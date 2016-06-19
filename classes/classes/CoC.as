@@ -254,6 +254,8 @@ the text from being too boring.
 		public var urtaPregs:UrtaPregs = new UrtaPregs();
 		public var valeria:Valeria = new Valeria();
 		public var vapula:Vapula = new Vapula();
+		public var fenrisScene:FenrisScene = new FenrisScene();
+		public var fenris:Fenris = Fenris.getInstance();
 		// Scenes/Places/
 		public var bazaar:Bazaar = new Bazaar();
 		public var boat:Boat = new Boat();

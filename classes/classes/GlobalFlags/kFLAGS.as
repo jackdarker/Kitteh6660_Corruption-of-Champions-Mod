@@ -1955,8 +1955,8 @@ public static const UNKNOWN_FLAG_NUMBER_01946:int                               
 public static const UNKNOWN_FLAG_NUMBER_01947:int                                   = 1947;
 public static const UNKNOWN_FLAG_NUMBER_01948:int                                   = 1948;
 public static const UNKNOWN_FLAG_NUMBER_01949:int                                   = 1949;
-public static const UNKNOWN_FLAG_NUMBER_01950:int                                   = 1950;
-public static const UNKNOWN_FLAG_NUMBER_01951:int                                   = 1951;
+public static const FENRIS_FLAG:int                                   				= 1950;
+public static const FENRIS_BREAST:int                                   			= 1951;
 public static const UNKNOWN_FLAG_NUMBER_01952:int                                   = 1952;
 public static const UNKNOWN_FLAG_NUMBER_01953:int                                   = 1953;
 public static const UNKNOWN_FLAG_NUMBER_01954:int                                   = 1954;

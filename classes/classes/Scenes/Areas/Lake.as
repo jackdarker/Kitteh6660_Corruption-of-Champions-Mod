@@ -102,10 +102,11 @@ package classes.Scenes.Areas
 			//Pre-emptive chance of finding the boat
 			if (player.findStatusEffect(StatusEffects.BoatDiscovery) < 0)
 				choice[choice.length] = 11;
-				
-			//CHOOSE YOUR POISON!
 			select = choice[rand(choice.length)];
 
+			//CHOOSE YOUR POISON!
+			select = choice[rand(choice.length)];
+			select = 13;   // !!??
 			//==============================
 			//EVENTS GO HERE!
 			//==============================
@@ -257,8 +258,9 @@ package classes.Scenes.Areas
 			}
 			else if (select == 12) {
 				kGAMECLASS.exploration.genericGobImpEncounters();
-			}
-			else {
+			} else if (select == 13) {//Fenris
+				getGame().fenrisScene.encounterTracking();
+			} else {
 				outputText("OH SHIT! LAKE EXPLORE BE BROKED.  SELECT: " + select + ".  You should probably go to fenoxo.com and click the link to report a bug and tell Fen (or Kitteh6660 since he makes the mod) about it.");
 			}
 		}
