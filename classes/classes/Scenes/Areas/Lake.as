@@ -102,11 +102,12 @@ package classes.Scenes.Areas
 			//Pre-emptive chance of finding the boat
 			if (player.findStatusEffect(StatusEffects.BoatDiscovery) < 0)
 				choice[choice.length] = 11;
-			select = choice[rand(choice.length)];
+			//meet Fenris	
+			choice[choice.length] = 13;
 
 			//CHOOSE YOUR POISON!
 			select = choice[rand(choice.length)];
-			select = 13;   // !!??
+			select = 13;   // Todo: just for testing Fenris
 			//==============================
 			//EVENTS GO HERE!
 			//==============================

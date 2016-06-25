@@ -1,43 +1,23 @@
 package classes.Scenes.NPCs{
-	import classes.*;
+
 	import classes.Scenes.NPCs.Fenris;
 	import classes.Scenes.NPCs.FenrisMonster;
+	import classes.Scenes.Areas.Lake.FenrisGooFight;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.internals.TakeoutDrop;
 	import classes.Items.Consumables.SimpleConsumable;
 	import classes.ItemType;
 
-	public class FenrisScene extends NPCAwareContent implements TimeAwareInterface {
+	public class FenrisScene extends NPCAwareContent  {
 
-		public var pregnancy:PregnancyStore;
 		public var FenrisNPC:classes.Scenes.NPCs.Fenris;
 
 		public function FenrisScene()
 		{
-			CoC.timeAwareClassAdd(this);
-		}
-		
-		//Implementation of TimeAwareInterface
-		public function timeChange():Boolean
-		{
-			//pregnancy.pregnancyAdvance();
-			trace("\nFenris time change: Time is " + model.time.hours , false);
-			if (model.time.hours > 23) {
-			}
-			return false;
-		}
-	
-		public function timeChangeLarge():Boolean {
 			
-			return false;
 		}
-		//End of Interface Implementation
 
-
-	
-	
-	
 	/**this will switch to the next stage; see Fenris.as for stages & flags
 	 * value defines the quest branch to go on
 	 */
@@ -86,14 +66,19 @@ public function encounterTracking():void {
 		addButton(0, "Greetings", greetingsFirstTime, null, null, null, "Head over for some greetings");
 		addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+		break;
 	case Fenris.MAINQUEST_Steal_Cloth:
 		clearOutput();
 		outputText("You see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] say's '<i> ...you didn't see a loin cloth lying around, no? </i>' \n\n", false);	
 		menu();
 		addButton(0, "Nope", afterLoinClothStealDlg, 0, null, null, "Just pretend you didnt steal it");
 		addButton(2, "Attack", afterLoinClothStealDlg, 2, null, null, "Ready for some beating?");
+		break;
 	case Fenris.MAINQUEST_Greetings: 
-		metAgain(0);
+		var _rand:Number = rand(10);
+		if(_rand>5) {
+			gooFight();
+		} else metAgain(0);
 	default:
 		trace("missing Fenris-stage " + stage.toString());
 	}
@@ -107,10 +92,10 @@ public function encounterTracking():void {
 private var _dlgStage:int; 
 private function greetingsFirstTime ():void {
 	clearOutput();
-	outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n\n", false);	
+	outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n\n TODO:", false);	
 	progressMainQuest(1);
 	menu();
-	addButton(15, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");	
+	addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");	
 }
 private function metAgain(stage:int = -1):void {
 	if (stage < 0) stage = _dlgStage;
@@ -158,11 +143,10 @@ private function metAgain(stage:int = -1):void {
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	}
+	} else trace("missing Fenris-stage " + stage.toString());
 }
 
 /*build list of places you know
- * 
  */ 
 private function buildLocationToGoMenu():void {
 	if (player.exploredForest > 0) {
@@ -170,6 +154,13 @@ private function buildLocationToGoMenu():void {
 			addButton(0, "search forest", goThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
 		} else {
 			addButton(0, "avoid forest", dontGoThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
+		}	
+	}
+	if (player.exploredMountain > 0) {
+		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINQUEST_SEARCH_MOUNTAIN)) {
+			addButton(0, "search mountain", goThere,Fenris.MAINQUEST_SEARCH_MOUNTAIN, 200, null, "");
+		} else {
+			addButton(0, "avoid mountain", dontGoThere,Fenris.MAINQUEST_SEARCH_MOUNTAIN, 200, null, "");
 		}	
 	}
 	if (player.exploredDesert > 0) {}
@@ -180,9 +171,13 @@ private function goThere(Flag:uint, stage:int = -1):void {
 	_dlgStage = stage;
 	clearOutput();
 	switch (Flag) {
-		case Fenris.MAINFLAG_SEARCH_FOREST:
+	case Fenris.MAINFLAG_SEARCH_FOREST:
 			outputText("You tell him that he should checkout the forest.\n");
 			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_FOREST,true)
+		break;
+	case Fenris.MAINFLAG_SEARCH_MOUNTAIN:
+			outputText("You tell him that he should hike the mountains.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN,true)
 		break;
 	default:
 		trace("missing Flocation " + Flag.toString());
@@ -195,9 +190,13 @@ private function dontGoThere(Flag:uint, stage:int = -1):void {
 	_dlgStage = stage;
 	clearOutput();
 	switch (Flag) {
-		case Fenris.MAINFLAG_SEARCH_FOREST:
+	case Fenris.MAINFLAG_SEARCH_FOREST:
 			outputText("You tell him to avoid the forest.\n");
 			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_FOREST,false)
+		break;
+	case Fenris.MAINFLAG_SEARCH_MOUNTAIN:
+			outputText("You tell him that he should avoid the mountains.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN,false)
 		break;
 	default:
 		trace("missing Flocation " + Flag.toString());
@@ -272,13 +271,13 @@ private function afterLoinClothStealDlg(stage:int = -1):void {
 		menu();
 		//Todo: offer cloth if you have one
 		addButton(0, "Get used to it", afterLoinClothStealDlg, 100, null, null, "");
-		addButton(15, "Appearance", fenrisAppearance, afterLoinClothStealDlg, null, null, "");
+		addButton(14, "Appearance", fenrisAppearance, afterLoinClothStealDlg, null, null, "");
 	}else if (stage == 100) {
 		outputText("'<i>Not the clothe are making the differences. Just try to keep your wits up. </i>' you answer. \n <Todo>\n\n");	
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Appearance", fenrisAppearance, afterLoinClothStealDlg, null, null, "");
-		addButton(15, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	}  
 	
 }
@@ -290,6 +289,23 @@ private function fenrisAppearance(back:Function):void {
 	doNext(back);
 }
 
+private function gooFight(stage:int = -1):void {
+	if (stage < 0) stage = _dlgStage;
+	_dlgStage = stage;
+	if (stage <= 0 ) {
+		clearOutput();
+		outputText("Todo: You see Fenris struggling with a goo-girl. What do you do?\n");
+		menu();
+		addButton(0, "Fight Goo", gooFight, 100, null, null, "Help Fenris defeating the enemy");
+		addButton(14, "Back out", gooFight, 200, null, null, "");
+	} else if (stage==100) {
+		startCombat(new FenrisGooFight());
+	} else if (stage==200) {
+		outputText("You silently make your way back, leaving him to his fate.\n");
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, ""); 
+	} else trace("missing Fenris-stage " + stage.toString());
+}
 /* 
  */ 
 public function loseToFenris():void {

@@ -58,7 +58,7 @@ package classes.Scenes.NPCs
 			_monster.checkMonster();		
 	}
 	private function recalcBaseStats():void {
-		level = Fenris.getInstance().level;
+		level = Fenris.getInstance().getLevel();
 		//bonusHP = 75;
 		lust = 1;
 		lustVuln = .05;
