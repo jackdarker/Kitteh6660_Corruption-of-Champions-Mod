@@ -5,7 +5,7 @@ package classes.Scenes.NPCs{
 	import classes.Scenes.Areas.Lake.FenrisGooFight;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
-	import classes.internals.TakeoutDrop;
+	import classes.internals.*;
 	import classes.Items.Consumables.SimpleConsumable;
 	import classes.ItemType;
 
@@ -206,16 +206,16 @@ private function dontGoThere(Flag:uint, stage:int = -1):void {
 }
 /*build random list of foods you could give away
  * random because we could have 20 foods but only 5 buttons and dont want to stick with first 5 foods !
- * 
+ * Todo: make several pages instead
  */ 
 private function buildRandomGiveFoodMenu():void {
 	var _foods:TakeoutDrop = new TakeoutDrop(null);
 	if (player.hasItem(consumables.VITAL_T)) _foods.add(consumables.VITAL_T,1);
 	if (player.hasItem(consumables.BLACKPP)) _foods.add(consumables.BLACKPP,1);
 	if (player.hasItem(consumables.CANINEP)) _foods.add(consumables.CANINEP,1);
-	if (player.hasItem(consumables.BLUEEGG)) _foods.add(consumables.BLUEEGG,1);
-	if (player.hasItem(consumables.PINKEGG)) _foods.add(consumables.PINKEGG,1);
-	if (player.hasItem(consumables.KANGAFT)) _foods.add(consumables.KANGAFT, 1);
+	if (player.hasItem(consumables.IMPFOOD)) _foods.add(consumables.IMPFOOD,1);
+	if (player.hasItem(consumables.GOB_ALE)) _foods.add(consumables.GOB_ALE,1);
+	if (player.hasItem(consumables.SDELITE)) _foods.add(consumables.SDELITE, 1);
 	var _item:SimpleConsumable;
 	_item = _foods.roll();
 	if (_item != null) addButton(0, _item.shortName, giveFood,_item, 101, null, "");
@@ -232,9 +232,15 @@ private function giveFood(Food:SimpleConsumable, stage:int = -1):void {
 	if (stage < 0) stage = _dlgStage;
 	_dlgStage = stage;
 	clearOutput();
-	outputText("Fenris takes a suspicious look at " + Food.longName +". But he is hungry so he wolfyli munches it down.");
+	
 	//Todo: add effect to fenris
-	player.consumeItem(ItemType.lookupItem(Food.id));
+	var Result:ReturnResult = new ReturnResult();
+	Fenris.getInstance().eatThis(Food, Result);
+	outputText("Fenris takes a suspicious look at " + Food.longName +".");
+	outputText(Result.Text);
+	if (Result.Code == 0) {
+		player.consumeItem(ItemType.lookupItem(Food.id));
+	}
 	menu();
 	doNext(metAgain);
 }
@@ -250,7 +256,7 @@ private function stealCloth (stage:int = -1):void {
 	} else if (stage == 2) {
 		//Todo: add sucesss calculation
 		outputText("You pull the loin cloth form the stone and make your way silently back to your camp. \n\n");	
-		progressMainQuest(1)
+		progressMainQuest(2)
 		menu();
 		addButton(10, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 		//Todo: add item and remove it from fenris
@@ -283,7 +289,8 @@ private function afterLoinClothStealDlg(stage:int = -1):void {
 }
 private function fenrisAppearance(back:Function):void {
 	clearOutput();
-	outputText("Right in front of you stands a walking, speaking wolfman.");
+	outputText("Right in front of you stands a walking, speaking wolfman. \n");
+	outputText("[fenris descrwithclothes] \n");
 	outputText("[fenris status]"); //for debug only
 	menu();
 	doNext(back);
@@ -302,6 +309,7 @@ private function gooFight(stage:int = -1):void {
 		startCombat(new FenrisGooFight());
 	} else if (stage==200) {
 		outputText("You silently make your way back, leaving him to his fate.\n");
+		//Todo: calc win chance of fenris
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, ""); 
 	} else trace("missing Fenris-stage " + stage.toString());
@@ -310,6 +318,7 @@ private function gooFight(stage:int = -1):void {
  */ 
 public function loseToFenris():void {
 	outputText("Todo: Loose description ");
+	combat.cleanupAfterCombat();
 	//dynStats("lust+", 10 + player.lib / 10, "cor+", 5 + rand(10));
  }
 }}

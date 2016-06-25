@@ -17,7 +17,7 @@ package classes.Scenes.NPCs
 			var _fenris:Fenris = Fenris.getInstance();
 			_monster.a = "the ";
 			_monster.short = "wolf";
-			_monster.imageName = "hellhound"; //Todo: add image
+			//_monster.imageName = "hellhound"; //Todo: add image
 			_monster.long = "You are fighting an anthro-wolf";
 			if (_fenris.hasVagina()) {
 					_monster.createVagina(_fenris.getVaginaVirgin(),VAGINA_WETNESS_NORMAL,_fenris.getVaginaSize());
@@ -32,8 +32,8 @@ package classes.Scenes.NPCs
 			if (_fenris.getCockCount() >= 1) {
 					//Todo: add multiple
 					_monster.createCock(_fenris.getCockSize(), _fenris.getCockSize()/10, CockTypesEnum.DOG);
-					_monster.balls = 2;
-					_monster.ballSize = 2;
+					_monster.balls = _fenris.getBallCount();
+					_monster.ballSize = _fenris.getBallSize();
 					_monster.cumMultiplier = 1;
 			}
 				
@@ -188,6 +188,8 @@ package classes.Scenes.NPCs
 		{
 			//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.PCBeatsUpSalamanderSparring();
 			//else game.helScene.beatUpHel();
+			outputText("\n\nYou defeated Fenris");
+			game.combat.cleanupAfterCombat();
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void

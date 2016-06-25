@@ -1,8 +1,8 @@
-package classes.Scenes.NPCs
-{
+package classes.Scenes.NPCs{
 
 	import classes.BreastRowClass;
 	import classes.BreastStore;
+	import classes.Items.Weapon;
 	import classes.PregnancyStore;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kFLAGS;
@@ -15,9 +15,12 @@ package classes.Scenes.NPCs
 	import classes.internals.*;
 	import classes.CoC;
 	import classes.CockTypesEnum;
+	import classes.Items.Consumables.SimpleConsumable;
+	import classes.ItemType;
 	import classes.SaveAwareInterface;
 
-	public class Fenris implements SaveAwareInterface, TimeAwareInterface //extends Monster 
+	//dont extends Monster because we need to change stats and features
+	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
 	{
 		//those are the main quest stages
 		public static const MAINQUEST_Not_Met:uint = 0;		//initial value
@@ -59,46 +62,63 @@ package classes.Scenes.NPCs
 			}
 			return _Return;
 		} 
+		public function getXP():uint {
+			return _Level / 0x100;
+		}
 		// Todo: how about XP adjustment
 		private function setLevel(value:uint):void { 
 			_Level = (value & 0xFF) +  (_Level & 0xFFFFFF00 ); 
 		} 
-		public function getCockSize():Number {
-			return 5.5;
-		}
-		private var _Corruption:Number =0;
+
+		private var _Corruption:uint =0;  // 2bytes Corruption 100/50000 per bit
 		public function getCorruption():Number {
-			return _Corruption;
+			return (Number(_Corruption & 0xFFFF)) * 0.002;;
 		}
 		public function setCorruption(x:Number):void {
-			_Corruption=(x);
+			if (x < 0) return;
+			_Corruption=(uint(x/0.002))&0xFFFF;
 		}
-		private var _BodyStrength:Number = 0;
+		private var _LibidoLust:uint =0;  // 2 bytes Libido & 2 bytes Lust 100/50000 per bit
+		public function getLibido():Number {
+			return (Number(_LibidoLust & 0xFFFF)) * 0.002;
+		}
+		public function setLibido(x:Number):void {
+			if (x < 0) return;
+			_LibidoLust= (_LibidoLust & 0xFFFF0000 )+((uint(x/0.002))&0xFFFF);
+		}
+		public function getLust():Number {
+			return (Number((_LibidoLust / 0x10000 ) & 0xFFFF)) * 0.002;
+		}
+		public function setLust(x:Number):void {
+			if (x < 0) return;
+			_LibidoLust=(_LibidoLust & 0xFFFF )+((uint(x/0.002))&0xFFFF)*0x10000;
+		}
+		private var _BodyStrength:uint = 0;
 		/* returns fitness/masculinity of body  0=no muscles 100=bodybuilder on steroids  
 		 */ 
 		public function getBodyStrength():Number {
 			return _BodyStrength;
 		}
 		public function setBodyStrength(x:Number):void {
-			_BodyStrength=(x);
+			_BodyStrength=uint(x);
 		}
-		private var _SelfEsteem:Number = 0;
+		private var _SelfEsteem:uint = 0;
 		/* returns confidence of himself, modifys chances for fullfilling others request:0= easy to dominate 100= dominating others 
 		 */ 
 		public function getSelfEsteem():Number {
 			return _SelfEsteem;
 		}
 		public function setSelfEsteem(x:Number):void {
-			_SelfEsteem=(x);
+			_SelfEsteem=uint(x);
 		}
-		private var _PlayerRelation:Number = 0;
+		private var _PlayerRelation:uint = 0;
 		/* returns relation to player, 0= neutral, 100=lover, -100=nemesis
 		 */ 
 		public function getPlayerRelation():Number {
 			return _PlayerRelation;
 		}
 		public function setPlayerRelation(x:Number):void {
-			_PlayerRelation=(x);
+			_PlayerRelation=uint(x);
 		}
 		private var _MainQuestStage:uint = 0;
 		private var _MainQuestFlags:uint = 0;
@@ -125,10 +145,33 @@ package classes.Scenes.NPCs
 		public function getMainQuestStage():uint {
 			return _MainQuestStage;
 		}
-		public function getCockCount():Number {
-			return  1;
+		public function getCockSize():Number {
+			var _size:Number = (Number((_CockSize & 0xFFFF0000 ) / 0x10000)) / 100;
+			return _size;
 		}
-		public function setCock(Size:Number, isVirgin:Boolean,  Count:Number):void {
+		public function getCockCount():int {
+			var _count:int = (int((_CockSize & 0x7 )));
+			return _count;
+		}
+		private var _CockSize:uint;  //
+		public function setCock(Size:Number, Count:int):void {
+			var _size:uint = (uint(Size * 100)) *  0x10000;  //upper 2 bytes = Size 0..655.35 <= 1/100 per bit
+			var _count:uint = uint(Count & 0x7); //lowest 3 bits = count (0..7)
+			_CockSize = _size + _count;
+		}
+		private var _BallSize:uint;  //  
+		public function setBalls(Size:Number, Count:int):void {
+			var _size:uint = (uint(Size * 100)) *  0x10000; //upper 2 bytes = Size 0..655.35 <= 1/100 per bit
+			var _count:uint = uint(Count & 0x6); //bits 1&2 = count  (0,2,4,6)
+			_BallSize = _size + _count;
+		}
+		public function getBallSize():Number {
+			var _size:Number = (Number((_BallSize & 0xFFFF0000 ) / 0x10000)) / 100;
+			return _size;
+		}
+		public function getBallCount():int {
+			var _count:int = (int((_BallSize & 0x6 )));
+			return _count;
 		}
 		public function getVaginaSize():Number {
 			return  0;
@@ -141,14 +184,15 @@ package classes.Scenes.NPCs
 		}
 		public function setVagina( Looseness:Number,  isVirgin:Boolean,  hasVagina:Boolean):void {
 		}
-		
+		private var _AnalStats:uint = 0;
 		public function getAnalSize():Number {
 			return  0;
 		}
 		public function getAnalVirgin():Boolean {
 			return  true;
 		}
-		public function setAnus( Looseness:Number,  isVirgin:Boolean):void {
+		public function setAnus( Looseness:Number,  isVirgin:Boolean, Wetness:Number):void {
+
 		}
 		public function setBreast (size:Number, Rows:int):void {
 			
@@ -157,30 +201,77 @@ package classes.Scenes.NPCs
 		{
 			return man;
 		}
-
+		//returns 0 if he eats it
+		public function eatThis(Food:SimpleConsumable, Result:ReturnResult):void {
+			if (Food == kGAMECLASS.consumables.VITAL_T) {
+				Result.Code = 0;
+				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."
+				//Todo: refresh HP?
+				setPlayerRelation(getPlayerRelation() + 3);
+			}if (Food == kGAMECLASS.consumables.CANINEP) { 
+				Result.Code = 0;
+				Result.Text = "[fenris Ey] takes some bites from the fruit ";
+				if (getBodyStrength() < 70) {
+					setBodyStrength(getBodyStrength() + 3)
+					Result.Text += "and [fenris eir] features seems to get slightly more like that of an predator. \n";
+				} else {
+					Result.Text += "but it doesnt seem to have an effect on [fenris em]. \n "
+				}
+				if (getCorruption() < 70) {
+					setCorruption(getCorruption() + 3)
+					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone."
+				} else {
+				}
+				
+			}if (Food == kGAMECLASS.consumables.SDELITE) { 
+				Result.Code = 0;
+				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips on it.";
+				if (getBodyStrength() < 70 && getCockSize()> 0) {
+					setBodyStrength(getBodyStrength() + 3)
+					Result.Text += "and [fenris eir] features seems to get slightly more like that of an predator. \n";
+				} else {
+					Result.Text += "It doesnt seem to taste well, so [fenris ey] spews out the little bit he drank. \n "
+				}
+				if (getCorruption() < 70) {
+					setCorruption(getCorruption() + 3)
+					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone.\n"
+				} else {
+				}
+				
+			} else {
+				Result.Code = 1;
+				Result.Text = "Fenris doesnt seem to like " + Food.shortName +" and gives it back to you."
+			}
 		}
+		}  //
 		{ // --> stuff related to Items
 		//definition of items & equipment slots; actually only virtual items
-		public static var ITEMSLOT_UNDERWEAR:uint 		= 0x0100;
-		public static var ITEMSLOT_WEAPON:uint 			= 0x0200;
-		public static var ITEMSLOT_PIERC_BREAST:uint 	= 0x0400;
-		public static var ITEMSLOT_HEAD:uint 			= 0x0800;
-		public static var UNDERWEAR_NONE:uint = 0x100;
-		public static var UNDERWEAR_LOINCLOTH:uint = 0x102;
-		public static var UNDERWEAR_COCKCAGE:uint = 0x103;
-		public static var WEAPON_NONE:uint = 0x200;
-		public static var WEAPON_KNIFE:uint = 0x202;
-		public static var HEAD_NONE:uint 				= 0x800;
-		public static var HEAD_MUZZLE:uint 				= 0x801;
+		//byte0&1 is the slot , byte 2&3 is the gear 
+		public static var ITEMSLOT_UNDERWEAR:uint 		= 0x0001;
+		public static var ITEMSLOT_WEAPON:uint 			= 0x0002;
+		public static var ITEMSLOT_PIERC_BREAST:uint 	= 0x0004;
+		public static var ITEMSLOT_HEAD:uint 			= 0x0008;
+		public static var ITEMSLOT_FEET:uint 			= 0x0010;
+		public static var ITEMSLOT_HAND:uint 			= 0x0020;
+		public static var ITEMSLOT_NECK:uint 			= 0x0040;
+						
+		public static var UNDERWEAR_NONE:uint 			= 0x00001;
+		public static var UNDERWEAR_LOINCLOTH:uint 		= 0x20001;  //his default loincloth	
+		public static var UNDERWEAR_COCKCAGE:uint 		= 0x30001;
+		public static var WEAPON_NONE:uint 				= 0x00002;
+		public static var WEAPON_KNIFE:uint 			= 0x10002;  //his default tool-knife
+		public static var HEAD_NONE:uint 				= 0x00008;
+		public static var HEAD_MUZZLE:uint 				= 0x10008;  //leatherstraps around muzzle, cannot bite
+		public static var HEAD_MUZZLEFULL:uint 			= 0x20008;  //full head muzzle add. obscuring view and other senses
 		
-		private var _AvailableItems:Array = []; //uint
+		private var _AvailableItems:Array = []; //unordered list of items
 		public function getAllItems(): Array {
 			return _AvailableItems;
 		}
 		public function setAllItems(items:Array):void {
 			_AvailableItems = items;
 		}
-		private var _EquippedItems:Array = [];	//uint
+		private var _EquippedItems:Array = [];	//index of array is slot, value is item
 		public function getEquippedItems(): Array {
 			return _EquippedItems;
 		}
@@ -257,7 +348,7 @@ package classes.Scenes.NPCs
 			if (!hasItem(item))	return "Fenris doesnt have this item";
 			_ret = canUnequipItem(item);
 			if (_ret != null) return _ret; 
-			getEquippedItems()[slot] = 0;
+			getEquippedItems()[slot] = slot;  //this slot is set to XYZ_NONE
 			if (take) {
 				getAllItems().splice(getAllItems().indexOf(item), 1);
 			}
@@ -323,14 +414,17 @@ package classes.Scenes.NPCs
 			if (!_initDone) {
 				//first time initialisation
 				setVagina(0, true, false);
-				setAnus(0, true);
-				setCock(5.5 , true, 1);
+				setAnus(0, true,0);
+				setCock(5.5 , 1);
+				setBalls(1 , 2);
 				setBreast(0, 1);
 				setSelfEsteem(50);
-				setBodyStrength(50);
+				setBodyStrength(40);
 				setCorruption(2);
 				setPlayerRelation(50);
 				setLevel( 1);
+				equipItem(ITEMSLOT_UNDERWEAR,UNDERWEAR_LOINCLOTH,true);
+				equipItem(ITEMSLOT_WEAPON,WEAPON_KNIFE,true);
 			}
 			_initDone = true;
 		}	
@@ -345,54 +439,65 @@ package classes.Scenes.NPCs
 			if (Flag < 1 || Flag > MAX_FLAG_VALUE) return;
 			var _allItems:String = "";
 			var _equItems:String = "";
+			var i:int = -1;
 			var flagData:Array = String(game.flags[Flag]).split("^");
-			if (((String) (flagData[0])) == "1" ){//im to lazzy: && flagData.length == 7) {
-				_Corruption				= Number(flagData[1]);
-				_SelfEsteem				= Number(flagData[2]);
-				_PlayerRelation			= int(flagData[3]);
-				_MainQuestStage			= uint(flagData[4]);
-				_MainQuestFlags			= uint(flagData[5]);
-				_Level					= Number(flagData[6]);
-				//_allItems				= String(flagData[7]);
-				//_equItems				= String(flagData[8]);
+			if (((String) (flagData[0])) == "2" ){//im to lazzy: && flagData.length == 7) {
+				_Corruption				= uint(flagData[i++]);
+				_SelfEsteem				= uint(flagData[i++]);
+				_PlayerRelation			= uint(flagData[i++]);
+				_MainQuestStage			= uint(flagData[i++]);
+				_MainQuestFlags			= uint(flagData[i++]);
+				_CockSize				= uint(flagData[i++]);
+				_BallSize				= uint(flagData[i++]);
+				_LibidoLust				= uint(flagData[i++]);
+				_AnalStats				= uint(flagData[i++]);
+				_BodyStrength 			= uint(flagData[i++]);
+				_Level					= uint(flagData[i++]);
+				_allItems				= String(flagData[i++]);
+				_equItems				= String(flagData[i++]);
+			
+				var _allItemsArr:Array = _allItems.split("~");
+				var _allItemsArr2:Array = []; 
+				var item:String;
+				for ( item in _allItemsArr) 	{ 
+					if(item!="") _allItemsArr2.push(uint(item));
+				}
+				this._AvailableItems = _allItemsArr2;
+				var _equItemsArr:Array = _equItems.split("~");
+				var _equItemsArr2:Array = []; 
+				for ( item in _equItemsArr) 	{ 
+					if(item!="") _equItemsArr2.push(uint(item));
+				}
+				this._EquippedItems = _equItemsArr2;
 			}
-			var _allItemsArr:Array = _allItems.split("~");
-			var _allItemsArr2:Array = []; 
-			var i:String;
-			for ( i in _allItemsArr) 	{ 
-				if(i!="") _allItemsArr2.push(uint(i));
-			}
-			this._AvailableItems = _allItemsArr2;
-			var _equItemsArr:Array = _equItems.split("~");
-			var _equItemsArr2:Array = []; 
-			for ( i in _equItemsArr) 	{ 
-				if(i!="") _equItemsArr2.push(uint(i));
-			}
-			this._EquippedItems = _equItemsArr2;
-
 		}
 
 		public function updateBeforeSave(game:CoC):void {
 			if (Flag < 1 || Flag > MAX_FLAG_VALUE) return;
 			var _allItems:String = "";
 			var _allItemsArr:Array = this.getAllItems();
-			var i:String;
-			for (i in _allItemsArr) 	{ 
-				_allItems += i + "~";
+			var item:String;
+			for (item in _allItemsArr) 	{ 
+				_allItems += item + "~";
 			}
 			var _equItems:String = "";
 			var _equItemsArr:Array = this.getEquippedItems();
-			for ( i in _equItemsArr) 	{ 
-				_equItems += i + "~";
+			for ( item in _equItemsArr) 	{ 
+				_equItems += item + "~";
 			}
 			game.flags[Flag] = FENRIS_STORE_VERSION_1 + "^" + 
-			_Corruption + "^" + 
-			_SelfEsteem + "^" + 
+			_Corruption 	+ "^" + 
+			_SelfEsteem 	+ "^" + 
 			_PlayerRelation + "^" + 
 			_MainQuestStage + "^" + 
 			_MainQuestFlags + "^" +
-			_Level + "^" +
-			_allItems + "^" +
+			_CockSize		+ "^" +
+			_BallSize		+ "^" +
+			_LibidoLust		+ "^" +
+			_AnalStats		+ "^" +
+			_BodyStrength 	+ "^" +
+			_Level 			+ "^" +
+			_allItems 		+ "^" +
 			_equItems;
 		}
 		//End of Interface Implementation
@@ -406,6 +511,11 @@ package classes.Scenes.NPCs
 			if (_Return) {
 				_Return = false;
 				var _rand:Number; 
+				//update lust, if we hit 100, masturbate
+				var _lust:Number = getLust() + getLibido() * 2 / 100;  //at 100lib increase lust by 48/24h
+				if (_lust > 90 ) _lust = 90;
+				setLust(_lust);
+				
 				if (kGAMECLASS.model.time.hours >= 16 && kGAMECLASS.model.time.hours < 17) {
 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
 					if (getLevel()< (kGAMECLASS.player.level+3)) {
@@ -429,13 +539,27 @@ package classes.Scenes.NPCs
 		{// -->  functions for parser callbacks to convert pronouns
 		// Todo:add herm and other converters
 		public function get descrwithclothes():String { 
-			var _str:String = "Fenris the wolfman";
-			_str += "underwear " +this.getEquippedItemText(ITEMSLOT_UNDERWEAR, true) + "\nweapon "+this.getEquippedItemText(ITEMSLOT_WEAPON,true);
+			var _str:String = "Fenris the wolfman wears "+this.getEquippedItemText(ITEMSLOT_UNDERWEAR, true) +" and uses " +this.getEquippedItemText(ITEMSLOT_WEAPON,true)+ " as weapon.\n";
+			if (getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_NONE) {
+				_str += "You can see "+ eir + getBallCount() +" gonads swinging below his sheath. Each orb measures around " + getBallSize() + " inches. \n"; 
+				if (getLust()> 90) {
+					_str += Eir + " throbing, "+getCockSize()+"inch long wolfhood stands proudly errect from his sheath. \n";
+				} else if (getLust() > 60) {
+					_str += "[fenris Eir] halfhard schlong is mostly out of its sheath and is flapping around whenever he moves. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
+				}else if (getLust() > 30) {
+					_str += "Only the tip of "+ eir + " dick is poking out of the fuzzy sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
+				}else  {
+					_str += Eir + " penis is savely hidden in its furred sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
+				}
+			} else if(getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_LOINCLOTH) {
+				_str += Eir + " loincloth is obscuring the view of his private bits." 
+			}
 			return _str;
 		}
 		
 		public function get status():String {
-			return "\nLevel " + this.getLevel() +" XP " +this._Level/0x100  + "\n Corruption " + this._Corruption + "\n Selfesteem " + this._SelfEsteem +
+			return "\nLevel " + this.getLevel() +" XP " +this.getXP()  + "\n Corruption " + this.getCorruption() + "\n Selfesteem " + this._SelfEsteem +
+			"\n Libido " +this.getLibido() + " Lust " +getLust() +
 			"\n Playerrelation " +this._PlayerRelation + "\n MainQuestStage " + this._MainQuestStage + "\n MainQuestFlag " +this._MainQuestFlags +"\n";
 			
 		}
