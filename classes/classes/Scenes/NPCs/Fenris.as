@@ -23,24 +23,21 @@ package classes.Scenes.NPCs{
 	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
 	{
 		//those are the main quest stages
-		public static const MAINQUEST_Not_Met:uint = 0;		//initial value
-		public static const MAINQUEST_Spotted:uint = 1;		//PC heard him in the bushes
-		public static const MAINQUEST_Spotted2:uint = 2;	//PC saw him at the lake
-		public static const MAINQUEST_Greetings:uint = 3;	//PC talked to him first time
-		public static const MAINQUEST_Steal_Cloth:uint = 4; //PC decided to steal his loin cloth
-		public static const MAINQUEST_SEARCH_DEEPWOOD:uint = 5; //
-		public static const MAINQUEST_AVOID_DEEPWOOD:uint = 6; //
-		public static const MAINQUEST_SEARCH_MOUNTAIN:uint = 7; //
-		public static const MAINQUEST_AVOID_MOUNTAIN:uint = 8; //
-		public static const MAINQUEST_SEARCH_FOREST:uint = 9; //
-		public static const MAINQUEST_AVOID_FOREST:uint = 10; //
+		public static const MAINQUEST_Not_Met:uint = 		0;		//initial value
+		public static const MAINQUEST_Spotted:uint = 		1;		//PC heard him in the bushes
+		public static const MAINQUEST_Spotted2:uint = 		2;	//PC saw him at the lake
+		public static const MAINQUEST_Greetings:uint = 		3;	//PC talked to him first time
+		public static const MAINQUEST_Steal_Cloth:uint = 	4; //PC decided to steal his loin cloth
+		public static const MAINQUEST_CAGED:uint = 			5; //Fenris got COCKCAGE from Fetish guys
+
 		//those flags keep track of the mainquest history (bitwise)
 		public static const MAINFLAG_Stole_Cloth:uint = 	1 << 0;	//PC stole loin cloth
 		public static const MAINFLAG_SEARCH_DEEPWOOD:uint = 1 << 1;	//
 		public static const MAINFLAG_SEARCH_MOUNTAIN:uint = 1 << 2;	//
 		public static const MAINFLAG_SEARCH_FOREST:uint = 	1 << 3;	//
 		public static const MAINFLAG_SEARCH_DESERT:uint = 	1 << 4;	//
-		{// --> stats
+		//{ --> stats
+		//Todo: convert measurments to metrics if kFlags.USE_METRICS is set
 		private var _Level:uint = 0; // lowest byte is level (1..254), the other bytes keep track of XP (0..16Mio)
 		public function getLevel():uint { 
 			return _Level & 0xFF;
@@ -65,7 +62,7 @@ package classes.Scenes.NPCs{
 		public function getXP():uint {
 			return _Level / 0x100;
 		}
-		// Todo: how about XP adjustment
+		// Todo: how about reset XP ?
 		private function setLevel(value:uint):void { 
 			_Level = (value & 0xFF) +  (_Level & 0xFFFFFF00 ); 
 		} 
@@ -136,43 +133,83 @@ package classes.Scenes.NPCs{
 			}
 		}
 		public function setMainQuestStage(x:uint):void {
+			var _Result:ReturnResult = new ReturnResult();
 			if (x == MAINQUEST_Steal_Cloth) {
 				setMainQuestFlag(MAINFLAG_Stole_Cloth, true);
-				unequipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true);
+				unequipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, _Result);
 			}
 			_MainQuestStage = x;
 		}
 		public function getMainQuestStage():uint {
 			return _MainQuestStage;
 		}
-		public function getCockSize():Number {
-			var _size:Number = (Number((_CockSize & 0xFFFF0000 ) / 0x10000)) / 100;
+		public function getCockSize(Index:int=0):Number {
+			var _size:Number;
+			if (Index == 0) { 
+				_size = (Number(_CockStats & 0x1FF  )/0x1) / 10;
+			} else if (Index == 1) {
+				_size = (Number((_CockStats & 0x1FF000)/0x1000)) / 10;
+			} else if (Index > 1 && Index < 7) { // Pentaclecocks
+				_size = (Number((_CockStats & 0xFF000000)/0x1000000)) ;
+			} else {
+				_size = 0;
+			}
 			return _size;
 		}
 		public function getCockCount():int {
-			var _count:int = (int((_CockSize & 0x7 )));
+			var _count:int = (int((_CockStats & 0xE00000 ) / 0x200000));
+			if (getCockSize(0) > 0) _count++;
+			if (getCockSize(1) > 0) _count++;
+			
 			return _count;
 		}
-		private var _CockSize:uint;  //
-		public function setCock(Size:Number, Count:int):void {
-			var _size:uint = (uint(Size * 100)) *  0x10000;  //upper 2 bytes = Size 0..655.35 <= 1/100 per bit
-			var _count:uint = uint(Count & 0x7); //lowest 3 bits = count (0..7)
-			_CockSize = _size + _count;
+		private var _CockStats:uint;  //
+		/*set size to 0 to remove cock; index can only be 0..1 actually
+		 */ 
+		public function setCock(Size:Number, Index:int):void {
+			var _size:uint = uint(Math.max(Size * 10, 0x1FF));  //0.1 inch per bit 0x1FF bits => capped at 51.1"
+			var _count:int = (int((_CockStats & 0xE00000 ) / 0x200000)); // count Pentaclecocks (0..7)
+			//cocksize 1.cock bits 0to8  ; cocktype bits 9to11 Todo:currently just dogcock
+			//cocksize 2.cock bits 12to20 ; same cocktype like 1.cock
+			//Pentaclecocks use bits 24to31; 1inch per bit capped at 255"
+			// bit-map: 3333 3333 ccc2 2222 2222 ttt1 1111 1111 
+			//todo: oh my this is crap shifting bits forth and back, would be easier with arrays
+			/*if (Index == 0 ) {
+				if (_size <= 0) {
+					_count = Math.max(0, _count -1);
+					// copy 2.cock to 1.
+					_size = ((_CockStats && (0x001FF000))/0x1000);
+				} else {
+					_count = _count | 0x1;
+					
+				}
+			} else if (Index == 1 ) {
+				if (_size <= 0) {
+					_count = Math.max(0, _count -1);
+					_size = _CockStats && !(0xFFE00FFF);
+				} else {
+					
+				}
+			} else if (Index > 1 && Index < 7) { // Pentaclecocks
+				//Todo:
+			}*/
+			_CockStats = _size + _count;
 		}
-		private var _BallSize:uint;  //  
+		private var _BallStats:uint;  //  
 		public function setBalls(Size:Number, Count:int):void {
-			var _size:uint = (uint(Size * 100)) *  0x10000; //upper 2 bytes = Size 0..655.35 <= 1/100 per bit
+			var _size:uint = uint(Math.max(Size * 100, 0xFFF)) *  0x100000; //0.01 inch per bit 0xFFF bits => capped at 40.95"
 			var _count:uint = uint(Count & 0x6); //bits 1&2 = count  (0,2,4,6)
-			_BallSize = _size + _count;
+			_BallStats = _size + _count;
 		}
 		public function getBallSize():Number {
-			var _size:Number = (Number((_BallSize & 0xFFFF0000 ) / 0x10000)) / 100;
+			var _size:Number = (Number((_BallStats & 0xFFF00000 ) / 0x100000)) / 100;
 			return _size;
 		}
 		public function getBallCount():int {
-			var _count:int = (int((_BallSize & 0x6 )));
+			var _count:int = (int((_BallStats & 0x6 )));
 			return _count;
 		}
+		private var _VaginalStats:uint = 0;
 		public function getVaginaSize():Number {
 			return  0;
 		}
@@ -197,8 +234,7 @@ package classes.Scenes.NPCs{
 		public function setBreast (size:Number, Rows:int):void {
 			
 		}
-		public function fenrisMF(man:String, woman:String):String
-		{
+		public function fenrisMF(man:String, woman:String):String	{
 			return man;
 		}
 		//returns 0 if he eats it
@@ -208,7 +244,7 @@ package classes.Scenes.NPCs{
 				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."
 				//Todo: refresh HP?
 				setPlayerRelation(getPlayerRelation() + 3);
-			}if (Food == kGAMECLASS.consumables.CANINEP) { 
+			}else if (Food == kGAMECLASS.consumables.CANINEP) { 
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] takes some bites from the fruit ";
 				if (getBodyStrength() < 70) {
@@ -223,7 +259,7 @@ package classes.Scenes.NPCs{
 				} else {
 				}
 				
-			}if (Food == kGAMECLASS.consumables.SDELITE) { 
+			}else if (Food == kGAMECLASS.consumables.SDELITE) { 
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips on it.";
 				if (getBodyStrength() < 70 && getCockSize()> 0) {
@@ -241,10 +277,11 @@ package classes.Scenes.NPCs{
 			} else {
 				Result.Code = 1;
 				Result.Text = "Fenris doesnt seem to like " + Food.shortName +" and gives it back to you."
+				return ;
 			}
 		}
-		}  //
-		{ // --> stuff related to Items
+		//}  //
+		//{ --> stuff related to Items
 		//definition of items & equipment slots; actually only virtual items
 		//byte0&1 is the slot , byte 2&3 is the gear 
 		public static var ITEMSLOT_UNDERWEAR:uint 		= 0x0001;
@@ -255,14 +292,15 @@ package classes.Scenes.NPCs{
 		public static var ITEMSLOT_HAND:uint 			= 0x0020;
 		public static var ITEMSLOT_NECK:uint 			= 0x0040;
 						
-		public static var UNDERWEAR_NONE:uint 			= 0x00001;
-		public static var UNDERWEAR_LOINCLOTH:uint 		= 0x20001;  //his default loincloth	
-		public static var UNDERWEAR_COCKCAGE:uint 		= 0x30001;
-		public static var WEAPON_NONE:uint 				= 0x00002;
-		public static var WEAPON_KNIFE:uint 			= 0x10002;  //his default tool-knife
-		public static var HEAD_NONE:uint 				= 0x00008;
-		public static var HEAD_MUZZLE:uint 				= 0x10008;  //leatherstraps around muzzle, cannot bite
-		public static var HEAD_MUZZLEFULL:uint 			= 0x20008;  //full head muzzle add. obscuring view and other senses
+		public static var UNDERWEAR_NONE:uint 			= 0x000001;
+		public static var UNDERWEAR_LOINCLOTH:uint 		= 0x020001;  //his default loincloth	
+		public static var UNDERWEAR_COCKCAGE:uint 		= 0x030001;
+		public static var UNDERWEAR_COCKRING:uint 		= 0x040001;
+		public static var WEAPON_NONE:uint 				= 0x000002;
+		public static var WEAPON_KNIFE:uint 			= 0x010002;  //his default tool-knife
+		public static var HEAD_NONE:uint 				= 0x000008;
+		public static var HEAD_MUZZLE:uint 				= 0x010008;  //leatherstraps around muzzle, cannot bite
+		public static var HEAD_MUZZLEFULL:uint 			= 0x020008;  //full head muzzle add. obscuring view and other senses
 		
 		private var _AvailableItems:Array = []; //unordered list of items
 		public function getAllItems(): Array {
@@ -322,70 +360,82 @@ package classes.Scenes.NPCs{
 			}	
 			return _text;
 		}
-		/*returns null if ok or message if nok
+		/*returns 0 if ok or message if nok
 		 * */
-		public function equipItem(slot:uint, item:uint , give:Boolean ):String {
-			var _ret:String;
-			_ret = canEquipItem(slot, item,true);
-			if (_ret != null) return _ret;
+		public function equipItem(slot:uint, item:uint , give:Boolean , Result:ReturnResult):void {
+			canEquipItem(slot, item, true, Result);
+			if (Result.Code!= 0) return ;
 			//check if we own this item and havent it already equipped
 			if (!hasItem(item)) {
 				if (!give) {
-					return "Fenris doesnt have this item";
+					Result.Text = "Fenris doesnt have this item";
+					Result.Code = 1;
+					return;
 				} else {
 					getAllItems().push(item);
 				}
 			} //Todo: if he already has this item we should not give him another one
 			getEquippedItems()[slot] = item;
-			
-			return null;
 		}
-		/*returns null if ok or message if nok
+		/*returns 0 if ok or message if nok
 		 * */
-		public function unequipItem(slot:uint,item:uint, take:Boolean):String {
-			var _ret:String;
+		public function unequipItem(slot:uint,item:uint, take:Boolean, Result:ReturnResult):void {
 			//check if we own this item and havent it already equipped
-			if (!hasItem(item))	return "Fenris doesnt have this item";
-			_ret = canUnequipItem(item);
-			if (_ret != null) return _ret; 
+			if (!hasItem(item))	{
+				Result.Text = "Fenris doesnt have this item";
+				Result.Code = 1;
+				return;
+			}
+			canUnequipItem(item,Result);
+			if (Result.Code != 0) return ; 
 			getEquippedItems()[slot] = slot;  //this slot is set to XYZ_NONE
 			if (take) {
 				getAllItems().splice(getAllItems().indexOf(item), 1);
 			}
-			return null;
 
 		}
-		/*returns null if ok or message if nok
+		/*returns 0 if ok or message if nok
 		 * */
-		public function canEquipItem(slot:uint, item:uint,  withUnequip:Boolean):String {
+		public function canEquipItem(slot:uint, item:uint,  withUnequip:Boolean, Result:ReturnResult):void {
 			// check if item is appropiate for slot
-			var _ret:String;
-			if (((item & 0xFF00) | slot) != slot) return "cannot equip this item in this slot";
-			if (getEquippedItem(slot) == item) return "Fenris already has this item equipped";
-			if (getEquippedItem(slot) > 0 ) {
+
+			if (((item & 0xFF00) | slot) != slot) {
+				Result.Text = "cannot equip this item in this slot";
+				Result.Code = 1;
+				return;
+			} else if (getEquippedItem(slot) == item) { 
+				Result.Text = "Fenris already has this item equipped";
+				Result.Code = 1;
+				return;
+			} else if (getEquippedItem(slot) > 0 ) {
 				if (withUnequip) {
-					_ret =  canUnequipItem(item);
-					if (_ret != null) return _ret;
+					canUnequipItem(item, Result); 
+					if (Result.Code != 0) return ;
 				} else {
-					return "Fenris already has an item equipped"
+					Result.Text = "Fenris already has an item equipped";
+					Result.Code = 1;
+					return;
 				}
-			}
-			return null;		
+			}		
 		}
-		/*returns null if ok or message if nok
+		/*returns 0 if ok or message if nok
 		 * */
-		public function canUnequipItem(item:uint):String {
+		public function canUnequipItem(item:uint, Result:ReturnResult):void {
 			// check if item can be removed
 			//Todo: add quest related stuff
-			if ((item ) == UNDERWEAR_COCKCAGE) return "Without the proper key you cannot remove the cockcage";
-			
-			return null;		
+			if ((item ) == UNDERWEAR_COCKCAGE) {
+				Result.Text = "Without the proper key you cannot remove the cockcage";
+				Result.Code = 1;
+				return;
+			} else {
+				Result.Code = 0;
+			}
 		}
-		}
-		{// --> constructor and such
+		//}
+		//{ --> constructor and such
 		private var _BreastStore:BreastStore;
 		private var pregnancy:PregnancyStore;
-		private static var _initDone:Boolean = false;	
+		private var _initDone:Boolean = false;	
 		private static var _instance:Fenris;
 		/**implemented as singleton because Fenris is unique
 		 * */
@@ -394,13 +444,12 @@ package classes.Scenes.NPCs{
 				new Fenris();
 			} 
 			//workaround to initialise as soon as kGAMECLASS is valid
-			if (kGAMECLASS != null && !_initDone) {
+			if (kGAMECLASS != null && !_instance._initDone) {
 				_instance.initFenris();
 			}
 			return _instance;
 		}
-		public function Fenris()
-		{
+		public function Fenris(){
 			if(_instance){
 				throw new Error("Singleton... use getInstance()");
 			} 
@@ -415,7 +464,7 @@ package classes.Scenes.NPCs{
 				//first time initialisation
 				setVagina(0, true, false);
 				setAnus(0, true,0);
-				setCock(5.5 , 1);
+				setCock(5.5 , 0);
 				setBalls(1 , 2);
 				setBreast(0, 1);
 				setSelfEsteem(50);
@@ -423,13 +472,14 @@ package classes.Scenes.NPCs{
 				setCorruption(2);
 				setPlayerRelation(50);
 				setLevel( 1);
-				equipItem(ITEMSLOT_UNDERWEAR,UNDERWEAR_LOINCLOTH,true);
-				equipItem(ITEMSLOT_WEAPON,WEAPON_KNIFE,true);
+				var _Result:ReturnResult = new ReturnResult();
+				equipItem(ITEMSLOT_UNDERWEAR,UNDERWEAR_LOINCLOTH,true,_Result);
+				equipItem(ITEMSLOT_WEAPON,WEAPON_KNIFE,true,_Result);
 			}
 			_initDone = true;
 		}	
-		}
-		{// --> Implementation of SaveAwareInterface
+		//}
+		//{ --> Implementation of SaveAwareInterface
 		private static const FENRIS_STORE_VERSION_1:String	= "1";
 		private static const Flag:int = kFLAGS.FENRIS_FLAG;
 		private static const MAX_FLAG_VALUE:int	= 2999;
@@ -441,16 +491,17 @@ package classes.Scenes.NPCs{
 			var _equItems:String = "";
 			var i:int = -1;
 			var flagData:Array = String(game.flags[Flag]).split("^");
-			if (((String) (flagData[0])) == "2" ){//im to lazzy: && flagData.length == 7) {
+			if (((String) (flagData[0])) == "1" ){//im to lazzy: && flagData.length == 7) {
 				_Corruption				= uint(flagData[i++]);
 				_SelfEsteem				= uint(flagData[i++]);
 				_PlayerRelation			= uint(flagData[i++]);
 				_MainQuestStage			= uint(flagData[i++]);
 				_MainQuestFlags			= uint(flagData[i++]);
-				_CockSize				= uint(flagData[i++]);
-				_BallSize				= uint(flagData[i++]);
+				_CockStats				= uint(flagData[i++]);
+				_BallStats				= uint(flagData[i++]);
 				_LibidoLust				= uint(flagData[i++]);
 				_AnalStats				= uint(flagData[i++]);
+				_VaginalStats			= uint(flagData[i++]);
 				_BodyStrength 			= uint(flagData[i++]);
 				_Level					= uint(flagData[i++]);
 				_allItems				= String(flagData[i++]);
@@ -491,18 +542,18 @@ package classes.Scenes.NPCs{
 			_PlayerRelation + "^" + 
 			_MainQuestStage + "^" + 
 			_MainQuestFlags + "^" +
-			_CockSize		+ "^" +
-			_BallSize		+ "^" +
+			_CockStats		+ "^" +
+			_BallStats		+ "^" +
 			_LibidoLust		+ "^" +
 			_AnalStats		+ "^" +
+			_VaginalStats		+ "^" +
 			_BodyStrength 	+ "^" +
 			_Level 			+ "^" +
 			_allItems 		+ "^" +
 			_equItems;
 		}
-		//End of Interface Implementation
-		}
-		{// --> Implementation of TimeAwareInterface
+		//}
+		//{ --> Implementation of TimeAwareInterface
 		public function timeChange():Boolean
 		{
 			//pregnancy.pregnancyAdvance();
@@ -512,7 +563,7 @@ package classes.Scenes.NPCs{
 				_Return = false;
 				var _rand:Number; 
 				//update lust, if we hit 100, masturbate
-				var _lust:Number = getLust() + getLibido() * 2 / 100;  //at 100lib increase lust by 48/24h
+				var _lust:Number = getLust() + (getLibido()-20) * 2 / 100;  //at 100lib increase lust by 48/24h
 				if (_lust > 90 ) _lust = 90;
 				setLust(_lust);
 				
@@ -535,8 +586,8 @@ package classes.Scenes.NPCs{
 		public function timeChangeLarge():Boolean {			
 			return false;
 		}
-		}
-		{// -->  functions for parser callbacks to convert pronouns
+		//}
+		//{ -->  functions for parser callbacks to convert pronouns
 		// Todo:add herm and other converters
 		public function get descrwithclothes():String { 
 			var _str:String = "Fenris the wolfman wears "+this.getEquippedItemText(ITEMSLOT_UNDERWEAR, true) +" and uses " +this.getEquippedItemText(ITEMSLOT_WEAPON,true)+ " as weapon.\n";
@@ -612,7 +663,8 @@ package classes.Scenes.NPCs{
 		}
 		public function get emself():String {
 			return Emself.toLowerCase();
-		}}// End functions for parser callbacks
+		}
+		//} End functions for parser callbacks
 		
 		
 	}

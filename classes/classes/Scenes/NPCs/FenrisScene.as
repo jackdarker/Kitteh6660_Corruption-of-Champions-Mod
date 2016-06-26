@@ -28,13 +28,12 @@ package classes.Scenes.NPCs{
 				stage = Fenris.MAINQUEST_Spotted;
 				break;
 		case Fenris.MAINQUEST_Spotted: 
+		case Fenris.MAINQUEST_Greetings: 
 			if (value==1) {
 				stage = Fenris.MAINQUEST_Greetings;
 			} else {
 				stage = Fenris.MAINQUEST_Steal_Cloth;				
 			}
-			break;
-		case Fenris.MAINQUEST_Greetings: 
 			break;
 		case Fenris.MAINQUEST_Steal_Cloth:
 			stage = Fenris.MAINQUEST_Greetings;
@@ -48,9 +47,10 @@ package classes.Scenes.NPCs{
 /* this creates output and options for display depending on quest stage
  * */
 public function encounterTracking():void {
-	if (!player.hasItem(ItemType.lookupItem("DbgWand"))) player.itemSlot1.setItemAndQty(ItemType.lookupItem("DbgWand"), 1);  //??debug
+	if (!player.hasItem(ItemType.lookupItem("DbgWand"))) player.itemSlot1.setItemAndQty(ItemType.lookupItem("DbgWand"), 1);  //Todo: ??debug
 	//Todo: spriteSelect(68);
-	var stage:uint = Fenris.getInstance().getMainQuestStage();
+	var _fenris:Fenris = Fenris.getInstance();
+	var stage:uint = _fenris.getMainQuestStage();
 	//First time greeting
 	switch (stage ) {
 	case Fenris.MAINQUEST_Not_Met:
@@ -74,11 +74,23 @@ public function encounterTracking():void {
 		addButton(0, "Nope", afterLoinClothStealDlg, 0, null, null, "Just pretend you didnt steal it");
 		addButton(2, "Attack", afterLoinClothStealDlg, 2, null, null, "Ready for some beating?");
 		break;
-	case Fenris.MAINQUEST_Greetings: 
-		var _rand:Number = rand(10);
-		if(_rand>5) {
+	case Fenris.MAINQUEST_Greetings:  //
+		var _rand:Number = rand(100);
+		if (_rand < 10 && !_fenris.testMainQuestFlag(Fenris.MAINFLAG_Stole_Cloth)) { //repeats randomly until Player steals his gear
+			outputText("You can see Fenris swimming in the lake again.\n\n");
+			menu();
+			addButton(0, "Greetings", metAgain, 0, null, null, "Head over for some greetings");
+			addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
+			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+		}else if (_rand < 10 && _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED &&
+			_fenris.testMainQuestFlag(Fenris.MAINFLAG_Stole_Cloth)) {
+			fenrisGotCaged(0);		
+		} else if(_rand>90) {
 			gooFight();
 		} else metAgain(0);
+		break;
+	case Fenris.MAINQUEST_CAGED:  //
+		break;
 	default:
 		trace("missing Fenris-stage " + stage.toString());
 	}
@@ -90,6 +102,64 @@ public function encounterTracking():void {
 // at some point I want to call a different function and then switch back f.e. with doNext(afterLoinClothStealDlg). But no option to call with argument
 // so there is an additional variable _dlgStage to track the actual stage and use it if afterLoinClothStealDlg is called without argument
 private var _dlgStage:int; 
+private function fenrisGotCaged(stage:int = -1):void {
+	if (stage < 0) stage = _dlgStage;
+	_dlgStage = stage;
+	if (stage <= 0 ) {
+		outputText("You can see Fenris other there. As the wolfman sees you [fenris ey] trys to hide behind a fallen tree. He seems to be anxious again.\n\n");	
+		outputText("'<i>Uhh, hi [player short]</i>' [fenris ey] responds '<i> how is it going.</i>' \n\n");
+		outputText("You sigh '<i>Some more troubles?</i>'\n");
+		outputText("Fenris whines '<i>Mmh...well I run into some crazy guy ...and well he seemed to be easy to overpower at first..</i>'");
+		outputText("'<i>but he draw some dirty tricks..and then..</i>'\n\n");
+		outputText("'<i>And then he did abuse you right?</i>' you finish the sentence.\n");
+		outputText("'<i>Kinda... he locked that damn thing on me ..told me I should not run around naked ..</i>'\n\n");
+		outputText("'<i>Thing,what thing? </i>' you question\n");
+		menu();
+		addButton(0, "Next", fenrisGotCaged, 100, null, null, "");	
+	} else if (stage == 100 ) {
+		outputText("[fenris Ey] steps out of [fenris eir] cover:\n");
+		outputText("[fenris Eir] entire shaft is engulfed by something that seems to some kind of metal tube. You approach him to take a closer look.\n");
+		outputText("'<i>I tried to pull it off since some hours now </i>' [fenris ey] whimpers. '<i>but its just to thight fitting</i>'\n");
+		outputText("You kneel down to inspect this device. Indeed its a solid tube that appears to be slipped over his sheath.\n");
+		outputText("Grabing the tube you try to pull it off in the upward direction.\n");
+		outputText("'<i>AAhh... No, wait,... its locked around my testicles.. </i>' [fenris ey] quickly intercepts \n");
+		outputText("'<i>and there is something sticking inside my pene.. </i>' \n");
+		outputText("Rigth, the tube is locked in place with a sturdy metal ring grasping around the base of [fenris eir] nuts in a tight fit.\n");
+		outputText("The tip of [fenris eir] sheath is covered by the tube except of a small hole. \n");
+		outputText("Fenris sees you inspecting the hole '<i>I can pee through it but there is something pushed into my pisslit... its going halfway into my pene </i>' \n");
+		outputText("A hollow urethrea plug you guess. This makes it even more complicated to remove this chastity device.\n")
+		outputText("'<i>please help me ... its stiring all the time...but I cannot get hard with this..  </i>' [fenris ey] whimpers\n");
+		outputText("For sure, this device would keep someone from getting hard forcibly and at the same time causes a continues source of stimulation.");
+		menu();
+		addButton(0, "Next", fenrisGotCaged, 101, null, null, "");	
+	} else if (stage == 101 ) {
+		outputText("So what do you have in mind:\n");
+		outputText("Maybe the goblins and other cockhungry sluts are now much less interested in him since he is incapable to use his 'gear'. \n");
+		outputText("Of course it is still troublesome to not being able to get off. It could be much more likely that bad things happen to him if he is running around distracted.");
+		outputText("Do you offer your help freely. Because thats what are friends are doing, right.\n");
+		outputText("Or maybe get some kind of compensation in return for your effort. But that would let a stale impression on him.\n");
+		outputText("Or tell him to stick with it. \n");
+		menu();
+		addButton(1, "Help him", fenrisGotCaged, 201, null, null, "");	
+		addButton(2, "Compensation?", fenrisGotCaged, 202, null, null, "");	
+		addButton(3, "Keep it", fenrisGotCaged, 203, null, null, "");
+	} else if (stage == 201 ) {
+		clearOutput();
+		outputText("I will help you. But how?\n"); //-> friendship++ 
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+	} else if (stage == 202 ) {
+		clearOutput();
+		outputText("I have other important tasks already. But what could you offer me\n"); //-> get some money or use himother ways
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+	} else if (stage == 203 ) {
+		clearOutput();
+		outputText("Maybe its not that bad to stick with it. Think about it.\n");  //-> on longterm he will be a submissive buttslut
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+	}else trace("missing Fenris-stage " + stage.toString());
+}
 private function greetingsFirstTime ():void {
 	clearOutput();
 	outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n\n TODO:", false);	
@@ -103,7 +173,7 @@ private function metAgain(stage:int = -1):void {
 	if (stage <= 0 ) {
 		clearOutput();
 		outputText("Todo: How is it going - blabla \n\n");
-		outputText("I'am starving - what can I eat? \n\n");
+		outputText("'<i>I'am starving - what can I eat?</i>' \n\n");
 		menu();
 		addButton(0, "Give food", metAgain, 100, null, null, "See if you have some food to spare");
 		addButton(1, "Give directions", metAgain, 200, null, null, "what places to go to or avoid");
@@ -111,10 +181,8 @@ private function metAgain(stage:int = -1):void {
 		addButton(3, "Who to mess", metAgain, 400, null, null, "someone to avoid maybe");
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	} else if (stage == 100) {
+	} else if (stage == 100) { //giving some food
 		outputText("Todo: give him something to eat -with effects perhaps \n\n");	
-		//Todo: check your invent for possible food
-		//  give and see mutation
 		menu();
 		buildRandomGiveFoodMenu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
@@ -122,24 +190,19 @@ private function metAgain(stage:int = -1):void {
 	} else if (stage == 101) { // selected a food
 		outputText("Todo: Since his hunger is sated at least a little bit, you bid farwell. \n\n");	
 		doNext(camp.returnToCampUseOneHour);
-	} else if (stage == 200) {
+	} else if (stage == 200) { //Todo: check your map and tell him to go or avoid places
 		outputText("Todo: where should he go, maybe into deepwoods and meet akabal? \n\n");	
-		//Todo: check your map and tell him to go or avoid places
 		menu();
 		buildLocationToGoMenu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (stage == 300) {
+	} else if (stage == 300) { //Todo: check your map and tell him what enemydrops he should take
 		outputText("Todo: what food should he avoid or search \n\n");	
-		//Todo: check your map and tell him what enemydrops he should take
-		//  
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (stage == 400) {
+	} else if (stage == 400) {//Todo: check your map and tell him who to attack/trust
 		outputText("Todo: should he fight some enemys for experience? What could go wrong fighting a minotaur? \n\n");	
-		//Todo: check your map and tell him who to attack/trust
-		//  
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
@@ -157,10 +220,10 @@ private function buildLocationToGoMenu():void {
 		}	
 	}
 	if (player.exploredMountain > 0) {
-		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINQUEST_SEARCH_MOUNTAIN)) {
-			addButton(0, "search mountain", goThere,Fenris.MAINQUEST_SEARCH_MOUNTAIN, 200, null, "");
+		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN)) {
+			addButton(0, "search mountain", goThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
 		} else {
-			addButton(0, "avoid mountain", dontGoThere,Fenris.MAINQUEST_SEARCH_MOUNTAIN, 200, null, "");
+			addButton(0, "avoid mountain", dontGoThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
 		}	
 	}
 	if (player.exploredDesert > 0) {}
