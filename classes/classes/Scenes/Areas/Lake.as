@@ -107,7 +107,7 @@ package classes.Scenes.Areas
 
 			//CHOOSE YOUR POISON!
 			select = choice[rand(choice.length)];
-			select = 13;   // Todo: just for testing Fenris
+			//select = 13;   // Todo: just for testing Fenris
 			//==============================
 			//EVENTS GO HERE!
 			//==============================

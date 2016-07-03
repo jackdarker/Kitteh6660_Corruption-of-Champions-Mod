@@ -28,7 +28,8 @@ package classes.Scenes.NPCs{
 		public static const MAINQUEST_Spotted2:uint = 		2;	//PC saw him at the lake
 		public static const MAINQUEST_Greetings:uint = 		3;	//PC talked to him first time
 		public static const MAINQUEST_Steal_Cloth:uint = 	4; //PC decided to steal his loin cloth
-		public static const MAINQUEST_CAGED:uint = 			5; //Fenris got COCKCAGE from Fetish guys
+		public static const MAINQUEST_CAGED_Init:uint = 	5; //Fenris got COCKCAGE from Fetish guys
+		public static const MAINQUEST_CAGED:uint = 			6; //Fenris got COCKCAGE from Fetish guys; you talked with him already
 
 		//those flags keep track of the mainquest history (bitwise)
 		public static const MAINFLAG_Stole_Cloth:uint = 	1 << 0;	//PC stole loin cloth
@@ -108,12 +109,30 @@ package classes.Scenes.NPCs{
 		public function setSelfEsteem(x:Number):void {
 			_SelfEsteem=uint(x);
 		}
+		public function increaseSelfEsteem(x:Number, limit:Number):void {
+			_SelfEsteem = uint(increaseStat(_SelfEsteem,x,limit));
+		}
 		private var _PlayerRelation:uint = 0;
-		/* returns relation to player, 0= neutral, 100=lover, -100=nemesis
+		/** returns relation to player, 0= neutral, 100=lover, -100=nemesis
 		 */ 
 		public function getPlayerRelation():Number {
 			return _PlayerRelation;
 		}
+		/** adds/substracts x from stat if stat is lower/higher than limit
+		 */
+		public function increasePlayerRelation(x:Number, limit:Number):void {
+			_PlayerRelation = uint(increaseStat(_PlayerRelation,x,limit));
+		}
+		private function increaseStat(stat:Number , x:Number, limit:Number):Number {
+			var Result:Number = stat;
+			if (x >= 0) {
+				Result = uint(Math.min(limit, x + stat));
+			} else {
+				Result = uint(Math.max(limit, x + stat));
+			}
+			return Result;
+		}
+		
 		public function setPlayerRelation(x:Number):void {
 			_PlayerRelation=uint(x);
 		}
@@ -481,16 +500,16 @@ package classes.Scenes.NPCs{
 		//}
 		//{ --> Implementation of SaveAwareInterface
 		private static const FENRIS_STORE_VERSION_1:String	= "1";
-		private static const Flag:int = kFLAGS.FENRIS_FLAG;
+		private static const FENRIS_STORE_Flag:int = kFLAGS.FENRIS_FLAG;
 		private static const MAX_FLAG_VALUE:int	= 2999;
 		
 		public function updateAfterLoad(game:CoC):void {
 			var _Level:Number = Fenris.getInstance().getLevel(); //dummy to force init of Fenris if not already done
-			if (Flag < 1 || Flag > MAX_FLAG_VALUE) return;
+			if (FENRIS_STORE_Flag < 1 || FENRIS_STORE_Flag > MAX_FLAG_VALUE) return;
 			var _allItems:String = "";
 			var _equItems:String = "";
 			var i:int = -1;
-			var flagData:Array = String(game.flags[Flag]).split("^");
+			var flagData:Array = String(game.flags[FENRIS_STORE_Flag]).split("^");
 			if (((String) (flagData[0])) == "1" ){//im to lazzy: && flagData.length == 7) {
 				_Corruption				= uint(flagData[i++]);
 				_SelfEsteem				= uint(flagData[i++]);
@@ -524,7 +543,7 @@ package classes.Scenes.NPCs{
 		}
 
 		public function updateBeforeSave(game:CoC):void {
-			if (Flag < 1 || Flag > MAX_FLAG_VALUE) return;
+			if (FENRIS_STORE_Flag < 1 || FENRIS_STORE_Flag > MAX_FLAG_VALUE) return;
 			var _allItems:String = "";
 			var _allItemsArr:Array = this.getAllItems();
 			var item:String;
@@ -536,7 +555,7 @@ package classes.Scenes.NPCs{
 			for ( item in _equItemsArr) 	{ 
 				_equItems += item + "~";
 			}
-			game.flags[Flag] = FENRIS_STORE_VERSION_1 + "^" + 
+			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION_1 + "^" + 
 			_Corruption 	+ "^" + 
 			_SelfEsteem 	+ "^" + 
 			_PlayerRelation + "^" + 
@@ -546,7 +565,7 @@ package classes.Scenes.NPCs{
 			_BallStats		+ "^" +
 			_LibidoLust		+ "^" +
 			_AnalStats		+ "^" +
-			_VaginalStats		+ "^" +
+			_VaginalStats	+ "^" +
 			_BodyStrength 	+ "^" +
 			_Level 			+ "^" +
 			_allItems 		+ "^" +

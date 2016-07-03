@@ -38,6 +38,12 @@ package classes.Scenes.NPCs{
 		case Fenris.MAINQUEST_Steal_Cloth:
 			stage = Fenris.MAINQUEST_Greetings;
 			break;
+		case Fenris.MAINQUEST_Greetings:
+			stage = Fenris.MAINQUEST_CAGED_Init;
+			break;
+		case Fenris.MAINQUEST_CAGED_Init:
+			stage = Fenris.MAINQUEST_CAGED;
+			break;
 		default:
 			trace("missing Fenris-stage " + stage.toString());
 		}
@@ -75,6 +81,8 @@ public function encounterTracking():void {
 		addButton(2, "Attack", afterLoinClothStealDlg, 2, null, null, "Ready for some beating?");
 		break;
 	case Fenris.MAINQUEST_Greetings:  //
+	case Fenris.MAINQUEST_CAGED_Init:  //
+	case Fenris.MAINQUEST_CAGED:  //
 		var _rand:Number = rand(100);
 		if (_rand < 10 && !_fenris.testMainQuestFlag(Fenris.MAINFLAG_Stole_Cloth)) { //repeats randomly until Player steals his gear
 			outputText("You can see Fenris swimming in the lake again.\n\n");
@@ -82,14 +90,12 @@ public function encounterTracking():void {
 			addButton(0, "Greetings", metAgain, 0, null, null, "Head over for some greetings");
 			addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-		}else if (_rand < 10 && _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED &&
+		}else if (_rand < 10 && _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&
 			_fenris.testMainQuestFlag(Fenris.MAINFLAG_Stole_Cloth)) {
 			fenrisGotCaged(0);		
 		} else if(_rand>90) {
 			gooFight();
 		} else metAgain(0);
-		break;
-	case Fenris.MAINQUEST_CAGED:  //
 		break;
 	default:
 		trace("missing Fenris-stage " + stage.toString());
@@ -102,10 +108,10 @@ public function encounterTracking():void {
 // at some point I want to call a different function and then switch back f.e. with doNext(afterLoinClothStealDlg). But no option to call with argument
 // so there is an additional variable _dlgStage to track the actual stage and use it if afterLoinClothStealDlg is called without argument
 private var _dlgStage:int; 
-private function fenrisGotCaged(stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
-	if (stage <= 0 ) {
+private function fenrisGotCaged(dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	if (dlgstage <= 0 ) {
 		outputText("You can see Fenris other there. As the wolfman sees you [fenris ey] trys to hide behind a fallen tree. He seems to be anxious again.\n\n");	
 		outputText("'<i>Uhh, hi [player short]</i>' [fenris ey] responds '<i> how is it going.</i>' \n\n");
 		outputText("You sigh '<i>Some more troubles?</i>'\n");
@@ -116,7 +122,7 @@ private function fenrisGotCaged(stage:int = -1):void {
 		outputText("'<i>Thing,what thing? </i>' you question\n");
 		menu();
 		addButton(0, "Next", fenrisGotCaged, 100, null, null, "");	
-	} else if (stage == 100 ) {
+	} else if (dlgstage == 100 ) {
 		outputText("[fenris Ey] steps out of [fenris eir] cover:\n");
 		outputText("[fenris Eir] entire shaft is engulfed by something that seems to some kind of metal tube. You approach him to take a closer look.\n");
 		outputText("'<i>I tried to pull it off since some hours now </i>' [fenris ey] whimpers. '<i>but its just to thight fitting</i>'\n");
@@ -132,33 +138,38 @@ private function fenrisGotCaged(stage:int = -1):void {
 		outputText("For sure, this device would keep someone from getting hard forcibly and at the same time causes a continues source of stimulation.");
 		menu();
 		addButton(0, "Next", fenrisGotCaged, 101, null, null, "");	
-	} else if (stage == 101 ) {
+	} else if (dlgstage == 101 ) {
 		outputText("So what do you have in mind:\n");
 		outputText("Maybe the goblins and other cockhungry sluts are now much less interested in him since he is incapable to use his 'gear'. \n");
 		outputText("Of course it is still troublesome to not being able to get off. It could be much more likely that bad things happen to him if he is running around distracted.");
 		outputText("Do you offer your help freely. Because thats what are friends are doing, right.\n");
 		outputText("Or maybe get some kind of compensation in return for your effort. But that would let a stale impression on him.\n");
 		outputText("Or tell him to stick with it. \n");
+		progressMainQuest(0);
 		menu();
-		addButton(1, "Help him", fenrisGotCaged, 201, null, null, "");	
-		addButton(2, "Compensation?", fenrisGotCaged, 202, null, null, "");	
-		addButton(3, "Keep it", fenrisGotCaged, 203, null, null, "");
-	} else if (stage == 201 ) {
+		addButton(1, "Help him", fenrisGotCaged, 201, null, null, "Offer him your help");	
+		addButton(2, "Compensation?", fenrisGotCaged, 202, null, null, "Nothing for Nothing");	
+		addButton(3, "Keep it", fenrisGotCaged, 203, null, null, "Why not stick with this 'protection'");
+	} else if (dlgstage == 201 ) {
 		clearOutput();
-		outputText("I will help you. But how?\n"); //-> friendship++ 
+		outputText("'<i>I will help you. But how?'</i>\nFenris cheers up on your offer. You could simply try to search around to find the key. Or maybe you should talk to people who might know more about such chastity devices."); //-> friendship++ 
+		Fenris.getInstance().increasePlayerRelation(10, 30);
+		Fenris.getInstance().increaseSelfEsteem(10,30);
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	} else if (stage == 202 ) {
+	} else if (dlgstage == 202 ) {
 		clearOutput();
-		outputText("I have other important tasks already. But what could you offer me\n"); //-> get some money or use himother ways
+		outputText("'<i>I have other important tasks already. But maybe you could offer me something?'</i>\n"); //-> get some money or use himother ways
+		Fenris.getInstance().increasePlayerRelation( -5, -30);
+		Fenris.getInstance().increaseSelfEsteem(-10,30);
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	} else if (stage == 203 ) {
+	} else if (dlgstage == 203 ) {
 		clearOutput();
-		outputText("Maybe its not that bad to stick with it. Think about it.\n");  //-> on longterm he will be a submissive buttslut
+		outputText("'<i>Maybe its not that bad to stick with it. Think about it.'</i>\n");  //-> on longterm he will be a submissive buttslut
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	}else trace("missing Fenris-stage " + stage.toString());
+	}else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
 private function greetingsFirstTime ():void {
 	clearOutput();
@@ -167,10 +178,12 @@ private function greetingsFirstTime ():void {
 	menu();
 	addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");	
 }
-private function metAgain(stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
-	if (stage <= 0 ) {
+private function metAgain(dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	var _fenris:Fenris = Fenris.getInstance();
+	var stage:uint = _fenris.getMainQuestStage();
+	if (dlgstage <= 0 ) {
 		clearOutput();
 		outputText("Todo: How is it going - blabla \n\n");
 		outputText("'<i>I'am starving - what can I eat?</i>' \n\n");
@@ -178,35 +191,43 @@ private function metAgain(stage:int = -1):void {
 		addButton(0, "Give food", metAgain, 100, null, null, "See if you have some food to spare");
 		addButton(1, "Give directions", metAgain, 200, null, null, "what places to go to or avoid");
 		addButton(2, "What to eat", metAgain, 300, null, null, "what to eat");
-		addButton(3, "Who to mess", metAgain, 400, null, null, "someone to avoid maybe");
+		//Todo: addButton(3, "Who to mess", metAgain, 400, null, null, "someone to avoid maybe");
+		if (stage == Fenris.MAINQUEST_CAGED) {
+			addButton(6, "Quest", metAgain, 600, null, null, "");
+		}
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	} else if (stage == 100) { //giving some food
+	} else if (dlgstage == 100) { //giving some food
 		outputText("Todo: give him something to eat -with effects perhaps \n\n");	
 		menu();
 		buildRandomGiveFoodMenu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");	
-	} else if (stage == 101) { // selected a food
+	} else if (dlgstage == 101) { // selected a food
 		outputText("Todo: Since his hunger is sated at least a little bit, you bid farwell. \n\n");	
 		doNext(camp.returnToCampUseOneHour);
-	} else if (stage == 200) { //Todo: check your map and tell him to go or avoid places
+	} else if (dlgstage == 200) { //Todo: check your map and tell him to go or avoid places
 		outputText("Todo: where should he go, maybe into deepwoods and meet akabal? \n\n");	
 		menu();
 		buildLocationToGoMenu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (stage == 300) { //Todo: check your map and tell him what enemydrops he should take
+	} else if (dlgstage == 300) { //Todo: check your map and tell him what enemydrops he should take
 		outputText("Todo: what food should he avoid or search \n\n");	
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (stage == 400) {//Todo: check your map and tell him who to attack/trust
+	} else if (dlgstage == 400) {//Todo: check your map and tell him who to attack/trust
 		outputText("Todo: should he fight some enemys for experience? What could go wrong fighting a minotaur? \n\n");	
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else trace("missing Fenris-stage " + stage.toString());
+	} else if (dlgstage == 600) {//Todo: Talk about Questprogress
+		outputText("Todo: ask him where to look, give him the key or... \n\n");	
+		menu();
+		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
+		addButton(14, "Back", metAgain, 0, null, null, "");	
+	} else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
 
 /*build list of places you know
@@ -229,9 +250,9 @@ private function buildLocationToGoMenu():void {
 	if (player.exploredDesert > 0) {}
 	if (player.exploredMountain > 0) {}
 }
-private function goThere(Flag:uint, stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
+private function goThere(Flag:uint, dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
 	clearOutput();
 	switch (Flag) {
 	case Fenris.MAINFLAG_SEARCH_FOREST:
@@ -248,9 +269,9 @@ private function goThere(Flag:uint, stage:int = -1):void {
 	menu();
 	doNext(metAgain);
 }
-private function dontGoThere(Flag:uint, stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
+private function dontGoThere(Flag:uint, dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
 	clearOutput();
 	switch (Flag) {
 	case Fenris.MAINFLAG_SEARCH_FOREST:
@@ -291,9 +312,9 @@ private function buildRandomGiveFoodMenu():void {
 	_item = _foods.roll();
 	if (_item != null) addButton(4, _item.shortName,giveFood,_item, 101, null, "");
 }
-private function giveFood(Food:SimpleConsumable, stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
+private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
 	clearOutput();
 	
 	//Todo: add effect to fenris
@@ -308,15 +329,15 @@ private function giveFood(Food:SimpleConsumable, stage:int = -1):void {
 	doNext(metAgain);
 }
 
-private function stealCloth (stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
+private function stealCloth (dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
 	clearOutput();
-	if (stage <=1 ) {
+	if (dlgstage <=1 ) {
 		outputText("You try to sneak over and grab what you can get. \n\n");	
 		menu();
 		addButton(10, "Next", stealCloth, 2, null, null, "Continue on");
-	} else if (stage == 2) {
+	} else if (dlgstage == 2) {
 		//Todo: add sucesss calculation
 		outputText("You pull the loin cloth form the stone and make your way silently back to your camp. \n\n");	
 		progressMainQuest(2)
@@ -325,23 +346,23 @@ private function stealCloth (stage:int = -1):void {
 		//Todo: add item and remove it from fenris
 	}	
 }
-private function afterLoinClothStealDlg(stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
+private function afterLoinClothStealDlg(dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
 	//clearOutput();
-	if (stage <= 0 ) {
+	if (dlgstage <= 0 ) {
 		outputText("'<i>No sorry</i>' you lie. But why do you need an loin cloth after all since you are already furred from tip to toe?\n\n");	
 		menu();
 		addButton(10, "Next", afterLoinClothStealDlg, 10, null, null, "");
-	}else if (stage == 2) {
+	}else if (dlgstage == 2) {
 		startCombat(new FenrisMonster() )
-	}else if (stage == 10) {
+	}else if (dlgstage == 10) {
 		outputText("'<i>Sure,but ... I'm used to weare it. I feel kinda vulnerable without it ...and at home they say that wearing clothes separates our kind from animals</i>' [fenris ey] responds. \n <Todo>\n\n");	
 		menu();
 		//Todo: offer cloth if you have one
 		addButton(0, "Get used to it", afterLoinClothStealDlg, 100, null, null, "");
 		addButton(14, "Appearance", fenrisAppearance, afterLoinClothStealDlg, null, null, "");
-	}else if (stage == 100) {
+	}else if (dlgstage == 100) {
 		outputText("'<i>Not the clothe are making the differences. Just try to keep your wits up. </i>' you answer. \n <Todo>\n\n");	
 		progressMainQuest(1);
 		menu();
@@ -359,23 +380,23 @@ private function fenrisAppearance(back:Function):void {
 	doNext(back);
 }
 
-private function gooFight(stage:int = -1):void {
-	if (stage < 0) stage = _dlgStage;
-	_dlgStage = stage;
-	if (stage <= 0 ) {
+private function gooFight(dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	if (dlgstage <= 0 ) {
 		clearOutput();
 		outputText("Todo: You see Fenris struggling with a goo-girl. What do you do?\n");
 		menu();
 		addButton(0, "Fight Goo", gooFight, 100, null, null, "Help Fenris defeating the enemy");
 		addButton(14, "Back out", gooFight, 200, null, null, "");
-	} else if (stage==100) {
+	} else if (dlgstage==100) {
 		startCombat(new FenrisGooFight());
-	} else if (stage==200) {
+	} else if (dlgstage==200) {
 		outputText("You silently make your way back, leaving him to his fate.\n");
 		//Todo: calc win chance of fenris
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, ""); 
-	} else trace("missing Fenris-stage " + stage.toString());
+	} else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
 /* 
  */ 
