@@ -12,7 +12,7 @@
 	import classes.GlobalFlags.kGAMECLASS; // This file creates the gameclass that the game will run within.
 	import classes.GlobalFlags.kACHIEVEMENTS; // This file creates the flags for the achievements system.
 	import classes.Scenes.Combat.Combat;
-	import classes.Scenes.Dungeons.DungeonEngine; // This file creates all the dungeons, their rooms, and their completion states except for D3. This also includes cabin code. See file for more details.
+	import classes.Scenes.Dungeons.DungeonCore; // This file creates all the dungeons, their rooms, and their completion states except for D3. This also includes cabin code. See file for more details.
 	import classes.Scenes.Dungeons.D3.D3; // Likely due to D3's complexity, that dungeon is split out separately.
 	import classes.Scenes.Seasonal.AprilFools;
 	import classes.Scenes.Seasonal.Fera;
@@ -262,7 +262,7 @@ the text from being too boring.
 		public var farm:Farm = new Farm();
 		public var owca:Owca = new Owca();
 		public var telAdre:TelAdre = new TelAdre();
-		public var dungeons:DungeonEngine = new DungeonEngine();
+		public var dungeons:DungeonCore = new DungeonCore();
 		public var ingnam:Ingnam = new Ingnam();
 		public var prison:Prison = new Prison();
 		// Scenes/Seasonal/
@@ -314,17 +314,6 @@ the text from being too boring.
 		private var gameState:int;
 		public var time :TimeModel;
 		public var currentText:String;
-
-		public var explored:Boolean;
-		public var foundForest:Boolean;
-		public var foundDesert:Boolean;
-		public var foundMountain:Boolean;
-		public var foundLake:Boolean;
-		//These plot variables are to be replaced.
-		public var whitney:Number;
-		public var monk:Number;
-		public var sand:Number;
-		public var giacomo:int;
 
 		public var temp:int;
 		public var args:Array;
@@ -398,8 +387,8 @@ the text from being too boring.
 			//model.debug = debug; // TODO: Set on model?
 
 			//Version NUMBER
-			ver = "1.0.2_mod_1.3.24";
-			version = ver + " (<b>Ember Spar Intensifies</b>)";
+			ver = "1.0.2_mod_1.4_dev";
+			version = ver + " (<b>Anzu's Palace Test</b>)";
 
 			//Indicates if building for mobile?
 			mobile = false;
@@ -482,16 +471,6 @@ the text from being too boring.
 			//{ region PlotVariables
 
 			//Plot variables
-			explored = false;
-			foundForest = false;
-			foundDesert = false;
-			foundMountain = false;
-			foundLake = false;
-			whitney = 0;
-			monk = 0;
-			sand = 0;
-			giacomo = 0;
-//Replaced by flag			beeProgress = 0;
 
 //			itemStorage = [];
 //			gearStorage = [];

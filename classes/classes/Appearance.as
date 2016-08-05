@@ -2180,7 +2180,8 @@
 					[SKIN_TYPE_FUR, "fur"],
 					[SKIN_TYPE_SCALES, "scales"],
 					[SKIN_TYPE_GOO, "goo"],
-					[SKIN_TYPE_UNDEFINED, "undefined flesh"]
+					[SKIN_TYPE_UNDEFINED, "undefined flesh"],
+					[SKIN_TYPE_DRACONIC, "scales"]
 				]
 		);
 		public static const DEFAULT_SKIN_DESCS:Object = createMapFromPairs(
@@ -2189,7 +2190,8 @@
 					[SKIN_TYPE_FUR, "fur"],
 					[SKIN_TYPE_SCALES, "scales"],
 					[SKIN_TYPE_GOO, "skin"],
-					[SKIN_TYPE_UNDEFINED, "skin"]
+					[SKIN_TYPE_UNDEFINED, "skin"],
+					[SKIN_TYPE_DRACONIC, "scales"]
 				]
 		);
 		public static const DEFAULT_HAIR_NAMES:Object = createMapFromPairs(
@@ -2251,7 +2253,9 @@
 				[
 					[EYES_HUMAN, "human"],
 					[EYES_FOUR_SPIDER_EYES, "4 spider"],
-					[EYES_BLACK_EYES_SAND_TRAP, "sandtrap black"]
+					[EYES_BLACK_EYES_SAND_TRAP, "sandtrap black"],
+					[EYES_LIZARD, "lizard"],
+					[EYES_DRAGON, "dragon"],
 				]
 		);
 		public static const DEFAULT_EARS_NAMES:Object = createMapFromPairs(
@@ -2299,6 +2303,7 @@
 					[ARM_TYPE_HUMAN, "human"],
 					[ARM_TYPE_HARPY, "harpy"],
 					[ARM_TYPE_SPIDER, "spider"],
+					[ARM_TYPE_PREDATOR, "predator"],
 					[ARM_TYPE_SALAMANDER, "salamander"]
 				]
 		);

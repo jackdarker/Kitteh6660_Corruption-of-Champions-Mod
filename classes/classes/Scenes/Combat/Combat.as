@@ -1138,9 +1138,9 @@ package classes.Scenes.Combat
 			if (damage < 0) damage = 1;
 			if (apply) monster.HP -= damage;
 			if (display) {
-				if (damage > 0) outputText("<b>(<font color=\"#800000\">" + temp + "</font>)</b>"); //Damage
-				else if (damage == 0) outputText("<b>(<font color=\"#000080\">" + temp + "</font>)</b>"); //Miss/block
-				else if (damage < 0) outputText("<b>(<font color=\"#008000\">" + temp + "</font>)</b>"); //Heal
+				if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>"); //Damage
+				else if (damage == 0) outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>"); //Miss/block
+				else if (damage < 0) outputText("<b>(<font color=\"#008000\">" + damage + "</font>)</b>"); //Heal
 			}
 			//Isabella gets mad
 			if (monster.short == "Isabella") {
@@ -1205,7 +1205,7 @@ package classes.Scenes.Combat
 					flags[kFLAGS.FORCE_BEE_TO_PRODUCE_HONEY] = 0;
 				}
 			}
-			if (monster is Jojo && getGame().monk > 4) {
+			if (monster is Jojo && flags[kFLAGS.JOJO_STATUS] > 4) {
 				if (rand(2) == 0) itype = consumables.INCUBID;
 				else {
 					if (rand(2) == 0) itype = consumables.B__BOOK;

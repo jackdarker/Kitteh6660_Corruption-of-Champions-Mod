@@ -519,7 +519,7 @@ package classes.Scenes.Combat
 			if (monster.short == "Jojo")
 			{
 				// Not a completely corrupted monkmouse
-				if (kGAMECLASS.monk < 2)
+				if (flags[kFLAGS.JOJO_STATUS] < 2)
 				{
 					outputText("You thrust your palm forward, sending a blast of pure energy towards Jojo. At the last second he sends a blast of his own against yours canceling it out\n\n");
 					flags[kFLAGS.SPELLS_CAST]++;
@@ -1149,7 +1149,7 @@ package classes.Scenes.Combat
 			}
 			player.changeFatigue(35,1);
 			//Deals direct damage and lust regardless of enemy defenses.  Especially effective against non-corrupted targets.
-			outputText("Holding out your palm, you conjure corrupted purple flame that dances across your fingertips.  You launch it at " + monster.a + monster.short + " with a ferocious throw, and it bursts on impact, showering dazzling lavender sparks everywhere.");
+			outputText("Holding out your palm, you conjure corrupted purple flame that dances across your fingertips.  You launch it at " + monster.a + monster.short + " with a ferocious throw, and it bursts on impact, showering dazzling lavender sparks everywhere.  ");
 
 			var dmg:int = int(10 + (player.inte / 3 + rand(player.inte / 2)) * player.spellMod());
 			dmg = calcInfernoMod(dmg);
@@ -1162,13 +1162,12 @@ package classes.Scenes.Combat
 			if (monster.short == "goo-girl") temp = Math.round(temp * 1.5);
 			//Using fire attacks on the goo]
 			if (monster.short == "goo-girl") {
-				outputText("  Your flames lick the girl's body and she opens her mouth in pained protest as you evaporate much of her moisture. When the fire passes, she seems a bit smaller and her slimy " + monster.skinTone + " skin has lost some of its shimmer.", false);
+				outputText("Your flames lick the girl's body and she opens her mouth in pained protest as you evaporate much of her moisture. When the fire passes, she seems a bit smaller and her slimy " + monster.skinTone + " skin has lost some of its shimmer.  ");
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
-			outputText("  ");
 			dmg = combat.doDamage(dmg, true, true);
-			outputText("\n\n");
 			statScreenRefresh();
+			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
@@ -1195,7 +1194,7 @@ package classes.Scenes.Combat
 				return;
 			}
 			//Deals direct damage and lust regardless of enemy defenses.  Especially effective against corrupted targets.
-			outputText("Holding out your palm, you conjure an ethereal blue flame that dances across your fingertips.  You launch it at " + monster.a + monster.short + " with a ferocious throw, and it bursts on impact, showering dazzling azure sparks everywhere.");
+			outputText("Holding out your palm, you conjure an ethereal blue flame that dances across your fingertips.  You launch it at " + monster.a + monster.short + " with a ferocious throw, and it bursts on impact, showering dazzling azure sparks everywhere.  ");
 			var dmg:int = int(10+(player.inte/3 + rand(player.inte/2)) * player.spellMod());
 			dmg = calcInfernoMod(dmg);
 			if (monster.cor < 33) dmg = Math.round(dmg * .66);
@@ -1207,13 +1206,12 @@ package classes.Scenes.Combat
 			if (monster.short == "goo-girl") temp = Math.round(temp * 1.5);
 			//Using fire attacks on the goo]
 			if (monster.short == "goo-girl") {
-				outputText("  Your flames lick the girl's body and she opens her mouth in pained protest as you evaporate much of her moisture. When the fire passes, she seems a bit smaller and her slimy " + monster.skinTone + " skin has lost some of its shimmer.", false);
+				outputText("Your flames lick the girl's body and she opens her mouth in pained protest as you evaporate much of her moisture. When the fire passes, she seems a bit smaller and her slimy " + monster.skinTone + " skin has lost some of its shimmer.  ");
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
-			outputText("  ");
 			dmg = combat.doDamage(dmg, true, true);
-			outputText("\n\n");
 			statScreenRefresh();
+			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
@@ -1375,14 +1373,15 @@ package classes.Scenes.Combat
 				case TAIL_TYPE_SPIDER_ADBOMEN:
 					addButton(button++, "Web", PCWebAttack, null, null, null, "Attempt to use your abdomen to spray sticky webs at an enemy and greatly slow them down.  Be aware it takes a while for your webbing to build up.  \n\nWeb Amount: " + Math.floor(player.tailVenom) + "/100");
 					break;
+				case TAIL_TYPE_SALAMANDER:
+					addButton(button++, "Tail Slap", tailSlapAttack, null, null, null, "Set your tail ablaze in red-hot flames to whip your foe with it to hurt and burn them!");
+					//break;
 				case TAIL_TYPE_SHARK:
 				case TAIL_TYPE_LIZARD:
 				case TAIL_TYPE_KANGAROO:
 				case TAIL_TYPE_DRACONIC:
 				case TAIL_TYPE_RACCOON:
 					addButton(button++, "Tail Whip", tailWhipAttack, null, null, null, "Whip your foe with your tail to enrage them and lower their defense!");
-				case TAIL_TYPE_SALAMANDER:
-					addButton(button++, "Tail Slap", tailSlapAttack, null, null, null, "Set ablaze in red-hot flames your tail to whip your foe with it to hurt and burn them!");
 				default:
 			}
 			if (player.shield != ShieldLib.NOTHING) {

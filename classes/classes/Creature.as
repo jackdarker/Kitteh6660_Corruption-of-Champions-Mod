@@ -157,6 +157,7 @@ package classes
 			if (skinType == SKIN_TYPE_FUR) return _furColor;
 			else return hairColor;
 		}
+		public function get newFurColor():String { return _furColor; } // alternative getter for the furColor. Ignores the skinType (Stadler76)
 		public function set furColor(value:String):void { _furColor = value; }
 		/*Beardstyle
 		0- normal
@@ -199,6 +200,11 @@ package classes
 		15 - halfmouse
 		16 - fullmouse*/
 		public var faceType:Number = FACE_HUMAN;
+
+		// <mod name="Predator arms" author="Stadler76">
+		public var clawTone:String = "";
+		public var clawType:Number = CLAW_TYPE_NORMAL;
+		// </mod>
 
 		/*EarType
 		-1 - none!
@@ -607,6 +613,11 @@ package classes
 			{
 				return false;
 			}
+			if (perkv4(ptype) > 0)
+			{
+				// trace('ERROR! Attempted to remove permanent "' + ptype.name + '" perk.');
+				return false;
+			}
 			while (counter > 0)
 			{
 				counter--;
@@ -736,7 +747,7 @@ package classes
 		var counter:Number = findPerk(ptype);
 		if (counter < 0)
 		{
-			trace("ERROR? Looking for perk '" + ptype + "', but player does not have it.");
+			// trace("ERROR? Looking for perk '" + ptype + "', but player does not have it.");
 			return 0;
 		}
 		return perk(counter).value4;
@@ -1822,11 +1833,7 @@ package classes
 		// As such, delineating between the two is kind of silly.
 		public function dogCocks():int { //How many dogCocks
 			if (cocks.length == 0) return 0;
-			var counter:int = 0;
-			for (var x:int = 0; x < cocks.length; x++) {
-				if (cocks[x].cockType == CockTypesEnum.DOG || cocks[x].cockType == CockTypesEnum.FOX) counter++;
-			}
-			return counter;
+			return countCocksOfType(CockTypesEnum.DOG) + countCocksOfType(CockTypesEnum.FOX);
 		}
 		
 		public function findFirstCockType(ctype:CockTypesEnum):Number
@@ -2510,11 +2517,28 @@ package classes
 			//haircolor
 			if (_skinType == 1)
 				skinzilla += furColor + " ";
+			else if (_skinType == SKIN_TYPE_DRACONIC)
+				skinzilla += "iron-like, " + _skinTone + " shield-shaped ";
 			else
 				skinzilla += _skinTone + " ";
 			skinzilla += skinDesc;
 			return skinzilla;
 		}
+
+		// <mod name="Predator arms" author="Stadler76">
+		public function claws():String
+		{
+			var toneText:String = clawTone == "" ? " " : (", " + clawTone + " ");
+
+			switch (clawType) {
+				case CLAW_TYPE_NORMAL: return "fingernails";
+				case CLAW_TYPE_LIZARD: return "short curved" + toneText + "claws";
+				case CLAW_TYPE_DRAGON: return "powerful, thick curved" + toneText + "claws";
+				// Since mander arms are hardcoded and the others are NYI, we're done here for now
+			}
+			return "fingernails";
+		}
+		// </mod>
 
 		public function leg():String
 		{

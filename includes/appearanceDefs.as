@@ -15,7 +15,8 @@ public static const SKIN_TYPE_PLAIN:int                                         
 public static const SKIN_TYPE_FUR:int                                               =    1;
 public static const SKIN_TYPE_SCALES:int                                            =    2;
 public static const SKIN_TYPE_GOO:int                                               =    3;
-public static const SKIN_TYPE_UNDEFINED:int                                         =    4;
+public static const SKIN_TYPE_UNDEFINED:int                                         =    4; // DEPRECATED, silently discarded upon loading a saved game
+public static const SKIN_TYPE_DRACONIC:int                                          =    5;
 
 // hairType
 public static const HAIR_NORMAL:int                                                =     0;
@@ -68,6 +69,9 @@ public static const TONGUE_ECHIDNA:int                                          
 public static const EYES_HUMAN:int                                                  =   0;
 public static const EYES_FOUR_SPIDER_EYES:int                                       =   1;
 public static const EYES_BLACK_EYES_SAND_TRAP:int                                   =   2;
+public static const EYES_LIZARD:int                                                 =   3;
+public static const EYES_DRAGON:int                                                 =   4; // Slightly different description/TF and *maybe* in the future(!) grant different perks/combat abilities
+public static const EYES_BASILISK:int                                               =   5; // NYI! Example for now!!! Maybe later and granted from Benoit.
 
 // earType
 public static const EARS_HUMAN:int                                                  =   0;
@@ -108,7 +112,18 @@ public static const ANTENNAE_BEE:int                                            
 public static const ARM_TYPE_HUMAN:int                                              =   0;
 public static const ARM_TYPE_HARPY:int                                              =   1;
 public static const ARM_TYPE_SPIDER:int                                             =   2;
-public static const ARM_TYPE_SALAMANDER:int									           		=   5;
+public static const ARM_TYPE_PREDATOR:int                                           =   4;
+public static const ARM_TYPE_SALAMANDER:int                                         =   5;
+
+// clawType
+public static const CLAW_TYPE_NORMAL:int                                            =   0;
+public static const CLAW_TYPE_LIZARD:int                                            =   1;
+public static const CLAW_TYPE_DRAGON:int                                            =   2;
+public static const CLAW_TYPE_SALAMANDER:int                                        =   3;
+public static const CLAW_TYPE_CAT:int                                               =   4; // NYI! Placeholder for now!! (See http://tiny.cc/coc-revamp-claws)
+public static const CLAW_TYPE_DOG:int                                               =   5; // NYI! Placeholder for now!! (See http://tiny.cc/coc-revamp-claws)
+public static const CLAW_TYPE_RAPTOR:int                                            =   6; // NYI! Placeholder for now!! (See http://tiny.cc/coc-revamp-claws) Giev teh Rapturs :-)
+public static const CLAW_TYPE_MANTIS:int                                            =   7; // NYI! Placeholder for Xianxia mod (See http://tiny.cc/coc-xianxia-mod)
 
 // tailType
 public static const TAIL_TYPE_NONE:int                                              =   0;
@@ -178,7 +193,7 @@ public static const LOWER_BODY_TYPE_CLOVEN_HOOFED:int                           
 //public static const LOWER_BODY_TYPE_RHINO:int                                       =  22;
 public static const LOWER_BODY_TYPE_ECHIDNA:int                                     =  23;
 public static const LOWER_BODY_TYPE_DEERTAUR:int                                    =  24; // DEPRECATED, use LOWER_BODY_TYPE_CLOVEN_HOOFED and legCount=4
-public static const LOWER_BODY_TYPE_SALAMANDER:int						       			=  25;
+public static const LOWER_BODY_TYPE_SALAMANDER:int                                  =  25;
 
 // piercingtypesNOPEDISABLED
 public static const PIERCING_TYPE_NONE:int                                          =   0;

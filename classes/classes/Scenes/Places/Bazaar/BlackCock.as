@@ -1,6 +1,7 @@
 package classes.Scenes.Places.Bazaar 
 {
 	import classes.GlobalFlags.*;
+	import classes.Items.Mutations;
 	import classes.*;
 	/**
 	 * The Black Cock by Foxxling
@@ -8,12 +9,15 @@ package classes.Scenes.Places.Bazaar
 	 */
 	public class BlackCock extends BazaarAbstractContent
 	{
-		
-		public function BlackCock() 
-		{
-			
-		}
-		
+		protected function get mutations():Mutations { return kGAMECLASS.mutations; }
+		protected function set mutations(val:Mutations):void { kGAMECLASS.mutations = val; }
+		protected function get changes():int { return mutations.changes; }
+		protected function set changes(val:int):void { mutations.changes = val; }
+		protected function get changeLimit():int { return mutations.changeLimit; }
+		protected function set changeLimit(val:int):void { mutations.changeLimit = val; }
+
+		public function BlackCock() {}
+
 		//Will eventually be used to display sprites.
 		public function displayAnitaSprite():void {
 			//Anita's sprite code goes here
@@ -1399,9 +1403,11 @@ package classes.Scenes.Places.Bazaar
 		//------------
 		// TRANSFORMATIONS
 		//------------
-		public function satyrTFs():void {
-			var changes:int = 0;
-			var changeLimit:int = 3;
+		public function satyrTFs():void
+		{
+			var tfSource:String = "satyrTFs";
+			changes = 0;
+			changeLimit = 3;
 			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 			//Stats and genital changes
@@ -1453,7 +1459,9 @@ package classes.Scenes.Places.Bazaar
 				changes++;
 			}
 			//Transformations
-			if (rand(3) == 0 && changes < changeLimit && player.skinType == SKIN_TYPE_SCALES) {
+			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
+
+			if (rand(3) == 0 && changes < changeLimit && player.hasScales()) {
 				outputText("\n\nYou feel an odd rolling sensation as your scales begin to shift, spreading and reforming as they grow and disappear, <b>becoming normal human skin</b>.");
 				player.skinType = SKIN_TYPE_PLAIN;
 				changes++;
@@ -1474,7 +1482,7 @@ package classes.Scenes.Places.Bazaar
 				player.faceType = FACE_HUMAN;
 				changes++;
 			}
-			if (rand(4) == 0 && changes < changeLimit && player.skinType != SKIN_TYPE_SCALES && player.earType != EARS_ELFIN) {
+			if (rand(4) == 0 && changes < changeLimit && !player.hasScales() && player.earType != EARS_ELFIN) {
 				outputText("\n\nYou feel an odd shifting sensation on the side of your head and, reaching up to inspect it, find a <b>pair of fleshy pointed ears</b>. "); 
 				if (player.skinType == SKIN_TYPE_FUR) ("As you examine your new elvish ears you feel fur grow around them, matching the rest of you.");
 				player.earType = EARS_ELFIN;
@@ -1533,9 +1541,11 @@ package classes.Scenes.Places.Bazaar
 			flags[kFLAGS.TIMES_TRANSFORMED] += changes;
 		}
 		
-		public function rhinoTFs():void {
-			var changes:int = 0;
-			var changeLimit:int = 3;
+		public function rhinoTFs():void
+		{
+			var tfSource:String = "rhinoTFs";
+			changes = 0;
+			changeLimit = 3;
 			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 			// Stats Changes
@@ -1570,6 +1580,7 @@ package classes.Scenes.Places.Bazaar
 			if (rand(3) == 0 && player.rhinoScore() >= 2 && (rand(2) == 0 || !player.inRut) && player.hasCock()) {
 				player.goIntoRut(true);
 			}
+			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
 			// Special TFs
 			//------------
 			if (rand(4) == 0 && changes < changeLimit && player.hornType != HORNS_UNICORN && player.earType == EARS_HORSE && (player.lowerBody == LOWER_BODY_TYPE_HOOFED || player.lowerBody == LOWER_BODY_TYPE_CLOVEN_HOOFED || player.horseScore() >= 3)) {
@@ -1603,6 +1614,7 @@ package classes.Scenes.Places.Bazaar
 						outputText("You feel an itching sensation as your fur beings to fall off in clumps, <b>revealing tough gray skin</b> beneath it.");
 						break;
 					case SKIN_TYPE_SCALES:
+					case SKIN_TYPE_DRACONIC:
 						outputText("You feel an odd rolling sensation as your scales begin to shift, spreading and reforming as they grow and disappear, <b>becoming tough gray skin</b>.");
 						break;
 					case SKIN_TYPE_GOO:
@@ -1615,6 +1627,7 @@ package classes.Scenes.Places.Bazaar
 				player.skinAdj = "tough";
 				player.skinType = SKIN_TYPE_PLAIN;
 				player.skinDesc = "skin";
+				mutations.updateClaws(player.clawType);
 				changes++;
 			}
 			//Arms change to regular
@@ -1629,6 +1642,7 @@ package classes.Scenes.Places.Bazaar
 					default:
 				}
 				player.armType = ARM_TYPE_HUMAN;
+				mutations.updateClaws();
 				changes++;
 			}
 			//Change legs to normal
@@ -1827,9 +1841,11 @@ package classes.Scenes.Places.Bazaar
 			flags[kFLAGS.TIMES_TRANSFORMED] += changes;
 		}
 		
-		public function echidnaTFs():void {
-			var changes:int = 0;
-			var changeLimit:int = 3;
+		public function echidnaTFs():void
+		{
+			var tfSource:String = "echidnaTFs";
+			changes = 0;
+			changeLimit = 3;
 			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 			var i:int = 0;
@@ -1839,6 +1855,8 @@ package classes.Scenes.Places.Bazaar
 			
 			// Normal TFs
 			//------------
+			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
+
 			if (rand(4) == 0 && changes < changeLimit && player.hairType != HAIR_NORMAL && player.hairType != HAIR_QUILL) {
 				outputText("\n\nYour scalp feels really strange, but the sensation is brief. You feel your hair, and you immediately notice the change. <b>It would seem that your hair is normal again!</b>");
 				player.hairType = HAIR_NORMAL;

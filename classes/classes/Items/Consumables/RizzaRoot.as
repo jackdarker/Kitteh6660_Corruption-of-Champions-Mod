@@ -12,10 +12,11 @@ package classes.Items.Consumables
 
         private function rizzaRootEffect(player:Player):void
         {
-            clearOutput();
-			var changes:Number = 0;
-			var changeLimit:Number = 1;
+			var tfSource:String = "rizzaRootEffect";
 			var counter:Number = 0;
+			clearOutput();
+			changes = 0;
+			changeLimit = 1;
 			if (Utils.rand(2) == 0) changeLimit++;
 			if (Utils.rand(3) == 0) changeLimit++;
 			if (Utils.rand(4) == 0) changeLimit++;
@@ -25,9 +26,9 @@ package classes.Items.Consumables
 			if ((changes < changeLimit) && (player.skinType != 0) && (Utils.rand(6) == 0)){
 				if (player.skinType == 1)
 					outputText("\n\nYour fur itches incessantly, so you start scratching it.  It starts coming off in big clumps before the whole mess begins sloughing off your body.  In seconds, your skin is hairless, or nearly so. <b>You've lost your fur!</b>");
-				else if (player.skinType == 2)
+				else if (player.hasScales())
 					outputText("\n\nYour scales itch incessantly, so you scratch at them.  They start falling off wholesale, leaving you standing in a pile of scales after only a few moments. <b>You've lost your scales!</b>");
-				else if (player.skinType > 2)
+				else if (player.skinType == 3)
 					outputText("\n\nYour " + player.skinDesc + " itches incessantly, and as you scratch it shifts and changes, becoming normal human-like skin. <b>Your skin is once again normal!</b>");
 				player.skinDesc = "skin";
 				player.skinType = 0;
@@ -38,6 +39,7 @@ package classes.Items.Consumables
 				changes++;
 				outputText("\n\nA weird tingling runs through your scalp as your " + player.hairDescript() + " shifts slightly.  You reach up and your hand bumps against <b>your new pointed elfin ears</b>.  You bet they look cute!");
 			}
+			if (Utils.rand(5) == 0) mutations.updateOvipositionPerk(tfSource); // I doubt, that this will ever be affected, but well ... just in case
 			if ((changes < changeLimit) && (player.tallness < 108)){
 				player.tallness += changeLimit - changes + Utils.rand(2); //Add remaining changes as additional height
 				if (player.tallness > 108) player.tallness = 108;

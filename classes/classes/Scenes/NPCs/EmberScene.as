@@ -951,7 +951,8 @@ package classes.Scenes.NPCs
 					outputText("\n\nEmber's body is a curvy thing, not rough like you'd expect from a reptilian creature, but rounded and almost soft-looking, with a taut belly and a perfect hourglass figure, giving " + emberMF("him", "her") + " the silhouette of an amazon from your village's histories: beautiful but powerful.  Excepting the wings and horns, of course.");
 				}
 				outputText("\n\nThe dragon scorns clothing and exposes " + emberMF("him", "her") + "self to both you and the elements with equal indifference, claiming " + emberMF("his", "her") + " scales are all the covering " + emberMF("he", "she") + " needs... and yet when you admire " + emberMF("his", "her") + " body, " + emberMF("he", "she") + " is quick to hide it from your wandering gaze.");
-				outputText("\n\n" + emberMF("His", "Her") + " head is reptilian, with sharp teeth fit for a predator and strong ridges on the underside of the jaw.  At the sides of " + emberMF("his", "her") + " head are strange, fin-like growths concealing small holes; you presume these to be the dragon equivalent of ears.  Atop " + emberMF("his", "her") + " head sit a pair of ebony horns that curve backwards elegantly; despite being as tough as steel, their shape is not fit for use in combat, instead it is simply aesthetical, giving Ember a majestic look.  A long tongue occasionally slips out, to lick at " + emberMF("his", "her") + " jaws and teeth.  Prideful, fierce eyes, with slit pupils and burning orange irises, glitter even in the darkness.");
+				outputText("\n\n" + emberMF("His", "Her") + " head is reptilian, with sharp teeth fit for a predator and strong ridges on the underside of the jaw.  At the sides of " + emberMF("his", "her") + " head are strange, fin-like growths concealing small holes; you presume these to be the dragon equivalent of ears.  Atop " + emberMF("his", "her") + " head sit two pairs of ebony horns that curve backwards elegantly; despite being as tough as steel, their shape is not fit for use in combat, instead it is simply aesthetical, giving Ember a majestic look.  A long tongue occasionally slips out, to lick at " + emberMF("his", "her") + " jaws and teeth.  Prideful, fierce eyes, with slit pupils and burning orange irises, glitter even in the darkness.");
+				outputText("  They come with the typical second set of eyelids, allowing " + emberMF("him", "her") + " to blink twice as much as others.");
 				//(if Ember has any hair)
 				if (flags[kFLAGS.EMBER_HAIR] == 1) {
 					if (flags[kFLAGS.EMBER_GENDER] == 1) outputText("  Short ");
@@ -1169,7 +1170,7 @@ package classes.Scenes.NPCs
 				//(If player has not yet impregnated Tamani)
 				else if (subChoice == 3 && !kGAMECLASS.forest.tamaniScene.pregnancy.isPregnant) outputText("one goblin being teased by a bunch of pregnant goblins for not being pregnant yet.  She just spat back that she wanted a 'better catch' to be her baby-maker than a mere imp and wandered off.");
 				//(If Jojo isn't in the camp & not corrupt)
-				else if (rand(2) == 0 && monk <= 1 && player.findStatusEffect(StatusEffects.PureCampJojo) < 0) outputText("this mouse-morph monk, sitting in a glade and meditating. A goblin tried to proposition him; he just gave her a lecture and sent her running away in tears.  When an imp tried to attack him, he crushed its skull with a staff he had.  Not bad moves for such a weedy little thing...");
+				else if (rand(2) == 0 && flags[kFLAGS.JOJO_STATUS] <= 1 && player.findStatusEffect(StatusEffects.PureCampJojo) < 0) outputText("this mouse-morph monk, sitting in a glade and meditating. A goblin tried to proposition him; he just gave her a lecture and sent her running away in tears.  When an imp tried to attack him, he crushed its skull with a staff he had.  Not bad moves for such a weedy little thing...");
 				else outputText("one glade I touched down in to catch myself a nice brace of plump coneys, when all of a sudden this... this thing made out of flailing vines and fruit attacks me.  It went up in a puff of smoke once I torched it, of course.");
 			}
 			else if (choice == 2) { //Lake
@@ -1573,10 +1574,11 @@ package classes.Scenes.NPCs
 //TF messages (Z)
 		public function emberTFs(drakesHeart:Boolean = false):void
 		{
-			var changes:int = 0;
-			var changeLimit:int = 2;
+			changes = 0;
+			changeLimit = 2;
 			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+			var tfSource:String = "emberTFs";
 			//Gain Dragon Dick
 			if (changes < changeLimit && player.countCocksOfType(CockTypesEnum.DRAGON) < player.totalCocks() && rand(3) == 0) {
 				temp = 0;
@@ -1601,6 +1603,7 @@ package classes.Scenes.NPCs
 				player.cocks[select].cockType = CockTypesEnum.DRAGON;
 				player.cocks[select].knotMultiplier = 1.3;
 			}
+			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
 			//Gain Dragon Head
 			if (changes < changeLimit && rand(3) == 0 && player.faceType != FACE_DRAGON && flags[kFLAGS.EMBER_ROUNDFACE] == 0) {
 				outputText("\n\nYou scream as your face is suddenly twisted; your facial bones begin rearranging themselves under your skin, restructuring into a long, narrow muzzle.  Spikes of agony rip through your jaws as your teeth are brutally forced from your gums, giving you new rows of fangs - long, narrow and sharp.  Your jawline begins to sprout strange growths; small spikes grow along the underside of your muzzle, giving you an increasingly inhuman visage.\n\nFinally, the pain dies down, and you look for a convenient puddle to examine your changed appearance.\n\nYour head has turned into a reptilian muzzle, with small barbs on the underside of the jaw.  <b>You now have a dragon's face.</b>");
@@ -1658,7 +1661,7 @@ package classes.Scenes.NPCs
 						//maxxed out, new row
 						else {
 							//--Next horn growth adds second row and brings length up to 12\"
-							outputText("\n\nA second row of horns erupts under the first, and though they are narrower, they grow nearly as long as your first row before they stop.  A sense of finality settles over you.  <b>You have as many horns as a lizan can grow.</b>", false);
+							outputText("\n\nA second row of horns erupts under the first, and though they are narrower, they grow nearly as long as your first row before they stop.  A sense of finality settles over you.  <b>You have as many horns as a dragon can grow.</b>", false);
 							player.hornType = HORNS_DRACONIC_X4_12_INCH_LONG;
 							changes++;
 						}
@@ -1680,13 +1683,29 @@ package classes.Scenes.NPCs
 			}
 			//(Pending Tongue Masturbation Variants; if we ever get around to doing that.)
 			//Gain Dragon Scales
-			if (player.skinType != SKIN_TYPE_SCALES && changes < changeLimit && rand(3) == 0) {
+			if (player.skinType != SKIN_TYPE_DRACONIC && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nPrickling discomfort suddenly erupts all over your body, like every last inch of your skin has suddenly developed pins and needles.  You scratch yourself, hoping for relief; and when you look at your hands you notice small fragments of your " + player.skinFurScales() + " hanging from your fingers.  Nevertheless you continue to scratch yourself, and when you're finally done, you look yourself over. New shield-like scales have grown to replace your peeled off " + player.skinFurScales() + ".  They are smooth and look nearly as tough as iron. <b>Your body is now covered in shield-shaped dragon scales.</b>");
-				player.skinType = SKIN_TYPE_SCALES;
-				player.skinAdj = "";
+				player.skinType = SKIN_TYPE_DRACONIC;
+				player.skinAdj = "tough";
 				player.skinDesc = "scales";
 				//def bonus of scales
 			}
+			//<mod name="Reptile eyes" author="Stadler76">
+			//Gain Dragon Eyes
+			if (player.eyeType != EYES_DRAGON && player.skinType == SKIN_TYPE_DRACONIC && player.earType == EARS_DRAGON && player.hasDragonHorns() && changes < changeLimit && rand(4) == 0) {
+				if (player.hasReptileEyes())
+					outputText("\n\nYour eyes change slightly in their appearance.");
+				else
+				{
+					outputText("\n\nYou feel a sudden surge of pain in your eyes as they begin to reshape. Your pupils begin to elongate becoming vertically slitted and your irises change their color, too.");
+					outputText("\nAs the pain passes, you examine your eyes in a nearby puddle. You look into your new prideful, fierce dragon eyes with vertically slitted pupils and burning orange irises.");
+					outputText("  They glitter even in the darkness. With a few tears remaining, the look is a bit blurry. Wanting to get a clearer look at them, you blink your remaining tears away and suddenly you realize, that you just did that with your second set of eyelids.");
+				}
+				outputText("  <b>You now have fierce dragon eyes.</b>");
+				player.eyeType = EYES_DRAGON;
+				changes++;
+			}
+			//</mod>
 			//Gain Dragon Legs
 			if (player.lowerBody != LOWER_BODY_TYPE_DRAGON && changes < changeLimit && rand(3) == 0) {
 				//(if drider)
@@ -1762,6 +1781,23 @@ package classes.Scenes.NPCs
 				}
 				changes++;
 			}
+			// <mod name="Predator arms" author="Stadler76">
+			//Gain Dragon Arms (Derived from ARM_TYPE_SALAMANDER)
+			if (player.armType != ARM_TYPE_PREDATOR && player.skinType == SKIN_TYPE_DRACONIC && player.lowerBody == LOWER_BODY_TYPE_DRAGON && changes < changeLimit && rand(3) == 0) {
+				outputText("\n\nYou scratch your biceps absentmindedly, but no matter how much you scratch, you can't get rid of the itch.  After a longer moment of ignoring it you finally glance down in irritation, only to discover that your arms former appearance has changed into those of some reptilian killer with shield-shaped " + player.skinTone + " scales and powerful, thick, curved steel-gray claws replacing your fingernails.");
+				outputText("\n<b>You now have dragon arms.</b>", false);
+				player.armType = ARM_TYPE_PREDATOR;
+				mutations.updateClaws(CLAW_TYPE_DRAGON);
+				changes++
+			}
+			//Claw transition
+			if (player.armType == ARM_TYPE_PREDATOR && player.skinType == SKIN_TYPE_DRACONIC && player.clawType != CLAW_TYPE_DRAGON && changes < changeLimit && rand(3) == 0) {
+				outputText("\n\nYour " + player.claws() + " change  a little to become more dragon-like.");
+				mutations.updateClaws(CLAW_TYPE_DRAGON);
+				outputText(" <b>You now have " + player.claws() + ".</b>");
+				changes++
+			}
+			// </mod>
 			//Get Dragon Breath (Tainted version)
 			//Can only be obtained if you are considered a dragon-morph, once you do get it though, it won't just go away even if you aren't a dragon-morph anymore.
 
@@ -1797,13 +1833,13 @@ package classes.Scenes.NPCs
 					outputText("rut");
 					
 					player.goIntoRut(false);
-					changes++;
+					changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
 				}
 				else {
 					outputText("heat");
 					
 					player.goIntoHeat(false);
-					changes++;
+					changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
 				}
 				outputText("</b>.");
 			}
