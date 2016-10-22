@@ -165,6 +165,16 @@ public function clearBenoitPreggers():void
 	}
 }
 
+public function benoitOffspring():int
+{
+	return flags[kFLAGS.BENOIT_EGGS] + flags[kFLAGS.FEMOIT_EGGS_LAID];
+}
+
+public function benoitBigFamily():Boolean
+{
+	return benoitOffspring() >= 12; // I guess, 12 eggs is a good start (Stadler76)
+}
+
 public function setBenoitShop(setButtonOnly:Boolean = false):void {
 	if (model.time.hours >= 9 && model.time.hours <= 17) {
 		if ((flags[kFLAGS.FEMOIT_NEXTDAY_EVENT_DONE] == 1 && this.getGame().model.time.days >= flags[kFLAGS.FEMOIT_NEXTDAY_EVENT]) || flags[kFLAGS.FEMOIT_NEXTDAY_EVENT_DONE] != 1)
@@ -297,13 +307,20 @@ public function benoitIntro():void {
 	addButton(2, "Talk", talkToBenoit);
 	addButton(14, "Leave", bazaar.enterTheBazaarAndMenu);
 	//Feminize & Herminize
-	if (flags[kFLAGS.FEMOIT_UNLOCKED] == 1 && flags[kFLAGS.BENOIT_STATUS] == 0) addButton(3, "Feminize", benoitFeminise);
-	if (flags[kFLAGS.BENOIT_STATUS] > 0 && flags[kFLAGS.BENOIT_STATUS] < 3) addButton(3, "Herminize", benoitHerminise);
+	if (flags[kFLAGS.FEMOIT_UNLOCKED] == 1 && flags[kFLAGS.BENOIT_STATUS] == 0)
+		addButton(3, "Feminize", benoitFeminise);
+	if (flags[kFLAGS.BENOIT_STATUS] > 0 && flags[kFLAGS.BENOIT_STATUS] < 3)
+		addButton(3, "Herminize", benoitHerminise);
 	//Basilisk Womb
-	if (flags[kFLAGS.BENOIT_WOMB_TALK_UNLOCKED] == 1 && player.findPerk(PerkLib.BasiliskWomb) < 0 && flags[kFLAGS.BENOIT_TESTED_BASILISK_WOMB] == 0 && [0, 3].indexOf(flags[kFLAGS.BENOIT_STATUS]) >= 0) addButton(4, "Basil. Womb", tryToConvertToBassyWomb);
+	if (flags[kFLAGS.BENOIT_WOMB_TALK_UNLOCKED] == 1 && player.findPerk(PerkLib.BasiliskWomb) < 0 && flags[kFLAGS.BENOIT_TESTED_BASILISK_WOMB] == 0 && [0, 3].indexOf(flags[kFLAGS.BENOIT_STATUS]) >= 0)
+		addButton(4, "Basil. Womb", tryToConvertToBassyWomb);
 	//Suggest & sex
-	if (flags[kFLAGS.BENOIT_SUGGEST_UNLOCKED] > 0 && player.hasVagina() && (flags[kFLAGS.BENOIT_STATUS] == 0 || flags[kFLAGS.BENOIT_STATUS] == 3)) addButton(5, "Suggest", eggySuggest);
-	if (player.hasCock() && flags[kFLAGS.BENOIT_STATUS] > 0 && player.lust >= 33) addButton(6, "Sex", femoitSexIntro);
+	if (flags[kFLAGS.BENOIT_SUGGEST_UNLOCKED] > 0 && player.hasVagina() && (flags[kFLAGS.BENOIT_STATUS] == 0 || flags[kFLAGS.BENOIT_STATUS] == 3))
+		addButton(5, "Suggest", eggySuggest);
+	if (player.hasCock() && flags[kFLAGS.BENOIT_STATUS] > 0 && player.lust >= 33)
+		addButton(6, "Sex", femoitSexIntro);
+	if (flags[kFLAGS.BENOIT_EYES_TALK_UNLOCKED] == 1 && player.eyeType != EYES_BASILISK)
+		addButton(7, "Basil. Eyes", convertToBassyEyes);
 }
 //Buy or Sell First Time, only if prelover/prefem: You ask him what the deal is with his shop.
 private function buyOrSellExplanationFirstTime():void {
@@ -637,11 +654,65 @@ private function talkToBenoit():void {
 		flags[kFLAGS.BENOIT_TALKED_TODAY] = 1;
 		benoitAffection(5);
 	}
+	if (flags[kFLAGS.BENOIT_BASIL_EYES_GRANTED] > 0 && player.hasKeyItem("Feathery hair-pin") < 0) {
+		var hasSolidHair:Boolean = (player.hairType != HAIR_GOO && player.hairLength > 0);
+		// Talk scene written by MissBlackthorne
+		outputText("\"<i>Ah [name]! I 'ad been 'oping to speak wiz you.</i>\" your basilisk lover says with a toothy smile. \"<i>I 'ave a gift for "
+		          +"you... For all you 'ave done.</i>\" You notice the scales on " + benoitMF("Benoit", "Benoite") + "'s face turn a deeper green,"
+		          +" evidently blushing as " + benoitMF("he", "she") + " thrusts out a closed palm, gaze averted like a kid on Valentines Day."
+		          +" You place your hand out and feel something small fall into your palm. It tickles and feels cool."
+		          +" You look down at the trinket you have received, immediately surprised.");
+		outputText("\n\nYou hold a silver hair pin, its shining exterior glittering in the light. Tiny scales are cast into the metal of the pin as"
+		          +" though it were the tail of a reptile, something that must have taken master craftsmanship to form so well. At the end is a ovoid"
+		          +" gemstone, a swirling grey pattern deep within it. You are reminded of the eyes of basilisks in the mountains, though this time,"
+		          +" you look at it because it is beautiful, rather than through compulsion. Under the gem is a plume of three delicate crimson"
+		          +" feathers, their soft fibres tickling your palm. Surely " + benoitMF("Benoit", "Benoite") + " didn't mean to give you such an"
+		          +" expensive looking item?!");
+		outputText("\n\n\"<i>[name], nussing can pay for what you 'ave done for me, for my kind. Such an 'eirloom is paltry to zat.</i>\" "
+		          + benoitMF("Benoit", "Benoite") + " says softly, eyes closed. \"<i>It does not feel warped by ze demons, and I am 'oping it reminds"
+		          +" you of me in your travels.</i>\"");
+		outputText("\n\nYou feel a blush creep across your [face] as you thank the blind basilisk, hugging " + benoitMF("him", "her")
+		          +" to you tight before you leave");
+		// Equip only, if you have hair and if it's not gooey.
+		outputText((hasSolidHair && player.cor < 55) ? ", slipping the pin into your [hair] as you exit the store." : ".");
+		// value1: hairPinIsEquipped, value2: just (re)equipped, but TF not triggered yet.
+		if (hasSolidHair && player.cor < 55)
+			player.createKeyItem("Feathery hair-pin", 1, 1, 0, 0);
+		else
+			player.createKeyItem("Feathery hair-pin", 0, 0, 0, 0);
+		outputText("\n\n(<b>Gained Key Item: Feathery hair-pin</b>)");
+		doNext(camp.returnToCampUseOneHour);
+		return;
+	}
+	if (benoitBigFamily() && player.inte >= 60 && flags[kFLAGS.BENOIT_EYES_TALK_UNLOCKED] == 0) {
+		// Talk scene written by MissBlackthorne
+		outputText("You ask " + benoitMF("Benoit", "Benoite") + " how the petrifying effect of " + benoitMF("his", "her") + " brethrens gaze works,"
+		          +" is it something their eyes naturally do or type of sight? " + benoitMF("He","She") + " stiffens for a moment before letting out a frustrated sigh.");
+
+		outputText("\n\n\"<i>[name], you do know i am blind yes? Zis is not somesing to joke about.</i>\"");
+
+		outputText("\n\nYou hurriedly tell your scaled lover that you didn't mean it in a cruel way, you were merely curious."
+		          +" After all, you've transformed yourself to become more basilisk like for " + benoitMF("him", "her")
+		          +" already, so you're curious if you could get even closer to being a true basilisk.");
+
+		outputText("\n\nAfter a few moments " + benoitMF("Benoit", "Benoite") + " nods slightly.");
+		outputText("\n\"<i>I see...are you sure about zis [name]? It is so reckless to experiment on your body like zis....But I suppose you have done so much for my folk,"
+		          +" zat if you wish to be one of us, i could look into it. Beware though, zey are dangerous, so while i shall do zis to thank you,"
+		          +" I do not wish to risk you becoming like ze others...Ze demons no doubt affected our gaze too, ze perverts...</i>\"");
+
+		outputText("\n\nYou smile at the lizard's concern for you before leaving " + benoitMF("Benoit", "Benoite") + " to find a recipe in peace.");
+
+		//toggle on "Basil. Eyes" from benoit's main menu.
+		flags[kFLAGS.BENOIT_EYES_TALK_UNLOCKED] = 1;
+		outputText("\n\n(<b>Basilisk Eyes option enabled in " + benoitMF("Benoit", "Benoite") + "'s menu!</b>)");
+		doNext(camp.returnToCampUseOneHour);
+		return;
+	}
 	//Basilisk Womb
 	//Requires: Had sex with Benoit at least twice, have vagina, select talk
 	if (((flags[kFLAGS.BENOIT_TIMES_SEXED_FEMPCS] > 2 && player.inte >= 60 && flags[kFLAGS.BENOIT_WOMB_TALK_UNLOCKED] == 0) || flags[kFLAGS.BENOIT_TIMES_SEXED_FEMPCS] == 2) && player.hasVagina()) {
 		outputText("You ask " + benoitMF("Benoit","Benoite") + " if " + benoitMF("he","she") + " has ever thought about trying to do something to help his people's plight.");
-		
+
 		outputText("\n\nThe basilisk is silent for a time, running his claws along the counter pensively.  \"<i>Yes,</i>\" " + benoitMF("he","she") + " says eventually, in a quiet tone.  \"<i>I 'ave.  Away from ze mountains, I 'ave 'ad time to sink.  I am not ze demons' slave anymore, and I am a funny joke of a basilisk anyway, so I 'ave often thought about... making certain zacrifices.  If we 'ad just one female, away from zeir corruption, zen...</i>\" " + benoitMF("he","she") + " trails off, sighing heavily before smiling ruefully at you.  \"<i>Zose were ze kind of soughts I 'ad before I met you.  Crazy, yes?  Even more crazy to be still sinking zem when a good woman is giving me 'er love for no reason except through ze kindness of 'er 'art.  Still... it is so frustrating, being able to sink clearly about zese sings and not being able to do anysing about it.</i>\"");
 		
 		if (player.inte >= 60) {
@@ -846,10 +917,78 @@ private function talkToBenoit():void {
 
 			outputText("\n\n“<i>Well, of course I can, zilly,</i>” she says teasingly. “<i>When you end up smelling like someone else for several hours, it is a difficult sing to mistake.  It is a memento of you and it reminds me of appiness; I wish I could smell zat way for longer.  My sexy little shaved monkey.</i>”");
 		}
+
+		// Hair pin talk
+		if (player.hasKeyItem("Feathery hair-pin") >= 0 && (debug || flags[kFLAGS.BENOIT_HAIRPIN_TALKED_TODAY] == 0))
+		{
+			doNext(benoitHairPinTalk);
+			return;
+		}
 	}
 	doNext(camp.returnToCampUseOneHour);
 }
 
+private function benoitHairPinTalk():void
+{
+	// On a new page, since it may trigger the hair TF.
+	clearOutput();
+	outputText("You ask " + benoitMF("Benoit", "Benoite") + " about the feathery hair-pin he gave to you.");
+	outputText("\n\n\"<i>Ah, ze pin? It iz a 'eirloom from my mozzers side. I suspect it 'as simply been thrown down through generations, none"
+	          +" wanting sumsing zat was more complex zan a shiny object. I think it 'as escaped ze taint, simply because of zis. I kept it to sell,"
+	          +" but a better use 'as come for it. Maybe I am just sentimental, but I 'ope it reminds you of all you 'ave done for ze basilisks, and"
+	          +" for me.</i>\"");
+	benoitHairPinTFCheck();
+}
+
+private function benoitHairPinTFCheck():void
+{
+	if (player.cor < 30 && player.isFemaleOrHerm() && player.featheryHairPinEquipped() && [HAIR_BASILISK_PLUME, HAIR_GOO].indexOf(player.hairType) == -1)
+	{
+		outputText("\n\nYou feel the hair pin " + benoitMF("Benoit", "Benoite") + " gave you heat up, a gentle warmth suffusing through your body."
+		          +" Something tells you that if you let it, this feminine hair piece will evoke some sort of change.");
+		outputText("\n\nDo you let it?");
+		menu();
+		addButton(0, "No", benoitHairPinTFNo);
+		addButton(1, "Yes", benoitHairPinTFYes);
+		return;
+	}
+
+	benoitHairPinTalkFinal();
+}
+
+private function benoitHairPinTFNo():void
+{
+	outputText("\n\nYou take out the hair pin for a while, the feeling fading as soon as you do so.");
+	benoitHairPinTalkFinal();
+}
+
+private function benoitHairPinTFYes():void
+{
+	outputText("\n\nYou let the feeling be, wondering what it will do. Soon your head begins to tickle and you reach up to scratch at it, only to be"
+	          +" surprised by the softness you feel. It reminds you of the down of baby chickens, velvety soft and slightly fluffy. You look at"
+	          +" yourself in a nearby puddle and gasp, where your hair once was, you now have red feathers, some longer and larger than others."
+	          +" This floppy but soft plume sits daintily on your head, reminding you of a ladies fascinator. You realise soon"
+	          + benoitMF(" that your hair has changed into a plume of feathers that, like legend is told, belongs to a female basilisk!",
+	                     " that you have a plume, like a female basilisk!"));
+
+	if (flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] != 0)
+		outputText("\n\n<b>Your hair is growing again and is now a plume of short red feathers.</b>");
+	else
+		outputText("\n\n<b>Your hair is now a plume of short red feathers.</b>");
+
+	flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 0;
+	player.hairLength = 2;
+	player.hairColor = "red";
+	player.hairType = HAIR_BASILISK_PLUME;
+	benoitHairPinTalkFinal();
+}
+
+private function benoitHairPinTalkFinal():void
+{
+	dynStats("cor", -(player.featheryHairPinEquipped() ? 10 : 5));
+	flags[kFLAGS.BENOIT_HAIRPIN_TALKED_TODAY] = 1;
+	doNext(camp.returnToCampUseOneHour);
+}
 
 //Male Benoit x Female PC Interactions
 //First talk
@@ -1173,6 +1312,138 @@ private function repeatBenoitFuckTakeCharge():void {
 	doNext(camp.returnToCampUseOneHour);
 }
 
+//Feathery hair-pin
+public function equipUnequipHairPin():void
+{
+	var keyItemNum:int = player.hasKeyItem("Feathery hair-pin");
+	if (keyItemNum < 0) return;
+
+	clearOutput();
+	if (player.keyItemv1("Feathery hair-pin") > 0) {
+		// unequip it
+		if (player.hairLength > 0)
+			outputText("You take the feathery hair-pin " + benoitMF("Benoit", "Benoite") + " gave to you out of your " + player.hairDescript() 
+			          +" and put it back into your inventory.");
+		else
+			outputText("You remove the feathery hair-pin " + benoitMF("Benoit", "Benoite") + " gave to you from your bald head and put it back into"
+			          +" your inventory. It was surprisingly easy.");
+		player.keyItems[keyItemNum].value1 = 0; // not equipped
+		player.keyItems[keyItemNum].value2 = 0; // if its not equipped it won't trigger any TF, right? ^^
+	} else {
+		// equip it
+		if (player.hairType == HAIR_GOO)
+			outputText("You try to slide the hair pin into your " + player.hairDescript() + ", but their semi-liquid state isn't enough to hold it in"
+			          +" place. The pin falls to the ground with a wet splat the moment you let it go. With a sigh you clean it up and then you put"
+			          +" it back.");
+		else if (player.cor >= 55)
+				outputText("You go to slide the hair-pin into your " + player.hairDescript() + ", but the moment it touches your scalp it heats up,"
+			              +" causing you to drop it in shock. Seems it doesn't want you dirty its purity... you pick it up and put it back into your"
+			              +" inventory for now.");
+		else {
+			if (player.hairLength > 0)
+				outputText("You slide the hair-pin " + benoitMF("Benoit", "Benoite") + " gave you into your " + player.hairDescript()
+				          +", briefly admiring yourself in a nearby puddle before returning to your adventures.");
+			else
+				outputText("You take the feathery hair-pin " + benoitMF("Benoit", "Benoite") + " gave to you out of your inventory and then you press"
+				          +" it onto your bald head. To your surprise it sticks to your head as though you had hair to hold it in place.");
+
+			player.keyItems[keyItemNum].value1 = 1; // equipped
+			player.keyItems[keyItemNum].value2 = 1; // just equipped it, but it didn't trigger the TF(-event) so far
+		}
+	}
+	outputText("\n");
+	doNext(inventory.checkKeyItems);
+}
+
+//Basilisk Eyes
+private function convertToBassyEyes():void
+{
+	var eyesGranted:int = flags[kFLAGS.BENOIT_BASIL_EYES_GRANTED] + 1;
+	var benoitE:String = benoitMF("Benoit", "Benoite");
+	var benoit_heshe:String = benoitMF("he", "she");
+	var benoit_HeShe:String = benoitMF("He", "She");
+	var benoit_hisher:String = benoitMF("his", "her");
+	var benoit_himher:String = benoitMF("him", "her");
+	clearOutput();
+	if (eyesGranted <= 1) { // First time
+		outputText("You tell " + benoitE + " that you've weighed up the pros and cons and that you want to become more of a basilisk. "
+		          + benoit_HeShe + " nods as " + benoit_heshe + " feels " + benoit_hisher + " way across the counter before rummaging about underneath.");
+		outputText("\n\n\"<i>I 'ave found a way to transform your eyes, but I 'ave no idea if it will even work."
+		          +" Ze one oo told me about zis was insistent zat ze recipe relies on you being a basilisk enough already.</i>\"");
+		outputText("\n\nAs the blind basilisk begins to pull out bottle after bottle from under the counter, you wonder what " + benoit_heshe + " means.");
+		outputText("\n\n\"<i> 'Opefully, you 'aving birthed so many will be enough.</i>\" " + benoit_HeShe + " mutters as " + benoit_heshe + " pulls out a large bowl. "
+		          + benoit_HeShe + " begins to sloppily pour several measures from the bottles into the bowl, stirring it now and then with a wooden spoon."
+		          +" The mixture seems to be a flat matte grey when " + benoit_heshe + " stops. Placing " + benoit_hisher + " palm over the bowl "
+		          + benoit_heshe + " cuts it open with a claw, hissing at the pain as droplets of blood fall in with a small splash. "
+		          + benoit_HeShe + " brings a finger to one of " + benoit_hisher + " milky eyes, wiping a tear drop from it before letting that slide down into the mixture too.");
+		outputText("\n\nAs " + benoitE + " goes to fetch a cloth to cover the cut, you watch in awe as the once matte mixture takes on a wet sheen, like an endless grey seeing pool."
+		          +" It reminds you of the eyes of the basilisks in the mountains and flinch away before realising how silly that is.");
+		outputText("\n\n\"<i>Are you going to drink it zen? Or am I to close my shop all day for nuzzing?</i>\" " + benoitE + " says, startling you,"
+		          +" having not noticed the blind basilisk return, being that you were so fixated on the mixture.");
+		outputText("\n\nWith a swift nod you grab the bowl, draining it before realising your non-verbal response. You groan,"
+		          +" the mixture thick on your tongue though not tasting overly foul. Your eyelids feel heavy, like they were made of stone."
+		          +" You tell " + benoitE + " you think you need to rest for a moment, the basilisk now hurrying you to a corner of store room where a pile of fabrics are. "
+		          + benoit_HeShe + " helps you onto them as you lay back and your eyes close.");
+		doNext(convertToBassyEyesPageTwo);
+		return;
+	} else {
+		outputText("You tell " + benoitE + ", that you've lost the basilisk eyes and ask " + benoit_himher + ", if "
+		          + benoit_heshe + " could grant them to you again.");
+		if (eyesGranted == 2) { // Second time
+			outputText("\n\n" + benoitE + " says: \"<i>Oh, you’ve lost zem?"
+			          +" Not what I expected to hear today, but very well [name]. I shall make ze potion...</i>\" ");
+		} else if (eyesGranted >= 3 && eyesGranted < 6) { // Third time and later
+			outputText("\n\n" + benoitE + " says: \"<i>You’ve lost zem again?"
+			          +" Not what I expected to hear today, but very well [name]. I shall make ze potion...</i>\" ");
+		} else /*if (eyesGranted >= 6)*/ { // Sixth time and later
+			outputText("\n\n" + benoitE + " says: \"<i>You’ve lost zem again?"
+			          +" You should be more careful not to lose zem so often [name]!</i>\" ");
+		}
+		outputText(benoitE + " pads over to the section of the counter, pulling out bottles again");
+		if (eyesGranted >= 6) outputText(", grumbling as " + benoit_heshe + " does");
+		outputText(".\n\"<i>Here we go... For ze " + num2Text2(eyesGranted) + " time</i>\", " + benoit_heshe + " mumbles, though you can tell, " + benoit_heshe + "'s not mad");
+		outputText(eyesGranted < 6 ? "." : ", simply tired of making the potion so often. Maybe you should be a bit more careful in the future?");
+		outputText("\n\nWithin minutes a bowl is slid to you, a familiar grey mixture sloshing within. You drain the bowl and move to lay down.");
+		outputText("\n\nWhen you wake you open your eyes slowly, waiting to adjust. You thank " + benoitE + " for " + benoit_hisher + " help with a small kiss on the snout"
+		          +" before leaving, once again feeling the compulsion to look deep into the grey orbs of basilisks fade as you catch your reflection in the mirror.");
+	}
+	convertToBassyEyesFinal();
+}
+
+private function convertToBassyEyesPageTwo():void
+{
+	var benoitE:String = benoitMF("Benoit", "Benoite");
+	var benoit_heshe:String = benoitMF("he", "she");
+	var benoit_HeShe:String = benoitMF("He", "She");
+	var benoit_hisher:String = benoitMF("his", "her");
+	var benoit_HisHer:String = benoitMF("His", "Her");
+	var benoit_hishers:String = benoitMF("his", "hers");
+	clearOutput();
+	outputText("When you wake, you open your eyes and cry out, quickly closing them again. Gods it's bright! " + benoitE + " rushes over to you and places a hand on your shoulder.");
+	outputText("\n\n\"<i>What iz it? Did somesing 'appen? You're not 'urt are you?</i>\" " + benoit_HeShe + " says in an increasing worry. You put your hand to "
+	          + benoit_hishers + " and say that you're fine, everything was just a little bright. You open your eyes again, this time slowly, letting your eyes adjust."
+	          +" You ask the basilisk if " + benoit_heshe + " could get you a mirror, curious if the potion has worked. "
+	          + benoit_HeShe + " rushes off with a nod and comes back with a small hand mirror.");
+	outputText("\n\n\"<i>Well?</i>\"");
+	outputText("\n\nYour eyes widen as you look in the mirror, the grey reptilian orbs staring back at you catching you off guard. They're absolutely mesmerising,"
+	          +" the swirling greys and wet sheen parted by a thin black slit of a pupil. While you feel you could look into their depths forever,"
+	          +" you don't feel any kind of compulsion like when you look into other basilisk's eyes. Somehow you think you'll be immune to their gaze from now on,"
+	          +" though it does make sense. After all, why would a basilisk ever try to use their gaze on one another?");
+	outputText("\n\nYou smile and put down the mirror, sharing that it worked and thanking " + benoitE + " with a kiss on the tip of " + benoit_hisher + " scaled snout. "
+	          + benoit_HisHer + " scales colour a deeper grey-green, waving a hand in a nonchalant gesture.");
+	outputText("\n\n\"<i>It was nussing, a gift from me to you, for all you've done.</i>\" " + benoit_HeShe + " says shyly before returning to a more normal business like demeanor."
+	          +" You are subsequently shoo’ed from the store, though not without a sticky but loving lick to the cheek from the basilisk.");
+	convertToBassyEyesFinal();
+}
+
+private function convertToBassyEyesFinal():void
+{
+	player.eyeType = EYES_BASILISK;
+	outputText("\n\n(<b>Your eyes are now basilisk eyes!</b>)");
+	flags[kFLAGS.BENOIT_BASIL_EYES_GRANTED]++
+	doNext(camp.returnToCampUseOneHour);
+}
+
 //Bas. Womb (not for horses)
 private function tryToConvertToBassyWomb():void {
 	clearOutput();
@@ -1392,7 +1663,7 @@ public function benoitFeminise():void
 	{
 		outputText("You don't have the necessary ingredients to attempt this yet.");
 		outputText("\n\n<b>(Requires 2x Purified Succubus Milk, 1x Large Pink Egg, 1x Ovi Elixir, 1x Reptilium.)</b>");
-		this.getGame().flushOutputTextToGUI();
+		output.flush();
 	}
 	else
 	{
@@ -1746,7 +2017,7 @@ public function femoitSexIntro():void
 		{
 			outputText("You don't have the necessary ingredients to attempt this yet.");
 			outputText("\n\n<b>(Requires 2x Purified Incubi Draft, 1x Purified Succubi's Delight, 1x Reptilium.)</b>");
-			this.getGame().flushOutputTextToGUI();
+			output.flush();
 		}
 		else
 		{

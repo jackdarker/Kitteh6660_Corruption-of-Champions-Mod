@@ -14,20 +14,21 @@ public function playerMenu():void {
 	if (!inCombat) spriteSelect(-1);
 	mainView.setMenuButton(MainView.MENU_NEW_MAIN, "New Game", charCreation.newGameGo);
 	mainView.nameBox.visible = false;
-	if (gameState == 1 || gameState == 2) {
+	showStats();
+	if (_gameState == 1 || _gameState == 2) {
 		kGAMECLASS.combat.combatMenu();
 		return;
 	}
-	//Clear restriction on item overlaps if not in combat
-	combat.plotFight = false;
+	combat.plotFight = false; //Clear restriction on item overlaps if not in combat
 	if (inDungeon) {
-		//dungeonMenu();
 		kGAMECLASS.dungeons.checkRoom();
 		return;
 	}
 	else if (inRoomedDungeon) {
-		if (inRoomedDungeonResume != null) inRoomedDungeonResume();
-		return;
+		if (inRoomedDungeonResume != null) {
+			inRoomedDungeonResume();
+			return;
+		}
 	}
 	flags[kFLAGS.PLAYER_PREGGO_WITH_WORMS] = 0;
 	doCamp();
@@ -44,20 +45,21 @@ public function gameOver(clear:Boolean = false):void { //Leaves text on screen u
 	outputText("</font>");
 	//Delete save on hardcore.
 	if (flags[kFLAGS.HARDCORE_MODE] > 0) {
-		outputText("\n\n<b>Your save file has been deleted as you are on Hardcore Mode!</b>", false);
+		outputText("\n\n<b>Error deleting save file.</b>");
+		/*outputText("\n\n<b>Your save file has been deleted as you are on Hardcore Mode!</b>", false);
 		flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] = flags[kFLAGS.HARDCORE_SLOT];
 		var test:* = SharedObject.getLocal(flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION], "/");
 		if (test.data.exists)
 		{
 			trace("DELETING SLOT: " + flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION]);
 			test.clear();
-		}
+		}*/
 	}
 	flags[kFLAGS.TIMES_BAD_ENDED]++;
 	awardAchievement("Game Over!", kACHIEVEMENTS.GENERAL_GAME_OVER, true, true);
 	menu();
 	addButton(0, "Game Over", gameOverMenuOverride, null, null, null, "Your game has ended. Please load a saved file or start a new game.");
-	if (flags[kFLAGS.HARDCORE_MODE] <= 0) addButton(1, "Continue", camp.wakeFromBadEnd, null, null, null, "It's all just a dream. Wake up.");
+	if (flags[kFLAGS.HARDCORE_MODE] <= 0) addButton(1, "Nightmare", camp.wakeFromBadEnd, null, null, null, "It's all just a dream. Wake up.");
 	//addButton(3, "NewGamePlus", charCreation.newGamePlus, null, null, null, "Start a new game with your equipment, experience, and gems carried over.");
 	//if (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 1 || debug) addButton(4, "Debug Cheat", playerMenu);
 	gameOverMenuOverride();
@@ -157,9 +159,12 @@ public function goNext(time:Number, needNext:Boolean):Boolean  {
 		if (player.inHeat) temp += 2;
 		if (vapula.vapulaSlave()) temp += 7;
 		//Reduce chance
+		var scarePercent:Number = 0;
+		scarePercent += flags[kFLAGS.CAMP_WALL_SKULLS] + flags[kFLAGS.CAMP_WALL_STATUES] * 4;
+		if (scarePercent > 100) scarePercent = 100;
 		if (flags[kFLAGS.CAMP_WALL_PROGRESS] > 0) temp /= 1 + (flags[kFLAGS.CAMP_WALL_PROGRESS] / 100);
 		if (flags[kFLAGS.CAMP_WALL_GATE] > 0) temp /= 2;
-		if (flags[kFLAGS.CAMP_WALL_SKULLS] > 0) temp *= 1 - (flags[kFLAGS.CAMP_WALL_SKULLS] / 100);
+		temp *= 1 - (scarePercent / 100);
 		if (model.time.hours == 2) {
 			if (model.time.days % 30 == 0 && flags[kFLAGS.ANEMONE_KID] > 0 && player.hasCock() && flags[kFLAGS.ANEMONE_WATCH] > 0 && flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] >= 40) {
 				anemoneScene.goblinNightAnemone();

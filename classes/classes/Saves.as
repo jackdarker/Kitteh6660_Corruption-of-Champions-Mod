@@ -2,6 +2,7 @@
 {
 
 	import classes.GlobalFlags.kGAMECLASS;
+	import classes.GlobalFlags.kACHIEVEMENTS;
 	import classes.Scenes.Inventory;
 	import classes.Scenes.Places.TelAdre.Katherine;
 
@@ -372,7 +373,7 @@ public function saveLoad(e:MouseEvent = null):void
 		return;
 	}
 	if (player.str == 0) {
-		addButton(14, "Back", kGAMECLASS.mainMenu);
+		addButton(14, "Back", kGAMECLASS.mainMenu.mainMenu);
 		return;
 	}
 	if (inDungeon) {
@@ -383,7 +384,7 @@ public function saveLoad(e:MouseEvent = null):void
 		addButton(0, "Save", saveScreen);
 		addButton(5, "Save to File", saveToFile);
 		addButton(3, "AutoSave: " + autoSaveSuffix, autosaveToggle);
-		addButton(14, "Back", kGAMECLASS.mainMenu);
+		addButton(14, "Back", kGAMECLASS.mainMenu.mainMenu);
 	}
 	else
 	{
@@ -607,6 +608,7 @@ public function savePermObject(isFile:Boolean):void {
 			}			
 		}
 		saveFile.data.flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM] = flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM];
+		saveFile.data.flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] = flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED];
 		
 		saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] = flags[kFLAGS.SHOW_SPRITES_FLAG];
 		saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
@@ -614,7 +616,7 @@ public function savePermObject(isFile:Boolean):void {
 		
 		saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE] = flags[kFLAGS.USE_OLD_INTERFACE];
 		saveFile.data.flags[kFLAGS.USE_OLD_FONT] = flags[kFLAGS.USE_OLD_FONT];
-		saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] = flags[kFLAGS.BACKGROUND_STYLE];
+		if (flags[kFLAGS.KAIZO_MODE] == 0 && flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] == 0) saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] = flags[kFLAGS.BACKGROUND_STYLE];
 		saveFile.data.flags[kFLAGS.IMAGEPACK_OFF] = flags[kFLAGS.IMAGEPACK_OFF];
 		saveFile.data.flags[kFLAGS.SPRITE_STYLE] = flags[kFLAGS.SPRITE_STYLE];
 		saveFile.data.flags[kFLAGS.SFW_MODE] = flags[kFLAGS.SFW_MODE];
@@ -622,6 +624,9 @@ public function savePermObject(isFile:Boolean):void {
 		saveFile.data.flags[kFLAGS.USE_12_HOURS] = flags[kFLAGS.USE_12_HOURS];
 		saveFile.data.flags[kFLAGS.AUTO_LEVEL] = flags[kFLAGS.AUTO_LEVEL];
 		saveFile.data.flags[kFLAGS.USE_METRICS] = flags[kFLAGS.USE_METRICS];
+		saveFile.data.flags[kFLAGS.DISABLE_QUICKLOAD_CONFIRM] = flags[kFLAGS.DISABLE_QUICKLOAD_CONFIRM];
+		saveFile.data.flags[kFLAGS.DISABLE_QUICKSAVE_CONFIRM] = flags[kFLAGS.DISABLE_QUICKSAVE_CONFIRM];
+		
 		//achievements
 		saveFile.data.achievements = [];
 		for (i = 0; i < achievements.length; i++)
@@ -632,6 +637,8 @@ public function savePermObject(isFile:Boolean):void {
 				saveFile.data.achievements[i] = achievements[i];
 			}
 		}
+		if (getGame().permObjVersionID != 0)
+			saveFile.data.permObjVersionID = getGame().permObjVersionID;
 	}
 	catch (error:Error)
 	{
@@ -652,6 +659,7 @@ public function loadPermObject():void {
 		//Load saved flags.
 		if (saveFile.data.flags) {
 			if (saveFile.data.flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM] != undefined) flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM] = saveFile.data.flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM];
+			if (saveFile.data.flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] != undefined) flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] = saveFile.data.flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED];
 			
 			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
 			if (saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] != undefined) flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
@@ -666,6 +674,12 @@ public function loadPermObject():void {
 			if (saveFile.data.flags[kFLAGS.USE_12_HOURS] != undefined) flags[kFLAGS.USE_12_HOURS] = saveFile.data.flags[kFLAGS.USE_12_HOURS];
 			if (saveFile.data.flags[kFLAGS.AUTO_LEVEL] != undefined) flags[kFLAGS.AUTO_LEVEL] = saveFile.data.flags[kFLAGS.AUTO_LEVEL];
 			if (saveFile.data.flags[kFLAGS.USE_METRICS] != undefined) flags[kFLAGS.USE_METRICS] = saveFile.data.flags[kFLAGS.USE_METRICS];
+			if (saveFile.data.flags[kFLAGS.DISABLE_QUICKLOAD_CONFIRM] != undefined) flags[kFLAGS.DISABLE_QUICKLOAD_CONFIRM] = saveFile.data.flags[kFLAGS.DISABLE_QUICKLOAD_CONFIRM];
+			if (saveFile.data.flags[kFLAGS.DISABLE_QUICKSAVE_CONFIRM] != undefined) flags[kFLAGS.DISABLE_QUICKSAVE_CONFIRM] = saveFile.data.flags[kFLAGS.DISABLE_QUICKSAVE_CONFIRM];
+		}
+		//Kaizo
+		if (flags[kFLAGS.KAIZO_MODE] > 0 && flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] == 0) {
+			flags[kFLAGS.BACKGROUND_STYLE] = 9;
 		}
 		//achievements, will check if achievement exists.
 		if (saveFile.data.achievements) {
@@ -674,6 +688,22 @@ public function loadPermObject():void {
 				if (saveFile.data.achievements[i] != undefined)
 					achievements[i] = saveFile.data.achievements[i];
 			}
+		}
+
+		if (saveFile.data.permObjVersionID != undefined) {
+			getGame().permObjVersionID = saveFile.data.permObjVersionID;
+			trace("Found internal permObjVersionID:", getGame().permObjVersionID);
+		}
+
+		if (getGame().permObjVersionID < 1039900) {
+			// apply fix for issue #337 (Wrong IDs in kACHIEVEMENTS conflicting with other achievements)
+			achievements[kACHIEVEMENTS.ZONE_EXPLORER] = 0;
+			achievements[kACHIEVEMENTS.ZONE_SIGHTSEER] = 0;
+			achievements[kACHIEVEMENTS.GENERAL_PORTAL_DEFENDER] = 0;
+			achievements[kACHIEVEMENTS.GENERAL_BAD_ENDER] = 0;
+			getGame().permObjVersionID = 1039900;
+			savePermObject(false);
+			trace("PermObj internal versionID updated:", getGame().permObjVersionID);
 		}
 	}
 }
@@ -831,7 +861,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.furColor = player.furColor;
 		saveFile.data.hairColor = player.hairColor;
 		saveFile.data.hairType = player.hairType;
-		saveFile.data.gills = player.gills;
+		saveFile.data.gillType = player.gillType;
 		saveFile.data.armType = player.armType;
 		saveFile.data.hairLength = player.hairLength;
 		saveFile.data.beardLength = player.beardLength;
@@ -1028,13 +1058,8 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.ass.analWetness = player.ass.analWetness;
 		saveFile.data.ass.analLooseness = player.ass.analLooseness;
 		saveFile.data.ass.fullness = player.ass.fullness;
-		//EXPLORED
-		saveFile.data.exploredLake = player.exploredLake;
-		saveFile.data.exploredMountain = player.exploredMountain;
-		saveFile.data.exploredForest = player.exploredForest;
-		saveFile.data.exploredDesert = player.exploredDesert;
-		saveFile.data.explored = player.explored;
-		saveFile.data.gameState = gameStateGet();
+
+		saveFile.data.gameState = gameStateGet(); // Saving game state?
 		
 		//Time and Items
 		saveFile.data.minutes = model.time.minutes;
@@ -1367,7 +1392,12 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 			if (saveFile.data.flags[i] != undefined)
 				flags[i] = saveFile.data.flags[i];
 		}
-		
+
+		if (saveFile.data.versionID != undefined) {
+			game.versionID = saveFile.data.versionID;
+			trace("Found internal versionID:", game.versionID);
+		}
+
 		//PIERCINGS
 		
 		//trace("LOADING PIERCINGS");
@@ -1625,10 +1655,12 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 			player.hairType = 0;
 		else
 			player.hairType = saveFile.data.hairType;
-		if (saveFile.data.gills == undefined)
-			player.gills = false;
+		if (saveFile.data.gillType != undefined)
+			player.gillType = saveFile.data.gillType;
+		else if (saveFile.data.gills == undefined)
+			player.gillType = GILLS_NONE;
 		else
-			player.gills = saveFile.data.gills;
+			player.gillType = saveFile.data.gills ? GILLS_ANEMONE : GILLS_NONE;
 		if (saveFile.data.armType == undefined)
 			player.armType = ARM_TYPE_HUMAN;
 		else
@@ -2117,13 +2149,7 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		player.ass.analWetness = saveFile.data.ass.analWetness;
 		player.ass.fullness = saveFile.data.ass.fullness;
 		
-		//Shit
-		gameStateSet(saveFile.data.gameState);
-		player.exploredLake = saveFile.data.exploredLake;
-		player.exploredMountain = saveFile.data.exploredMountain;
-		player.exploredForest = saveFile.data.exploredForest;
-		player.exploredDesert = saveFile.data.exploredDesert;
-		player.explored = saveFile.data.explored;
+		gameStateSet(saveFile.data.gameState);  // Loading game state
 		
 		//Days
 		//Time and Items
@@ -2135,7 +2161,13 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		else
 			player.autoSave = saveFile.data.autoSave;
 		
-		//PLOTZ
+		// Fix possible old save for Plot & Exploration
+		flags[kFLAGS.TIMES_EXPLORED_LAKE]     = (flags[kFLAGS.TIMES_EXPLORED_LAKE] || saveFile.data.exploredLake);
+		flags[kFLAGS.TIMES_EXPLORED_MOUNTAIN] = (flags[kFLAGS.TIMES_EXPLORED_MOUNTAIN] || saveFile.data.exploredMountain);
+		flags[kFLAGS.TIMES_EXPLORED_FOREST]   = (flags[kFLAGS.TIMES_EXPLORED_FOREST] || saveFile.data.exploredForest);
+		flags[kFLAGS.TIMES_EXPLORED_DESERT]   = (flags[kFLAGS.TIMES_EXPLORED_DESERT] || saveFile.data.exploredDesert);
+		flags[kFLAGS.TIMES_EXPLORED]          = (flags[kFLAGS.TIMES_EXPLORED] || saveFile.data.exploredDesert);
+ 
 		flags[kFLAGS.JOJO_STATUS]        = (flags[kFLAGS.JOJO_STATUS] || saveFile.data.monk);
 		flags[kFLAGS.SANDWITCH_SERVICED] = (flags[kFLAGS.SANDWITCH_SERVICED] || saveFile.data.sand);
 		flags[kFLAGS.GIACOMO_MET]        = (flags[kFLAGS.GIACOMO_MET] || saveFile.data.giacomo);
@@ -2492,6 +2524,13 @@ public function unFuckSave():void
 			if (player.cocks[i].cockLength > 499.9) player.cocks[i].cockLength = 499.9;
 			if (player.cocks[i].cockThickness > 99.9) player.cocks[i].cockThickness = 99.9;
 		}
+	}
+	//Set to Kaizo if doing kaizo unless locked
+	if (flags[kFLAGS.KAIZO_MODE] > 0) {
+		if (flags[kFLAGS.KAIZO_BACKGROUND_UNLOCKED] == 0) {
+			flags[kFLAGS.BACKGROUND_STYLE] = 9;
+		}
+		getGame().inRoomedDungeon = true;
 	}
 	//Unstick shift key flag
 	flags[kFLAGS.SHIFT_KEY_DOWN] = 0;

@@ -357,8 +357,9 @@ package classes
 		//ArmType
 		public var armType:Number = ARM_TYPE_HUMAN;
 
-		//Gills
-		public var gills:Boolean = false;
+		//GillType
+		public var gillType:int = GILLS_NONE;
+		public function hasGills():Boolean { return gillType != GILLS_NONE; }
 
 		//Sexual Stuff		
 		//MALE STUFF
@@ -1983,7 +1984,12 @@ package classes
 			return _wingType == 2 || _wingType == 7 || _wingType == 9 || _wingType == 11 || _wingType == 12;
 
 		}
-		
+
+		public function canUseStare():Boolean
+		{
+			return eyeType == EYES_BASILISK;
+		}
+
 		//check for vagoo
 		public function hasVagina():Boolean
 		{

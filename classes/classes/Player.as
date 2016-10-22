@@ -76,12 +76,6 @@ use namespace kGAMECLASS;
 		public var tempTou:Number = 0;
 		public var tempSpe:Number = 0;
 		public var tempInt:Number = 0;
-		//Number of times explored for new areas
-		public var explored:Number = 0;
-		public var exploredForest:Number = 0;
-		public var exploredDesert:Number = 0;
-		public var exploredMountain:Number = 0;
-		public var exploredLake:Number = 0;
 
 		//Player pregnancy variables and functions
 		override public function pregnancyUpdate():Boolean {
@@ -595,11 +589,8 @@ use namespace kGAMECLASS;
 			var returnDamage:int = (damage>0 && damage<1)?1:damage;
 			if (damage>0){
 				//game.HPChange(-damage, display);
-				HP -= damage
-				if (display) {
-					if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>", false)
-					else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>", false)
-				}
+				HP -= damage;
+				if (display) game.output.text(game.combat.getDamageText(damage));
 				game.mainView.statsView.showStatDown('hp');
 				game.dynStats("lus", 0); //Force display arrow.
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
@@ -769,7 +760,10 @@ use namespace kGAMECLASS;
 			}
 			if (lizardScore() >= 4)
 			{
-				race = "lizan";
+				if (hasDragonWingsAndFire())
+					race = isBasilisk() ? "dracolisk" : "dragonewt";
+				else
+					race = isBasilisk() ? "basilisk"  : "lizan";
 				if (isTaur())
 					race += "-taur";
 				if (lizardScore() >= 9)
@@ -1284,7 +1278,9 @@ use namespace kGAMECLASS;
 				lizardCounter++;
 			if (hasScales())
 				lizardCounter++;
-			if (hasReptileEyes() && eyeType != EYES_DRAGON) // Maybe I'll write a different function for that later. e. g. hasLizardEyes() (Stadler76)
+			if (eyeType == EYES_LIZARD)
+				lizardCounter++;
+			if (lizardCounter >= 4 && eyeType == EYES_BASILISK)
 				lizardCounter++;
 			return lizardCounter;
 		}
@@ -2448,7 +2444,7 @@ use namespace kGAMECLASS;
 				if (maxSpe < 50) maxSpe = 50;
 			}
 			//Perks ahoy
-			if (findPerk(PerkLib.BasiliskResistance) >= 0)
+			if (findPerk(PerkLib.BasiliskResistance) >= 0 && !canUseStare())
 			{
 				maxSpe -= 5;
 			}
@@ -2477,6 +2473,11 @@ use namespace kGAMECLASS;
 			}
 			if (lizardScore() >= 4) {
 				maxInt += 10;
+				if (isBasilisk()) {
+					// Needs more balancing, especially other races, since dracolisks are quite OP right now!
+					maxTou += 5;
+					maxInt += 5;
+				}
 			}
 			if (dragonScore() >= 4) {
 				maxStr += 5;

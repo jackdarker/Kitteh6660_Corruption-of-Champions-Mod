@@ -78,6 +78,27 @@
 			//
 			// HAIR WORDS
 			//
+			switch (i_creature.hairType) {
+				case HAIR_BASILISK_SPINES:
+					options = [
+						"rubbery spines",
+						"spiny crown",
+						"basilisk spines",
+						"reptilian spines",
+					];
+					return description + randomChoice(options);
+				case HAIR_BASILISK_PLUME:
+					options = [
+						"feathered hair",
+						"fluffy plume",
+						"basilisk plume",
+						"shock of feathers",
+					];
+					return description + randomChoice(options);
+			}
+			// TODO: Fix the spaghetti-code below to use a switch-case-return and it'll be
+			// case HAIR_GOO: return description + "goo-mane";
+			// and so on. (Stadler76)
 			//If furry and longish hair sometimes call it a mane (50%)
 			if (i_creature.skinType == 1 && i_creature.hairLength > 3 && rand(2) == 0) {
 				if (i_creature.hairType == HAIR_FEATHER) description += "feather-";
@@ -2002,6 +2023,11 @@
 			return DEFAULT_WING_NAMES[i_creature.wingType] + " wings";
 		}
 
+		public static function eyesDescript(i_creature:Creature):String
+		{
+			return DEFAULT_EYES_NAMES[i_creature.eyeType] + " eyes";
+		}
+
 /* All of these functions have been replaced with direct calls to the appropriate form of cockNoun().
 		private static function humanDescript(cockNum:Number):String
 		{
@@ -2201,7 +2227,9 @@
 					[HAIR_GHOST, "transparent"],
 					[HAIR_GOO, "goopy"],
 					[HAIR_ANEMONE, "tentacle"],
-					[HAIR_QUILL, "quill"]
+					[HAIR_QUILL, "quill"],
+					[HAIR_BASILISK_SPINES, "spiny basilisk"],
+					[HAIR_BASILISK_PLUME, "feathery plume"],
 				]
 		);
 		public static const DEFAULT_BEARD_NAMES:Object = createMapFromPairs(
@@ -2256,6 +2284,7 @@
 					[EYES_BLACK_EYES_SAND_TRAP, "sandtrap black"],
 					[EYES_LIZARD, "lizard"],
 					[EYES_DRAGON, "dragon"],
+					[EYES_BASILISK, "basilisk"],
 				]
 		);
 		public static const DEFAULT_EARS_NAMES:Object = createMapFromPairs(

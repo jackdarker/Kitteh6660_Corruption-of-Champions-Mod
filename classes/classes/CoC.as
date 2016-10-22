@@ -121,21 +121,9 @@ the text from being too boring.
 	{
 
 		// Include the functions. ALL THE FUNCTIONS
-//No longer needed. Added into CharCreation.as:		include "../../includes/customCharCreation.as";
-		
-//No longer needed:		include "../../includes/descriptors.as";
-//No longer needed. Moved to PlayerAppearance.as:		include "../../includes/appearance.as";
-
-//No longer needed:		include "../../includes/InitialiseUI.as";
 		include "../../includes/input.as";
-		include "../../includes/OnLoadVariables.as";
-		include "../../includes/startUp.as";
-		
-//No longer needed. Split up into 3 files.		include "../../includes/combat.as";
 		include "../../includes/debug.as";
-//No longer needed. This file has been chopped up and spread throughout the codebase:		include "../../includes/doEvent.as";
 		include "../../includes/eventParser.as";
-//Merged into debug.as:		include "../../includes/eventTest.as";
 		include "../../includes/engineCore.as";
 
 		// Lots of constants
@@ -171,8 +159,9 @@ the text from being too boring.
 		public var playerAppearance:PlayerAppearance = new PlayerAppearance();
 		public var playerInfo:PlayerInfo = new PlayerInfo();
 		public var saves:Saves = new Saves(gameStateDirectGet, gameStateDirectSet);
+		public var lightsOut:LightsOut = new LightsOut();
 		// Items/
-		public var mutations:Mutations = new Mutations();
+		public var mutations:Mutations = Mutations.init();
 		public var consumables:ConsumableLib = new ConsumableLib();
 		public var useables:UseableLib;
 		public var weapons:WeaponLib = new WeaponLib();
@@ -184,7 +173,7 @@ the text from being too boring.
 		// Scenes/
 		public var camp:Camp = new Camp(campInitialize);
 		public var dreams:Dreams = new Dreams();
-		public var exploration:Exploration = new Exploration();
+		public var dungeons:DungeonCore = new DungeonCore();
 		public var followerInteractions:FollowerInteractions = new FollowerInteractions();
 		public var inventory:Inventory = new Inventory(saves);
 		public var masturbation:Masturbation = new Masturbation();
@@ -200,6 +189,8 @@ the text from being too boring.
 		public var plains:Plains = new Plains();
 		public var swamp:Swamp = new Swamp();
 		public var volcanicCrag:VolcanicCrag = new VolcanicCrag();
+		
+		public var exploration:Exploration = new Exploration(); //Goes last in order to get it working.
 		// Scenes/Combat/
 		public var combat:Combat = new Combat();
 		// Scenes/Dungeons
@@ -214,7 +205,7 @@ the text from being too boring.
 		public var goblinAssassinScene:GoblinAssassinScene = new GoblinAssassinScene();
 		public var goblinWarriorScene:GoblinWarriorScene = new GoblinWarriorScene();
 		public var goblinShamanScene:GoblinShamanScene = new GoblinShamanScene();
-		public var goblinElderScene:GoblinElderScene = new GoblinElderScene();
+		public var goblinElderScene:PriscillaScene = new PriscillaScene();
 		public var impScene:ImpScene = new ImpScene();
 		public var mimicScene:MimicScene = new MimicScene();
 		public var succubusScene:SuccubusScene = new SuccubusScene();
@@ -262,7 +253,6 @@ the text from being too boring.
 		public var farm:Farm = new Farm();
 		public var owca:Owca = new Owca();
 		public var telAdre:TelAdre = new TelAdre();
-		public var dungeons:DungeonCore = new DungeonCore();
 		public var ingnam:Ingnam = new Ingnam();
 		public var prison:Prison = new Prison();
 		// Scenes/Seasonal/
@@ -274,8 +264,9 @@ the text from being too boring.
 		// Scenes/Quests/
 		public var urtaQuest:UrtaQuest = new UrtaQuest();
 		
+		public var mainMenu:MainMenu = new MainMenu();
+		public var gameSettings:GameSettings = new GameSettings();
 		public var debugMenu:DebugMenu = new DebugMenu();
-		
 		public var crafting:Crafting = new Crafting();
 		
 		// Force updates in Pepper Flash ahuehue
@@ -283,7 +274,12 @@ the text from being too boring.
 		
 		public var mainViewManager:MainViewManager = new MainViewManager();
 		//Scenes in includes folder GONE! Huzzah!
-		
+
+		public var bindings:Bindings = new Bindings();
+		public var output:Output = Output.init();
+		public var measurements:Measurements = Measurements.init();
+		public function get currentText():String { return output.currentText; }
+		public function set currentText(text:String):void { output.currentText = text; }
 		/****
 			This is used purely for bodges while we get things cleaned up.
 			Hopefully, anything you stick to this object can be removed eventually.
@@ -304,6 +300,8 @@ the text from being too boring.
 		public var debug:Boolean;
 		public var ver:String;
 		public var version:String;
+		public var versionID:uint = 0;
+		public var permObjVersionID:uint = 0;
 		public var mobile:Boolean;
 		public var images:ImageManager;
 		public var player:Player;
@@ -311,9 +309,9 @@ the text from being too boring.
 		public var monster:Monster;
 		public var flags:DefaultDict;
 		public var achievements:DefaultDict;
-		private var gameState:int;
+		private var _gameState:int;
+		public function get gameState():int { return _gameState; }
 		public var time :TimeModel;
-		public var currentText:String;
 
 		public var temp:int;
 		public var args:Array;
@@ -324,19 +322,32 @@ the text from being too boring.
 		public var kFLAGS_REF:*;
 		public var kACHIEVEMENTS_REF:*;
 		
-		public function get inCombat():Boolean { return gameState == 1; }
+		public function get inCombat():Boolean { return _gameState == 1; }
+		public function set inCombat(value:Boolean):void { _gameState = (value ? 1 : 0); }
 		
-		public function set inCombat(value:Boolean):void { gameState = (value ? 1 : 0); }
+		public function gameStateDirectGet():int { return _gameState; }
+		public function gameStateDirectSet(value:int):void { _gameState = value; }
 		
-		private function gameStateDirectGet():int { return gameState; }
-		
-		private function gameStateDirectSet(value:int):void { gameState = value; }
-		
-		public function rand(max:int):int
-		{
-			return Utils.rand(max);
-		}
+		public function rand(max:int):int { return Utils.rand(max); }
 
+		//System time
+		public var date:Date = new Date();
+		
+		//Mod save version.
+		public var modSaveVersion:Number = 13;
+		public var levelCap:Number = 120;
+		
+		//dungeoneering variables (If it ain't broke, don't fix it)
+		public var inDungeon:Boolean = false;
+		public var dungeonLoc:int = 0;
+
+		// To save shitting up a lot of code...
+		public var inRoomedDungeon:Boolean = false;
+		public var inRoomedDungeonResume:Function = null;
+
+		public var timeQ:Number = 0;
+		public var campQ:Boolean = false;
+		
 		public function CoC()
 		{
 			// Cheatmode.
@@ -368,8 +379,8 @@ the text from being too boring.
 			
 			// ******************************************************************************************
 
-			var mainView :MainView = this.mainView;
-			var model :GameModel = this.model;
+			var mainView:MainView = this.mainView;
+			var model:GameModel = this.model;
 			
 
 			/**
@@ -380,15 +391,9 @@ the text from being too boring.
 			 * System Variables
 			 * Debug, Version, etc
 			 */
-			//{ region SystemVariables
-
-			//DEBUG, used all over the place
-			debug = false;
-			//model.debug = debug; // TODO: Set on model?
-
-			//Version NUMBER
-			ver = "1.0.2_mod_1.4_dev";
-			version = ver + " (<b>Anzu's Palace Test</b>)";
+			debug = false; //DEBUG, used all over the place
+			ver = "1.0.2_mod_1.4_dev"; //Version NUMBER
+			version = ver + " (<b>I give up</b>)"; //Version TEXT
 
 			//Indicates if building for mobile?
 			mobile = false;
@@ -397,7 +402,7 @@ the text from being too boring.
 			this.images = new ImageManager(stage);
 			this.inputManager = new InputManager(stage, false);
 			include "../../includes/ControlBindings.as";
-
+			
 			//} endregion
 
 			/**
@@ -426,15 +431,11 @@ the text from being too boring.
 			//{ region StateVariables
 
 			//User all over the place whenever items come up
-//No longer used:			itemSwapping = false;
 
 			//The extreme flag state array. This needs to go. Holds information about everything, whether it be certain attacks for NPCs 
 			//or state information to do with the game. 
 			flags = new DefaultDict();
-			//model.flags = flags;
-			
 			achievements = new DefaultDict();
-			//model.achievements = achievements;
 
 			///Used everywhere to establish what the current game state is
 			// Key system variables
@@ -442,7 +443,7 @@ the text from being too boring.
 			//1 = in combat
 			//2 = in combat in grapple
 			//3 = at start or game over screen
-			gameState = 0;
+			_gameState = 0;
 
 			/**
 			 * Display Variables
@@ -458,38 +459,16 @@ the text from being too boring.
 			currentText = "";
 			//}endregion 
 
-			/**
-			 * Item variables
-			 * Holds all the information about items in your inventory and stashes away
-			 */
-			//{region ItemVariables
-
-			/**
-			 * Plot Variables
-			 * Booleans and numbers about whether you've found certain places
-			 */
-			//{ region PlotVariables
-
-			//Plot variables
-
-//			itemStorage = [];
-//			gearStorage = [];
-			//}endregion
-
-
 			// These are toggled between by the [home] key.
 			mainView.textBGWhite.visible = false;
 			mainView.textBGTan.visible = false;
 
 			// *************************************************************************************
-
-			// import flash.events.MouseEvent;
-
-			//const DOUBLE_ATTACK_STYLE:int = 867;
-			//const SPELLS_CAST:int = 868;
-
-			//Fenoxo loves his temps
-			temp = 0;
+			//Workaround.
+			exploration.configureRooms();
+			d3.configureRooms();
+			
+			temp = 0; //Fenoxo loves his temps
 
 			//Used to set what each action buttons displays and does.
 			args = [];
@@ -516,10 +495,7 @@ the text from being too boring.
 
 			mainView.aCb.dataProvider = new DataProvider([{label:"TEMP",perk:new PerkClass(PerkLib.Acclimation)}]);
 			mainView.aCb.addEventListener(Event.CHANGE, playerInfo.changeHandler); 
-			 
-			//mainView._getButtonToolTipText = getButtonToolTipText;
-
-
+			
 			//Register the classes we need to be able to serialize and reconstitute so
 			// they'll get reconstituted into the correct class when deserialized
 			registerClassAlias("AssClass", AssClass);
@@ -546,7 +522,7 @@ the text from being too boring.
 
 		public function run():void
 		{
-			mainMenu();
+			mainMenu.mainMenu();
 			this.stop();
 
 			_updateHack.name = "wtf";

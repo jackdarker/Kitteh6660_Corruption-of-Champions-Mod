@@ -41,6 +41,16 @@
 			kGAMECLASS.cheatTime(time, needNext);
 		}
 
+		protected function get output():Output
+		{
+			return kGAMECLASS.output;
+		}
+
+		protected function get measurements():Measurements
+		{
+			return kGAMECLASS.measurements;
+		}
+
 		protected function get timeQ():Number
 		{
 			return kGAMECLASS.timeQ;
@@ -66,7 +76,12 @@
 		{
 			return kGAMECLASS.combat;
 		}
-		
+
+		protected function get mutations():Mutations
+		{
+			return kGAMECLASS.mutations;
+		}
+
 		public function goNext(time:Number,defNext:Boolean):Boolean
 		{
 			return kGAMECLASS.goNext(time,defNext);
@@ -183,10 +198,6 @@
 			return kGAMECLASS.doSFWloss();
 		}
 		
-		protected function showCredits():void {
-			kGAMECLASS.creditsScreen();
-		}
-		
 		/**
 		 * Start a new combat.
 		 * @param	monster_ The new monster to be initialized.
@@ -222,10 +233,6 @@
 		{
 			kGAMECLASS.currentText = "";
 			kGAMECLASS.mainView.clearOutputText();
-		}
-		
-		protected function flushOutputTextToGUI():void {
-			kGAMECLASS.flushOutputTextToGUI();
 		}
 
 		protected function doNext(eventNo:Function):void //Now typesafe

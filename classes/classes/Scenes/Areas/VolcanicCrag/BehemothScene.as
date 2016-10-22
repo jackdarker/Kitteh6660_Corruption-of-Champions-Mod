@@ -31,11 +31,15 @@ package classes.Scenes.Areas.VolcanicCrag
 		public function behemothIntro():void {
 			clearOutput();
 			if (flags[kFLAGS.MET_BEHEMOTH] <= 0) {
-				outputText("As you're exploring the infernal landscape, you are drawn to the sight of a creature you've never seen before: a muscular male bipedal purple-skinned horned creature with spikes on his back. You guess he is sentient as he's wearing a loincloth. Underneath his loincloth is a large cock and a duo of balls; you estimate his cock to be 18 inches long and 2½ inches thick but it's hard for sure as his cock is flaccid. You estimate his balls to be three inches across. You approach the creature and he says to your surprise, \"<i>Hello there. Not many even dared to approach me. Either it's me or it's the landscape.</i>\"");
-				outputText("\n\nYou introduce yourself and the creature says, \"<i>" + player.short + ", eh? I'm the mighty Behemoth. It's good to see someone like you; I was so lonely. So what do you want?</i>\" He smiles.");
+				outputText("As you stop to take a breath, the barren landscape relentlessly hot and devoid of decent shelter, you notice you're not alone. A massive horned creature is on patrol, and you stiffen as his pointy ears prickle, listening.\n\n");
+				outputText("Mareth has made you paranoid, but you've survived this far.\n\n");
+				outputText("\"<em>Howdy, stranger!</em>\" the monster calls, and you get up to greet him.  \"<em>Don't see too many people around here,</em>\" he admits, and you can't exactly say you're surprised.  \"<em>Landscape like this, ain't that many people who want to be friendly, eh?</em>\"\n\n");
+				outputText("Somehow you suspect that's not precisely it, but he likely knows that already.  You try not to stare at his hulking muscles or the spines along his back, both only barely obscured by his purple fur, and you introduce yourself, wanting to match his friendliness.\n\n");
+				outputText("As expected, he's delighted, and he claps you on the back like you're already best friends. \"<em>" + player.short + ", eh?  They call me the Behemoth; least, they did last time I had people to talk to!  What brings you out here?</em>\"\n\n");
+				outputText("Whatever the answer, it probably isn't the giant cock pressing up against his red loincloth.  Right?");
 			}
 			else {
-				outputText("As you're exploring the infernal landscape, you spot the familiar purple-skinned creature. The behemoth approaches you with a smile and says, \"<i>Hello again, " + player.short + ". So feeling up for fighting? Or want to have sex?</i>\"");
+				outputText("As you're exploring the swelting landscape, you spot the familiar face going about his day.  \"<i>Hello again, " + player.short + ",</i>\" he says as he strides up, his deep chest leaving his voice a pleasant rumble.  \"<em>Looking for a spar?  Or ... something else?</em>\" His mouth twitches into what might be a smile, and he flexes his arm, emphasizing both his claws and loincloth.  Looks like he's looking for a good time, no matter what it is.");
 			}
 			flags[kFLAGS.MET_BEHEMOTH]++;
 			behemothMenu();
@@ -51,7 +55,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			addButton(1, "Behemoth", talkAboutBehemoth, null, null, null, "Talk to the behemoth about himself.");
 			if (flags[kFLAGS.BEHEMOTH_TALK_LEVEL] >= 1) addButton(2, "His Past", talkAboutSadStory, null, null, null, "Talk to the behemoth about his past.");
 			else addButtonDisabled(2, "His Past", "Talk to the behemoth at least once to unlock this.");
-			if (timesSexed() >= 2) addButton(3, "His Cum", talkAboutHisCum, null, null, null, "Talk to the behemoth about the special properties of his cum and how he managed to cum that much despite his ball size."); 
+			if (timesSexed() >= 2) addButton(3, "His Cum", talkAboutHisCum, null, null, null, "Talk to the behemoth about the special properties of his cum."); 
 			else addButtonDisabled(3, "His Cum", "Have sex with the behemoth at least twice to unlock this.");
 			if (flags[kFLAGS.BEHEMOTH_CHILDREN] > 0) addButton(4, "Children", talkAboutHisChildren, null, null, null, "Talk to the behemoth about his son" + (flags[kFLAGS.BEHEMOTH_CHILDREN] == 1 ? "" : "s") + ".");
 			else addButtonDisabled(4, "???", "Have at least 1 child with him to unlock this.");
@@ -60,32 +64,31 @@ package classes.Scenes.Areas.VolcanicCrag
 		
 		private function talkAboutYourself():void {
 			clearOutput();
-			outputText("You tell the behemoth about your origins, where you originally lived in, how you've came to be the champion of Ingnam and sent through the portal. ");
-			outputText("\n\n\"<i>Ingnam? That sounds like a nice place. I used to live in another world too and like you, I've went to this world through a portal.</i>\"");
+			outputText("You tell the behemoth about your origins and hometown, and the yearly tradition that led you to be sent through the portal as the champion of Ingnam.  He listens attentively, something complicated in his face, and you wonder how long it's been since he's heard someone speak this much.");
+			outputText("\n\n\"<i>Ingnam sounds nice,</i>\" he says eventually, a bit wistful.  \"<i>I came from a portal from another world, too.</i>\"  He doesn't elaborate, however, leaving you to tell him about your travels.");
 			if (flags[kFLAGS.FACTORY_SHUTDOWN] > 0) {
-				outputText("\n\nYou tell the behemoth about how you've managed to shut down the factory. ");
+				outputText("\n\nHe's intrigued as you tell him about Marae's quest for you to shut down the factory, too. ");
 				if (flags[kFLAGS.FACTORY_SHUTDOWN] == 1) {
-					outputText("\"<i>Wow, you're quite the hero! I'm glad you've managed to save Marae,</i>\" he smiles.");
+					outputText("\"<i>Wow, you're quite the hero! Well done: we'll need her help if we're to get out of this.</i>\" he says, his tail swishing with pride.");
 				}
 				else if (flags[kFLAGS.FACTORY_SHUTDOWN] == 2) {
-					outputText("\"<i>Don't you think you should have shut down the factory properly? You've only managed to worsen the corruption,</i>\" he says with a bit of worried look.");
+					outputText("\"<i>Sounds like you just made it worse,</i>\" he says frankly, his brow creasing in worry. \"<i>Do you think it'll be okay?</i>\"");
 				}
 			}
 			if (flags[kFLAGS.DEFEATED_ZETAZ] > 0) {
-				outputText("\n\nYou tell the behemoth about how you've managed to find and defeat Zetaz, the original imp who tried to rape you in the first place after you've entered the portal. ");
-				outputText("\n\nThe behemoth remarks and says, \"<i>That's great! I had a similar story. I had a rival who bullied and mocked me from my childhood. Years later, I've finally got my revenge on him and literally ripped him apart with my bare hands.</i>\" Your jaws drop when he mentions being able to rip someone apart with his strength. He says, \"<i>Yes, seriously. I actully did it. After that, I've had his meat." + (silly() ? " Besides, I wouldn't want to traumatize the player reading whatever we're saying or make the player squick.</i>\"": "") + " "); //Fourth wall breaker
-				if (silly()) outputText("Did he just break the fourth wall?");
-			}
-			if (flags[kFLAGS.LETHICE_DEFEATED] > 0) {
-				outputText("\n\nNext, You tell the behemoth about how you've managed to get past the obstacles in Lethice's stronghold and eventually overthrow Lethice, the Queen of the Demons. ");
-				outputText("\n\nThe behemoth smiles and says, \"<i>You have fulfilled your role as a Champion! I'm happy for you!</i>\" ");
-				if (player.armor == armors.LTHCARM) {
-					outputText("The behemoth looks at your strange lethicite armor. \"<i>Wow, Lethice actually managed to harvest enough lethicite to make an armor? Clever use of lethicite. I notice it doesn't cover your groin,</i>\" the Behemoth says. ");
-					if (player.lowerGarment.name == "nothing") outputText("He blushes when he looks at your " + (player.hasCock() ? "[cock] hanging freely from the opening" : "groin") + ".");
-				}
+				outputText("\n\nYou tell the behemoth about how you've managed to take revenge upon Zetaz, the imp who raped you when you first came through the portal. ");
+				outputText("\n\n\"<i>Not bad!</i>\" he says, clapping you on the back. \"<i>I knew this guy once -- wouldn't leave me alone no matter what I did, and I was a lot younger then, you know?  Years later, I got to find him again and tear him apart with these,</i>\" he boasts, wiggling his claws, and you stare at him in disbelief.  \"<i>Yep. Don't think anybody could even find all the pieces afterward, though don't ask me what I did with them.</i>\"");
 			}
 			if (flags[kFLAGS.CORRUPTED_MARAE_KILLED] > 0) {
-				outputText("\n\nNext, you tell the behemoth on how you've slain Marae, the corrupted goddess of Mareth. The behemoth drops his jaws at what you've done. \"<i>You actually KILLED a goddess? Wow, that's quite an amazing feat for a mortal to defeat a deity. You're even stronger than I am! I normally fear the wrath of the gods but you're brave,</i>\" he chuckles.");
+				outputText("\n\nNext, you go back to the story of the factory and tell the behemoth about the clean-up: slaying the corrupted goddess Marae.  He thinks you're joking at first, but you assure him it's true and he whistles. \"<i>You actually KILLED a goddess? Wow, you're even stronger than I am!</i>\" From him, that's quite the admission.");
+			}
+			if (flags[kFLAGS.LETHICE_DEFEATED] > 0) {
+				outputText("\n\nYou do a lot of embellishing as you tell him about taking down the demons in Lethice's stronghold, though the story barely needs it. ");
+				outputText("\n\n\"<i>Holy shit,</i>\" he says, and he offers a hand for a high five. You return it, and both of you beam with pride as you settle back down. \"<i>Guess you did what you came here for,</i>\" he adds, and he's a bit wistful. ");
+				if (player.armor == armors.LTHCARM) {
+					outputText("It doesn't stop him from admiring your lethicite armor, though. \"<i>Wow, Lethice actually managed to harvest enough for that?  Pretty clever, though I notice it doesn't cover your groin.</i>\"");
+					if (player.lowerGarment.name == "nothing") outputText("\n\nHe blushes when he looks " + (player.hasCock() ? "at your [cock] hanging freely " : "") + "through the opening, and you're tempted to tease him.");
+				}
 			}
 			outputText("\n\nAfter chatting for a good while, you and the behemoth part ways and you return to your camp.");
 			doNext(camp.returnToCampUseOneHour);
@@ -93,41 +96,43 @@ package classes.Scenes.Areas.VolcanicCrag
 		private function talkAboutBehemoth():void {
 			clearOutput();
 			outputText("You ask the behemoth about himself. What is he, exactly?");
-			outputText("\n\n\"<i>I don't have an actual name but everybody calls me Behemoth. We were a proud race known for incredible strength, feats, and contests. Here, let me show you something,</i>\" the behemoth says and shows you the codex entry on behemoths.");
+			outputText("\n\n\"<i>Nobody calls me by my old name; just call me the Behemoth and that's good enough, eh?  We're a proud race known for our strength, and we love to prove it, too, but there ain't too much of us around anymore. Here, let me show you something,</i>\" the behemoth says, and he pulls out some books.");
 			if (flags[kFLAGS.CODEX_ENTRY_BEHEMOTH] <= 0) {
 				flags[kFLAGS.CODEX_ENTRY_BEHEMOTH] = 1;
 				outputText("\n\n<b>New codex entry unlocked: Behemoths!</b>");
 			}
-			outputText("\n\n\"<i>I suggest you read the codex entry; it contains detailed information,</i>\" the behemoth says.");
-			outputText("\n\nYou thank him for the codex entry. \"<i>You're always welcome,</i>\" the behemoth says with a smile. His face begins to shift from a happy to a sad look. \"<i>Something wrong?</i>\" you ask. The behemoth replies, \"<i>Well... I had a rough past. I'd rather not talk about it for now. Why not come back later?</i>\" You nod and wrap your arms around the behemoth, giving him a hug before you say farewell and make your way back to camp.");
+			outputText("\n\n\"<i>Check through those; they ought to answer everything you're looking for,</i>\" he says, and you thank him.");
+			outputText("\n\n\"<i>Thank <b>you,</b></i>\" he corrects, and he laughs as he pushes his hair and mane back.  You try asking him what's wrong, but he shakes his head.  \"<i>I don't want to talk about it right now,</i>\" he admits. \"<i>My past ain't the greatest; let's just worry about the now for now, okay?</i>\"");
+			outputText("You nod, and you wrap your arms around him to give him a hug, before making your farewells and your way back to camp.");
 			if (flags[kFLAGS.BEHEMOTH_TALK_LEVEL] <= 1) flags[kFLAGS.BEHEMOTH_TALK_LEVEL]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
 		private function talkAboutSadStory():void {
 			clearOutput();
-			outputText("You ask the behemoth if he's willing to share his story.");
-			outputText("\n\n\"<i>All right, just come to my tent and we'll talk,</i>\" the behemoth says as he escorts you to his tent and gestures for you to enter.");
-			outputText("\n\nThe behemoth sits on one of the chairs and invites you to take a seat. ");
-			if (player.isBiped() || player.isGoo()) outputText("You walk over to the vacant chair and sit on it so you're facing the behemoth.");
-			else outputText("Due to your irregular lower half, you move the chair aside and adjust your position so you're facing the behemoth.");
+			outputText("You ask the behemoth if he's willing to tell you more about himself.");
+			outputText("\n\n\He takes a deep breath and nods agreement, though he itches his ear like he's shy. \"<i>Make yourself at home and then we'll talk, all right?</i>\" he says, leading the way to his tent.  He holds the flap open for you to enter, and no matter the size of it, it's a little cramped with the two of you in it as he takes a seat and gestures to the other chair.\n\n");
+			if (player.isBiped() || player.isGoo()) outputText("You turn it to face the behemoth and then sit down, intrigued.");
+			else outputText("You move it out of the way and find a comfortable position for you to listen to him on the floor rug.");
 			//Early life
-			outputText("\n\nThe behemoth clears his throat and says, \"<i>I had a great childhood. I get to watch my father participate into something called \"Feats of Strength\". I was just a year old back then but mind you, we reach maturity in two years so I'd guess the equivalent to nine human years. It lasts three days and whoever had the most points get to become the tribe leader. My father emerged victorious in the Feat of Strength and became the leader of the tribe I lived in.</i>\"");
-			outputText("\n\n\"<i>What's next?</i>\" you ask.");
-			outputText("\n\n\"<i>When my second birthday comes, my father told me that I was meant to be sent through the portal. I was like \"WHAT?\" and my father claimed that should the sacrifice fail, my homeworld would be doomed. Of course, I don't believe that but I got sent into the portal anyway and I can't come back. The portal wouldn't let me go back at all. For the first two weeks, I check up on the portal if it opens but to no avail. Luckily, before I got sent, I was given two hundred gems. So I spend some time exploring the realms of this world.</i>\"");
-			outputText("\n\nOkay, so he's an explorer. What sort of something interesting did he find?");
-			outputText("\n\n\"<i>I've met that Oni named Izumi in the high mountains. She claims to be the 'Font of All Strength' and while she's indeed strong, I'm even stronger! The duel lasted for quite some time but I emerged victorious and in the end, I had sex with her. I'm quite relieved to find someone who's pure.</i>\"");
+			outputText("\n\nThe behemoth clears his throat, uncertain how to begin, and you suspect he hasn't shared this too often.  \"<i>I don't have many complaints about my childhood,</i>\" he admits, his claws in his mane as he thinks.  \"<em>When I was a year old -- that's adolescence for us; we're adults around our second birthday -- I saw my father participate in the Feats of Strength.  It's a three-day competition and whoever does the best is declared tribe leader, and of course that was my father.  He was the biggest and strongest of all of us and I was so proud.</i>\"\n\n");
+			outputText("But of course that's not the end of it, and you wait patiently for him to continue.\n\n");
+			outputText("\"<i>It was good for a long while,</i>\" he says, \"<i>but when my second birthday rolled around, my father told me I was the one to be sent through the portal.  I argued with him, of course, but he's the tribe leader: what was I supposed to do?  If you get told you gotta go or your whole world will be doomed, you do it, no matter that I think it's bullshit.  He gave me two hundred gems to support myself with and then tossed me through and that was it: no matter how I tried, the portal wouldn't let me go back and I was stuck here.</i>\"");
+			outputText("\n\nThat story sounds familiar, you comment, and he grins toothily.  He clearly didn't stay at the portal forever, though, and you ask him what he did after he realized he's stuck.\n\n");
+			outputText("\"<i>Took up exploring, naturally,</i>\" he says proudly. \"<i>There's an oni named Izumi in the high mountains, and she claims to be the Font of All Strength.  'course, me being me, I had to test that, and we dueled for ages.  I won eventually, as you could expect, and after we were done fighting, we took up fucking.  Strength like that needs appreciating, you know, especially since she ain't corrupted.  Good clean fun doesn't come around too often, you know?</i>\"");
 			//Tel'Adre
 			if (player.statusEffectv1(StatusEffects.TelAdre) >= 1) {
-				outputText("\n\nYou ask the behemoth if he ever visited Tel'Adre.");
-				outputText("\n\n\"<i>Of course. It's a really nice place and there is that hermaphrodite gray fox named Urta who usually hang out at \"The Wet Bitch\". I have no idea why the bar has such suggestive name. Anyways, I've made a stop at the bakery and tried out the delicious brownies. I've worked out at the gym; it's a pretty great place to hang out!</i>\"");
+				outputText("\n\nThere's a whole city that's still pure, you point out.  Has he ever visited Tel'Adre?");
+				outputText("\n\n\"<i>Of course!  It's pretty great, and that fox Urta who hangs out at the Wet Bitch is hot as hell.  No clue what that name's about, though: the one bar that's not corrupted ought to show it somehow, but there's no accounting for taste, eh?</em>\"  He laughs, but he doesn't really mind.  \"<em>And then there's the bakery -- try the brownies if you haven't; they're great -- and there ain't many places better to hang out than that gym of theirs.  Yeah, you can definitely say I've been there before.</i>\"");
 			}
 			//Behemoth the Imp Slayer!
-			outputText("\n\n\"<i>When I'm taking a stroll on the path to visit various regions, I've seen imps. All of them ran away from me except for one. I let the imp approach me but I could see his face twisting into a grin and he tries to force himself. It's a HUGE mistake for him. I punched him square in the chin and he reels back. But he gets up and tries to force himself on me again so I picked him up and ripped him with my strength. I let out a laugh like this,</i>\" the behemoth laughs like a beast and says, \"<i>I even took his skull to remind the imps to never mess with me.</i>\" The behemoth gets up and grabs the imp skull and shows it to you and says, \"<i>This is real. You can see the horns protruding from this skull.</i>\" You look at the skull; it definitely looks and feels real. The behemoth gets up, puts the imp skull away and sits down.");
-			outputText("\n\n\"<i>Anything else?</i>\" you ask.");
+			outputText("\n\n\"<i>What really gets me, though, is how when I'm walking about, all the imps run away from me except for this one fucker.  I let him come up to me, 'cause I'm a nice guy like that, but he got that sly look on his face and tried to force himself on me and big mistake.  For him, I mean.  I clocked him right in the jaw and he flies back, but he didn't have the sense to cut and run and tried AGAIN.</i>\"\n\n");
+			outputText("Yeah, you've met imps like that, and you nod along.  \"<i>I try to be nice, but that just ticked me off, so I picked him up and tore him to shreds.  Kept the skull, though,</i>\" he adds, picking up an imp skull to show it to you, and that's definitely an imp skull, all right.  \"<i>Scares the shit out of the rest of them when I show it off and laugh.  Wanna see?</i>\"\n\n");
+			outputText("Nah, you'll trust him on that, you assure him, but the behemoth looks disappointed, so you relent.  He stands up and poses with the skull in his hand as he shows off his muscles, then lets out this menacing bestial cackle.  Yep, you can definitely see why the imps don't mess with him anymore.  ... At least not the smarter ones.\n\n");
+			outputText("You ask him if he has anything else he wants to share, and he starts to shake his head, before slicking his hair back and nodding, resolute.\n\n");
 			//Sad story.
-			outputText("\n\n\"<i>This part is tragic. By the time I'm allowed to go back through the portal, I was horrified to find out what happened. My village... destroyed. My tribe... dead. The whole landscape is ravaged. I've spent time searching for survivors but to no avail. Not a trace of life. So I give my family a proper burial and packed up all my stuff before finally moving back to Mareth and locked away the portal,</i>\" the behemoth says, tears leaking from his eyes.");
-			outputText("\n\nThis is quite sad. You wrap your arms around the behemoth and give him an assuring hug. He says, \"<i>Thank you for comforting me. I needed some company anyways.</i>\" You ask him if he has anything left.");
-			outputText("\n\n\"<i>I'm afraid that's pretty much my entire story but I only hope to find someone who's pure and willing to bear children and start a new family,</i>\" the behemoth says. You thank him for telling you the story. \"<i>You're always welcome,</i>\" the behemoth says with a smile. You give him a farewell and walk back to camp.");
+			outputText("\"<i>This ain't a happy story,</i>\" he warns you, but you're interested in hearing anyway and he continues. \"<i>Even though I gave up on heading back home after a few weeks, I still kept checking the portal time and again, you know?  Habit, I guess.  For ages it was locked, but one day ... one day I try and get back through, but there's nothing there.  Nothing living, anyway: just destruction and the burnt-out remains of where my village used to be, and a lot of corpses.  Most of who I can't identify by this time, mind, us growing up pretty quick and it being a while since I was there.  I gave everybody proper burials, and I think I know which one was my old pa, and then I did the only thing I could do: pack up all the stuff I could salvage, move back to Mareth, and lock away the portal.</i>\"\n\n");
+			outputText("You let him finish, and you know he's not the only one this could happen to.  You're a champion, too, after all.\n\nYou move up close to him and then pull him into a hug, his fur and body noticably warmer than your own, and even with the tent being too warm for two people, he needs this.  \"<i>Thanks for listening,</i>\" he says eventually, and you shrug.  Anytime, you assure him, and you ask him if there's anything else he wants to share.\n\n");
+			outputText("\"<i>I'm kinda lonely,</i>\" he admits, and he gives you a considering look before shaking his head and dismissing the thought.  \"<i>You ever meet anybody pure who wants to help me start a whole family of behemoths, you let me know, okay?</i>\"\n\nYou assure him you will, and the both of you make your farewells before you return to your own camp.");
 			if (flags[kFLAGS.BEHEMOTH_TALK_LEVEL] <= 2) flags[kFLAGS.BEHEMOTH_TALK_LEVEL]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -205,37 +210,41 @@ package classes.Scenes.Areas.VolcanicCrag
 			statScreenRefresh();
 			kGAMECLASS.inCombat = false;
 			if (doSFWloss()) {
-				outputText("\n\n\"<i>I win and you know what that means? I'll take some of your gems,</i>\" he says and he takes " + gemsLost + " gems from your pouch, \"<i>I'll take care of you while you're recovering.</i>\" You black out...");
+				outputText("\n\n\"<i>Heh, guess I won,</i>\" he says. \"<i>I'll take care of you until you recover, but in exchange ....</i>\"\n\n He rifles through your pouch, taking " + gemsLost + " gems before picking you up.  You black out ....");
 				HPChange(player.maxHP() / 2, false);
 				player.changeFatigue(-50);
 				return;
 			}
 			if (player.HP <= 0) outputText("You collapse from your injuries.");
 			else outputText("You collapse from your overwhelming desires.");
-			outputText("\n\n\"<i>I win and you know what that means? I'll take some of your gems and I get to fuck your ass. Don't you worry, I'll be gentle,</i>\" he says with a grin. He takes " + gemsLost + " gems from your pouch. \"<i>I will give you some of your gems back should you beat me,</i>\" he says.");
+			outputText("\n\n\"<i>Heh, I won,</i>\" he says, grinning. \"<i>I'll give back some of your money if you beat me next time, but either way, I'm gonna fuck your ass.  I'll be gentle, I promise.</i>\"\n\n He rifles through your pouch, taking " + gemsLost + " gems.");
 			doNext(analCatchBehemoth);
 		}
 		
 		public function giveBirthToBehemoth():void {
 			clearOutput();
-			outputText("The pain in your womb is getting unbearable. You realize it's time for you to give birth to the behemoth! You make your way to the behemoth's tent in the volcanic crag to see the behemoth smiling at you.");
-			outputText("\n\n\"<i>I'll help you. Lay on my bed,</i>\" the behemoth says" + player.clothedOrNaked(" as he assists you in removing your [armor]") + ". You lay on the bed and spread your [legs]. The labour is getting intense but you know the behemoth is already excited.");
-			outputText("\n\n\"<i>Push,</i>\" the behemoth instructs. That's your encouragement as you start pushing, taking deep breath between pushes. Eventually, your ordeal is over as the newborn behemoth finally comes out of your womb. \"<i>You've done great!</i>\" the behemoth says, smilingly.");
+			outputText("These cramps are nearly unbearable, and you hurry off to the volcanic crag to find the father of your unborn child! He spots you almost immediately, jittering with excitement. \"<i>What, already?</i>\" he quips, but you're too preoccupied to find much humor in it and he helps you to his tent, his tail up and swishing like a cat's.\n\n")
+			outputText("He's expanded it in preparation, and he deftly lays out a leather blanket for you on his bed before helping you " + player.clothedOrNaked(" out of your [armor] and ") + "onto the bed. Gods, to get this weight out of you!\n\n")
+			outputText("Labor takes agonisingly long, but he's with you the whole time and you're proud to be helping him bring back his race. He massages your [legs] when they get stiff from having to hold you in the right position, and you're tempted to ask for another dose of his energising cum, no matter that it's what got you into this mess. To hell with it: you ask him to fap onto you, and whether or not it works, it's a beautiful distraction, and soon you're schlicking yourself in the hopes an orgasm will get this baby out of you faster.\n\n");
+			if (player.findPerk(PerkLib.BroodMother) > 0) {
+				outputText("You've had many children during your time in Mareth, and you're still grateful for each father decent enough to stay with you and help.  It's nearly novel to be covered in cum during this because you <i>want</i> to be, not because some imp took advantage of you, and you curl up afterwards against his soft fur, his muscles comforting to push up against.\n\n") }
+			outputText("Eventually, you make one final push larger than the rest and a small furry creature pops out of your womb and cunt, thankfully currently devoid of spines. \"<i>Wow,</i>\" the behemoth says, wiping off your new offspring before setting him to your breasts, his infant claws too soft to hurt as he kneads you. \"<i>I love you,</i>\" he says, still mindblown, and you smile at him as he watches you both in utter amazement. ");
 			player.cuntChange(48, true);
+			player.orgasm();
 			flags[kFLAGS.BEHEMOTH_CHILDREN]++;
 			if (flags[kFLAGS.BEHEMOTH_CHILDREN] == 1) {
-				outputText("\n\n\"<i>Look at that. Our first child. I'm finally happy to finally have a family! You're now a mother,</i>\" the behemoth says. You smile at him and you spend some time breastfeeding your newborn.");
+				outputText("\"<i>I can't believe I finally have a family.  Thank you so much.,</i>\"");
 				flags[kFLAGS.BEHEMOTH_CHILD_1_BIRTH_DAY] = model.time.days;
 			}
 			else if (flags[kFLAGS.BEHEMOTH_CHILDREN] == 2) {
-				outputText("\n\n\"<i>My second child! Now my first son won't be lonely!</i>\" the behemoth says smilingly. ");
+				outputText("\"<i>Two kids! Thank you for making sure my son wouldn't be lonely.</i>\"");
 				flags[kFLAGS.BEHEMOTH_CHILD_2_BIRTH_DAY] = model.time.days;
 			}
 			else if (flags[kFLAGS.BEHEMOTH_CHILDREN] == 3) {
-				outputText("\n\n\"<i>My third child! I think I have enough children, thank you. I love you,</i>\" the behemoth says smilingly as he gives you a kiss.");
+				outputText("\n\n\"<i>Three kids is a good number,</i>\" he says drowsily, and he gives you a kiss as you all rest for a while together.");
 				flags[kFLAGS.BEHEMOTH_CHILD_3_BIRTH_DAY] = model.time.days;
 			}
-			outputText("\n\nYou rest for a while and breastfeed your newborn. Eventually, you know you should return to your camp. \"<i>I'll take good care of him,</i>\" the behemoth says. You give him a goodbye and walk back to your camp.");
+			outputText("\n\nEventually, you know you should return to your camp. \"<i>I'll take good care of him, I promise,</i>\" he says as you make your goodbyes, and you walk back to your camp with a goofy smile on your face.");
 			player.knockUpForce(); //Clear!
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -298,48 +307,55 @@ package classes.Scenes.Areas.VolcanicCrag
 			clearOutput();
 			outputText(images.showImage("behemoth-anal-catch"), false);
 			if (player.HP <= 0 || player.lust >= player.maxLust()) {
-				outputText("You have no choice but to accept the fact that the behemoth is going to penetrate you anally. He looks at you with a grin and says, \"<i>Go on, strip for me. I want to see your wonderful butt, " + player.mf("dude", "chick") + ".</i>\"\n\n");
+				outputText("The behemoth looks you over with a friendly leer as your face heats.  \"<i>Turn around,</i>\" he says, and you scramble to obey, too tired to do otherwise. \"<i>That's a nice ass," + player.mf("dude", "lady") + ", but I'd like to see more of it, yeah?</i>\"\n\n");
 			}
 			else {
-				outputText("You definitely want that " + (silly() ? "dig bick": "big dick") + " in your [ass]. ");
+				outputText("You definitely want that " + (silly() ? "dig bick": "big dick") + " in your [ass] and you tell him such.  \"Not in the tent,\" he says with amusement, and he leads you outside.  \n\n");
 			}
-			outputText("" + player.clothedOrNaked("You strip out of your [armor] until you're naked. You make sure to toss your [armor] into a neat pile. ") + "You present your naked body and more importantly, your [butt] to the behemoth. He shifts his loincloth aside to expose his large pecker and says excitedly, \"<i>Now that's some wonderful butt-cheeks you've got there! I'll go gentle on you and make sure you enjoy the experience.</i>\"");
-			if (player.isBiped()) outputText("\n\nYou get down on all fours");
-			else if (player.isTaur()) outputText("\n\nYou adjust your pose so your [butt] is at the right height");
-			else if (player.isNaga()) outputText("\n\nYou shift your body and tail until your [ass] is accessible");
-			else if (player.isGoo()) outputText("\n\nYou shift your gooey body");
-			outputText(" and prepare for whatever he has in store for you. The behemoth walks to you and caress your [butt] gently. He walks around you and sticks his manhood into your mouth. He smiles and says, \"<i>I need them lubed up. I want you to suck it good!</i>\"");
-			outputText("\n\nYou have no choice; you're going to coat his length in saliva. After all, he needs a good lubricant so you can take his monster cock. You can already taste the precum but the behemoth pulls his cock out of your mouth. \"<i>That'll do. I'm going to start now,</i>\" he says as he gets behind you.");
-			outputText("\n\nYou clench your teeth and ready for whatever's coming. You feel the tip of his cock entering your backdoor. As time passes, more and more of his length slides into your [ass].");
+			outputText("" + player.clothedOrNaked("You strip hurriedly, tossing your [armor] into a quick pile, because with claws and strength like that, you don't know how much care he'd take, then glance to make sure your belongings look safe.  ") + "The hot air's pleasant on your body, and your skin prickles as you present your [butt] to the behemoth, turning your head to watch him.  \"<i>Nice ass,</i>\" he says after a whistle, then twists his loincloth to free his massive prick.  \"<i>I'll be gentle, I promise.</i>\"\n\n");
+			outputText("You swallow in trepidation, but he's been good to you so far, and you ");
+			if (player.isBiped()) outputText("bend down on all fours");
+			else if (player.isTaur()) outputText("rest your front legs down");
+			else if (player.isNaga()) outputText("twist your tail to show off your cloaca");
+			else if (player.isGoo()) outputText("shift your malleable body");
+			outputText(" as you wait for him to do what he wants.  You watch him walk up to you, his feline paws silent on the rocks, and you shiver as his firm hands caress your [butt] gently, his claws only the slightest pressure as your breath hitches.\n\n");
+			outputText("He doesn't do more than that, though.  Not yet.  He simply releases your ass then prowls around in front of you, your [eyes] on his cock the whole time, and you don't dare move though your [skin] prickles.  \"<i>I need some lube,</i>\" he says gently, trawling a claw under your jaw, and you open your mouth obediently as he slides his length in, the warmth so much more present than the heat of the crag.\n\n");
+			outputText("You suck on it, hoping your saliva will be enough to take his monster cock, but you're only just getting started when he pulls out, precum beading on the humanoid tip.  \"<i>That'll do,</i>\" he says, though you doubt it, and he moves behind you ");
+			if (player.isBiped()) outputText("lifting your legs and taking most of your weight onto his arms.");
+			else if (player.isTaur()) outputText("lifting your rear legs and raising your ass for easier access.");
+			else if (player.isNaga()) outputText("lifting your whole body as you wind your tail around him.");
+			else if (player.isGoo()) outputText("to pull your gooey ass to the right level.");
+			outputText("\n\nYour jaw clenches, nervous despite his strength, and he eases the tip of his cock into your backdoor as gravity pushes you onto him, his length slowly sliding into your [ass].\n\n");
 			player.buttChange(45, true, true, true);
-			if (isVirgin) outputText("\"<i>Gods, that's tight! It's a good thing you've been saving your virginity for me,</i>\" The behemoth says with a smile.");
-			if (player.looseness(false) < 3) outputText(" It takes a bit of effort for him to slide his cock inside due to your tightness.");
-			else outputText(" He easily slides his entire length into your [ass].");
-			outputText("\n\nEven though his cock is large, you don't feel any sign of discomfort. The behemoth slides his cock back and forth with your [ass] clamping down. ");
-			if (player.hasCock()) outputText("Your " + (player.cocks.length == 1 ? "cock": "cocks") + " springs to full erectness and precum leaks from your " + player.multiCockDescript() + ". ");
-			if (player.hasCock() && player.hasVagina()) outputText("At the same time, ");
-			if (player.hasVagina()) outputText("" + (player.hasCock() ? "femspunk": "Femspunk") + " leaks from your " + player.vaginaDescript() + "."); 
-			outputText("\n\n\"<i>I'm going to pace up a bit,</i>\" the behemoth announces. He gradually increases his thrusting pace. With each thrust, you moan in pleasure and enjoy every moment of being fucked. ");
-			if (flags[kFLAGS.BEHEMOTH_ANAL_CATCH] <= 0) outputText("He says, \"<i>I'm sure you've never known about how much a behemoth can cum. In fact, I'm capable of producing a lot of cum, far beyond what a minotaur can produce. Or even that fox-herm in Tel'Adre! Don't let the size of my balls deceive you,</i>\" he says with a chuckle. You recall his balls being three inches in length.");
-			outputText("\n\nIt seems take forever but all good things must come to an end. \"<i>I'm going to cum!</i>\" The behemoth announces. With a cry of pleasure and glee, he unleashes a huge amount of cum into your bowels. His cum surges through your intestines and up to your belly. By the gods, you feel so full! You look down to notice that your belly definitely got swollen. ");
+			if (isVirgin) outputText("\"<i>You're tight enough for me to be your first,</i>\" he observes, and you shoot him a glare. \"<i>What, really?  What luck!</i>\"  You wonder if he means for him or you, but it's just as true either way.  ");
+			if (player.looseness(false) < 3) outputText("You're tight enough you only move a little at a time, ");
+			else outputText("You've done this enough times for your ass to welcome him with ease, ");
+			outputText("but you're still surprised when you feel his ballsack touch you that he fit in that well painlessly, no matter his size.  He lifts you back up a little faster, leaving only the head in your ass, and you whine from the lack of pressure, eager to be filled and your energy already restoring.  Your [ass] clamps down to keep him from escaping, though the bit of you that can still think doubts he'd want to, and he pushes back in, ");
+			if (player.hasCock()) outputText("your " + (player.cocks.length == 1 ? "cock": "cocks") + " springing to full erectness");
+			if (player.hasCock() && player.hasVagina()) outputText(" and ");
+			if (player.hasVagina()) outputText("femspunk leaking from your " + player.vaginaDescript()); 
+			outputText(".\n\n\"<i>You good so far?</i>\" he asks, and you groan for more as you touch yourself and try to grind down on him, most of your weight already under his control.  He laughs, but he does go faster, his hands squeezing your waist as his claws edge just shy of causing pain and you moan, his obscene length sliding easily through your ass as he thrusts faster, pulling you onto his cock as much as he's pushing into you, and you think you might black out a little.\n\n");
+			if (flags[kFLAGS.BEHEMOTH_ANAL_CATCH] <= 0) outputText("\"<i>Don't let my balls deceive you,</i>\" he says, voice rough with sex, and it's hard to listen to him with how thoroughly he's pounding you.  You can feel their size banging against your ass, and they're definitely large, but ....  \"<i>Behemoths like me, we make a LOT of cum, more than minotaurs or that fox-herm, and I'm gonna give you all of it.</i>\"\n\n");
+			outputText("You feel like you've been his cock sleeve your whole existence and wish it could last forever, but he holds your ass up for a moment and pauses.  \"<i>Bottom's up!</i>\" he announces, and he slams you back down onto his cock as he presses into you and holds it, his cock twitching as it starts spurting and doesn't stop, the amount surging into a cum fountain right into your bowels, filling you up beyond what you think you could take as your belly swells. By the gods, how much can there BE?!\n\n");
 			player.refillHunger(70, false);
-			outputText("His orgasm triggers yours too.\n\n");
+			outputText("His orgasm gives you energy, and you cum as well, feeling rejuvenated as ");
 			if (player.hasCock()) {
-				outputText("You cum, ");
-				if (player.cumQ() < 50) outputText("shooting small ropes of jism all over the ground.");
-				else if (player.cumQ() >= 50 && player.cumQ() < 250) outputText("shooting ropes of jism all over the ground.");
-				else if (player.cumQ() >= 250 && player.cumQ() < 500) outputText("shooting jets of cum all over the ground, forming a small puddle.");
-				else if (player.cumQ() >= 500 && player.cumQ() < 2500) outputText("shooting torrents of cum all over the ground, forming a medium puddle of your seed.");
-				else outputText("shooting waves after waves of your seed that never seem to end. A large puddle of cum forms after you eventually stop cumming.");
+				outputText("your " + (player.cocks.length == 1 ? "cock": "cocks") + "shoot ");
+				if (player.cumQ() < 50) outputText("small ropes of jism all over the ground and yourself.");
+				else if (player.cumQ() >= 50 && player.cumQ() < 250) outputText("ropes of jism all over the ground and yourself.");
+				else if (player.cumQ() >= 250 && player.cumQ() < 500) outputText("jets of cum all over the ground and yourself, puddling on your belly.");
+				else if (player.cumQ() >= 500 && player.cumQ() < 2500) outputText("torrents of cum all over the ground and yourself, puddling on the rocky ground.");
+				else outputText("waves after waves of your seed that never seem to end as you're left completely soaked and your cum pools on the rocks, dribbling down enough everyone will know you had a good time.");
 			}
-			if (player.hasCock() && player.hasVagina()) outputText("At the same time, ");
+			if (player.hasCock() && player.hasVagina()) outputText("  As you watch the show, ");
 			if (player.hasVagina()) {
-				if (player.averageVaginalWetness() < 4) outputText("" + (player.hasCock() ? "femspunk": "Femspunk") + " bursts from your " + player.vaginaDescript() + " and seeps down your [legs].");
-				else outputText("" + (player.hasCock() ? "femspunk": "Femspunk") + " gushes from your " + player.vaginaDescript() + " and splashes onto the ground."); 
+				if (player.averageVaginalWetness() < 4) outputText("femspunk seeps down your [legs]");
+				else outputText("femspunk spurts out of your cunt and splashes onto the ground");
+				outputText(" as your " + player.vaginaDescript() + " clenches relentlessly on your fingers, hard enough to bruise.");  
 			}
-			if (player.gender == 0) outputText("Your entire body rocks from the overwhelming pleasure.");
-			outputText(" You finally recover from your orgasmic high and fall down, exhausted. The behemoth finally slides his cock out of your cum-stuffed [ass] and lays next to you. \"<i>It feels great to have someone to fuck,</i>\" the behemoth says.");
-			outputText("\n\nHe lays on top of you and the two of you rest for a while. You wake up some time later and you give the behemoth a kiss on one of his cheeks and let him know that you'll be going. \"<i>See you later,</i>\" the behemoth says with a smile on his face. You " + player.clothedOrNaked("redress and ") + "walk back to your camp, oddly feeling a bit better.");
+			if (player.gender == 0) outputText("your whole body shakes in overwhelming pleasure.");
+			outputText("  You'd collapse if you were under your own power, but the behemoth carefully lifts you off his cock and spooge floods out of your [ass], coating his legs and the hard ground.  He waits for the dripping to slow before setting you down gently and lying next to you, the two of you sharing the wet spot.  \"<i>I love having someone to fuck,</i>\" he says warmly, his arm over you in claim as you feel his muscles spasm in aftershocks and you rest for a while, sure nothing would pick a fight with him.\n\n");
+			outputText("You wake up some time later and kiss his cheek before letting him know you'll be going.  \"<i>See you later,</i>\" he says as he lets you up, though he doesn't bother getting up. The main thing you remember as " + player.clothedOrNaked("he watches you redress and ") + "you walk back to your camp is his expression of utter contentment, and your mood carries on for the rest of the day.");
 			player.orgasm();
 			player.slimeFeed();
 			HPChange(player.maxHP() / 4, false);

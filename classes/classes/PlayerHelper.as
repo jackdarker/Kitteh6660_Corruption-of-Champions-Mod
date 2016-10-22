@@ -21,14 +21,19 @@ package classes
 			return skinType == SKIN_TYPE_FUR || hasScales();
 		}
 
-		public function hasDragonHorns():Boolean
+		public function hasDragonHorns(fourHorns:Boolean = false):Boolean
 		{
-			return (horns > 0 && hornType == HORNS_DRACONIC_X2) || hornType == HORNS_DRACONIC_X4_12_INCH_LONG;
+			return (!fourHorns && horns > 0 && hornType == HORNS_DRACONIC_X2) || hornType == HORNS_DRACONIC_X4_12_INCH_LONG;
 		}
 
 		public function hasReptileEyes():Boolean
 		{
 			return [EYES_LIZARD, EYES_DRAGON, EYES_BASILISK].indexOf(eyeType) != -1;
+		}
+
+		public function hasLizardEyes():Boolean
+		{
+			return [EYES_LIZARD, EYES_BASILISK].indexOf(eyeType) != -1;
 		}
 
 		public function hasReptileFace():Boolean
@@ -73,14 +78,34 @@ package classes
 			return findPerk(PerkLib.Dragonfire) >= 0;
 		}
 
-		public function hasDragonWingsAndFire():Boolean
+		public function hasDragonWingsAndFire(largeWings:Boolean = true):Boolean
 		{
-			return hasDragonWings(true) && hasDragonfire();
+			return hasDragonWings(largeWings) && hasDragonfire();
 		}
 
 		public function isBasilisk():Boolean
 		{
-			return findPerk(PerkLib.BasiliskWomb) >= 0 /*&& eyeType == EYES_BASILISK*/;
+			return game.bazaar.benoit.benoitBigFamily() && eyeType == EYES_BASILISK;
+		}
+
+		public function hasLizardScales():Boolean
+		{
+			return skinType == SKIN_TYPE_SCALES;
+		}
+
+		public function featheryHairPinEquipped():Boolean
+		{
+			return hasKeyItem("Feathery hair-pin") >= 0 && keyItemv1("Feathery hair-pin") == 1;
+		}
+
+		public function isMaleOrHerm():Boolean
+		{
+			return (gender & GENDER_MALE) != 0;
+		}
+
+		public function isFemaleOrHerm():Boolean
+		{
+			return (gender & GENDER_FEMALE) != 0;
 		}
 	}
 }
