@@ -11,14 +11,15 @@ package classes.Scenes.NPCs
 
 	public class FenrisMonster extends Monster
 	{
+		var _fenris:Fenris;
 		public function FenrisMonster() {
 			//Todo: update stats before combat depending on progress
 			var _monster:Monster = this;
-			var _fenris:Fenris = Fenris.getInstance();
+			_fenris = Fenris.getInstance();
 			_monster.a = "the ";
 			_monster.short = "wolf";
 			//_monster.imageName = "hellhound"; //Todo: add image
-			_monster.long = "You are fighting an anthro-wolf";
+			_monster.long = _fenris.descrwithclothes; // "You are fighting an anthro-wolf";
 			if (_fenris.hasVagina()) {
 					_monster.createVagina(_fenris.getVaginaVirgin(),VAGINA_WETNESS_NORMAL,_fenris.getVaginaSize());
 					//createStatusEffect(StatusEffects.BonusVCapacity, 85, 0, 0, 0);
@@ -60,12 +61,12 @@ package classes.Scenes.NPCs
 	private function recalcBaseStats():void {
 		level = Fenris.getInstance().getLevel();
 		//bonusHP = 75;
-		lust = 1;
+		lust = Math.min(70,Fenris.getInstance().getLust());
 		lustVuln = .05;
 		
 		gems = 5 + rand(5);
 		initStrTouSpeInte(50, 50, 55, 50);
-		initLibSensCor(1, 1, 1);
+		initLibSensCor(Fenris.getInstance().getLibido(), 20, Fenris.getInstance().getCorruption());
 			
 	}
 	//depending on equpped weapon of Fenris-NPC
@@ -98,8 +99,37 @@ package classes.Scenes.NPCs
 				armorValue = 3;
 		}	
 	}
+	private function fenrisHowlOfDominance
+	private function fenrisPentacleGrapple():void { 
+		var _pentacles:int = _fenris.getPentacleCockCount();
+		outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see "+_pentacles+" tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n", false);
+		//Not Trapped yet
+		if (player.findStatusEffect(StatusEffects.TentacleBind) < 0) {
+			//Success Todo
+			if (false) {
+				outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
+			}
+			//Fail
+			else {
+					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n", false);
+					game.dynStats("lus", (8+player.sens/20));
+					player.createStatusEffect(StatusEffects.TentacleBind,0,0,0,0);
+			}
+		}
+		OldLust = lust;
+		//Todo: ??thats not working - would have to modify combat.as to add Pentaclegrapple
+
+	}
 	private function fenrisAttack():void {
-			var damage:Number;
+		var damage:Number;
+		
+		if (_fenris.getPentacleCockCount() >= 2 && lust > OldLust && lust > 50 ) {
+			fenrisPentacleGrapple(); //corrupted fenris will try to grab you if horny
+		} else if (this.HPRatio() < 0.2 && HowlCooldown && rand(100) > 70) {
+			fenrisHowlOfDominance(); //
+			this.fatigue
+		} else {
+			
 			var select:int = rand(2);
 			var _oldweaponName:String = this.weaponName;
 			var _oldweaponVerb:String = this.weaponVerb;
@@ -117,7 +147,7 @@ package classes.Scenes.NPCs
 			} else {
 				eAttack();
 			}
-  
+		}
 			//we dont need the following stuff ??    ----------------->
 			/*
 			//Blind dodge change
@@ -167,10 +197,10 @@ package classes.Scenes.NPCs
 			outputText("\n", false);
 			combatRoundOver();
 		}
-
+		private var OldLust:Number;
+		private var HowlCooldown:Number;
 		override protected function performCombatAction():void
 		{
-			trace("Fenris Perform Combat Action Called");
 			//Todo: add combat
 			var select:Number = rand(1);
 			trace("Selected: " + select);
@@ -182,6 +212,7 @@ package classes.Scenes.NPCs
 					fenrisAttack();
 					break;
 			}
+			
 		}
 
 		override public function defeated(hpVictory:Boolean):void

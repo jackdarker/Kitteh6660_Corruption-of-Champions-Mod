@@ -37,6 +37,14 @@ package classes.Scenes.NPCs{
 		public static const MAINFLAG_SEARCH_MOUNTAIN:uint = 1 << 2;	//
 		public static const MAINFLAG_SEARCH_FOREST:uint = 	1 << 3;	//
 		public static const MAINFLAG_SEARCH_DESERT:uint = 	1 << 4;	//
+		public static const MAINFLAG_CAGED_HELPHIM:uint = 	1 << 5;	//told him to help
+		
+		//the following flags are not persistantly stored and are only used to modify screenoutput 
+		public static const TEMPFLAG_CORRUPTION_UP:uint = 		1 << 0;	//his corruption has gone above one threshold since last met 
+		public static const TEMPFLAG_CORRUPTION_DOWN:uint = 	1 << 1;	//his corruption has gone below one threshold since last met 
+		public static const TEMPFLAG_BODY_UP:uint = 			1 << 2;	//his bodystrength has gone above one threshold since last met 
+		public static const TEMPFLAG_BODY_DOWN:uint = 			1 << 3;	//his bodystrength has gone below one threshold since last met 
+		
 		//{ --> stats
 		//Todo: convert measurments to metrics if kFlags.USE_METRICS is set
 		private var _Level:uint = 0; // lowest byte is level (1..254), the other bytes keep track of XP (0..16Mio)
@@ -72,6 +80,26 @@ package classes.Scenes.NPCs{
 		public function getCorruption():Number {
 			return (Number(_Corruption & 0xFFFF)) * 0.002;;
 		}
+		public function increaseCorruption(x:Number, limit:Number):void {
+			var _old:Number = getCorruption();
+			setCorruption(increaseStat(_old, x, limit));
+			var _new:Number = getCorruption();
+			// set flag 
+			var _i:int = detectThreshold(_old,_new,15)+ detectThreshold(_old,_new,30)*2+
+						detectThreshold(_old, _new, 45)*4 + detectThreshold(_old, _new, 60)*8 +
+					detectThreshold(_old, _new, 75)*16 + detectThreshold(_old, _new, 90)*32  ;	
+			if (_i != 0) {
+				setTempFlag(TEMPFLAG_CORRUPTION_DOWN, _i<0);
+				setTempFlag(TEMPFLAG_CORRUPTION_UP, _i>0);
+			}
+			if (_i >= 8 ) setCock(100, 2);
+			if (_i >= 16 ) setCock(100,4);
+			if (_i >= 32) setCock(100, 6);
+			if (_i <= -32 ) setCock(100, 4);
+			if (_i <= -16 ) setCock(100,2);
+			if (_i <= -8) setCock(0, 2);
+
+		}
 		public function setCorruption(x:Number):void {
 			if (x < 0) return;
 			_Corruption=(uint(x/0.002))&0xFFFF;
@@ -80,12 +108,18 @@ package classes.Scenes.NPCs{
 		public function getLibido():Number {
 			return (Number(_LibidoLust & 0xFFFF)) * 0.002;
 		}
+		public function increaseLibido(x:Number, limit:Number):void {
+			setLibido(increaseStat(getLibido(),x,limit));
+		}
 		public function setLibido(x:Number):void {
 			if (x < 0) return;
 			_LibidoLust= (_LibidoLust & 0xFFFF0000 )+((uint(x/0.002))&0xFFFF);
 		}
 		public function getLust():Number {
 			return (Number((_LibidoLust / 0x10000 ) & 0xFFFF)) * 0.002;
+		}
+		public function increaseLust(x:Number, limit:Number):void {
+			setLust(increaseStat(getLust(),x,limit));
 		}
 		public function setLust(x:Number):void {
 			if (x < 0) return;
@@ -96,6 +130,19 @@ package classes.Scenes.NPCs{
 		 */ 
 		public function getBodyStrength():Number {
 			return _BodyStrength;
+		}
+		public function increaseBodyStrength(x:Number, limit:Number):void {
+			var _old:Number = getBodyStrength();
+			setBodyStrength(increaseStat(getBodyStrength(), x, limit));
+			var _new:Number = getBodyStrength();
+			// set flag 
+			var _i:int = detectThreshold(_old,_new,15)+ detectThreshold(_old,_new,30)+
+						detectThreshold(_old, _new, 45) + detectThreshold(_old, _new, 60) +
+					detectThreshold(_old, _new, 75) + detectThreshold(_old, _new, 90)  ;	
+			if (_i != 0) {
+				setTempFlag(TEMPFLAG_BODY_DOWN, _i<0);
+				setTempFlag(TEMPFLAG_BODY_UP, _i>0);
+			}
 		}
 		public function setBodyStrength(x:Number):void {
 			_BodyStrength=uint(x);
@@ -116,12 +163,16 @@ package classes.Scenes.NPCs{
 		/** returns relation to player, 0= neutral, 100=lover, -100=nemesis
 		 */ 
 		public function getPlayerRelation():Number {
-			return _PlayerRelation;
+			var _ret:Number = Number(int(_PlayerRelation));
+			return _ret;
 		}
 		/** adds/substracts x from stat if stat is lower/higher than limit
 		 */
 		public function increasePlayerRelation(x:Number, limit:Number):void {
-			_PlayerRelation = uint(increaseStat(_PlayerRelation,x,limit));
+			setPlayerRelation(increaseStat(getPlayerRelation(),x,limit));
+		}
+		public function setPlayerRelation(x:Number):void {
+			_PlayerRelation=uint(x);
 		}
 		private function increaseStat(stat:Number , x:Number, limit:Number):Number {
 			var Result:Number = stat;
@@ -132,9 +183,30 @@ package classes.Scenes.NPCs{
 			}
 			return Result;
 		}
+		/* returns 1 if (old< threshold and New>=threshold) 
+		 * returns -1 if (new< threshold and old>=threshold) 
+		 * returns 0 otherwise
+		 * */
+		private function detectThreshold(Old:Number, New:Number, threshold:Number):int {
+			if ( Old< threshold && New>=threshold) return 1;
+			if ( New< threshold && Old>=threshold) return -1;
+			return 0;
+		}
 		
-		public function setPlayerRelation(x:Number):void {
-			_PlayerRelation=uint(x);
+		
+		private var _TempFlags:uint = 0;
+		public function getTempFlag():uint {
+			return _TempFlags;
+		}
+		public function testTempFlag(Flag:uint):Boolean{
+			return (_TempFlags & Flag ) == Flag;
+		}
+		public function setTempFlag(x:uint, set:Boolean):void {
+			if (set) {
+				_TempFlags = _TempFlags | x;
+			} else {
+				_TempFlags = _TempFlags ^ x;
+			}
 		}
 		private var _MainQuestStage:uint = 0;
 		private var _MainQuestFlags:uint = 0;
@@ -156,7 +228,7 @@ package classes.Scenes.NPCs{
 			if (x == MAINQUEST_Steal_Cloth) {
 				setMainQuestFlag(MAINFLAG_Stole_Cloth, true);
 				unequipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, _Result);
-			}
+			} 
 			_MainQuestStage = x;
 		}
 		public function getMainQuestStage():uint {
@@ -169,54 +241,63 @@ package classes.Scenes.NPCs{
 			} else if (Index == 1) {
 				_size = (Number((_CockStats & 0x1FF000)/0x1000)) / 10;
 			} else if (Index > 1 && Index < 7) { // Pentaclecocks
-				_size = (Number((_CockStats & 0xFF000000)/0x1000000)) ;
+				_size = (Number((_CockStats & 0xFF000000)/0x1000000))*2 ;
 			} else {
 				_size = 0;
 			}
 			return _size;
 		}
 		public function getCockCount():int {
-			var _count:int = (int((_CockStats & 0xE00000 ) / 0x200000));
+			var _count:int =0;//= (int((_CockStats & 0xE00000 ) / 0x200000));
 			if (getCockSize(0) > 0) _count++;
 			if (getCockSize(1) > 0) _count++;
 			
 			return _count;
 		}
+		public function getPentacleCockCount():int {
+			var _count:int = (int((_CockStats & 0xE00000 ) / 0x200000));	
+			return _count;
+		}
 		private var _CockStats:uint;  //
-		/*set size to 0 to remove cock; index can only be 0..1 actually
+		/*set size to 0 to remove cock; index can only be 0,1 for normal cock and 2,4,6 for pentaclecocks
 		 */ 
 		public function setCock(Size:Number, Index:int):void {
-			var _size:uint = uint(Math.max(Size * 10, 0x1FF));  //0.1 inch per bit 0x1FF bits => capped at 51.1"
+			var _size:uint = uint(Math.min(Size * 10, 0x1FF));  //0.1 inch per bit 0x1FF bits => capped at 51.1"
 			var _count:int = (int((_CockStats & 0xE00000 ) / 0x200000)); // count Pentaclecocks (0..7)
 			//cocksize 1.cock bits 0to8  ; cocktype bits 9to11 Todo:currently just dogcock
 			//cocksize 2.cock bits 12to20 ; same cocktype like 1.cock
-			//Pentaclecocks use bits 24to31; 1inch per bit capped at 255"
+			//Pentaclecocks use bits 24to31; 2inch per bit capped at 510"
 			// bit-map: 3333 3333 ccc2 2222 2222 ttt1 1111 1111 
 			//todo: oh my this is crap shifting bits forth and back, would be easier with arrays
-			/*if (Index == 0 ) {
+			if (Index == 0 ) {
 				if (_size <= 0) {
-					_count = Math.max(0, _count -1);
 					// copy 2.cock to 1.
-					_size = ((_CockStats && (0x001FF000))/0x1000);
+					_size = ((_CockStats & (0x001FF000))/0x1000);
+					_CockStats = (_CockStats & 0xFFE00E00) | _size;
 				} else {
-					_count = _count | 0x1;
-					
+					_CockStats = (_CockStats & 0xFFFFFE00) | _size;
 				}
 			} else if (Index == 1 ) {
 				if (_size <= 0) {
-					_count = Math.max(0, _count -1);
-					_size = _CockStats && !(0xFFE00FFF);
+					_size = _CockStats & 0xFFE00FFF;
 				} else {
-					
+					_CockStats = (_CockStats & 0xFFE00FFF) | (_size*0x1000);
 				}
-			} else if (Index > 1 && Index < 7) { // Pentaclecocks
-				//Todo:
-			}*/
-			_CockStats = _size + _count;
+			} else if (Index >= 2 && Index <= 6) { // Pentaclecocks
+				_size =(Math.min(Size / 2, 0x1FF));
+				if (_size <= 0) {  //remove pentaclcocks up to this index
+					_count = Index - 2;
+				} else { // add cocks up to this index
+					_count = Math.max(_count, Index);
+				}
+				_CockStats = (_CockStats& 0x001FFFFF) | (_size*0x01000000) | (_count*0x00200000);
+	
+			}
+			
 		}
 		private var _BallStats:uint;  //  
 		public function setBalls(Size:Number, Count:int):void {
-			var _size:uint = uint(Math.max(Size * 100, 0xFFF)) *  0x100000; //0.01 inch per bit 0xFFF bits => capped at 40.95"
+			var _size:uint = uint(Math.min(Size * 100, 0xFFF)) *  0x100000; //0.01 inch per bit 0xFFF bits => capped at 40.95"
 			var _count:uint = uint(Count & 0x6); //bits 1&2 = count  (0,2,4,6)
 			_BallStats = _size + _count;
 		}
@@ -303,23 +384,24 @@ package classes.Scenes.NPCs{
 		//{ --> stuff related to Items
 		//definition of items & equipment slots; actually only virtual items
 		//byte0&1 is the slot , byte 2&3 is the gear 
-		public static var ITEMSLOT_UNDERWEAR:uint 		= 0x0001;
-		public static var ITEMSLOT_WEAPON:uint 			= 0x0002;
-		public static var ITEMSLOT_PIERC_BREAST:uint 	= 0x0004;
-		public static var ITEMSLOT_HEAD:uint 			= 0x0008;
-		public static var ITEMSLOT_FEET:uint 			= 0x0010;
-		public static var ITEMSLOT_HAND:uint 			= 0x0020;
-		public static var ITEMSLOT_NECK:uint 			= 0x0040;
+		public static const ITEMSLOT_UNDERWEAR:uint 		= 0x0001;
+		public static const ITEMSLOT_WEAPON:uint 			= 0x0002;
+		public static const ITEMSLOT_PIERC_BREAST:uint 	= 0x0004;
+		public static const ITEMSLOT_HEAD:uint 			= 0x0008;
+		public static const ITEMSLOT_FEET:uint 			= 0x0010;
+		public static const ITEMSLOT_HAND:uint 			= 0x0020;
+		public static const ITEMSLOT_NECK:uint 			= 0x0040;
+		// up topublic static const ITEMSLOT_??:uint 	= 0x8000;
 						
-		public static var UNDERWEAR_NONE:uint 			= 0x000001;
-		public static var UNDERWEAR_LOINCLOTH:uint 		= 0x020001;  //his default loincloth	
-		public static var UNDERWEAR_COCKCAGE:uint 		= 0x030001;
-		public static var UNDERWEAR_COCKRING:uint 		= 0x040001;
-		public static var WEAPON_NONE:uint 				= 0x000002;
-		public static var WEAPON_KNIFE:uint 			= 0x010002;  //his default tool-knife
-		public static var HEAD_NONE:uint 				= 0x000008;
-		public static var HEAD_MUZZLE:uint 				= 0x010008;  //leatherstraps around muzzle, cannot bite
-		public static var HEAD_MUZZLEFULL:uint 			= 0x020008;  //full head muzzle add. obscuring view and other senses
+		public static const UNDERWEAR_NONE:uint 			= 0x000001;
+		public static const UNDERWEAR_LOINCLOTH:uint 		= 0x020001;  //his default loincloth	
+		public static const UNDERWEAR_COCKCAGE:uint 		= 0x030001;
+		public static const UNDERWEAR_COCKRING:uint 		= 0x040001;
+		public static const WEAPON_NONE:uint 				= 0x000002;
+		public static const WEAPON_KNIFE:uint 			= 0x010002;  //his default tool-knife
+		public static const HEAD_NONE:uint 				= 0x000008;
+		public static const HEAD_MUZZLE:uint 				= 0x010008;  //leatherstraps around muzzle, cannot bite
+		public static const HEAD_MUZZLEFULL:uint 			= 0x020008;  //full head muzzle add. obscuring view and other senses
 		
 		private var _AvailableItems:Array = []; //unordered list of items
 		public function getAllItems(): Array {
@@ -339,7 +421,7 @@ package classes.Scenes.NPCs{
 			return getAllItems().indexOf(item) >= 0;	
 		}
 		public function getEquippedItem(slot:uint):uint {
-			if (slot<0 || slot >ITEMSLOT_PIERC_BREAST) return 0;
+			if (slot<=0 || slot >0x8000) return 0;
 			return (uint)(getEquippedItems()[slot]);
 		}
 
@@ -435,7 +517,12 @@ package classes.Scenes.NPCs{
 					Result.Code = 1;
 					return;
 				}
-			}		
+			}
+			if ((item ) == UNDERWEAR_COCKCAGE && this.getCockCount()<1) {
+				Result.Text = "He needs a cock to use this item";
+				Result.Code = 1;
+				return;
+			}
 		}
 		/*returns 0 if ok or message if nok
 		 * */
@@ -489,7 +576,7 @@ package classes.Scenes.NPCs{
 				setSelfEsteem(50);
 				setBodyStrength(40);
 				setCorruption(2);
-				setPlayerRelation(50);
+				setPlayerRelation(10);
 				setLevel( 1);
 				var _Result:ReturnResult = new ReturnResult();
 				equipItem(ITEMSLOT_UNDERWEAR,UNDERWEAR_LOINCLOTH,true,_Result);
@@ -510,33 +597,36 @@ package classes.Scenes.NPCs{
 			var _equItems:String = "";
 			var i:int = -1;
 			var flagData:Array = String(game.flags[FENRIS_STORE_Flag]).split("^");
-			if (((String) (flagData[0])) == "1" ){//im to lazzy: && flagData.length == 7) {
-				_Corruption				= uint(flagData[i++]);
-				_SelfEsteem				= uint(flagData[i++]);
-				_PlayerRelation			= uint(flagData[i++]);
-				_MainQuestStage			= uint(flagData[i++]);
-				_MainQuestFlags			= uint(flagData[i++]);
-				_CockStats				= uint(flagData[i++]);
-				_BallStats				= uint(flagData[i++]);
-				_LibidoLust				= uint(flagData[i++]);
-				_AnalStats				= uint(flagData[i++]);
-				_VaginalStats			= uint(flagData[i++]);
-				_BodyStrength 			= uint(flagData[i++]);
-				_Level					= uint(flagData[i++]);
-				_allItems				= String(flagData[i++]);
-				_equItems				= String(flagData[i++]);
+			if (((String) (flagData[++i])) == FENRIS_STORE_VERSION_1 ){//im to lazzy: && flagData.length == 7) {
+				_Corruption				= uint(flagData[++i]);
+				_SelfEsteem				= uint(flagData[++i]);
+				_PlayerRelation			= uint(flagData[++i]);
+				_MainQuestStage			= uint(flagData[++i]);
+				_MainQuestFlags			= uint(flagData[++i]);
+				_CockStats				= uint(flagData[++i]);
+				_BallStats				= uint(flagData[++i]);
+				_LibidoLust				= uint(flagData[++i]);
+				_AnalStats				= uint(flagData[++i]);
+				_VaginalStats			= uint(flagData[++i]);
+				_BodyStrength 			= uint(flagData[++i]);
+				_Level					= uint(flagData[++i]);
+				_allItems				= String(flagData[++i]);
+				_equItems				= String(flagData[++i]);
 			
 				var _allItemsArr:Array = _allItems.split("~");
 				var _allItemsArr2:Array = []; 
+				var _slot:Array;
 				var item:String;
 				for ( item in _allItemsArr) 	{ 
-					if(item!="") _allItemsArr2.push(uint(item));
+					_slot = _allItemsArr[item].split(":");
+					if(_slot[0]!="") _allItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
 				}
 				this._AvailableItems = _allItemsArr2;
 				var _equItemsArr:Array = _equItems.split("~");
 				var _equItemsArr2:Array = []; 
 				for ( item in _equItemsArr) 	{ 
-					if(item!="") _equItemsArr2.push(uint(item));
+					_slot = _equItemsArr[item].split(":");
+					if(_slot[0]!="") _equItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
 				}
 				this._EquippedItems = _equItemsArr2;
 			}
@@ -547,13 +637,13 @@ package classes.Scenes.NPCs{
 			var _allItems:String = "";
 			var _allItemsArr:Array = this.getAllItems();
 			var item:String;
-			for (item in _allItemsArr) 	{ 
-				_allItems += item + "~";
+			for ( item in _allItemsArr)	{
+				_allItems += item+":"+(_allItemsArr[item]).toString() + "~";
 			}
 			var _equItems:String = "";
 			var _equItemsArr:Array = this.getEquippedItems();
-			for ( item in _equItemsArr) 	{ 
-				_equItems += item + "~";
+			for ( item in _equItemsArr)	{ 
+				_equItems += item+":"+(_equItemsArr[item]).toString()+ "~";
 			}
 			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION_1 + "^" + 
 			_Corruption 	+ "^" + 
@@ -610,27 +700,66 @@ package classes.Scenes.NPCs{
 		// Todo:add herm and other converters
 		public function get descrwithclothes():String { 
 			var _str:String = "Fenris the wolfman wears "+this.getEquippedItemText(ITEMSLOT_UNDERWEAR, true) +" and uses " +this.getEquippedItemText(ITEMSLOT_WEAPON,true)+ " as weapon.\n";
+			if (testTempFlag(TEMPFLAG_BODY_DOWN) || testTempFlag(TEMPFLAG_BODY_UP) ) {
+				_str += "You notice that "+eir+" body has undergone some changes since you saw "+em  +". \n";
+				setTempFlag(TEMPFLAG_BODY_DOWN, false);
+				setTempFlag(TEMPFLAG_BODY_UP, false);
+			}
+			if (testTempFlag(TEMPFLAG_CORRUPTION_DOWN) || testTempFlag(TEMPFLAG_CORRUPTION_UP) ) {
+				if (testTempFlag(TEMPFLAG_CORRUPTION_UP)) _str += Ey + " seems to be more corrupted than the last time. \n";
+				else _str += Ey + " seems to be much less corrupted than the last time. \n";
+				setTempFlag(TEMPFLAG_CORRUPTION_DOWN, false);
+				setTempFlag(TEMPFLAG_CORRUPTION_UP, false);
+			}
+			//Todo: add demon feature description
+			if (getCorruption() >= 90) {
+				_str += "Corruption seeps from every inch of "+eir+" body. \n";
+				
+			} else if (getCorruption() >= 75) {
+				
+			}else if (getCorruption() >= 60) {
+				
+			}else if (getCorruption() >= 45) {
+				
+			}else if (getCorruption() >= 30) {
+				_str += "While been walking this strange land for a while, "+eir+" body and mind seems only sligthly tainted. \n";
+				
+			}else if (getCorruption() >= 15) {
+				
+			}
+			//Todo add cock and vagina descr
 			if (getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_NONE) {
 				_str += "You can see "+ eir + getBallCount() +" gonads swinging below his sheath. Each orb measures around " + getBallSize() + " inches. \n"; 
 				if (getLust()> 90) {
-					_str += Eir + " throbing, "+getCockSize()+"inch long wolfhood stands proudly errect from his sheath. \n";
+					_str += Eir + " throbing, "+getCockSize()+"inch long wolfhood stands proudly errect from "+eir+" sheath. \n";
 				} else if (getLust() > 60) {
-					_str += "[fenris Eir] halfhard schlong is mostly out of its sheath and is flapping around whenever he moves. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
+					_str += Eir + " halfhard schlong is mostly out of its sheath and is flapping around whenever he moves. You guess it would be " + getCockSize() + " inch long when fully errect. \n";
 				}else if (getLust() > 30) {
 					_str += "Only the tip of "+ eir + " dick is poking out of the fuzzy sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
 				}else  {
 					_str += Eir + " penis is savely hidden in its furred sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
 				}
 			} else if(getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_LOINCLOTH) {
-				_str += Eir + " loincloth is obscuring the view of his private bits." 
+				_str += Eir + " loincloth is obscuring the view of "+eir+" private bits." 
 			}
+			if (getPentacleCockCount()>0) {
+				if (getLust()> 80) {
+					_str += Eir + " "+getPentacleCockCount()+" slivering, bulging tentacles are frantically twisting behind is back. There bulging tips are convulsing and opening from time to time, continously seeping a suspicios slimy substance. Better not to get into reach of those things. \n";
+				} else if (getLust() > 60) {
+					_str += "At first you didn't want to take notice but now you can seen that there are some odd appendages swinging throug the air behind his back.\n";
+					_str += getPentacleCockCount()+" twisting, purple tentacles , each of them thick as your wrist and glistening slimily. \n";
+				}else if (getLust() > 40) {
+					_str += "You are not sure but was there some movement on his back?\n";
+				}
+			}
+			
 			return _str;
 		}
 		
 		public function get status():String {
 			return "\nLevel " + this.getLevel() +" XP " +this.getXP()  + "\n Corruption " + this.getCorruption() + "\n Selfesteem " + this._SelfEsteem +
 			"\n Libido " +this.getLibido() + " Lust " +getLust() +
-			"\n Playerrelation " +this._PlayerRelation + "\n MainQuestStage " + this._MainQuestStage + "\n MainQuestFlag " +this._MainQuestFlags +"\n";
+			"\n Playerrelation " +this.getPlayerRelation() + "\n MainQuestStage " + this._MainQuestStage + "\n MainQuestFlag " +this._MainQuestFlags +"\n";
 			
 		}
 		public function get Ey():String {

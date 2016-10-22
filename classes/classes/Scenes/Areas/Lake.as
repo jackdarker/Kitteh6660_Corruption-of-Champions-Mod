@@ -104,10 +104,11 @@ package classes.Scenes.Areas
 				choice[choice.length] = 11;
 			//meet Fenris	
 			choice[choice.length] = 13;
+	
 
 			//CHOOSE YOUR POISON!
 			select = choice[rand(choice.length)];
-			//select = 13;   // Todo: just for testing Fenris
+			select = 13;   // debug: just for testing Fenris
 			//==============================
 			//EVENTS GO HERE!
 			//==============================
