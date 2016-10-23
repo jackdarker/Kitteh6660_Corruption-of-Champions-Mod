@@ -2637,6 +2637,7 @@ use namespace kGAMECLASS;
 			if (findStatusEffect(StatusEffects.WebSilence) >= 0) removeStatusEffect(StatusEffects.WebSilence);
 			if (findStatusEffect(StatusEffects.GooArmorSilence) >= 0) removeStatusEffect(StatusEffects.GooArmorSilence);
 			if (findStatusEffect(StatusEffects.Bound) >= 0) removeStatusEffect(StatusEffects.Bound);
+			if (findStatusEffect(StatusEffects.bound) >= 0) removeStatusEffect(StatusEffects.bound);
 			if (findStatusEffect(StatusEffects.GooArmorBind) >= 0) removeStatusEffect(StatusEffects.GooArmorBind);
 			if (findStatusEffect(StatusEffects.Whispered) >= 0) removeStatusEffect(StatusEffects.Whispered);
 			if (findStatusEffect(StatusEffects.AkbalSpeed) >= 0) {

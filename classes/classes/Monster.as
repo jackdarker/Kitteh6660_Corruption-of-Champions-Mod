@@ -862,7 +862,18 @@
 			combatRoundOver();
 			return false;
 		}
-
+		/**
+		 * Called if Player is constricted by monster and struggles
+		 * The monster should calculate chances for success and output some textual description
+		 * @return true if Player could free himself
+		 */
+		public function handleStruggling(Struggling:Boolean):Boolean
+		{
+			var _Result:Boolean = Struggling;
+			outputText("UUps - handleStruggling not overriden in classe \n");
+			
+			return _Result;
+		}
 		/**
 		 * This method is called after all stun/fear/constricted checks.
 		 * Default: Equal chance to do physical or special (if any) attack

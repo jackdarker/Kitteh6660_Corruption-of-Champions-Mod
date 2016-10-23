@@ -335,6 +335,8 @@ package classes
 		public static const PigbysHands:StatusEffectType = mk("Pigbys Hands");
 		public static const WhipSilence:CombatStatusEffect = mk2("Whip-Silence");
 
+		public static const bound:CombatStatusEffect = mk2("bound"); //generic bound-effect v1: bound bodypart; v2: intensity  ; v3: ; v4:
+		//body-part bitmask: 0= all; 1=hands; 2=legs
 		/**
 		 * Creates non-combat status affect
 		 */

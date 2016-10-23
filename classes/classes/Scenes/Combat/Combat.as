@@ -200,6 +200,7 @@ package classes.Scenes.Combat
 			}
 			if (player.findStatusEffect(StatusEffects.UBERWEB) >= 0) temp = true;
 			if (player.findStatusEffect(StatusEffects.Bound) >= 0) temp = true;
+			if (player.findStatusEffect(StatusEffects.bound) >= 0) temp = true;
 			if (player.findStatusEffect(StatusEffects.Chokeslam) >= 0) temp = true;
 			if (player.findStatusEffect(StatusEffects.Titsmother) >= 0) temp = true;
 			if (player.findStatusEffect(StatusEffects.GiantGrabbed) >= 0) {
@@ -581,6 +582,9 @@ package classes.Scenes.Combat
 			}
 			else if (player.findStatusEffect(StatusEffects.GiantGrabbed) >= 0) {
 				(monster as FrostGiant).giantGrabStruggle();
+			}
+			else if (player.findStatusEffect(StatusEffects.bound) >= 0) {
+				monster.handleStruggling(true);
 			}
 			else {
 				clearOutput();

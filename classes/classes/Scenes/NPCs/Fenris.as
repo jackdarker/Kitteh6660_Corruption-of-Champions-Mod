@@ -22,6 +22,28 @@ package classes.Scenes.NPCs{
 	//dont extends Monster because we need to change stats and features
 	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
 	{
+		/*sketch of quest CAGED
+		 * 	1) you meet a wolfman from other world
+		 *  2) you steel something from him
+		 *  3) he gets cock-caged by a fetish zealot because running around naked
+		 *  4) he asks for help to get freed - he might run around in areas and need assistance to not get further humiliated
+		 *  )
+		 *  ) go to Teladre blacksmith -> forging not possible , decides that its easier to shrink cock
+		 *  ) get pink egg 
+		 *  ) shrink his cock but cage shrinks also !
+		 *  ) defeat fetish zealot -> key was lost in other area
+		 * 
+		 *  ) fenris fights ???
+		 *  ) fenris gets captured by slavers, player has to free him from prison
+		 *  ) fenris fights ???
+		 *  ) get large pink egg -> cock vanishs, he is cuntboy now; cockcage is now clitcage damn! 
+		 *  ) fenris fights ???
+		 * 
+		 *  ) found key
+		 *  ) release fenris -quest solved
+		 * */
+		
+		
 		//those are the main quest stages
 		public static const MAINQUEST_Not_Met:uint = 		0;		//initial value
 		public static const MAINQUEST_Spotted:uint = 		1;		//PC heard him in the bushes
@@ -30,14 +52,30 @@ package classes.Scenes.NPCs{
 		public static const MAINQUEST_Steal_Cloth:uint = 	4; //PC decided to steal his loin cloth
 		public static const MAINQUEST_CAGED_Init:uint = 	5; //Fenris got COCKCAGE from Fetish guys
 		public static const MAINQUEST_CAGED:uint = 			6; //Fenris got COCKCAGE from Fetish guys; you talked with him already
-
+		public static const MAINQUEST_FORGEKEY1:uint =		20; //ask blacksmith for help, cannot forge
+		public static const MAINQUEST_SHRINKCOCK1:uint = 	40; //try to shrink his cock a little bit 
+		public static const MAINQUEST_HUNTKEY1:uint =		60; //defeat fetish zealot, but key lost
+		
+		public static const MAINQUEST_IMPRISSONED:uint =		100; //someone tells you fenris got captured
+		public static const MAINQUEST_IMPRISSONED2:uint =		110; //you are ready to flee, do you take fenris with you; maybe some obedience training would be of use for him?
+		public static const MAINQUEST_IMPRISSONED3:uint =		120; //you fled with him
+		
+		public static const MAINQUEST_HUNTKEY3:uint =		200; //fenris is plaything for hellhound, still no key, gets collared?
+		public static const MAINQUEST_SHRINKCOCK2:uint =	300; //he has no cock anymore; still has clitcage
+		public static const MAINQUEST_HUNTKEY4:uint =		400; //fenris is akabals bitch, still no key
+		
+		public static const MAINQUEST_HUNTKEY5:uint =		500; //fight ?? 
+		public static const MAINQUEST_FOUNDKEY:uint =		600; //you get the key but it is damaged
+		public static const MAINQUEST_UNCAGE:uint =		700; //you released fenris
+		
 		//those flags keep track of the mainquest history (bitwise)
-		public static const MAINFLAG_Stole_Cloth:uint = 	1 << 0;	//PC stole loin cloth
+		public static const MAINFLAG_STOLE_CLOTH:uint = 	1 << 0;	//PC stole loin cloth
 		public static const MAINFLAG_SEARCH_DEEPWOOD:uint = 1 << 1;	//
 		public static const MAINFLAG_SEARCH_MOUNTAIN:uint = 1 << 2;	//
 		public static const MAINFLAG_SEARCH_FOREST:uint = 	1 << 3;	//
 		public static const MAINFLAG_SEARCH_DESERT:uint = 	1 << 4;	//
 		public static const MAINFLAG_CAGED_HELPHIM:uint = 	1 << 5;	//told him to help
+		public static const MAINFLAG_SLAVEPRISON:uint = 	1 << 6; //captured by slavers (repeatable)
 		
 		//the following flags are not persistantly stored and are only used to modify screenoutput 
 		public static const TEMPFLAG_CORRUPTION_UP:uint = 		1 << 0;	//his corruption has gone above one threshold since last met 
@@ -226,7 +264,7 @@ package classes.Scenes.NPCs{
 		public function setMainQuestStage(x:uint):void {
 			var _Result:ReturnResult = new ReturnResult();
 			if (x == MAINQUEST_Steal_Cloth) {
-				setMainQuestFlag(MAINFLAG_Stole_Cloth, true);
+				setMainQuestFlag(MAINFLAG_STOLE_CLOTH, true);
 				unequipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, _Result);
 			} 
 			_MainQuestStage = x;

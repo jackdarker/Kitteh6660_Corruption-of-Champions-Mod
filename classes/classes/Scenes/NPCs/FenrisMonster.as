@@ -12,7 +12,7 @@ package classes.Scenes.NPCs
 	public class FenrisMonster extends Monster
 	{
 		var _fenris:Fenris;
-		public function FenrisMonster() {
+	public function FenrisMonster() {
 			//Todo: update stats before combat depending on progress
 			var _monster:Monster = this;
 			_fenris = Fenris.getInstance();
@@ -30,34 +30,35 @@ package classes.Scenes.NPCs
 			} else {*/
 					_monster.createBreastRow(0);
 			//}
-			if (_fenris.getCockCount() >= 1) {
-					//Todo: add multiple
-					_monster.createCock(_fenris.getCockSize(), _fenris.getCockSize()/10, CockTypesEnum.DOG);
-					_monster.balls = _fenris.getBallCount();
-					_monster.ballSize = _fenris.getBallSize();
-					_monster.cumMultiplier = 1;
-			}
-				
-			_monster.ass.analLooseness = ANAL_LOOSENESS_TIGHT;
-			_monster.ass.analWetness = ANAL_WETNESS_DRY;
-				//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
-			_monster.tallness = 70;
-			_monster.hipRating = HIP_RATING_SLENDER;
-			_monster.buttRating = BUTT_RATING_TIGHT;
-			_monster.skinTone = "stone gray";
-			_monster.hairColor = "dark gray";
-			_monster.hairLength = 5;
+		if (_fenris.getCockCount() >= 1) {
+				//Todo: add multiple
+				_monster.createCock(_fenris.getCockSize(), _fenris.getCockSize()/10, CockTypesEnum.DOG);
+				_monster.balls = _fenris.getBallCount();
+				_monster.ballSize = _fenris.getBallSize();
+				_monster.cumMultiplier = 1;
+		}
+			
+		_monster.ass.analLooseness = ANAL_LOOSENESS_TIGHT;
+		_monster.ass.analWetness = ANAL_WETNESS_DRY;
+			//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
+		_monster.tallness = 70;
+		_monster.hipRating = HIP_RATING_SLENDER;
+		_monster.buttRating = BUTT_RATING_TIGHT;
+		_monster.skinTone = "stone gray";
+		_monster.hairColor = "dark gray";
+		_monster.hairLength = 5;
 
-			recalcBaseStats();
-			recalcWeaponStats();
-			recalcArmorStats();
-			_monster.drop = new ChainedDrop().
-						add(undergarments.C_LOIN,0.05).
-						add(consumables.CANINEP,0.95);
-			_monster.tailType = TAIL_TYPE_DOG;
-			_monster.tailRecharge = 0;
-			_monster.checkMonster();		
+		recalcBaseStats();
+		recalcWeaponStats();
+		recalcArmorStats();
+		_monster.drop = new ChainedDrop().
+					add(undergarments.C_LOIN,0.05).
+					add(consumables.CANINEP,0.95);
+		_monster.tailType = TAIL_TYPE_DOG;
+		_monster.tailRecharge = 0;
+		_monster.checkMonster();		
 	}
+	//adjust the Enemy-Level
 	private function recalcBaseStats():void {
 		level = Fenris.getInstance().getLevel();
 		//bonusHP = 75;
@@ -75,7 +76,7 @@ package classes.Scenes.NPCs
 		weaponName = Fenris.getInstance().getEquippedItemText(Fenris.ITEMSLOT_WEAPON,false);
 		switch (_weapon) {
 			case Fenris.WEAPON_KNIFE:
-					weaponVerb="strike";
+					weaponVerb="cut";
 					weaponAttack = 10;
 					break;
 			default:
@@ -99,37 +100,77 @@ package classes.Scenes.NPCs
 				armorValue = 3;
 		}	
 	}
-	private function fenrisHowlOfDominance
+	//Todo howls to make himself stronger, regenerate fatigue, maybe call supportife hellhounds
+	private function fenrisHowlOfDominance():void
+	{
+		HowlCooldown = 5;
+		outputText("Annoyed by your attempts to defeat him, he raises his wolfen head and calls a terrifiying howl.\n", false);
+		addHP(eMaxHP()*0.33);
+		fatigue += 10;
+	}
+	//
 	private function fenrisPentacleGrapple():void { 
+		//fenris only has pentacles if corrupted
 		var _pentacles:int = _fenris.getPentacleCockCount();
-		outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see "+_pentacles+" tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n", false);
-		//Not Trapped yet
-		if (player.findStatusEffect(StatusEffects.TentacleBind) < 0) {
-			//Success Todo
-			if (false) {
-				outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
+		//Todo if fenris is aroused he will unleash his pentacles, try to grab  and pleasure player
+		
+		
+		//just grabbed the player
+		if (PentacleState >= 2) {
+			if (player.findStatusEffect(StatusEffects.bound) > 0) {
+				outputText("The pentacles increase their effort to entwine you.\n", false);
+				if (_pentacles >= 6) {
+					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n", false);
+					PentacleState = PentacleState+3;
+				}else if (_pentacles >= 4) {
+					outputText("Two of them slip around your waist and upper body while the others try to choke you.\n", false);
+					PentacleState = PentacleState+2;
+				}else if (_pentacles >= 2) {
+					outputText("Both of them slip around your waist and upper body.\n", false);
+					PentacleState = PentacleState+1;
+				}
+				game.dynStats("lus", 5 + player.sens / 10);
+			} else {
+				PentacleState = 1;
 			}
-			//Fail
-			else {
+			
+		}
+		//try to grab player
+		if (PentacleState == 1) {
+			if (player.findStatusEffect(StatusEffects.bound) < 0) {
+				//Success Todo
+				if (false) {
+					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
+				}
+				//Fail
+				else {
 					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n", false);
 					game.dynStats("lus", (8+player.sens/20));
-					player.createStatusEffect(StatusEffects.TentacleBind,0,0,0,0);
+					player.createStatusEffect(StatusEffects.bound, 0, 0, 0, 0);
+					PentacleState = 2;
+				}
 			}
 		}
-		OldLust = lust;
-		//Todo: ??thats not working - would have to modify combat.as to add Pentaclegrapple
+		//unleash tentacles
+		if (PentacleState < 1) {
+			outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see " + _pentacles + " tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n", false);
+			PentacleState = 1;
+			return;
+		}
 
 	}
-	private function fenrisAttack():void {
+
+	private var HowlCooldown:Number=3;
+	private var PentacleState:Number=0;
+	override protected function performCombatAction():void
+	{
 		var damage:Number;
 		
-		if (_fenris.getPentacleCockCount() >= 2 && lust > OldLust && lust > 50 ) {
+		if (_fenris.getPentacleCockCount() >= 2 && lust > 50 ) {
 			fenrisPentacleGrapple(); //corrupted fenris will try to grab you if horny
-		} else if (this.HPRatio() < 0.2 && HowlCooldown && rand(100) > 70) {
-			fenrisHowlOfDominance(); //
-			this.fatigue
-		} else {
-			
+		} else if (this.HPRatio() < 0.3 && HowlCooldown<=0 && rand(100) > 70) {
+			fenrisHowlOfDominance(); 
+		} else {			
 			var select:int = rand(2);
 			var _oldweaponName:String = this.weaponName;
 			var _oldweaponVerb:String = this.weaponVerb;
@@ -192,46 +233,63 @@ package classes.Scenes.NPCs
 				}
 				if (damage > 0) damage = player.takeDamage(damage, true);
 			}*/
-			
+			//Set flags for rounds
+			if (findStatusEffect(StatusEffects.Round) < 0) {
+				createStatusEffect(StatusEffects.Round,2,0,0,0);
+			} else addStatusValue(StatusEffects.Round, 1, 1);
+			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
 			statScreenRefresh();
 			outputText("\n", false);
 			combatRoundOver();
-		}
-		private var OldLust:Number;
-		private var HowlCooldown:Number;
-		override protected function performCombatAction():void
-		{
-			//Todo: add combat
-			var select:Number = rand(1);
-			trace("Selected: " + select);
-			switch(select) {
-				case 0:
-					fenrisAttack();
-					break;
-				default:
-					fenrisAttack();
-					break;
+	}
+	override public function handleStruggling(Struggling:Boolean):Boolean
+	{
+		var _Result:Boolean  = Struggling;
+		clearOutput();
+		//Todo better description
+		//Struggle:
+		if (Struggling) {
+			outputText("You struggle against thight bindings of the tentacles.");
+			//Success
+			if (rand(20) + player.str / 20  >= 12) {
+				outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
+				player.removeStatusEffect(StatusEffects.bound);
+				doAI();
+			} else {//Failure  ++LUST
+				outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
+				game.dynStats("lus", 5 + player.sens / 10);
+				combatRoundOver();
 			}
-			
+		} else {
+			clearOutput();
+			outputText("You just wait to see where this leads too.");
+			outputText("\n\nThe bindings intensifys.");		
+			game.dynStats("lus", 5 + player.sens / 10);
+			combatRoundOver();		
 		}
 
-		override public function defeated(hpVictory:Boolean):void
-		{
-			//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.PCBeatsUpSalamanderSparring();
-			//else game.helScene.beatUpHel();
-			outputText("\n\nYou defeated Fenris");
-			game.combat.cleanupAfterCombat();
-		}
+		return _Result;
+	}
+	override public function defeated(hpVictory:Boolean):void
+	{
+		//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.PCBeatsUpSalamanderSparring();
+		//else game.helScene.beatUpHel();
+		outputText("\n\nYou defeated Fenris");
+		game.combat.cleanupAfterCombat();
+	}
 
-		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
-		{
-			if (pcCameWorms){
-				outputText("\n\nFenris waits it out in stoic silence...");
-				doNext(game.combat.endLustLoss);
-			} else {
-				//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.loseToSparringHeliaLikeAButtRapedChump();
-				game.fenrisScene.loseToFenris();
-			}
+	override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
+	{
+		if (pcCameWorms){
+			outputText("\n\nFenris waits it out in stoic silence...");
+			doNext(game.combat.endLustLoss);
+		} else if (PentacleState > 2) {
+			//Todo Pentaclerape
+			game.fenrisScene.loseToFenris();
+		} else {
+			//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.loseToSparringHeliaLikeAButtRapedChump();
+			game.fenrisScene.loseToFenris();
 		}
+	}
 	}
 }

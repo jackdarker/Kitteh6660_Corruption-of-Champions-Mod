@@ -108,7 +108,7 @@ package classes.Scenes.Areas
 
 			//CHOOSE YOUR POISON!
 			select = choice[rand(choice.length)];
-			select = 13;   // debug: just for testing Fenris
+			//select = 13;   // debug??: just for testing Fenris
 			//==============================
 			//EVENTS GO HERE!
 			//==============================
@@ -254,11 +254,9 @@ package classes.Scenes.Areas
 					return;
 				}
 				fetishCultistScene.fetishCultistEncounter();
-			}
-			else if (select == 6) {
+			} else if (select == 6) {
 				kGAMECLASS.rathazul.encounterRathazul();
-			}
-			else if (select == 12) {
+			} else if (select == 12) {
 				kGAMECLASS.exploration.genericGobImpEncounters();
 			} else if (select == 13) {//Fenris
 				getGame().fenrisScene.encounterTracking();
