@@ -104,7 +104,7 @@ public function encounterTracking():void {
 			addButton(0, "Greetings", metAgain, 0, null, null, "Head over for some greetings");
 			addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-		}else if (_rand < 10 && _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&
+		}else if ( _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&
 			_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) {
 			fenrisGotCaged(0);	
 		}else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_CAGED &&
@@ -112,7 +112,7 @@ public function encounterTracking():void {
 			fenrisGotCaged(400);
 		} else if (_rand > 90 && _fenris.getPlayerRelation()>-10) {
 			gooFight();
-		} else metAgain(0);
+		} else metAgain(0); //goto no-quest dialog
 		break;
 	default:
 		trace("missing Fenris-stage " + stage.toString());
@@ -310,20 +310,19 @@ private function metAgain(dlgstage:int = -1):void {
  */ 
 private function buildLocationToGoMenu():void {
 	if (flags[kFLAGS.TIMES_EXPLORED_FOREST]  > 0) {
-		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_FOREST)) {
-			addButton(0, "search forest", goThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
-		} else {
+		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_FOREST)) {			
 			addButton(0, "avoid forest", dontGoThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
+		} else {
+			addButton(0, "search forest", goThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
 		}	
 	}
 	if (flags[kFLAGS.TIMES_EXPLORED_MOUNTAIN]  > 0) {
 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN)) {
-			addButton(0, "search mountain", goThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
-		} else {
 			addButton(0, "avoid mountain", dontGoThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
+		} else {
+			addButton(0, "search mountain", goThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
 		}	
 	}
-
 }
 private function goThere(Flag:uint, dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
