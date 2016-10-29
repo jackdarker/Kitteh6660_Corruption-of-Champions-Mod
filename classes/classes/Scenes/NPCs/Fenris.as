@@ -46,15 +46,16 @@ package classes.Scenes.NPCs{
 		
 		//those are the main quest stages
 		public static const MAINQUEST_Not_Met:uint = 		0;		//initial value
-		public static const MAINQUEST_Spotted:uint = 		1;		//PC heard him in the bushes
-		public static const MAINQUEST_Spotted2:uint = 		2;	//PC saw him at the lake
-		public static const MAINQUEST_Greetings:uint = 		3;	//PC talked to him first time
-		public static const MAINQUEST_Steal_Cloth:uint = 	4; //PC decided to steal his loin cloth
-		public static const MAINQUEST_CAGED_Init:uint = 	5; //Fenris got COCKCAGE from Fetish guys
-		public static const MAINQUEST_CAGED:uint = 			6; //Fenris got COCKCAGE from Fetish guys; you talked with him already
-		public static const MAINQUEST_FORGEKEY1:uint =		20; //ask blacksmith for help, cannot forge
-		public static const MAINQUEST_SHRINKCOCK1:uint = 	40; //try to shrink his cock a little bit 
+		public static const MAINQUEST_Spotted:uint = 		5;		//PC heard him in the bushes
+		public static const MAINQUEST_Spotted2:uint = 		10;	//PC saw him at the lake
+		public static const MAINQUEST_Greetings:uint = 		20;	//PC talked to him first time
+		public static const MAINQUEST_Steal_Cloth:uint = 	25; //PC decided to steal his loin cloth
+		public static const MAINQUEST_CAGED_Init:uint = 	30; //Fenris got COCKCAGE from Fetish guys
+		public static const MAINQUEST_CAGED:uint = 			35; //Fenris got COCKCAGE from Fetish guys; you talked with him already
+		public static const MAINQUEST_FORGEKEY1:uint =		40; //asked blacksmith for help, cannot forge
+		public static const MAINQUEST_SHRINKCOCK1:uint = 	50; //tryd to shrink his cock a little bit 
 		public static const MAINQUEST_HUNTKEY1:uint =		60; //defeat fetish zealot, but key lost
+		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		65; //bought key from fetish zealot, this is the quick end
 		
 		public static const MAINQUEST_IMPRISSONED:uint =		100; //someone tells you fenris got captured
 		public static const MAINQUEST_IMPRISSONED2:uint =		110; //you are ready to flee, do you take fenris with you; maybe some obedience training would be of use for him?
@@ -589,7 +590,7 @@ package classes.Scenes.NPCs{
 			} 
 			//workaround to initialise as soon as kGAMECLASS is valid
 			if (kGAMECLASS != null && !_instance._initDone) {
-				_instance.initFenris();
+				_instance.initFenris(false);
 			}
 			return _instance;
 		}
@@ -603,8 +604,13 @@ package classes.Scenes.NPCs{
 			_BreastStore = new BreastStore(kFLAGS.FENRIS_BREAST);
 			CoC.saveAwareClassAdd(_BreastStore);
 		}
-		private function initFenris():void {
-			if (!_initDone) {
+		/* for debug-Reset
+		 */
+		public function resetFenris():void {
+			initFenris(true);
+		}
+		private function initFenris(forceInit:Boolean):void {
+			if (!_initDone || forceInit) {
 				//first time initialisation
 				setVagina(0, true, false);
 				setAnus(0, true,0);
@@ -616,6 +622,9 @@ package classes.Scenes.NPCs{
 				setCorruption(2);
 				setPlayerRelation(10);
 				setLevel( 1);
+				_MainQuestStage = 0;
+				_MainQuestFlags = 0;
+				_TempFlags = 0;
 				var _Result:ReturnResult = new ReturnResult();
 				equipItem(ITEMSLOT_UNDERWEAR,UNDERWEAR_LOINCLOTH,true,_Result);
 				equipItem(ITEMSLOT_WEAPON,WEAPON_KNIFE,true,_Result);

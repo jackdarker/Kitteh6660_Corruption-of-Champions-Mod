@@ -11,7 +11,7 @@ package classes.Scenes.NPCs
 
 	public class FenrisMonster extends Monster
 	{
-		var _fenris:Fenris;
+		private var _fenris:Fenris;
 	public function FenrisMonster() {
 			//Todo: update stats before combat depending on progress
 			var _monster:Monster = this;
