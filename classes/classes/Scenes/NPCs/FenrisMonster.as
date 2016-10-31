@@ -1,6 +1,6 @@
 /**
  * ...
- * @author jk
+ * @author jackdarker
  */
 
 package classes.Scenes.NPCs

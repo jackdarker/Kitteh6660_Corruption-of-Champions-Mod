@@ -1,9 +1,9 @@
+/**
+ * ...
+ * @author jackdarker
+ */
 package classes.Scenes.Areas.Lake 
 {
-	/**
-	 * ...
-	 * @author jk
-	 */
 	import classes.*;
 	import classes.Scenes.NPCs.Fenris;
 	import classes.GlobalFlags.kFLAGS;

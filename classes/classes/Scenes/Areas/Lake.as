@@ -104,6 +104,8 @@ package classes.Scenes.Areas
 				choice[choice.length] = 11;
 			//meet Fenris	
 			choice[choice.length] = 13;
+			choice[choice.length] = 13;
+			choice[choice.length] = 13;
 	
 
 			//CHOOSE YOUR POISON!
@@ -259,7 +261,7 @@ package classes.Scenes.Areas
 			} else if (select == 12) {
 				kGAMECLASS.exploration.genericGobImpEncounters();
 			} else if (select == 13) {//Fenris
-				getGame().fenrisScene.encounterTracking();
+				getGame().fenrisScene.encounterTrackingLake();
 			} else {
 				outputText("OH SHIT! LAKE EXPLORE BE BROKED.  SELECT: " + select + ".  You should probably go to fenoxo.com and click the link to report a bug and tell Fen (or Kitteh6660 since he makes the mod) about it.");
 			}

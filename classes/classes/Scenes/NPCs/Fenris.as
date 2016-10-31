@@ -1,3 +1,8 @@
+/**
+ * ...
+ * @author jackdarker
+ */
+
 package classes.Scenes.NPCs{
 
 	import classes.BreastRowClass;
@@ -22,52 +27,56 @@ package classes.Scenes.NPCs{
 	//dont extends Monster because we need to change stats and features
 	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
 	{
-		/*sketch of quest CAGED
-		 * 	1) you meet a wolfman from other world
-		 *  2) you steel something from him
-		 *  3) he gets cock-caged by a fetish zealot because running around naked
-		 *  4) he asks for help to get freed - he might run around in areas and need assistance to not get further humiliated
-		 *  )
-		 *  ) go to Teladre blacksmith -> forging not possible , decides that its easier to shrink cock
-		 *  ) get pink egg 
-		 *  ) shrink his cock but cage shrinks also !
-		 *  ) defeat fetish zealot -> key was lost in other area
-		 * 
-		 *  ) fenris fights ???
-		 *  ) fenris gets captured by slavers, player has to free him from prison
-		 *  ) fenris fights ???
-		 *  ) get large pink egg -> cock vanishs, he is cuntboy now; cockcage is now clitcage damn! 
-		 *  ) fenris fights ???
-		 * 
-		 *  ) found key
-		 *  ) release fenris -quest solved
-		 * */
-		
 		
 		//those are the main quest stages
 		public static const MAINQUEST_Not_Met:uint = 		0;		//initial value
 		public static const MAINQUEST_Spotted:uint = 		5;		//PC heard him in the bushes
 		public static const MAINQUEST_Spotted2:uint = 		10;	//PC saw him at the lake
 		public static const MAINQUEST_Greetings:uint = 		20;	//PC talked to him first time
-		public static const MAINQUEST_Steal_Cloth:uint = 	25; //PC decided to steal his loin cloth
-		public static const MAINQUEST_CAGED_Init:uint = 	30; //Fenris got COCKCAGE from Fetish guys
-		public static const MAINQUEST_CAGED:uint = 			35; //Fenris got COCKCAGE from Fetish guys; you talked with him already
-		public static const MAINQUEST_FORGEKEY1:uint =		40; //asked blacksmith for help, cannot forge
-		public static const MAINQUEST_SHRINKCOCK1:uint = 	50; //tryd to shrink his cock a little bit 
-		public static const MAINQUEST_HUNTKEY1:uint =		60; //defeat fetish zealot, but key lost
-		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		65; //bought key from fetish zealot, this is the quick end
+		public static const MAINQUEST_Greetings2:uint = 		22;	//PC talked where he cam from
+		public static const MAINQUEST_Greetings3:uint = 		26;	//PC talked how sex normally works since fenris is a virgin
+		public static const MAINQUEST_Steal_Cloth:uint = 	30; //PC decided to steal his loin cloth
+		public static const MAINQUEST_CAGED_Init:uint = 	40; //Fenris got COCKCAGE from Fetish guys because running around naked
+		public static const MAINQUEST_CAGED:uint = 			45; //Fenris got COCKCAGE from Fetish guys; you talked with him already
+		public static const MAINQUEST_FORGEKEY1:uint =		50; //asked blacksmith for help, cannot forge, decides that its easier to shrink cock
+		public static const MAINQUEST_SHRINKCOCK1:uint = 	60; //tryd to shrink his cock a little bit but cage shrinks also !
+		public static const MAINQUEST_HUNTKEY1:uint =		70; //defeat fetish zealot, but key lost
+		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		75; //bought key from fetish zealot, this is the quick end -->
+		public static const MAINQUEST_Greetings4:uint = 		80;	//PC talked about alternative sex anal,oral;
 		
-		public static const MAINQUEST_IMPRISSONED:uint =		100; //someone tells you fenris got captured
-		public static const MAINQUEST_IMPRISSONED2:uint =		110; //you are ready to flee, do you take fenris with you; maybe some obedience training would be of use for him?
-		public static const MAINQUEST_IMPRISSONED3:uint =		120; //you fled with him
+		public static const MAINQUEST_HUNTKEY2:uint =		85; // defend fenris against ?; if you dont help him or fail he might get captured
+		public static const MAINQUEST_IMPRISSONED:uint =		300; //someone tells you fenris got captured, player has to free him from prison; how to get to prison if no access to bazaar?
+		public static const MAINQUEST_IMPRISSONED2:uint =		310; //you are ready to flee, do you take fenris with you; maybe some obedience training would be of use for him?
+		public static const MAINQUEST_IMPRISSONED3:uint =		320; //you fled with him
+		//this might repeat several times, the more often he get captured, the more submissive and corrupted he gets
+		//f.e. plaything for hellhounds, akabals bitch,...		
+		public static const MAINQUEST_HUNTKEY3:uint =		400; //fenris is plaything for hellhound, still no key, gets collared?
+		public static const MAINQUEST_SHRINKCOCK2:uint =	500; //he has no cock anymore; still has clitcage
+		public static const MAINQUEST_FORGEKEY2:uint =		550; //spook to smith again; tells you that the key is attracted to the chastity-device; just continue helping fenris to search for it
 		
-		public static const MAINQUEST_HUNTKEY3:uint =		200; //fenris is plaything for hellhound, still no key, gets collared?
-		public static const MAINQUEST_SHRINKCOCK2:uint =	300; //he has no cock anymore; still has clitcage
-		public static const MAINQUEST_HUNTKEY4:uint =		400; //fenris is akabals bitch, still no key
+		public static const MAINQUEST_HUNTKEY4:uint =		600; //				
+		public static const MAINQUEST_HUNTKEY5:uint =		700; //fight ?? 
+		public static const MAINQUEST_FOUNDKEY:uint =		800; //you get the key but it is damaged
+		public static const MAINQUEST_DEFER_UNCAGE:uint =		850; //you spoke with fenris but didnt uncage him
+		public static const MAINQUEST_UNCAGE:uint =		900; //you released fenris -> quest done; but maybe you can keep the cock cage?
 		
-		public static const MAINQUEST_HUNTKEY5:uint =		500; //fight ?? 
-		public static const MAINQUEST_FOUNDKEY:uint =		600; //you get the key but it is damaged
-		public static const MAINQUEST_UNCAGE:uint =		700; //you released fenris
+		// alternative questline - you got the key but decided to keep the cuntboy  in chastity
+		// you discover that you can release the chastity-rings temporary and stuff him with eggs
+		// if you fed him a ovi-elixir he will grow them to large eggs; just keep the chastity-rings closed and wait
+		// after some repeats he doesnt even need the elixir
+		
+		// give him some  ? to grow 3 rows of tittys
+		// get the hellhounds to breed him for some stronger hellerhounds
+		
+		// alternative questline - this will mutate fenris into a demonic werwolf lord 
+		// the caged questline should be finished before this is started, doesnt need to free him from the cage however
+		// MAINQUEST_TRAINING1	//you start to do more combat training with him 
+		// //you fed him stuff to make him grow stronger (black pepper), this will also fire up his libido
+		// he grows more confident, well a little bit over confident and demanding; show him his place or else...
+		// gets into trouble with kiha/Jojo ...??
+		// joins the dark side and gets more and more corrupted
+		// trys to dominate the player, fights him if he is not corrupted
+		// ...??
 		
 		//those flags keep track of the mainquest history (bitwise)
 		public static const MAINFLAG_STOLE_CLOTH:uint = 	1 << 0;	//PC stole loin cloth
