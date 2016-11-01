@@ -1470,6 +1470,9 @@ package classes.Scenes.Combat
 			if (player.shield != ShieldLib.NOTHING) {
 				addButton(button++, "Shield Bash", shieldBash, null, null, null, "Bash your opponent with a shield. Has a chance to stun. Bypasses stun immunity. \n\nThe more you stun your opponent, the harder it is to stun them again.");
 			}
+			if (player.findStatusEffect(StatusEffects.FenrisCombatSupport)>0 && player.statusEffectv1(StatusEffects.FenrisCombatSupport)<=0) {
+				addButton(button++, "Call Fenris", FenrisCombatSupport, -1, null, null, "Call out for Fenris. It might take a while until [Fenris ey] appears.");
+			}
 			addButton(14, "Back", combat.combatMenu, false);
 		}
 		
@@ -2409,6 +2412,25 @@ package classes.Scenes.Combat
 			monster.doAI();
 		}
 		
+		public function FenrisCombatSupport(Round:int):void { //function is called from CombatAbilitys and Combat
+			if ( player.findStatusEffect(StatusEffects.FenrisCombatSupport) < 0) {
+				CoC_Settings.error("StatusEffects.FenrisCombatSupport not found in Player");
+				return; 
+			}
+			if (Round < 0) { // function got called from CombatAbilitys to start
+				player.changeStatusValue(StatusEffects.FenrisCombatSupport, 1, 10); //Reset cooldown for next battle !
+				//Todo: he should not appear in Plot-fights / Sparrings...?
+				player.changeStatusValue(StatusEffects.FenrisCombatSupport, 2, 1);// Todo:  random chance that fenris appears within 0..3 rounds
+			}
+			if (player.statusEffectv2(StatusEffects.FenrisCombatSupport) <= 0) { //he arrived now
+				// his damage depends on his weapon & level - Todo how to calculate
+				outputText("\nFenris didnt deal any damage.");
+			} else {
+				outputText("\nFenris is still nowhere to be seen.");
+				player.addStatusValue(StatusEffects.FenrisCombatSupport, 2, -1) //still not here
+			}
+			
+		}
 	}
 
 }

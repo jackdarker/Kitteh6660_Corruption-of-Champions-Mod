@@ -143,6 +143,7 @@ package classes
 		public static const TensionReleased:StatusEffectType = mk("TensionReleased");
 		public static const TF2:StatusEffectType = mk("TF2");
 		public static const TookBlessedSword:StatusEffectType = mk("Took Blessed Sword");
+		public static const FenrisCombatSupport:StatusEffectType = mk("FenrisCombatSupport");	// v1=  hours cooldown  v2= rounds until combat ready
 		
 		//Old status plots. DEPRECATED, DO NOT USE. Currently cannot be removed without breaking existing saves.
 		public static const DungeonShutDown:StatusEffectType = mk("DungeonShutDown");

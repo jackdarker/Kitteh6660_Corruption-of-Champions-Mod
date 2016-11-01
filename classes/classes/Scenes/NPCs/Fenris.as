@@ -19,6 +19,7 @@ package classes.Scenes.NPCs{
 	import classes.Appearance;
 	import classes.internals.*;
 	import classes.CoC;
+	import classes.BaseContent;
 	import classes.CockTypesEnum;
 	import classes.Items.Consumables.SimpleConsumable;
 	import classes.ItemType;
@@ -33,16 +34,16 @@ package classes.Scenes.NPCs{
 		public static const MAINQUEST_Spotted:uint = 		5;		//PC heard him in the bushes
 		public static const MAINQUEST_Spotted2:uint = 		10;	//PC saw him at the lake
 		public static const MAINQUEST_Greetings:uint = 		20;	//PC talked to him first time
-		public static const MAINQUEST_Greetings2:uint = 		22;	//PC talked where he cam from
-		public static const MAINQUEST_Greetings3:uint = 		26;	//PC talked how sex normally works since fenris is a virgin
-		public static const MAINQUEST_Steal_Cloth:uint = 	30; //PC decided to steal his loin cloth
-		public static const MAINQUEST_CAGED_Init:uint = 	40; //Fenris got COCKCAGE from Fetish guys because running around naked
-		public static const MAINQUEST_CAGED:uint = 			45; //Fenris got COCKCAGE from Fetish guys; you talked with him already
-		public static const MAINQUEST_FORGEKEY1:uint =		50; //asked blacksmith for help, cannot forge, decides that its easier to shrink cock
-		public static const MAINQUEST_SHRINKCOCK1:uint = 	60; //tryd to shrink his cock a little bit but cage shrinks also !
-		public static const MAINQUEST_HUNTKEY1:uint =		70; //defeat fetish zealot, but key lost
-		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		75; //bought key from fetish zealot, this is the quick end -->
-		public static const MAINQUEST_Greetings4:uint = 		80;	//PC talked about alternative sex anal,oral;
+		public static const MAINQUEST_Greetings2:uint = 		25;	//PC talked where he cam from
+		public static const MAINQUEST_Greetings3:uint = 		30;	//PC talked how sex normally works since fenris is a virgin
+		public static const MAINQUEST_Steal_Cloth:uint = 	100; //PC decided to steal his loin cloth
+		public static const MAINQUEST_CAGED_Init:uint = 	110; //Fenris got COCKCAGE from Fetish guys because running around naked
+		public static const MAINQUEST_CAGED:uint = 			120; //Fenris got COCKCAGE from Fetish guys; you talked with him already
+		public static const MAINQUEST_FORGEKEY1:uint =		130; //asked blacksmith for help, cannot forge, decides that its easier to shrink cock
+		public static const MAINQUEST_SHRINKCOCK1:uint = 	140; //tryd to shrink his cock a little bit but cage shrinks also !
+		public static const MAINQUEST_HUNTKEY1:uint =		150; //defeat fetish zealot, but key lost
+		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		155; //bought key from fetish zealot, this is the quick end -->
+		public static const MAINQUEST_Greetings4:uint = 		160;	//PC talked about alternative sex anal,oral;
 		
 		public static const MAINQUEST_HUNTKEY2:uint =		85; // defend fenris against ?; if you dont help him or fail he might get captured
 		public static const MAINQUEST_IMPRISSONED:uint =		300; //someone tells you fenris got captured, player has to free him from prison; how to get to prison if no access to bazaar?
@@ -613,6 +614,7 @@ package classes.Scenes.NPCs{
 			_BreastStore = new BreastStore(kFLAGS.FENRIS_BREAST);
 			CoC.saveAwareClassAdd(_BreastStore);
 		}
+		
 		/* for debug-Reset
 		 */
 		public function resetFenris():void {
@@ -742,6 +744,11 @@ package classes.Scenes.NPCs{
 								kGAMECLASS.outputText("You hear rumors that Fenris leveld up.\n");
 							}
 						}
+					}
+				}
+				if (kGAMECLASS.player.findStatusEffect(StatusEffects.FenrisCombatSupport) >= 0) { //? should be moved to player?
+					if (kGAMECLASS.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
+						kGAMECLASS.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
 					}
 				}
 			}

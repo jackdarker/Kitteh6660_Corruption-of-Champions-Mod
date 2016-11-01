@@ -33,17 +33,22 @@ package classes.Scenes.NPCs{
 				stage = Fenris.MAINQUEST_Spotted;
 				break;
 		case Fenris.MAINQUEST_Spotted: 
-		case Fenris.MAINQUEST_Greetings: 
+			stage = Fenris.MAINQUEST_Greetings2;
+			break;
+		case Fenris.MAINQUEST_Greetings2: 
+			stage = Fenris.MAINQUEST_Greetings3;
+			break;	
+		case Fenris.MAINQUEST_Greetings3: 
 			if (value==1) {
-				stage = Fenris.MAINQUEST_Greetings;
+				stage = Fenris.MAINQUEST_Greetings3;
 			} else {
 				stage = Fenris.MAINQUEST_Steal_Cloth;				
 			}
 			break;
 		case Fenris.MAINQUEST_Steal_Cloth:
-			stage = Fenris.MAINQUEST_Greetings;
+			stage = Fenris.MAINQUEST_Greetings3;
 			break;
-		case Fenris.MAINQUEST_Greetings:
+		case Fenris.MAINQUEST_Greetings3:
 			stage = Fenris.MAINQUEST_CAGED_Init;
 			break;
 		case Fenris.MAINQUEST_CAGED_Init:
@@ -100,12 +105,14 @@ public function encounterTrackingLake():void {
 		addButton(0, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 		break;
 	case Fenris.MAINQUEST_Spotted:
+	case Fenris.MAINQUEST_Greetings:
+	case Fenris.MAINQUEST_Greetings2:
 		greetingsFirstTime(0);
 		break;
 	case Fenris.MAINQUEST_Steal_Cloth:
 		afterLoinClothStealDlg(0)
 		break;
-	case Fenris.MAINQUEST_Greetings:  
+	case Fenris.MAINQUEST_Greetings3:  
 	case Fenris.MAINQUEST_CAGED_Init:  
 	case Fenris.MAINQUEST_CAGED:  		
 		if (_rand < 10 && !_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) { //repeats randomly until Player steals his gear
@@ -144,10 +151,20 @@ private var _dlgStage:int;
 private function greetingsFirstTime (dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
+	var _stage:uint = Fenris.getInstance().getMainQuestStage();
 	if (dlgstage <= 0 ) {
-		outputText("\nYou see someone in the water. Maybe you should go over for greeting.\n\n");
 		menu();
-		addButton(0, "Greetings", greetingsFirstTime, 100, null, null, "Head over for some greetings");
+		if (_stage >= Fenris.MAINQUEST_Greetings2) {
+			outputText("\nYou head over to Fenris. He seems to be nervous about something.\n\n");
+			addButton(0, "Greetings", greetingsFirstTime, 300, null, null, "Head over for some greetings");
+			
+		}else if (_stage >= Fenris.MAINQUEST_Greetings) {
+			outputText("\nThere is Fenris again, standing at the shoreline of the see and staring into the water.\n\n");
+			addButton(0, "Greetings", greetingsFirstTime, 200, null, null, "Head over for some greetings");
+		} else {
+			outputText("\nYou see someone in the water. Maybe you should go over for greeting.\n\n");
+			addButton(0, "Greetings", greetingsFirstTime, 100, null, null, "Head over for some greetings");
+		}		
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 100) { //	
 		clearOutput();
@@ -165,6 +182,22 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 	} else if (dlgstage == 120) { //
 		outputText("\n\n As you leave, an odd idea comes to your mind: Maybe you should have tried to steal his loin cloth while he was busy in the lake. That might have given you the opportunity to check the rest of his \"gear\"...", false);
 		progressMainQuest(1);
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+	} else if (dlgstage == 200) { //
+		outputText("\n\n Todo: speak about where he came from." , false);
+		progressMainQuest(1);
+		menu();
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+	} else if (dlgstage == 300) { //
+		outputText("\n\n '<i>Everything alright with you?<i>'\n '<i>Umm.. yes I think.<i>' he responds '<i> I'm just a little puzzled about...<i> \n" , false);
+		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...<i>'\n '<i>and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant'<i>' \n" , false);
+	
+		progressMainQuest(1);
+		menu();
+		addButton(0, "Next", greetingsFirstTime, 301, null, null, "");
+	} else if (dlgstage == 301) { //
+		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? <i>'" , false); //Todo: explain him about the flowers and bees
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	}
@@ -586,6 +619,10 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		addButton(3, "No Unlock", questCagedDlg, 320, null, null, "");	
 	} else if (dlgstage == 310) { //
 		outputText("\nTODO: You decide to unlock Fenris and he is happy about this.");
+		outputText("\n<B>You might now call Fenris for help in combat (added Physical Skill - Fenris Combat Support)</B>");
+		if (player.findStatusEffect(StatusEffects.FenrisCombatSupport) < 0) {
+			player.createStatusEffect(StatusEffects.FenrisCombatSupport,0,0,0,0);
+		}
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");			
@@ -630,7 +667,6 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		progressMainQuest(2);
 	}
 }
-
 private function stealCloth (dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
@@ -687,7 +723,6 @@ private function fenrisAppearance(back:Function):void {
 	menu();
 	doNext(back);
 }
-
 private function randomEvent(dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
