@@ -57,6 +57,7 @@ package classes.Scenes.NPCs
 		_monster.tailType = TAIL_TYPE_DOG;
 		_monster.tailRecharge = 0;
 		_monster.checkMonster();		
+		
 	}
 	//adjust the Enemy-Level
 	private function recalcBaseStats():void {
@@ -272,24 +273,12 @@ package classes.Scenes.NPCs
 	}
 	override public function defeated(hpVictory:Boolean):void
 	{
-		//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.PCBeatsUpSalamanderSparring();
-		//else game.helScene.beatUpHel();
-		outputText("\n\nYou defeated Fenris");
-		game.combat.cleanupAfterCombat();
+		game.fenrisScene.winAgainstFenris();
+		
 	}
 
 	override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 	{
-		if (pcCameWorms){
-			outputText("\n\nFenris waits it out in stoic silence...");
-			doNext(game.combat.endLustLoss);
-		} else if (PentacleState > 2) {
-			//Todo Pentaclerape
-			game.fenrisScene.loseToFenris();
-		} else {
-			//if (findStatusEffect(StatusEffects.Sparring) >= 0) game.helFollower.loseToSparringHeliaLikeAButtRapedChump();
-			game.fenrisScene.loseToFenris();
-		}
+		game.fenrisScene.loseToFenris();
 	}
-	}
-}
+}}

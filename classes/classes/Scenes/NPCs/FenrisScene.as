@@ -35,6 +35,9 @@ package classes.Scenes.NPCs{
 		case Fenris.MAINQUEST_Spotted: 
 			stage = Fenris.MAINQUEST_Greetings2;
 			break;
+		case Fenris.MAINQUEST_Greetings: 
+			stage = Fenris.MAINQUEST_Greetings2;
+			break;	
 		case Fenris.MAINQUEST_Greetings2: 
 			stage = Fenris.MAINQUEST_Greetings3;
 			break;	
@@ -46,9 +49,6 @@ package classes.Scenes.NPCs{
 			}
 			break;
 		case Fenris.MAINQUEST_Steal_Cloth:
-			stage = Fenris.MAINQUEST_Greetings3;
-			break;
-		case Fenris.MAINQUEST_Greetings3:
 			stage = Fenris.MAINQUEST_CAGED_Init;
 			break;
 		case Fenris.MAINQUEST_CAGED_Init:
@@ -70,13 +70,58 @@ package classes.Scenes.NPCs{
 			} else {
 				stage = Fenris.MAINQUEST_HUNTKEY1;
 			}
+			break;
 		case Fenris.MAINQUEST_HUNTKEY1_SUCCESS:
+		case Fenris.MAINQUEST_FOUNDKEY:
 			if (value==1 ) {
 				stage = Fenris.MAINQUEST_UNCAGE;
 			} else { 
 				stage = Fenris.MAINQUEST_DEFER_UNCAGE;
 			}
-			stage = Fenris.MAINQUEST_UNCAGE;
+			break;
+		case Fenris.MAINQUEST_HUNTKEY1:		
+				stage = Fenris.MAINQUEST_HUNTKEY3; //<- Todo switch MAINQUEST_Greetings4 
+			break;	
+		case Fenris.MAINQUEST_Greetings4:
+				stage = Fenris.MAINQUEST_HUNTKEY2;
+			break;		
+		case Fenris.MAINQUEST_HUNTKEY2:		//Todo : only trigger if prison is reachable 
+				stage = Fenris.MAINQUEST_IMPRISSONED;
+			break;	
+		case Fenris.MAINQUEST_IMPRISSONED:		//
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_IMPRISSONED3;
+			} else { 
+				stage = Fenris.MAINQUEST_IMPRISSONED2;
+			}
+			break;
+		case Fenris.MAINQUEST_HUNTKEY2:
+				stage = Fenris.MAINQUEST_HUNTKEY3; 
+			break;	
+		case Fenris.MAINQUEST_HUNTKEY3:
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_SHRINKCOCK2;
+			} 
+			break;
+		case Fenris.MAINQUEST_SHRINKCOCK2:
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_FORGEKEY2;
+			} 
+			break;
+		case Fenris.MAINQUEST_FORGEKEY2:
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_HUNTKEY4;
+			} 
+			break;
+		case Fenris.MAINQUEST_HUNTKEY4:
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_HUNTKEY5;
+			} 
+			break;
+		case Fenris.MAINQUEST_HUNTKEY5:
+			if (value==1 ) {
+				stage = Fenris.MAINQUEST_FOUNDKEY;
+			} 
 			break;
 		default:
 			trace("missing Fenris-stage " + stage.toString());
@@ -86,15 +131,48 @@ package classes.Scenes.NPCs{
 
 /* jumps into this function to switch to the actual quest dialog
  * */
-public function encounterTrackingLake():void {	
+public function isEncounterPossible(Place:String):Boolean {
+	var _fenris:Fenris = Fenris.getInstance();
+	var stage:uint = _fenris.getMainQuestStage();
+	var _fightHim:Boolean = stage > Fenris.MAINQUEST_Spotted && _fenris.getPlayerRelation() < -10;
+	if (Place == "Lake") {	//not imprissoned
+		return (!_fenris.testMainQuestFlag(Fenris.MAINFLAG_SLAVEPRISON));
+	} /*else if (Place == "DESERT") {
+		return (_fenris.testMainQuestFlag(Fenris.MAINFLAG_SLAVEPRISON) ||
+			_fenris.getMainQuestStage() == Fenris.MAINQUEST_IMPRISSONED );	
+	}*/
+	return false;
+}
+public function encounterTracking(Place:String):void {
 	//Todo: spriteSelect(68);
 	var _fenris:Fenris = Fenris.getInstance();
 	var stage:uint = _fenris.getMainQuestStage();
 	var _rand:Number = rand(100);
-	if (stage>Fenris.MAINQUEST_Spotted && _fenris.getPlayerRelation() < -10) {  // he is our enemy now
+	if ( _fenris.getMainQuestStage() == Fenris.MAINQUEST_IMPRISSONED || _fenris.testMainQuestFlag(Fenris.MAINFLAG_SLAVEPRISON )) {  //Todo description
+		clearOutput();
+		outputText("\nYou get the information that Fenris got captured by slavers. You need to help him escape from the prison.\n\n");	
+		menu();
+		addButton(0, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");					
+		return;
+	}
+
+	if (stage > Fenris.MAINQUEST_Spotted && _fenris.getPlayerRelation() < -10) {  // he is our enemy now
 			startCombat(new FenrisMonster());
+			//Todo improve Relation if you submit freely
 			return;
 	}
+	if (Place == "Lake") {
+		encounterTrackingLake();
+	} 
+}
+	
+
+private function encounterTrackingLake():void {	
+	//Todo: spriteSelect(68);
+	var _fenris:Fenris = Fenris.getInstance();
+	var stage:uint = _fenris.getMainQuestStage();
+	var _rand:Number = rand(100);
+	
 	// this will switch dialogs depending on quest stage; see Fenris.as for short Quest-overview
 	switch (stage ) {
 	case Fenris.MAINQUEST_Not_Met:
@@ -131,6 +209,7 @@ public function encounterTrackingLake():void {
 		break;
 	case Fenris.MAINQUEST_FORGEKEY1:  
 	case Fenris.MAINQUEST_SHRINKCOCK1:  
+	case Fenris.MAINQUEST_HUNTKEY3:  
 		if (_rand > 70 ) { 
 			questCagedDlg();
 		} else if (_rand > 90 && _fenris.getPlayerRelation()>-10) { //randomize other combat/support-scene
@@ -141,6 +220,36 @@ public function encounterTrackingLake():void {
 		debugScr(0); 
 	}
 }
+
+public function encounterTrackingDesert():void {	
+	var _fenris:Fenris = Fenris.getInstance();
+	var stage:uint = _fenris.getMainQuestStage();
+	var _rand:Number = rand(100);
+	
+	if (_fenris.testMainQuestFlag(Fenris.MAINFLAG_SLAVEPRISON) ||
+			_fenris.getMainQuestStage() == Fenris.MAINQUEST_IMPRISSONED ) {  //Todo description
+		clearOutput();
+		outputText("\nYou can feel someone hiding in the underbushes. \n'<i>Hey, come out</i>' you call. But there is only silence.\n\n");	
+		progressMainQuest(1);
+		menu();
+		addButton(0, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");		
+			
+		return;
+	}
+	switch (stage ) {
+	case Fenris.MAINQUEST_IMPRISSONED:
+		clearOutput();
+		outputText("\nYou can feel someone hiding in the underbushes. \n'<i>Hey, come out</i>' you call. But there is only silence.\n\n");	
+		progressMainQuest(1);
+		menu();
+		addButton(0, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+		break;
+	default:
+		trace("missing Fenris-stage " + stage.toString());
+		debugScr(0); 
+	}
+}
+
 //some explanation about this:
 //	usualy I have a function for every Quest-Stage. This function has an additional stage which has nothing to do with Quest-Stage
 // It is used to switch through different substates/dialogs by repeatedly calling the function
@@ -260,6 +369,7 @@ private function metAgain(dlgstage:int = -1):void {
 		addButton(0, "Give food", metAgain, 100, null, null, "See if you have some food to spare");
 		addButton(1, "Give directions", metAgain, 200, null, null, "what places to go to or avoid");
 		//addButton(2, "What to eat", metAgain, 300, null, null, "what to eat");
+		addButton(3, "Train", metAgain, 400, null, null, "");
 		if (_fenris.getMainQuestStage() >=Fenris.MAINQUEST_CAGED && _fenris.getMainQuestStage() <Fenris.MAINQUEST_UNCAGE) {
 			addButton(5, "Quest", questCagedDlg, 0, null, null, "");
 			addButton(7, "Rewards", metAgain, 600, null, null, "Ask about some rewards - greedy bitch");
@@ -287,8 +397,18 @@ private function metAgain(dlgstage:int = -1):void {
 		outputText("\nWhat food should he avoid or search \n\n");	
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
-		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (dlgstage == 400) {//Todo: check your map and tell him who to attack/trust
+		addButton(14, "Back", metAgain, 0, null, null, "");	
+	} else if (dlgstage == 400) {	// do some Training
+		outputText("Would you like to do some Sparring with him? \nYou could also fake a loss to boost his selfesteem.\n");	
+		menu();
+		addButton(1, "Sparring", metAgain, 410, null, null);
+		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
+		addButton(14, "Back", metAgain, 0, null, null, "");	
+	} else if (dlgstage == 410) { // do some sparring
+		startCombat(new FenrisMonster());
+		monster.createStatusEffect(StatusEffects.Sparring, 0, 0, 0, 0);
+		monster.gems = 0;
+	} else if (dlgstage == 450) {//Todo: check your map and tell him who to attack/trust  ??
 		outputText("Todo: should he fight some enemys for experience? What could go wrong fighting a minotaur? \n\n");	
 		menu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
@@ -303,10 +423,12 @@ private function metAgain(dlgstage:int = -1):void {
 		addButton(7, "Do better", metAgain, 630, null, null, "He should do better than that");
 	} else if (dlgstage == 620) {//Todo: take item if inventory not full
 		outputText("\nYou thank him for his offering but you dont want it right now.\n");
+		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 630) {//Todo: chance that he will present something better next time 
 		//will make him more submissive; dont overdue it or he gets pissed at you
 		outputText("\nYou scold him to not waste your time with such pitiful offering.\n");
+		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	}else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
@@ -357,6 +479,14 @@ private function goThere(Flag:uint, dlgstage:int = -1):void {
 			outputText("You tell him that he should hike the mountains.\n");
 			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN,true)
 		break;
+	case Fenris.MAINFLAG_SEARCH_DEEPWOOD:
+			outputText("You tell him that he should stride deeper into the forest.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_DEEPWOOD,true)
+		break;
+	case Fenris.MAINFLAG_SEARCH_DESERT:
+			outputText("You tell him that he try his luck in the desert.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_DESERT,true)
+		break;
 	default:
 		trace("missing location " + Flag.toString());
 	}
@@ -375,6 +505,14 @@ private function dontGoThere(Flag:uint, dlgstage:int = -1):void {
 	case Fenris.MAINFLAG_SEARCH_MOUNTAIN:
 			outputText("You tell him that he should avoid the mountains.\n");
 			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN,false)
+		break;
+	case Fenris.MAINFLAG_SEARCH_DEEPWOOD:
+			outputText("You tell him that he should avoid the deep wood.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_DEEPWOOD,false)
+		break;
+	case Fenris.MAINFLAG_SEARCH_DESERT:
+			outputText("You tell him that he should avoid the desert.\n");
+			Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_SEARCH_DESERT,false)
 		break;
 	default:
 		trace("missing location " + Flag.toString());
@@ -473,7 +611,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 		Fenris.getInstance().increasePlayerRelation(10, 30);
 		Fenris.getInstance().increaseSelfEsteem(10, 30);
 		Fenris.getInstance().setMainQuestFlag(Fenris.MAINFLAG_CAGED_HELPHIM, true);
-		progressMainQuest(1);
+		progressMainQuest(3);	// (1);  Todo: this is now bypassing the forgekey dialog until its implemented
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 202 ) {
@@ -527,7 +665,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 			outputText("\n He didnt seem to take that for a good message '<i>So that means I'm stuck with it?<i>'\n", false)
 			menu();
 			addButton(0, "Next", questCagedDlg, 100, null, null, "");
-		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_SHRINKCOCK1) { //Todo: only if PC unlocked fetish zealot
+		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_SHRINKCOCK1) { //Todo: trigger only if PC unlocked fetish zealot
 			outputText("As you patrol around the lake, you can see a group of people gathering at a makeshift shelter.\n", false)
 			outputText("You decide to hide and spy on them before you take further steps.\n", false)
 			menu();
@@ -573,7 +711,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	
-	} else if (dlgstage == 200) {	
+	} else if (dlgstage == 200) {	//<- remove dick
 		outputText("A small pink egg didnt work out last time. But how about removing his dick completely? Sure he would loose his maleness, but in this strange land it shouldnt be that hard to restore it.\n");
 		menu();
 		if (player.hasItem(consumables.L_PNKEG, 1) ) {
@@ -615,8 +753,8 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nOR delay unlock.");
 		progressMainQuest(1);
 		menu();
-		addButton(1, "Unlock",questCagedDlg, 310, null, null, "");
-		addButton(3, "No Unlock", questCagedDlg, 320, null, null, "");	
+		addButton(1, "Unlock now",questCagedDlg, 310, null, null, "");
+		addButton(3, "Unlock later", questCagedDlg, 320, null, null, "");	
 	} else if (dlgstage == 310) { //
 		outputText("\nTODO: You decide to unlock Fenris and he is happy about this.");
 		outputText("\n<B>You might now call Fenris for help in combat (added Physical Skill - Fenris Combat Support)</B>");
@@ -649,7 +787,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		addButton(14, "Run", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 420) { 
 		clearOutput();
-		outputText("\nMumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n", false);
+		outputText("\nRumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n", false);
 		outputText("\n'<i>Oh thats not just the expense for the key, </i>' she responds smiling dangerously '<i>its also the charge for walking out of here freely. </i>'\n", false);
 		menu();
 		addButton(0, "Next", questCagedDlg, 421, null, null, ""); 
@@ -745,9 +883,25 @@ private function randomEvent(dlgstage:int = -1):void {
 /* 
  */ 
 public function loseToFenris():void {
-	outputText("Todo: Loose description ");
-	//Todo: wining against you will boost his selfesteem
+	//if (monster.findStatusEffect(StatusEffects.Sparring) >= 0)
+	outputText("Todo: Loose description, Pentaclerape maybe ");
+	//Todo: wining against you will boost his selfesteem + add XP
 	combat.cleanupAfterCombat();
-	//dynStats("lust+", 10 + player.lib / 10, "cor+", 5 + rand(10));
+
+ }
+ public function winAgainstFenris():void {
+	//Todo: loosing against you will lower his selfesteem + add XP
+	clearOutput();
+	outputText("Todo: Win description ");
+	if (monster.HP < 1) {
+	//	outputText("The kitsune hits the ground with an 'Oomph', landing roughly on her well-cushioned backside." + ((monster.hairColor == "red" && flags[kFLAGS.redheadIsFuta] == 0) ? "  The moment her rounded rump impacts the dirt, a swirling flame crackles to life between her legs, engulfing her exposed cock.  When it dies away, all that remains of her throbbing member is a pert cherry-colored bud between her dripping lips." : "") + "  She rubs her sore posterior, wincing in pain and pouting childishly.\n\n");
+	}	else { //Lust victory
+	//	outputText("The kitsune falls to the ground, one hand buried in her robes as she plays with herself shamelessly, too turned on to continue fighting." + ((monster.hairColor == "red" && flags[kFLAGS.redheadIsFuta] == 0) ? "  The moment her rounded rump impacts the dirt, a swirling flame crackles to life between her legs, engulfing her exposed cock.  When it dies away, all that remains of her throbbing member is a pert cherry-colored bud between her dripping lips." : "") + "\n\n" + ((player.lust >= 33) ? "<b>As you watch her lewd display, you realize your own lusts have not been sated yet. What will you do to her?</b>" : ""));
+	}
+	/*if (_fenris.hasVagina() && _fenris.getEquippedItem(ITEMSLOT_UNDERWEAR) == classes.Scenes.NPCs.Fenris.UNDERWEAR_COCKCAGE) {
+			// cannot fuck vagina
+		}*/
+	//menu();
+	combat.cleanupAfterCombat();
  }
 }}

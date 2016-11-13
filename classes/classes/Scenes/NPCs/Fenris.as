@@ -277,12 +277,36 @@ package classes.Scenes.NPCs{
 			if (x == MAINQUEST_Steal_Cloth) {
 				setMainQuestFlag(MAINFLAG_STOLE_CLOTH, true);
 				unequipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, _Result);
-			} 
+			}
+			if (x == MAINQUEST_IMPRISSONED) {
+				setMainQuestFlag(MAINFLAG_SLAVEPRISON, true);				
+			}
+			if (x == MAINQUEST_IMPRISSONED3) {
+				setMainQuestFlag(MAINFLAG_SLAVEPRISON, false);				
+			}
 			_MainQuestStage = x;
 		}
 		public function getMainQuestStage():uint {
 			return _MainQuestStage;
 		}
+		//{  --> body 
+		/*  TODO definition of bodyparts 
+		public static const BODY_HAND:uint 		= 0x0001;
+		public static const BODY_FEET:uint 		= 0x0002;
+		public static const BODY_TORSO:uint 	= 0x0004;
+		public static const BODY_HEAD:uint 		= 0x0008;
+		public static const BODY_TYPE:uint 		= 0x0010; 
+		// up to public static const BODY_??:uint 	= 0x8000;
+		//byte0&1 is the slot , byte 2&3 is the gear 	
+		public static const B_HAND_WOLF:uint 	= 0x000001;
+		public static const B_FEET_WOLF:uint 	= 0x000002;
+		public static const B_TORSO_WOLF:uint 	= 0x000004;
+		public static const B_HEAD_WOLF:uint 	= 0x000008;
+		public static const B_TYPE_2LEG2ARM:uint 	= 0x000010; 
+		public static const B_TYPE_4LEG:uint 		= 0x010010;  //feral
+		public static const B_TYPE_4LEG2ARM:uint 	= 0x010010;  // taur with normal torso
+		*/
+		
 		public function getCockSize(Index:int=0):Number {
 			var _size:Number;
 			if (Index == 0) { 
@@ -431,26 +455,32 @@ package classes.Scenes.NPCs{
 		}
 		//}  //
 		//{ --> stuff related to Items
-		//definition of items & equipment slots; actually only virtual items
-		//byte0&1 is the slot , byte 2&3 is the gear 
+		//definition of items & equipment slots; actually only virtual items		
 		public static const ITEMSLOT_UNDERWEAR:uint 		= 0x0001;
 		public static const ITEMSLOT_WEAPON:uint 			= 0x0002;
 		public static const ITEMSLOT_PIERC_BREAST:uint 	= 0x0004;
 		public static const ITEMSLOT_HEAD:uint 			= 0x0008;
-		public static const ITEMSLOT_FEET:uint 			= 0x0010;
-		public static const ITEMSLOT_HAND:uint 			= 0x0020;
+		public static const ITEMSLOT_FEET:uint 			= 0x0010; // & lower legs
+		public static const ITEMSLOT_HAND:uint 			= 0x0020; // & lower arms
 		public static const ITEMSLOT_NECK:uint 			= 0x0040;
-		// up topublic static const ITEMSLOT_??:uint 	= 0x8000;
-						
+		public static const ITEMSLOT_CHEST:uint 		= 0x0080;
+		// up to public static const ITEMSLOT_??:uint 	= 0x8000;
+		//byte0&1 is the slot , byte 2&3 is the gear 				
 		public static const UNDERWEAR_NONE:uint 			= 0x000001;
 		public static const UNDERWEAR_LOINCLOTH:uint 		= 0x020001;  //his default loincloth	
-		public static const UNDERWEAR_COCKCAGE:uint 		= 0x030001;
-		public static const UNDERWEAR_COCKRING:uint 		= 0x040001;
-		public static const WEAPON_NONE:uint 				= 0x000002;
+		public static const UNDERWEAR_COCKCAGE:uint 		= 0x030001;  //cock or clitcage ; quest related
+		public static const UNDERWEAR_COCKRING:uint 		= 0x040001; // a metal ring fitted around base of cock and balls; min lust 20 
+		public static const UNDERWEAR_BALLSTRETCHER:uint 	= 0x050001; // a thick&heavy looking metal ring around his nutsack; ++tease  --evade
+		public static const WEAPON_NONE:uint 			= 0x000002;
 		public static const WEAPON_KNIFE:uint 			= 0x010002;  //his default tool-knife
 		public static const HEAD_NONE:uint 				= 0x000008;
-		public static const HEAD_MUZZLE:uint 				= 0x010008;  //leatherstraps around muzzle, cannot bite
-		public static const HEAD_MUZZLEFULL:uint 			= 0x020008;  //full head muzzle add. obscuring view and other senses
+		public static const HEAD_MUZZLE:uint 			= 0x010008;  //leatherstraps around muzzle, cannot bite
+		public static const HEAD_MUZZLEFULL:uint 		= 0x020008;  //full head muzzle add. obscuring view and other senses
+		public static const NECK_NONE:uint 				= 0x000040; 
+		public static const NECK_LUCKPENDANT:uint 		= 0x010040;	// a talisman to shield him from bad events
+		public static const NECK_PETCOLLAR:uint 		= 0x020040; // a red colored leahter collar with his name tag; 
+		public static const NECK_SPIKEDCOLLAR:uint 		= 0x030040; // a thick black leather collar with metal spikes ; 
+		
 		
 		private var _AvailableItems:Array = []; //unordered list of items
 		public function getAllItems(): Array {
@@ -633,6 +663,8 @@ package classes.Scenes.NPCs{
 				setCorruption(2);
 				setPlayerRelation(10);
 				setLevel( 1);
+				setLust(0);
+				setLibido(0);
 				_MainQuestStage = 0;
 				_MainQuestFlags = 0;
 				_TempFlags = 0;
