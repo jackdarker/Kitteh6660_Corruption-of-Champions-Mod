@@ -61,14 +61,15 @@ package classes.Scenes.NPCs
 	}
 	//adjust the Enemy-Level
 	private function recalcBaseStats():void {
-		level = Fenris.getInstance().getLevel();
+		var _fenris:Fenris = Fenris.getInstance();
+		level = _fenris.getLevel();
 		//bonusHP = 75;
 		lust = Math.min(70,Fenris.getInstance().getLust());
-		lustVuln = .05;
+		lustVuln = 0.05*_fenris.getLibido();
 		
 		gems = 5 + rand(5);
-		initStrTouSpeInte(50, 50, 55, 50);
-		initLibSensCor(Fenris.getInstance().getLibido(), 20, Fenris.getInstance().getCorruption());
+		initStrTouSpeInte(_fenris.getStrength(), _fenris.getThoughness(), _fenris.getSpeed(), _fenris.getIntelligence());
+		initLibSensCor(_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
 			
 	}
 	//depending on equpped weapon of Fenris-NPC
@@ -78,11 +79,15 @@ package classes.Scenes.NPCs
 		switch (_weapon) {
 			case Fenris.WEAPON_KNIFE:
 					weaponVerb="cut";
-					weaponAttack = 10;
+					weaponAttack = 4;
+					break;
+			case Fenris.WEAPON_PIPE:
+					weaponVerb="smash";
+					weaponAttack = 5;
 					break;
 			default:
 					weaponVerb="slash";
-					weaponAttack = 4;
+					weaponAttack = 3;
 		}	
 	}
 	private function recalcArmorStats():void {

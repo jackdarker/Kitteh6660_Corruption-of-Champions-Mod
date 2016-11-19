@@ -4,6 +4,7 @@
  */
 package classes.Scenes.NPCs{
 
+	import classes.Items.Weapon;
 	import classes.Scenes.NPCs.Fenris;
 	import classes.Scenes.NPCs.FenrisMonster;
 	import classes.Scenes.Areas.Lake.FenrisGooFight;
@@ -12,6 +13,7 @@ package classes.Scenes.NPCs{
 	import classes.internals.*;
 	import classes.StatusEffects;
 	import classes.Items.Consumables.SimpleConsumable;
+	import classes.Items.Useable;
 	import classes.ItemType;
 
 	public class FenrisScene extends NPCAwareContent  {
@@ -80,7 +82,7 @@ package classes.Scenes.NPCs{
 			}
 			break;
 		case Fenris.MAINQUEST_HUNTKEY1:		
-				stage = Fenris.MAINQUEST_HUNTKEY3; //<- Todo switch MAINQUEST_Greetings4 
+				stage = Fenris.MAINQUEST_HUNTKEY3; //<- Todo switch to MAINQUEST_Greetings4 
 			break;	
 		case Fenris.MAINQUEST_Greetings4:
 				stage = Fenris.MAINQUEST_HUNTKEY2;
@@ -101,9 +103,12 @@ package classes.Scenes.NPCs{
 		case Fenris.MAINQUEST_HUNTKEY3:
 			if (value==1 ) {
 				stage = Fenris.MAINQUEST_SHRINKCOCK2;
-			} 
+			} else if (value == 2 ) {
+				stage = Fenris.MAINQUEST_SHRINKCOCK2_NO;
+			}
 			break;
 		case Fenris.MAINQUEST_SHRINKCOCK2:
+		case Fenris.MAINQUEST_SHRINKCOCK2_NO:
 			if (value==1 ) {
 				stage = Fenris.MAINQUEST_FORGEKEY2;
 			} 
@@ -193,15 +198,15 @@ private function encounterTrackingLake():void {
 	case Fenris.MAINQUEST_Greetings3:  
 	case Fenris.MAINQUEST_CAGED_Init:  
 	case Fenris.MAINQUEST_CAGED:  		
-		if (_rand < 10 && !_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) { //repeats randomly until Player steals his gear
+		if (_rand > 90 && !_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) { //repeats randomly until Player steals his gear
 			outputText("\nYou can see Fenris swimming in the lake again.\n\n");
 			menu();
 			addButton(0, "Greetings", metAgain, 0, null, null, "Head over for some greetings");
 			addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-		}else if ( _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) {
+		}else if (/*_rand > 40 && ??disabled for debug*/  _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) {
 			fenrisGotCaged(0);	
-		}else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_CAGED &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_CAGED_HELPHIM)) {
+		}else if (_fenris.getMainQuestStage() <= Fenris.MAINQUEST_CAGED &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_CAGED_HELPHIM)) {
 			fenrisGotCaged(400);
 		} else if (_rand > 90 && _fenris.getPlayerRelation()>-10) { //randomize other combat/support-scene
 			randomEvent();
@@ -209,7 +214,9 @@ private function encounterTrackingLake():void {
 		break;
 	case Fenris.MAINQUEST_FORGEKEY1:  
 	case Fenris.MAINQUEST_SHRINKCOCK1:  
-	case Fenris.MAINQUEST_HUNTKEY3:  
+	case Fenris.MAINQUEST_HUNTKEY3:
+	case Fenris.MAINQUEST_SHRINKCOCK2: 
+	case Fenris.MAINQUEST_SHRINKCOCK2_NO: 
 		if (_rand > 70 ) { 
 			questCagedDlg();
 		} else if (_rand > 90 && _fenris.getPlayerRelation()>-10) { //randomize other combat/support-scene
@@ -522,9 +529,13 @@ private function dontGoThere(Flag:uint, dlgstage:int = -1):void {
 }
 /*build random list of foods you could give away
  * random because we could have 20 foods but only 5 buttons and dont want to stick with first 5 foods !
- * Todo: make several pages instead
  */ 
 private function buildRandomGiveFoodMenu():void {
+
+	/* Todo: make several pages instead
+	 *if (player.hasItem(consumables.VITAL_T)) createMultiPageMenu(true,consumables.VITAL_T.shortName, giveFood, consumables.VITAL_T, 101, null);
+	if (player.hasItem(consumables.BLACKPP)) createMultiPageMenu(false,consumables.BLACKPP.shortName, giveFood, consumables.BLACKPP, 101, null);*/
+	
 	var _foods:TakeoutDrop = new TakeoutDrop(null);
 	if (player.hasItem(consumables.VITAL_T)) _foods.add(consumables.VITAL_T,1);
 	if (player.hasItem(consumables.BLACKPP)) _foods.add(consumables.BLACKPP,1);
@@ -532,6 +543,8 @@ private function buildRandomGiveFoodMenu():void {
 	if (player.hasItem(consumables.IMPFOOD)) _foods.add(consumables.IMPFOOD,1);
 	if (player.hasItem(consumables.GOB_ALE)) _foods.add(consumables.GOB_ALE,1);
 	if (player.hasItem(consumables.SDELITE)) _foods.add(consumables.SDELITE, 1);
+	if (player.hasItem(consumables.PPHILTR)) _foods.add(consumables.PPHILTR, 1);
+
 	var _item:SimpleConsumable;
 	_item = _foods.roll();
 	if (_item != null) addButton(0, _item.shortName, giveFood,_item, 101, null, "");
@@ -542,8 +555,45 @@ private function buildRandomGiveFoodMenu():void {
 	_item = _foods.roll();
 	if (_item != null) addButton(3, _item.shortName, giveFood,_item, 101, null, "");
 	_item = _foods.roll();
-	if (_item != null) addButton(4, _item.shortName,giveFood,_item, 101, null, "");
+	if (_item != null) addButton(4, _item.shortName, giveFood, _item, 101, null, "");
+	_item = _foods.roll();
+	if (_item != null) addButton(5, _item.shortName, giveFood,_item, 101, null, "");
+	_item = _foods.roll();
+	if (_item != null) addButton(6, _item.shortName, giveFood,_item, 101, null, "");
+	_item = _foods.roll();
+	if (_item != null) addButton(7, _item.shortName, giveFood,_item, 101, null, "");
+	_item = _foods.roll();
+	if (_item != null) addButton(8, _item.shortName, giveFood,_item, 101, null, "");
+	_item = _foods.roll();
+	if (_item != null) addButton(9, _item.shortName, giveFood, _item, 101, null, "");
 }
+private function buildRandomGiveItemMenu():void {
+	var _Items:TakeoutDrop = new TakeoutDrop(null);
+	if (player.hasItem(weapons.DAGGER)) _Items.add(weapons.DAGGER, 1);
+	if (player.hasItem(weapons.PIPE)) _Items.add(weapons.PIPE, 1);
+	if (player.hasItem(undergarments.FURLOIN)) _Items.add(undergarments.FURLOIN, 1);
+	var _Item:Useable = _Items.roll();
+	if (_Item != null) addButton(5, _Item.shortName, giveItem, _Item, 101, null, "");
+	_Item = _Items.roll();
+	if (_Item != null) addButton(6, _Item.shortName, giveItem, _Item, 101, null, "");
+	_Item = _Items.roll();
+	if (_Item != null) addButton(7, _Item.shortName, giveItem, _Item, 101, null, "");
+	_Item = _Items.roll();
+	if (_Item != null) addButton(8, _Item.shortName, giveItem, _Item, 101, null, "");
+	_Item = _Items.roll();
+	if (_Item != null) addButton(9, _Item.shortName, giveItem, _Item, 101, null, "");
+	
+}
+/*var ButtonCnt:int = 0;
+var Page:int = 0;
+private function createMultiPageMenu(init:Boolean,Name:String,Func1:Function,Arg1:*=null,Arg2:*=null,Arg3:*=null ):void {
+	if (init) {
+		ButtonCnt = Page = 0;
+	}
+	if (ButtonCnt%10) 
+	addButton(bt, Name, Func1, Arg1, Arg2, Arg3);
+	ButtonCnt += 1;
+}*/
 private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
@@ -556,6 +606,21 @@ private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
 	outputText(Result.Text);
 	if (Result.Code == 0) {
 		player.consumeItem(ItemType.lookupItem(Food.id));
+	}
+	menu();
+	doNext(metAgain);
+}
+private function giveItem(Item:Useable, dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	clearOutput();
+
+	var Result:ReturnResult = new ReturnResult();
+	Fenris.getInstance().equipItemFromUseable(Item, true,Result);
+	outputText("Fenris takes a suspicious look at " + Item.longName +".");
+	outputText(Result.Text);
+	if (Result.Code == 0) {
+		player.consumeItem(ItemType.lookupItem(Item.id));
 	}
 	menu();
 	doNext(metAgain);
@@ -680,7 +745,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 			//addButton(2, "Tease him",questCagedDlg, 310, null, null, "");
 			//}
 			addButton(1, "Unlock him",questCagedDlg, 300, null, null, "");
-		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_HUNTKEY3) {
+		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_HUNTKEY3 || _fenris.getMainQuestStage() == Fenris.MAINQUEST_SHRINKCOCK2_NO) {
 			outputText("You see Fenris in vain again. You rummage trough your gear to check if you have anything that could help.\n\n");
 			menu();
 			addButton(0, "Next",questCagedDlg, 200, null, null, "");
@@ -724,7 +789,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		//Todo: convince him
 		menu();
 		addButton(7, "Try it",questCagedDlg, 211, null, null, "");
-		addButton(14, "Back", metAgain, null, null, null, "");	
+		addButton(14, "Better Not", questCagedDlg, 250, null, null, "");	
 	} else if (dlgstage == 211) {
 		outputText("\nHesitantly he swallows down the egg.\n");
 		outputText("\nHe looks down in fear. His maleness shrinks as do his balls. He grabs the cage as he want to make sure to get rid of it this time.");
@@ -745,6 +810,11 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nIs this making his life easier? At least the goblins and harpies wouldnt be after him anymore...maybe.");
 		outputText("\n\nSo whats the plan now. You need that freaking key if there is any.");
 		progressMainQuest(1);
+		menu();
+		addButton(14, "Back", metAgain, 0, null, null, "");	
+	}	else if (dlgstage == 250) {
+		outputText("\nYou sigh..you are not sure if this will work and he is not fond of the idea. Maybe its better to find another way.\n");
+		progressMainQuest(2);
 		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 300) { // are you going to unlock him?

@@ -7,7 +7,9 @@ package classes.Scenes.NPCs{
 
 	import classes.BreastRowClass;
 	import classes.BreastStore;
+	import classes.Items.Useable;
 	import classes.Items.Weapon;
+	import classes.Items.WeaponLib;
 	import classes.PregnancyStore;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kFLAGS;
@@ -42,7 +44,7 @@ package classes.Scenes.NPCs{
 		public static const MAINQUEST_FORGEKEY1:uint =		130; //asked blacksmith for help, cannot forge, decides that its easier to shrink cock
 		public static const MAINQUEST_SHRINKCOCK1:uint = 	140; //tryd to shrink his cock a little bit but cage shrinks also !
 		public static const MAINQUEST_HUNTKEY1:uint =		150; //defeat fetish zealot, but key lost
-		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		155; //bought key from fetish zealot, this is the quick end -->
+		public static const MAINQUEST_HUNTKEY1_SUCCESS:uint =		155; //bought key from fetish zealot,  --> this is the quick end 
 		public static const MAINQUEST_Greetings4:uint = 		160;	//PC talked about alternative sex anal,oral;
 		
 		public static const MAINQUEST_HUNTKEY2:uint =		85; // defend fenris against ?; if you dont help him or fail he might get captured
@@ -53,10 +55,12 @@ package classes.Scenes.NPCs{
 		//f.e. plaything for hellhounds, akabals bitch,...		
 		public static const MAINQUEST_HUNTKEY3:uint =		400; //fenris is plaything for hellhound, still no key, gets collared?
 		public static const MAINQUEST_SHRINKCOCK2:uint =	500; //he has no cock anymore; still has clitcage
-		public static const MAINQUEST_FORGEKEY2:uint =		550; //spook to smith again; tells you that the key is attracted to the chastity-device; just continue helping fenris to search for it
+		public static const MAINQUEST_SHRINKCOCK2_NO:uint =	505; //you decided to not remove cock but you still can decide otherwise
+		
+		public static const MAINQUEST_FORGEKEY2:uint =		550; //spok to smith again; tells you that the key is attracted to the chastity-device; just continue helping fenris to search for it
 		
 		public static const MAINQUEST_HUNTKEY4:uint =		600; //				
-		public static const MAINQUEST_HUNTKEY5:uint =		700; //fight ?? 
+		public static const MAINQUEST_HUNTKEY5:uint =		700; //fight in Zetaz Lair again?? 
 		public static const MAINQUEST_FOUNDKEY:uint =		800; //you get the key but it is damaged
 		public static const MAINQUEST_DEFER_UNCAGE:uint =		850; //you spoke with fenris but didnt uncage him
 		public static const MAINQUEST_UNCAGE:uint =		900; //you released fenris -> quest done; but maybe you can keep the cock cage?
@@ -68,6 +72,8 @@ package classes.Scenes.NPCs{
 		
 		// give him some  ? to grow 3 rows of tittys
 		// get the hellhounds to breed him for some stronger hellerhounds
+		
+		// he is reluctant for analsex at beginning but after some training (by player/monster/quest) gets more affine to it
 		
 		// alternative questline - this will mutate fenris into a demonic werwolf lord 
 		// the caged questline should be finished before this is started, doesnt need to free him from the cage however
@@ -178,7 +184,7 @@ package classes.Scenes.NPCs{
 		/* returns fitness/masculinity of body  0=no muscles 100=bodybuilder on steroids  
 		 */ 
 		public function getBodyStrength():Number {
-			return _BodyStrength;
+			return (Number(_BodyStrength & 0xFFFF)) * 0.002;
 		}
 		public function increaseBodyStrength(x:Number, limit:Number):void {
 			var _old:Number = getBodyStrength();
@@ -193,8 +199,33 @@ package classes.Scenes.NPCs{
 				setTempFlag(TEMPFLAG_BODY_UP, _i>0);
 			}
 		}
+		//2 byte bodyStrength 100/50000 per bit
 		public function setBodyStrength(x:Number):void {
-			_BodyStrength=uint(x);
+			if (x < 0) return;
+			_BodyStrength= (_BodyStrength & 0xFFFF0000 )+((uint(x/0.002))&0xFFFF);
+		}
+		public function getIntelligence():Number { // the stronger the dumber 
+			return increaseStat(20,100-getBodyStrength()/2,maxAttributeForLevel());
+		}
+		public function getStrength():Number { // the stronger the stronger 
+			return increaseStat(20,getBodyStrength(),maxAttributeForLevel());
+		}
+		public function getThoughness():Number { // the stronger the thougher 
+			return increaseStat(20,getBodyStrength(),maxAttributeForLevel());
+		}
+		public function getSpeed():Number { // the stronger the slower 
+			return increaseStat(20,100-getBodyStrength()/2,maxAttributeForLevel());
+		}
+		private function maxAttributeForLevel():Number { //calculates max attribute-limit depending on level&others
+			var _level:uint = getLevel();
+			var _max:Number = 25;
+			if (_level >= 30) {
+				_max = 100;
+			} else if (_level < 5) {			
+			} else {
+				_max = _max + (100-_max) * ((_level - 5) / (30 - 5));		//lvl=20 -> 25+75*(15/25) = 70
+			}
+			return _max;
 		}
 		private var _SelfEsteem:uint = 0;
 		/* returns confidence of himself, modifys chances for fullfilling others request:0= easy to dominate 100= dominating others 
@@ -289,6 +320,7 @@ package classes.Scenes.NPCs{
 		public function getMainQuestStage():uint {
 			return _MainQuestStage;
 		}
+		//}
 		//{  --> body 
 		/*  TODO definition of bodyparts 
 		public static const BODY_HAND:uint 		= 0x0001;
@@ -394,7 +426,7 @@ package classes.Scenes.NPCs{
 		}
 		public function setVagina( Looseness:Number,  isVirgin:Boolean,  hasVagina:Boolean):void {
 		}
-		private var _AnalStats:uint = 0;
+		private var _AnalStats:uint = 0; //2 bytes Analsize ?00/50000 per bit ; 7bit AnalTraining ?; 1bit isVirgin
 		public function getAnalSize():Number {
 			return  0;
 		}
@@ -426,7 +458,7 @@ package classes.Scenes.NPCs{
 				} else {
 					Result.Text += "but it doesnt seem to have an effect on [fenris em]. \n "
 				}
-				if (getCorruption() < 70) {
+				if (getCorruption() < 60) {
 					setCorruption(getCorruption() + 3)
 					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone."
 				} else {
@@ -446,7 +478,14 @@ package classes.Scenes.NPCs{
 					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone.\n"
 				} else {
 				}
-				
+			}else if ( Food == kGAMECLASS.consumables.PPHILTR) { 	
+				Result.Code = 0;
+				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips off it.\n";
+				if (getCorruption() > 8) {
+					setCorruption(getCorruption() - 8)
+					Result.Text += "You get the impression that [fenris ey] loose some of the dark taint.\n"
+				} else {
+				}
 			} else {
 				Result.Code = 1;
 				Result.Text = "Fenris doesnt seem to like " + Food.shortName +" and gives it back to you."
@@ -465,7 +504,7 @@ package classes.Scenes.NPCs{
 		public static const ITEMSLOT_NECK:uint 			= 0x0040;
 		public static const ITEMSLOT_CHEST:uint 		= 0x0080;
 		// up to public static const ITEMSLOT_??:uint 	= 0x8000;
-		//byte0&1 is the slot , byte 2&3 is the gear 				
+		//byte0&1 is the slot , byte 2&3 is the gear - dont forget to also add description 				
 		public static const UNDERWEAR_NONE:uint 			= 0x000001;
 		public static const UNDERWEAR_LOINCLOTH:uint 		= 0x020001;  //his default loincloth	
 		public static const UNDERWEAR_COCKCAGE:uint 		= 0x030001;  //cock or clitcage ; quest related
@@ -473,6 +512,7 @@ package classes.Scenes.NPCs{
 		public static const UNDERWEAR_BALLSTRETCHER:uint 	= 0x050001; // a thick&heavy looking metal ring around his nutsack; ++tease  --evade
 		public static const WEAPON_NONE:uint 			= 0x000002;
 		public static const WEAPON_KNIFE:uint 			= 0x010002;  //his default tool-knife
+		public static const WEAPON_PIPE:uint 			= 0x020002;  //
 		public static const HEAD_NONE:uint 				= 0x000008;
 		public static const HEAD_MUZZLE:uint 			= 0x010008;  //leatherstraps around muzzle, cannot bite
 		public static const HEAD_MUZZLEFULL:uint 		= 0x020008;  //full head muzzle add. obscuring view and other senses
@@ -531,6 +571,9 @@ package classes.Scenes.NPCs{
 						case WEAPON_KNIFE:
 							_text= "plain knife"
 							break;
+						case WEAPON_PIPE:
+							_text= "simple pipe"
+							break;
 						default:
 							_text= "invalid item";
 					}
@@ -539,6 +582,19 @@ package classes.Scenes.NPCs{
 					_text="oh no-invalid slot";
 			}	
 			return _text;
+		}
+		/* translates between USEABLE and Fenris-Items
+		 * */
+		public function equipItemFromUseable(item:Useable , give:Boolean , Result:ReturnResult):void {
+			if (item == kGAMECLASS.weapons.PIPE) {
+				equipItem(ITEMSLOT_WEAPON, WEAPON_PIPE, true, Result);
+			} else if (item == kGAMECLASS.undergarments.FURLOIN) {
+				equipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, Result);
+			} else {
+				Result.Code = 1;
+				Result.Text = "Fenris cannot use this item.";
+			}
+			
 		}
 		/*returns 0 if ok or message if nok
 		 * */
@@ -659,7 +715,7 @@ package classes.Scenes.NPCs{
 				setBalls(1 , 2);
 				setBreast(0, 1);
 				setSelfEsteem(50);
-				setBodyStrength(40);
+				setBodyStrength(31);
 				setCorruption(2);
 				setPlayerRelation(10);
 				setLevel( 1);
@@ -676,7 +732,7 @@ package classes.Scenes.NPCs{
 		}	
 		//}
 		//{ --> Implementation of SaveAwareInterface
-		private static const FENRIS_STORE_VERSION_1:String	= "1";
+		private static const FENRIS_STORE_VERSION_1:String	= "1";	//the actual save file version for fenris
 		private static const FENRIS_STORE_Flag:int = kFLAGS.FENRIS_FLAG;
 		private static const MAX_FLAG_VALUE:int	= 2999;
 		
@@ -687,7 +743,8 @@ package classes.Scenes.NPCs{
 			var _equItems:String = "";
 			var i:int = -1;
 			var flagData:Array = String(game.flags[FENRIS_STORE_Flag]).split("^");
-			if (((String) (flagData[++i])) == FENRIS_STORE_VERSION_1 ){//im to lazzy: && flagData.length == 7) {
+			var _oldversion:String = ((String) (flagData[++i]));
+			if ( _oldversion == FENRIS_STORE_VERSION_1 ){//im to lazzy: && flagData.length == 7) {
 				_Corruption				= uint(flagData[++i]);
 				_SelfEsteem				= uint(flagData[++i]);
 				_PlayerRelation			= uint(flagData[++i]);
@@ -719,7 +776,13 @@ package classes.Scenes.NPCs{
 					if(_slot[0]!="") _equItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
 				}
 				this._EquippedItems = _equItemsArr2;
+				// _oldversion = FENRIS_STORE_VERSION_2; //trigger next conversion step
+				// i=0;
 			}
+			
+			/*if (_oldversion == FENRIS_STORE_VERSION_2 ){
+				if we need to change save-structure, create version , add code-fragment here and update version in updateBeforeSave
+			}*/
 		}
 
 		public function updateBeforeSave(game:CoC):void {
@@ -735,7 +798,7 @@ package classes.Scenes.NPCs{
 			for ( item in _equItemsArr)	{ 
 				_equItems += item+":"+(_equItemsArr[item]).toString()+ "~";
 			}
-			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION_1 + "^" + 
+			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION_1 + "^" + 	
 			_Corruption 	+ "^" + 
 			_SelfEsteem 	+ "^" + 
 			_PlayerRelation + "^" + 
@@ -761,17 +824,23 @@ package classes.Scenes.NPCs{
 			if (_Return) {
 				_Return = false;
 				var _rand:Number; 
-				//update lust, if we hit 100, masturbate
-				var _lust:Number = getLust() + (getLibido()-20) * 2 / 100;  //at 100lib increase lust by 48/24h
+				var _XPChance:Number;
+				//at 100lib increase lust by 48/24h, minimum of 20lib required for buildup
+				var _lust:Number = getLust() + (getLibido()-20) * 2 / 100;  
 				if (_lust > 90 ) _lust = 90;
 				setLust(_lust);
 				
 				if (kGAMECLASS.model.time.hours >= 16 && kGAMECLASS.model.time.hours < 17) {
 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
 					if (getLevel()< (kGAMECLASS.player.level+3)) {
-						_rand = Utils.rand(10);
-						/*if (_rand > 8 )*/ {
-							if (addXP(10)) {
+						_rand = Utils.rand(100);
+						_XPChance += 40;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_DEEPWOOD)) _XPChance += 10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_DESERT)) _XPChance += 10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_FOREST)) _XPChance += 10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_MOUNTAIN)) _XPChance += 10;
+						if (_rand < _XPChance ) {
+							if (addXP(10*getLevel())) {
 								_Return = true;
 								kGAMECLASS.outputText("You hear rumors that Fenris leveld up.\n");
 							}
@@ -800,6 +869,24 @@ package classes.Scenes.NPCs{
 				setTempFlag(TEMPFLAG_BODY_DOWN, false);
 				setTempFlag(TEMPFLAG_BODY_UP, false);
 			}
+			//Todo: add body description
+			if (getBodyStrength() >= 90) {
+				_str += "Thick muscels bulge around "+eir+" arms and legs. A taut set of sixpack and pectorials make a impressive eye-catch.\n";
+			//} else if (getBodyStrength() >= 75) {
+				
+			//}else if (getBodyStrength() >= 60) {
+				
+			//}else if (getBodyStrength() >= 45) {
+				
+			}else if (getBodyStrength() >= 30) {
+				_str += "Fenris has a rather slender body. You can see muscles here and there but it's not that impressive. \n";
+				
+			//}else if (getBodyStrength() >= 15) {
+				
+			} else {
+				_str += "Fenris body is of slight, feminine build. \n";
+			}
+			_str += "Dense fur covers "+eir+ " entire body." //Todo coat description
 			if (testTempFlag(TEMPFLAG_CORRUPTION_DOWN) || testTempFlag(TEMPFLAG_CORRUPTION_UP) ) {
 				if (testTempFlag(TEMPFLAG_CORRUPTION_UP)) _str += Ey + " seems to be more corrupted than the last time. \n";
 				else _str += Ey + " seems to be much less corrupted than the last time. \n";
@@ -810,29 +897,35 @@ package classes.Scenes.NPCs{
 			if (getCorruption() >= 90) {
 				_str += "Corruption seeps from every inch of "+eir+" body. \n";
 				
-			} else if (getCorruption() >= 75) {
+			//} else if (getCorruption() >= 75) {
 				
-			}else if (getCorruption() >= 60) {
+			//}else if (getCorruption() >= 60) {
 				
-			}else if (getCorruption() >= 45) {
+			//}else if (getCorruption() >= 45) {
 				
 			}else if (getCorruption() >= 30) {
 				_str += "While been walking this strange land for a while, "+eir+" body and mind seems only sligthly tainted. \n";
 				
-			}else if (getCorruption() >= 15) {
+			//}else if (getCorruption() >= 15) {
 				
+			} else {
+				_str += Eir+" body and mind seems to be completely untained by the corruption of this world. \n";
 			}
 			//Todo add cock and vagina descr
-			if (getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_NONE) {
-				_str += "You can see "+ eir + getBallCount() +" gonads swinging below his sheath. Each orb measures around " + getBallSize() + " inches. \n"; 
-				if (getLust()> 90) {
+			var _underwear:uint = getEquippedItem(ITEMSLOT_UNDERWEAR);
+			if (_underwear == UNDERWEAR_NONE || _underwear==UNDERWEAR_BALLSTRETCHER || _underwear==UNDERWEAR_COCKCAGE) {
+				_str += "You can see " + eir + getBallCount() +" gonads swinging below his sheath. Each orb measures around " + getBallSize() + " inches. \n"; 
+				if (_underwear==UNDERWEAR_BALLSTRETCHER) _str+= "A heavy ballstretcher is fitted tightly around the base of [fenris eir] nutsack, giving it a constant tug downwards. "
+				if (getLust()> 90 && (_underwear == UNDERWEAR_NONE || _underwear==UNDERWEAR_BALLSTRETCHER)) {
 					_str += Eir + " throbing, "+getCockSize()+"inch long wolfhood stands proudly errect from "+eir+" sheath. \n";
-				} else if (getLust() > 60) {
+				} else if (getLust() > 60 && (_underwear == UNDERWEAR_NONE || _underwear==UNDERWEAR_BALLSTRETCHER)) {
 					_str += Eir + " halfhard schlong is mostly out of its sheath and is flapping around whenever he moves. You guess it would be " + getCockSize() + " inch long when fully errect. \n";
-				}else if (getLust() > 30) {
+				}else if (getLust() > 30 && (_underwear == UNDERWEAR_NONE || _underwear==UNDERWEAR_BALLSTRETCHER)) {
 					_str += "Only the tip of "+ eir + " dick is poking out of the fuzzy sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
-				}else  {
+				}else  if (_underwear != UNDERWEAR_COCKCAGE ){
 					_str += Eir + " penis is savely hidden in its furred sheath. You guess it would be "+getCockSize()+"inch long when fully errect. \n";
+				} else {
+					_str += Eir + " sheath is securely engulfed by a solid looking cockcage. \n";
 				}
 			} else if(getEquippedItem(ITEMSLOT_UNDERWEAR) == UNDERWEAR_LOINCLOTH) {
 				_str += Eir + " loincloth is obscuring the view of "+eir+" private bits." 
@@ -854,7 +947,7 @@ package classes.Scenes.NPCs{
 		public function get status():String {
 			return "\nLevel " + this.getLevel() +" XP " +this.getXP()  + "\n Corruption " + this.getCorruption() + "\n Selfesteem " + this._SelfEsteem +
 			"\n Libido " +this.getLibido() + " Lust " +getLust() +
-			"\n Playerrelation " +this.getPlayerRelation() + "\n MainQuestStage " + this._MainQuestStage + "\n MainQuestFlag " +this._MainQuestFlags +"\n";
+			"\n Playerrelation " +this.getPlayerRelation() + "\n MainQuestStage " + this._MainQuestStage.toString() + "\n MainQuestFlag 0x" +this._MainQuestFlags.toString(16) +"\n";
 			
 		}
 		public function get Ey():String {
