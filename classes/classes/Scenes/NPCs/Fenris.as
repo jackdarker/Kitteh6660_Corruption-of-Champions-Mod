@@ -99,6 +99,7 @@ package classes.Scenes.NPCs{
 		public static const TEMPFLAG_CORRUPTION_DOWN:uint = 	1 << 1;	//his corruption has gone below one threshold since last met 
 		public static const TEMPFLAG_BODY_UP:uint = 			1 << 2;	//his bodystrength has gone above one threshold since last met 
 		public static const TEMPFLAG_BODY_DOWN:uint = 			1 << 3;	//his bodystrength has gone below one threshold since last met 
+		public static const TEMPFLAG_SEXED_COOLDOWN:uint = 		1 << 4;	//a cooldown marker for disabling SexEd dialogs
 		
 		//{ --> stats
 		//Todo: convert measurments to metrics if kFlags.USE_METRICS is set
@@ -158,6 +159,33 @@ package classes.Scenes.NPCs{
 		public function setCorruption(x:Number):void {
 			if (x < 0) return;
 			_Corruption=(uint(x/0.002))&0xFFFF;
+		}
+		//stores info for his sexual knowledge; upgrading his knowledge unlocks better&longer sexcenes for PC and NPC
+		//upgrading is done by talking, lessons, enemy encounters, quest?
+		private var _SexEducat:uint = 0;	//4bit per topic => 8topics 0..15 ?
+		// 0 never heard of sex
+		// 1 heard about bees and flowers
+		// 2 the basic m-f stuff ...
+		// 0x100..0xF00  oral stuff.. deepthroat, 69, rimming
+		// 0x1000..0xF000 anal stuff.. pegging, fisting
+		// pawjob, bondage, sadism...
+		//0x10000000..0xF0000000
+		public static const SEXED_TOPIC_BASE:uint = 	1 << 0;
+		public static const SEXED_TOPIC_ORAL:uint = 	1 << 8;
+		public static const SEXED_TOPIC_ANAL:uint = 	1 << 12;
+		public static const SEXED_TOPIC_VAGINAL:uint = 	1 << 16;
+		
+		public function upgradeSexEd(Topic:uint):void {
+			if (Topic < 0) return;
+			var _tempMask:uint = ((uint)(0xF * Topic));
+			var _temp:uint =  (Topic==0 ? (_SexEducat & _tempMask) : ((_SexEducat & _tempMask) / Topic));			
+			if (_temp < 15) _temp++;
+			_SexEducat = (_SexEducat & ~_tempMask) | (_temp * Topic);
+		}
+		public function getSexEd(Topic:uint):uint {
+			var _tempMask:uint = ((uint)(0xF * Topic));
+			var _temp:uint =  (Topic==0 ? (_SexEducat & _tempMask) : ((_SexEducat & _tempMask) / Topic));	
+			return _temp;
 		}
 		private var _LibidoLust:uint =0;  // 2 bytes Libido & 2 bytes Lust 100/50000 per bit
 		public function getLibido():Number {
@@ -322,7 +350,8 @@ package classes.Scenes.NPCs{
 		}
 		//}
 		//{  --> body 
-		/*  TODO definition of bodyparts 
+		//  TODO definition of bodyparts 
+		private var _BodyType:uint = 0; /*
 		public static const BODY_HAND:uint 		= 0x0001;
 		public static const BODY_FEET:uint 		= 0x0002;
 		public static const BODY_TORSO:uint 	= 0x0004;
@@ -732,59 +761,84 @@ package classes.Scenes.NPCs{
 		}	
 		//}
 		//{ --> Implementation of SaveAwareInterface
-		private static const FENRIS_STORE_VERSION_1:String	= "1";	//the actual save file version for fenris
+		
 		private static const FENRIS_STORE_Flag:int = kFLAGS.FENRIS_FLAG;
 		private static const MAX_FLAG_VALUE:int	= 2999;
 		
 		public function updateAfterLoad(game:CoC):void {
 			var _Level:Number = Fenris.getInstance().getLevel(); //dummy to force init of Fenris if not already done
 			if (FENRIS_STORE_Flag < 1 || FENRIS_STORE_Flag > MAX_FLAG_VALUE) return;
-			var _allItems:String = "";
-			var _equItems:String = "";
-			var i:int = -1;
-			var flagData:Array = String(game.flags[FENRIS_STORE_Flag]).split("^");
-			var _oldversion:String = ((String) (flagData[++i]));
-			if ( _oldversion == FENRIS_STORE_VERSION_1 ){//im to lazzy: && flagData.length == 7) {
-				_Corruption				= uint(flagData[++i]);
-				_SelfEsteem				= uint(flagData[++i]);
-				_PlayerRelation			= uint(flagData[++i]);
-				_MainQuestStage			= uint(flagData[++i]);
-				_MainQuestFlags			= uint(flagData[++i]);
-				_CockStats				= uint(flagData[++i]);
-				_BallStats				= uint(flagData[++i]);
-				_LibidoLust				= uint(flagData[++i]);
-				_AnalStats				= uint(flagData[++i]);
-				_VaginalStats			= uint(flagData[++i]);
-				_BodyStrength 			= uint(flagData[++i]);
-				_Level					= uint(flagData[++i]);
-				_allItems				= String(flagData[++i]);
-				_equItems				= String(flagData[++i]);
 			
-				var _allItemsArr:Array = _allItems.split("~");
-				var _allItemsArr2:Array = []; 
-				var _slot:Array;
-				var item:String;
-				for ( item in _allItemsArr) 	{ 
-					_slot = _allItemsArr[item].split(":");
-					if(_slot[0]!="") _allItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
-				}
-				this._AvailableItems = _allItemsArr2;
-				var _equItemsArr:Array = _equItems.split("~");
-				var _equItemsArr2:Array = []; 
-				for ( item in _equItemsArr) 	{ 
-					_slot = _equItemsArr[item].split(":");
-					if(_slot[0]!="") _equItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
-				}
-				this._EquippedItems = _equItemsArr2;
-				// _oldversion = FENRIS_STORE_VERSION_2; //trigger next conversion step
-				// i=0;
+			var flagData:Array = String(game.flags[FENRIS_STORE_Flag]).split("^");
+			var _oldversion:String = ((String) (flagData[0]));
+			//if we need to change save-structure, create version , add code-fragment here and update version in updateBeforeSave
+			//
+			if ( _oldversion == "1" /*FENRIS_STORE_VERSION*/)  {	
+				_oldversion = updateAfterLoadV1(flagData);
 			}
 			
-			/*if (_oldversion == FENRIS_STORE_VERSION_2 ){
-				if we need to change save-structure, create version , add code-fragment here and update version in updateBeforeSave
-			}*/
+			if (_oldversion == "2" ) {
+				_oldversion = updateAfterLoadV2(flagData);					
+			}
 		}
-
+		private function updateAfterLoadV2(flagData:Array):String {
+			_Corruption				= uint(flagData[1]);
+			_SelfEsteem				= uint(flagData[2]);
+			_PlayerRelation			= uint(flagData[3]);
+			_MainQuestStage			= uint(flagData[4]);
+			_MainQuestFlags			= uint(flagData[5]);
+			_CockStats				= uint(flagData[6]);
+			_BallStats				= uint(flagData[7]);
+			_LibidoLust				= uint(flagData[8]);
+			_AnalStats				= uint(flagData[9]);
+			_VaginalStats			= uint(flagData[10]);
+			_BodyStrength 			= uint(flagData[11]);
+			_Level					= uint(flagData[12]);
+			_BodyType				= uint(flagData[13]);
+			_SexEducat				= uint(flagData[14]);
+			var _allItems:String	= String(flagData[15]);
+			var _equItems:String  	= String(flagData[16]);
+			updateItemsAfterLoad(_allItems,_equItems);		
+			return "2";	//updated to version;	
+		}
+		private function updateAfterLoadV1(flagData:Array):String {
+			//im to lazzy: check for flagData.length
+			_Corruption				= uint(flagData[1]);
+			_SelfEsteem				= uint(flagData[2]);
+			_PlayerRelation			= uint(flagData[3]);
+			_MainQuestStage			= uint(flagData[4]);
+			_MainQuestFlags			= uint(flagData[5]);
+			_CockStats				= uint(flagData[6]);
+			_BallStats				= uint(flagData[7]);
+			_LibidoLust				= uint(flagData[8]);
+			_AnalStats				= uint(flagData[9]);
+			_VaginalStats			= uint(flagData[10]);
+			_BodyStrength 			= uint(flagData[11]);
+			_Level					= uint(flagData[12]);
+			var _allItems:String	= String(flagData[13]);
+			var _equItems:String  	= String(flagData[14]);
+			updateItemsAfterLoad(_allItems,_equItems);		
+			return "1";	//updated to version;		
+		}
+		private function updateItemsAfterLoad(AllItems:String, EquipItems:String):void {
+			var _allItemsArr:Array = AllItems.split("~");
+			var _allItemsArr2:Array = []; 
+			var _slot:Array;
+			var item:String;
+			for ( item in _allItemsArr) 	{ 
+				_slot = _allItemsArr[item].split(":");
+				if(_slot[0]!="") _allItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
+			}
+			this._AvailableItems = _allItemsArr2;
+			var _equItemsArr:Array = EquipItems.split("~");
+			var _equItemsArr2:Array = []; 
+			for ( item in _equItemsArr) 	{ 
+				_slot = _equItemsArr[item].split(":");
+				if(_slot[0]!="") _equItemsArr2[uint(_slot[0])]=(uint(_slot[1]));
+			}
+			this._EquippedItems = _equItemsArr2;
+		}
+		private static const FENRIS_STORE_VERSION:String	= "2";	//the actual save file version for fenris
 		public function updateBeforeSave(game:CoC):void {
 			if (FENRIS_STORE_Flag < 1 || FENRIS_STORE_Flag > MAX_FLAG_VALUE) return;
 			var _allItems:String = "";
@@ -798,7 +852,8 @@ package classes.Scenes.NPCs{
 			for ( item in _equItemsArr)	{ 
 				_equItems += item+":"+(_equItemsArr[item]).toString()+ "~";
 			}
-			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION_1 + "^" + 	
+			//Save is only implemented for the last version; no need to save backward compatible version
+			game.flags[FENRIS_STORE_Flag] = FENRIS_STORE_VERSION + "^" + 	//<== V2
 			_Corruption 	+ "^" + 
 			_SelfEsteem 	+ "^" + 
 			_PlayerRelation + "^" + 
@@ -811,6 +866,8 @@ package classes.Scenes.NPCs{
 			_VaginalStats	+ "^" +
 			_BodyStrength 	+ "^" +
 			_Level 			+ "^" +
+			_BodyType		+ "^" +
+			_SexEducat		+ "^" +
 			_allItems 		+ "^" +
 			_equItems;
 		}
@@ -824,7 +881,7 @@ package classes.Scenes.NPCs{
 			if (_Return) {
 				_Return = false;
 				var _rand:Number; 
-				var _XPChance:Number;
+				var _XPChance:Number=0;
 				//at 100lib increase lust by 48/24h, minimum of 20lib required for buildup
 				var _lust:Number = getLust() + (getLibido()-20) * 2 / 100;  
 				if (_lust > 90 ) _lust = 90;
@@ -834,11 +891,11 @@ package classes.Scenes.NPCs{
 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
 					if (getLevel()< (kGAMECLASS.player.level+3)) {
 						_rand = Utils.rand(100);
-						_XPChance += 40;
-						if (testMainQuestFlag(MAINFLAG_SEARCH_DEEPWOOD)) _XPChance += 10;
-						if (testMainQuestFlag(MAINFLAG_SEARCH_DESERT)) _XPChance += 10;
-						if (testMainQuestFlag(MAINFLAG_SEARCH_FOREST)) _XPChance += 10;
-						if (testMainQuestFlag(MAINFLAG_SEARCH_MOUNTAIN)) _XPChance += 10;
+						_XPChance = _XPChance+40;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_DEEPWOOD)) _XPChance = _XPChance+10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_DESERT)) _XPChance = _XPChance+10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_FOREST)) _XPChance = _XPChance+ 10;
+						if (testMainQuestFlag(MAINFLAG_SEARCH_MOUNTAIN)) _XPChance = _XPChance+ 10;
 						if (_rand < _XPChance ) {
 							if (addXP(10*getLevel())) {
 								_Return = true;
@@ -852,6 +909,7 @@ package classes.Scenes.NPCs{
 						kGAMECLASS.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
 					}
 				}
+				setTempFlag(TEMPFLAG_SEXED_COOLDOWN, false); //unlock SexEd-dialog once per day
 			}
 			return _Return;
 		}

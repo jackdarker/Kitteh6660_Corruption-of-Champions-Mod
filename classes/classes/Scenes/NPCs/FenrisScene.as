@@ -278,7 +278,7 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 			outputText("\nThere is Fenris again, standing at the shoreline of the see and staring into the water.\n\n");
 			addButton(0, "Greetings", greetingsFirstTime, 200, null, null, "Head over for some greetings");
 		} else {
-			outputText("\nYou see someone in the water. Maybe you should go over for greeting.\n\n");
+			outputText("\nYou see someone in the water. Maybe you should go over for some introduction.\n\n");
 			addButton(0, "Greetings", greetingsFirstTime, 100, null, null, "Head over for some greetings");
 		}		
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
@@ -314,6 +314,8 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 		addButton(0, "Next", greetingsFirstTime, 301, null, null, "");
 	} else if (dlgstage == 301) { //
 		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? <i>'" , false); //Todo: explain him about the flowers and bees
+		outputText("\n\n Well, maybe someone needs an introduction in this topic then...." , false); 
+		Fenris.getInstance().upgradeSexEd(Fenris.SEXED_TOPIC_BASE); //unlocks Sex-Education Topics
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	}
@@ -375,7 +377,7 @@ private function metAgain(dlgstage:int = -1):void {
 		menu();
 		addButton(0, "Give food", metAgain, 100, null, null, "See if you have some food to spare");
 		addButton(1, "Give directions", metAgain, 200, null, null, "what places to go to or avoid");
-		//addButton(2, "What to eat", metAgain, 300, null, null, "what to eat");
+		addButton(2, "Talk", metAgain, 300, null, null, "");
 		addButton(3, "Train", metAgain, 400, null, null, "");
 		if (_fenris.getMainQuestStage() >=Fenris.MAINQUEST_CAGED && _fenris.getMainQuestStage() <Fenris.MAINQUEST_UNCAGE) {
 			addButton(5, "Quest", questCagedDlg, 0, null, null, "");
@@ -400,9 +402,10 @@ private function metAgain(dlgstage:int = -1):void {
 		buildLocationToGoMenu();
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");		
-	} else if (dlgstage == 300) { //Todo: check your map and tell him what enemydrops he should take
-		outputText("\nWhat food should he avoid or search \n\n");	
+	} else if (dlgstage == 300) { //Todo: Talk about him and you and whatever
+		outputText("\nYou try to start a conversation about...\n\n");	
 		menu();
+		buildTalkMenu(0);
 		addButton(13, "Appearance", fenrisAppearance, metAgain, null, null, "");
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 400) {	// do some Training
@@ -439,7 +442,28 @@ private function metAgain(dlgstage:int = -1):void {
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	}else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
-
+/*build talk menu
+ */ 
+private function buildTalkMenu(dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	if (dlgstage == 0) {
+		if (Fenris.getInstance().getSexEd(Fenris.SEXED_TOPIC_BASE) >= 1 ) {
+			if (Fenris.getInstance().testTempFlag(Fenris.TEMPFLAG_SEXED_COOLDOWN)) {
+				outputText("\n\n[Fenris Ey] seems not ready to talk about the sexy stuff again.\n\n");
+				addButtonDisabled(6, "SEX");
+			} else {
+				addButton(6, "SEX", buildTalkMenu, 700, null, "");
+			}
+		} 
+	} else if (dlgstage == 700) {
+		outputText("\n\nTodo: talk about some smutty stuff, maybe with some handson lesson...\n\n");
+		//Fenris.getInstance().upgradeSexEd()
+		menu();
+		addButton(14, "Back", metAgain, 0, null, null, "");	
+	}
+	
+}
 /*build list of places you know
  */ 
 private function buildLocationToGoMenu():void {
@@ -598,11 +622,9 @@ private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
 	clearOutput();
-	
-	//Todo: add effect to fenris
 	var Result:ReturnResult = new ReturnResult();
-	Fenris.getInstance().eatThis(Food, Result);
 	outputText("Fenris takes a suspicious look at " + Food.longName +".");
+	Fenris.getInstance().eatThis(Food, Result);
 	outputText(Result.Text);
 	if (Result.Code == 0) {
 		player.consumeItem(ItemType.lookupItem(Food.id));
@@ -703,14 +725,14 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 	} else if (dlgstage == 401) {
 		clearOutput();
 		outputText("'<i>I was just thinking that there are some, umm ... substances that could make your cock shrink a little bit. ' </i> \n"); 
-		outputText("\n[fenris Es] eyes widen in shock \n");
+		outputText("\n[fenris Eir] eyes widen in shock \n");
 		outputText("'<i>... then you could possibly squirm out of it. ' </i> \n");
 		menu();
 		addButton(1, "Next", fenrisGotCaged, 402, null, null, "Next");
 	} else if (dlgstage == 402) {
 		outputText("[fenris Ey] nervously rubs [fenris es] paws together '<i> Na, Im not sure I would like to try this </i>' obviously in doubt. \n"); 
 		outputText("'<i>If we might shrink it, we could size it up again. <i>'  you try to convince him \n");
-		outputText("'<i>I will try to find someone in Teladre how could help you first. Maybe someone how knows how to lockpick or build a lock. In the meantime you should try to track down however did this to you. Just don't get into more trouble.<i>'\n");
+		outputText("'<i>I will try to find someone in Teladre how could help you first. Maybe someone how knows how to lockpick or build a key. In the meantime you should try to track down however did this to you. Just don't get into more trouble.<i>'\n");
 		Fenris.getInstance().increasePlayerRelation(10, 30);
 		menu();
 		addButton(2, "Talk", metAgain, 0, null, null, "Talk some more");
@@ -797,6 +819,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nHe cowers down until the process finishs, still trying to get hold of the metal and obscuring your view.");
 		outputText("\n'<i>Damn... '</i> he pulls his hand away <i>is it gone? where is it? '</i>");
 		player.consumeItem(consumables.L_PNKEG);
+		//todo shrink his cock
 		progressMainQuest(1);
 		menu();
 		addButton(1, "Next",questCagedDlg, 212, null, null, "");	
@@ -842,14 +865,14 @@ private function questCagedDlg (dlgstage:int = -1):void {
 	} else if (dlgstage == 400) { // confront Fetish zealot 
 		outputText("\nYou can easily see that those people wear some strange cloths and gadgets.\n", false); //Todo: description leather-bondage and chastity stuff
 		outputText("\nThere seems also a strained discussion going on. It's hard to hear some details but you catch something about 'wolf' and 'chastity'. One of them also grabs a shiny pendant dangling down at her neckchain and show it off to the other persons gathering around. ");
-		outputText("\nCould this be the key you are seaching?");
+		outputText("\nCould this be the key you are searching?");
 		outputText("\nSo what now? Maybe you can talk with those guys if they are friendly enough. But if not you might get into trouble since there are at least 4 or 5 of them. Of course you could also try to sneak away silently and come back when you are. ready. \n", false); 
 		menu();
 		addButton(1, "Talk", questCagedDlg, 410, null, null, "");
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 410) { // 
 		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n", false);
-		outputText("\n'<i>And how are you?</i>' the female with the pendant asks resentful.\n", false);
+		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n", false);
 		outputText("\nBlaBla Gimme the key BlaBla Pay for it.\n", false); //Todo
 		menu();
 		addButton(1, "Pay", questCagedDlg, 420, null, null, ""); // Todo: check if PC has enough money

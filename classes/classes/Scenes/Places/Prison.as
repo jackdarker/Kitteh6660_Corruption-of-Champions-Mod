@@ -18,6 +18,8 @@ package classes.Scenes.Places
 		public var ellyScene:EllyScene = new EllyScene();
 		public var scruffyScene:ScruffyScene = new ScruffyScene();
 		public var billieScene:BillieScene = new BillieScene();
+		//getGame().fenrisScene
+		
 		//Punishments & Trainings
 		public var punishments:Punishments = new Punishments();
 		public var trainingPet:TrainingPet = new TrainingPet();
