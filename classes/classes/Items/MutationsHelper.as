@@ -73,7 +73,7 @@ package classes.Items
 
 							case SKIN_TYPE_PLAIN:
 							case SKIN_TYPE_FUR:
-							case SKIN_TYPE_SCALES:
+							case SKIN_TYPE_LIZARD_SCALES:
 								message += "\n\nYou feel a sudden tingle in your [claws] and then you realize,"
 								          +" that they have become normal human fingernails again.";
 								break;
@@ -161,6 +161,39 @@ package classes.Items
 			}
 
 			return false;
+		}
+
+		public function removeBassyHair():Boolean
+		{
+			// Failsafe, duh
+			if ([HAIR_BASILISK_PLUME, HAIR_BASILISK_SPINES].indexOf(player.hairType) == -1) return false;
+
+			if (player.hairType == HAIR_BASILISK_PLUME) {
+				// TF blurb derived from losing feathery hair
+				//(long):
+				if (player.hairLength >= 5)
+					outputText("\n\nA lock of your feathery plume droops over your eye.  Before you can blow the offending down away,"
+					          +" you realize the feather is collapsing in on itself."
+					          +" It continues to curl inward until all that remains is a normal strand of hair.");
+				//(short)
+				else
+					outputText("\n\nYou run your fingers through your feathery plume while you await the effects of the item you just ingested."
+					          +" While your hand is up there, it detects a change in the texture of your feathers.  They're completely disappearing,"
+					          +" merging down into strands of regular hair.");
+
+					outputText("\n\n<b>Your hair is no longer feathery!</b>");
+			} else {
+				outputText("\n\nYou feel a tingling on your scalp. You reach up to your basilisk spines to find out what is happening. The moment"
+					          +" your hand touches a spine, it comes loose and falls in front of you. One after another the other spines fall out,"
+					          +" until all the spines that once decorated your head now lay around you, leaving you with a bald head.");
+
+				outputText("\n\n<b>You realize, that you'll grow normal human hair again!</b>");
+				flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 0;
+				player.hairLength = 0;
+			}
+			player.hairType = HAIR_NORMAL;
+			changes++;
+			return true;
 		}
 
 		public function newLizardSkinTone():String
@@ -327,7 +360,7 @@ package classes.Items
 						player.hairColor = player.skinTone;                   // hairColor always set to player.skinTone
 						player.hairType = HAIR_BASILISK_SPINES;               // hairType set to basilisk spines
 						player.hairLength = 2;                                // hairLength set to 2 (inches, displayed as ‘short’)
-						flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 0; // Hair growth stops
+						flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 1; // Hair growth stops
 						changes++;
 						output.text("\n\n<b>Where your hair would be, you now have a crown of dull reptilian spines!</b>");
 
@@ -380,9 +413,9 @@ package classes.Items
 
 			if (changes >= changeLimit) return 0;
 
-			// Note, that we don't do the score checks anymore. That was just an unly workaround and we don't want to do that again!
+			// Note, that we don't do the score checks anymore. That was just an ugly workaround and we don't want to do that again!
 			switch(tfSource) {
-				case "emberTFs":
+				case "EmberTFs":
 				case "snakeOil":
 				case "goldenSeed-HarpyWomb":
 				//case "catTransformation-dragonne": // Keep it? Maybe later.
@@ -392,6 +425,7 @@ package classes.Items
 					return 0; // Don't change it. So we're done, yay!
 
 				case "reptilum":
+				case "echidnaTFs":
 					if (player.findPerk(PerkLib.Oviposition) >= 0) return 0;
 					outputText("\n\nDeep inside yourself there is a change.  It makes you feel a little woozy, but passes quickly."
 					          +"  Beyond that, you aren't sure exactly what just happened, but you are sure it originated from your womb.\n");
@@ -509,7 +543,7 @@ package classes.Items
 			var tsParts:Array = tfSource.split("-");
 			var race:String;
 
-			if (tsParts[0] == "emberTFs")
+			if (tsParts[0] == "EmberTFs")
 				race = "dragon";
 			else if (tsParts[0] == "reptilum" && tsParts.length > 1)
 				race = tsParts[1];
@@ -551,13 +585,13 @@ package classes.Items
 			else {
 				if (player.hornType == HORNS_DRACONIC_X2) {
 					if (player.horns < 12) {
-						if (rand(2) == 0) {
+						if (rand(3) == 0) {
 							outputText("\n\nYou get a headache as an inch of fresh horn escapes from your pounding skull.");
 							player.horns += 1;
 						}
 						else {
 							outputText("\n\nYour head aches as your horns grow a few inches longer.  They get even thicker about the base, giving you a menacing appearance.");
-							player.horns += 2 + rand(4);
+							player.horns += 3 + rand(3);
 						}
 						if (player.horns >= 12) outputText("  <b>Your horns settle down quickly, as if they're reached their full size.</b>");
 						changes++;

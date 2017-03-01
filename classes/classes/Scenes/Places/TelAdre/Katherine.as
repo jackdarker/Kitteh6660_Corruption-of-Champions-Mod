@@ -3344,11 +3344,12 @@ private function katherineDrunkSeeUrta():void {
 		outputText("You get the feeling you are going to have to intervene quickly if you don’t want them to fuck right here and now.");
 		var button:int = 0;
 		menu();
-		if (submissiveness() < 3) {
+		if (submissiveness() >= 3) {
 			addButton(button++, "Orgy", telAdre.katherineThreesome.orgy);
-			outputText("\n\nYou");
+			outputText("  On the other hand everyone enjoys an orgy. \n\nYou");
+			outputText("");
 		}
-		else outputText("  On the other hand everyone enjoys an orgy.\n\nOtherwise you");
+		else outputText("\n\nOtherwise you");
 		if (player.gender == GENDER_NONE) {
 			outputText(" could let the two of them fuck.  Unfortunately, you really aren't equipped for more than that.");
 			addButton(button++, "Watch", telAdre.katherineThreesome.watchNoIntro, true);
@@ -5633,9 +5634,9 @@ private function bathTimePenetrated():void {
 
 		outputText("Kath presses herself against you and the feeling of her ");
 		if (furry)
-			outputText("slick fur rubbing against your " + (player.skinType == SKIN_TYPE_FUR ? "own" : "skin"));
+			outputText("slick fur rubbing against your " + (player.hasFur() ? "own" : "skin"));
 		else
-			outputText("wet skin " + (player.skinType == SKIN_TYPE_FUR ? "rubbing against your fur" : "sliding over your body"));
+			outputText("wet skin " + (player.hasFur() ? "rubbing against your fur" : "sliding over your body"));
 		outputText(" overloads your senses.  " + (player.cor < 75 ? "You close your eyes and lose yourself in the sensual feelings, the icy water forgotten." : "Your ability to fight back drains away and you curse your lack of planning - you’re so aroused that you can’t take advantage of Kath.  In fact she’s the one taking the lead!") + "\n\n");
 
 		outputText("For a while you and Kath just enjoy the feeling of the water lazily drifting past and the slow and steady grinding.  When every part of you seems infused with desire you feel your asshole begin to loosen, your body begging for something to fill your needy hole.\n\n");

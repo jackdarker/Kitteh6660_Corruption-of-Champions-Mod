@@ -159,7 +159,6 @@ the text from being too boring.
 		public var playerAppearance:PlayerAppearance = new PlayerAppearance();
 		public var playerInfo:PlayerInfo = new PlayerInfo();
 		public var saves:Saves = new Saves(gameStateDirectGet, gameStateDirectSet);
-		public var lightsOut:LightsOut = new LightsOut();
 		// Items/
 		public var mutations:Mutations = Mutations.init();
 		public var consumables:ConsumableLib = new ConsumableLib();
@@ -171,6 +170,7 @@ the text from being too boring.
 		public var shields:ShieldLib = new ShieldLib();
 		public var miscItems:MiscItemLib = new MiscItemLib();
 		// Scenes/
+		public var achievementList:Achievements = new Achievements();
 		public var camp:Camp = new Camp(campInitialize);
 		public var dreams:Dreams = new Dreams();
 		public var dungeons:DungeonCore = new DungeonCore();
@@ -255,6 +255,7 @@ the text from being too boring.
 		public var telAdre:TelAdre = new TelAdre();
 		public var ingnam:Ingnam = new Ingnam();
 		public var prison:Prison = new Prison();
+		public var townRuins:TownRuins = new TownRuins();
 		// Scenes/Seasonal/
 		public var aprilFools:AprilFools = new AprilFools();
 		public var fera:Fera = new Fera();
