@@ -4,6 +4,7 @@
 	import classes.Items.Armor;
 	import classes.Scenes.Dungeons.DeepCave.ValaScene;
 	import classes.Scenes.Places.TelAdre.*;
+	import classes.Scenes.NPCs.Fenris;
 
 	/**
  * The lovely town of Tel Adre
@@ -1596,35 +1597,54 @@ private function debitClothes(itype:ItemType):void {
 //-----------------
 //-- ARMOUR SHOP
 //-----------------
-public function armorShop():void {
+public function armorShop(page:int = -1):void {
 	clearOutput();
 	spriteSelect(64);
-	outputText("The interior of the armory is blisteringly hot, filled with intense heat from the massive forge dominating the far side of the shop.  The bellows are blowing hard as a tall german-shepherd woman works the forge.  Incredibly, she's wearing nothing aside from a ragged leather apron.  It bulges from the front, barely containing her obscene proportions as it protects them from the heat of her forge.  She pulls a piece of metal from the forge and strikes it a few times with a hammer bigger than your head, then tosses it in a bucket filled with water, steam boiling out of it from the hot metal.  At last, the sweating forgemistress notices you and turns around, her breasts jiggling wildly.\n\n", true);
-	//outputText("\"<i>Vat can Yvonne make for you?  Ze platemail?  Or someting a bit lighter?</i>\" she asks you.", false);
-	outputText("\"<i>What can I make for you?  Platemail?  Or something that breathes a little easier?</i>\" Yvonne asks, fanning herself.");
-	
-	menu();
-	addButton(0, armors.CHBIKNI.shortName, armorBuy, armors.CHBIKNI);
-	addButton(1, armors.FULLCHN.shortName, armorBuy, armors.FULLCHN);
-	addButton(2, armors.FULLPLT.shortName, armorBuy, armors.FULLPLT);
-	addButton(3, armors.INDECST.shortName, armorBuy, armors.INDECST);
-	addButton(4, armors.LTHRROB.shortName, armorBuy, armors.LTHRROB);
-	addButton(5, armors.SCALEML.shortName, armorBuy, armors.SCALEML);
-	addButton(6, armors.SAMUARM.shortName, armorBuy, armors.SAMUARM);
-	addButton(7, shields.BUCKLER.shortName, armorBuy, shields.BUCKLER);
-	addButton(8, shields.KITE_SH.shortName, armorBuy, shields.KITE_SH);
-	addButton(9, shields.GREATSH.shortName, armorBuy, shields.GREATSH);
-	addButton(10, shields.TOWERSH.shortName, armorBuy, shields.TOWERSH);
-
-	if (player.hasKeyItem("Dragon Eggshell") >= 0) {
-		outputText("\n\nThough the pieces on display have their arguable attractions, none of them really interest you.  Yvonne taps her foot impatiently.  \"<i>Well, I could make you something to order... if you have any decent materials, cutie.  200 gems.</i>\"");
-		if (player.gems < 200) {
-			outputText("\n\nYou can't afford that!");
+	if (page<=0) {
+		outputText("The interior of the armory is blisteringly hot, filled with intense heat from the massive forge dominating the far side of the shop.  The bellows are blowing hard as a tall german-shepherd woman works the forge.  Incredibly, she's wearing nothing aside from a ragged leather apron.  It bulges from the front, barely containing her obscene proportions as it protects them from the heat of her forge.  She pulls a piece of metal from the forge and strikes it a few times with a hammer bigger than your head, then tosses it in a bucket filled with water, steam boiling out of it from the hot metal.  At last, the sweating forgemistress notices you and turns around, her breasts jiggling wildly.\n\n", true);
+		//outputText("\"<i>Vat can Yvonne make for you?  Ze platemail?  Or someting a bit lighter?</i>\" she asks you.", false);
+		outputText("\"<i>What can I make for you?  Platemail?  Or something that breathes a little easier?</i>\" Yvonne asks, fanning herself.");
+		
+		menu();
+		addButton(0, armors.CHBIKNI.shortName, armorBuy, armors.CHBIKNI);
+		addButton(1, armors.FULLCHN.shortName, armorBuy, armors.FULLCHN);
+		addButton(2, armors.FULLPLT.shortName, armorBuy, armors.FULLPLT);
+		addButton(3, armors.INDECST.shortName, armorBuy, armors.INDECST);
+		addButton(4, armors.LTHRROB.shortName, armorBuy, armors.LTHRROB);
+		addButton(5, armors.SCALEML.shortName, armorBuy, armors.SCALEML);
+		addButton(6, armors.SAMUARM.shortName, armorBuy, armors.SAMUARM);
+		addButton(7, shields.BUCKLER.shortName, armorBuy, shields.BUCKLER);
+		addButton(8, shields.KITE_SH.shortName, armorBuy, shields.KITE_SH);
+		addButton(9, shields.GREATSH.shortName, armorBuy, shields.GREATSH);
+		addButton(10, shields.TOWERSH.shortName, armorBuy, shields.TOWERSH);
+		
+		if (player.hasKeyItem("Dragon Eggshell") >= 0) {
+			outputText("\n\nThough the pieces on display have their arguable attractions, none of them really interest you.  Yvonne taps her foot impatiently.  \"<i>Well, I could make you something to order... if you have any decent materials, cutie.  200 gems.</i>\"");
+			if (player.gems < 200) {
+				outputText("\n\nYou can't afford that!");
+			}
+			else addButton(12, "Eggshell", kGAMECLASS.emberScene.getSomeStuff);
 		}
-		else addButton(12, "Eggshell", kGAMECLASS.emberScene.getSomeStuff);
+		addButton(13, "More", armorShop, 100);
+		addButton(14, "Leave", telAdreMenu);
+	} else {
+		menu();
+		if (Fenris.getInstance().getMainQuestStage()==Fenris.MAINQUEST_CAGED) {
+			addButton(10, "Forge Key", fenrisForgeKey);
+		}
+		addButton(13, "Flirt", yvonneFlirt);
+		addButton(14, "Back", armorShop);
 	}
-	addButton(13, "Flirt", yvonneFlirt);
-	addButton(14, "Leave", telAdreMenu);
+}
+private function fenrisForgeKey():void {
+	clearOutput();
+	outputText("You ask Yvonne if its possible to forge a key for Fenris chastity device.\n\n", true);
+	outputText("'<i>Im unable to do this. Not just because I'm specialised in forging armor. But the description you gave me sounds like this is a magical enhanced device and thus it will require a key with the correct magical signature.</i>'\n\n", true);
+	outputText("'<i>I really dont have an idea how could help you with that and I would suggest to not bother with it otherwise, ...well bad things could happen..</i>'\n\n", true);
+	outputText("You are disappointed by her response. Seems like you are in a dead end here.\n\n", true);
+	Fenris.getInstance().setMainQuestStage(Fenris.MAINQUEST_FORGEKEY1);
+	menu();	
+	addButton(1, "Back", armorShop);
 }
 private function armorBuy(itype:ItemType):void {
 	spriteSelect(64);

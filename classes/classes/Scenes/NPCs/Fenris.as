@@ -166,8 +166,8 @@ package classes.Scenes.NPCs{
 		// 0 never heard of sex
 		// 1 heard about bees and flowers
 		// 2 the basic m-f stuff ...
-		// 0x100..0xF00  oral stuff.. deepthroat, 69, rimming
-		// 0x1000..0xF000 anal stuff.. pegging, fisting
+		// 0x100..0xF00  oral stuff.. licking, deepthroat, 69, 
+		// 0x1000..0xF000 anal stuff.. pegging, fisting,rimming
 		// pawjob, bondage, sadism...
 		//0x10000000..0xF0000000
 		public static const SEXED_TOPIC_BASE:uint = 	1 << 0;

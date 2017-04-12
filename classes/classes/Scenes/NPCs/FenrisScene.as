@@ -155,23 +155,40 @@ public function encounterTracking(Place:String):void {
 	var _rand:Number = rand(100);
 	if ( _fenris.getMainQuestStage() == Fenris.MAINQUEST_IMPRISSONED || _fenris.testMainQuestFlag(Fenris.MAINFLAG_SLAVEPRISON )) {  //Todo description
 		clearOutput();
-		outputText("\nYou get the information that Fenris got captured by slavers. You need to help him escape from the prison.\n\n");	
+		outputText("You get the information that Fenris got captured by slavers. You need to help him escape from the prison.\n\n");	
 		menu();
 		addButton(0, "Next", camp.returnToCampUseOneHour, null, null, null, "Continue on");					
 		return;
 	}
 
 	if (stage > Fenris.MAINQUEST_Spotted && _fenris.getPlayerRelation() < -10) {  // he is our enemy now
-			startCombat(new FenrisMonster());
-			//Todo improve Relation if you submit freely
-			return;
+		submitOrGetBeatup();
+		return;
 	}
 	if (Place == "Lake") {
 		encounterTrackingLake();
-	} 
+	} else if (Place == "Desert") {
+		//Todo add content  encounterTrackingDesert();
+	}
 }
 	
-
+private function submitOrGetBeatup (dlgstage:int = -1):void {
+	if (dlgstage < 0) dlgstage = _dlgStage;
+	_dlgStage = dlgstage;
+	if (dlgstage <= 0 ) {
+		menu();
+		outputText("\nYou just run into Fenris again. \n Do you submit or fight ?\n");
+		addButton(1, "Submit", submitOrGetBeatup, 200, null, null, "" );
+		addButton(2, "Fight", submitOrGetBeatup, 300, null, null, "" );
+	} else if (dlgstage==200) {
+		//Todo improve Relation if you submit freely, pet-training?
+		menu();
+		outputText("\nKneeling down and bowing your head before the wolf, you signal that you are willing to submit to [fenris ey] ?\n");
+		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "");
+	}else if (dlgstage==300) {
+		startCombat(new FenrisMonster());		
+	} else trace("missing Fenris-dlgstage " + dlgstage.toString());
+}
 private function encounterTrackingLake():void {	
 	//Todo: spriteSelect(68);
 	var _fenris:Fenris = Fenris.getInstance();
@@ -204,7 +221,7 @@ private function encounterTrackingLake():void {
 			addButton(0, "Greetings", metAgain, 0, null, null, "Head over for some greetings");
 			addButton(1, "Steal cloth", stealCloth, 1, null, null, "Try to sneak up and steal the loin cloth");
 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-		}else if (/*_rand > 40 && ??disabled for debug*/  _fenris.getMainQuestStage() < Fenris.MAINQUEST_CAGED_Init &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) {
+		}else if (/*_rand > 40 && ??disabled for debug*/  _fenris.getMainQuestStage() <= Fenris.MAINQUEST_CAGED_Init &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_STOLE_CLOTH)) {
 			fenrisGotCaged(0);	
 		}else if (_fenris.getMainQuestStage() <= Fenris.MAINQUEST_CAGED &&	_fenris.testMainQuestFlag(Fenris.MAINFLAG_CAGED_HELPHIM)) {
 			fenrisGotCaged(400);
@@ -222,6 +239,7 @@ private function encounterTrackingLake():void {
 		} else if (_rand > 90 && _fenris.getPlayerRelation()>-10) { //randomize other combat/support-scene
 			randomEvent();
 		} else metAgain(0); //goto no-quest dialog
+		break;
 	default:
 		trace("missing Fenris-stage " + stage.toString());
 		debugScr(0); 
@@ -306,19 +324,19 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 300) { //
-		outputText("\n\n '<i>Everything alright with you?<i>'\n '<i>Umm.. yes I think.<i>' he responds '<i> I'm just a little puzzled about...<i> \n" , false);
-		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...<i>'\n '<i>and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant'<i>' \n" , false);
+		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n" , false);
+		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n" , false);
 	
 		progressMainQuest(1);
 		menu();
 		addButton(0, "Next", greetingsFirstTime, 301, null, null, "");
 	} else if (dlgstage == 301) { //
-		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? <i>'" , false); //Todo: explain him about the flowers and bees
+		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? </i>'" , false); //Todo: explain him about the flowers and bees
 		outputText("\n\n Well, maybe someone needs an introduction in this topic then...." , false); 
 		Fenris.getInstance().upgradeSexEd(Fenris.SEXED_TOPIC_BASE); //unlocks Sex-Education Topics
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
-	}
+	}else trace("missing Fenris-dlgstage " + dlgstage.toString());
 	
 }
 private function debugScr(dlgstage:int = -1):void {
@@ -365,6 +383,7 @@ private function debugFct(dlgstage:int = -1):void {
 	} else trace("missing Fenris-dlgstage " + dlgstage.toString());
 	debugScr();
 }
+//this function is called when you meet Fenris
 private function metAgain(dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
@@ -396,7 +415,7 @@ private function metAgain(dlgstage:int = -1):void {
 		outputText("\n Since his hunger is sated at least a little bit, you bid farwell. \n\n");	
 		doNext(camp.returnToCampUseOneHour);
 	} else if (dlgstage == 200) { //Todo: check your map and tell him to go or avoid places
-		outputText("You might give him some advices which places to check out and which to avoid. If he just sit here he will not learn much of this strage land.\n");	//Todo
+		outputText("You might give him some advices which places to check out and which to avoid. If he just sit here he will not learn much of this strange land.\n");	//Todo
 		outputText("But sending him into dangerous area could get him in trouble.\n");
 		menu();
 		buildLocationToGoMenu();
@@ -448,14 +467,20 @@ private function buildTalkMenu(dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
 	if (dlgstage == 0) {
+		addButton(1, "His past", buildTalkMenu, 100, null, "");
 		if (Fenris.getInstance().getSexEd(Fenris.SEXED_TOPIC_BASE) >= 1 ) {
 			if (Fenris.getInstance().testTempFlag(Fenris.TEMPFLAG_SEXED_COOLDOWN)) {
-				outputText("\n\n[Fenris Ey] seems not ready to talk about the sexy stuff again.\n\n");
-				addButtonDisabled(6, "SEX");
+				outputText("\n\n[fenris Ey] seems not ready to talk about the sexy stuff again.\n\n");
+				addButtonDisabled(6, "SEX-Ed");
 			} else {
 				addButton(6, "SEX", buildTalkMenu, 700, null, "");
 			}
 		} 
+	} else if (dlgstage == 100) {
+		outputText("\n'You are living here at the lake for long?' you ask 'maybe you can show me around some time.'");
+		outputText("\n\nFenris cocks an eyebrow 'Actually I'm not familiar with this area too, I thougth you are an inhabitant here?'");
+		menu();
+		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 700) {
 		outputText("\n\nTodo: talk about some smutty stuff, maybe with some handson lesson...\n\n");
 		//Fenris.getInstance().upgradeSexEd()
@@ -490,9 +515,9 @@ private function buildLocationToGoMenu():void {
 	}
 	if (flags[kFLAGS.TIMES_EXPLORED_DESERT] > 0) {
 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_DESERT)) {
-			addButton(6, "avoid desert", dontGoThere,Fenris.MAINFLAG_SEARCH_DESERT, 200, null, "");
+			addButton(7, "avoid desert", dontGoThere,Fenris.MAINFLAG_SEARCH_DESERT, 200, null, "");
 		} else {
-			addButton(6, "search desert", goThere,Fenris.MAINFLAG_SEARCH_DESERT, 200, null, "");
+			addButton(7, "search desert", goThere,Fenris.MAINFLAG_SEARCH_DESERT, 200, null, "");
 		}		
 	}
 	//if (flags[kFLAGS.TIMES_EXPLORED_PLAINS] > 0)
@@ -652,7 +677,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 	_dlgStage = dlgstage;
 	if (dlgstage <= 0 ) {
 		clearOutput();
-		outputText("\nYou can see Fenris other there. As the wolfman sees you [fenris ey] trys to hide behind a fallen tree. He seems to be anxious again.\n\n");	
+		outputText("\nYou can see Fenris other there. As the wolfman sees you [fenris ey] trys to hide behind a fallen tree. [fenris Ey] seems to be anxious again.\n\n");	
 		outputText("'<i>Uhh, hi [player short]</i>' [fenris ey] responds '<i> how is it going.</i>' \n\n");
 		outputText("You sigh '<i>Some more troubles?</i>'\n");
 		outputText("Fenris whines '<i>Mmh...well I run into some crazy guy ...and well he seemed to be easy to overpower at first..</i>'");
@@ -712,7 +737,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 203 ) {
 		clearOutput();
-		outputText("\n'<i>Maybe its not that bad to stick with it. Think about it.'</i>\n");  //-> on longterm he will be a submissive buttslut
+		outputText("\n'<i>Maybe its not that bad to stick with it. Think about it.</i>'\n");  //-> on longterm he will be a submissive buttslut
 		progressMainQuest(0);
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
@@ -724,7 +749,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 		addButton(1, "Next", fenrisGotCaged, 401, null, null, "Next");	
 	} else if (dlgstage == 401) {
 		clearOutput();
-		outputText("'<i>I was just thinking that there are some, umm ... substances that could make your cock shrink a little bit. ' </i> \n"); 
+		outputText("'<i>I was just thinking that there are some, umm ... substances that could make your cock shrink a little bit. </i>' \n"); 
 		outputText("\n[fenris Eir] eyes widen in shock \n");
 		outputText("'<i>... then you could possibly squirm out of it. ' </i> \n");
 		menu();
@@ -740,6 +765,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 		progressMainQuest(3) //Todo move this to Teladre
 	}else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
+//this is called to trigger scenes of fenris quest
 private function questCagedDlg (dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
@@ -780,9 +806,9 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		}	
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 110) {
-		outputText("\n'<i>Here eat this. '</i> you present [fenris em] a pink egg.'<i>Will it help... I mean how does it work?'</i> \n");	
-		outputText("\n'<i>It will shrink your maleness and then we can pull the cage off'</i> \n'<i>Shrink my pene? ...no thats bad.. I dont wana shrink it..'</i> \n");
-		outputText("\n'<i>Dont worry, I'm sure we can make it big again in the same way<i>' you simle.\n '<i>Ohh.. if you think its not lasting...I could try this.");
+		outputText("\n'<i>Here eat this. </i>' you present [fenris em] a pink egg.'<i>Will it help... I mean how does it work?</i>' \n");	
+		outputText("\n'<i>It will shrink your maleness and then we can pull the cage off</i>' \n'<i>Shrink my pene? ...no thats bad.. I dont wana shrink it..</i>' \n");
+		outputText("\n'<i>Dont worry, I'm sure we can make it big again in the same way<i>' you simle.\n '<i>Ohh.. if you think its not lasting...I could try this.</i>'");
 		menu();
 		addButton(7, "Try it",questCagedDlg, 112, null, null, "");
 		addButton(14, "Back", metAgain, null, null, null, "");	
@@ -806,8 +832,8 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		}	
 		addButton(14, "Back", metAgain, 0, null, null, "");
 	} else if (dlgstage == 210) {
-		outputText("\n'<i>Here eat this. '</i> you present him the large, pink egg.'<i>But it didnt work the last time, why should it work now ?!'</i> \n");	
-		outputText("\n'<i>Well, this should remove your cock completely and then the cage should just drop off'</i> \n'<i>Remove it ? Thats horrible !'</i> he yells at you \n");
+		outputText("\n'<i>Here eat this. </i>' you present him the large, pink egg.'<i>But it didnt work the last time, why should it work now ?!</i>' \n");	
+		outputText("\n'<i>Well, this should remove your cock completely and then the cage should just drop off</i>' \n'<i>Remove it ? Thats horrible !</i>' he yells at you \n");
 		//Todo: convince him
 		menu();
 		addButton(7, "Try it",questCagedDlg, 211, null, null, "");
@@ -817,7 +843,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nHe looks down in fear. His maleness shrinks as do his balls. He grabs the cage as he want to make sure to get rid of it this time.");
 		outputText("\nHis male flesh quickly vanishs but also the magic of the cage fires up faster. He clenches his legs together making as it seems in arousal and pain at the same time.");
 		outputText("\nHe cowers down until the process finishs, still trying to get hold of the metal and obscuring your view.");
-		outputText("\n'<i>Damn... '</i> he pulls his hand away <i>is it gone? where is it? '</i>");
+		outputText("\n'<i>Damn... </i>' he pulls his hand away '<i>is it gone? where is it? </i>'");
 		player.consumeItem(consumables.L_PNKEG);
 		//todo shrink his cock
 		progressMainQuest(1);
@@ -828,7 +854,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nFenris now has a vagina. A small one, but netherless its plain visible that he is now female.");
 		outputText("\nThe metal is still there. It just transformed into something that someone could call a 'clit-cage'. A metall bump bulges out of the top of his vulva.")
 		outputText("\nOh yeah, and at least a dozen rings are pierced into his labia. ")
-		outputText("\n'<i>Uhh...is it.. oh no its still there '</i> he trys to twist it off with his thumb and index finger but is immeadiatly stopped by overwhelming sensations.");
+		outputText("\n'<i>Uhh...is it.. oh no its still there </i>' he trys to twist it off with his thumb and index finger but is immeadiatly stopped by overwhelming sensations.");
 		outputText("\nWhile the egg transformed his maleness, the rest of his body is still male. Well, he might look a little bit more feminine, but his breast are still manly. Someone would call him a cuntboy now.");
 		outputText("\nIs this making his life easier? At least the goblins and harpies wouldnt be after him anymore...maybe.");
 		outputText("\n\nSo whats the plan now. You need that freaking key if there is any.");
@@ -844,7 +870,6 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		//Todo: 
 		outputText("\nTODO: You unlock Fenris and he is happy about this.");
 		outputText("\nOR delay unlock.");
-		progressMainQuest(1);
 		menu();
 		addButton(1, "Unlock now",questCagedDlg, 310, null, null, "");
 		addButton(3, "Unlock later", questCagedDlg, 320, null, null, "");	
@@ -873,7 +898,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 	} else if (dlgstage == 410) { // 
 		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n", false);
 		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n", false);
-		outputText("\nBlaBla Gimme the key BlaBla Pay for it.\n", false); //Todo
+		outputText("\nTodo:BlaBla Gimme the key BlaBla Pay for it.\n", false); //Todo
 		menu();
 		addButton(1, "Pay", questCagedDlg, 420, null, null, ""); // Todo: check if PC has enough money
 		addButton(2, "Fight", questCagedDlg, 430, null, null, "");
@@ -920,19 +945,19 @@ private function afterLoinClothStealDlg(dlgstage:int = -1):void {
 	_dlgStage = dlgstage;
 	if (dlgstage <= 0 ) {
 		clearOutput();
-		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] say's '<i> ...you didn't see a loin cloth lying around, no? </i>' \n\n", false);	
+		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] says '<i> ...you didn't see a loin cloth lying around, no? </i>' \n", false);	
 		menu();
 		addButton(0, "Nope", afterLoinClothStealDlg, 100, null, null, "Just pretend you didnt steal it"); 
 		addButton(2, "Attack", afterLoinClothStealDlg, 200, null, null, "Ready for some beating?");
 	}else if (dlgstage == 100) {
 		//Todo - random chance to fail with the lie?
-		outputText("'<i>No sorry</i>' you lie. But why do you need an loin cloth after all since you are already furred from tip to toe?\n\n");	
+		outputText("'<i>No sorry</i>' you lie. But why do you need an loin cloth after all since you are already furred from tip to toe?\n");	
 		menu();
 		addButton(10, "Next", afterLoinClothStealDlg, 110, null, null, "");
 	}else if (dlgstage == 200) {
 		startCombat(new FenrisMonster() )
 	}else if (dlgstage == 110) {
-		outputText("'<i>Sure,but ... I'm used to weare it. I feel kinda vulnerable without it ...and at home they say that wearing clothes separates our kind from animals</i>' [fenris ey] responds. \n <Todo>\n\n");	
+		outputText("'<i>Sure,but ... I'm used to weare it. I feel kinda vulnerable without it ...and at home they say that wearing clothes separates our kind from animals</i>' [fenris ey] responds. \n <Todo>\n");	
 		menu();
 		//Todo: offer cloth if you have one
 		addButton(0, "Get used to it", afterLoinClothStealDlg, 120, null, null, "");
@@ -948,25 +973,27 @@ private function afterLoinClothStealDlg(dlgstage:int = -1):void {
 }
 private function fenrisAppearance(back:Function):void {
 	clearOutput();
-	outputText("Right in front of you stands a walking, speaking wolfman. \n");
+	outputText("Right in front of you stands a walking, talking wolfman. \n");
 	outputText("[fenris descrwithclothes] \n");
 	outputText("[fenris status]"); //for debug only
 	menu();
 	doNext(back);
 }
+//this might be called to trigger a random scene
 private function randomEvent(dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
 	clearOutput();
 	// Todo add more events here
 	if (dlgstage <= 50 ) {	
-		outputText("Todo: You see Fenris struggling with a goo-girl. What do you do?\n");
+		outputText("You see Fenris struggling with a goo-girl. What do you do?\n");
 		menu();
 		addButton(0, "Fight Goo", randomEvent, 100, null, null, "Help Fenris defeating the enemy");
-		addButton(14, "Back out", randomEvent, 200, null, null, "");
+		//addButton(1, "Hide&Watch", randomEvent, 200, null, null, "");
+		addButton(2, "Back out", randomEvent, 300, null, null, "");
 	} else if (dlgstage==100) {
 		startCombat(new FenrisGooFight());
-	} else if (dlgstage==200) {
+	} else if (dlgstage==300) {
 		outputText("You silently make your way back, leaving him to his fate.\n");
 		//Todo: calc win chance of fenris
 		menu();

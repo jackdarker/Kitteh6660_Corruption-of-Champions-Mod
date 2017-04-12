@@ -62,14 +62,13 @@ package classes.Scenes.NPCs
 	//adjust the Enemy-Level
 	private function recalcBaseStats():void {
 		var _fenris:Fenris = Fenris.getInstance();
-		level = _fenris.getLevel();
-		//bonusHP = 75;
-		lust = Math.min(70,Fenris.getInstance().getLust());
-		lustVuln = 0.05*_fenris.getLibido();
-		
-		gems = 5 + rand(5);
+		level = Math.round( (player.level +  (_fenris.getLevel() -player.level)/4)* 10)/10; //autolevel??
 		initStrTouSpeInte(_fenris.getStrength(), _fenris.getThoughness(), _fenris.getSpeed(), _fenris.getIntelligence());
 		initLibSensCor(_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
+		bonusHP = level*10;
+		lust = Math.min(70,Fenris.getInstance().getLust());
+		lustVuln = 0.01*_fenris.getLibido();		
+		gems = 5 + rand(level*5);	
 			
 	}
 	//depending on equpped weapon of Fenris-NPC
@@ -115,14 +114,37 @@ package classes.Scenes.NPCs
 		fatigue += 10;
 	}
 	//
-	private function fenrisPentacleGrapple():void { 
+	private var PentacleState:Number = 0;	//shows the state of the pentacles:
+	//0 retracted
+	//1 try to grab the player
+	//2 pc got grabbed
+	//4 molested by 3 pentacles
+	//6 molested by 4 pentacles
+	//8 molested by 5 pentacles
+	//100 pc escaped
+	//99..80 cooldown before grabbing again 
+	
+	//returns true pentacles were used and should skip further attacks
+	private function fenrisPentacleGrapple():Boolean { 
 		//fenris only has pentacles if corrupted
 		var _pentacles:int = _fenris.getPentacleCockCount();
+		
+		//cooldown for 5 rounds or less
+		if (PentacleState >= 80 && PentacleState <= 100) {
+			PentacleState = PentacleState-4; 
+			return false;
+		}
+		
+		if (_pentacles > 0 && lust > 50) {}
+		else { return false; } //no pantacles or lust to low - skip
 		//Todo if fenris is aroused he will unleash his pentacles, try to grab  and pleasure player
 		
-		
+		if (PentacleState >= 3 && PentacleState <=5 ) {
+			outputText("You are molested by the pentacles.\n", false);
+			game.dynStats("lus", 5 + player.sens / 10); // Lust++
+		}
 		//just grabbed the player
-		if (PentacleState >= 2) {
+		if (PentacleState == 2) {
 			if (player.findStatusEffect(StatusEffects.bound) > 0) {
 				outputText("The pentacles increase their effort to entwine you.\n", false);
 				if (_pentacles >= 6) {
@@ -161,13 +183,12 @@ package classes.Scenes.NPCs
 		if (PentacleState < 1) {
 			outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see " + _pentacles + " tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n", false);
 			PentacleState = 1;
-			return;
 		}
-
+		return true;
 	}
 
 	private var HowlCooldown:Number=3;
-	private var PentacleState:Number=0;
+	
 	override protected function performCombatAction():void
 	{
 		var damage:Number;
@@ -260,6 +281,7 @@ package classes.Scenes.NPCs
 			if (rand(20) + player.str / 20  >= 12) {
 				outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
 				player.removeStatusEffect(StatusEffects.bound);
+				PentacleState = 100; //Start cooldown
 				doAI();
 			} else {//Failure  ++LUST
 				outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
@@ -278,12 +300,16 @@ package classes.Scenes.NPCs
 	}
 	override public function defeated(hpVictory:Boolean):void
 	{
+		if (findStatusEffect(StatusEffects.Sparring) >= 0) { }  //Todo
+		else {}
 		game.fenrisScene.winAgainstFenris();
 		
 	}
 
 	override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 	{
+		if (findStatusEffect(StatusEffects.Sparring) >= 0) { }  //Todo
+		else {}
 		game.fenrisScene.loseToFenris();
 	}
 }}
