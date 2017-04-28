@@ -21,9 +21,7 @@ package classes.Scenes.NPCs{
 		public var FenrisNPC:classes.Scenes.NPCs.Fenris;
 
 		public function FenrisScene()
-		{
-			
-		}
+		{		}
 
 	/**this will switch to the next stage; see Fenris.as for stages & flags
 	 * value defines the quest branch to go on
@@ -134,8 +132,7 @@ package classes.Scenes.NPCs{
 		Fenris.getInstance().setMainQuestStage(stage);
 	}
 
-/* jumps into this function to switch to the actual quest dialog
- * */
+
 public function isEncounterPossible(Place:String):Boolean {
 	var _fenris:Fenris = Fenris.getInstance();
 	var stage:uint = _fenris.getMainQuestStage();
@@ -148,6 +145,8 @@ public function isEncounterPossible(Place:String):Boolean {
 	}*/
 	return false;
 }
+/* jumps into this function to switch to the actual quest dialog
+ * */
 public function encounterTracking(Place:String):void {
 	//Todo: spriteSelect(68);
 	var _fenris:Fenris = Fenris.getInstance();
@@ -177,15 +176,24 @@ private function submitOrGetBeatup (dlgstage:int = -1):void {
 	_dlgStage = dlgstage;
 	if (dlgstage <= 0 ) {
 		menu();
-		outputText("\nYou just run into Fenris again. \n Do you submit or fight ?\n");
+		outputText("\nYou just run into Fenris again. \n Do you try to submit or fight ?\n");
 		addButton(1, "Submit", submitOrGetBeatup, 200, null, null, "" );
 		addButton(2, "Fight", submitOrGetBeatup, 300, null, null, "" );
 	} else if (dlgstage==200) {
 		//Todo improve Relation if you submit freely, pet-training?
 		menu();
 		outputText("\nKneeling down and bowing your head before the wolf, you signal that you are willing to submit to [fenris ey] ?\n");
-		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "");
-	}else if (dlgstage==300) {
+		addButton(1, "Next", submitOrGetBeatup, 210, null, null, "" );
+	} else if (dlgstage==210) {
+		loseToFenrisDescr(false); //for now just display lose description
+		Fenris.getInstance().increaseSelfEsteem(5, 50);
+		Fenris.getInstance().increasePlayerRelation(2, 10);
+		camp.returnToCampUseOneHour()
+	} else if (dlgstage == 300) {
+		menu();
+		outputText("\nYou ready yourself for a fight?\n");
+		addButton(1, "Next", submitOrGetBeatup, 310, null, null, "" );
+	} else if (dlgstage==310) {
 		startCombat(new FenrisMonster());		
 	} else trace("missing Fenris-dlgstage " + dlgstage.toString());
 }
@@ -1003,11 +1011,21 @@ private function randomEvent(dlgstage:int = -1):void {
 /* 
  */ 
 public function loseToFenris():void {
-	//if (monster.findStatusEffect(StatusEffects.Sparring) >= 0)
-	outputText("Todo: Loose description, Pentaclerape maybe ");
-	//Todo: wining against you will boost his selfesteem + add XP
+	// wining against you will boost his selfesteem + add XP
+	Fenris.getInstance().increaseSelfEsteem(2, 50);
+	Fenris.getInstance().addXP(Fenris.getInstance().getLevel() * 30);
+	
+	if (monster.findStatusEffect(StatusEffects.Sparring) >= 0) {
+		loseToFenrisDescr(true);
+	} else {
+		loseToFenrisDescr(false);
+	}
+	
 	combat.cleanupAfterCombat();
-
+ }
+ private function loseToFenrisDescr(Sparring:Boolean):void {
+	 outputText("Todo: Loose description, Pentaclerape maybe ");
+	 // only rapes if turned on enough
  }
  public function winAgainstFenris():void {
 	//Todo: loosing against you will lower his selfesteem + add XP
