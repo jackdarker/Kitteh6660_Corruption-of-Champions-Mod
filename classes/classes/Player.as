@@ -101,6 +101,7 @@ use namespace kGAMECLASS;
 		private var _weapon:Weapon = WeaponLib.FISTS;
 		private var _armor:Armor = ArmorLib.COMFORTABLE_UNDERCLOTHES;
 		private var _jewelry:Jewelry = JewelryLib.NOTHING;
+		//private var _jewelry2:Jewelry = JewelryLib.NOTHING;
 		private var _shield:Shield = ShieldLib.NOTHING;
 		private var _upperGarment:Undergarment = UndergarmentLib.NOTHING;
 		private var _lowerGarment:Undergarment = UndergarmentLib.NOTHING;
@@ -265,9 +266,9 @@ use namespace kGAMECLASS;
 				armorDef += 2;
 			}
 			//Stacks on top of Thick Skin perk.
-			if (skinType == SKIN_TYPE_FUR) armorDef += 1;
-			if (hasScales()) armorDef += 3;
-			//if (skinType == SKIN_TYPE_DRACONIC) armorDef += 3; // maybe later
+			if (hasFur()) armorDef += 1;
+			if (hasReptileScales()) armorDef += 3;
+			//if (hasDragonScales()) armorDef += 3; // maybe later
 			//'Thick' dermis descriptor adds 1!
 			if (skinAdj == "smooth") armorDef += 1;
 			//Bonus defense
@@ -799,14 +800,14 @@ use namespace kGAMECLASS;
 			{
 				if (isTaur() && lowerBody == LOWER_BODY_TYPE_FOX)
 					race = "fox-taur";
-				else if (skinType == 1)
+				else if (hasFur())
 					race = "fox-morph";
 				else
 					race = "fox-" + mf("morph", "girl");
 			}
 			if (ferretScore() >= 4)
 			{
-				if (skinType == 1)
+				if (hasFur())
 					race = "ferret-morph";
 				else
 					race = "ferret-" + mf("morph", "girl");
@@ -880,7 +881,7 @@ use namespace kGAMECLASS;
 			if (salamanderScore() >= 4)
 			{
 				if (isTaur()) race = "salamander-taur";
-				else race = "salamander-morph";
+				else race = "salamander-" + mf("boy", "girl");
 			}
 			//<mod>
 			if (pigScore() >= 4) 
@@ -982,7 +983,7 @@ use namespace kGAMECLASS;
 				demonCounter++;
 			if (wingType == 6 || wingType == 7)
 				demonCounter++;
-			if (skinType == 0 && cor > 50)
+			if (hasPlainSkin() && cor > 50)
 				demonCounter++;
 			if (faceType == 0 && cor > 50)
 				demonCounter++;
@@ -1129,7 +1130,7 @@ use namespace kGAMECLASS;
 			if (earType == EARS_FERRET) counter++;
 			if (tailType == TAIL_TYPE_FERRET) counter++;
 			if (lowerBody == LOWER_BODY_TYPE_FERRET) counter++;
-			if (skinType == SKIN_TYPE_FUR && counter > 0) counter++;
+			if (hasFur() && counter > 0) counter++;
 			return counter;
 		}
 		//Determine Dog Rating
@@ -1153,7 +1154,7 @@ use namespace kGAMECLASS;
 			if (breastRows.length > 3)
 				dogCounter--;
 			//Fur only counts if some canine features are present
-			if (skinType == 1 && dogCounter > 0)
+			if (hasFur() && dogCounter > 0)
 				dogCounter++;
 			return dogCounter;
 		}
@@ -1171,7 +1172,7 @@ use namespace kGAMECLASS;
 			if (faceType == 16)
 				coonCounter += 2;
 			//Fur only counts if some canine features are present
-			if (skinType == 1 && coonCounter > 0)
+			if (hasFur() && coonCounter > 0)
 				coonCounter++;
 
 			if (tallness < 55 && coonCounter > 0)
@@ -1197,7 +1198,7 @@ use namespace kGAMECLASS;
 			if (coonCounter > 0 && balls > 0)
 				coonCounter++;
 			//Fur only counts if some canine features are present
-			if (skinType == 1 && coonCounter > 0)
+			if (hasFur() && coonCounter > 0)
 				coonCounter++;
 			return coonCounter;
 		}
@@ -1223,7 +1224,7 @@ use namespace kGAMECLASS;
 			if (breastRows.length == 4 && foxCounter > 0)
 				foxCounter++;
 			//Fur only counts if some canine features are present
-			if (skinType == 1 && foxCounter > 0)
+			if (hasFur() && foxCounter > 0)
 				foxCounter++;
 			return foxCounter;
 		}
@@ -1249,7 +1250,7 @@ use namespace kGAMECLASS;
 			if (breastRows.length > 3)
 				catCounter -= 2;
 			//Fur only counts if some canine features are present
-			if (skinType == 1 && catCounter > 0)
+			if (hasFur() && catCounter > 0)
 				catCounter++;
 			return catCounter;
 		}
@@ -1276,7 +1277,7 @@ use namespace kGAMECLASS;
 				lizardCounter++;
 			if (armType == ARM_TYPE_PREDATOR && clawType == CLAW_TYPE_LIZARD)
 				lizardCounter++;
-			if (hasScales())
+			if (hasReptileScales())
 				lizardCounter++;
 			if (eyeType == EYES_LIZARD)
 				lizardCounter++;
@@ -1300,7 +1301,7 @@ use namespace kGAMECLASS;
 				score--;
 			if (tailType == 5)
 				score += 2;
-			if (skinType != SKIN_TYPE_PLAIN && score > 0)
+			if (!hasPlainSkin() && score > 0)
 				score--;
 			return score;
 		}
@@ -1320,7 +1321,7 @@ use namespace kGAMECLASS;
 			if (lowerBody == 1 || lowerBody == 4)
 				horseCounter++;
 			//Fur only counts if some equine features are present
-			if (skinType == 1 && horseCounter > 0)
+			if (hasFur() && horseCounter > 0)
 				horseCounter++;
 			return horseCounter;
 		}
@@ -1355,11 +1356,11 @@ use namespace kGAMECLASS;
 			if (kitsuneCounter > 0 && femininity >= 40)
 				kitsuneCounter++;
 			//If the character has fur, scales, or gooey skin, -1
-			if (skinType == SKIN_TYPE_FUR && !InCollection(furColor, KitsuneScene.basicKitsuneFur) && !InCollection(furColor, KitsuneScene.elderKitsuneColors))
+			if (hasFur() && !InCollection(furColor, KitsuneScene.basicKitsuneFur) && !InCollection(furColor, KitsuneScene.elderKitsuneColors))
 				kitsuneCounter--;
 			if (hasScales())
 				kitsuneCounter -= 2;
-			if (skinType == SKIN_TYPE_GOO)
+			if (hasGooSkin())
 				kitsuneCounter -= 3;
 			//If the character has abnormal legs, -1
 			if (lowerBody != LOWER_BODY_TYPE_HUMAN && lowerBody != LOWER_BODY_TYPE_FOX)
@@ -1396,7 +1397,7 @@ use namespace kGAMECLASS;
 				dragonCounter++;
 			if (lowerBody == LOWER_BODY_TYPE_DRAGON)
 				dragonCounter++;
-			if (skinType == SKIN_TYPE_DRACONIC && dragonCounter > 0)
+			if (hasDragonScales() && dragonCounter > 0)
 				dragonCounter++;
 			if (hasDragonHorns())
 				dragonCounter++;
@@ -1481,7 +1482,7 @@ use namespace kGAMECLASS;
 			if (balls > 2 && bunnyCounter > 0)
 				bunnyCounter--;
 			//Human skin on bunmorph adds
-			if (skinType == 0 && bunnyCounter > 1)
+			if (hasPlainSkin() && bunnyCounter > 1)
 				bunnyCounter++;
 			//No wings and antennae a plus
 			if (bunnyCounter > 0 && antennae == 0)
@@ -1526,7 +1527,7 @@ use namespace kGAMECLASS;
 				kanga++;
 			if (faceType == 9)
 				kanga++;
-			if (kanga >= 2 && skinType == 1)
+			if (kanga >= 2 && hasFur())
 				kanga++;
 			return kanga;
 		}
@@ -1542,7 +1543,7 @@ use namespace kGAMECLASS;
 			if (tailType == 7)
 				sharkCounter++;
 			//skin counting only if PC got any other shark traits
-			if (skinType == 0 && sharkCounter > 0)
+			if (hasPlainSkin() && sharkCounter > 0)
 				sharkCounter++;
 			return sharkCounter;
 		}
@@ -1553,7 +1554,7 @@ use namespace kGAMECLASS;
 			var mutantCounter:Number = 0;
 			if (faceType > 0)
 				mutantCounter++;
-			if (skinType != SKIN_TYPE_PLAIN)
+			if (hasPlainSkin())
 				mutantCounter++;
 			if (tailType > 0)
 				mutantCounter++;
@@ -1567,19 +1568,19 @@ use namespace kGAMECLASS;
 				mutantCounter++;
 			if (faceType == 1)
 			{
-				if (skinType == 1)
+				if (hasFur())
 					mutantCounter--;
 				if (tailType == 1)
 					mutantCounter--;
 			}
 			if (faceType == 2)
 			{
-				if (skinType == 1)
+				if (hasFur())
 					mutantCounter--;
 				if (tailType == 2)
 					mutantCounter--;
 			}
-			return mutantCounter--;
+			return mutantCounter;
 		}
 		
 		//Salamander score
@@ -1617,7 +1618,7 @@ use namespace kGAMECLASS;
 				sirenCounter++;
 			//if (hasCock() && findFirstCockType(CockTypesEnum.ANEMONE) >= 0)
 			//	sirenCounter++;
-			return sirenCounter++;
+			return sirenCounter;
 		}
 		
 		public function pigScore():Number
@@ -1639,7 +1640,7 @@ use namespace kGAMECLASS;
 		public function satyrScore():Number
 		{
 			var satyrCounter:Number = 0;
-			if (lowerBody == LOWER_BODY_TYPE_HOOFED)
+			if (lowerBody == LOWER_BODY_TYPE_CLOVEN_HOOFED)
 				satyrCounter++;
 			if (tailType == TAIL_TYPE_GOAT)
 				satyrCounter++;
@@ -1687,7 +1688,7 @@ use namespace kGAMECLASS;
 				echidnaCounter++;
 			if (lowerBody == LOWER_BODY_TYPE_ECHIDNA)
 				echidnaCounter++;
-			if (echidnaCounter >= 2 && skinType == SKIN_TYPE_FUR)
+			if (echidnaCounter >= 2 && hasFur())
 				echidnaCounter++;
 			if (echidnaCounter >= 2 && countCocksOfType(CockTypesEnum.ECHIDNA) > 0)
 				echidnaCounter++;
@@ -1707,7 +1708,7 @@ use namespace kGAMECLASS;
 				deerCounter++;
 			if (hornType == HORNS_ANTLERS && horns >= 4)
 				deerCounter++;
-			if (deerCounter >= 2 && skinType == SKIN_TYPE_FUR)
+			if (deerCounter >= 2 && hasFur())
 				deerCounter++;
 			if (deerCounter >= 3 && countCocksOfType(CockTypesEnum.HORSE) > 0)
 				deerCounter++;
@@ -1730,7 +1731,7 @@ use namespace kGAMECLASS;
 				dragonneCounter++;
 			if (lowerBody == LOWER_BODY_TYPE_CAT)
 				dragonneCounter++;
-			if (hasScales() && dragonneCounter > 0)
+			if (hasReptileScales() && dragonneCounter > 0)
 				dragonneCounter++;
 			return dragonneCounter;
 		}
@@ -1756,7 +1757,7 @@ use namespace kGAMECLASS;
 					catCounter++;
 			}
 			//Fur only counts if some canine features are present
-			if (skinType == SKIN_TYPE_FUR && catCounter >= 6)
+			if (hasFur() && catCounter >= 6)
 				catCounter++;
 			return catCounter;
 		}
@@ -1769,10 +1770,17 @@ use namespace kGAMECLASS;
 			//(Small – 0.01 mLs – Size 1 + 1 Multi)
 			//(Large – 0.8 - Size 10 + 4 Multi)
 			//(HUGE – 2.4 - Size 12 + 5 Multi + 4 tits)
-			var total:Number;
+			
+			var total:Number = 0;
 			if (findStatusEffect(StatusEffects.LactationEndurance) < 0)
 				createStatusEffect(StatusEffects.LactationEndurance, 1, 0, 0, 0);
-			total = biggestTitSize() * 10 * averageLactation() * statusEffectv1(StatusEffects.LactationEndurance) * totalBreasts();
+			
+			var counter:Number = breastRows.length;
+			while (counter > 0) {
+				counter--;
+				total += 10 * breastRows[counter].breastRating * breastRows[counter].lactationMultiplier * breastRows[counter].breasts * statusEffectv1(StatusEffects.LactationEndurance);
+				
+			}
 			if (findPerk(PerkLib.MilkMaid) >= 0)
 				total += 200 + (perkv1(PerkLib.MilkMaid) * 100);
 			if (statusEffectv1(StatusEffects.LactationReduction) >= 48)
@@ -1889,15 +1897,7 @@ use namespace kGAMECLASS;
 			if (flags[kFLAGS.MEANINGLESS_CORRUPTION] > 0) temp += 100;
 			return temp;
 		}
-		
-		public function newGamePlusMod():int {
-			var temp:int = flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-			//Constrains value between 0 and 4.
-			if (temp < 0) temp = 0;
-			if (temp > 4) temp = 4;
-			return temp;
-		}
-		
+
 		public function buttChangeDisplay():void
 		{	//Allows the test for stretching and the text output to be separated
 			if (ass.analLooseness == 5) outputText("<b>Your " + Appearance.assholeDescript(this) + " is stretched even wider, capable of taking even the largest of demons and beasts.</b>");
@@ -1917,15 +1917,15 @@ use namespace kGAMECLASS;
 				}
 			}
 			if (findPerk(PerkLib.Diapause) >= 0) {
-				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00228] += 3 + rand(3);
-				flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00229] = 1;
+				flags[kFLAGS.DIAPAUSE_FLUID_AMOUNT] += 3 + rand(3);
+				flags[kFLAGS.DIAPAUSE_NEEDS_DISPLAYING] = 1;
 			}
 
 		}
 
 		public function minoCumAddiction(raw:Number = 10):void {
 			//Increment minotaur cum intake count
-			flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00340]++;
+			flags[kFLAGS.MINOTAUR_CUM_INTAKE_COUNT]++;
 			//Fix if variables go out of range.
 			if (flags[kFLAGS.MINOTAUR_CUM_ADDICTION_TRACKER] < 0) flags[kFLAGS.MINOTAUR_CUM_ADDICTION_TRACKER] = 0;
 			if (flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] < 0) flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] = 0;
@@ -2274,26 +2274,7 @@ use namespace kGAMECLASS;
 						if (breastRows.length > 1) outputText("You drop to your knees from a massive change in your body's center of gravity.  Your " + breastDescript(0) + " tingle strongly, growing disturbingly large.", false);
 						if (breastRows.length == 1) outputText("You drop to your knees from a massive change in your center of gravity.  The tingling in your " + breastDescript(0) + " intensifies as they continue to grow at an obscene rate.", false);
 					}
-					if (biggestTitSize() >= 8.5 && nippleLength < 2)
-					{
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = 2;
-					}
-					if (biggestTitSize() >= 7 && nippleLength < 1)
-					{
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = 1;
-					}
-					if (biggestTitSize() >= 5 && nippleLength < .75)
-					{
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = .75;
-					}
-					if (biggestTitSize() >= 3 && nippleLength < .5)
-					{
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = .5;
-					}
+
 				}
 				else
 				{
@@ -2309,23 +2290,28 @@ use namespace kGAMECLASS;
 						if (breastRows.length > 1) outputText("You drop to your knees from a massive change in your body's center of gravity.  Your top row of " + breastDescript(0) + " tingle strongly, growing disturbingly large.", false);
 						if (breastRows.length == 1) outputText("You drop to your knees from a massive change in your center of gravity.  The tingling in your " + breastDescript(0) + " intensifies as they continue to grow at an obscene rate.", false);
 					}
-					if (biggestTitSize() >= 8.5 && nippleLength < 2) {
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = 2;
-					}
-					if (biggestTitSize() >= 7 && nippleLength < 1) {
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = 1;
-					}
-					if (biggestTitSize() >= 5 && nippleLength < .75) {
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = .75;
-					}
-					if (biggestTitSize() >= 3 && nippleLength < .5) {
-						outputText("  A tender ache starts at your " + nippleDescript(0) + "s as they grow to match your burgeoning breast-flesh.", false);
-						nippleLength = .5;
-					}
 				}
+			}
+			// Nipples
+			if (biggestTitSize() >= 8.5 && nippleLength < 2) 
+			{
+				if (display) outputText("  A tender ache starts at your [nipples] as they grow to match your burgeoning breast-flesh.", false);
+				nippleLength = 2;
+			}
+			if (biggestTitSize() >= 7 && nippleLength < 1)
+			{
+				if (display) outputText("  A tender ache starts at your [nipples] as they grow to match your burgeoning breast-flesh.", false);
+				nippleLength = 1;
+			}
+			if (biggestTitSize() >= 5 && nippleLength < .75)
+			{
+				if (display) outputText("  A tender ache starts at your [nipples] as they grow to match your burgeoning breast-flesh.", false);
+				nippleLength = .75;
+			}
+			if (biggestTitSize() >= 3 && nippleLength < .5)
+			{
+				if (display) outputText("  A tender ache starts at your [nipples] as they grow to match your burgeoning breast-flesh.", false);
+				nippleLength = .5;
 			}
 		}
 
@@ -2574,10 +2560,10 @@ use namespace kGAMECLASS;
 			if (isNaga()) maxSpe += 10;
 			if (isTaur() || isDrider()) maxSpe += 20;
 			//Apply New Game+
-			maxStr += 25 * newGamePlusMod();
-			maxTou += 25 * newGamePlusMod();
-			maxSpe += 25 * newGamePlusMod();
-			maxInt += 25 * newGamePlusMod();
+			maxStr += ascensionFactor();
+			maxTou += ascensionFactor();
+			maxSpe += ascensionFactor();
+			maxInt += ascensionFactor();
 			//Might
 			if (findStatusEffect(StatusEffects.Might) >= 0) {
 				maxStr += statusEffectv1(StatusEffects.Might);
@@ -3189,7 +3175,7 @@ use namespace kGAMECLASS;
 		}
 		
 		public function setFurColor(colorArray:Array, ignoreSkinType:Boolean = false):void {
-			if (!ignoreSkinType && skinType != SKIN_TYPE_FUR) return;
+			if (!ignoreSkinType && !hasFur()) return;
 			furColor = colorArray[rand(colorArray.length)];
 		}
 	}

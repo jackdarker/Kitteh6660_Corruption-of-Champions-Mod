@@ -588,7 +588,7 @@ private function stayQuietWhileAmilyBitchesAboutFuckingArborday():void {
 	flags[kFLAGS.AMILY_FOLLOWER] = 0;
 	//Set - amily flipped her shit
 	flags[kFLAGS.AMILY_TREE_FLIPOUT] = 1;
-	flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00173] = 0;
+	flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] = 0;
 	//Enable village encounters
 	flags[kFLAGS.AMILY_VILLAGE_ENCOUNTERS_DISABLED] = 0;
 	//Change to plain mouse birth!
@@ -1513,7 +1513,7 @@ private function holliAndGenderlessSittingInATree():void {
 	
 	outputText("\n\n\"<i>Indeed it does,</i>\" Holli agrees.  \"<i>But when you make a choice, you accept the consequences.  Is that not so?</i>\"  The dryad pulls the traveler onto her body, then begins to moan as he caresses her breasts and enters her; the eyes of her mute sentinel follow the lovers to the ground and ");
 	if (player.hasScales()) outputText("a quiver of arousal shakes its scales");
-	else if (player.skinType == SKIN_TYPE_FUR) outputText("its fur begins to prick up with arousal");
+	else if (player.hasFur()) outputText("its fur begins to prick up with arousal");
 	else outputText("a blush of lust colors its " + player.skinFurScales());
 	outputText("...");
 	

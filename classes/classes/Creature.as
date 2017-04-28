@@ -154,7 +154,7 @@ package classes
 		
 		private var _furColor:String = "no"; //Fur colour!
 		public function get furColor():String {
-			if (skinType == SKIN_TYPE_FUR) return _furColor;
+			if (hasFur()) return _furColor;
 			else return hairColor;
 		}
 		public function get newFurColor():String { return _furColor; } // alternative getter for the furColor. Ignores the skinType (Stadler76)
@@ -506,7 +506,7 @@ package classes
 		}
 
 		//Functions			
-		public function orgasm():void
+		public function orgasmReal():void
 		{
 			game.dynStats("lus=", 0, "res", false);
 			hoursSinceCum = 0;
@@ -518,6 +518,62 @@ package classes
 				game.outputText("\n\nFeeling some minor discomfort in your " + cockDescript(randomCock) + " you slip it out of your [armor] and examine it. <b>With a little exploratory rubbing and massaging, you manage to squeeze out " + bonusGems + " gems from its cum slit.</b>\n\n" );
 				gems += bonusGems;
 			}
+		}
+		public function orgasm(type:String = 'Default', real:Boolean = true):void
+		{
+			switch (type) {
+				// Start with that, whats easy
+				case 'Vaginal': flags[kFLAGS.TIMES_ORGASM_VAGINAL]++; break;
+				case 'Anal':    flags[kFLAGS.TIMES_ORGASM_ANAL]++;    break;
+				case 'Dick':    flags[kFLAGS.TIMES_ORGASM_DICK]++;    break;
+				case 'Lips':    flags[kFLAGS.TIMES_ORGASM_LIPS]++;    break;
+				case 'Tits':    flags[kFLAGS.TIMES_ORGASM_TITS]++;    break;
+				case 'Nipples': flags[kFLAGS.TIMES_ORGASM_NIPPLES]++; break;
+				case 'Ovi':     break;
+
+				// Now to the more complex types
+				case 'VaginalAnal':
+					orgasm((hasVagina() ? 'Vaginal' : 'Anal'), real);
+					return; // Prevent calling orgasmReal() twice
+
+				case 'DickAnal':
+					orgasm((rand(2) == 0 ? 'Dick' : 'Anal'), real);
+					return;
+
+				case 'Default':
+				case 'Generic':
+				default:
+					if (!hasVagina() && !hasCock()) {
+						orgasm('Anal'); // Failsafe for genderless PCs
+						return;
+					}
+
+					if (hasVagina() && hasCock()) {
+						orgasm((rand(2) == 0 ? 'Vaginal' : 'Dick'), real);
+						return;
+					}
+
+					orgasm((hasVagina() ? 'Vaginal' : 'Dick'), real);
+					return;
+			}
+
+			if (real) orgasmReal();
+		}
+
+		public function newGamePlusMod():int
+		{
+			//Constrains value between 0 and 4.
+			return Math.max(0, Math.min(4, flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+		}
+
+		public function ascensionFactor(multiplier:Number = 25):Number
+		{
+			return newGamePlusMod() * multiplier;
+		}
+
+		public function ngPlus(value:Number, multiplier:Number = 25):Number
+		{
+			return value + ascensionFactor(multiplier);
 		}
 
 		//Create a perk
@@ -1974,14 +2030,22 @@ package classes
 				return false;
 			return (cocks[0].cockLength >= 20);
 		}
-		
+
+		public static const canFlyWings:Array = [
+			WING_TYPE_BEE_LIKE_LARGE,
+			WING_TYPE_BAT_LIKE_LARGE,
+			WING_TYPE_FEATHERED_LARGE,
+			WING_TYPE_DRACONIC_LARGE,
+			WING_TYPE_GIANT_DRAGONFLY,
+		];
+
 		//PC can fly?
 		public function canFly():Boolean
 		{
 			//web also makes false!
 			if (findStatusEffect(StatusEffects.Web) >= 0)
 				return false;
-			return _wingType == 2 || _wingType == 7 || _wingType == 9 || _wingType == 11 || _wingType == 12;
+			return canFlyWings.indexOf(_wingType) != -1;
 
 		}
 
@@ -2402,6 +2466,51 @@ package classes
 			return (bonusFertility() + fertility);
 		}
 
+		public function hasScales():Boolean
+		{
+			return [SKIN_TYPE_LIZARD_SCALES, SKIN_TYPE_DRAGON_SCALES, SKIN_TYPE_FISH_SCALES].indexOf(skinType) != -1;
+		}
+
+		public function hasReptileScales():Boolean
+		{
+			return [SKIN_TYPE_LIZARD_SCALES, SKIN_TYPE_DRAGON_SCALES].indexOf(skinType) != -1;
+		}
+
+		public function hasDragonScales():Boolean
+		{
+			return skinType == SKIN_TYPE_DRAGON_SCALES;
+		}
+
+		public function hasLizardScales():Boolean
+		{
+			return skinType == SKIN_TYPE_LIZARD_SCALES;
+		}
+
+		public function hasNonLizardScales():Boolean
+		{
+			return hasScales() && !hasLizardScales();
+		}
+
+		public function hasFur():Boolean
+		{
+			return skinType == SKIN_TYPE_FUR;
+		}
+
+		public function hasFurOrScales():Boolean
+		{
+			return hasFur() || hasScales();
+		}
+
+		public function hasGooSkin():Boolean
+		{
+			return skinType == SKIN_TYPE_GOO;
+		}
+
+		public function hasPlainSkin():Boolean
+		{
+			return skinType == SKIN_TYPE_PLAIN;
+		}
+
 		public function isBiped():Boolean
 		{
 			return legCount == 2;
@@ -2521,9 +2630,9 @@ package classes
 				skinzilla += skinAdj + ", ";
 			//Fur handled a little differently since it uses
 			//haircolor
-			if (_skinType == 1)
+			if (hasFur())
 				skinzilla += furColor + " ";
-			else if (_skinType == SKIN_TYPE_DRACONIC)
+			else if (hasDragonScales())
 				skinzilla += "iron-like, " + _skinTone + " shield-shaped ";
 			else
 				skinzilla += _skinTone + " ";
@@ -3340,8 +3449,8 @@ package classes
 		}
 		
 		public function damageToughnessModifier(displayMode:Boolean = false):Number {
-			//Return 0 if Kaizo
-			if (flags[kFLAGS.KAIZO_MODE] > 0) return 0;
+			//Return 0 if Grimdark
+			if (flags[kFLAGS.GRIMDARK_MODE] > 0) return 0;
 			//Calculate
 			var temp:Number = 0;
 			if (tou < 25) temp = (tou * 0.4);
