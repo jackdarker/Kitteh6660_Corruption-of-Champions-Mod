@@ -35,11 +35,11 @@ package classes.Scenes.Combat
 		public function tease(justText:Boolean = false):void {
 			if (!justText) clearOutput();
 			//You cant tease a blind guy!
-			if (monster.findStatusEffect(StatusEffects.Blind) >= 0) {
+			if (monster.hasStatusEffect(StatusEffects.Blind)) {
 				outputText("You do your best to tease " + monster.a + monster.short + " with your body.  It doesn't work - you blinded " + monster.pronoun2 + ", remember?\n\n", true);
 				return;
 			}
-			if (player.findStatusEffect(StatusEffects.Sealed) >= 0 && player.statusEffectv2(StatusEffects.Sealed) == 1) {
+			if (player.hasStatusEffect(StatusEffects.Sealed) && player.statusEffectv2(StatusEffects.Sealed) == 1) {
 				outputText("You do your best to tease " + monster.a + monster.short + " with your body.  Your artless twirls have no effect, as <b>your ability to tease is sealed.</b>\n\n", true);
 				return;
 			}	
@@ -76,7 +76,7 @@ package classes.Scenes.Combat
 			//10% for seduction perk
 			if (player.findPerk(PerkLib.Seduction) >= 0) chance += 10;
 			//10% for sexy armor types
-			if (player.findPerk(PerkLib.SluttySeduction) >= 0) chance += 10;
+			if (player.findPerk(PerkLib.SluttySeduction) >= 0) chance += player.perkv1(PerkLib.SluttySeduction);
 			//10% for bimbo shits
 			if (player.findPerk(PerkLib.BimboBody) >= 0) {
 				chance += 10;
@@ -95,6 +95,7 @@ package classes.Scenes.Combat
 				chance += 2;
 			}
 			if (player.findPerk(PerkLib.ChiReflowLust) >= 0) chance += UmasShop.NEEDLEWORK_LUST_TEASE_MULTI;
+			if (getGame().bimboProgress.ableToProgress()) chance += player.bimboScore() / 2; // up to maximum value of 10 for pure bimbos 
 			//==============================
 			//Determine basic damage.
 			//==============================
@@ -110,6 +111,7 @@ package classes.Scenes.Combat
 				damage += 5;
 				bimbo = true;
 			}
+			if (getGame().bimboProgress.ableToProgress()) damage += player.bimboScore() / 4; // up to maximum value of 5 for pure bimbos
 			if (player.level < 30) damage += player.level;
 			else if (player.level < 60) damage += 30 + ((player.level - 30) / 2);
 			else damage += 45 + ((player.level - 60) / 5);
@@ -406,7 +408,7 @@ package classes.Scenes.Combat
 				choices[choices.length] = 25;
 			}
 			//26 SMART PEEPS! 70+ int, arouse spell!
-			if (player.inte >= 70 && player.findStatusEffect(StatusEffects.KnowsArouse) >= 0) {
+			if (player.inte >= 70 && player.hasStatusEffect(StatusEffects.KnowsArouse)) {
 				choices[choices.length] = 26;
 				choices[choices.length] = 26;
 				choices[choices.length] = 26;
@@ -701,7 +703,7 @@ package classes.Scenes.Combat
 					}
 					if (monster.plural) outputText(monster.capitalA + monster.short + "' gazes are riveted on your groin as you run your fingers up and down your folds seductively.", false);
 					else outputText(monster.capitalA + monster.short + "'s gaze is riveted on your groin as you run your fingers up and down your folds seductively.", false);
-					if (player.clitLength > 3) outputText("  You smile as your " + player.clitDescript() + " swells out from the folds and stands proudly, begging to be touched.", false);
+					if (player.getClitLength() > 3) outputText("  You smile as your " + player.clitDescript() + " swells out from the folds and stands proudly, begging to be touched.", false);
 					else outputText("  You smile and pull apart your lower-lips to expose your " + player.clitDescript() + ", giving the perfect view.", false);
 					if (player.cockTotal() > 0) outputText("  Meanwhile, " + player.sMultiCockDesc() + " bobs back and forth with your gyrating hips, adding to the display.", false);
 					//BONUSES!
@@ -714,7 +716,7 @@ package classes.Scenes.Combat
 				//7 special Adjatha-crafted bend over bimbo times
 				case 7:
 					outputText("The glinting of light catches your eye and you whip around to inspect the glittering object, turning your back on " + monster.a + monster.short + ".  Locking your knees, you bend waaaaay over, " + player.chestDesc() + " swinging in the open air while your " + player.buttDescript() + " juts out at the " + monster.a + monster.short + ".  Your plump cheeks and " + player.hipDescript() + " form a jiggling heart-shape as you eagerly rub your thighs together.\n\n", false);
-					outputText("The clear, warm fluid of your happy excitement trickles down from your loins, polishing your " + player.skin() + " to a glossy, inviting shine.  Retrieving the useless, though shiny, bauble, you hold your pose for just a moment longer, a sly little smile playing across your lips as you wiggle your cheeks one more time before straightening up and turning back around.", false);
+					outputText("The clear, warm fluid of your happy excitement trickles down from your loins, polishing your [skin] to a glossy, inviting shine.  Retrieving the useless, though shiny, bauble, you hold your pose for just a moment longer, a sly little smile playing across your lips as you wiggle your cheeks one more time before straightening up and turning back around.", false);
 					vagina = true;
 					chance++;
 					damage += 2;
@@ -861,7 +863,7 @@ package classes.Scenes.Combat
 					break;
 				//22 SPOIDAH SILK
 				case 22:
-					outputText("Reaching back, you milk some wet silk from your spider-y abdomen and present it to " + monster.a + monster.short + ", molding the sticky substance as " + monster.pronoun1 + " looks on curiously.  Within moments, you hold up a silken heart scuplture, and with a wink, you toss it at " + monster.pronoun2 + ". It sticks to " + monster.pronoun3 + " body, the sensation causing " + monster.pronoun2 + " to hastily slap the heart off.  " + monster.mf("He","She") + " returns " + monster.pronoun3 + " gaze to you to find you turned around, " + player.buttDescript() + " bared and abdomen bouncing lazily.  \"<i>I wonder what would happen if I webbed up your hole after I dropped some eggs inside?</i>\" you hiss mischievously.  " + monster.mf("He","She") + " gulps.", false);
+					outputText("Reaching back, you milk some wet silk from your spider-y abdomen and present it to " + monster.a + monster.short + ", molding the sticky substance as " + monster.pronoun1 + " looks on curiously.  Within moments, you hold up a silken heart sculpture, and with a wink, you toss it at " + monster.pronoun2 + ". It sticks to " + monster.pronoun3 + " body, the sensation causing " + monster.pronoun2 + " to hastily slap the heart off.  " + monster.mf("He","She") + " returns " + monster.pronoun3 + " gaze to you to find you turned around, " + player.buttDescript() + " bared and abdomen bouncing lazily.  \"<i>I wonder what would happen if I webbed up your hole after I dropped some eggs inside?</i>\" you hiss mischievously.  " + monster.mf("He","She") + " gulps.", false);
 					ass = true;
 					break;
 				//23 RUT TEASE
@@ -1216,19 +1218,19 @@ package classes.Scenes.Combat
 						bonusChance += .5;
 						bonusDamage += 1;
 					}
-					if (player.clitLength > 1.5) {
+					if (player.getClitLength() > 1.5) {
 						bonusChance += .5;
 						bonusDamage++;
 					}
-					if (player.clitLength > 3.5) {
+					if (player.getClitLength() > 3.5) {
 						bonusChance += .5;
 						bonusDamage += 1;
 					}
-					if (player.clitLength > 7) {
+					if (player.getClitLength() > 7) {
 						bonusChance += .5;
 						bonusDamage += 1;
 					}
-					if (player.clitLength > 12) {
+					if (player.getClitLength() > 12) {
 						bonusChance += .5;
 						bonusDamage += 1;
 					}
@@ -1408,7 +1410,7 @@ package classes.Scenes.Combat
 				damage = (damage + rand(bonusDamage)) * monster.lustVuln;
 				
 				if (monster is JeanClaude) (monster as JeanClaude).handleTease(damage, true);
-				else if (monster is Doppleganger && monster.findStatusEffect(StatusEffects.Stunned) < 0) (monster as Doppleganger).mirrorTease(damage, true);
+				else if (monster is Doppleganger && !monster.hasStatusEffect(StatusEffects.Stunned)) (monster as Doppleganger).mirrorTease(damage, true);
 				else if (!justText) monster.teased(damage);
 				
 				if (flags[kFLAGS.PC_FETISH] >= 1 && !getGame().urtaQuest.isUrta()) 

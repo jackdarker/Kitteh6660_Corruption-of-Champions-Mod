@@ -53,7 +53,10 @@ package classes.Scenes.Areas.Swamp
 			else outputText("You go exploring in the swamp, and before you get far, a female spider-morph appears!  She's clearly different than the last one you ran into, though many of her features remain the same.  You realize she's no more than a dozen paces away and slowly approaching with a strange glint in her eye.\n\n", false);
 			//Menu for either
 			outputText("What do you do?", false);
-			simpleChoices("Fight", fightFSpiderMorph, "Try to Talk", talkToFSpiderMorph, "", null, "", null, "Leave", runFromFSpiderMorph);
+			menu();
+			addButton(0, "Fight", fightFSpiderMorph);
+			addButton(1, "Try to Talk", talkToFSpiderMorph);
+			addButton(14, "Leave", runFromFSpiderMorph);
 			//Incremement 'times encountered spider-girls'
 			flags[kFLAGS.TIMES_ENCOUNTERED_FEMALE_SPIDERMORPHS]++;
 			if (flags[kFLAGS.CODEX_ENTRY_ARACHNES] <= 0) {
@@ -105,7 +108,9 @@ package classes.Scenes.Areas.Swamp
 					}
 					outputText(" well, you're the first sane person I've had a chance to ask.  Oh fuck it, can I tie you up and fuck you? Please?</i>\"\n\n", false);
 					outputText("Do you let her fuck you?", false);
-					simpleChoices("Yes", voluntaryFemaleSpiderMorphRapesYou, "", null, "", null, "", null, "Leave", declinedCrazyFemaleSpiderMorphSexFunTimes);
+					menu();
+					addButton(0, "Yes", voluntaryFemaleSpiderMorphRapesYou);
+					addButton(14, "Leave", declinedCrazyFemaleSpiderMorphSexFunTimes);
 				}
 				//(OPTION 2 - GIFT) 
 				else {
@@ -221,7 +226,7 @@ package classes.Scenes.Areas.Swamp
 			else outputText("gushing", false);
 			outputText(" nether-lips, leaving them to stew in their own juices.  You moan, unable to remain silent under such stimulation.  The lusty arachnid-girl finally pops off your puffed-up nipples and looks up past the red scratches to your face.\n\n", false);
 
-			outputText("\"<i>Delicious!  Now to get you ready,</i>\" she says with a smug grin.  You groan your frustration, but your voice is thrown up a few octaves when she sinks over an inch of her needle-like fangs into your breast.  Venom boils into your pierced flesh, the hot drug burning through your veins as your body spreads it throughout all its extremities. Your " + player.skin() + " flushes, and though you didn't think it possible, your " + player.vaginaDescript() + " gushes out a veritable flood of slick girlcum that turns the pearly threads a damp gray.  The air stinks with the heady aroma of puddling girl-lust, and you instinctively hump against your bindings, the restraints turning your motions into little more than pathetic, repetitive muscle twitches.\n\n", false);
+			outputText("\"<i>Delicious!  Now to get you ready,</i>\" she says with a smug grin.  You groan your frustration, but your voice is thrown up a few octaves when she sinks over an inch of her needle-like fangs into your breast.  Venom boils into your pierced flesh, the hot drug burning through your veins as your body spreads it throughout all its extremities. Your [skin] flushes, and though you didn't think it possible, your " + player.vaginaDescript() + " gushes out a veritable flood of slick girlcum that turns the pearly threads a damp gray.  The air stinks with the heady aroma of puddling girl-lust, and you instinctively hump against your bindings, the restraints turning your motions into little more than pathetic, repetitive muscle twitches.\n\n", false);
 
 			outputText("The spider-girl pulls back and admires her handiwork for a moment before she repeats the action on ", false);
 			if (player.biggestTitSize() < 1) outputText("the other side of your chest", false);
@@ -264,7 +269,7 @@ package classes.Scenes.Areas.Swamp
 
 			outputText("During your dreamless sleep, your body registers the feeling of your restraints being removed, but you slumber on, completely unaware.", false);
 			//[end]
-			player.orgasm();
+			player.orgasm('Vaginal');
 			dynStats("lib", 2, "sen", 1);
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
@@ -369,7 +374,7 @@ package classes.Scenes.Areas.Swamp
 
 			outputText("Finally at peace, you go limp in the bonds, slipping into a deep slumber.  During your dreamless sleep, your body registers the feeling of your restraints being severed.", false);
 
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("lib", 2, "sen", 1);
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
@@ -415,7 +420,7 @@ package classes.Scenes.Areas.Swamp
 			//(All)
 			outputText("You start to protest, but the dominatrix squats down, resting the smooth carapace of her abdomen directly on top of your " + player.cockDescript(x) + ", squishing the urethral bulge flat under its weight.  She sighs and rocks her hips back and forth, dragging the weighty bulb back and forth over your dick with slow, teasing motions that cause the poor member to rapidly fill to its maximum, twitching size.  Looking quite satisfied, she announces, \"<i>That's a good " + player.mf("boy", "girl") + ".  Now to knit a nice, soft, little cock-sock to muzzle this beast.</i>\"\n\n", false);
 
-			outputText("Immediately, smooth silk strands start to slide out from her spinnerets, sliding in long loops around your " + player.cockDescript(x) + " until the top third of it is completely covered.  You realize that unlike the webs pinning you down, these gossamer threads don't stick at all, and while the wonderfully soft cock-sock she's weaving feels quite tight, it easily flexes and slides a little bit each time it's touched.  That wonderful encapsulation continues, binding every inch of your dick in a tight alabaster sheath until there's not a single speck of your skin visible.  The spider-girl stands and rubs the warm webs up and down, masterbating you with the silken tube a few times until you start to groan in pleasure.\n\n", false);
+			outputText("Immediately, smooth silk strands start to slide out from her spinnerets, sliding in long loops around your " + player.cockDescript(x) + " until the top third of it is completely covered.  You realize that unlike the webs pinning you down, these gossamer threads don't stick at all, and while the wonderfully soft cock-sock she's weaving feels quite tight, it easily flexes and slides a little bit each time it's touched.  That wonderful encapsulation continues, binding every inch of your dick in a tight alabaster sheath until there's not a single speck of your skin visible.  The spider-girl stands and rubs the warm webs up and down, masturbating you with the silken tube a few times until you start to groan in pleasure.\n\n", false);
 
 			outputText("The female arachnid stops and announces, \"<i>No cumming yet my cute, big-dicked prey.  You still need to service me, remember?</i>\"  You grunt and try to twist upward and push your bound penis up into her hands again, but the enveloping, sticky mess of her webbing keeps you pinned totally in place, unable to raise your hips even an inch.  While you struggle, she changes position to bring herself above your face.  Her abdomen blocks much of the light from your view, but you can see her tight, dark ring and black-skinned, glistening sex in startling detail from your submissive position in the dirt.\n\n", false);
 
@@ -425,7 +430,7 @@ package classes.Scenes.Areas.Swamp
 
 			outputText("You're already shivering and panting with need, exhaling hot lungfuls of air onto the moist spider-snatch as you try to get ahold of yourself.  More bites... there's no way you could handle being that turned on and not getting ANY relief.  You tilt your head to press your lips into the sloppy vulva and extend your tongue for the first, hesitant taste of her feminine drippings.  They're sweet!  Her pussy is like honey, almost sickeningly sweet, like a slowly dripping fountain of sugar that makes your tongue buzz in delight with each plunge into the syrupy muff.\n\n", false);
 
-			outputText("\"<i>Oooh, that's right, my little insect, keep licking... service me, your mistress,</i>\" commands the spider-girl while she takes your web-wrapped cock in her hands.  After being ignored for so long, the touches of her slender digits upon your " + player.cockDescript(x) + " provide a cacophany of sensation that makes your head swim.  Eager for more rewards, your tongue attacks the sloppy puss above with almost religious fervor, worshipping the dripping pussy with long licks while you gently suckle the tiny bulb of her clit.  The spider-girl begins to slowly jack you off with the pre-cum-soaked sheath, the warm, wet tightness of it feeling like a huge pussy sliding along your girth.  She pumps it up and down, fucking you with her webs to the tempo of your thrashing tongue.\n\n", false);
+			outputText("\"<i>Oooh, that's right, my little insect, keep licking... service me, your mistress,</i>\" commands the spider-girl while she takes your web-wrapped cock in her hands.  After being ignored for so long, the touches of her slender digits upon your " + player.cockDescript(x) + " provide a cacophony of sensation that makes your head swim.  Eager for more rewards, your tongue attacks the sloppy puss above with almost religious fervor, worshipping the dripping pussy with long licks while you gently suckle the tiny bulb of her clit.  The spider-girl begins to slowly jack you off with the pre-cum-soaked sheath, the warm, wet tightness of it feeling like a huge pussy sliding along your girth.  She pumps it up and down, fucking you with her webs to the tempo of your thrashing tongue.\n\n", false);
 
 			outputText("The faster you go, the faster she jerks you with the webs.  Soon both of you are breathing hard, gasping out nonsense noises of pleasure, and drizzling your lusty fluids freely.  The fast pumping, slippery web-pussy bunches up around your base, pulling tight at your tip with every downstroke, and with each upstroke, it creates a small vacuum, sucking on your cock while it exposes a little of your flesh to the air.  It feels wondrous, and though you're utterly and completely bound, the muscles of your " + player.hipDescript() + " continually thrust and buck against their restraints, trying to rut with the gossamer sleeve like some unthinking beast.\n\n", false);
 
@@ -445,7 +450,7 @@ package classes.Scenes.Areas.Swamp
 				if (player.cumQ() >= 4000) outputText("  It pops, too weak to contain all that liquid pressure, soaking the both of you with your spunk!", false);
 			}
 			outputText("  You sigh and fall into a fitful slumber, barely registering the spider-girl cutting your restraints.", false);
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("lib", 2, "sen", 1);
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
@@ -475,24 +480,39 @@ package classes.Scenes.Areas.Swamp
 		{
 			clearOutput();
 			spriteSelect(73);
+	
+			if (flags[kFLAGS.SFW_MODE] > 0) {
+				outputText("You smile in satisfaction as the " + monster.short + " collapses, unable to continue fighting.", true);
+				combat.cleanupAfterCombat();
+				return;
+			}
+			
 			outputText("The spider-girl drops to her knees and wobbles unsteadily", false);
 			if (monster.lust >= monster.eMaxLust()) outputText(", thrusting two of her carapace-covered finger-tips deep into her sloppy box as she gives into her lust.  She actually has the temerity to demand, \"<i>Fuck me, fuck me now!</i>\"", false);
 			else outputText(", too wounded to fight back or run away.", false);
-			if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
-				outputText("\n\nWhat do you do to her?", false);
-				var scissor:Function =null;
-				var pussyFuck:Function =null;
-				var analFuck:Function =null;
-				if (player.hasVagina()) scissor = fSpiderMorphRape;
+			
+			menu();
+			addDisabledButton(0, "Fuck Ass", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(1, "Fuck Pussy", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(2, "Scissor", "This scene requires you to have vagina and sufficient arousal.");
+			
+			if (player.lust >= 33) {
+				outputText("\n\nWhat do you do to her?");
+				
 				if (player.hasCock()) {
-					if (player.cockThatFits(monster.vaginalCapacity()) != -1) pussyFuck = fSpiderMorphRapeDude;
-					else outputText("  <b>You don't have a dick small enough to fuck her vagina.</b>", false);
-					if (player.cockThatFits(monster.analCapacity()) != -1) analFuck = evilSpiderGirlVictoryAnal;
-					else outputText("  <b>Her ass is too tight for you to fit inside.</b>", false);
+					if (player.cockThatFits(monster.analCapacity()) != -1) {
+						addButton(0, "Fuck Ass", evilSpiderGirlVictoryAnal);
+					}
+					if (player.cockThatFits(monster.vaginalCapacity()) != -1) {
+						addButton(1, "Fuck Pussy", fSpiderMorphRapeDude);
+					}
 				}
-				simpleChoices("Fuck Ass", analFuck, "Fuck Pussy", pussyFuck, "Scissor", scissor, "", null, "Leave", combat.cleanupAfterCombat);
+				if (player.hasVagina()) {
+					addButton(2, "Scissor", fSpiderMorphRape);
+				}
 			}
-			else combat.cleanupAfterCombat();
+			
+			addButton(14, "Leave", combat.cleanupAfterCombat);
 		}
 
 		//*Victory Female
@@ -520,12 +540,12 @@ package classes.Scenes.Areas.Swamp
 			outputText("While the stimulation of her twitching body grinding against your " + player.vaginaDescript() + " is wonderful, you quickly tire of her thrashing.  You locate her bulky abdomen and find one of the spinnerets.  The fleshy protuberance is surprisingly quite easy to handle, and you aim it at one of the spider-girl's legs and squeeze.  A torrent of webbing splatters over her carapace-clad legs, and though it doesn't stick to her, it does completely engulf her ankle and adhere to the ground, securing her in place.  You pull back and repeat the action with her other leg, leaving her stuck fast.\n\n", false);
 
 			outputText("You thread yourself back under and around her, sliding back up against her still-quivering cunt until your slippery sex is mashing against it.  With two pairs of slippery pussy lips gliding over each other, squishing wetly from the mixed dribbles of fem-cum, the rest of the swamp fades to a barely-noticed background.  Your " + player.clitDescript() + " quickly emerges from its sheath", false);
-			if (player.clitLength < 4) outputText(", bumping and gliding against the black spider-cooch's sopping lips.", false);
+			if (player.getClitLength() < 4) outputText(", bumping and gliding against the black spider-cooch's sopping lips.", false);
 			else outputText(", slowly spearing forward to penetrate the sopping wet spider-cooch with its decidedly unladylike length and girth.", false);
 			outputText("  The pale beauty moans and screams, her bound arms pulling futilely against the restraints as you work her relentlessly, using her body as your lubricated, vibrating toy.\n\n", false);
 
 			outputText("The squishes and schlicks of your mating echo out, while both your voices rise to higher pitches from the pleasure.  The arachnid-woman cums numerous times, squirting her sweet honey over your " + player.vaginaDescript() + " enough times to leave a puddle under the joining of your waists.  Even in the humid swamp air, the splattering lady-spunk quickly soaks into the mud, but your spidery lover will keep making more; you're sure of it.  You grab one of her feet for leverage and hump harder and harder until your " + player.clitDescript() + " ", false);
-			if (player.clitLength >= 4) outputText("is seized by her velvet embrace just right, and you cum while fucking her with your 'tiny' nub.", false);
+			if (player.getClitLength() >= 4) outputText("is seized by her velvet embrace just right, and you cum while fucking her with your 'tiny' nub.", false);
 			else outputText("drags over her velvet lips just right, and you cum hard, screaming in ecstasy.", false);
 			outputText("\n\n", false);
 
@@ -549,7 +569,7 @@ package classes.Scenes.Areas.Swamp
 			if (player.cor < 33) outputText("In a moment of pity, you work to free her from the restraints before you leave.", false);
 			else if (player.cor < 66) outputText("You feel a little guilty, and before you go, you untie the bindings around her hands so that she'll be able to free herself.", false);
 			else outputText("You leave her there with her hands and feet completely restrained.  Sucks to be her.", false);
-			player.orgasm();
+			player.orgasm('Vaginal');
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
 			else combat.cleanupAfterCombat();
@@ -615,7 +635,7 @@ package classes.Scenes.Areas.Swamp
 			else outputText("you slap her across the face and tell her to toughen up.  She starts to bawl at that, curling into a tight little ball and openly weeping.", false);
 			outputText("  You get dressed and head back to camp.", false);
 
-			player.orgasm();
+			player.orgasm('Dick');
 			pregnancy.knockUpForce(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.INCUBATION_SPIDER - 200); //Spiders carry for half as long as the player does for some reason
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
@@ -633,7 +653,7 @@ package classes.Scenes.Areas.Swamp
 			spriteSelect(73);
 			outputText("You peel off your " + player.armorName + " while you gaze disdainfully down at your prize.  ", false);
 			if (monster.lust >= monster.eMaxLust()) outputText("She's moaning plaintively and happily fingering herself, practically offering her juicy box to you.", false);
-			else outputText("She's groaning painfully and struggling to move before falling back down, legs akimbo, inadvertantly displaying her pussy to you.", false);
+			else outputText("She's groaning painfully and struggling to move before falling back down, legs akimbo, inadvertently displaying her pussy to you.", false);
 			outputText("  Sighing, you grab her narrow frame, admiring the lightness of her body as you heft her up and position her onto her hands and knees.  ", false);
 			if (monster.lust >= monster.eMaxLust()) outputText("She mewls with disappointment.  ", false);
 			outputText("This is a much better position for her; ass-up, with her pussy and pucker fully exposed.\n\n", false);
@@ -685,7 +705,7 @@ package classes.Scenes.Areas.Swamp
 			else outputText("river", false);
 			outputText(" of seed rushes out of her gaped anus, pooling on the swamp floor as she slowly loses consciousness.  You give her ass an affectionate slap and get dressed, feeling sated and ready to resume your adventures.", false);
 			if (y != 1) pregnancy.knockUpForce(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.INCUBATION_SPIDER - 200); //Spiders carry for half as long as the player does for some reason
-			player.orgasm();
+			player.orgasm('Dick');
 			if (!getGame().inCombat)
 				doNext(camp.returnToCampUseOneHour);
 			else combat.cleanupAfterCombat();

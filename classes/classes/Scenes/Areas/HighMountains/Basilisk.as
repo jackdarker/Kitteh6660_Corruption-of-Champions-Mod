@@ -17,7 +17,7 @@ package classes.Scenes.Areas.HighMountains
 				if (amount < 0) amount = 0;
 			}
 			player.spe -= amount;
-			if (player.findStatusEffect(StatusEffects.BasiliskSlow) >= 0) player.addStatusValue(StatusEffects.BasiliskSlow,1,amount);
+			if (player.hasStatusEffect(StatusEffects.BasiliskSlow)) player.addStatusValue(StatusEffects.BasiliskSlow,1,amount);
 			else player.createStatusEffect(StatusEffects.BasiliskSlow,amount,0,0,0);
 			showStatDown( 'spe' );
 			// speUp.visible = false;
@@ -32,7 +32,7 @@ package classes.Scenes.Areas.HighMountains
 			//Success:
 			if (player.inte / 5 + rand(20) < 24 + player.newGamePlusMod() * 5) {
 				//Immune to Basilisk?
-				if (player.findPerk(PerkLib.BasiliskResistance) >= 0 || player.canUseStare()) {
+				if (player.findPerk(PerkLib.BasiliskResistance) >= 0 || player.canUseStare() || player.hasKeyItem("Laybans") >= 0) {
 					outputText("You can't help yourself... you glimpse the reptile's grey, slit eyes. However, no matter how much you look into the eyes, you do not see anything wrong. All you can see is the basilisk. The basilisk curses as he finds out that you're immune!", false);
 				}
 				else {
@@ -67,7 +67,7 @@ package classes.Scenes.Areas.HighMountains
 
 		override protected function performCombatAction():void
 		{
-			if (player.findStatusEffect(StatusEffects.BasiliskCompulsion) < 0 && rand(3) == 0 && findStatusEffect(StatusEffects.Blind) < 0) compulsion();
+			if (!player.hasStatusEffect(StatusEffects.BasiliskCompulsion) && rand(3) == 0 && !hasStatusEffect(StatusEffects.Blind)) compulsion();
 			else if (rand(3) == 0) basiliskTailSwipe();
 			else eAttack();
 		}
@@ -86,13 +86,22 @@ package classes.Scenes.Areas.HighMountains
 				game.highMountains.basiliskScene.loseToBasilisk();
 			}
 		}
+		
+		override public function get long():String
+		{
+			if (player.hasPerk(PerkLib.BasiliskResistance) || player.canUseStare() || player.hasKeyItem("Laybans") >= 0) {
+				return "You are fighting a basilisk!  The basilisk is a male reptilian biped standing a bit over 6' tall.  He has a thin but ropy build, his tightly muscled yellow underbelly the only part of his frame not covered in those deceptive, camouflaging grey-green scales.  A long, whip-like tail flits restlessly through the dirt behind his skinny legs, and sharp sickle-shaped index claws decorate each hand and foot.  His face has a cruel jaw, a blunt lizard snout and a crown of dull spines.";
+			} else {
+				return "You are fighting a basilisk!  From what you can tell while not looking directly at it, the basilisk is a male reptilian biped standing a bit over 6' tall.  He has a thin but ropy build, his tightly muscled yellow underbelly the only part of his frame not covered in those deceptive, camouflaging grey-green scales.  A long, whip-like tail flits restlessly through the dirt behind his skinny legs, and sharp sickle-shaped index claws decorate each hand and foot.  You don't dare to look at his face, but you have the impression of a cruel jaw, a blunt lizard snout and a crown of dull spines.";
+			}
+		}
 
 		public function Basilisk()
 		{
 			this.a = "the ";
 			this.short = "basilisk";
 			this.imageName = "basilisk";
-			this.long = "You are fighting a basilisk!  From what you can tell while not looking directly at it, the basilisk is a male reptilian biped standing a bit over 6' tall.  He has a thin but ropy build, his tightly muscled yellow underbelly the only part of his frame not covered in those deceptive, camouflaging grey-green scales.  A long, whip-like tail flits restlessly through the dirt behind his skinny legs, and sharp sickle-shaped index claws decorate each hand and foot.  You don't dare to look at his face, but you have the impression of a cruel jaw, a blunt lizard snout and a crown of dull spines.";
+			this.long = ""; // Needs to be set to supress validation errors, but is handled by the override.
 			// this.plural = false;
 			this.createCock(6,2);
 			this.balls = 2;

@@ -40,6 +40,7 @@ package classes.Items
 		public const RAINDYE:HairDye = new HairDye("RainDye", "Rainbow");
 		public const RED_DYE:HairDye = new HairDye("Red Dye", "Red");
 		public const WHITEDY:HairDye = new HairDye("WhiteDy", "White");
+		public const YELLODY:HairDye = new HairDye("YelloDy", "Yellow");
 		
 		//SKIN OILS & BODY LOTIONS
 		public const DARK_OL:SkinOil = new SkinOil("DarkOil", "Dark");
@@ -49,6 +50,23 @@ package classes.Items
 		public const MAHOGOL:SkinOil = new SkinOil("MahogOl", "Mahogany");
 		public const OLIVEOL:SkinOil = new SkinOil("OliveOl", "Olive");
 		public const RUSS_OL:SkinOil = new SkinOil("RussOil", "Russet");
+		public const RED__OL:SkinOil = new SkinOil("Red Oil", "Red");
+		public const ORANGOL:SkinOil = new SkinOil("OranOil", "Orange");
+		public const YELLOOL:SkinOil = new SkinOil("YeloOil", "Yellow");
+		public const GREENOL:SkinOil = new SkinOil("GrenOil", "Green");
+		public const WHITEOL:SkinOil = new SkinOil("WhitOil", "White");
+		public const BLUE_OL:SkinOil = new SkinOil("BlueOil", "Blue");
+		public const BLACKOL:SkinOil = new SkinOil("BlakOil", "Black");
+		public const PURPLOL:SkinOil = new SkinOil("PurpOil", "Purple");
+		public const SILVROL:SkinOil = new SkinOil("SlvrOil", "Silver");
+		public const YELGROL:SkinOil = new SkinOil("YlGrOil", "Yellow Green");
+		public const SPRGROL:SkinOil = new SkinOil("SpGrOil", "Spring Green");
+		public const CYAN_OL:SkinOil = new SkinOil("CyanOil", "Cyan");
+		public const OCBLUOL:SkinOil = new SkinOil("OBluOil", "Ocean Blue");
+		public const ELVIOOL:SkinOil = new SkinOil("EVioOil", "Electric Violet");
+		public const MAGENOL:SkinOil = new SkinOil("MagenOl", "Magenta");
+		public const DPPNKOL:SkinOil = new SkinOil("DPnkOil", "Deep Pink");
+		public const PINK_OL:SkinOil = new SkinOil("PinkOil", "Pink");
 		
 		public const CLEARLN:BodyLotion = new BodyLotion("ClearLn", "Clear", "smooth thick creamy liquid");
 		public const ROUGHLN:BodyLotion = new BodyLotion("RoughLn", "Rough", "thick abrasive cream");
@@ -116,6 +134,7 @@ package classes.Items
 		public const AKBALSL:SimpleConsumable = mk("AkbalSl","AkbalSlv", "a vial of Akbal's saliva", m.akbalSaliva,"This corked vial of Akbal's saliva is said to contain healing properties. ");
 		public const C__MINT:SimpleConsumable = mk("C. Mint","C. Mint", "a calm mint", m.calmMint,"This is a sprig of silver-colored mint.  Its strong scent makes you feel calmer and less lustful.");
 		public const CERUL_P:SimpleConsumable = mk("Cerul P","Cerulean P.", "a cerulean-tinted potion", m.ceruleanPotion, "This is a mysterious bottle filled with a sky-blue liquid that sloshes gently inside.  Supposedly it will make you irresistible, though to what or who you cannot say.");
+		public const CLOVERS:SimpleConsumable = mk("Clovis", "Clovis", "a bottle of Clovis", m.clovis, "This bottle is in the shape of a 4-leaf-clover and contains a soft pink potion. An image of a sheep is on the label along with text, \"<i>Clovis - to help you to live in clover</i>\".");
 		public const COAL___:SimpleConsumable = mk("Coal   ","Coal", "two pieces of coal", m.coal, "These two pieces of coal may look ordinary but it makes you wonder what happens when you rub them.");
 		public const DEBIMBO:DeBimbo = new DeBimbo();
 		public const EXTSERM:HairExtensionSerum = new HairExtensionSerum();
@@ -191,7 +210,7 @@ package classes.Items
 		public const VIXVIGR:SimpleConsumable = mk("VixVigr","VixVigr", "a bottle labelled \"Vixen's Vigor\"", curry(m.foxTF, true), "This small medicine bottle contains something called \"Vixen's Vigor\", supposedly distilled from common fox-berries.  It is supposed to be a great deal more potent, and a small warning label warns of \"extra boobs\", whatever that means.", 30);
 		public const W_FRUIT:SimpleConsumable = mk("W.Fruit","W.Fruit", "a piece of whisker-fruit", m.catTransformation, "This small, peach-sized fruit has tiny whisker-like protrusions growing from the sides.");
 		public const WETCLTH:SimpleConsumable = mk("WetClth","WetClth", "a wet cloth dripping with slippery slime", m.gooGasmic, "Dripping with a viscous slime, you've no doubt rubbing this cloth on your body would have some kind of strange effect.");
-		public const WOLF_PP:SimpleConsumable = mk("Wolf Pp","WolfPepper", "a Wolf pepper", curry(m.caninePepper, 6), "The pepper is shiny and black, bulbous at the base but long and narrow at the tip.  It has a fuzzy feel to it and it smells spicy.", 10);
+		public const WOLF_PP:SimpleConsumable = mk("Wolf Pp","WolfPepper", "a Wolf Pepper", m.wolfPepper, "The pepper is shiny and black, bulbous at the base but long and narrow at the tip. It has a fuzzy feel to it and it smells spicy. Somehow, you know it's different from the usual Canine Peppers you see.");
 
 		public const LARGE_EGGS:Array = [L_BLKEG,L_BLUEG,L_BRNEG,L_PNKEG,L_PRPEG,L_WHTEG];
 		public const SMALL_EGGS:Array = [BLACKEG,BLUEEGG,BROWNEG,PINKEGG,PURPLEG,WHITEEG];

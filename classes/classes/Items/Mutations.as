@@ -43,11 +43,11 @@
 			else {
 				outputText("The liquid tastes rather bland and goes down easily. ", true);
 				//Special repeat texts
-				if (player.findStatusEffect(StatusEffects.RepeatSuccubi) >= 0) outputText("You look forwards to tonight's encounter.", false);
+				if (player.hasStatusEffect(StatusEffects.RepeatSuccubi)) outputText("You look forwards to tonight's encounter.", false);
 				//First timer huh?
 				else outputText("You do not notice any real effects.  Did the merchant con you?", false);
 			}
-			if (player.findStatusEffect(StatusEffects.SuccubiNight) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.SuccubiNight)) {
 				if (player.statusEffectv1(StatusEffects.SuccubiNight) < 3) player.addStatusValue(StatusEffects.SuccubiNight,1,1);
 			}
 			else player.createStatusEffect(StatusEffects.SuccubiNight, 1, 0, 0, 0);
@@ -259,7 +259,6 @@
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Demonic changes - higher chance with higher corruption.
 			if (rand(40) + player.cor / 3 > 35 && tainted) demonChanges(player);
-			player.genderCheck();
 			if (rand(4) == 0 && tainted) outputText(player.modFem(5, 2), false);
 			if (rand(4) == 0 && tainted) outputText(player.modThickness(30, 2), false);
 			player.refillHunger(10);
@@ -285,7 +284,7 @@
 				outputText("The skin bulges obscenely, darkening and splitting around " + num2Text(temp) + " of your new dicks.  For an instant they turn a demonic purple and dribble in thick spasms of scalding demon-cum.  After, they return to a more humanoid coloration.  ", false);
 			}
 			if (temp > 4) outputText("Your tender bundle of new cocks feels deliciously sensitive, and you cannot stop yourself from wrapping your hands around the slick demonic bundle and pleasuring them.\n\nNearly an hour later, you finally pull your slick body away from the puddle you left on the ground.  When you look back, you notice it has already been devoured by the hungry earth.", false);
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 
 		public function tatteredScroll(player:Player):void
@@ -319,7 +318,7 @@
 				}
 				if (player.biggestLactation() > 0) {
 					outputText("A strong pressure builds in your chest, painful in its intensity.  You yank down your top as ", false);
-					if (player.biggestLactation() < 2) outputText("powerful jets of milk spray from your nipples, spraying thick streams over the ground.  You moan at the sensation and squeeze your tits, hosing down the tainted earth with an offering of your milk.  You blush as the milk ends, quite embarassed with your increased milk production.  ", false);
+					if (player.biggestLactation() < 2) outputText("powerful jets of milk spray from your nipples, spraying thick streams over the ground.  You moan at the sensation and squeeze your tits, hosing down the tainted earth with an offering of your milk.  You blush as the milk ends, quite embarrassed with your increased milk production.  ", false);
 					if (player.biggestLactation() >= 2 && player.biggestLactation() <= 2.6) outputText("eruptions of milk squirt from your nipples, hosing thick streams everywhere.  The feeling of the constant gush of fluids is very erotic, and you feel yourself getting more and more turned on.  You start squeezing your breasts as the flow diminishes, anxious to continue the pleasure, but eventually all good things come to an end.  ", false);
 					if (player.biggestLactation() > 2.6 && player.biggestLactation() < 3) outputText("thick hoses of milk erupt from your aching nipples, forming puddles on the ground.  You smile at how well you're feeding the earth, your milk coating the ground faster than it can be absorbed.  The constant lactation is pleasurable... in a highly erotic way, and you find yourself moaning and pulling on your nipples, your hands completely out of control.  In time you realize the milk has stopped, and even had time to soak into the dirt.  You wonder at your strange thoughts and pull your hands from your sensitive nipples.  ", false);
 
@@ -348,7 +347,7 @@
 				//RAEP
 				spriteSelect(50);
 				outputText("\n\nYou hear the soft impact of clothes hitting the ground behind you, and turn to see that the sand witch has found you! You cannot resist a peek at your uninvited guest, beholding a curvy dark-skinned beauty, her form dominated by a quartet of lactating breasts.  Somewhere in your lust-fogged mind you register the top two as something close to double-Ds, and her lower pair to be about Cs.  She smiles and leans over you, pushing you to the ground violently.\n\nShe turns around and drops, planting her slick honey-pot firmly against your mouth.  Her scent is strong, overpowering in its intensity.  Your tongue darts out for a taste and finds a treasure trove of sticky sweetness.  Instinctively you tongue-fuck her, greedily devouring her cunny-juice, shoving your tongue in as far as possible while suckling her clit.  Dimly you feel the milk spattering over you, splashing off you and into the cracked earth.  Everywhere the milk touches feels silky smooth and sensitive, and your hands begin stroking your body, rubbing it in as the witch sprays more and more of it.  You lose track of time, orgasming many times, slick and sticky with sexual fluids.", false);
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("lib", 1, "sen", 5);
 				player.slimeFeed();
 			}
@@ -388,7 +387,7 @@
 			}
 			if (player.hasVagina()) {
 				outputText("  Your " + player.clitDescript() + " engorges, ", false);
-				if (player.clitLength < 3) outputText("parting your lips.", false);
+				if (player.getClitLength() < 3) outputText("parting your lips.", false);
 				else outputText("bursting free of your lips and bobbing under its own weight.", false);
 				if (player.vaginas[0].vaginalWetness <= VAGINA_WETNESS_NORMAL) outputText("  Wetness builds inside you as your " + player.vaginaDescript(0) + " tingles and aches to be filled.", false);
 				else if (player.vaginas[0].vaginalWetness <= VAGINA_WETNESS_SLICK) outputText("  A trickle of wetness escapes your " + player.vaginaDescript(0) + " as your body reacts to the desire burning inside you.", false);
@@ -556,12 +555,11 @@
 						if (player.cocks.length == 0) {
 							outputText("  Strangely, your clit seems to have resisted the change, and is growing larger by the moment... shifting into the shape of a small ribbed minotaur-like penis!  <b>You now have a horse-cock!</b>", false);
 							player.createCock();
-							player.cocks[0].cockLength = player.clitLength + 2;
+							player.cocks[0].cockLength = player.getClitLength() + 2;
 							player.cocks[0].cockThickness = 1;
 							player.cocks[0].cockType = CockTypesEnum.HORSE;
-							player.clitLength = .25;
+							player.setClitLength(.25);
 						}
-						player.genderCheck();
 					}
 					changes++;
 				}
@@ -696,7 +694,7 @@
 			}
 			
 			//Anti-masturbation status
-			if (rand(4) == 0 && changes < changeLimit && player.findStatusEffect(StatusEffects.Dysfunction) < 0) {
+			if (rand(4) == 0 && changes < changeLimit && !player.hasStatusEffect(StatusEffects.Dysfunction)) {
 				if (player.cocks.length > 0) outputText("\n\nYour " + player.cockDescript(0) + " tingles abruptly, then stops.  Worried, you reach down to check it, only to discover that it feels... numb.  It will be very hard to masturbate like this.", false);
 				else if (player.hasVagina()) outputText("\n\nYour " + player.vaginaDescript(0) + " tingles abruptly, then stops.  Worried, you reach down to check it, only to discover that it feels... numb.  It will be very hard to masturbate like this.", false);
 				if (player.cocks.length > 0 || player.hasVagina()) {
@@ -861,21 +859,21 @@
 			outputText("You down the potion, grimacing at the strong taste.", true);
 			//CHANCE OF BAD END - 20% if face/tail/skin/cock are appropriate.
 			//If hooved bad end doesn't appear till centaured
-			if (player.hasFur() && player.faceType == FACE_HORSE && player.tailType == TAIL_TYPE_HORSE && (player.lowerBody != LOWER_BODY_TYPE_HOOFED)) {
+			if (player.hasFur() && player.faceType == FACE_HORSE && player.tailType == TAIL_TYPE_HORSE && (player.lowerBody != LOWER_BODY_TYPE_HOOFED || player.isTaur())) {
 				//WARNINGS
 				//Repeat warnings
-				if (player.findStatusEffect(StatusEffects.HorseWarning) >= 0 && rand(3) == 0) {
+				if (player.hasStatusEffect(StatusEffects.HorseWarning) && rand(3) == 0) {
 					if (player.statusEffectv1(StatusEffects.HorseWarning) == 0) outputText("<b>\n\nYou feel a creeping chill down your back as your entire body shivers, as if rejecting something foreign.  Maybe you ought to cut back on the horse potions.</b>", false);
 					if (player.statusEffectv1(StatusEffects.HorseWarning) > 0) outputText("<b>\n\nYou wonder how many more of these you can drink before you become a horse...</b>", false);
 					player.addStatusValue(StatusEffects.HorseWarning,1,1);
 				}
 				//First warning
-				if (player.findStatusEffect(StatusEffects.HorseWarning) < 0) {
+				if (!player.hasStatusEffect(StatusEffects.HorseWarning)) {
 					outputText("<b>\n\nWhile you drink the tasty potion, you realize how horse-like you already are, and wonder what else the potion could possibly change...</b>", false);
 					player.createStatusEffect(StatusEffects.HorseWarning, 0, 0, 0, 0);
 				}
 				//Bad End
-				if (rand(4) == 0 && player.findStatusEffect(StatusEffects.HorseWarning) >= 0 && player.findPerk(PerkLib.TransformationResistance) < 0) {
+				if (rand(4) == 0 && player.hasStatusEffect(StatusEffects.HorseWarning) && player.findPerk(PerkLib.TransformationResistance) < 0) {
 					//Must have been warned first...
 					if (player.statusEffectv1(StatusEffects.HorseWarning) > 0) {
 						//If player has dicks check for horsedicks
@@ -1239,6 +1237,7 @@
 				}
 				dynStats("spe", 3);
 				player.legCount = 4;
+				kGAMECLASS.rathazul.addMixologyXP(20);
 			}
 			//Remove odd eyes
 			if (changes < changeLimit && rand(5) == 0 && player.eyeType > EYES_HUMAN) {
@@ -1262,15 +1261,16 @@
 			}
 			//Fur - if has horsetail && ears and not at changelimit
 			if (!player.hasFur() && changes < changeLimit && rand(4) == 0 && player.tailType == TAIL_TYPE_HORSE) {
-				player.setFurColor(horseFurColors, true);
-				if (player.hasPlainSkin()) outputText("\n\nAn itchy feeling springs up over every inch of your skin.  As you scratch yourself madly, you feel fur grow out of your skin until <b>you have a fine coat of " + player.newFurColor + "-colored fur.</b>");
+				player.setFurColor(horseFurColors);
+				if (player.hasPlainSkin()) outputText("\n\nAn itchy feeling springs up over every inch of your skin.  As you scratch yourself madly, you feel fur grow out of your skin until <b>you have a fine coat of " + player.furColor + "-colored fur.</b>");
 				if (player.hasScales()) {
 					player.skinDesc = "fur";
-					outputText("\n\nYour " + player.skinTone + " scales begin to itch insufferably.  You reflexively scratch yourself, setting off an avalanche of discarded scales.  The itching intensifies as you madly scratch and tear at yourself, revealing a coat of " + player.newFurColor + " " + player.skinDesc + ".  At last the itching stops as <b>you brush a few more loose scales from your new coat of " + player.newFurColor + "-colored fur.</b>");
+					outputText("\n\nYour " + player.skinTone + " scales begin to itch insufferably.  You reflexively scratch yourself, setting off an avalanche of discarded scales.  The itching intensifies as you madly scratch and tear at yourself, revealing a coat of " + player.furColor + " " + player.skinDesc + ".  At last the itching stops as <b>you brush a few more loose scales from your new coat of " + player.furColor + "-colored fur.</b>");
 				}
 				changes++;
 				player.skinType = SKIN_TYPE_FUR;
 				player.skinDesc = "fur";
+				player.underBody.restore(); // Restore the underbody for now
 			}
 			//Ears - requires tail
 			if (player.earType != EARS_HORSE && player.tailType == TAIL_TYPE_HORSE && changes < changeLimit && rand(3) == 0) {
@@ -1406,7 +1406,7 @@
 					if (player.vaginas[0].vaginalWetness == VAGINA_WETNESS_SLICK) outputText("staining your undergarments with cum.", false);
 					if (player.vaginas[0].vaginalWetness == VAGINA_WETNESS_DROOLING) outputText("leaving cunt-juice trickling down your leg.", false);
 					if (player.vaginas[0].vaginalWetness >= VAGINA_WETNESS_SLAVERING) outputText("spraying your undergarments liberally with slick girl-cum.", false);
-					player.orgasm();
+					player.orgasm('Vaginal');
 				}
 				else if (player.gender != 0) {
 					if (player.cocks.length == 1) outputText("  You feel a strange sexual pleasure, but your " + player.multiCockDescript() + " remains unaffected.", false);
@@ -1470,7 +1470,7 @@
 				player.vaginas[0].vaginalLooseness = VAGINA_LOOSENESS_TIGHT;
 				player.vaginas[0].vaginalWetness = VAGINA_WETNESS_NORMAL;
 				player.vaginas[0].virgin = true;
-				player.clitLength = .25;
+				player.setClitLength(.25);
 				if (player.fertility <= 5) player.fertility = 6;
 				outputText("\n\nAn itching starts in your crotch and spreads vertically.  You reach down and discover an opening.  You have grown a <b>new " + player.vaginaDescript(0) + "</b>!", false);
 			}
@@ -1503,13 +1503,13 @@
 					if (player.vaginas[0].vaginalWetness == VAGINA_WETNESS_SLAVERING) {
 						if (player.vaginas.length == 1) outputText("Your " + player.vaginaDescript(0) + " gushes fluids down your leg as you spontaneously orgasm.", false);
 						else outputText("Your " + player.vaginaDescript(0) + "s gush fluids down your legs as you spontaneously orgasm, leaving a thick puddle of pussy-juice on the ground.  It is rapidly absorbed by the earth.", false);
-						player.orgasm();
+						player.orgasm('Vaginal');
 						if (tainted) dynStats("cor", 1);
 					}
 					if (player.vaginas[0].vaginalWetness == VAGINA_WETNESS_DROOLING) {
 						if (player.vaginas.length == 1) outputText("Your pussy feels hot and juicy, aroused and tender.  You cannot resist as your hands dive into your " + player.vaginaDescript(0) + ".  You quickly orgasm, squirting fluids everywhere.  <b>You are now a squirter</b>.", false);
 						if (player.vaginas.length > 1) outputText("Your pussies feel hot and juicy, aroused and tender.  You cannot resist plunging your hands inside your " + player.vaginaDescript(0) + "s.  You quiver around your fingers, squirting copious fluids over yourself and the ground.  The fluids quickly disappear into the dirt.", false);
-						player.orgasm();
+						player.orgasm('Vaginal');
 						if (tainted) dynStats("cor", 1);
 					}
 					if (player.vaginas[0].vaginalWetness == VAGINA_WETNESS_SLICK) {
@@ -1537,12 +1537,12 @@
 				if (player.skinTone == "blue" || player.skinTone == "purple" || player.skinTone == "indigo" || player.skinTone == "shiny black") {
 					if (player.vaginas.length > 0) {
 						outputText("\n\nYour heart begins beating harder and harder as heat floods to your groin.  You feel your clit peeking out from under its hood, growing larger and longer as it takes in more and more blood.", false);
-						if (player.clitLength > 3 && player.findPerk(PerkLib.BigClit) < 0) outputText("  After some time it shrinks, returning to its normal aroused size.  You guess it can't get any bigger.", false);
-						if (player.clitLength > 5 && player.findPerk(PerkLib.BigClit) >= 0) outputText("  Eventually it shrinks back down to its normal (but still HUGE) size.  You guess it can't get any bigger.", false);
-						if (((player.findPerk(PerkLib.BigClit) >= 0) && player.clitLength < 6)
-								|| player.clitLength < 3) {
+						if (player.getClitLength() > 3 && player.findPerk(PerkLib.BigClit) < 0) outputText("  After some time it shrinks, returning to its normal aroused size.  You guess it can't get any bigger.", false);
+						if (player.getClitLength() > 5 && player.findPerk(PerkLib.BigClit) >= 0) outputText("  Eventually it shrinks back down to its normal (but still HUGE) size.  You guess it can't get any bigger.", false);
+						if (((player.findPerk(PerkLib.BigClit) >= 0) && player.getClitLength() < 6)
+								|| player.getClitLength() < 3) {
 							temp += 2;
-							player.clitLength += (rand(4) + 2) / 10;
+							player.changeClitLength((rand(4) + 2) / 10);
 						}
 						dynStats("sen", 3, "lus", 8);
 					}
@@ -1551,7 +1551,7 @@
 						player.vaginas[0].vaginalLooseness = VAGINA_LOOSENESS_TIGHT;
 						player.vaginas[0].vaginalWetness = VAGINA_WETNESS_NORMAL;
 						player.vaginas[0].virgin = true;
-						player.clitLength = .25;
+						player.setClitLength(.25);
 						outputText("\n\nAn itching starts in your crotch and spreads vertically.  You reach down and discover an opening.  You have grown a <b>new " + player.vaginaDescript(0) + "</b>!", false);
 					}
 				}
@@ -1565,6 +1565,7 @@
 					updateClaws(player.clawType);
 					if (tainted) dynStats("cor", 1);
 					else dynStats("cor", 0);
+					kGAMECLASS.rathazul.addMixologyXP(20);
 				}
 			}
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
@@ -1578,9 +1579,525 @@
 				outputText(player.modFem(90, 1), false);
 				if (rand(3) == 0) outputText(player.modTone(20, 2), false);
 			}
-			player.genderCheck();
 			player.refillHunger(20);
 		}
+		
+		
+		// Clovis, written by MissBlackthorne and coded by Foxwells
+		public function clovis(player:Player):void {
+			var tfSource: String = "clovis";
+			changes = 0;
+			changeLimit = 1;
+			// Add to change limit
+			if (rand(2) == 0) changeLimit++;
+			if (rand(2) == 0) changeLimit++;
+			// Perk change limit modifiers
+			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
+			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+			outputText("You open the bottle of Clovis, its sweet smell making you feel carefree. You drink the contents and relax to the sensation it brings, feeling like you're being cuddled by a big fluffy cloud.", false);
+			// Stat changes!
+			if (player.inte > 90 && rand(3) == 0 && changes < changeLimit) {
+				dynStats("int", -(rand(1) + 1));
+				outputText("\n\nThe sense of calm the potion gives you slowly fades into dopey bliss. You haven't a care in the world, not even the fact that you've got a little dumber.", false);
+				changes++;
+			}
+			if (rand(3) == 0 && changes < changeLimit) {
+				dynStats("tou", rand(1) + 1);
+				outputText("\n\nYou feel a wave of stubborn pride wash over you as you finish the potion. You’re sure nothing could stop you now, not even the demons.", false);
+				changes++;
+			}
+			if (player.spe < 75 && rand(3) == 0 && changes < changeLimit) {
+				dynStats("spe", rand(2) + 1);
+				outputText("\n\nYou feel oddly compelled to jump from rock to rock across a nearby stream, a sense of sure footedness and increased agility deep within you. To your surprise, you make it across with no trouble. The damp and uneven rocks are barely a challenge to your increased speed.", false);
+				changes++;
+			}
+			if (rand(3) == 0 && changes < changeLimit) {
+				dynStats("sens", -(rand(1) + 1));
+				outputText("\n\nYou feel less sensitive to the touch, a slight numbness pervading your body as if truly wrapped in cotton wool. The numbness eventually fades, leaving you now less affected by the lusty touches of your foes.", false);
+				changes++;
+			}
+			if (rand(3) == 0 && changes < changeLimit) {
+				dynStats("cor", -(rand(3) + 2));
+				outputText("\n\nYou close your eyes as your mind becomes clearer, a purging white searing through your being. It envelops you in its fluffy softness as it chases out the taint, first burning but then soothing. As you open your eyes, you feel you have regained some of your purity that this perverted realm seeks to claim.", false);
+				changes++;
+			}
+			if (player.tallness > 67 && rand(2) == 0 && changes < changeLimit) {
+				player.tallness -= (1 + rand(4));
+				outputText("\n\nYou blink as you feel your center of gravity shift lower. You look down and realize the ground is closer now. You appear to have gotten shorter!", false);
+				changes++;
+			}
+			if (player.buttRating < 6 && rand(3) == 0 && changes < changeLimit) {
+				player.buttRating += (1 + rand(1));
+				if (player.buttRating > 6) {
+					player.buttRating = 6;
+				}
+				outputText("\n\nYou feel your clothes tighten around your [butt], your behind expanding. Thankfully, it stops before your clothes can't handle it. As you run your hand over the tight fabric, you can't help but grope the now plumper flesh.", false);
+			}
+			if (player.earType != EARS_SHEEP && rand(3) == 0 && changes < changeLimit) {
+				if (player.earType == -1) { outputText("\n\nTwo painful nubs begin sprouting from your head, growing out in a tear-drop shape and flopping over. To top it off, wool coats them.", false); } else { outputText("\n\nYou feel your ears shift and elongate, becoming much floppier. They take on a more tear drop shape, flopping at the side of your head cutely as a light coat of downy wool forms on them.", false);	}		
+				player.earType = EARS_SHEEP;
+				player.earValue = 2;
+				outputText(" <b>You now have sheep ears!</b>", false);
+				changes++;
+			}
+			if (player.tailType != TAIL_TYPE_SHEEP && rand(3) == 0 && changes < changeLimit) {
+				outputText("\n\nYou feel the flesh above your [butt] knotting and changing. It twists and writhes around itself, lengthening before flopping straight down. With a slight poof, a coat of soft and fluffy wool coats it, your new tail taking on the wooly appearance of a sheep's.", false);
+				player.tailType = TAIL_TYPE_SHEEP;
+				outputText(" <b>You now have a sheep's tail!</b>", false);
+				changes++;
+			}
+			if (player.lowerBody != LOWER_BODY_TYPE_CLOVEN_HOOFED && player.tailType == TAIL_TYPE_SHEEP && rand(3) == 0 && changes < changeLimit) {
+				outputText("\n\nYou feel a strange tightness from your feet and nearly topple over as your balance shifts. You're balancing on your toes for some reason. You look down in amazement as your legs slim and shorten, your feet elongating and darkening at the ends, all morphing until you're balancing on two sheep legs, complete with cute little hooves.", false);
+				player.lowerBody = LOWER_BODY_TYPE_CLOVEN_HOOFED;
+				player.legCount = 2;
+				outputText(" <b>You now have sheep hooves!</b>", false);
+				changes++;
+			}
+			if (player.hornType != HORNS_SHEEP && player.hornType != HORNS_RAM && player.earType == EARS_SHEEP && rand(3) == 0 && changes < changeLimit) {
+					if (player.hornType != HORNS_NONE) {
+						outputText("\n\nYou feel your horns suddenly crumble, falling apart in large chunks until they flake away into nothing.");
+					} 
+					outputText("\n\nYou grip your head as a surge of pain hits you. A pair of horns slowly emerge from your skull, curling out and forward in a half circle. The ribbed curls remind you of the horns of the sheep back in Ingnam. <b>You now have sheep horns!</b>", false);
+				player.hornType = HORNS_SHEEP;
+				player.horns = 1;
+				changes++;
+			}
+			if (rand(3) == 0 && changes < changeLimit && player.legCount == 2 && player.lowerBody == LOWER_BODY_TYPE_CLOVEN_HOOFED && player.hornType == HORNS_SHEEP && player.tailType == TAIL_TYPE_SHEEP && player.earType == EARS_SHEEP && !player.hasWool()) {
+			    var sheepWoolColors: Array = [
+				"white",
+				"black",
+				"gray",
+				"silver",
+				"brown",
+				"moorit"
+			    ];
+				if (!player.hasFur()) {
+					outputText("\n\nWith an almost audible \*POMF\*, a soft fleece erupts from your body. The fleece covers all of your midsection and thighs, thick and fluffy. It doesn't fully hide your sexual features, instead obscuring them in an enticing manner. You can't help but run your hands over your soft, " + player.furColor + " wool, reveling in plushness. <b>You now have sheep wool!</b>");
+				} else {
+					outputText("\n\nYou feel your fur suddenly stand on end, every follicle suddenly detaching and leaving your skin bare. As you stand with a pile of shed fur around your feet, you feel your skin tingle, and you're sure it isn't from the cold. With an almost audible \*POMF\*, a soft fleece erupts from your body. The fleece covers all of your midsection and thighs, thick and fluffy. It doesn't fully hide your sexual features, instead obscuring them in an enticing manner. You can't help but run your hands over your soft, " + player.furColor + " wool, reveling in plushness. <b>You now have sheep wool!</b>", false);
+				}
+				player.skinType = SKIN_TYPE_WOOL;
+				player.skinDesc = "wool";
+				player.setFurColor(sheepWoolColors, {
+					type: UNDER_BODY_TYPE_WOOL
+				}, true);
+				changes++;
+			}
+			if (player.hornType == HORNS_SHEEP && player.hasWool() && player.femininity <= 45 && rand(3) == 0 && changes < changeLimit) {
+					outputText("\n\nYou feel a familiar pain in your head. Your horns are growing! More ribbed horn emerges from your scalp, your horns slowly curling around fully as they thicken. Once a full ring of horn is complete they lengthen until the pointed ends face forward, tucked under your ears. You run your fingers over your curled horns in awe. These could seriously do some damage! Or at least stun your foes. <b>You now have the horns of a ram!</b>", false);
+				player.hornType = HORNS_RAM;
+				player.horns = 2;
+				changes++;
+			}
+			if (player.hornType == HORNS_RAM && rand(3) == 0 && changes < changeLimit) {
+				outputText("\n\nYou groan and clutch your head as your horns stretch out, becoming even longer.", false);
+				player.hornType = HORNS_RAM;
+				player.horns += (1 + rand(3));
+				changes++;
+			}
+			if (player.hasWool() && player.hairType != HAIR_WOOL && player.femininity >= 65 && rand(3) == 0 && changes < changeLimit) {
+				outputText("\n\nYour hair suddenly poofs out as if you had filled it with static. You attempt to smooth it down, but you can't seem to straighten it out properly. It keeps bouncing back in a cushion-like manner. You in a nearby puddle. Your hair is now much thicker, it having become rather curly and bouffant like the wool of a sheep. You realize that <b>you now have woolen hair!</b>", false);
+				player.hairType = HAIR_WOOL;
+				changes++;
+			}
+			if (player.hipRating < 10 && player.femininity >= 65 && rand(3) == 0 && changes < changeLimit) {
+				outputText("\n\nYou grip your hips as they shift, getting wider and altering your stance. Your hips seem much more fitting for a sheep now, all big and cuddly.", false);
+				player.hipRating += (rand(1) + 1);
+				if (player.hipRating > 10) {
+					player.hipRating = 10;
+				}
+				changes++;
+			}
+			if (player.breastRows[0].breastRating < 5 && player.femininity >= 65 && rand(3) == 0 && changes < changeLimit) {
+				player.breastRows[0].breastRating += (rand(1) + 1);
+				if (player.breastRows[0].breastRating > 5) {
+					player.breastRows[0].breastRating = 5;
+				}
+				outputText("\n\nYour breasts feel constrained and painful against your top as they grow larger by the moment, finally stopping as they reach " + player.breastRows[0].breastRating + " size. You rub the tender orbs as you get used to your larger breast flesh.", false);
+				changes++;
+			}
+		}
+
+// Fuck yo dog shit we full-on wolf bitches now -Foxwells
+public function wolfPepper(type: Number, player: Player): void {
+    var tfSource: String = "wolfPepper";
+    var temp2: Number = 0;
+    var temp3: Number = 0;
+    var crit: Number = 1;
+    changes = 0;
+    changeLimit = 1;
+    if (type == 1) changeLimit += 2;
+    if (rand(2) == 0) changeLimit++;
+    if (rand(2) == 0) changeLimit++;
+    if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
+    if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+    outputText("The pepper has an uncomfortable texture to it, being covered in soft fuzz like it's a peach but somewhat crunchy like any other pepper. Its spiciness makes you nearly spit it out, and you're left sniffling after.", false);
+    if (rand(100) < 15) {
+        crit = int(Math.random() * 20) / 10 + 2;
+        outputText(" Maybe it was a bit too spicy... The pepper seemed far more ripe than what you'd expect.", false);
+    }
+    //STAT CHANGES - TOU SPE INT RANDOM CHANCE, LIB LUST COR ALWAYS UPPED
+    dynStats("lib", 1 + rand(2), "lus", 5 + rand(10), "cor", 1 + rand(5));
+    outputText("\n\nYou lick your lips after you finish. That spiciness hit you in more ways than one.", false);
+    if (player.tou < 70 && rand(3) == 0 && changes < changeLimit) {
+        dynStats("tou", (1 * crit));
+        if (crit > 1) outputText("\n\nYou roll your shoulders and tense your arms experimentally. You feel more durable, and your blood seems to run through you more clearly. You know you have more endurance.", false);
+        else outputText("\n\nYour muscles feel denser and more durable. Not so much that feel stronger, but you feel like you can take more hits.", false);
+        changes++;
+    }
+    if (player.spe > 30 && rand(7) == 0 && changes < changeLimit) {
+        dynStats("spe", (-1 * crit));
+        if (crit > 1) outputText("\n\nThe pepper's strong taste makes you take a couple steps back and lean against the nearest solid object. You don't feel like you'll be moving very fast anymore.", false);
+        else outputText("\n\nYou stumble forward, but manage to catch yourself. Still, though, you feel somewhat slower.", false);
+        changes++;
+    }
+    if (player.inte < 60 && rand(7) == 0 && changes < changeLimit) {
+        dynStats("int", (1 * crit));
+        outputText("\n\nThe spiciness makes your head twirl, but you manage to gather yourself. A strange sence of clarity comes over you in the aftermath, and you feel ", false);
+        if (crit > 1) outputText("a lot ", false);
+        outputText("smarter somehow.", false);
+        changes++;
+    }
+    //MUTATIONZZZZZ
+    //PRE-CHANGES: become biped, remove horns, remove wings, give human tongue, remove claws, remove antennea
+    //no claws
+    if (rand(4) == 0) updateClaws();
+    //remove antennae
+    if (player.antennae != ANTENNAE_NONE && rand(3) == 0 && changes < changeLimit) {
+        outputText("\n\nYou tilt your head down as a wave of dizziness passes over you. Your antennae fall to the ground. You touch where they were on your head and confirm that they did indeed just fall off. <b>You have lost your anntenae!</b>", false);
+        player.antennae = ANTENNAE_NONE;
+        changes++;
+    }
+    //remove horns
+    if (player.hornType != HORNS_NONE && player.horns > 0 && rand(3) == 0 && changes < changeLimit) {
+        outputText("\n\nYou feel your horns crumble, falling apart in large chunks until they flake away into nothing.", false);
+        player.horns = 0;
+        player.hornType = HORNS_NONE;
+        changes++;
+    }
+    //remove wings
+    if (player.wingType != WING_TYPE_NONE && rand(3) == 0 && changes < changeLimit) {
+        if (player.wingType == WING_TYPE_SHARK_FIN) outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into your spine. After a moment the pain passes, though your fin is gone!", false);
+        else outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into each of your shoulder-blades. After a moment the pain passes, though your wings are gone!", false);
+        player.wingType = WING_TYPE_NONE;
+        changes++;
+    }
+    //give human tongue
+    if (player.tongueType != TONGUE_HUMAN && rand(3) == 0 && changes < changeLimit) {
+        outputText("\n\nYou lick the roof of your mouth, noticing that your tongue feels different. It then hits you-- <b>You have a human tongue!</b>", false);
+        player.tongueType == TONGUE_HUMAN;
+        changes++;
+    }
+    //remove non-wolf eyes
+    if (changes < changeLimit && rand(3) == 0 && player.eyeType != EYES_HUMAN && player.eyeType != EYES_WOLF) {
+        if (player.eyeType == EYES_BLACK_EYES_SAND_TRAP) {
+            outputText("\n\nYou feel a twinge in your eyes and you blink.  It feels like black cataracts have just fallen away from you, and you know without needing to see your reflection that your eyes have gone back to looking human.");
+        } else {
+            outputText("\n\nYou blink and stumble, a wave of vertigo threatening to pull your " + player.feet() + " from under you.  As you steady and open your eyes, you realize something seems different.  Your vision is changed somehow.", false);
+            if (player.eyeType == EYES_FOUR_SPIDER_EYES) outputText("  Your multiple, arachnid eyes are gone!</b>", false);
+            outputText("  <b>You have normal, human eyes.</b>", false);
+        }
+        player.eyeType = EYES_HUMAN;
+        changes++;
+    }
+    //normal legs
+    if (player.lowerBody != LOWER_BODY_TYPE_WOLF && rand(4) == 0) restoreLegs(tfSource);
+    //normal arms
+    if (rand(4) == 0 && player.armType != ARM_TYPE_WOLF) restoreArms(tfSource);
+    //remove feather hair
+    if (rand(4) == 0) removeFeatheryHair();
+    //remove basilisk hair
+    if (rand(4) == 0) removeBassyHair()
+    //MUTATIONZ AT ANY TIME: wolf dick, add/decrease breasts, decrease breast size if above D
+    //get a wolf dick
+    //if ya genderless we give ya a dick cuz we nice like that
+    if (player.gender == 0 && player.cocks.length == 0 && changes < changeLimit) {
+        outputText("\n\nYou double over as a pain fills your groin, and you take off your " + player.armorName + " just in time to watch a bulge push out of your body. The skin folds back and bunches up into a sheath, revealing a red, knotted wolf cock drooling pre-cum underneath it. You take a shuddering breath as the pain dies down, leaving you with only a vague sense of lust and quiet admiration for your new endowment. <b>You now have a wolf cock.</b>", false);
+        player.createCock();
+        player.cocks[0].cockLength = rand(4) + 4;
+        player.cocks[0].cockThickness = rand(2);
+        player.cocks[0].knotMultiplier = 1.5;
+        player.cocks[0].cockType = CockTypesEnum.WOLF;
+        dynStats("lib", 3, "sen", 2, "lus", 25);
+        changes++;
+    }
+    //if ya got a dick that's ok too we'll change it to wolf
+    if (player.hasCock()) { //shamelessly copy/pasted from dog cock
+        if (player.wolfCocks() < player.cocks.length && ((changes < changeLimit && rand(1.6)) || type == 1) == 0) {
+            //Select first non-wolf cock
+            temp = player.cocks.length;
+            temp2 = 0;
+            while (temp > 0 && temp2 == 0) {
+                temp--;
+                //Store cock index if not a wolfCock and exit loop
+                if (player.cocks[temp].cockType != CockTypesEnum.WOLF) {
+                    temp3 = temp;
+                    //kicking out of the loop
+                    temp2 = 1000;
+                }
+            }
+            //Using generic description because what's even the point of multiple descriptions--
+            if (player.cocks[temp3].cockType.Index > 4) {
+                outputText("\n\nYour " + player.cockDescript(temp3) + " trembles, resizing and reshaping itself into a shining, red wolf cock with a fat knot at the base. <b>You now have a wolf cock.</b>", false);
+                dynStats("sen", 3, "lus", 5 * crit);
+                if (player.cocks[temp3].cockType == CockTypesEnum.HORSE) { //horses get changes
+                    if (player.cocks[temp3].cockLength > 6) player.cocks[temp3].cockLength -= 2;
+                    else player.cocks[temp3].cockLength -= .5;
+                    player.cocks[temp3].cockThickness += .5;
+                }
+            }
+            player.cocks[temp3].cockType = CockTypesEnum.WOLF;
+            player.cocks[temp3].knotMultiplier = 1.5;
+            player.cocks[temp3].thickenCock(2);
+            changes++;
+        }
+    }
+        //titties for those who got titties
+        //wolfs have 8 nips so, 4 rows max. fen has no power here I'm making a wolf not a dog.
+        //tbh also shamelessly copy/pasted from dog and adjusted according
+        if (player.breastRows.length > 0 && player.breastRows.length < 3) {
+            if (player.breastRows[0].breastRating > 0) {
+                if (player.breastRows.length < 4 && rand(2) == 0 && changes < changeLimit) {
+                    player.createBreastRow();
+                    //Store temp to the index of the newest row
+                    temp = player.breastRows.length - 1;
+                    //Breasts are too small to grow a new row, so they get bigger first
+                    if (player.breastRows[0].breastRating <= player.breastRows.length) {
+                        outputText("\n\nYour " + player.breastDescript(0) + " feel constrained and painful against your top as they grow larger by the moment, finally stopping as they reach ", false);
+                        player.breastRows[0].breastRating += 1;
+                        outputText(player.breastCup(0) + " size.", false);
+                        changes++;
+                    }
+                    //Had 1 row to start
+                    if (player.breastRows.length == 2 && changes < changeLimit) {
+                        //1 size below primary breast row
+                        player.breastRows[temp].breastRating = player.breastRows[0].breastRating - 1;
+                        if (player.breastRows[0].breastRating - 1 == 0) outputText("\n\nA second set of breasts forms under your current pair, stopping while they are still fairly flat and masculine looking.", false);
+                        else outputText("\n\nA second set of breasts bulges forth under your current pair, stopping as they reach " + player.breastCup(temp) + "s.", false);
+                        outputText(" A sensitive nub grows on the summit of each new tit, becoming a new nipple.", false);
+                        dynStats("sen", 2, "lus", 5);
+                        changes++;
+                    }
+                    //Many breast Rows - requires larger primary tits
+                    if (player.breastRows.length > 2 && player.breastRows[0].breastRating > player.breastRows.length && changes < changeLimit) {
+                        dynStats("sen", 2, "lus", 5);
+                        //New row's size = the size of the row above -1
+                        player.breastRows[temp].breastRating = player.breastRows[temp - 1].breastRating - 1;
+                        //If second row are super small but primary row is huge it could go negative.
+                        //This corrects that problem.
+                        if (player.breastRows[temp].breastRating < 0) player.breastRows[temp].breastRating = 0;
+                        if (player.breastRows[temp - 1].breastRating < 0) player.breastRows[temp - 1].breastRating = 0;
+                        if (player.breastRows[temp].breastRating == 0) outputText("\n\nYour abdomen tingles and twitches as a new row of breasts sprouts below the others. Your new breasts stay flat and masculine, not growing any larger.", false);
+                        else outputText("\n\nYour abdomen tingles and twitches as a new row of " + player.breastCup(temp) + " " + player.breastDescript(temp) + " sprouts below your others.", false);
+                        outputText(" A sensitive nub grows on the summit of each new tit, becoming a new nipple.", false);
+                        changes++;
+                    }
+                    //Extra sensitive if crit
+                    if (crit > 1) {
+                        if (crit > 2) {
+                            outputText(" You heft your new chest experimentally, exploring the new flesh with tender touches. Your eyes nearly roll back in your head from the intense feelings.", false);
+                            dynStats("sen", 8, "lus", 15)
+                        } else {
+                            outputText(" You touch your new nipples with a mixture of awe and desire, the experience arousing beyond measure. You squeal in delight, nearly orgasming, but in time finding the willpower to stop yourself.", false);
+                            dynStats("sen", 4, "lus", 10);
+                        }
+                    }
+
+                }
+                //If already has max breasts
+                else if (rand(2) == 0) {
+                    //Check for size mismatches, and move closer to spec
+                    temp = player.breastRows.length;
+                    temp2 = 0;
+                    var evened: Boolean = false;
+                    //Check each row, and if the row above or below it is
+                    while (temp > 1 && temp2 == 0) {
+                        temp--;
+                        if (player.breastRows[temp].breastRating + 1 < player.breastRows[temp - 1].breastRating) {
+                            if (!evened) {
+                                evened = true;
+                                outputText("\n", false);
+                            }
+                            outputText("\nYour ", false);
+                            if (temp == 0) outputText("first ", false);
+                            if (temp == 1) outputText("second ", false);
+                            if (temp == 2) outputText("third ", false);
+                            if (temp == 3) outputText("fourth ", false);
+                            if (temp > 3) outputText("", false);
+                            outputText("row of " + player.breastDescript(temp) + " grows larger, as if jealous of the jiggling flesh above.", false);
+                            temp2 = (player.breastRows[temp - 1].breastRating) - player.breastRows[temp].breastRating - 1;
+                            if (temp2 > 4) temp2 = 4;
+                            if (temp2 < 1) temp2 = 1;
+                            player.breastRows[temp].breastRating += temp2;
+                        }
+                    }
+                }
+            }
+        }
+        //Remove breast rows if over 4
+        if (changes < changeLimit && player.bRows() > 4 && rand(3) == 0) {
+            changes++;
+            outputText("\n\nYou stumble back when your center of balance shifts, and though you adjust before you can fall over, you're left to watch in awe as your bottom-most " + player.breastDescript(player.breastRows.length - 1) + " shrink down, disappearing completely into your ", false);
+            if (player.bRows() >= 3) outputText("abdomen", false);
+            else outputText("chest", false);
+            outputText(". The " + player.nippleDescript(player.breastRows.length - 1) + "s even fade until nothing but ", false);
+            if (player.hasFur()) outputText(player.hairColor + " " + player.skinDesc, false);
+            else outputText(player.skinTone + " " + player.skinDesc, false);
+            outputText(" remains. <b>You've lost a row of breasts!</b>", false);
+            dynStats("sen", -5);
+            player.removeBreastRow(player.breastRows.length - 1, 1);
+        }
+        //Grow breasts if has vagina and has no breasts/nips
+        else if (player.hasVagina() && rand(2) == 0 && changes < changeLimit) {
+            outputText("\n\nYour chest tingles uncomfortably as your center of balance shifts. <b>You now have a pair of D-cup breasts.</b>", false);
+            outputText(" A sensitive nub grows on the summit of each tit, becoming a new nipple.", false);
+            player.createBreastRow();
+            player.breastRows[0].breastRating = 4;
+            player.breastRows[0].breasts = 2;
+            dynStats("sen", 4, "lus", 6);
+            changes++;
+        }
+        //Shrink breasts if over D-cup
+        if (changes < changeLimit && rand(3) == 0 && !flags[kFLAGS.HYPER_HAPPY]) {
+            temp2 = 0;
+            temp3 = 0;
+            //Determine if shrinking is required
+            if (player.biggestTitSize() > 4) temp2 = 4;
+            if (temp2 > 0) {
+                //temp3 stores how many rows are changed
+                temp3 = 0;
+                for (var k: Number = 0; k < player.breastRows.length; k++) {
+                    //If this row is over threshhold
+                    if (player.breastRows[k].breastRating > temp2) {
+                        //Big change
+                        if (player.breastRows[k].breastRating > 10) {
+                            player.breastRows[k].breastRating -= 2 + rand(3);
+                            if (temp3 == 0) outputText("\n\nThe " + player.breastDescript(0) + " on your chest wobble for a second, then tighten up, losing several cup-sizes in the process!", false);
+                            else outputText(" The change moves down to your " + num2Text2(k + 1) + " row of " + player.breastDescript(0) + ". They shrink greatly, losing a couple cup-sizes.", false);
+                        }
+                        //Small change
+                        else {
+                            player.breastRows[k].breastRating -= 1;
+                            if (temp3 == 0) outputText("\n\nAll at once, your sense of gravity shifts. Your back feels a sense of relief, and it takes you a moment to realize your " + player.breastDescript(k) + " have shrunk!", false);
+                            else outputText(" Your " + num2Text2(k + 1) + " row of " + player.breastDescript(k) + " gives a tiny jiggle as it shrinks, losing some off its mass.", false);
+                        }
+                        //Increment changed rows
+                        temp3++;
+                    }
+                }
+            }
+            //Count shrinking
+            if (temp3 > 0) changes++;
+        }
+        //MUTATIONZ LEVEL 1: fur, stop hair growth, ears, tail
+        //Gain fur
+        if (rand(5) == 0 && changes < changeLimit && !player.hasFur()) {
+            var wolfFurColors: Array = [
+                "white",
+                "gray",
+                "dark gray",
+                "light gray",
+                "black",
+                "light brown",
+                "sandy brown",
+                "golden",
+                "silver",
+                "brown",
+                "auburn", ["black", "gray"],
+                ["black", "brown"],
+                ["black", "silver"],
+                ["black", "auburn"],
+                ["white", "gray"],
+                ["white", "silver"],
+                ["white", "golden"],
+            ];
+            outputText("\n\nYour " + player.skinDesc + " begins to tingle, then itch. ");
+            player.skinType = SKIN_TYPE_FUR;
+            player.skinDesc = "fur";
+            player.setFurColor(wolfFurColors, {
+                type: UNDER_BODY_TYPE_FUR
+            }, true);
+            outputText("You reach down to scratch your arm absent-mindedly and pull your fingers away to find strands of " + player.furColor + " fur. You stare at it. Fur. Wait, you just grew fur?! What happened?! Your mind reeling, you do know one thing for sure: <b>you now have fur!</b>");
+            changes++;
+        }
+        //Ears time
+        if (rand(3) == 0 && player.earType != EARS_WOLF && changes < changeLimit) {
+            if (player.earType == -1) outputText("\n\nTwo painful nubs begin sprouting from your head, growing and opening into canine ears. ", false);
+            if (player.earType == EARS_HUMAN) outputText("\n\nThe skin on the sides of your face stretches painfully as your ears migrate upwards, towards the top of your head. They shift and elongate, becoming canine in nature. ", false);
+            if (player.earType == EARS_HORSE) outputText("\n\nYour equine ears twist as they transform into canine versions. ", false);
+            if (player.earType == EARS_DOG) outputText("\n\nYour dog ears widen out, curving and becoming more aware of your surroundings. ", false);
+            if (player.earType > EARS_WOLF) outputText("\n\nYour ears transform, becoming more canine in appearance. ", false);
+            player.earType = EARS_WOLF;
+            player.earValue = 2;
+            outputText("<b>You now have wolf ears.</b>", false);
+            changes++;
+        }
+        //Wolf tail
+        if (rand(3) == 0 && changes < changeLimit && player.tailType != TAIL_TYPE_WOLF) {
+            if (player.tailType == TAIL_TYPE_NONE) outputText("\n\nA pressure builds on your backside. You feel under your clothes and discover an odd, thick bump that seems to be growing larger by the moment. In seconds it passes between your fingers, bursts out the back of your clothes, and grows most of the way to the ground. A nushy coat of fur springs up to cover your new tail.  ", false);
+            if (player.tailType == TAIL_TYPE_HORSE) outputText("\n\nYou feel a tightness in your rump, matched by the tightness with which the strands of your tail clump together. In seconds they fuse into a single, thick tail, rapidly sprouting bushy fur. ", false);
+            if (player.tailType == TAIL_TYPE_DEMONIC) outputText("\n\nThe tip of your tail feels strange. As you pull it around to check on it, the spaded tip disappears, quickly replaced by a bushy coat of fur over the entire surface of your tail. Your tail thickens with it. ", false);
+            if (player.tailType >= TAIL_TYPE_COW) outputText("\n\nYou feel your backside shift and change, flesh molding and displacing into a thick, bushy tail. ", false);
+            changes++;
+            player.tailType = TAIL_TYPE_WOLF;
+            outputText("<b>You now have a wolf tail!</b>", false);
+        }
+        //Sets hair normal and stops growth
+        if (player.hairLength > 0) {
+            if (player.hairType != HAIR_NORMAL && changes < changeLimit && rand(3) == 0) {
+                outputText("\n\nYou reach up and feel the top of your head as it begins to tingle. You put a hand on the top of your head and slowly pull it down. Chunks of your " + player.hairDescript() + " come with, replaced by a set of normal, human hair. You also get the feeling you won't be seeing your hair grow anymore.", false);
+                player.hairType = HAIR_NORMAL;
+                flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 1;
+                changes++;
+            } else if (player.hairType == HAIR_NORMAL && flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] == 0 && changes < changeLimit && rand(5) == 0) {
+                outputText("You reach up and feel the top of your head as it begins to tingle.You put a hand on the top of your head.Nothing feels like it 's changed, but somehow, you get the feeling that your hair won't be growing anymore.", false);
+                    flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 1;
+                    changes++;
+                }
+            }
+        //MUTATIONZ LEVEL 2: fur->arms fur+tail+ears->face stophair->nohair fur+tail->legs
+        //gain wolf face
+        if (player.faceType != FACE_WOLF && player.earType == EARS_WOLF && player.tailType == TAIL_TYPE_WOLF && player.skinType == SKIN_TYPE_FUR && rand(5) == 0 && changes < changeLimit) {
+            outputText("\n\nYou screech in pain as the bones of your face begin to rearrange themselves. Your [skinFurScales] practically melts off you, dropping onto the ground with heavy streams of blood. You put your hands to your face, writhing, blackness covering your vision as pain overwhelms you. But as quickly as it came, it stops, and you pull your shaking hands from your face. You scramble to the nearest reflective surface. <b>You have a wolf's face!</b>", false);
+            player.faceType == FACE_WOLF;
+            changes++;
+        }
+        //no hair
+        if (player.hairLength > 0 && rand(5) == 0 && changes < changeLimit) {
+            outputText("\n\nYou grip your head as your scalp burns in pain. Your hands seem to fall away, though, and bring clumps of hair with. Before you know it, your hair is falling right off your head without you touching it. It's only a matter of seconds before it's all gone.", false);
+            player.hairLength == 0;
+            changes++;
+        }
+        //wolf arms
+        if (player.armType != ARM_TYPE_WOLF && player.skinType == SKIN_TYPE_FUR && rand(4) == 0 && changes < changeLimit) {
+            outputText("\n\nYou hold your arms to your chest and absent-mindedly squeeze them, trying to get rid of a feeling of discomfort. When it fails to go away, you look down in annoyance at whatever could be bothering you, only to see that your hands have turned to wolf paws and your arms are slim but muscular. They're built strong, but have difficulty moving in any direction but back and forth. <b>You now have wolf arms.</b>");
+            player.armType = ARM_TYPE_WOLF;
+            updateClaws(CLAW_TYPE_NORMAL);
+            changes++;
+        }
+        //legz
+        if (player.legCount == 2 && player.lowerBody != LOWER_BODY_TYPE_WOLF && player.tailType == TAIL_TYPE_WOLF && player.skinType == SKIN_TYPE_FUR && rand(4) == 0 && changes < changeLimit) {
+            //Hooman feets
+            if (player.lowerBody == LOWER_BODY_TYPE_HUMAN) outputText("\n\nYou stumble and fall, howling in pain as your legs and feet break apart and reform into wolf-like legs and paws. The worst of the pain eventually passes, but you're still left whimpering for a while. <b>You now have paws!</b>", false);
+            //Hooves -> Paws
+            else if (player.lowerBody == LOWER_BODY_TYPE_HOOFED) outputText("\n\nYou feel your hooves suddenly splinter, growing into five unique digits. Their flesh softens as your hooves reshape into furred paws. <b>You now have paws!</b>", false);
+            else outputText("\n\nYour lower body is suddenly wracked by pain, causing you to collapse onto the ground in agony. Once it passes, you discover that you're standing on fur-covered paws. <b>You now have paws!</b>", false);
+            player.lowerBody = LOWER_BODY_TYPE_WOLF;
+            changes++;
+        }
+        //MUTATIONZ LEVEL 3: face->eyes
+        if (player.eyeType != EYES_WOLF && player.faceType == FACE_WOLF && rand(4) == 0 && changes < changeLimit) {
+            outputText("\n\nYou feel a sudden surge of pain in your face as your eyes begin to change. You close them and feel something wet slide under your eyelids. You jump in surprise. The feeling's gone, but now the distance is a blurred view, and greens seem to be mixed with yellows.", false);
+            outputText("\n\nYou turn to a nearby reflective surface to investigate. Your eyes have massive amber irises and are dipped into your face, hiding any sign of your sclera. Blackness surrounds them and emphasise the wolfish shape of your face. You blink a few times as you stare at your reflection. <b>You now have wolf eyes!</b> Your peripherals and night vision has probably improved, too.", false);
+            player.eyeType == EYES_WOLF;
+            changes++;
+        }
+        //MISC CRAP
+        if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
+        if (rand(3) == 0) outputText(player.modTone(100, 4), false);
+        if (rand(3) == 0) outputText(player.modThickness(75, 3), false);
+        player.refillHunger(10);
+    }
 
 //1-Oversized Pepper (+size, thickness)
 //2-Double Pepper (+grows second cock or changes two cocks to dogcocks)
@@ -1644,7 +2161,7 @@
 				outputText("You eat the pepper, even the two orb-like growths that have grown out from the base.  It's delicious!", false);
 			}
 			//OVERDOSE Bad End!
-			if (type <= 0 && crit > 1 && player.hasFur() && player.faceType == FACE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && player.tailType == TAIL_TYPE_DOG && rand(2) == 0 && player.findStatusEffect(StatusEffects.DogWarning) >= 0 && player.findPerk(PerkLib.TransformationResistance) < 0) {
+			if (type <= 0 && crit > 1 && player.hasFur() && player.faceType == FACE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && player.tailType == TAIL_TYPE_DOG && rand(2) == 0 && player.hasStatusEffect(StatusEffects.DogWarning) && player.findPerk(PerkLib.TransformationResistance) < 0) {
 				temp = rand(2);
 				if (temp == 0) {
 					outputText("\n\nAs you swallow the pepper, you note that the spicy hotness on your tongue seems to be spreading. Your entire body seems to tingle and burn, making you feel far warmer than normal, feverish even. Unable to stand it any longer you tear away your clothes, hoping to cool down a little. Sadly, this does nothing to aid you with your problem. On the bright side, the sudden feeling of vertigo you've developed is more than enough to take your mind off your temperature issues. You fall forward onto your hands and knees, well not really hands and knees to be honest. More like paws and knees. That can't be good, you think for a moment, before the sensation of your bones shifting into a quadrupedal configuration robs you of your concentration. After that, it is only a short time before your form is remade completely into that of a large dog, or perhaps a wolf. The distinction would mean little to you now, even if you were capable of comprehending it. ", false);
@@ -1656,11 +2173,11 @@
 				return;
 			}
 			//WARNING, overdose VERY close!
-			if (type <= 0 && player.hasFur() && player.faceType == FACE_DOG && player.tailType == TAIL_TYPE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && player.findStatusEffect(StatusEffects.DogWarning) >= 0 && rand(3) == 0) {
+			if (type <= 0 && player.hasFur() && player.faceType == FACE_DOG && player.tailType == TAIL_TYPE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && player.hasStatusEffect(StatusEffects.DogWarning) && rand(3) == 0) {
 				outputText("<b>\n\nEating the pepper, you realize how dog-like you've become, and you wonder what else the peppers could change...</b>", false);
 			}
 			//WARNING, overdose is close!
-			if (type <= 0 && player.hasFur() && player.faceType == FACE_DOG && player.tailType == TAIL_TYPE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && player.findStatusEffect(StatusEffects.DogWarning) < 0) {
+			if (type <= 0 && player.hasFur() && player.faceType == FACE_DOG && player.tailType == TAIL_TYPE_DOG && player.earType == EARS_DOG && player.lowerBody == LOWER_BODY_TYPE_DOG && !player.hasStatusEffect(StatusEffects.DogWarning)) {
 				player.createStatusEffect(StatusEffects.DogWarning, 0, 0, 0, 0);
 				outputText("<b>\n\nEating the pepper, you realize how dog-like you've become, and you wonder what else the peppers could change...</b>", false);
 			}
@@ -1765,7 +2282,6 @@
 						}
 					}
 				}
-				player.genderCheck();
 			}
 			//Knotty knot pepper!
 			if (type == 4) {
@@ -2192,22 +2708,36 @@
 				player.faceType = FACE_DOG;
 				changes++;
 			}
-			if (type == 3 && player.hairColor != "midnight black") {
-				if (player.hasFur()) outputText("<b>\n\nYour fur and hair tingles, growing in thicker than ever as darkness begins to spread from the roots, turning it midnight black.</b>", false);
-				else outputText("<b>\n\nYour " + player.skinDesc + " itches like crazy as fur grows out from it, coating your body.  It's incredibly dense and black as the middle of a moonless night.</b>", false);
+
+			// break things, so it'll be fixed below ;-)
+			if (type == 3 && !player.hasFur() && player.furColor == "midnight black") player.furColor = "no";
+
+			if (type == 3 && (player.hairColor != "midnight black" || player.furColor != "midnight black")) {
+				var furHairText:String;
+				if (!player.hasFur())
+					outputText("<b>\n\nYour " + player.skinDesc + " itches like crazy as fur grows out from it, coating your body.  It's incredibly dense and black as the middle of a moonless night.</b>");
+				else {
+					if (player.hairColor != "midnight black" && player.furColor != "midnight black")
+						furHairText = "fur and hair";
+					else 
+						furHairText = (player.furColor != "midnight black") ? "fur" : "hair";
+					outputText("<b>\n\nYour " + furHairText + " tingles, growing in thicker than ever as darkness begins to spread from the roots, turning it midnight black.</b>");
+				}
 				player.skinType = SKIN_TYPE_FUR;
 				player.skinAdj = "thick";
 				player.skinDesc = "fur";
 				player.hairColor = "midnight black";
 				player.furColor = player.hairColor;
+				player.underBody.restore(); // Restore the underbody for now
 			}
 			//Become furred - requires paws and tail
 			if (rand(4) == 0 && changes < changeLimit && player.lowerBody == LOWER_BODY_TYPE_DOG && player.tailType == TAIL_TYPE_DOG && !player.hasFur()) {
+				player.setFurColor(["brown", "chocolate", "auburn", "caramel", "orange", "black", "dark gray", "gray", "light gray", "silver", "white", "orange and white", "brown and white", "black and white"]);
 				if (player.hasPlainSkin()) outputText("\n\nYour skin itches intensely.  You gaze down as more and more hairs break forth from your skin, quickly transforming into a soft coat of fur.  <b>You are now covered in " + player.furColor + " fur from head to toe.</b>", false);
 				if (player.hasScales()) outputText("\n\nYour scales itch incessantly.  You scratch, feeling them flake off to reveal a coat of " + player.furColor + " fur growing out from below!  <b>You are now covered in " + player.furColor + " fur from head to toe.</b>", false);
 				player.skinType = SKIN_TYPE_FUR;
 				player.skinDesc = "fur";
-				player.setFurColor(["brown", "chocolate", "auburn", "caramel", "orange", "black", "dark gray", "gray", "light gray", "silver", "white", "orange and white", "brown and white", "black and white"]);
+				player.underBody.restore(); // Restore the underbody for now
 				changes++;
 			}
 			//Change to paws - requires tail and ears
@@ -2280,14 +2810,15 @@
 					outputText("\n\nYour skin crawls, making you close your eyes and shiver.  When you open them again the world seems... different.  After a bit of investigation, you realize you've become shorter!\n", false);
 					player.tallness -= 1 + rand(3);
 				}
-				//Red skin!
-				if (rand(30) == 0 && player.skinTone != "red") {
+				//Red or orange skin!
+				if (rand(30) == 0 && ["red", "orange"].indexOf(player.skinTone) == -1) {
 					if (player.hasFur()) outputText("\n\nUnderneath your fur, your skin ", false);
 					else outputText("\n\nYour " + player.skinDesc + " ", false);
 					if (rand(2) == 0) player.skinTone = "red";
 					else player.skinTone = "orange";
 					outputText("begins to lose its color, fading until you're as white as an albino.  Then, starting at the crown of your head, a reddish hue rolls down your body in a wave, turning you completely " + player.skinTone + ".", false);
 					updateClaws(player.clawType);
+					kGAMECLASS.rathazul.addMixologyXP(20);
 				}
 				return;
 			}
@@ -2297,14 +2828,15 @@
 				HPChange(20 + player.tou / 3, true);
 				dynStats("lus", 3, "cor", 1);
 			}
-			//Red skin!
-			if (rand(30) == 0 && player.skinTone != "red") {
+			//Red or orange skin!
+			if (rand(30) == 0 && ["red", "orange"].indexOf(player.skinTone) == -1) {
 				if (player.hasFur()) outputText("\n\nUnderneath your fur, your skin ", false);
 				else outputText("\n\nYour " + player.skinDesc + " ", false);
 				if (rand(2) == 0) player.skinTone = "red";
 				else player.skinTone = "orange";
 				outputText("begins to lose its color, fading until you're as white as an albino.  Then, starting at the crown of your head, a reddish hue rolls down your body in a wave, turning you completely " + player.skinTone + ".", false);
 				updateClaws(player.clawType);
+				kGAMECLASS.rathazul.addMixologyXP(20);
 			}
 
 			//Shrinkage!
@@ -2524,7 +3056,7 @@
 			}
 			//If player already has eggs, chance of size increase!
 			if (player.pregnancyType == PregnancyStore.PREGNANCY_OVIELIXIR_EGGS) {
-				if (player.findStatusEffect(StatusEffects.Eggs) >= 0) {
+				if (player.hasStatusEffect(StatusEffects.Eggs)) {
 					//If eggs are small, chance of increase!
 					if (player.statusEffectv2(StatusEffects.Eggs) == 0) {
 						//1 in 2 chance!
@@ -2614,7 +3146,6 @@
 				if (player.cocks.length > 0) {
 					player.killCocks(1);
 					outputText("\n\n", false);
-					player.genderCheck()
 				}
 				//remove balls
 				if (player.balls > 0) {
@@ -2641,7 +3172,6 @@
 				if (player.cocks.length > 0) {
 					player.killCocks(-1);
 					outputText("\n\n", false);
-					player.genderCheck();
 				}
 				if (player.balls > 0) {
 					player.balls = 0;
@@ -2671,9 +3201,8 @@
 				//Kill pussies!
 				if (player.vaginas.length > 0) {
 					outputText("\n\nYour vagina clenches in pain, doubling you over.  You slip a hand down to check on it, only to feel the slit growing smaller and smaller until it disappears, taking your clit with it! <b> Your vagina is gone!</b>", false);
+					player.setClitLength(.5);
 					player.removeVagina(0, 1);
-					player.clitLength = .5;
-					player.genderCheck();
 				}
 				//Dickz
 				if (player.cocks.length > 0) {
@@ -2735,9 +3264,8 @@
 				if (player.vaginas.length > 0) {
 					outputText("Your vagina clenches in pain, doubling you over.  You slip a hand down to check on it, only to feel the slit growing smaller and smaller until it disappears, taking your clit with it!\n\n", false);
 					if (player.bRows() > 1 || player.buttRating > 5 || player.hipRating > 5) outputText("  ", false);
+					player.setClitLength(.5);
 					player.removeVagina(0, 1);
-					player.clitLength = .5;
-					player.genderCheck();
 				}
 				//Kill extra boobages
 				if (player.bRows() > 1) {
@@ -2872,6 +3400,7 @@
 					player.skinAdj = "smooth";
 					if (player.skinTone == "rough gray") player.skinTone = "gray";
 					player.skinType = SKIN_TYPE_PLAIN;
+					player.underBody.restore();
 					updateClaws(player.clawType);
 				}
 				//chance of hair change
@@ -2926,6 +3455,7 @@
 					player.skinAdj = "smooth";
 					if (player.skinTone == "rough gray") player.skinTone = "gray";
 					player.skinType = SKIN_TYPE_PLAIN;
+					player.underBody.restore();
 					updateClaws(player.clawType);
 				}
 				//chance of hair change
@@ -3060,7 +3590,7 @@
 			kGAMECLASS.marbleScene.marbleStatusChange(0, 5);
 			//Does not apply the 'Marble's Milk' effect
 			//Purge withdrawl
-			if (player.findStatusEffect(StatusEffects.MarbleWithdrawl) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.MarbleWithdrawl)) {
 				player.removeStatusEffect(StatusEffects.MarbleWithdrawl);
 				dynStats("tou", 5, "int", 5);
 				outputText("You no longer feel the symptoms of withdrawal.\n\n", false);
@@ -3070,7 +3600,7 @@
 			//Restores a portion of fatigue (once implemented)
 			player.changeFatigue(-25);
 			//If the player is addicted, this item negates the withdrawal effects for a few hours (suggest 6), there will need to be a check here to make sure the withdrawal effect doesn't reactivate while the player is under the effect of 'Marble's Milk'.
-			if (player.findStatusEffect(StatusEffects.BottledMilk) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.BottledMilk)) {
 				player.addStatusValue(StatusEffects.BottledMilk, 1, (6 + rand(6)));
 			}
 			else player.createStatusEffect(StatusEffects.BottledMilk, 12, 0, 0, 0);
@@ -3188,12 +3718,11 @@
 						player.balls = 0;
 						player.ballSize = 1;
 						player.createVagina();
-						player.clitLength = .25;
+						player.setClitLength(.25);
 						player.removeCock(0, 1);
 					}
 					else {
 						player.killCocks(1);
-						player.genderCheck();
 					}
 				}
 				//if the last of the player's dicks are eliminated this way, they gain a virgin vagina;
@@ -3202,11 +3731,10 @@
 					player.vaginas[0].vaginalLooseness = VAGINA_LOOSENESS_TIGHT;
 					player.vaginas[0].vaginalWetness = VAGINA_WETNESS_NORMAL;
 					player.vaginas[0].virgin = true;
-					player.clitLength = .25;
+					player.setClitLength(.25);
 					outputText("\n\nAn itching starts in your crotch and spreads vertically.  You reach down and discover an opening.  You have grown a <b>new " + player.vaginaDescript(0) + "</b>!", false);
 
 					changes++;
-					player.genderCheck();
 					dynStats("lus", 10);
 				}
 			}
@@ -3314,7 +3842,7 @@
 						}
 						changes++;
 					}
-					if ((player.breastRows[0].lactationMultiplier > 2 && player.findStatusEffect(StatusEffects.Feeder) >= 0) || player.breastRows[0].lactationMultiplier > 5) {
+					if ((player.breastRows[0].lactationMultiplier > 2 && player.hasStatusEffect(StatusEffects.Feeder)) || player.breastRows[0].lactationMultiplier > 5) {
 						if (rand(2) == 0) outputText("\n\nYour breasts suddenly feel less full, it seems you aren't lactating at quite the level you were.", false);
 						else outputText("\n\nThe insides of your breasts suddenly feel bloated.  There is a spray of milk from them, and they settle closer to a more natural level of lactation.", false);
 						changes++;
@@ -3328,7 +3856,7 @@
 			//apply an effect where the player really wants
 			//to give their milk to other creatures
 			//(capable of getting them addicted):
-			if (player.findStatusEffect(StatusEffects.Feeder) < 0 && player.biggestLactation() >= 3 && rand(2) == 0 && player.biggestTitSize() >= 5 && player.cor >= 35) {
+			if (!player.hasStatusEffect(StatusEffects.Feeder) && player.biggestLactation() >= 3 && rand(2) == 0 && player.biggestTitSize() >= 5 && player.cor >= 35) {
 				outputText("\n\nYou start to feel a strange desire to give your milk to other creatures.  For some reason, you know it will be very satisfying.\n\n<b>(You have gained the 'Feeder' perk!)</b>", false);
 				player.createStatusEffect(StatusEffects.Feeder, 0, 0, 0, 0);
 				player.createPerk(PerkLib.Feeder, 0, 0, 0, 0);
@@ -3341,10 +3869,7 @@
 				if (player.vaginas[0].vaginalLooseness < VAGINA_LOOSENESS_LOOSE && changes < changeLimit && rand(2) == 0) {
 					outputText("\n\nYou feel a relaxing sensation in your groin.  On further inspection you discover your " + player.vaginaDescript(0) + " has somehow relaxed, permanently loosening.", false);
 					player.vaginas[0].vaginalLooseness++;
-					//Cunt Stretched used to determine how long since last enlargement
-					if (player.findStatusEffect(StatusEffects.CuntStretched) < 0) player.createStatusEffect(StatusEffects.CuntStretched, 0, 0, 0, 0);
-					//Reset the timer on it to 0 when restretched.
-					else player.changeStatusValue(StatusEffects.CuntStretched, 1, 0);
+					player.vaginas[0].resetRecoveryProgress();
 					player.vaginas[0].vaginalLooseness++;
 					changes++;
 					dynStats("lus", 10);
@@ -3419,6 +3944,7 @@
 				player.skinType = SKIN_TYPE_FUR;
 				player.hairColor = "black and white spotted";
 				player.furColor = player.hairColor;
+				player.underBody.restore(); // Restore the underbody for now
 			}
 			//if enhanced to probova give a shitty cow face
 			else if (enhanced && player.faceType != FACE_COW_MINOTAUR) {
@@ -3481,7 +4007,7 @@
 				}
 			}
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
+			if (player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				changes++;
 				player.removeStatusEffect(StatusEffects.BlackNipples);
@@ -3519,19 +4045,19 @@
 				dynStats("int", .6);
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 25 && player.findStatusEffect(StatusEffects.KnowsArouse) < 0) {
+			if (player.inte >= 25 && !player.hasStatusEffect(StatusEffects.KnowsArouse)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Arouse.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsArouse, 0, 0, 0, 0);
 				return;
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 30 && player.findStatusEffect(StatusEffects.KnowsHeal) < 0) {
+			if (player.inte >= 30 && !player.hasStatusEffect(StatusEffects.KnowsHeal)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Heal.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsHeal, 0, 0, 0, 0);
 				return;
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 40 && player.findStatusEffect(StatusEffects.KnowsMight) < 0) {
+			if (player.inte >= 40 && !player.hasStatusEffect(StatusEffects.KnowsMight)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Might.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsMight, 0, 0, 0, 0);
 			}
@@ -3557,19 +4083,19 @@
 				dynStats("int", .6);
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 25 && player.findStatusEffect(StatusEffects.KnowsCharge) < 0) {
+			if (player.inte >= 25 && !player.hasStatusEffect(StatusEffects.KnowsCharge)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Charge Weapon.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsCharge, 0, 0, 0, 0);
 				return;
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 30 && player.findStatusEffect(StatusEffects.KnowsBlind) < 0) {
+			if (player.inte >= 30 && !player.hasStatusEffect(StatusEffects.KnowsBlind)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Blind.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsBlind, 0, 0, 0, 0);
 				return;
 			}
 			//Smart enough for arouse and doesnt have it
-			if (player.inte >= 40 && player.findStatusEffect(StatusEffects.KnowsWhitefire) < 0) {
+			if (player.inte >= 40 && !player.hasStatusEffect(StatusEffects.KnowsWhitefire)) {
 				outputText("\n\nYou blink in surprise, assaulted by the knowledge of a <b>new spell: Whitefire.</b>", false);
 				player.createStatusEffect(StatusEffects.KnowsWhitefire, 0, 0, 0, 0);
 			}
@@ -3606,7 +4132,7 @@
 				if (player.gender == 0) outputText("body begins to quiver with orgasmic bliss.  ", false);
 				outputText("Once you've had a chance to calm down, you notice that the explosion of pleasure you just experienced has rocked you to your core.  You are a little hornier than you were before.", false);
 				//increase player libido, and maybe sensitivity too?
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("lib", 2, "sen", 1);
 			}
 			if (player.lust > player.maxLust()) player.lust = player.maxLust();
@@ -3673,7 +4199,7 @@
 			}
 			//Boost vaginal capacity without gaping
 			if (changes < changeLimit && rand(3) == 0 && player.hasVagina() && player.statusEffectv1(StatusEffects.BonusVCapacity) < 40) {
-				if (player.findStatusEffect(StatusEffects.BonusVCapacity) < 0) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
+				if (!player.hasStatusEffect(StatusEffects.BonusVCapacity)) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
 				player.addStatusValue(StatusEffects.BonusVCapacity, 1, 5);
 				outputText("\n\nThere is a sudden... emptiness within your " + player.vaginaDescript(0) + ".  Somehow you know you could accommodate even larger... insertions.", false);
 				changes++;
@@ -3748,6 +4274,7 @@
 				player.skinAdj = "";
 				player.skinDesc = "skin";
 				player.skinType = SKIN_TYPE_PLAIN;
+				player.underBody.restore();
 				changes++;
 			}
 			//skinTone
@@ -3763,6 +4290,7 @@
 				if (player.hasFur()) outputText("skin", false);
 				else outputText(player.skinDesc, false);
 				outputText(" turned " + player.skinTone + ".  No way!  It's staying, it really changed color!", false);
+				kGAMECLASS.rathazul.addMixologyXP(20);
 			}
 			//Face!
 			if (player.faceType != FACE_HUMAN && changes < changeLimit && rand(4) == 0 && player.earType == EARS_ELFIN) {
@@ -3780,7 +4308,7 @@
 			if (rand(4) == 0 && player.hasGills() && changes < changeLimit) updateGills();
 
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
+			if (player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				changes++;
 				player.removeStatusEffect(StatusEffects.BlackNipples);
@@ -3879,6 +4407,7 @@
 				player.skinType = SKIN_TYPE_GOO;
 				player.skinDesc = "skin";
 				player.skinAdj = "slimy";
+				player.underBody.restore();
 				if (player.skinTone != "green" && player.skinTone != "purple" && player.skinTone != "blue" && player.skinTone != "cerulean" && player.skinTone != "emerald") {
 					outputText("  Stranger still, your skintone changes to ");
 					var blaht:int = rand(10);
@@ -3912,14 +4441,12 @@
 				player.createVagina();
 				player.vaginas[0].vaginalWetness = VAGINA_WETNESS_DROOLING;
 				player.vaginas[0].vaginalLooseness = VAGINA_LOOSENESS_GAPING;
-				player.clitLength = .4;
-				player.genderCheck();
+				player.setClitLength(.4);
 				return;
-
 			}
 			//3b.Infinite Vagina
 			if (player.vaginalCapacity() < 9000) {
-				if (player.findStatusEffect(StatusEffects.BonusVCapacity) < 0) player.createStatusEffect(StatusEffects.BonusVCapacity, 9000, 0, 0, 0);
+				if (!player.hasStatusEffect(StatusEffects.BonusVCapacity)) player.createStatusEffect(StatusEffects.BonusVCapacity, 9000, 0, 0, 0);
 				else player.addStatusValue(StatusEffects.BonusVCapacity, 1, 9000);
 				outputText("\n\nYour " + player.vaginaDescript(0) + "'s internal walls feel a tingly wave of strange tightness.  Experimentally, you slip a few fingers, then your hand, then most of your forearm inside yourself.  <b>It seems you're now able to accommodate just about ANYTHING inside your sex.</b>", false);
 				return;
@@ -3931,7 +4458,7 @@
 			}
 			//Big slime girl
 			else {
-				if (player.findStatusEffect(StatusEffects.SlimeCraving) < 0) {
+				if (!player.hasStatusEffect(StatusEffects.SlimeCraving)) {
 					outputText("\n\nYou feel a growing gnawing in your gut.  You feel... hungry, but not for food.  No, you need something wet and goopy pumped into you.  You NEED it.  You can feel it in your bones.  <b>If you don't feed that need... you'll get weaker and maybe die.</b>", false);
 					player.createStatusEffect(StatusEffects.SlimeCraving, 0, 0, 0, 1); //Value four indicates this tracks strength and speed separately
 				}
@@ -4000,9 +4527,8 @@
 				//(neither)
 				else outputText("\n\nAn itch starts on your groin and fades before you can take action. Curious about the intermittent sensation, <b>you peek under your " + player.armorName + " to discover your brand new vagina, complete with pussy lips and a tiny clit.</b>", false);
 				player.createVagina();
-				player.clitLength = .25;
+				player.setClitLength(.25);
 				dynStats("sen", 10);
-				player.genderCheck();
 			}
 			//WANG GROWTH - TIGGERSHARK ONLY
 			if (type == 1 && (!player.hasCock()) && changes < changeLimit && rand(3) == 0) {
@@ -4018,7 +4544,6 @@
 				outputText("!", false);
 				player.createCock(7, 1.4);
 				dynStats("lib", 4, "sen", 5, "lus", 20);
-				player.genderCheck();
 				changes++;
 			}
 			//(Requires the player having two testicles)
@@ -4077,15 +4602,17 @@
 			//Skin
 			if (((player.skinTone != "rough gray" && player.skinTone != "orange and black striped") || !player.hasPlainSkin()) && rand(7) == 0 && changes < changeLimit) {
 				outputText("\n\n", false);
-				if (player.hasFurOrScales()) outputText("Your " + player.skinDesc + " falls out, collecting on the floor and exposing your supple skin underneath.  ", false);
-				else if (player.hasGooSkin()) outputText("Your gooey skin solidifies, thickening up as your body starts to solidy into a more normal form. ", false);
+				if (player.isFurryOrScaley()) outputText("Your " + player.skinDesc + " falls out, collecting on the floor and exposing your supple skin underneath.  ", false);
+				else if (player.hasGooSkin()) outputText("Your gooey skin solidifies, thickening up as your body starts to solidify into a more normal form. ", false);
 				else if (type == 0) outputText("Your skin itches and tingles becoming slightly rougher and turning gray.  ", false);
 				if (type == 0) {
 					outputText("You abruptly stop moving and gasp sharply as a shudder goes up your entire frame. Your skin begins to shift and morph, growing slightly thicker and changing into a shiny grey color. Your skin now feels oddly rough too, comparable to that of a marine mammal. You smile and run your hands across your new shark skin.", false);
 					player.skinType = SKIN_TYPE_PLAIN;
 					player.skinDesc = "skin";
 					player.skinTone = "rough gray";
+					player.underBody.restore();
 					updateClaws(player.clawType);
+					kGAMECLASS.rathazul.addMixologyXP(20);
 					changes++;
 				}
 				else {
@@ -4093,7 +4620,9 @@
 					player.skinType = SKIN_TYPE_PLAIN;
 					player.skinDesc = "skin";
 					player.skinTone = "orange and black striped";
+					player.underBody.restore();
 					updateClaws(player.clawType);
+					kGAMECLASS.rathazul.addMixologyXP(20);
 					changes++;
 				}
 			}
@@ -4103,7 +4632,6 @@
 				if (player.wingType > WING_TYPE_NONE) outputText("Your wings fold into themselves, merging together with your back.  ", false);
 				outputText("You groan and slump down in pain, almost instantly regretting eating the tooth. You start sweating profusely and panting loudly, feeling the space between your shoulder blades shifting about. You hastily remove your " + player.armorName + " just in time before a strange fin-like structure bursts from in-between your shoulders. You examine it carefully and make a few modifications to your " + player.armorName + " to accommodate your new fin.", false);
 				player.wingType = WING_TYPE_SHARK_FIN;
-				player.wingDesc = "";
 				changes++;
 			}
 			if (changes == 0) {
@@ -4197,6 +4725,27 @@
 				outputText("  But then, scales start to form on the surface of your skin, slowly becoming visible, recoloring all of your body from the waist down in a snake-like pattern. The feeling is... not that bad actually, kind of like callous, except on your whole lower body. The transformation complete, you get up, standing on your newly formed snake tail. You can't help feeling proud of this majestic new body of yours.", false);
 				player.lowerBody = LOWER_BODY_TYPE_NAGA;
 				player.legCount = 1;
+
+				// Naga lower body plus a tail may look awkward, so silently discard it (Stadler76)
+				player.tailType = TAIL_TYPE_NONE;
+				player.tailVenom = 0;
+				player.tailRecharge = 0;
+
+				if (player.hasReptileUnderBody()) {
+					player.skin.tone = "green";
+					player.underBody.skin.tone = "light green";
+				} else {
+					player.underBody.setProps({
+						type: UNDER_BODY_TYPE_NAGA,
+						skin: {
+							type: SKIN_TYPE_LIZARD_SCALES,
+							tone: "green",
+							adj:  "",
+							desc: "scales"
+						}
+					});
+				}
+				updateClaws(player.clawType); // Just auto-fix the clawTone
 				changes++;
 			}
 			// Remove gills
@@ -4287,7 +4836,6 @@
 			player.lowerBody = LOWER_BODY_TYPE_HUMAN;
 			player.legCount = 2;
 			player.wingType = WING_TYPE_NONE;
-			player.wingDesc = "non-existant";
 			player.tailType = TAIL_TYPE_NONE;
 			player.tongueType = TONGUE_HUMAN;
 			player.tailRecharge = 0;
@@ -4297,6 +4845,7 @@
 			player.skinType = SKIN_TYPE_PLAIN;
 			player.skinDesc = "skin";
 			player.skinAdj = "";
+			player.underBody.restore();
 			player.tongueType = TONGUE_HUMAN;
 			player.eyeType = EYES_HUMAN;
 			if (player.fertility > 15) player.fertility = 15;
@@ -4331,7 +4880,7 @@
 				player.createVagina();
 				player.vaginas[0].virgin = virgin;
 			}
-			player.clitLength = .25;
+			player.setClitLength(.25);
 			//Tighten butt!
 			player.buttRating = 2;
 			player.hipRating = 2;
@@ -4401,6 +4950,7 @@
 				else if (temp == 2) player.skinTone = "dark";
 				else if (temp == 3) player.skinTone = "light";
 				outputText(player.skinTone + " colored.</b>", false);
+				player.underBody.skin.tone = player.skin.tone;
 				updateClaws(player.clawType);
 			}
 			//Change skin to normal
@@ -4410,9 +4960,8 @@
 				else outputText("is", false);
 				outputText(" falling to the ground, revealing flawless skin below.  <b>You now have normal skin.</b>", false);
 
-				player.skinType = SKIN_TYPE_PLAIN;
-				player.skinAdj = "";
-				player.skinDesc = "skin";
+				player.skin.restore();
+				player.underBody.restore();
 				changes++;
 			}
 			//Restore arms to become human arms again
@@ -4454,7 +5003,7 @@
 			//Removes gills
 			if (rand(4) == 0 && player.hasGills() && changes < changeLimit) updateGills();
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
+			if (player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				changes++;
 				player.removeStatusEffect(StatusEffects.BlackNipples);
@@ -4541,7 +5090,6 @@
 			if (player.cocks.length > 1 && rand(3) == 0 && changes < changeLimit) {
 				player.killCocks(1);
 				outputText("\n\nYou have a strange feeling as your crotch tingles.  Opening your " + player.armorName + ", <b>you realize that one of your cocks have vanished completely!</b>", false);
-				player.genderCheck()
 				changes++;
 			}
 			//Remove additional balls
@@ -4675,7 +5223,7 @@
 			else {
 				//Boost anal capacity without gaping
 				if (player.statusEffectv1(StatusEffects.BonusACapacity) < 80) {
-					if (player.findStatusEffect(StatusEffects.BonusACapacity) < 0) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
+					if (!player.hasStatusEffect(StatusEffects.BonusACapacity)) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
 					player.addStatusValue(StatusEffects.BonusACapacity, 1, 5);
 					outputText("\n\nYou feel... more accommodating somehow.  Your " + player.assholeDescript() + " is tingling a bit, and though it doesn't seem to have loosened, it has grown more elastic.", false);
 					changes++;
@@ -4953,10 +5501,30 @@
 			}
 			//TURN INTO A FURRAH!  OH SHIT
 			if (player.tailType == TAIL_TYPE_CAT && player.earType == EARS_CAT && rand(5) == 0 && changes < changeLimit && player.lowerBody == LOWER_BODY_TYPE_CAT && !player.hasFur()) {
+				var catFurColors:Array = [
+					"brown",
+					"chocolate",
+					"auburn",
+					"caramel",
+					"orange",
+					"sandy brown",
+					"golden",
+					"black",
+					"midnight black",
+					"dark gray",
+					"gray",
+					"light gray",
+					"silver",
+					"white",
+					["orange", "white"],
+					["brown", "white"],
+					["black", "white"],
+					["gray", "white"],
+				];
 				outputText("\n\nYour " + player.skinDesc + " begins to tingle, then itch. ");
 				player.skinType = SKIN_TYPE_FUR;
 				player.skinDesc = "fur";
-				player.setFurColor(["brown", "chocolate", "auburn", "caramel", "orange", "sandy brown", "golden", "black", "midnight black", "dark gray", "gray", "light gray", "silver", "white", "orange and white", "brown and white", "black and white", "gray and white"]);
+				player.setFurColor(catFurColors, {type: UNDER_BODY_TYPE_FUR}, true);
 				outputText("You reach down to scratch your arm absent-mindedly and pull your fingers away to find strands of " + player.furColor + " fur. Wait, fur?  What just happened?! You spend a moment examining yourself and discover that <b>you are now covered in glossy, soft fur.</b>");
 				changes++;
 			}
@@ -5123,7 +5691,7 @@
 			//-Grows second lizard dick if only 1 dick
 			if (player.countCocksOfType(CockTypesEnum.LIZARD) == 1 && player.cocks.length == 1 && rand(4) == 0 && changes < changeLimit) {
 				outputText("\n\nA knot of pressure forms in your groin, forcing you off your " + player.feet() + " as you try to endure it.  You examine the affected area and see a lump starting to bulge under your " + player.skinDesc + ", adjacent to your " + player.cockDescript(0) + ".  The flesh darkens, turning purple", false);
-				if (player.hasFurOrScales())
+				if (player.isFurryOrScaley())
 					outputText(" and shedding " + player.skinDesc, false);
 				outputText(" as the bulge lengthens, pushing out from your body.  Too surprised to react, you can only pant in pain and watch as the fleshy lump starts to take on a penis-like appearance.  <b>You're growing a second lizard-cock!</b>  It doesn't stop growing until it's just as long as its brother and the same shade of shiny purple.  A dribble of cum oozes from its tip, and you feel relief at last.", false);
 
@@ -5136,7 +5704,7 @@
 			}
 			//--Worms leave if 100% lizard dicks?
 			//Require mammals?
-			if (player.countCocksOfType(CockTypesEnum.LIZARD) == player.cockTotal() && changes < changeLimit && player.findStatusEffect(StatusEffects.Infested) >= 0) {
+			if (player.countCocksOfType(CockTypesEnum.LIZARD) == player.cockTotal() && changes < changeLimit && player.hasStatusEffect(StatusEffects.Infested)) {
 				outputText("\n\nLike rats from a sinking ship, worms escape from your body in a steady stream.  Surprisingly, the sensation is remarkably pleasant, similar to the pleasure of sexual release in a way.  Though they seem inexhaustible, the tiny, cum-slimed invertebrates slow to a trickle.  The larger worm-kin inside you stirs as if disturbed from a nap, coming loose from whatever moorings it had attached itself to in the interior of your form.  It slowly works its way up your urethra, stretching to an almost painful degree with every lurching motion.  Your dick bloats out around the base, stretched like the ovipositor on a bee-girl in order to handle the parasitic creature, but thankfully, the ordeal is a brief one.", false);
 				if (player.balls > 1) outputText("  The remaining " + num2Text(player.balls - 1) + " slither out the pre-stretched holes with ease, though the last one hangs from your tip for a moment before dropping to the ground.", false);
 				outputText("  The white creature joins its kin on the ground and slowly slithers away.  Perhaps they prefer mammals? In any event, <b>you are no longer infected with worms</b>.", false);
@@ -5170,7 +5738,7 @@
 				outputText(" nipples relax.  It's a strange feeling, and you pull back your top to touch one.  It feels fine, though there doesn't seem to be any milk leaking out.  You give it a squeeze and marvel when nothing ", false);
 				if (player.hasFuckableNipples()) outputText("but sexual fluid ", false);
 				outputText("escapes it.  <b>You are no longer lactating.</b>  That makes sense, only mammals lactate!  Smiling, you muse at how much time this will save you when cleaning your gear.", false);
-				if (player.findPerk(PerkLib.Feeder) >= 0 || player.findStatusEffect(StatusEffects.Feeder) >= 0) {
+				if (player.findPerk(PerkLib.Feeder) >= 0 || player.hasStatusEffect(StatusEffects.Feeder)) {
 					outputText("\n\n(<b>Feeder perk lost!</b>)", false);
 					player.removePerk(PerkLib.Feeder);
 					player.removeStatusEffect(StatusEffects.Feeder);
@@ -5273,27 +5841,47 @@
 			//-Scales – color changes to red, green, white, blue, or black.  Rarely: purple or silver.
 			if (!player.hasLizardScales() && player.earType == EARS_LIZARD && player.tailType == TAIL_TYPE_LIZARD && player.lowerBody == LOWER_BODY_TYPE_LIZARD && changes < changeLimit && rand(5) == 0) {
 				//(fur)
+				var newSkinTones:Array = newLizardSkinTone();
 				if (player.hasFur()) {
-					player.skinTone = newLizardSkinTone();
+					player.skin.tone = newSkinTones[0];
 					updateClaws(player.clawType);
-					outputText("\n\nYou scratch yourself, and come away with a large clump of " + player.furColor + " fur.  Panicked, you look down and realize that your fur is falling out in huge clumps.  It itches like mad, and you scratch your body relentlessly, shedding the remaining fur with alarming speed.  Underneath the fur your skin feels incredibly smooth, and as more and more of the stuff comes off, you discover a seamless layer of " + player.skinTone + " scales covering most of your body.  The rest of the fur is easy to remove.  <b>You're now covered in scales from head to toe.</b>", false);
+					outputText("\n\nYou scratch yourself, and come away with a large clump of " + player.furColor + " fur.  Panicked, you look down"
+					          +" and realize that your fur is falling out in huge clumps.  It itches like mad, and you scratch your body"
+					          +" relentlessly, shedding the remaining fur with alarming speed.  Underneath the fur your skin feels incredibly"
+					          +" smooth, and as more and more of the stuff comes off, you discover a seamless layer of " + player.skinTone
+					          +" scales covering most of your body.  The rest of the fur is easy to remove.");
 				}
 				else if (player.hasNonLizardScales()) {
-					outputText("\n\nPrickling discomfort suddenly erupts all over your body, like every last inch of your skin has suddenly developed pins and needles.  You scratch yourself, hoping for relief; and when you look at your hands you notice small fragments of your " + player.skinFurScales() + " hanging from your fingers.  Nevertheless you continue to scratch yourself, and when you're finally done, you look yourself over. New scales have grown to replace your peeled off " + player.skinFurScales() + ".  <b>You're covered from head to toe in shiny ");
-					player.skinTone = newLizardSkinTone();
+					outputText("\n\nPrickling discomfort suddenly erupts all over your body, like every last inch of your skin has suddenly"
+					          +" developed pins and needles.  You scratch yourself, hoping for relief; and when you look at your hands you notice"
+					          +" small fragments of your " + player.skinFurScales() + " hanging from your fingers.  Nevertheless you continue to"
+					          +" scratch yourself, and when you're finally done, you look yourself over. New scales have grown to replace your"
+					          +" peeled off [skinFurScales].");
+					player.skin.tone = newSkinTones[0];
 					updateClaws(player.clawType);
-					outputText(player.skinTone + " scales.</b>", false);
 				}
 				//(no fur)
 				else {
-					outputText("\n\nYou idly reach back to scratch yourself and nearly jump out of your " + player.armorName + " when you hit something hard.  A quick glance down reveals that scales are growing out of your " + player.skinTone + " skin with alarming speed.  As you watch, the surface of your skin is covered in smooth scales.  They interlink together so well that they may as well be seamless.  You peel back your " + player.armorName + " and the transformation has already finished on the rest of your body.  <b>You're covered from head to toe in shiny ", false);
-					player.skinTone = newLizardSkinTone();
+					outputText("\n\nYou idly reach back to scratch yourself and nearly jump out of your " + player.armorName + " when you hit"
+					          +" something hard.  A quick glance down reveals that scales are growing out of your " + player.skinTone + " skin with"
+					          +" alarming speed.  As you watch, the surface of your skin is covered in smooth scales.  They interlink together so"
+					          +" well that they may as well be seamless.  You peel back your " + player.armorName + " and the transformation has"
+					          +" already finished on the rest of your body.");
+					player.skin.tone = newSkinTones[0];
 					updateClaws(player.clawType);
-					outputText(player.skinTone + " scales.</b>", false);
 				}
-				player.skinType = SKIN_TYPE_LIZARD_SCALES;
-				player.skinAdj = "";
-				player.skinDesc = "scales";
+				player.skin.setProps({
+					type: SKIN_TYPE_LIZARD_SCALES,
+					adj: "",
+					desc: "scales"
+				});
+				player.underBody.type = UNDER_BODY_TYPE_LIZARD;
+				player.underBody.copySkin({ // copy the main skin props to the underBody skin ...
+					desc: "ventral scales", // ... and only override the desc
+					tone: newSkinTones[1]   // ... and the color (tone)
+				});
+				outputText("\n\n<b>You're covered from head to toe in shiny " + player.skinTone + " scales with [underBody.skinFurScales] on your underside.</b>");
+				kGAMECLASS.rathazul.addMixologyXP(20);
 				changes++;
 			}
 			//-Lizard-like face.
@@ -5301,8 +5889,12 @@
 				outputText("\n\nTerrible agony wracks your " + player.face() + " as bones crack and shift.  Your jawbone rearranges while your cranium shortens.  The changes seem to last forever; once they've finished, no time seems to have passed.  Your fingers brush against your toothy snout as you get used to your new face.  It seems <b>you have a toothy, reptilian visage now.</b>", false);
 				player.faceType = FACE_LIZARD;
 			}
-			//-Snake tongue
-			if (player.hasReptileFace() && rand(3) == 0) gainSnakeTongue();
+			//-Lizard tongue
+			if (player.tongueType == TONGUE_SNAKE && changes < changeLimit && rand(10) < 6) // Higher (60%) chance to be 'fixed' if old variant
+				gainLizardTongue();
+
+			if ([TONGUE_LIZARD, TONGUE_SNAKE].indexOf(player.tongueType) == -1 && player.hasReptileFace() && changes < changeLimit && rand(3) == 0)
+				gainLizardTongue();
 			//-Remove Gills
 			if (rand(4) == 0 && player.hasGills() && changes < changeLimit) updateGills();
 			//<mod name="Reptile eyes" author="Stadler76">
@@ -5346,7 +5938,7 @@
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 			//clear screen
 			clearOutput();
-			outputText("You uncork the hip flash and drink it down.  The taste is actualy quite good, like an alcohol but with a little fire within.  Just as you expected it makes you feel all hot and ready to take whole world head on.", false);
+			outputText("You uncork the hip flask and drink it down.  The taste is actually quite good, like an alcohol but with a little fire within.  Just as you expected, it makes you feel all hot and ready to take whole world head on.", false);
 
 			//Statistical changes:
 			//-Reduces speed down to 70.
@@ -5574,6 +6166,7 @@
 				player.skinType = SKIN_TYPE_PLAIN;
 				player.skinDesc = "skin";
 				player.skinAdj  = "";
+				player.underBody.restore();
 				changes++;
 			}
 			//Removing gills
@@ -6074,9 +6667,8 @@
 				//(neither)
 				else outputText("\n\nAn itch starts on your groin and fades before you can take action. Curious about the intermittent sensation, <b>you peek under your " + player.armorName + " to discover your brand new vagina, complete with pussy lips and a tiny clit.</b>", false);
 				player.createVagina();
-				player.clitLength = .25;
+				player.setClitLength(.25);
 				dynStats("sen", 10);
-				player.genderCheck();
 			}
 			//-Remove extra breast rows
 			if (changes < changeLimit && player.breastRows.length > 1 && rand(3) == 0 && !flags[kFLAGS.HYPER_HAPPY]) {
@@ -6219,15 +6811,13 @@
 			if (player.wingType == WING_TYPE_NONE && changes < changeLimit && (type == 1 || player.armType == ARM_TYPE_HARPY) && rand(4) == 0) {
 				outputText("\n\nPain lances through your back, the muscles knotting oddly and pressing up to bulge your " + player.skinDesc + ". It hurts, oh gods does it hurt, but you can't get a good angle to feel at the source of your agony. A loud crack splits the air, and then your body is forcing a pair of narrow limbs through a gap in your " + player.armorName + ". Blood pumps through the new appendages, easing the pain as they fill out and grow. Tentatively, you find yourself flexing muscles you didn't know you had, and <b>you're able to curve the new growths far enough around to behold your brand new, " + player.hairColor + " wings.</b>", false);
 				player.wingType = WING_TYPE_FEATHERED_LARGE;
-				player.wingDesc = "large, feathered";
 				changes++;
 			}
 			//-Remove old wings
-			if (player.wingType != WING_TYPE_FEATHERED_LARGE && player.wingType > WING_TYPE_NONE && changes < changeLimit && rand(4) == 0) {
-				if (player.wingType != WING_TYPE_SHARK_FIN) outputText("\n\nSensation fades from your " + player.wingDesc + " wings slowly but surely, leaving them dried out husks that break off to fall on the ground. Your back closes up to conceal the loss, as smooth and unbroken as the day you entered the portal.", false);
-				else outputText("\n\nSensation fades from your large fin slowly but surely, leaving it a dried out husk that breaks off to fall on the ground. Your back closes up to conceal the loss, as smooth and unbroken as the day you entered the portal.", false);
+			if ([WING_TYPE_NONE, WING_TYPE_FEATHERED_LARGE].indexOf(player.wingType) == -1 && changes < changeLimit && rand(4) == 0) {
+				if (player.wingType != WING_TYPE_SHARK_FIN) outputText("\n\nSensation fades from your [wings] slowly but surely, leaving them dried out husks that break off to fall on the ground. Your back closes up to conceal the loss, as smooth and unbroken as the day you entered the portal.");
+				else outputText("\n\nSensation fades from your large fin slowly but surely, leaving it a dried out husk that breaks off to fall on the ground. Your back closes up to conceal the loss, as smooth and unbroken as the day you entered the portal.");
 				player.wingType = WING_TYPE_NONE;
-				player.wingDesc = "non-existant";
 				changes++;
 			}
 			//-Feathery Arms
@@ -6271,7 +6861,7 @@
 				changes++;
 			}
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
+			if (player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				changes++;
 				player.removeStatusEffect(StatusEffects.BlackNipples);
@@ -6394,9 +6984,9 @@
 				changes++;
 			}
 			//-Shorten clits to reasonable size
-			if (player.clitLength >= 4 && changes < changeLimit && rand(5) == 0) {
+			if (player.getClitLength() >= 4 && changes < changeLimit && rand(5) == 0) {
 				outputText("\n\nPainful pricks work through your " + player.clitDescript() + ", all the way into its swollen clitoral sheath.  Gods, it feels afire with pain!  Agony runs up and down its length, and by the time the pain finally fades, the feminine organ has lost half its size.", false);
-				player.clitLength /= 2;
+				player.setClitLength(player.getClitLength() / 2);
 				changes++;
 			}
 			//Find biggest dick!
@@ -6452,6 +7042,7 @@
 				player.skinType = SKIN_TYPE_FUR;
 				player.skinDesc = "fur";
 				player.furColor = "brown";
+				player.underBody.restore(); // Restore the underbody for now
 				outputText("As you pull your hands in, you notice " + player.furColor + " fur growing on the backs of them.  All over your body the scene is repeated, covering you in the stuff.  <b>You now have fur!</b>");
 			}
 			//-Roo footsies (Req: Tail)
@@ -6666,6 +7257,7 @@
 				player.skinAdj = "";
 				player.skinType = SKIN_TYPE_PLAIN;
 				player.skinDesc = "skin";
+				player.underBody.restore();
 				updateClaws(player.clawType);
 				changes++;
 			}
@@ -6700,7 +7292,7 @@
 				}
 			}
 			//Nipples Turn Black:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) < 0 && rand(6) == 0 && changes < changeLimit) {
+			if (!player.hasStatusEffect(StatusEffects.BlackNipples) && rand(6) == 0 && changes < changeLimit) {
 				outputText("\n\nA tickling sensation plucks at your nipples and you cringe, trying not to giggle.  Looking down you are in time to see the last spot of flesh tone disappear from your [nipples].  They have turned an onyx black!");
 				player.createStatusEffect(StatusEffects.BlackNipples, 0, 0, 0, 0);
 				changes++;
@@ -6786,7 +7378,7 @@
 		public function applyLustStick(player:Player):void
 		{
 			clearOutput();
-			if (player.findStatusEffect(StatusEffects.LustStickApplied) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.LustStickApplied)) {
 				player.addStatusValue(StatusEffects.LustStickApplied, 1, 12 + rand(12));
 				outputText("You carefully open the sweet-smelling tube and smear the lipstick over the coat you already have on your lips.  <b>No doubt another layer will make it last even longer!</b>  ", false);
 				outputText("You finish and pucker your lips, feeling fairly sexy with your new, thicker makeup on.\n\n", false);
@@ -6857,7 +7449,6 @@
 				player.createPerk(PerkLib.FutaForm, 0, 0, 0, 0);
 				player.createPerk(PerkLib.FutaFaculties, 0, 0, 0, 0);
 				outputText("(Gained Perks - Futa Form, Futa Faculties)</b>", false);
-				player.genderCheck();
 				return;
 			}
 			//HP restore for bros!
@@ -6942,7 +7533,6 @@
 				outputText("At the same time, your " + player.vaginaDescript(0) + " burns hot, nearly feeling on fire.  You cuss in a decidedly masculine way for a moment before the pain fades to a dull itch.  Scratching it, you discover your lady-parts are gone.  Only a sensitive patch of skin remains.\n\n", false);
 				player.removeVagina(0, 1);
 			}
-			player.genderCheck();
 			//(below max masculinity)
 			if (player.femininity > 0) {
 				outputText("Lastly, the change hits your face.  You can feel your jawbones shifting and sliding around, your skin changing to accommodate your face's new shape.  Once it's finished, you feel your impeccable square jaw and give a wide, easy-going grin.  You look awesome!\n\n", false);
@@ -7044,6 +7634,7 @@
 					player.skinDesc = "skin";
 					player.skinType = SKIN_TYPE_PLAIN;
 				}
+				player.underBody.restore();
 				updateClaws(player.clawType);
 				changes++;
 			}
@@ -7127,7 +7718,6 @@
 			if (rand(4) == 0 && (player.wingType == WING_TYPE_BEE_LIKE_SMALL || player.wingType == WING_TYPE_BEE_LIKE_LARGE) && changes < changeLimit) {
 				outputText("\n\nYour wings twitch and flap involuntarily.  You crane your neck to look at them as best you are able; from what you can see, they seem to be shriveling and curling up.  They're starting to look a lot like they did when they first popped out, wet and new.  <b>As you watch, they shrivel all the way, then recede back into your body.</b>", false);
 				player.wingType = WING_TYPE_NONE;
-				player.wingDesc = "non-existent";
 				changes++;
 			}
 			//-hair morphs to anemone tentacles, retains color, hair shrinks back to med-short('shaggy') and stops growing, lengthening treatments don't work and goblins won't cut it, but more anemone items can lengthen it one level at a time
@@ -7153,6 +7743,7 @@
 				outputText("\n\nYou absently bite down on the last of the tentacle, then pull your hand away, wincing in pain.  How did you bite your finger so hard?  Looking down, the answer becomes obvious; <b>your hand, along with the rest of your skin, is now the same aphotic color as the dormant tentacle was!</b>", false);
 				player.skinTone = "aphotic blue-black";
 				updateClaws(player.clawType);
+				kGAMECLASS.rathazul.addMixologyXP(20);
 				changes++;
 			}
 			//-eat more, grow more 'hair':
@@ -7182,7 +7773,7 @@
 				player.lust -= 20 + rand(40);
 			}
 			if (rand(5) == 0) {
-				if (player.findStatusEffect(StatusEffects.Dysfunction) < 0) {
+				if (!player.hasStatusEffect(StatusEffects.Dysfunction)) {
 					outputText("\n\nUnfortunately, the skin of ", false);
 					if (player.cockTotal() > 0) {
 						outputText(player.sMultiCockDesc(), false);
@@ -7226,11 +7817,11 @@
 			clearOutput();
 			outputText("You pop the cork on this small vial and drink down the clear liquid.  It makes your lips and tongue tingle strangely, letting you feel each globule of spit in your mouth and each breath of air as it slides past your lips.", false);
 
-			if (player.findStatusEffect(StatusEffects.Dysfunction) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.Dysfunction)) {
 				outputText("\n\nThankfully, the draft invigorates your groin, replacing the numbness with waves of raw sensation.  It seems your crotch is back to normal and <b>you can masturbate again!</b>", false);
 				player.removeStatusEffect(StatusEffects.Dysfunction);
 			}
-			if (rand(4) == 0 && player.findStatusEffect(StatusEffects.LustyTongue) < 0) {
+			if (rand(4) == 0 && !player.hasStatusEffect(StatusEffects.LustyTongue)) {
 				outputText("The constant tingling in your mouth grows and grows, particularly around your lips, until they feel as sensitive as ", false);
 				if (player.hasVagina()) outputText("your", false);
 				else outputText("a woman's", false);
@@ -7461,10 +8052,10 @@
 					if (tits) outputText("\n\nThey aren't the only pair to go through a change!  Another row of growing bosom goes through the process with its sisters, getting larger.");
 					else {
 						var select2:Number = rand(3);
-						if (select2 == 1) outputText("\n\nA faint warmth buzzes to the surface of your " + player.breastDescript(counter) + ", the fluttering tingles seeming to vibrate faster and faster just underneath your " + player.skin() + ".  Soon, the heat becomes uncomfortable, and that row of chest-flesh begins to feel tight, almost thrumming like a newly-stretched drum.  You " + player.nippleDescript(counter) + "s go rock hard, and though the discomforting feeling of being stretched fades, the pleasant, warm buzz remains.  It isn't until you cup your tingly tits that you realize they've grown larger, almost in envy of the pair above.");
+						if (select2 == 1) outputText("\n\nA faint warmth buzzes to the surface of your " + player.breastDescript(counter) + ", the fluttering tingles seeming to vibrate faster and faster just underneath your [skin].  Soon, the heat becomes uncomfortable, and that row of chest-flesh begins to feel tight, almost thrumming like a newly-stretched drum.  You " + player.nippleDescript(counter) + "s go rock hard, and though the discomforting feeling of being stretched fades, the pleasant, warm buzz remains.  It isn't until you cup your tingly tits that you realize they've grown larger, almost in envy of the pair above.");
 						else if (select2 == 2) outputText("\n\nA faintly muffled gurgle emanates from your " + player.breastDescript(counter) + " for a split-second, just before your flesh shudders and shakes, stretching your " + player.skinFurScales() + " outward with newly grown breast.  Idly, you cup your hands to your swelling bosom, and though it stops soon, you realize that your breasts have grown closer in size to the pair above.");
 						else {
-							outputText("\n\nAn uncomfortable stretching sensation spreads its way across the curves of your " + player.breastDescript(counter) + ", threads of heat tingling through your flesh.  It feels as though your heartbeat has been magnified tenfold within the expanding mounds, your " + player.skin() + " growing flushed with arousal and your " + player.nippleDescript(counter) + " filling with warmth.  As the tingling heat gradually fades, a few more inches worth of jiggling breast spill forth.  Cupping them experimentally, you confirm that they have indeed grown to be a bit more in line with the size of the pair above.")
+							outputText("\n\nAn uncomfortable stretching sensation spreads its way across the curves of your " + player.breastDescript(counter) + ", threads of heat tingling through your flesh.  It feels as though your heartbeat has been magnified tenfold within the expanding mounds, your [skin] growing flushed with arousal and your " + player.nippleDescript(counter) + " filling with warmth.  As the tingling heat gradually fades, a few more inches worth of jiggling breast spill forth.  Cupping them experimentally, you confirm that they have indeed grown to be a bit more in line with the size of the pair above.")
 						}
 					}
 					//Bigger change!
@@ -7491,6 +8082,17 @@
 			//[Grow Fur]
 			//FOURTH
 			if ((enhanced || player.lowerBody == LOWER_BODY_TYPE_FOX) && !player.hasFur() && changes < changeLimit && rand(4) == 0) {
+				var colorChoices:Array = ["invalid color"]; // Failsafe ... should hopefully not happen (Stadler76)
+				var foxFurColors:Array = [
+					["orange", "white"],
+					["orange", "white"],
+					["orange", "white"],
+					["red", "white"],
+					["black", "white"],
+					"white",
+					"tan",
+					"brown"
+				];
 				//from scales
 				if (player.hasScales()) outputText("\n\nYour skin shifts and every scale stands on end, sending you into a mild panic.  No matter how you tense, you can't seem to flatten them again.  The uncomfortable sensation continues for some minutes until, as one, every scale falls from your body and a fine coat of fur pushes out.  You briefly consider collecting them, but when you pick one up, it's already as dry and brittle as if it were hundreds of years old.  <b>Oh well; at least you won't need to sun yourself as much with your new fur.</b>");
 				//from skin
@@ -7499,15 +8101,16 @@
 				player.skinAdj = "";
 				player.skinDesc = "fur";
 				if (player.kitsuneScore() >= 4)
-					if (InCollection(player.hairColor, KitsuneScene.basicKitsuneFur) || InCollection(player.hairColor, KitsuneScene.elderKitsuneColors))
-						player.furColor = player.hairColor;
+					if (InCollection(player.hairColor, convertMixedToStringArray(KitsuneScene.basicKitsuneFur)) || InCollection(player.hairColor, KitsuneScene.elderKitsuneColors))
+						colorChoices = [player.hairColor];
 					else
 						if (player.tailType == TAIL_TYPE_FOX && player.tailVenom == 9)
-							player.furColor = randomChoice(KitsuneScene.elderKitsuneColors);
+							colorChoices = KitsuneScene.elderKitsuneColors;
 						else
-							player.furColor = randomChoice(KitsuneScene.basicKitsuneFur);
+							colorChoices = KitsuneScene.basicKitsuneFur;
 				else
-					player.furColor = randomChoice("orange and white", "orange and white", "orange and white", "red and white", "black and white", "white", "tan", "brown");
+					colorChoices = foxFurColors;
+				player.setFurColor(colorChoices, {type: UNDER_BODY_TYPE_FUR}, true);
 				changes++;
 			}
 			//[Grow Fox Legs]
@@ -7521,7 +8124,7 @@
 				else if (player.lowerBody == LOWER_BODY_TYPE_HOOFED || player.lowerBody == LOWER_BODY_TYPE_DOG || player.lowerBody == LOWER_BODY_TYPE_CAT || player.lowerBody == LOWER_BODY_TYPE_BUNNY || player.lowerBody == LOWER_BODY_TYPE_KANGAROO)
 					outputText("\n\nYour legs twitch and quiver, forcing you to your seat.  As you watch, the ends shape themselves into furry, padded toes.  <b>You now have fox feet!</b>  Rather cute ones, actually.");
 				//red drider bb gone
-				else if (player.lowerBody == LOWER_BODY_TYPE_DRIDER_LOWER_BODY) outputText("\n\nYour legs buckle under you and you fall, smashing your abdomen on the ground.  Though your control deserts and you cannot see behind you, still you feel the disgusting sensation of chitin loosening and sloughing off your body, and the dry breeze on your exposed nerves.  Reflexively, your legs cling together to protect as much of their now-sensitive surface as possible.  When you try to part them, you find you cannot.  Several minutes pass uncomforably until you can again bend your legs, and when you do, you find that all the legs of a side bend together - <b>in the shape of a fox's leg!</b>");
+				else if (player.lowerBody == LOWER_BODY_TYPE_DRIDER_LOWER_BODY) outputText("\n\nYour legs buckle under you and you fall, smashing your abdomen on the ground.  Though your control deserts and you cannot see behind you, still you feel the disgusting sensation of chitin loosening and sloughing off your body, and the dry breeze on your exposed nerves.  Reflexively, your legs cling together to protect as much of their now-sensitive surface as possible.  When you try to part them, you find you cannot.  Several minutes pass uncomfortably until you can again bend your legs, and when you do, you find that all the legs of a side bend together - <b>in the shape of a fox's leg!</b>");
 				//goo home and goo to bed
 				else if (player.isGoo()) outputText("\n\nIt takes a while before you notice that your gooey mounds have something more defined in them.  As you crane your body and shift them around to look, you can just make out a semi-solid mass in the shape of a crooked, animalistic leg.  You don't think much of it until, a few minutes later, you step right out of your swishing gooey undercarriage and onto the new foot.  The goo covering it quickly dries up, as does the part you left behind, <b>revealing a pair of dog-like fox legs!</b>");
 				//reg legs, not digitigrade
@@ -7571,18 +8174,6 @@
 			if (player.tone > 40 && changes < changeLimit && rand(2) == 0) {
 				outputText("\n\nMoving brings with it a little more jiggle than you're used to.  You don't seem to have gained weight, but your muscles seem less visible, and various parts of you are pleasantly softer.");
 				player.tone -= 4;
-			}
-			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
-				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
-				changes++;
-				player.removeStatusEffect(StatusEffects.BlackNipples);
-			}
-			//Debugcunt
-			if (changes < changeLimit && rand(3) == 0 && player.vaginaType() == 5 && player.hasVagina()) {
-				outputText("\n\nSomething invisible brushes against your sex, making you twinge.  Undoing your clothes, you take a look at your vagina and find that it has turned back to its natural flesh colour.");
-				player.vaginaType(0);
-				changes++;
 			}
 			if (changes == 0) {
 				outputText("\n\nWell that didn't do much, but you do feel a little refreshed!");
@@ -7712,9 +8303,9 @@
 			//Boosts the special effect of Dragonbreath by 20% for 1 use. ie: if Tainted's breath weapon has a 80% chance to stun on hit, +20% equals 100% chance to stun.
 			outputText("You crack the shell easily and swallow the large yolk and the copious amounts of albumen - the yolk is blue, while the rest is crimson-tinted.  It tastes like... well, it tastes mostly of spiced mint, you think.");
 			if (player.findPerk(PerkLib.Dragonfire) >= 0) {
-				if (player.findStatusEffect(StatusEffects.DragonBreathCooldown) >= 0) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
+				if (player.hasStatusEffect(StatusEffects.DragonBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
 				else {
-					if (player.findStatusEffect(StatusEffects.DragonBreathBoost) < 0) player.createStatusEffect(StatusEffects.DragonBreathBoost, 0, 0, 0, 0);
+					if (!player.hasStatusEffect(StatusEffects.DragonBreathBoost)) player.createStatusEffect(StatusEffects.DragonBreathBoost, 0, 0, 0, 0);
 				}
 				//(if PC has breath weapon)
 				outputText("\n\nA sudden surge of energy fills your being and you feel like you could blast anything to atoms with a single breath, like the mighty dragons of legends.");
@@ -7736,6 +8327,7 @@
 			clearOutput();
 			changes = 0;
 			changeLimit = 1;
+			if (rand(2) == 0) changeLimit++;
 			if (rand(2) == 0) changeLimit++;
 			if (rand(3) == 0) changeLimit++;
 			if (mystic) changeLimit += 2;
@@ -7836,10 +8428,18 @@
 			//[Increase Vaginal Capacity] - requires vagina, of course
 			if (player.hasVagina() && ((mystic && rand(2) == 0) || (!mystic && rand(3) == 0)) && player.statusEffectv1(StatusEffects.BonusVCapacity) < 200 && changes < changeLimit) {
 				outputText("\n\nA gurgling sound issues from your abdomen, and you double over as a trembling ripple passes through your womb.  The flesh of your stomach roils as your internal organs begin to shift, and when the sensation finally passes, you are instinctively aware that your " + player.vaginaDescript(0) + " is a bit deeper than it was before.");
-				if (player.findStatusEffect(StatusEffects.BonusVCapacity) < 0) {
+				if (!player.hasStatusEffect(StatusEffects.BonusVCapacity)) {
 					player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
 				}
-				player.addStatusValue(StatusEffects.BonusVCapacity, 1, 5 + rand(10));
+				player.addStatusValue(StatusEffects.BonusVCapacity, 1, 10 + rand(10));
+				changes++;
+			}
+			else if (((mystic && rand(2) == 0) || (!mystic && rand(3) == 0)) && player.statusEffectv1(StatusEffects.BonusACapacity) < 150 && changes < changeLimit) {
+				outputText("\n\nYou feel... more accommodating somehow.  Your " + player.assholeDescript() + " is tingling a bit, and though it doesn't seem to have loosened, it has grown more elastic.");
+				if (!player.hasStatusEffect(StatusEffects.BonusACapacity)) {
+					player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
+				}
+				player.addStatusValue(StatusEffects.BonusACapacity, 1, 10 + rand(10));
 				changes++;
 			}
 			//[Vag of Holding] - rare effect, only if PC has high vaginal looseness
@@ -7918,22 +8518,28 @@
 			}
 			var tone:Array = mystic ? ["dark", "ebony", "ashen", "sable", "milky white"] : ["tan", "olive", "light"];
 			//[Change Skin Type: remove fur or scales, change skin to Tan, Olive, or Light]
+			var theFurColor:String = player.furColor;
+			if (player.hasFur() && player.underBody.type == UNDER_BODY_TYPE_FUR && player.furColor != player.underBody.skin.furColor)
+				theFurColor = player.furColor + " and " + player.underBody.skin.furColor;
+
 			if ((player.hasFur() 
-					&& !InCollection(player.furColor, KitsuneScene.basicKitsuneFur)
-					&& !InCollection(player.furColor, KitsuneScene.elderKitsuneColors)
-					&& !InCollection(player.furColor, ["orange and white", "black and white", "red and white", "tan", "brown"])
+					&& player.faceType != FACE_FOX
+					&& !InCollection(theFurColor, convertMixedToStringArray(KitsuneScene.basicKitsuneFur))
+					&& !InCollection(theFurColor, KitsuneScene.elderKitsuneColors)
+					&& !InCollection(theFurColor, ["orange and white", "black and white", "red and white", "tan", "brown"])
 					)
 				|| player.hasScales() && ((mystic) || (!mystic && rand(2) == 0))) {
-				outputText("\n\nYou begin to tingle all over your " + player.skin() + ", starting as a cool, pleasant sensation but gradually worsening until you are furiously itching all over.");
+				outputText("\n\nYou begin to tingle all over your [skin], starting as a cool, pleasant sensation but gradually worsening until you are furiously itching all over.");
 				if (player.hasFur()) outputText("  You stare in horror as you pull your fingers away holding a handful of " + player.furColor + " fur!  Your fur sloughs off your body in thick clumps, falling away to reveal patches of bare, " + player.skinTone + " skin.");
 				else if (player.hasScales()) outputText("  You stare in horror as you pull your fingers away holding a handful of dried up scales!  Your scales continue to flake and peel off your skin in thick patches, revealing the tender " + player.skinTone + " skin underneath.");
 				outputText("  Your skin slowly turns raw and red under your severe scratching, the tingling sensations raising goosebumps across your whole body.  Over time, the itching fades, and your flushed skin resolves into a natural-looking ");
 				player.skinType = SKIN_TYPE_PLAIN;
 				player.skinAdj = "";
 				player.skinDesc = "skin";
+				player.underBody.restore();
 				if (!InCollection(player.skinTone, tone)) player.skinTone = randomChoice(tone);
 				outputText(player.skinTone + " complexion.");
-				outputText("  <b>You now have " + player.skin() + "!</b>");
+				outputText("  <b>You now have [skin]!</b>");
 				updateClaws(player.clawType);
 				changes++;
 			}
@@ -7941,14 +8547,14 @@
 			else if (!InCollection(player.skinTone, tone) && changes < changeLimit && ((mystic && rand(2) == 0) || (!mystic && rand(3) == 0))) {
 				outputText("\n\nYou feel a crawling sensation on the surface of your skin, starting at the small of your back and spreading to your extremities, ultimately reaching your face.  Holding an arm up to your face, you discover that <b>you now have ");
 				player.skinTone = randomChoice(tone);
-				outputText(player.skin() + "!</b>");
+				outputText("[skin]!</b>");
 				updateClaws(player.clawType);
 				changes++;
 			}
 			//[Change Skin Color: add "Tattoos"]
 			//From Tan, Olive, or Light skin tones
 			else if (9999 == 0 && InCollection(player.skinTone, tone) && changes < changeLimit) {
-				outputText("You feel a crawling sensation on the surface of your skin, starting at the small of your back and spreading to your extremities, ultimately reaching your face.  You are caught by surprise when you are suddenly assaulted by a blinding flash issuing from areas of your skin, and when the spots finally clear from your vision, an assortment of glowing tribal tattoos adorns your " + player.skin() + ".  The glow gradually fades, but the distinctive ");
+				outputText("You feel a crawling sensation on the surface of your skin, starting at the small of your back and spreading to your extremities, ultimately reaching your face.  You are caught by surprise when you are suddenly assaulted by a blinding flash issuing from areas of your skin, and when the spots finally clear from your vision, an assortment of glowing tribal tattoos adorns your [skin].  The glow gradually fades, but the distinctive ");
 				if (mystic) outputText("angular");
 				else outputText("curved");
 				outputText(" markings remain, as if etched into your skin.");
@@ -7956,19 +8562,20 @@
 				//9999 - pending tats system
 			}
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && changes < changeLimit && rand(3) == 0) {
+			if (!player.hasFur() && player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				changes++;
 				player.removeStatusEffect(StatusEffects.BlackNipples);
 			}
 			//Debugcunt
-			if (changes < changeLimit && rand(3) == 0 && player.vaginaType() == 5 && player.hasVagina()) {
+			if (!player.hasFur() && changes < changeLimit && rand(3) == 0 && player.vaginaType() == 5 && player.hasVagina()) {
 				outputText("\n\nSomething invisible brushes against your sex, making you twinge.  Undoing your clothes, you take a look at your vagina and find that it has turned back to its natural flesh colour.");
 				player.vaginaType(0);
 				changes++;
 			}
-			// Kitsunes should have normal arms. exspecially skinny arms with claws are somewhat weird (Stadler76).
+			// Kitsunes should have normal arms and legs. exspecially skinny arms with claws are somewhat weird (Stadler76).
 			if (player.hasPlainSkin() && rand(4) == 0) restoreArms(tfSource);
+			if (player.hasPlainSkin() && rand(4) == 0) restoreLegs(tfSource);
 
 			if (changes == 0) {
 				outputText("\n\nOdd.  You don't feel any different.");
@@ -8199,6 +8806,7 @@
 			HPChange(Math.round(player.maxHP() * .25), true);
 			player.slimeFeed();
 			player.refillHunger(25);
+			player.orgasm('Lips',false);
 		}
 		//Urta's Cum
 		public function urtaCum(player:Player):void
@@ -8209,6 +8817,7 @@
 			HPChange(Math.round(player.maxHP() * .25), true);
 			player.slimeFeed();
 			player.refillHunger(25);
+			player.orgasm('Lips',false);
 		}
 //Trap Oil
 //Flavour Description: A round, opaque glass vial filled with a clear, viscous fluid.  It has a symbol inscribed on it, a circle with a cross and arrow pointing out of it in opposite directions.  It looks and smells entirely innocuous.
@@ -8296,6 +8905,7 @@
 					temp = 1;
 					while (temp < player.bRows()) {
 						if (player.breastRows[temp].breastRating < 1) player.breastRows[temp].breastRating = 1;
+						temp++;
 					}
 				}
 				changes++;
@@ -8332,7 +8942,7 @@
 				changes++;
 			}
 			//Testicle Reduction:
-			if (player.balls > 0 && player.hasCock() && (player.ballSize > 1 || player.findStatusEffect(StatusEffects.Uniball) < 0) && rand(4) == 0 && changes < changeLimit) {
+			if (player.balls > 0 && player.hasCock() && (player.ballSize > 1 || !player.hasStatusEffect(StatusEffects.Uniball)) && rand(4) == 0 && changes < changeLimit) {
 				outputText("\n\nYou feel a delicate tightening sensation around your [balls].  The sensation upon this most sensitive part of your anatomy isn't painful, but the feeling of your balls getting smaller is intense enough that you stifle anything more than a sharp intake of breath only with difficulty.");
 				player.ballSize--;
 				if (player.ballSize > 8) player.ballSize--;
@@ -8341,7 +8951,7 @@
 				if (player.ballSize > 15) player.ballSize--;
 				if (player.ballSize > 20) player.ballSize--;
 				//Testicle Reduction final:
-				if (player.ballSize < 1 && player.findStatusEffect(StatusEffects.Uniball) < 0) {
+				if (player.ballSize < 1 && !player.hasStatusEffect(StatusEffects.Uniball)) {
 					outputText("  You whimper as once again, your balls tighten and shrink.  Your eyes widen when you feel the gentle weight of your testicles pushing against the top of your [hips], and a few hesitant swings of your rear confirm what you can feel - you've tightened your balls up so much they no longer hang beneath your " + player.multiCockDescriptLight() + ", but press perkily upwards.  Heat ringing your ears, you explore your new sack with a careful hand.  You are deeply grateful you apparently haven't reversed puberty, but you discover that though you still have " + num2Text(player.balls) + ", your balls now look and feel like one: one cute, tight little sissy parcel, its warm, insistent pressure upwards upon the joining of your thighs a never-ending reminder of it.");
 					//[Note: Balls description should no longer say “swings heavily beneath”.  For simplicity's sake sex scenes should continue to assume two balls]
 					player.ballSize = 1;
@@ -8437,7 +9047,7 @@
 			}
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Nipples Turn Black:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) < 0 && rand(6) == 0 && changes < changeLimit) {
+			if (!player.hasStatusEffect(StatusEffects.BlackNipples) && rand(6) == 0 && changes < changeLimit) {
 				outputText("\n\nA tickling sensation plucks at your nipples and you cringe, trying not to giggle.  Looking down you are in time to see the last spot of flesh tone disappear from your [nipples].  They have turned an onyx black!");
 				player.createStatusEffect(StatusEffects.BlackNipples, 0, 0, 0, 0);
 				changes++;
@@ -8476,7 +9086,6 @@
 				//Wings Fall Out: You feel a sharp pinching sensation in your shoulders and you cringe slightly.  Your former dragonfly wings make soft, papery sounds as they fall into the dirt behind you.
 				changes++;
 				player.wingType = WING_TYPE_GIANT_DRAGONFLY;
-				player.wingDesc = "giant dragonfly";
 			}
 			if (changes == 0) {
 				outputText("\n\nWell... that didn't amount to much.");
@@ -8606,6 +9215,7 @@
 				player.skinAdj = "";
 				player.skinDesc = "fur";
 				player.furColor = "gray";
+				player.underBody.restore(); // Restore the underbody for now
 				outputText("<b>You now have a warm coat of " + player.furColor + " raccoon fur!</b>");
 				changes++;
 			}
@@ -8641,7 +9251,7 @@
 				}
 				//from human, demon, paw feet
 				else {
-					outputText("\n\nYour toes wiggle of their own accord, drawing your attention.  Looking down, you can see them changing from their current shape, stretching into oblongs.  When they finish, your foot appears humanoid, but with long, prehesile toes!  ");
+					outputText("\n\nYour toes wiggle of their own accord, drawing your attention.  Looking down, you can see them changing from their current shape, stretching into oblongs.  When they finish, your foot appears humanoid, but with long, prehensile toes!  ");
 					if ((player.lowerBody == LOWER_BODY_TYPE_HUMAN || player.lowerBody == LOWER_BODY_TYPE_DEMONIC_HIGH_HEELS || player.lowerBody == LOWER_BODY_TYPE_DEMONIC_CLAWS) && !player.hasFur()) outputText("The sensation of walking around on what feels like a second pair of hands is so weird that you miss noticing the itchy fur growing in over your legs...  ");
 					outputText("<b>You now have raccoon paws!</b>");
 				}
@@ -8660,7 +9270,7 @@
 					}
 					outputText("Shaking your head a bit, you wait for your energy to return, then examine your appearance.  ");
 					//(if player skinTone = ebony/black/ebony with tats and no fur/scales or if black/midnight fur or if black scales
-					if (((player.skinTone == "ebony" || player.skinTone == "black") && (player.hasPlainSkin() || player.hasGooSkin())) || ((player.hairColor == "black" || player.hairColor == "midnight") && player.hasFurOrScales())) {
+					if (((player.skinTone == "ebony" || player.skinTone == "black") && (player.hasPlainSkin() || player.hasGooSkin())) || ((player.hairColor == "black" || player.hairColor == "midnight") && player.isFurryOrScaley())) {
 						outputText("Nothing seems different at first.  Strange... you look closer and discover a darker, mask-line outline on your already inky visage.  <b>You now have a barely-visible raccoon mask.</b>");
 					}
 					else outputText("A dark, almost black mask shades the " + player.skinFurScales() + " around your eyes and over the topmost portion of your nose, lending you a criminal air!  <b>You now have a raccoon mask!</b>");
@@ -8669,7 +9279,7 @@
 				else {
 					outputText("\n\nA sudden migraine sweeps over you and you clutch your head in agony as your nose collapses back to human dimensions.  A worrying numb spot grows around your eyes, and you entertain several horrible premonitions until it passes as suddenly as it came.  Checking your reflection in your water barrel, you find ");
 					//[(if black/midnight fur or if black scales)
-					if (((player.hairColor == "black" || player.hairColor == "midnight") && player.hasFurOrScales())) outputText("your face apparently returned to normal shape, albeit still covered in " + player.skinFurScales() + ".  You look closer and discover a darker, mask-line outline on your already inky visage.  <b>You now have a barely-visible raccoon mask on your otherwise normal human face.</b>");
+					if (((player.hairColor == "black" || player.hairColor == "midnight") && player.isFurryOrScaley())) outputText("your face apparently returned to normal shape, albeit still covered in " + player.skinFurScales() + ".  You look closer and discover a darker, mask-line outline on your already inky visage.  <b>You now have a barely-visible raccoon mask on your otherwise normal human face.</b>");
 					else if ((player.skinTone == "ebony" || player.skinTone == "black") && (player.hasPlainSkin() || player.hasGooSkin())) outputText("your face apparently returned to normal shape.  You look closer and discover a darker, mask-line outline on your already inky visage.  <b>You now have a barely-visible raccoon mask on your normal human face.</b>");
 					else outputText("your face returned to human dimensions, but shaded by a black mask around the eyes and over the nose!  <b>You now have a humanoid face with a raccoon mask!</b>");
 				}
@@ -8762,11 +9372,11 @@
 				//adds some lust
 				dynStats("lus", 10 + player.sens / 5);
 				if (player.vaginalCapacity() < 100 && player.hasVagina()) {
-					if (player.findStatusEffect(StatusEffects.BonusVCapacity) < 0) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
+					if (!player.hasStatusEffect(StatusEffects.BonusVCapacity)) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
 					player.addStatusValue(StatusEffects.BonusVCapacity, 1, 5);
 				}
 				else {
-					if (player.findStatusEffect(StatusEffects.BonusACapacity) < 0) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
+					if (!player.hasStatusEffect(StatusEffects.BonusACapacity)) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
 					player.addStatusValue(StatusEffects.BonusACapacity, 1, 5);
 				}
 				changes++;
@@ -8794,7 +9404,7 @@
   					}
           }
           else {
-  					outputText("\n\nYour insides feel... roomy.  Accomodating, even.  You could probably carry a whole litter of little [name]s right now.  Filled with a sudden flush of desire, you look around furtively for any fertile males.  With a shake of your head, you try to clear your thoughts, but daydreams of being stuffed with seed creep right back in - it looks like your body is intent on probing the limits of your new fertility.  <b>You're in heat, and pregnable in several senses of the word!</b>", false);
+  					outputText("\n\nYour insides feel... roomy.  Accommodating, even.  You could probably carry a whole litter of little [name]s right now.  Filled with a sudden flush of desire, you look around furtively for any fertile males.  With a shake of your head, you try to clear your thoughts, but daydreams of being stuffed with seed creep right back in - it looks like your body is intent on probing the limits of your new fertility.  <b>You're in heat, and pregnable in several senses of the word!</b>", false);
             
             // Also make a permanent nudge.
   					player.fertility++;
@@ -8880,6 +9490,7 @@
 				player.skinAdj = "";
 				player.skinDesc = "fur";
 				player.skinType = SKIN_TYPE_FUR;
+				player.underBody.restore(); // Restore the underbody for now
 				changes++;
 			}
 			player.refillHunger(10);
@@ -8935,7 +9546,7 @@
 				flags[kFLAGS.TIMES_TRANSFORMED]++;
 			}
 			//Nipples Turn Back:
-			if (player.findStatusEffect(StatusEffects.BlackNipples) >= 0 && rand(3) == 0) {
+			if (player.hasStatusEffect(StatusEffects.BlackNipples) && rand(3) == 0) {
 				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
 				player.removeStatusEffect(StatusEffects.BlackNipples);
 				flags[kFLAGS.TIMES_TRANSFORMED]++;
@@ -8955,6 +9566,7 @@
 					if (player.hasScales()) outputText("Your scales begin to itch as they begin falling out in droves, <b>revealing your inhumanly smooth " + player.skinTone + " skin</b> underneath.", false);
 					player.skinType = SKIN_TYPE_PLAIN;
 					player.skinDesc = "skin";
+					player.underBody.restore();
 				}
 				flags[kFLAGS.TIMES_TRANSFORMED]++;
 			}
@@ -8991,14 +9603,12 @@
 					outputText("\n\n", false);
 					outputText("Your small demonic wings stretch and grow, tingling with the pleasure of being attached to such a tainted body.  You stretch over your shoulder to stroke them as they unfurl, turning into full-sized demon-wings.  <b>Your demonic wings have grown!</b>", false);
 					player.wingType = WING_TYPE_BAT_LIKE_LARGE;
-					player.wingDesc = "large, bat-like";
 				}
 				else if (player.wingType == WING_TYPE_SHARK_FIN) {
 					outputText("\n\n", false);
 					outputText("The muscles around your shoulders bunch up uncomfortably, changing to support the new bat-like wings growing from your back.  You twist your head as far as you can for a look and realize your fin has changed into ", false);
 					outputText("small ", false);
 					player.wingType = WING_TYPE_BAT_LIKE_TINY;
-					player.wingDesc = "tiny, bat-like";
 					outputText("bat-like demon-wings!", false);
 				}
 				else if (player.wingType == WING_TYPE_BEE_LIKE_SMALL || player.wingType == WING_TYPE_BEE_LIKE_LARGE) {
@@ -9007,12 +9617,10 @@
 					if (player.wingType == WING_TYPE_BEE_LIKE_SMALL) {
 						outputText("small ", false);
 						player.wingType = WING_TYPE_BAT_LIKE_TINY;
-						player.wingDesc = "tiny, bat-like";
 					}
 					else {
 						outputText("large ", false);
 						player.wingType = WING_TYPE_BAT_LIKE_LARGE;
-						player.wingDesc = "large, bat-like";
 					}
 					outputText("<b>bat-like demon-wings!</b>", false);
 				}
@@ -9021,7 +9629,6 @@
 					outputText("\n\n", false);
 					outputText("A knot of pain forms in your shoulders as they tense up.  With a surprising force, a pair of small demonic wings sprout from your back, ripping a pair of holes in the back of your " + player.armorName + ".  <b>You now have tiny demonic wings</b>.", false);
 					player.wingType = WING_TYPE_BAT_LIKE_TINY;
-					player.wingDesc = "tiny, bat-like";
 				}
 				flags[kFLAGS.TIMES_TRANSFORMED]++;
 			}
@@ -9184,7 +9791,7 @@
 						if (player.cocks[temp].cockLength >= 9) player.cocks[temp].cockLength -= rand(3) + 1;
 						if (player.cocks[temp].cockLength/6 >= player.cocks[temp].cockThickness)
 						{
-							outputText("  Luckily, it doen’t seem to have lost its previous thickness.");
+							outputText("  Luckily, it doesn’t seem to have lost its previous thickness.");
 						}
 						else
 						{
@@ -9276,6 +9883,7 @@
 				}
 				player.skinType = SKIN_TYPE_FUR;
 				player.furColor = player.hairColor;
+				player.underBody.restore(); // Restore the underbody for now
 				outputText("  <b>You now have " + player.furColor + " fur!</b>");
 				changes++;
 			}
@@ -9498,6 +10106,7 @@
 				outputText("\n\nYour skin tingles ever so slightly as you skin’s color changes before your eyes. As the tingling diminishes, you find that your skin has turned " + skinToBeChosen + ".");
 				player.skinTone = skinToBeChosen;
 				updateClaws(player.clawType);
+				kGAMECLASS.rathazul.addMixologyXP(20);
 				changes++;
 			}
 			if (changes == 0) {
@@ -9558,7 +10167,7 @@
 			outputText("Feeling parched, you twist the metal cap from the clear green bottle and chug it down. ");
 			dynStats("lus", 15);
 			player.refillHunger(10, false);
-			if (player.findStatusEffect(StatusEffects.Drunk) < 0) {
+			if (!player.hasStatusEffect(StatusEffects.Drunk)) {
 				player.createStatusEffect(StatusEffects.Drunk, 2, 1, 1, 0);
 				dynStats("str", 0.1);
 				dynStats("inte", -0.5);
@@ -9622,7 +10231,7 @@
 		public function purityPhilter(player:Player):void {
 			outputText("You uncap the small silver vial and place it to your lips. Tilting your head back, you pour the cold tasteless liquid down your throat.\n\n", true);
 			if (player.cor < 20) outputText("You shiver as your body is suffused with a cold, refreshing feeling. You feel much calmer than before.", false);
-			if (player.cor >= 20 && player.cor < 40) outputText("You break out into a cold sweat as the freezing liquid surges through your body. Dispite the discomfort, your thoughts do seem clearer.", false);
+			if (player.cor >= 20 && player.cor < 40) outputText("You break out into a cold sweat as the freezing liquid surges through your body. Despite the discomfort, your thoughts do seem clearer.", false);
 			if (player.cor >= 40 && player.cor < 60) outputText("As the freezing liquid hits your stomach, you suddenly feel like you're standing in a blizzard. Your hands and feet go numb, and even though you've never felt colder in your life, you're covered in sweat. Eventually, you begin to feel more normal, and your thoughts definitely seem clearer.", false);
 			if (player.cor >= 60) outputText("As you swallow the liquid, you fall gasping to your knees. It feels like someone shoved an icicle through your middle. You break out in a cold sweat as the sensation spreads, and you feel like your blood is freezing in your veins. Mercifully, you pass out.\n\nLater, when you wake up, the constant haze of lust that usually clouds your thoughts seems a bit thinner.", false);
 			var corLoss:Number = 5 + Math.floor(player.cor / 10);

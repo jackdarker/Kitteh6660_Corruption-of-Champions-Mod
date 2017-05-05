@@ -1,9 +1,11 @@
 ﻿package classes.Scenes.Places.Bazaar{
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+	import mx.logging.ILogger;
+	import classes.internals.LoggerFactory;
 
 	public class Roxanne extends BazaarAbstractContent implements TimeAwareInterface {
-
+		private static const LOGGER:ILogger = LoggerFactory.getLogger(Roxanne);
 //Roxanne Poisontail
 //-no hair, 
 //-stand roughly 5'11\" in height, 
@@ -52,7 +54,7 @@ WIN:
 			//Reset if she finds someone to take it (random at high values)
 			if (flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] >= 300 && model.time.hours == 1 && rand(5) == 0) flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] = 1;
 			//hangover status stuff
-			if (player.findStatusEffect(StatusEffects.Hangover) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.Hangover)) {
 			//Countdown
 				if (player.statusEffectv1(StatusEffects.Hangover) > 0) player.addStatusValue(StatusEffects.Hangover,1,-1);
 				else {
@@ -157,7 +159,10 @@ public function RoxanneChooseApproachOrRepeat():void {
 		flags[kFLAGS.CODEX_ENTRY_LIZANS] = 1;
 		outputText("\n\n<b>New codex entry unlocked: Lizans!</b>")
 	}
-	simpleChoices("Yes", roxanneDrinkingContest, "No", roxanneDrinkingContestNo, "Lose", roxanneDrinkingContestLoseDeliberately, "", null, "", null);
+	menu();
+	addButton(0, "Yes", roxanneDrinkingContest);
+	addButton(1, "No", roxanneDrinkingContestNo);
+	addButton(2, "Lose", roxanneDrinkingContestLoseDeliberately);
 }
 
 private function roxanneDrinkingContestNo():void {
@@ -176,7 +181,7 @@ private function roxanneDrinkingContestLoseDeliberately():void {
 	roxanneDrinkingContest();
 }
 
-private function roxanneDrinkingContest():void {
+protected function roxanneDrinkingContest():void {
 	spriteSelect(78);
 	clearOutput();
 	outputText("Roxanne ", false);
@@ -220,10 +225,19 @@ private function roxanneDrinkingContest():void {
 	}
 	var score:Number = 0;
 	//Calculate score if not 
-	if (flags[kFLAGS.ROXANNE_DRINKING_CONTEST_LOSE_ON_PURPOSE] == 0) score = (player.tallness * ((player.thickness + 100)/200) * (player.tou/100)) + flags[kFLAGS.ROXANNE_DRINKING_CONTEST_BONUS_SCORE];
+	if (flags[kFLAGS.ROXANNE_DRINKING_CONTEST_LOSE_ON_PURPOSE] == 0) {
+		score = (player.tallness * ((player.thickness + 100) / 200) * (player.tou / 100)) + flags[kFLAGS.ROXANNE_DRINKING_CONTEST_BONUS_SCORE];
+		if (player.findPerk(PerkLib.SatyrSexuality) >= 0) score += 10; // satyrs are not easy to beat in drinking contest!
+		if (player.findPerk(PerkLib.Lustzerker) >= 0) score += 10; // as well as salamanders
+		if (player.findPerk(PerkLib.Dragonfire) >= 0) score += 10; // and dragons
+		if (player.findPerk(PerkLib.EnlightenedNinetails) >= 0 || player.findPerk(PerkLib.CorruptedNinetails) >= 0) score += 10; // kitsune would always find a way to trick
+		if (player.findPerk(PerkLib.Medicine) >= 0) score += 5; // it gives poison resistances, after all
+		if (player.findPerk(PerkLib.Resolute) >= 0) score += 5; // never surrender!
+	}
 	//If score is less than 30-50 (Strahza is inconsistant!)
 	//[Lose!] 
 	if (score < (45 + rand(20))) {
+		LOGGER.debug("Lost to Roxanne with a score of {0}", score);
 		//Increment loss count!
 		flags[kFLAGS.ROXANNE_DRINING_CONTEST_LOST]++;
 		//Set who won contast last
@@ -231,20 +245,31 @@ private function roxanneDrinkingContest():void {
 		//Gain big bonus
 		flags[kFLAGS.ROXANNE_DRINKING_CONTEST_BONUS_SCORE] += 10;
 		outputText("Giggling and nearly tripping up on your own " + player.feet() + ", you stumble up to the corrupted deer-taur.  He looks at your wobbling stance, nearly-vacant eyes, and dopey grin before he shakes his head from side to side and says, \"<i>No.</i>\"  ", false);
-		if (flags[kFLAGS.ROXANNE_DRINKING_CONTEST_LOSE_ON_PURPOSE] == 0) outputText("Nooooo! You're cut off! That means Roxanne won...", false);
-		else outputText("Yessss!  You finally got so drunk that Roxanne has no excuse not to pack your drunk ass full of lizan-spoo!", false);
+		
+		if (flags[kFLAGS.ROXANNE_DRINKING_CONTEST_LOSE_ON_PURPOSE] == 0) {
+			outputText("Nooooo! You're cut off! That means Roxanne won...", false);
+		}else{
+			outputText("Yessss!  You finally got so drunk that Roxanne has no excuse not to pack your drunk ass full of lizan-spoo!", false);
+		}
+		
 		outputText("  A scaled hand slaps your " + player.buttDescript() + " spinning you around to fall drunkenly into the pirate's soft, cushy chest.  \"<i>Don't worry, I'll be gentle,</i>\" she whispers, hooking an arm around your sagging frame.", false);
 		//CHOOSE SEX SCENE
 		//Chance of big booty butt loss!
-		if (player.buttRating > 12 && player.tone <= 50 && flags[kFLAGS.ROXANNE_DRINING_CONTEST_LOST] > 1 && rand(2) == 0) doNext(bigBootyRoxanneContestLoss);
-		//TO huge or regular anal
-		else if (flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] >= 200) doNext(roxanneFucksYourAssOHGODITSHUGE);
-		else doNext(roxanneReamsYouNormal);
-		//Reset roxanne's cock
-		flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] = 1;
+		if (player.buttRating > 12 && player.tone <= 50 && flags[kFLAGS.ROXANNE_DRINING_CONTEST_LOST] > 1 && rand(2) == 0){
+			LOGGER.debug("Starting loss scene: Big booty");
+			doNext(bigBootyRoxanneContestLoss);
+		} else if (flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] >= 200) {
+			//TO huge or regular anal
+			LOGGER.debug("Starting loss scene: Huge");
+			doNext(roxanneFucksYourAssOHGODITSHUGE);
+		} else {
+			LOGGER.debug("Starting loss scene: Normal");
+			doNext(roxanneReamsYouNormal);
+		}
 	}
 	//[WIN]
 	else {
+		LOGGER.debug("Won against Roxanne with a score of {0}", score);
 		//Increment win count!
 		flags[kFLAGS.ROXANNE_DRINING_CONTEST_WON]++;
 		//Set who won contest last
@@ -254,11 +279,18 @@ private function roxanneDrinkingContest():void {
 		outputText("Laughing uproariously, you watch with a bemused expression while Roxanne tries to stumble up to the tap, tripping over her tail three times before she finally manages to ask for another mug.  The partly-corrupted deer-taur shakes his head and folds his arms across his chest.  She's been cut off!  You win!  The lecherous lizan stamps her heeled boot in the dirt before tramping back over to you, hips swaying drunkenly.  She trips on her tail again, this time falling face-first into your lap.  Hiccuping drunkenly, Roxanne slurs, \"<i>Well at leasht I don't havta go far to give you your winningshh, huh?</i>\"\n\n", false);
 		outputText("The other lizans are looking at you with a watchful eye.  It looks like you'll have to stick by the terms of the contest.  What manner of oral service do you make her provide?", false);
 		//[Fellatio] [Cunnilingus] [Rimming]
-		var fellatio:Function = null;
-		var cunnilingus:Function = null;
-		if (player.hasCock()) fellatio = roxanneGivesABlowjob;
-		if (player.hasVagina()) cunnilingus = roxanneCunnilingus;
-		simpleChoices("Cunnilingus", cunnilingus, "Fellatio", fellatio, "Rimming", roxanneRimjob, "", null, "", null);
+		menu();
+		if (player.hasVagina()) {
+			addButton(0, "Cunnilingus", roxanneCunnilingus);
+		} else {
+			addDisabledButton(0, "Cunnilingus");
+		}
+		if (player.hasCock()) {
+			addButton(1, "Fellatio", roxanneGivesABlowjob);
+		} else {
+			addDisabledButton(1, "Fellatio");
+		}
+		addButton(2, "Rimming", roxanneRimjob);
 	}
 }
 
@@ -303,7 +335,7 @@ private function roxanneGivesABlowjob():void {
 	if (player.cumQ() >= 1500) outputText(" and body", false);
 	outputText(".  \"<i>Jeeze, pent up much?</i>\" she laughs, struggling to stand while giggling at her own supposed cleverness.  Happy with how the contest worked out, you slip " + player.sMultiCockDesc() + " into your " + player.armorName + " and wobble off back to camp.", false);
 	//(-100 lust, -1 int)
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("int", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -320,14 +352,14 @@ private function roxanneCunnilingus():void {
 	outputText("Face blushing red, you groan and hump at the lizan, grabbing her horns so that you can smear her nose into your " + player.clitDescript() + ".  She pulls back, resisting your insistent pulls with inebriated strength, but before you can let go she reverses direction and smashes her forehead into your gut, winding you.  Your fingers release immediately, clutching at your aching middle while the angry lizard snarls, \"<i>You're getting oral, NOT using me as a dildo!  ...but I am sorry I hit you that hard. I just needed to breathe.  Relax and let me make it up to you...</i>\"\n\n", false);
 	
 	outputText("The drunken lizan puts her soft, lightly scaled fingers around you to squeeze at your " + player.buttDescript() + " and leans in to give your " + player.clitDescript() + " a tender kiss.  Her massive tongue ", false);
-	if (player.clitLength < 16) outputText("dwarfs", false);
+	if (player.getClitLength() < 16) outputText("dwarfs", false);
 	else outputText("envelops", false);
 	outputText(" the ", false);
-	if (player.clitLength < 1) outputText("little pleasure buzzer", false);
-	else if (player.clitLength < 3) outputText("swollen love-button", false);
+	if (player.getClitLength() < 1) outputText("little pleasure buzzer", false);
+	else if (player.getClitLength() < 3) outputText("swollen love-button", false);
 	else outputText("cock-like lady-part", false);
 	outputText(", slobbering over it with a lewd tongue-kiss. Her frothy spit completely soaks it ", false);
-	if (player.clitLength >= 3) outputText("before she curls tightly around the female member, enveloping it with flexible, gooey tongue.  You catch your breath just in time to exhale the noisy sounds of your pleasure, and groan out loud.  Roxanne takes the auditory encouragement to heart and begins pumping her tongue while she places her lower lips against your " + player.vaginaDescript() + " and hums.  As if that wasn't enough, she begins twisting the curled tongue up and down your " + player.clitDescript() + " rotating it as she pumps you.", false);
+	if (player.getClitLength() >= 3) outputText("before she curls tightly around the female member, enveloping it with flexible, gooey tongue.  You catch your breath just in time to exhale the noisy sounds of your pleasure, and groan out loud.  Roxanne takes the auditory encouragement to heart and begins pumping her tongue while she places her lower lips against your " + player.vaginaDescript() + " and hums.  As if that wasn't enough, she begins twisting the curled tongue up and down your " + player.clitDescript() + " rotating it as she pumps you.", false);
 	else outputText("before she lets her spit-sloppy tongue push through the saliva-soaked entrance of your mound.  You catch your breath just in time to exhale noisy sounds of pleasure, groaning out loud while you're speared with flexible, gooey tongue. Roxanne takes the auditory encouragement to heart and begins to pump her tongue deep inside you, at least two feet of constantly-thickening appendage coiling over your entrance before sliding inside to kiss your cervix.  As if that wasn't enough, a moment later she starts to hum, nuzzling at your " + player.clitDescript() + " while she tongue-fucks you.", false);
 	outputText("\n\n", false);
 	
@@ -349,7 +381,7 @@ private function roxanneCunnilingus():void {
 	
 	outputText("You smirk back, slowly putting your clothes back on.  Roxanne can do little to prevent you from noting the massive, unmistakable cock-outline in her pre-cum-soaked pants.  She gives you a smoky glare filled with lust and aggression, but she won't be getting her prize this time!", false);
 	//(-100 lust, -1 int)
-	player.orgasm();
+	player.orgasm('Vaginal');
 	dynStats("int", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -361,7 +393,7 @@ private function roxanneRimjob():void {
 	if (player.biggestTitSize() >= 2) outputText(", your breasts cushioning you from the hard wood below", false);
 	outputText(".  Poisontail eyeballs the ring of your " + player.assholeDescript() + ", salivating as she grabs your " + player.buttDescript() + " in her scaled hands.  With anguished slowness, she pulls the cheeks as wide apart as possible.  You hear her gasp in delight a split-second before you do the same.  Her tongue launched from her mouth and found your " + player.assholeDescript() + " immediately!  Now she's sliding it in circles around the sensitive ring, making the skin of that pucker tighten and wink.\n\n", false);
 	
-	outputText("Roxanne groans and gives your " + player.buttDescript() + " a raunchy squeeze, making love to your cheeks as her tongue worships your asshole.  She murmers, \"<i>Thish would be sho much better if it was jussht foreplay.  Why don't you lose next time, okay babe?</i>\"  You moan out loud when her tongue returns to its task, arching your back and whimpering from the intense, anal pleasure.  ", false);
+	outputText("Roxanne groans and gives your " + player.buttDescript() + " a raunchy squeeze, making love to your cheeks as her tongue worships your asshole.  She murmurs, \"<i>Thish would be sho much better if it was jussht foreplay.  Why don't you lose next time, okay babe?</i>\"  You moan out loud when her tongue returns to its task, arching your back and whimpering from the intense, anal pleasure.  ", false);
 	if (player.hasCock()) {
 		outputText(player.SMultiCockDesc() + " ", false);
 		if (player.lust < 70) outputText("hardens", false);
@@ -402,7 +434,7 @@ private function roxanneRimjob():void {
 	
 	outputText("Completely finished, you can do naught but tremble while Roxanne disentangles her tongue from your rectum, popping from your backside with a noisy slurp.  She immediately falls over and giggles, completely drunk, but she somehow staggers back up to give your ass a smack.  You follow her example and pull yourself to your feet, tired from the anal orgasm but feeling quite relaxed.  Once you've readied yourself, you realize that Roxanne's crew are arranged in a semi-circle around you.  You note a number of demons are on the prowl beyond that protective ring, though they seem to be dispersing now that the act has finished.  You make your way back to check on camp once it looks safe.", false);
 	//(-100 lust, -1 int
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("int", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -464,7 +496,7 @@ private function roxanneReamsYouNormal():void {
 	
 	outputText("Your insides froth and churn while they're filled with pent-up lizan cum.  The shemale's balls bounce against you, violently relaxing and contracting in time with the bursts of cream filling your intestines.  Wetness fills you completely, but the spurts go on relentlessly.  Suddenly, small squirts of hot cum escape your tender " + player.assholeDescript() + ", running down Roxanne's still-pulsing balls.  The action smears the cummy lather everywhere, and while the discomfort of being so completely filled rises, the pleasure grows in equal measure until you're twitching and moaning with whorish delight.\n\n", false);
 	
-	outputText("Finishing her obscene orgasm, Roxanne sighs, depositing one last creamy dollop into your anal seed-lake.  She coos in your ear, \"<i>That was nice...  I can see you shaking.  Did you enjoy being a loser that much?</i>\"  You nod meekly, blubbering out your embarassed agreement.  \"<i>How pathetic.  You'll probably be back here tomorrow to lose again, won't you?  Such a shameful butt-slut.</i>\"\n\n", false);
+	outputText("Finishing her obscene orgasm, Roxanne sighs, depositing one last creamy dollop into your anal seed-lake.  She coos in your ear, \"<i>That was nice...  I can see you shaking.  Did you enjoy being a loser that much?</i>\"  You nod meekly, blubbering out your embarrassed agreement.  \"<i>How pathetic.  You'll probably be back here tomorrow to lose again, won't you?  Such a shameful butt-slut.</i>\"\n\n", false);
 	
 	outputText("Roxanne tugs back, but even with the pressure of her reproductive leavings inside you, you keep her pinned inside your depths, squeezing and writhing on her shaft.  She tugs harder and harder, muscles going taut under her shiny purple scales until, with a violent 'POP', she slides free.  You climax in that moment, getting off while a river of cum pours from your gaping asshole.  Crying and moaning, you tremble while your beer-stained lips drool in bliss.", false);
 	if (player.hasCock()) {
@@ -483,9 +515,10 @@ private function roxanneReamsYouNormal():void {
 	outputText("<b>LATER...</b>\n", false);
 	outputText("You wake in the lizan's bed<b> with a nasty hangover</b>, her arm curled around your gurgling belly.  From how sore your rear feels, she kept 'winning' at least two or three more times.  Your head is pounding, your " + player.legs() + " are weak, and you dribble cum with every movement.  It takes some doing to extricate yourself from Roxanne's slumbering form, but you find your equipment and leave, hanging your head in shame under the leering eyes of the caravan-goers.", false);
 	//(-100 lust, -1 int, hangover effect)
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("int", -1);
 	applyHangover();
+	resetRoxanneSexTimeCounter();
 	doNext(camp.returnToCampUseFourHours);
 }
 
@@ -547,9 +580,10 @@ private function roxanneFucksYourAssOHGODITSHUGE():void {
 	outputText(".", false);
 	outputText("  <b>You'll wake and head back to camp with a massive hangover.</b>", false);
 	//(-100 lust, -1 int, hangover effect)
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("int", -1);
 	applyHangover();
+	resetRoxanneSexTimeCounter();
 	doNext(camp.returnToCampUseFourHours);
 }
 	
@@ -561,7 +595,7 @@ private function applyHangover():void {
 	//v4 = intelligence
 
 	//Already hungover?  Reset duration.
-	if (player.findStatusEffect(StatusEffects.Hangover) >= 0) player.changeStatusValue(StatusEffects.Hangover,1,8);
+	if (player.hasStatusEffect(StatusEffects.Hangover)) player.changeStatusValue(StatusEffects.Hangover,1,8);
 	//No hangover yet?  Create and yoink stats
 	else {
 		player.createStatusEffect(StatusEffects.Hangover,8,0,0,0);
@@ -637,10 +671,15 @@ private function bigBootyRoxanneContestLoss():void {
 	outputText("\n\n<b>LATER...</b>\n");
 	outputText("You wake in the lizan's bed, her arm curled around your gurgling belly.  From how sore your rear feels, she probably kept 'winning' at least two or three more times.  Your head is pounding, your " + player.legs() + " are weak, and you dribble cum from your ass with every movement.  It takes some doing to extricate yourself from Roxanne's slumbering form, but you find your equipment and leave, hanging your head in shame under the leering eyes of the caravan-goers.");
 	//(-100 lust, -1 int, hangover effect)
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("int", -1);
 	applyHangover();
+	resetRoxanneSexTimeCounter();
 	doNext(camp.returnToCampUseFourHours);
+}
+
+private function resetRoxanneSexTimeCounter():void {
+	flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] = 1;
 }
 }
 }

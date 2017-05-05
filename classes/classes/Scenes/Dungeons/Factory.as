@@ -49,8 +49,10 @@ package classes.Scenes.Dungeons
 			if (flags[kFLAGS.FACTORY_FOUND] < 1) {
 				outputText("\n\n<b>The factory is now accessible from the 'Dungeons' submenu inside 'Places' menu.</b>");
 				flags[kFLAGS.FACTORY_FOUND] = 1
-			}			
-			simpleChoices("Enter", roomLobby, "", null, "", null, "", null, "Leave", exitDungeon);
+			}
+			menu();
+			addButton(0, "Enter", roomLobby);
+			addButton(14, "Leave", exitDungeon);
 		}
 		
 		private function exitDungeon():void {
@@ -163,14 +165,14 @@ package classes.Scenes.Dungeons
 		private function doTensionRelease():void {
 			clearOutput();
 			//First time...
-			if (player.findStatusEffect(StatusEffects.TensionReleased) < 0) {
+			if (!player.hasStatusEffect(StatusEffects.TensionReleased)) {
 				outputText("You nod and step forwards, allowing her to hook up a modified harness and inject you with the demonic concoction.  In no time heat boils through your veins, pooling on your chest and crotch.  ", false);
 				if (player.biggestTitSize() < 10) {
 					player.growTits(1, (2+rand(3)), true, 1);
 					outputText("  ", false);
 				}
 				outputText("You glance over to the pile of glistening entwined bodies as they writhe in pleasure, and find yourself drawn in to the mass.  You spend the next four hours suckling tainted breast milk, fucking gaping pussies, and doing your damnedest to milk as much cum from the dick-girls around you.  Eventually the drugs work their way out of your system, leaving you to recover on the floor.  Cum, milk, and sweat drip from your nude form as you try to clean up and get dressed.", false);
-				player.orgasm();
+				player.orgasm('Tits');
 				dynStats("int", -2, "lib", 4, "cor", 4);
 				player.slimeFeed();
 				player.createStatusEffect(StatusEffects.TensionReleased,0,0,0,0);
@@ -221,7 +223,7 @@ package classes.Scenes.Dungeons
 					//HERM
 					if (player.vaginas.length > 0 && player.cocks.length > 0) outputText("You feel your " + player.multiCockDescript() + " getting milked by many wet holes, though you are too busy sucking cocks and moaning in ecstasy to notice who they belong to.  ", false);
 					outputText("The next eight hours are lost to your desires as you cum over and over, feeling mind-shattering pleasure.  You recover a while on the floor, soaked with a mixture of milk, cum, and pussy-juice.  Getting dressed is a bit troublesome with the recent changes, but you manage to squeeze back into your " + player.armorName + ".  You walk away while still feeling horny, and the moaning of the girls behind you doesn't help.  Maybe you could stay for another round...", false);
-					player.orgasm();
+					player.orgasm('Generic');
 					dynStats("int", -2, "lib", 4, "cor", 4);
 					player.createStatusEffect(StatusEffects.TensionReleased,0,0,0,0);
 					player.addStatusValue(StatusEffects.TensionReleased,1,1);
@@ -275,7 +277,7 @@ package classes.Scenes.Dungeons
 			outputText("A snap echoes through the pumping room, nearly drowned out by the moans of the other milk-sluts around you.  You look around as you realize the band to restrain your head has been unlatched.  You take advantage of your newfound freedom and look around.  Rows and rows of other girls are there, just like you.  Almost all of them have bigger tits and fuller milk-tubes.  In addition, they all have enormous members that would drag on the floor were it not for the gigantic tubes encapsulating each and every one.  ", false);
 			outputText("The girl next to you squirms and cums, wriggling inside her harness as waves of sticky goop are pumped down her cock-tube into a floor-socket.  She just keeps going and going, making you wonder how she can make so much of the stuff.  As the sight excites you, the pleasure in your own crotch redoubles.  Looking down thanks to your newfound freedom, you see your own giant encapsulated member; though not as large as your neighbor's, it still looks and feels wonderful.\n\n", false); 
 			outputText("The lining of the tube squeezes and massages your trapped prick expertly, even as those hands continue to work on your mind.  Some part of you suspects that your thoughts are being manipulated, but the carnal pleasure you are experiencing is so amazing that you have no intention of resisting. If being a cumslut for your sexy demonic masters is what it takes, so be it. Cramming a massive demon-cock in your throat, getting a few others up your holes to keep you pregnant all the time, and being their busty hermaphrodite breeding tool would be your joy and privilege.  ", false);
-			if (player.findStatusEffect(StatusEffects.CampMarble) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.CampMarble)) {
 				outputText("As if reading your thoughts, the hands stop massaging, and their owner snaps their fingers. You see Marble step in front of you, wearing an odd set of pink panties with a dick-like protrusion sticking out the front of them.  At the command of the figure behind you, she presents the panty-cock to you.  Happy to be of service, you spread your jaws and engulf as much of the great penis-like thing as you can, while the figure behind you moves around and takes Marble in the ass.  You continue to suck on the pink flesh until you feel it pour some kind of unholy load into your stomach.  Gurgling in pleasure, you start cumming yourself, all the while appeasing your demonic masters by servicing your once lover.\n\n", false);
 			}
 			else outputText("As if reading your thoughts, the hands stop massaging, and their owner comes in front of you, presenting you with a meaty, throbbing cock.  Happy to be of service, you spread your jaws and engulf as much of the great penis as you can, until you feel it pouring his unholy load into your stomach.  Gurgling in pleasure, you start cumming yourself, all the while attending to one or more of your demonic masters.\n\n", false);

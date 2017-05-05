@@ -35,8 +35,11 @@ public function hairDresser():void {
 	outputText("While exploring the mountain, you find a cleverly concealed doorway.  From inside you can hear the sound of blades being sharpened.  Do you enter the doorway?", true);
 	doYesNo(salonGreeting,camp.returnToCampUseOneHour);
 }
+	public function isDiscovered():Boolean {
+		return player.hasStatusEffect(StatusEffects.HairdresserMeeting);
+	}
 public function salonGreeting():void{
-	if (player.findStatusEffect(StatusEffects.HairdresserMeeting) >= 0)
+	if (player.hasStatusEffect(StatusEffects.HairdresserMeeting))
 	{
 		hairDresserRepeatGreeting();
 	}
@@ -53,27 +56,35 @@ private function favoriteSalonMenu():void {
 
 private function salonFavoritesPaymentMenu():void {
 	menu();
-	if (flags[kFLAGS.LYNNETTE_PREGNANCY_CYCLE] >= 4 && player.hasCock()) addButton(5,"Fuck Goblin",fuckLynnette);
+	if (flags[kFLAGS.LYNNETTE_PREGNANCY_CYCLE] >= 4 && player.hasCock()) addButton(5, "Fuck Goblin", fuckLynnette);
+	else if (!player.hasCock()) addDisabledButton(5, "Fuck Goblin", "You need a cock to fuck her.");
+	else addDisabledButton(5, "Fuck Goblin", "She is already pregnant.");
 	if (player.hasCock()) addButton(0, "Goblin Blow", goblinHairDresserFacefuck, null, null, null, "Let Lynnette suck you off.");
+	else addDisabledButton(0, "Goblin Blow", "You need a cock to pay with your own cum.");
 	addButton(1, "Canine", gloryholeDoggie, null, null, null, "Suck that knotted cock.");
 	addButton(2, "Imp", gloryholeImp, null, null, null, "Suck that demonic cock. Judging from the constant bobbing, someone must have been trying hard to hover at the right height.");
 	addButton(3, "Minotaur", gloryholeMinotaur, null, null, null, "Suck that huge minotaur cock!");
 	addButton(4, "Incubus", gloryholeIncubus, null, null, null, "Suck that incubus cock. It gives off that pleasant spicy scent.");
 	if (flags[kFLAGS.SALON_MINOCUM_UNLOCKED] > 0) addButton(8, "Buy MinoCum", buyMinoCum, null, null, null, "Buy a bottle of minotaur cum for 60 gems?");
 	if (player.hasItem(consumables.MINOCUM) || player.hasItem(consumables.P_M_CUM) || player.hasItem(consumables.URTACUM) || player.hasItem(consumables.BHMTCUM)) addButton(9, "Give Cum", giveCumOptions);
+	else addDisabledButton(9, "Give Cum", "You could try to find some cum outside.");
 	addButton(14,"Back",favoriteSalonMenu);
 }
 
 private function salonPaymentMenu():void {
 	menu();
 	if (flags[kFLAGS.LYNNETTE_PREGNANCY_CYCLE] >= 4 && player.hasCock()) addButton(5,"Fuck Goblin",fuckLynnette);
+	else if (!player.hasCock()) addDisabledButton(5, "Fuck Goblin", "You need a cock to fuck her.");
+	else addDisabledButton(5, "Fuck Goblin", "She is already pregnant.");
 	if (player.hasCock()) addButton(0, "Goblin Blow", goblinHairDresserFacefuck, null, null, null, "Let Lynnette suck you off.");
+	else addDisabledButton(0, "Goblin Blow", "You need a cock to pay with your own cum.");
 	addButton(1, "Canine", gloryholeDoggie, null, null, null, "Suck that knotted cock.");
 	addButton(2, "Imp", gloryholeImp, null, null, null, "Suck that demonic cock. Judging from the constant bobbing, someone must have been trying hard to hover at the right height.");
 	addButton(3, "Minotaur", gloryholeMinotaur, null, null, null, "Suck that huge minotaur cock!");
 	addButton(4, "Incubus", gloryholeIncubus, null, null, null, "Suck that incubus cock. It gives off that pleasant spicy scent.");
 	if (flags[kFLAGS.SALON_MINOCUM_UNLOCKED] > 0) addButton(8, "Buy MinoCum", buyMinoCum, null, null, null, "Buy a bottle of minotaur cum for 60 gems?");
 	if (player.hasItem(consumables.MINOCUM) || player.hasItem(consumables.P_M_CUM) || player.hasItem(consumables.URTACUM) || player.hasItem(consumables.BHMTCUM)) addButton(9, "Give Cum", giveCumOptions);
+	else addDisabledButton(9, "Give Cum", "You could try to find some cum outside.");
 	addButton(14, "Leave", camp.returnToCampUseOneHour);
 }
 
@@ -113,15 +124,22 @@ public function salonPurchaseMenu():void {
 	
 	menu();
 	if (player.hairType != HAIR_BASILISK_SPINES && player.hairLength > 2) addButton(0, "Cut Short", cutShort);
+	else addDisabledButton(0, "Cut Short");
 	if (player.hairLength > 13) addButton(1, "Cut Medium", cutMedium);
+	else addDisabledButton(1, "Cut Medium");
 	if (player.hairLength >= 26) addButton(2, "Cut Long", cutLong);
+	else addDisabledButton(2, "Cut Long");
 	if (player.hairType != HAIR_BASILISK_SPINES && player.hairLength < player.tallness) addButton(3, "Lengthen", hairGrow);
+	else addDisabledButton(3, "Lengthen");
 	if (player.hairType != HAIR_BASILISK_SPINES && player.hairLength > 0) addButton(4, "Remove Hair", removeHair);
+	else addDisabledButton(4, "Remove Hair");
 	addButton(5, "Buy Products", dyeMenu);
 	if (flags[kFLAGS.SALON_MINOCUM_UNLOCKED] > 0) addButton(6, "Buy MinoCum", buyMinoCum, null, null, null, "Buy a bottle of minotaur cum for 60 gems?");
 	addButton(7, "Beard Options", beardMenu);
 	if (mudFacialEnabled) addButton(8, "Mud Facial", mudFacial, null, null, null, "This facial is supposed to enhance the softness of your face and enhance its femininity greatly.");
+	else addDisabledButton(8, "Mud Facial", "You are as feminine as you could be.");
 	if (sandFacialEnabled) addButton(9, "Sand Facial", sandFacial, null, null, null, "The goblins promise this facial will give you a rough, handsome look thanks to their special, timeless sands.");
+	else addDisabledButton(9, "Sand Facial", "You are as masculine as you could be.");
 	addButton(14,"Leave",camp.returnToCampUseOneHour);
 }
 
@@ -129,7 +147,7 @@ private function hairDresserGreeting():void {
 	spriteSelect(38);
 	clearOutput();
 	outputText(images.showImage("location-salon"));
-	outputText("You step inside the cave, and are greeted by a sight you did not expect.  The cave's floor is covered with smooth wood panelling and the walls are nearly entirely covered with hanging mirrors.  The few stalactites have hooks drilled into them, from which hang hundreds of scissors, shears, razors, combs, and other hairstyling impliments.  It reminds you of the hair-cutter's shop in your hometown.");
+	outputText("You step inside the cave, and are greeted by a sight you did not expect.  The cave's floor is covered with smooth wood panelling and the walls are nearly entirely covered with hanging mirrors.  The few stalactites have hooks drilled into them, from which hang hundreds of scissors, shears, razors, combs, and other hairstyling implements.  It reminds you of the hair-cutter's shop in your hometown.");
 	outputText("\n\nThere are a few chairs along the wall and goblins with latex dresses and gloves looking bored.  At the sight of you they perk up and clamor around you excitedly, until one with a gravity-defying chest pushes them apart and greets you.", false);
 	outputText("   \"<i>I apologize for my daughters,</i>\" she says as she presses herself against you.  \"<i>They're a bunch of brainless hussies for the most part.  My name is Lynnette, and welcome to my salon!  You want your hair cut or lengthened?  We've got you covered, and we don't ask for much - just a shot of cum.", false);
 	if (player.cockTotal() == 0) {
@@ -170,7 +188,7 @@ private function hairDresserRepeatGreeting():void {
 				outputText("\n\nShe taps her chin in thought. \"<i>A real shame you aren't packing any more.  No worries, the glory holes in the back are pretty popular with the demons and monsters, just go back there and catch some spooge and we'll see about helping with your hair, ok?</i>\"\n\n(There are a number of dicks in the glory hole, which do you want to deal with (if you're willing at all)?", false);
 			}
 			else {
-				outputText("\n\nShe taps her chin in thought. \"<i>Will you be getting our normal services?  Just one BJ per hair treatment!  Maybe you wanted to be a repeat customer at Lynnette's womb?  No appointment neccessary.  Or would you rather get our fee from the gloryholes in back?</i>\"", false);
+				outputText("\n\nShe taps her chin in thought. \"<i>Will you be getting our normal services?  Just one BJ per hair treatment!  Maybe you wanted to be a repeat customer at Lynnette's womb?  No appointment necessary.  Or would you rather get our fee from the gloryholes in back?</i>\"", false);
 			}
 		}
 	}
@@ -244,11 +262,11 @@ private function gloryholeImp():void {
 	player.slimeFeed();
 	clearOutput();
 	outputText("You walk over to the hole in the wall, looking at the erect demon-member you'll have to service.  Judging by the height and constant bobbing up and down it does, the imp must be hovering on the other side, trying pretty damn hard to stay in the hole.\n\n", true);
-	if (player.cor < 33) {
+	if (Math.max(player.cor, player.lib, player.lust) < 33) {
 		outputText("You struggle to force your mouth onto the abomination in front of you, wondering why you chose to do such a thing.  Your head bobs up and down, trying to match the motions of the thick demonic tool as you grab hold and guide it into your mouth.  It's hot, hotter than you'd expect, and dripping with sickly sweet pre-cum that makes you tingle.  You throw yourself into the wretched task, intent on finishing it as quickly as possible.  You circle your tongue over the nodules, holding on as it swells in your mouth, unloading a sticky batch of spooge into your throat.  You cough and sputter, swallowing most of it, but you manage to hang on to enough for your pay.\n\n", false);
 		dynStats("lus", 15, "cor", .5);
 	}
-	else if (player.cor < 66) {
+	else if (Math.max(player.cor, player.lib, player.lust) < 66) {
 		outputText("You open wide, bobbing up and down in an effort to match the strange dick that wobbles in front of you.  In the end you wrap both hands around its bumpy base, steadying it as you engulf the throbbing demon dick, taking as much as you can into your mouth.  You squeeze and caress it, licking the ridge of nodules that surround the crown as sticky spoo begins to erupt from it.  The little guy didn't have much endurance, but he must have been pretty backed up, as he's flooding your mouth and throat with his seed.  You struggle to swallow enough to keep up, but when he finishes, you're panting and covered in white.\n\n", false);
 		dynStats("lus", 35, "cor", 1);
 	}
@@ -256,6 +274,7 @@ private function gloryholeImp():void {
 		outputText("You immediately dive forwards, relishing the idea of taking in another load of demonic cum.  Your groin tingles as your lips make their way down the oddly textured shaft, engulphing nearly 10 inches of demon-cock, feeling it press down your throat.  You curl your tongue around and begin sliding back and forth, immediately rewarded with a thick dribble of pre-cum.  The imp on the other end loses it immediately, blasting waves of cum directly into your belly as you shove forwards, taking him into the hilt.  You feel him pulsing and pull back in time to take the last few loads in your mouth, saving your payment for the goblins.\n\n", false);
 		dynStats("lus", 45, "cor", 2);
 	}
+	player.orgasm('Lips',false);
 	player.refillHunger(25);
 	outputText("Abruptly, the demon-dong slips through your grasp and out the hole.  You hear a loud thump as something lands on the ground. Poor thing.\n\n", false);
 	doNext(hairDressingMainMenu);
@@ -267,18 +286,19 @@ private function gloryholeDoggie():void {
 	player.slimeFeed();
 	clearOutput();
 	outputText("You sigh and kneel down to bring yourself level with the dog-dick hanging out of the wall.  It's pointed at the tip with a swollen circular bulb at the base.  As a matter of fact, the dog-dick's owner must be pretty excited to be here - it's dripping cum and the knot has swollen so large that it can't fit back through the hole.\n\n", true);
-	if (player.cor < 33) {
+	if (Math.max(player.cor, player.lib, player.lust) < 33) {
 		outputText("It's a struggle to force your lips apart and take the strange thing in your mouth.  You feel like a freak, but make yourself get to work servicing the male who'll be covering your hair treatment today.  It tastes salty and sweaty and has a potent musky scent that excites you in spite of your better judgment.  You find yourself starting to get into it as you lick and slurp, humming with pleasure.  You reach up to touch the knot and the dog-cock jumps in your mouth, spurting a wad of thick cum into your throat.  You pull back most of the way and pump the cock, collecting the jism in your mouth.\n\n", false);
 		dynStats("lus", 15, "cor", .25);
 	}
-	else if (player.cor < 66) {
+	else if (Math.max(player.cor, player.lib, player.lust) < 66) {
 		outputText("You open wide and take as much of the pointed dick as you can into your mouth.  A few times you nearly gag yourself, but you manage to get most of the way down to the thick swollen knot.  You start sliding back and forth, breathing in the musky animalistic scent of your 'client' and become aroused by the situation more and more.  You reach up and caress the knot, squeezing gently and stroking the dick until it unloads a thick wad of cum into your mouth.  You pull back and catch the fruits of your labor in your mouth, milking the dick with your hands until it's finished and the dick pops back through the hole.\n\n", false);
 		dynStats("lus", 25, "cor", .25);
 	}
 	else {
-		outputText("You throw yourself onto the swollen dog-cock and easily engulf the whole thing, spreading your lips wide around the thick knot.  You can feel it bouncing the uvula in your throat around but you manage to supress your gag reflex like a good slut while you work the sweaty dick, giving it a thorough tongue bath.  You wrap your lips around the base of the knot, feeling it start to stretch your jaws apart.  You pull back before it can lock you like that, and squeeze the knot in your hands.  It cums, unloading thick wads of gooey cum into your mouth.\n\n", false);
+		outputText("You throw yourself onto the swollen dog-cock and easily engulf the whole thing, spreading your lips wide around the thick knot.  You can feel it bouncing the uvula in your throat around but you manage to suppress your gag reflex like a good slut while you work the sweaty dick, giving it a thorough tongue bath.  You wrap your lips around the base of the knot, feeling it start to stretch your jaws apart.  You pull back before it can lock you like that, and squeeze the knot in your hands.  It cums, unloading thick wads of gooey cum into your mouth.\n\n", false);
 		dynStats("lus", 30, "cor", .3);
 	}
+	player.orgasm('Lips',false);
 	player.refillHunger(10);
 	outputText("A young goblin comes by with a bowl for you to make your payment into.  You spit out the gunk and wipe your mouth, as the goblin carries the seed away.  You notice a trail of clear drops on the ground behind her.  She must be anticipating something...", false);
 	doNext(hairDressingMainMenu);
@@ -287,7 +307,7 @@ private function gloryholeIncubus():void {
 	player.slimeFeed();
 	clearOutput();
 	outputText("You kneel down in front of the throbbing demonic dick, ready to earn your pay.\n\n", false);
-	if (player.cor < 33) {
+	if (Math.max(player.cor, player.lib, player.lust) < 33) {
 		outputText("You picked this dick hoping that a male lust demon would be the most pleasurable to service, and judging by the pleasant spicy scent the member gives off, you're right.  You open wide and take it inside your mouth, feeling the ridges around the crown pressing back against your lips. A drop of pre-cum hits your tongue and it tastes divine, spurring you on to please the tainted member.  You grab it with both hands and pump it, feeling the corrupted nodules under your fingers as you lick and suck on the head, eager for more.  You get your reward soon enough, and you eagerly start drinking down the copious waves of fluid.  Thankfully, the incubus' orgasm seems to last forever, and when he finishes, you have a full belly and a mouth full of cream.  You manage to resist this last swallow, as you still need to pay.\n\n", false);
 		dynStats("lus", 1, "cor", 1.5);
 		player.lust = 99;
@@ -298,6 +318,7 @@ private function gloryholeIncubus():void {
 		player.lust = 99;
 		
 	}
+	player.orgasm('Lips',false);
 	player.refillHunger(35);
 	statScreenRefresh();
 	doNext(hairDressingMainMenu);
@@ -313,6 +334,7 @@ private function gloryholeMinotaur(): void {
 	outputText("your [chest] as cum rains down upon you. By the time his orgasm stops and his dick goes limp, your face and [chest] are covered in a thick layer of spooge.\n\n", false);
 	outputText("Your head spins from the minotaur's musk, and you idly mop up and swallow the cum on your " + player.face() + ". A goblin aide comes in with a bowl, and gently scrapes the cum off your tits with a smooth, flat rock. Once you're cleaned up and you're dressed, the aide leads you back to Lynnette.\n\n", false);
 	dynStats("lus", 33, "cor", 1);
+	player.orgasm('Lips',false);
 	player.refillHunger(30);
 	player.minoCumAddiction(10);
 	doNext(hairDressingMainMenu);
@@ -360,7 +382,7 @@ private function goblinHairDresserFacefuck():void {
 	if (player.cumQ() >= 250) outputText(" She can't hold it all and suddenly starts swallowing as runnels of it escape her nose and a wave of it rolls down her lips.", false);
 	outputText("  In time it ends, and she pops back, spitting most of the cum into a funnel.  It washes down a pipe and you have to wonder if there's some horny goblin girl at the other end with her cunt spread wide.", false);
 	outputText("\n\nThe hair-dressing goblin matron sputters a bit before licking her lips clean and beaming a happy smile at you.\n\n", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	hairDressingMainMenu();
 }
 private function hairDressingMainMenu():void {
@@ -458,10 +480,14 @@ private function beardMenu():void {
 	outputText("\<i>I can help you with your beard-related needs,</i>\" Lynnette says.", true)
 	menu();
 	if (player.hasBeard() && player.beardLength > 0.5) addButton(0, "Cut Beard", cutBeard);
-	if (player.hasBeard() && player.beardLength < 6) addButton(1, "Lengthen Beard", growBeard, 0);
+	else addDisabledButton(0, "Beard Style", "You have no beard to cut.");
 	if (!player.hasBeard()) addButton(1, "Grow Beard", growBeard, 1);
+	else if (player.hasBeard() && player.beardLength < 6) addButton(1, "Lengthen Beard", growBeard, 0);
+	else addDisabledButton(1, "Lengthen Beard", "Your beard is already long enough.");
 	if (player.hasBeard()) addButton(2, "Beard Style", changeBeardStyle);
+	else addDisabledButton(2, "Beard Style", "You have no beard to style.");
 	if (player.hasBeard()) addButton(3, "Remove Beard", removeBeard);
+	else addDisabledButton(3, "Beard Style", "You have no beard to remove.");
 	addButton(14, "Back", hairDressingMainMenu);
 }
 
@@ -620,7 +646,8 @@ private function minotaurCumBukkakeInSalon():void {
 	
 	outputText("The strength goes completely out of your " + player.legs() + ", but you manage to hold yourself up long enough for your stud to flex his cock inside you and fill up your backdoor with more potent addiction.  You slide off, nerveless and still orgasming as jizz rains on your back from the abandoned cock, rolling off you to add to the ever-widening puddle of fluids on the floor.  Smiling vacantly and addled on more minotaur-cum than any one person has reason to handle, you stumble up on all fours and crawl to the next one.  More...", false);
 	//[NEXT]
-	player.orgasm();
+	player.orgasm('Lips',false);
+	player.orgasm('Anal');
 	dynStats("lib", 2, "sen", 2, "cor", 2);
 	doNext(minotaurSalonFollowUp);
 }
@@ -824,7 +851,7 @@ private function fuckLynnette():void {
 		lynnetteApproval(25);
 	}
 	flags[kFLAGS.LYNNETTE_FUCK_COUNTER]++;
-	player.orgasm();
+	player.orgasm('Dick');
 	flags[kFLAGS.LYNNETTE_CARRYING_COUNT] = 3 + rand(3);
 	if (player.cumQ() >= 1000) flags[kFLAGS.LYNNETTE_CARRYING_COUNT] += 1 + rand(3);
 	if (player.cumQ() >= 2000) flags[kFLAGS.LYNNETTE_CARRYING_COUNT] += 1 + rand(3);

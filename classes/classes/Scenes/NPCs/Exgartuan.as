@@ -63,7 +63,7 @@
 		public function timeChange():Boolean {
 			var needNext:Boolean = false;
 			checkedExgartuan = 0; //Make sure we test just once in timeChangeLarge
-			if (player.findStatusEffect(StatusEffects.Exgartuan) >= 0) { //Update Exgartuan stuff
+			if (player.hasStatusEffect(StatusEffects.Exgartuan)) { //Update Exgartuan stuff
 				trace("EXGARTUAN V1: " + player.statusEffectv1(StatusEffects.Exgartuan) + " V2: " + player.statusEffectv2(StatusEffects.Exgartuan));
 				if (player.statusEffectv1(StatusEffects.Exgartuan) == 1 && (!player.hasCock() || player.cockArea(0) < 100)) { //If too small dick, remove him
 					outputText("\n<b>You suddenly feel the urge to urinate, and stop over by some bushes.  It takes wayyyy longer than normal, and once you've finished, you realize you're alone with yourself for the first time in a long time.  Perhaps you got too small for Exgartuan to handle?</b>\n");
@@ -88,7 +88,7 @@
 					}
 					else { //If not sleeping, stuff happens!
 						if (player.statusEffectv1(StatusEffects.Exgartuan) == 1) { //Dude stuff
-							if (player.findStatusEffect(StatusEffects.Infested) >= 0) {
+							if (player.hasStatusEffect(StatusEffects.Infested)) {
 								outputText("\n<b>");
 								exgartuanWormCure();
 								outputText("</b>\n");
@@ -157,7 +157,7 @@
 		}
 		
 		public function timeChangeLarge():Boolean {
-			if (checkedExgartuan++ == 0 && player.findStatusEffect(StatusEffects.Exgartuan) >= 0 && player.statusEffectv2(StatusEffects.Exgartuan) == 0 && model.time.hours == 4) {
+			if (checkedExgartuan++ == 0 && player.hasStatusEffect(StatusEffects.Exgartuan) && player.statusEffectv2(StatusEffects.Exgartuan) == 0 && model.time.hours == 4) {
 				//Exgartuan must be present, must be awake and it must be night time
 				if (player.hasCock() && player.statusEffectv1(StatusEffects.Exgartuan) == 1 && rand(3) == 0 && player.hoursSinceCum >= 24) { //Exgartuan night time surprise!
 					outputText("\n");
@@ -194,7 +194,7 @@ private function drinkFountainEndowment():void {
 		player.XP += 200;
 		changed = true;
 	}
-	if (player.findStatusEffect(StatusEffects.Exgartuan) < 0 && !changed && rand(2) == 0) {
+	if (!player.hasStatusEffect(StatusEffects.Exgartuan) && !changed && rand(2) == 0) {
 		var choices:Number = 0;
 		if (player.cockTotal() > 0) {
 			if (player.cockArea(0) >= 100) choices++;
@@ -242,8 +242,8 @@ private function drinkFountainEndowment():void {
 	//(+Big Clit)
 	if (rand(4) == 0 && player.hasVagina()) {
 		outputText("\n\nYour " + player.clitDescript() + " plumps up, visibly parting your lips even when you aren't turned on.  It probably ", false);
-		player.clitLength += 2;
-		if (player.clitLength < 6) outputText("gets as big as a cock", false);
+		player.changeClitLength(2);
+		if (player.getClitLength() < 6) outputText("gets as big as a cock", false);
 		else outputText("gets bigger than most cocks", false);
 		outputText(" now!", false);
 		changed = true;
@@ -305,7 +305,7 @@ public function exgartuanMasturbation():void {
 		//Early prep
 		if (player.cor < 15) outputText("You sheepishly find some rocks to hide in, where you remove your clothes.  Exgartuan loudly grumbles, \"<i>Quit fucking around and hiding.  I WANT someone to walk in on this!</i>\"\n\nDisgusting...\n\n", false);
 		if (player.cor >= 15 && player.cor < 30) outputText("You make sure you are alone and strip naked.  Exgartuan mutters, \"<i>Why did you wait until you were alone?  Wouldn't it be fun to have a succubus wander in on us?</i>\"\n\n", false);
-		if (player.cor >= 30 && player.cor < 60) outputText("You happily remove your " + player.armorName + ", eager to pleasure yourself.  Your possessed " + player.cockDescript(0) + " throbbs happily.\n\n", false);
+		if (player.cor >= 30 && player.cor < 60) outputText("You happily remove your " + player.armorName + ", eager to pleasure yourself.  Your possessed " + player.cockDescript(0) + " throbs happily.\n\n", false);
 		if (player.cor >= 60 && player.cor < 80) outputText("You strip naked in an exaggerated fashion, hoping someone might be watching.  The demon-possessed member at your groin pulses happily, flooding you with lust in reward for your attitude.\n\n", false);
 		if (player.cor >= 80) outputText("You strip naked, fondling your naughty bits as you do so and casting seductive looks around, hoping someone or something is nearby to fuck you.  Your possessed member wiggles happily, flooding your body with feelings of lust and desire in reward.  Maybe it can call in a demonic companion for you?\n\n", false);
 		//Low corruption characters
@@ -357,7 +357,7 @@ public function exgartuanMasturbation():void {
 			outputText("You explode, filling your mouth with the tangy seed of your demonic submission.  Why did you ever think to resist such pleasure?  White hot release radiates out from your groin, making your body numb and happy as wave after wave of demon-spunk pours down your throat and spatters your face.  Such unholy pleasures, truly you deserve to enjoy them after what you've been through, right?  You wallow in a growing lake of syrupy submission, happy to be host to such a fun demon.\n\n", false);
 			outputText("Temporarily sated, Exgartuan deflates, not even bothering to taunt you while you try to clean up the goop now splattered over your upper body.", false);
 		}
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("lib", .25, "cor", 1);
 	}
 	//TITURBATION
@@ -392,6 +392,7 @@ public function exgartuanMasturbation():void {
 		dynStats("sen", .25, "lus", 15, "cor", 1);
 		if (player.biggestLactation() > 1) outputText("As you calm down you realize your " + player.nippleDescript(0) + "s are dribbling streams of milk, and judging from the pools of whiteness in the soil, you turned into quite the little milk-sprinkler.  ", false);
 		outputText("You blush and redress, noting that Exgartuan seems to be silent and sleeping...  maybe you'll get a little peace now?", false);
+		player.orgasm('Tits',false);
 	}
 	player.changeStatusValue(StatusEffects.Exgartuan,2,(12+rand(7)));
 	doNext(camp.returnToCampUseOneHour);
@@ -743,7 +744,7 @@ public function exgartuanLactationAdjustment():void {
 	//(Lactating Already)
 	if (player.biggestLactation() > 1) {
 		//(Increase)
-		if (rand(2) == 0 || player.findStatusEffect(StatusEffects.Feeder) >= 0) {
+		if (rand(2) == 0 || player.hasStatusEffect(StatusEffects.Feeder)) {
 			outputText("Your nipples grow warm and sensitive, then start dripping milk into your " + player.armorName + ".  Exgartuan appears to be having some fun with you again...", false);
 			player.boostLactation(player.breastRows.length);
 		}
@@ -797,9 +798,11 @@ public function exgartuanBeeRape():void {
 	outputText("It does not take long for the feeling of being in such a tight hole to push you beyond any point of endurance, and the obscene squelching mixed with high pitched moans doesn't help any.  You feel your orgasm building, flooding your groin with heat.  You press your body tightly against hers, forcing as much of yourself as possible inside her as you go off the deep end.  Wave after wave of spunk pumps into the bee, squeezing out an equal amount of eggs from her ovipositor.  Wet plops greet your ears in time with each spurt of seed you push into her.  Apparently, the eggs go in the very hole you're now abusing.\n\n", false);
 	outputText("You pull out with a satisfied grunt, enjoying the wet 'schlick' sound your " + player.cockDescript(0) + " makes as it pulls free of the bee-girl's once-tight hole.  Where once there was a honey-coated slit now resides a gaping monster, drooling a gooey mixture of slime and your tainted demonic seed.  Well, maybe her queen will have an easier time packing her full of eggs.\n\n", false);
 	outputText("You redress, whistling happily as you prepare to leave.  Your victim is practically unconscious, still shaking from the intense experience and leaking eggs and honey from the organ on her backside.  Do you cut her down or leave her bound up for the locals to enjoy?", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", 1, "cor", 2);
-	simpleChoices("Leave Her", leaveBeePostRape, "Free Her", freeBeePostRape, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Leave Her", leaveBeePostRape);
+	addButton(1, "Free Her", freeBeePostRape);
 }
 
 //[Free Her] (negates some corruption gain)
@@ -904,7 +907,7 @@ private function exgartuanSleepSurprise():void {
 				if (player.hasScales()) outputText("scales", false);
 				else outputText("skin", false);
 				outputText(" surrounding your sex, teasing you with the barest hint of sensation while your ignorant hands maul your " + player.cockDescript(0) + " at Exgartuan's behest.  If only you had taken care of yourself earlier, you might have had the control to slip a digit into your " + player.vaginaDescript(0), false);
-				if (player.clitLength > 3) outputText(" or stroke your " + player.clitDescript(), false);
+				if (player.getClitLength() > 3) outputText(" or stroke your " + player.clitDescript(), false);
 				outputText(" to fully satisfy ALL of yourself.", false);
 				outputText("\n\n", false);
 			}
@@ -924,7 +927,7 @@ private function exgartuanSleepSurprise():void {
 		outputText("  Liquid-hot pressure slides over the underside of your " + player.cockDescript(0) + ", licking wetly at the pulsating, need-filled demon-prick.  Your rogue tongue's attentions have the desired effect, and the cries of your pleasure are muffled by your own thick flesh and its rapidly distending urethra.\n\n", false);
 		
 		outputText("If someone were watching", false);
-		if (flags[kFLAGS.JOJO_STATUS] >= 5 && player.findStatusEffect(StatusEffects.NoJojo) < 0 && flags[kFLAGS.JOJO_DEAD_OR_GONE] == 0) outputText(", and judging by Jojo's high pitched whines, he certainly is,", false);
+		if (flags[kFLAGS.JOJO_STATUS] >= 5 && !player.hasStatusEffect(StatusEffects.NoJojo) && flags[kFLAGS.JOJO_DEAD_OR_GONE] == 0) outputText(", and judging by Jojo's high pitched whines, he certainly is,", false);
 		outputText(" they'd see dick-flesh bulging with a heavy load as it's pumped into your lips.  The fully-inflated cum-tube distends your mouth, stretching your jaw painfully, and dumps its creamy cargo into its willing receptacle.  Your belly burbles as it adjusts to the ", false);
 		temp = player.cumQ();
 		if (temp < 50) outputText("surprisingly light", false);
@@ -947,7 +950,7 @@ private function exgartuanSleepSurprise():void {
 		}
 		outputText("\n\n", false);
 		
-		if (flags[kFLAGS.JOJO_STATUS] >= 5 && player.findStatusEffect(StatusEffects.NoJojo) < 0 && flags[kFLAGS.JOJO_DEAD_OR_GONE] == 0) {
+		if (flags[kFLAGS.JOJO_STATUS] >= 5 && !player.hasStatusEffect(StatusEffects.NoJojo) && flags[kFLAGS.JOJO_DEAD_OR_GONE] == 0) {
 			outputText("The splatter of mouse-cum erupting in the wood reaches your ears, bringing a wistful smile to your face.  That slutty mouse is such a peeping tom!  ", false);
 		}
 		outputText("Your eyes slowly roll back down while Exgartuan deflates, leaving a trail of pleased, white submission ", false);
@@ -955,7 +958,7 @@ private function exgartuanSleepSurprise():void {
 		else outputText("between your tits", false);
 		outputText(" and across your belly as he retreats.  The thrill of orgasm is still fresh in your mind, but exhaustion quickly replaces it.  You resolve to clean up the mess in the morning as your eyelids flutter closed.  The smell of sex hangs off your dozing form like a cloud, keeping your dreams from straying too far from your cock...", false);
 		//[-100 lust, then +10 lust immediately, +1 libido to 60, then +.5 libido to 80, then +.25 libido.  +1 sensitivity.  +1 corruption]
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("sen", 1, "cor", 1);
 		if (player.lib < 60) dynStats("lib", 1);
 		else if (player.lib < 80) dynStats("lib", .5);
@@ -1066,7 +1069,7 @@ private function exgartuanBulgeTortureIII():void {
 	else outputText("a colossal wave of heavy demonic jizz", false);
 	outputText(" hits you square in the face.  The surprising force of the blow sends you reeling, your hands clearing from the mighty demon as he points skyward, showering everything around you in black, warm ejaculate.  You care little, however, being too busy convulsing and indulging on every ounce of pleasure radiating through it.  It doesn't take long for you to black out, drawing an end to your excruciating experience.\n\n", false);
 	//[new page. lust resets to 0. corruption raises by 2. player gains ailment \"<i>Jizzpants</i>\"]
-	player.orgasm();
+	player.orgasm('Dick');
 	player.createStatusEffect(StatusEffects.Jizzpants, 1, 0, 0, 0);
 	dynStats("cor", 2);
 	doNext(exgartuanBulgeTortureIV);
@@ -1119,7 +1122,7 @@ private function boobGartuanSURPRISE():void {
 		
 		outputText("Your face remains calm, a hint of superiority still swimming through it, \"<i>Will it really be that simple, Nemus? We both know there's more to that tomb than...</i>\"\n\n", false);
 		
-		outputText("Your warning turns to moaning as the imp's hands quickly latch onto your " + player.chestDesc() + ", discarding the walking stick and golden idol to the hard floor.  \"<i>I don't need any of your words of wisdom, " + player.short + ",</i>\" Nemus teases, his eyes meeting yours while he continues to caress your breasts, \"<i>You are little more than my trophy now.  Hardly a position befitting of giving advice, wouldn't you agree?</i>\" You start to tilt your head back as his grubby mitts continue to grope your massive mammaries.  The fiend slowly moves in on you, his unkempt nails teasing your sensitive " + player.skin() + ".  You begin to feel the rough fabric of his overalls brushing up against you, brought on by his stiffening member.  Nemus continues to draw closer to you.\n\n", false);
+		outputText("Your warning turns to moaning as the imp's hands quickly latch onto your " + player.chestDesc() + ", discarding the walking stick and golden idol to the hard floor.  \"<i>I don't need any of your words of wisdom, " + player.short + ",</i>\" Nemus teases, his eyes meeting yours while he continues to caress your breasts, \"<i>You are little more than my trophy now.  Hardly a position befitting of giving advice, wouldn't you agree?</i>\" You start to tilt your head back as his grubby mitts continue to grope your massive mammaries.  The fiend slowly moves in on you, his unkempt nails teasing your sensitive [skin].  You begin to feel the rough fabric of his overalls brushing up against you, brought on by his stiffening member.  Nemus continues to draw closer to you.\n\n", false);
 
 		outputText("Suddenly, the pleasure vanishes from your face, your now determined gaze locked onto the little wretch.  Before he has a chance to respond, your forehead viciously slams into his own, knocking the lust right out of him as he staggers off of the stepstool and falls to the ground.  The spectating imps recoil in fear by your outburst, trembling even further once your unwavering leer redirects to them.  You plant your feet on the stepstool for leverage and clench your hands into fists.  With seemingly little effort you flex them forward, shattering your shackles.  The imps' eyes are as large as saucepans after witnessing your tremendous feat.  A thought works its way through the paralyzing fear into the second imp, causing him to slap some sense into his friend, \"<i>Sound th' alarm, idiot!</i>\"\n\n", false);
 		
@@ -1180,7 +1183,7 @@ private function boobgartuanSurprise2():void {
 		else outputText("flip Nemus a mighty bird", false);
 		outputText(", making out his silhouette in the distance through the storm, hopping around angrily.  With your work done, you bound off of the wall, set to clear the tiny moat that circles around the fort.  Time seems to slow as you soar in the air away from the imp fortress.\n\n", false);
 		
-		outputText("You feel a sudden heft in your chest.  You peer down to see that your " + player.chestDesc() + " appear to be swelling rapidly!  What's much worse, however, is that their " + player.skin() + " is turning to rough stone before your eyes!  Fear sets in quickly as your majestic leap quickly loses its momentum.  You desperately reach out for land, but it seems as those the closest handhold is only getting farther and farther away from you.  It becomes difficult to keep grasping out towards the ledge as your chest-mounted stone weights drag you down into the murky water below.  All you can make out below you is unending darkness, the faint glimmer from strikes of lightning above only becoming more distant as you sink deeper into the abyss.  Your outstretched hand is the last thing you see before you are completely enveloped in darkness.  Your bountiful bosoms, easily thrice the size of you by this point, continue their tugging at your chest, feeling as though they are dragging the life out of in the process.\n\n", false);
+		outputText("You feel a sudden heft in your chest.  You peer down to see that your " + player.chestDesc() + " appear to be swelling rapidly!  What's much worse, however, is that their [skin] is turning to rough stone before your eyes!  Fear sets in quickly as your majestic leap quickly loses its momentum.  You desperately reach out for land, but it seems as those the closest handhold is only getting farther and farther away from you.  It becomes difficult to keep grasping out towards the ledge as your chest-mounted stone weights drag you down into the murky water below.  All you can make out below you is unending darkness, the faint glimmer from strikes of lightning above only becoming more distant as you sink deeper into the abyss.  Your outstretched hand is the last thing you see before you are completely enveloped in darkness.  Your bountiful bosoms, easily thrice the size of you by this point, continue their tugging at your chest, feeling as though they are dragging the life out of in the process.\n\n", false);
 		
 		outputText("For a moment, you can swear you felt them rumbling... taunting you...", false);
 		//[end of occurrence ==0]
@@ -1229,7 +1232,7 @@ private function boobgartuanSurprise3():void {
 	else if (flags[kFLAGS.BOOBGARTUAN_SURPRISE_COUNT] < 8)outputText("\"<i>HOW can you forget to caress these cans!?  Tease these teats!?</i>\"", false);
 	//[if occurrence ≥8]
 	else outputText("\"<i>Did you find anything to grab onto this time besides weeds? It doesn't look like you have.</i>\"", false);
-	outputText("  You make out a slight warmth radiating through your chest, followed by your " + player.chestDesc() + " pulling you up into the air!  Your weak bonds to the earth either slip free or unroot, leaving you at the mercy of your possessed pillows.  Not long after you return to your feet does your chest remount its attack, flinging you with ease from side to side while Exgartuan laughs at you.  By the third time you tumble towards the terrain, you finally decide to lock your arms around your mutinous milk cans, your fingers clamping down as hard as they can into your " + player.skin() + ".  Your powerful puppies flow over your death grip, the pressure becoming pleasure, your struggle dissolving into confusion.  The demoness pushes and shakes against your hold as your footing keeps up to compensate.  It seems as though her desire to be fondled is stronger than her desire to fight, your turbulent tatas' harsh movements slowly becoming much more smooth and relaxed.\n\n", false);
+	outputText("  You make out a slight warmth radiating through your chest, followed by your " + player.chestDesc() + " pulling you up into the air!  Your weak bonds to the earth either slip free or unroot, leaving you at the mercy of your possessed pillows.  Not long after you return to your feet does your chest remount its attack, flinging you with ease from side to side while Exgartuan laughs at you.  By the third time you tumble towards the terrain, you finally decide to lock your arms around your mutinous milk cans, your fingers clamping down as hard as they can into your [skin].  Your powerful puppies flow over your death grip, the pressure becoming pleasure, your struggle dissolving into confusion.  The demoness pushes and shakes against your hold as your footing keeps up to compensate.  It seems as though her desire to be fondled is stronger than her desire to fight, your turbulent tatas' harsh movements slowly becoming much more smooth and relaxed.\n\n", false);
 	
 	//[if occurrence ==0]
 	if (flags[kFLAGS.BOOBGARTUAN_SURPRISE_COUNT] == 0) outputText("\"<i>Well, I suppose you've had enough, champion,</i>\" Exgartuan yields, building lust betraying her usual taunting behavior, \"<i>Now why don't we move on to what we both want, hm?</i>\"", false);
@@ -1270,7 +1273,7 @@ private function boobgartuanSurprise3():void {
 	if (player.cor < 50) outputText("  At this point you are too far gone to resist.", false);
 	//[else]
 	else outputText("  You wiggle your fingers in anxious anticipation.", false);
-	outputText("  You finally bear down and grasp onto... nothing?  <b>Your nipples are nowhere to be found!</b>  The passion is beginning to flatline as you confusedly grope around your " + player.chestDesc() + ".  \"<i>What's wrong, champion?</i>\" Exgartuan asks knowingly, \"<i>Is this too hard for you?</i>\" The tips of your fingers comb around your areolas until you discover an inward bend in your " + player.skin() + " where your nipples should be.  Apparently, Exgartuan isn't through having fun with you; the blasted seductress managed to suck your teats inward!  Before you can fathom just how she pulled it off without your knowledge, your humble howitzers start to tingle.  You feel an anxious quiver work its way up your spine before a familiar need begins to course through your being: the need to be milked!", false);
+	outputText("  You finally bear down and grasp onto... nothing?  <b>Your nipples are nowhere to be found!</b>  The passion is beginning to flatline as you confusedly grope around your " + player.chestDesc() + ".  \"<i>What's wrong, champion?</i>\" Exgartuan asks knowingly, \"<i>Is this too hard for you?</i>\" The tips of your fingers comb around your areolas until you discover an inward bend in your [skin] where your nipples should be.  Apparently, Exgartuan isn't through having fun with you; the blasted seductress managed to suck your teats inward!  Before you can fathom just how she pulled it off without your knowledge, your humble howitzers start to tingle.  You feel an anxious quiver work its way up your spine before a familiar need begins to course through your being: the need to be milked!", false);
 	//[if corruption <50]
 	if (player.cor < 50) outputText("  Brought on artificially or not, you cannot deny it; you would probably be cursing the wretched demoness if you were not already preoccupied contending with your mounting passion and desire.", false);
 	outputText("  As you paw uselessly at the firm seal, you begin to feel moisture seeping out.", false);
@@ -1328,9 +1331,10 @@ private function boobgartuanSurprise3():void {
 	//[if corruption <50]
 	if (player.cor < 50) outputText("  A heavy sigh escapes your lips as you feel the artificial pressure subside, replaced with the slight increase of lust all the excitement brought on.  You'll have to tend to that when you're nice and rested.  Unfortunately, your mighty milk fountain has drenched you and the surrounding countryside, turning dirt to mud and your desire to come out of this somewhat clean becoming a futile fantasy.  You scoop up what little pride you can find and wander back to camp, a trail of milk forming behind you.", false);
 	//[else]
-	else outputText("  Your fingertips continue to sweep across your " + player.skin() + ", seemingly in denial that the exciting night has drawn to a close.  You peer up at the ever-present moon, its crimson hue as foreboding as the day you first arrived in Mareth.  You stew on the prospect of apologizing to the demoness for your forgetfulness.  Though, be it for your pride or hers, you decide it better to just shelf the idea.  All Exgartuan cares about is attention and fucking, better to not go and try to turn her into a conversationalist.  Best to just tend to her every so often if you actually do care.  Once you've taken care of your own lust anyway.  You shake some sense back into your head, sending some dirt flying.  The \"<i>breast show on earth</i>\" left you soaked, your milk turning the dirt to mud around you.  You figure it best to worry about it once you're at camp.  You begin the trek back, a little smile growing on your face once you see the trail of milk you're leaving behind in your wake.", false);
+	else outputText("  Your fingertips continue to sweep across your [skin], seemingly in denial that the exciting night has drawn to a close.  You peer up at the ever-present moon, its crimson hue as foreboding as the day you first arrived in Mareth.  You stew on the prospect of apologizing to the demoness for your forgetfulness.  Though, be it for your pride or hers, you decide it better to just shelf the idea.  All Exgartuan cares about is attention and fucking, better to not go and try to turn her into a conversationalist.  Best to just tend to her every so often if you actually do care.  Once you've taken care of your own lust anyway.  You shake some sense back into your head, sending some dirt flying.  The \"<i>breast show on earth</i>\" left you soaked, your milk turning the dirt to mud around you.  You figure it best to worry about it once you're at camp.  You begin the trek back, a little smile growing on your face once you see the trail of milk you're leaving behind in your wake.", false);
 	//[corruption +2, lust +5] 
 	dynStats("lus", 5, "cor", 2);
+	player.orgasm('Tits',false);
 	flags[kFLAGS.BOOBGARTUAN_SURPRISE_COUNT]++;
 	player.changeStatusValue(StatusEffects.Exgartuan,2,25);
 	doNext(playerMenu);
@@ -1408,11 +1412,11 @@ public function exgartuanNagaStoleMyMasturbation():void {
 	else outputText("  As impressive as Exgartuan's mighty length is in these lands, your tail is plenty capable of completely enveloping the titan in its scaley embrace.", false);
 	outputText("  The pressure on display here is tremendous.  The demon's vice-like grip is, like his many feats, teetering on the edge of expertise and insanity: you can't begin to comprehend how a squeeze this strong hasn't tripped the line from pleasure to pain.  You can only perceive your upper body's joints as forming right angles, tensing up from the gratifying duress.\n\n", false);
 	
-	outputText("Your dastardly dick moves on to phase two of its evil plan: stroking.  It's slow at first; you can feel each little nub react as each slick coil passes over them, the sensation just as maddeningly satisfying as everything else.  You feel as if your midsection is being stretched when your tail lifts as high as it can, exposing the base of your sinister shaft to the elements.  The roller coaster's been nothing but anticipation.  You enjoy just the mounting pleasure of the journey as it makes the first ascension.  Now you're hanging hundreds of feet in the air, your ride inching closer to the precipice.  You can see everything that you're in for laying ahead of you, but you can never perceive how it'll actually play out in action.  All you can do is dig your nails into your harness and- great goblins' ghosts!  The demon's already gone to work, your tail bottoming out on you one instant and teasing only your head the next.  The sound of scales smacking a wide surface area fills the air.  You would begin to wonder how the repeated blows to your groin haven't resulted in injury, but your mind is enthralled by the feel of your super-sized shaft's stimulation.  Even if you weren't orgasmicly paralyzed, you know better than to try and make sense of the dealings of your possessed pecker.\n\n", false);
+	outputText("Your dastardly dick moves on to phase two of its evil plan: stroking.  It's slow at first; you can feel each little nub react as each slick coil passes over them, the sensation just as maddeningly satisfying as everything else.  You feel as if your midsection is being stretched when your tail lifts as high as it can, exposing the base of your sinister shaft to the elements.  The roller coaster's been nothing but anticipation.  You enjoy just the mounting pleasure of the journey as it makes the first ascension.  Now you're hanging hundreds of feet in the air, your ride inching closer to the precipice.  You can see everything that you're in for laying ahead of you, but you can never perceive how it'll actually play out in action.  All you can do is dig your nails into your harness and- great goblins' ghosts!  The demon's already gone to work, your tail bottoming out on you one instant and teasing only your head the next.  The sound of scales smacking a wide surface area fills the air.  You would begin to wonder how the repeated blows to your groin haven't resulted in injury, but your mind is enthralled by the feel of your super-sized shaft's stimulation.  Even if you weren't orgasmically paralyzed, you know better than to try and make sense of the dealings of your possessed pecker.\n\n", false);
 	
 	outputText("Self stimulation should never feel this good.  This doesn't even seem like masturbation.  All you've been able to contribute to this action are clenched fists, various sounds, and shuffling expressions.  ", false);
 	//[if corruption <33]
-	if (player.cor < 33) outputText("\"<i>You can't measure up to treatment of this magnitude, champion,\" Exgarutan insults you, his voice trembling as the slick massage persists, \"But don't think that I'm giving you permission to slack off.  A slut like you can go on dreaming; one day maybe you'll have the perseverance to get close.\"", false);
+	if (player.cor < 33) outputText("\"<i>You can't measure up to treatment of this magnitude, champion,\" Exgartuan insults you, his voice trembling as the slick massage persists, \"But don't think that I'm giving you permission to slack off.  A slut like you can go on dreaming; one day maybe you'll have the perseverance to get close.\"", false);
 	//[if corruption ≥33 & <66]
 	else if (player.cor < 66) outputText("Your corrupt cock begins to speak up, the demon's unrelenting motions refusing to ease off, \"You're loving every bit of this champion.  There isn't a hint of uncertainty lingering in your senses.  If only you were this accepting all the time.\"", false);
 	//[else]
@@ -1432,7 +1436,7 @@ public function exgartuanNagaStoleMyMasturbation():void {
 
 	outputText("Having coated your face and upper torso in a demonic jism assault, Exgartuan returns to your serpent's slit.  His grasp on your tail lifts, leaving you to undo the tangled mess he left behind.  But you're too busy laying back decompressing.  No thoughts, no musings, no questions, no doubts... nothing is going on in your cum-soaked head.  What is there to say?", false);
 	player.changeStatusValue(StatusEffects.Exgartuan,2,(16+rand(7)));
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", .25);
 	doNext(camp.returnToCampUseOneHour);
 }

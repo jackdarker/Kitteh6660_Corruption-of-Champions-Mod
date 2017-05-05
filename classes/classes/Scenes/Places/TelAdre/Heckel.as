@@ -48,7 +48,9 @@ public function greetHeckel():void {
 	else {
 		outputText("Heckel is checking her pulse between laps when you approach her.  She grins as she catches sight of you, her teeth flashing in the light.  \"<i>Back again, fresh meat?  I thought I might have scared you off last time.</i>\"  She puts her hands on her hips and very blatantly looks your body up and down.  After a moment she nods to herself, as if making up her mind.  \"<i>I guess you can keep up after all.  What do you say to a workout, partner?</i>\"\n\n", false);
 	}
-	simpleChoices("Training", heckelTraining, "", null, "", null, "", null, "Leave", telAdre.gymDesc);
+	menu();
+	addButton(0, "Training", heckelTraining);
+	addButton(14, "Leave", telAdre.gymDesc);
 }
 
 //First time Sex
@@ -89,12 +91,16 @@ private function heckelTraining():void {
 		outputText("A black cock hangs half erect between her legs, a pair of fist-sized testes underneath.  Fully erect, you estimate her dong would be around ten inches long; large, but fitting for her lithe body.  It grows a little stiffer as you stare down at it, and it isn't until Heckel starts cackling that you realize how long you've been staring.\n\n", false);
 	
 		outputText("\"<i>Like what you see?</i>\" she asks, looking you up and down.  \"<i>'Cause I like what I see.  It's not every day I get someone as fit as you brave enough to partner up with me.  Come on then fresh meat, every newbie has to start at the bottom.</i>\"  She tilts her head towards her hardening member and raises an eyebrow.", false);
+		//ORAL or LEAVE
+		menu();
+		addButton(0, "Oral", heckelOrallyFixated);
 		if (player.str > 50 && player.hasCock()) {
 			outputText("\n\nYou feel pretty strong yourself, and you realize you could probably arm wrestle this hyena-bitch down to size.");
-			dom = dominateHeckel;
+			addButton(1, "Be Top Dog", dominateHeckel);
+		} else {
+			addDisabledButton(1, "Be Top Dog", "This scene requires you to have considerable strength and cock.");
 		}
-		//ORAL or LEAVE
-		simpleChoices("Oral", heckelOrallyFixated, "Anal", null, "Be Top Dog", dom, "", null, "Leave", camp.returnToCampUseOneHour);
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 	//FOLLOWUP SECKZ
 	else {
@@ -108,12 +114,17 @@ private function heckelTraining():void {
 		outputText("By the time she comes back into the locker room, you're completely naked. She doesn't bother to cover herself as she towels her fur off, making the coarse hair stand on end in more than a few places. She tosses the towel aside as she passes you, her black cock already bobbing between her legs. She sits down on one of the simple wooden benches and pats the spot next to her, beckoning you over.\n\n", false);
 
 		outputText("\"<i>I'm not gonna mince words,</i>\" she says with a snicker. \"<i>I need a good fuck and I need it right now. I promise, this is going to be as much of a workout as hitting the track.</i>\" As you sit down next to her, she runs a paw up your back and along your neck, eventually draping it over your shoulders. \"<i>Now then partner, how are you gonna take this?</i>\"\n\n", false);
+		//ORAL or LEAVE
+		menu();
+		addButton(0, "Oral", heckelOrallyFixated);
+		addButton(1, "Anal", heckelLovesDaAnal);
 		if (player.str > 50 && player.hasCock()) {
 			outputText("You feel pretty strong yourself, and you realize you could probably arm wrestle this hyena-bitch down to size.");
-			dom = dominateHeckel;
+			addButton(2, "Be Top Dog", dominateHeckel);
+		} else {
+			addDisabledButton(2, "Be Top Dog", "This scene requires you to have considerable strength and cock.");
 		}
-		//ORAL or LEAVE
-		simpleChoices("Oral", heckelOrallyFixated, "Anal", heckelLovesDaAnal, "Be Top Dog", dom, "", null, "Leave", camp.returnToCampUseOneHour);
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 }
 
@@ -167,7 +178,7 @@ private function heckelOrallyFixated():void {
 		outputText("Heckel pulls herself slowly from your throat, her dick finally coming free with a loud POP.  You moan as its girth leaves you, your throat feeling strangely empty without it. A strand of semen drips from her tip as she stands above you, but you greedily move your head to catch it and swallow the salty treat down. Heckel snickers at this before falling down on the bench, looking you over appreciatively.\n\n", false);
 	
 		outputText("\"<i>By Marae, " + player.short + ", you've got quite the mouth. I'm impressed, and that doesn't happen often.</i>\" She brings a paw to her chin as if thinking, before finally reaching it out and ruffling your hair. \"<i>You know, you aren't half bad to be around, and not just for the sex. Don't be a stranger around here, alright?</i>\" With that she stands and heads back into the showers, giving you time to clean up and head back to camp.", false);
-		player.orgasm();
+		player.orgasm('Lips');
 		dynStats("sen", 4);
 		doNext(camp.returnToCampUseOneHour);
 	}
@@ -280,7 +291,7 @@ private function heckelLovesAnal2():void {
 	outputText("You lay on the bench for a few moments as Heckel ruffles your hair again. \"<i>Not bad, partner. You're the best fuck I've had in years, you know that? Not to mention the best workout!</i>\"\n\n", false);
 	
 	outputText("She laughs as she stands and heads for the shower, letting you clean yourself up and head back to camp.", false);
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", 4);
 	doNext(camp.returnToCampUseFourHours);
 }
@@ -364,7 +375,7 @@ private function dominateHeckelConclusion():void {
 	outputText("\n\nHeckel whimpers pleadingly, jostling her hips in your direction, still leaking and dripping all over the strong table.  Gone is the woman obsessed with taking you; in her place is a whiny, sultry bitch begging to be fucked.  You let her go and flick her cock, commenting, \"<i>No need for this little puppy-prick to get anything.</i>\"  Then, without any further teasing, you mount the table and your new muscle-slut all in one motion.  The heat from her mons washes over [eachCock] like the air from a salacious furnace");
 	if (player.balls > 0) outputText(", basting your [balls] with her steaming warmth");
 	else if (player.hasVagina()) outputText(", basting your [vagina] with her steaming warmth");
-	else outputText(", basting your " + player.skin() + " with her steaming warmth");
+	else outputText(", basting your [skin] with her steaming warmth");
 	outputText(".  You give her a knowing smile, " + player.mf("man","'woman'") + " to woman, and rock forward, sliding through her puffy labia and into her silky canal.  Those wet hyena-lips cling to every vein and rigid nook of your " + player.cockDescript(x) + ", slurping your penis down the slick tunnel with hungry undulations.");
 	outputText("\n\nAs soon as you finish your slow glide into that wondrous passage, you drop forward over your prize to look her in the eyes, admiring the smears of cock-cream you dripped and wiped over her muzzle.  Her pouty black lips are trembling, and inspired by the exquisite sensations migrating through your " + player.cockDescript(x) + ", you kiss her, not as her lover but as her owner.  You ply her mouth with brutal, forceful kisses, raping her lips with your tongue, twining it around her own as you pillage her confused visage with a bruisingly rough french.  Her animal-like ears quickly begin to twitch, and her back arches, pressing her nipples into your [chest] as she sensually writhes beneath you.");
 	outputText("\n\nYou reach down to crudely grope at her perky tits, squeezing the soft mounds in your fingers as you take her completely, your hips bouncing atop hers hard enough to shake the table.  The whole structure rocks slightly, rattling against the wall with loud knocks.  You pound her pussy hard, her useless balls jostle uncomfortably, passing momentary glimpses of displeasure through her sex-fueled rictus.  Her pre-spunk, which coated her toned abs long ago, has puddled up to such a degree that it's rolling down her sides in small rivers, lubricating the wood below enough that she's begin to slip and slide across it.  You break the kiss to look her in the eye, and with another squeeze of her enjoyable little titty, you say, \"<i>You're MY bitch.</i>\"");
@@ -399,7 +410,7 @@ private function dominateHeckelConclusion():void {
 		if (flags[kFLAGS.LOTTIE_ENCOUNTER_COUNTER] > 0) outputText(", then give Lottie a high five");
 		outputText(".  You really love bacon.");
 	}
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }

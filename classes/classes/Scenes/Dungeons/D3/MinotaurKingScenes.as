@@ -27,7 +27,7 @@ package classes.Scenes.Dungeons.D3
 			{
 				outputText(" Even Isabella would struggle to wield such a weapon.");
 			}
-			else if (player.findStatusEffect(StatusEffects.CampMarble) >= 0)
+			else if (player.hasStatusEffect(StatusEffects.CampMarble))
 			{
 				outputText(" Even Marble would struggle to wield such a weapon");
 			}
@@ -56,10 +56,16 @@ package classes.Scenes.Dungeons.D3
 				outputText(" The poor things are so corrupted.");
 			}
 			menu();
+			addDisabledButton(1, "Docking", "This scene requires you to have fitting cock.");
+			addDisabledButton(2, "Buttfuck", "This scene requires you to have fitting cock.");
+			addDisabledButton(3, "Titfuck", "This scene requires you to have cock.");
+			addDisabledButton(4, "SloppySeconds", "This scene requires you to have cock.");
+			addDisabledButton(5, "Ride Him", "This scene requires you to have vagina.");
+			
 			addButton(0,"Kill Them",this.murderhobo);
 			if (player.hasCock())
 			{
-				if (player.smallestCockIndex()) addButton(1, "Docking", this.dockucocku, player.smallestCockIndex());
+				if (player.smallestCockArea() <= 50) addButton(1, "Docking", this.dockucocku, player.smallestCockIndex());
 				if (player.cockThatFits(200) >= 0) addButton(2,"Buttfuck",this.buttufucku);
 				addButton(3,"Titfuck",this.titfuckCowslut);
 				addButton(4,"SloppySeconds",this.sloppySeconds);
@@ -119,7 +125,7 @@ package classes.Scenes.Dungeons.D3
 			{
 				outputText("\n\nYou cum like a firehose, spraying a deluge of sticky spunk straight down the minotaur’s cock. His body may have been ready to expel such flows, but never to take one in. He grunts in what you take for discomfort and stares in horror at the bulges of fluid disappearing into his sheath, spreading through his body and collecting in his balls. You can actually see his nuts swelling up with all the pumped-in sperm, absolutely bloated with the fruit of your loins. Hefting one, you feel the extra fluid slosh as you fill it, marvelling at your own virility.");
 			}
-			if (!player.hasKnot())
+			if (!player.hasKnot(cockIdx) || player.cocks[cockIdx].knotMultiplier * player.cocks[cockIdx].cockThickness <= 2)
 			{
 				outputText("\n\nSatisfied at last, you pull out with lurid ‘schliiiick’ sound. A few of the assembled demons clap and catcall, but most surprising of all is the monarch’s own roar of bliss, followed shortly after by his powerful hips lifting up off the floor. The well-fucked horse-cock erupts like a long-dormant volcano, spraying jizz from its sloppy, stretched slit until minotaur spunk is raining over the assembled crowd. Many of the demons immediately fall into fucking one another, but you have the good sense to avoid the bulk of it.");
 				outputText("\n\nAgain and again, those powerful, shaggy hips lift, and each time, more cow-cream explodes into the air, mixed with something else. Something better. Champion cum. Excellia is revitalized by erotic monsoon and manages to climb on top before he finishes, riding him like the bucking bronco that he is.");
@@ -236,7 +242,7 @@ package classes.Scenes.Dungeons.D3
 				outputText(".");
 			}
 			outputText("\n\nThe beaten brute squirms and writhes long after you both of you finish cumming, lost in barely understood pleasure. You pull out before his over-eager motions carry you with him, noisily licking his residue from your lips and preparing to get on with your business. The taste might be keeping you hard, but you feel more than sated enough to take on a demon queen.");
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("lus",10);
 			combat.cleanupAfterCombat(getGame().dungeons.resumeFromFight);
 		}	
@@ -400,7 +406,7 @@ package classes.Scenes.Dungeons.D3
 			}
 			outputText(". The artificial euphoria this has brought you makes it difficult not to crawl over to the nearest incubus and offer your body up, but you still have to deal with Lethice. Maybe you can make her lick the drippings from your slit after you take her down.");
 			outputText("\n\nWith that fantasy firmly in mind, you stand up and fix your [armor]. You can still do this, right?");
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("lus",5,"resisted",false);
 			player.createStatusEffect(StatusEffects.MinotaurKingsTouch,0,0,0,0);
 			flags[kFLAGS.MINOTAURKINGS_TOUCH] = 1;
@@ -443,7 +449,7 @@ package classes.Scenes.Dungeons.D3
 				}
 			}
 			outputText("\n\nRegrettably, you’ve got work to do. You extricate yourself from the cum-and-milk splattered cow-girl and stand up, regarding the awaiting demoness.");
-			player.orgasm();
+			player.orgasm('Dick');
 			player.HP = player.maxHP();
 			combat.cleanupAfterCombat(getGame().dungeons.resumeFromFight);
 		}
@@ -539,7 +545,7 @@ package classes.Scenes.Dungeons.D3
 			outputText("\n\nPivoting on your prick, dragging her velvety dicksleeve in a delightful 180 on your length, Excellia crawls atop you, still shaking. Her pussy is still squeezing and clenching down around your [cock " + x + "], keeping your attention focused solely on the itch between your thighs. Your overstimulated crotch has no choice but to climax once more, orgasming to the insatiable mynx’s demands. There’s not much to left to give her, but that doesn’t stop you from writhing in ecstasy, or groping her tits in wild excitement.");
 			outputText("\n\nYou aren’t sure how many more times you give it to her, but by the time you finally manage to extract yourself from her wanton lips, the Minotaur King has been dragged into the crowd.");
 			outputText("\n\nLethice looks bored, drumming her fingers on the edge of her throne. Time to deal with her.");
-			player.orgasm();
+			player.orgasm('Dick');
 			combat.cleanupAfterCombat(getGame().dungeons.resumeFromFight);
 		}
 		

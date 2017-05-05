@@ -35,11 +35,11 @@ package classes.Scenes.Dungeons.D3
 		
 		public function handleTease(lustDelta:Number, successful:Boolean):void
 		{
-			if (player.findStatusEffect(StatusEffects.RemovedArmor) < 0 && player.armor != ArmorLib.NOTHING)
+			if (!player.hasStatusEffect(StatusEffects.RemovedArmor) && player.armor != ArmorLib.NOTHING)
 			{
 				outputText("\n\nJean-Claude stops circling you, looking mildly surprised as you attempt to entice him with your body.");
 
-				outputText("\n\n“<i>This is the legendary Champion of Ignam?</i>” he husks. “<i>Flaunting themselves like the most amateur of Lethice’s strippers?</i>” His eyes glow orange. “<i>If that was your intent all along, interloper, you should not do it so half-assedly. You should take off all your clothes, embrace what you truly are, show me what you are really made of.</i>” The hypnotic compulsion presses upon you, commanding you to raise your hands to your [armor]’s clasps...");
+				outputText("\n\n“<i>This is the legendary Champion of Ingnam?</i>” he husks. “<i>Flaunting themselves like the most amateur of Lethice’s strippers?</i>” His eyes glow orange. “<i>If that was your intent all along, interloper, you should not do it so half-assedly. You should take off all your clothes, embrace what you truly are, show me what you are really made of.</i>” The hypnotic compulsion presses upon you, commanding you to raise your hands to your [armor]’s clasps...");
 				
 				if (!successful)
 				{
@@ -54,7 +54,7 @@ package classes.Scenes.Dungeons.D3
 					// (JC arousal up one level, PC’s armor removed for rest of battle)
 					player.createStatusEffect(StatusEffects.RemovedArmor, 0, 0, 0, 0);
 					
-					if (this.findStatusEffect(StatusEffects.JCLustLevel) < 0)
+					if (!this.hasStatusEffect(StatusEffects.JCLustLevel))
 					{
 						this.createStatusEffect(StatusEffects.JCLustLevel, 1, 0, 0, 0);
 						lustVuln += 0.1;

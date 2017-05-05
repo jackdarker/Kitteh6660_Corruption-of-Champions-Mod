@@ -76,8 +76,13 @@ package classes
 			outputText("\n\n");
 			
 			if (flags[kFLAGS.SILLY_MODE_ENABLE_FLAG]) outputText("Silly Mode: <font color=\"#008000\"><b>ON</b></font>\n Crazy, nonsensical, and possibly hilarious things may occur.");
-			else outputText("Silly Mode: <font color=\"#800000\"><b>OFF</b></font>\n You're an incorrigable stick-in-the-mud with no sense of humor.");
+			else outputText("Silly Mode: <font color=\"#800000\"><b>OFF</b></font>\n You're an incorrigible stick-in-the-mud with no sense of humor.");
 
+			outputText("\n\n");
+				
+			if (flags[kFLAGS.PRISON_ENABLED] == false) outputText("Prison: <font color=\"#008000\"><b>OFF</b></font>\nThe prison cannot be accessed.");
+			else outputText("Prison: <font color=\"#800000\"><b>ON</b></font>\nThe prison can be accessed. WARNING: The prison is very buggy and may break your game. Enter it at your own risk!");
+				
 			outputText("\n\n");
 			
 			outputText("<b>The following flags are not fully implemented yet (e.g. they don't apply in <i>all</i> cases where they could be relevant).</b>\n");
@@ -120,6 +125,10 @@ package classes
 			
 			addButton(5, "SFW Toggle", toggleSFW, null, null, null, "Toggles SFW Mode. If enabled, sex scenes are hidden and all adult materials are censored. \n\nCurrently under development, only disables most sex scenes. Soon, it'll disable rape scenes."); //Softcore Mode
 			addButton(6, "Auto level", toggleAutoLevel, null, null, null, "Toggles automatic leveling when you accumulate sufficient experience.");
+			if (flags[kFLAGS.PRISON_ENABLED] == true) {
+				addButton(7, "No Prison", togglePrison, null, null, null, "Turn off the prison.");
+			} else {
+				addButton(7, "Yes Prison", togglePrison, null, null, null, "Turn on the prison.\n\n<font color=\"#080000\">WARNING: The prison is very buggy and may break your game. Enter it at your own risk!</font>"); }
 			if (player.str > 0) addButton(8, "Enable Surv", enableSurvivalPrompt, null, null, null, "Enable Survival mode. This will enable hunger. \n\n<font color=\"#080000\">Note: This is permanent and cannot be turned off!</font>", "Enable Survival Mode");	
 			if (player.str > 0) addButton(9, "Enable Real", enableRealisticPrompt, null, null, null, "Enable Realistic mode. This will make the game a bit realistic. \n\n<font color=\"#080000\">Note: This is permanent and cannot be turned off! Do not turn this on if you have hyper endowments.</font>", "Enable Realistic Mode");	
 			addButton(10, "Fetishes", fetishSubMenu, null, null, null, "Toggle some of the weird fetishes such as watersports and worms.");
@@ -165,9 +174,23 @@ package classes
 			return;
 		}
 
+		public function togglePrison():void
+		{
+			//toggle prison
+			if (flags[kFLAGS.PRISON_ENABLED])
+				flags[kFLAGS.PRISON_ENABLED] = false;
+			else
+				flags[kFLAGS.PRISON_ENABLED] = true;
+				
+			mainView.showMenuButton(MainView.MENU_DATA);
+			settingsScreenGameSettings();
+			return;
+		}
+
 		public function difficultySelectionMenu():void {
 			clearOutput();
 			outputText("You can choose a difficulty to set how hard battles will be.\n");
+			//outputText("\n<b>Peaceful:</b> Same as Easy but encounters can be avoided or skipped.");
 			outputText("\n<b>Easy:</b> -50% damage, can ignore bad-ends.");
 			outputText("\n<b>Normal:</b> No stats changes.");
 			outputText("\n<b>Hard:</b> +25% HP, +15% damage.");
@@ -175,18 +198,19 @@ package classes
 			outputText("\n<b>Extreme:</b> +100% HP, +50% damage.");
 			//outputText("\n<b>Up to Eleven:</b> +150% HP, +75% damage. This is the most cruel difficulty of all.");
 			menu();
-			addButton(0, "Easy", chooseDifficulty, -1);
-			addButton(1, "Normal", chooseDifficulty, 0);
-			addButton(2, "Hard", chooseDifficulty, 1);
-			addButton(3, "Nightmare", chooseDifficulty, 2);
-			addButton(4, "EXTREME", chooseDifficulty, 3);
-			//addButton(5, "Up to Eleven", chooseDifficulty, 4);
+			//addButton(0, "Peaceful", chooseDifficulty, -2);
+			addButton(1, "Easy", chooseDifficulty, -1);
+			addButton(2, "Normal", chooseDifficulty, 0);
+			addButton(5, "Hard", chooseDifficulty, 1);
+			addButton(6, "Nightmare", chooseDifficulty, 2);
+			addButton(7, "EXTREME", chooseDifficulty, 3);
+			//addButton(8, "Up to Eleven", chooseDifficulty, 4);
 			addButton(14, "Back", settingsScreenGameSettings);
 		}
 
 		public function chooseDifficulty(difficulty:int = 0):void {
 			if (difficulty <= -1) {
-				flags[kFLAGS.EASY_MODE_ENABLE_FLAG] = 1;
+				flags[kFLAGS.EASY_MODE_ENABLE_FLAG] = -difficulty;
 				flags[kFLAGS.GAME_DIFFICULTY] = 0;
 			}
 			else {
@@ -262,19 +286,19 @@ package classes
 			menu();
 			addButton(0, "Watersports", toggleWatersports, null, null, null, "Toggles watersports scenes. (Scenes related to urine fetish)"); //Enables watersports.
 			//addButton(1, "Rimjob", toggleRimjob, null, null, null, "Toggles rimjob scenes."); //Enables rimjob.
-			if (player.findStatusEffect(StatusEffects.WormsOn) >= 0 || player.findStatusEffect(StatusEffects.WormsOff) >= 0) addButton(2, "Worms", toggleWormsMenu, null, null, null, "Enable or disable worms. This will NOT cure infestation, if you have any.");
+			if (player.hasStatusEffect(StatusEffects.WormsOn) || player.hasStatusEffect(StatusEffects.WormsOff)) addButton(2, "Worms", toggleWormsMenu, null, null, null, "Enable or disable worms. This will NOT cure infestation, if you have any.");
 			else addButtonDisabled(2, "Worms", "Find the sign depicting the worms in the mountains to unlock this.");
 			addButton(4, "Back", settingsScreenGameSettings);
 		}
 
 		private function toggleWormsMenu():void {
 			clearOutput();
-			if (player.findStatusEffect(StatusEffects.WormsOn) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.WormsOn)) {
 				outputText("You have chosen to encounter worms as you find the mountains");
-				if (player.findStatusEffect(StatusEffects.WormsHalf) >= 0) outputText(" albeit at reduced encounter rate");
+				if (player.hasStatusEffect(StatusEffects.WormsHalf)) outputText(" albeit at reduced encounter rate");
 				outputText(". You can get infested.");
 			}
-			if (player.findStatusEffect(StatusEffects.WormsOff) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.WormsOff)) {
 				outputText("You have chosen to avoid worms. You won't be able to get infested.");
 			}
 			menu();
@@ -286,9 +310,9 @@ package classes
 
 		private function setWorms(enabled:Boolean, half:Boolean):void {
 			//Clear status effects
-			if (player.findStatusEffect(StatusEffects.WormsOn) >= 0) player.removeStatusEffect(StatusEffects.WormsOn);
-			if (player.findStatusEffect(StatusEffects.WormsHalf) >= 0) player.removeStatusEffect(StatusEffects.WormsHalf);
-			if (player.findStatusEffect(StatusEffects.WormsOff) >= 0) player.removeStatusEffect(StatusEffects.WormsOff);
+			if (player.hasStatusEffect(StatusEffects.WormsOn)) player.removeStatusEffect(StatusEffects.WormsOn);
+			if (player.hasStatusEffect(StatusEffects.WormsHalf)) player.removeStatusEffect(StatusEffects.WormsHalf);
+			if (player.hasStatusEffect(StatusEffects.WormsOff)) player.removeStatusEffect(StatusEffects.WormsOff);
 			//Set status effects
 			if (enabled) {
 				player.createStatusEffect(StatusEffects.WormsOn, 0, 0, 0, 0);
@@ -513,11 +537,10 @@ package classes
 		//------------
 		public function fontSettingsMenu():void {
 			menu();
-			simpleChoices("Smaller Font", decFontSize,
-				"Larger Font", incFontSize,
-				"Reset Size", resetFontSize,
-				"", null,
-				"Back", settingsScreenMain);
+			addButton(0, "Smaller Font", decFontSize);
+			addButton(1, "Larger Font", incFontSize);
+			addButton(2, "Reset Size", resetFontSize);
+			addButton(4, "Back", settingsScreenMain);
 		}
 
 		public function incFontSize():void

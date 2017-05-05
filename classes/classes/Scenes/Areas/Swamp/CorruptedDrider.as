@@ -15,7 +15,7 @@ package classes.Scenes.Areas.Swamp
 			var temp:int;
 			outputText("The corrupted drider closes in on your web-bound form, cooing happily at you while you struggle with the sticky fibers.\n\n", false);
 			//Blind dodge change
-			if (findStatusEffect(StatusEffects.Blind) >= 0 && rand(3) < 2) {
+			if (hasStatusEffect(StatusEffects.Blind) && rand(3) < 2) {
 				outputText("She's too blind to get anywhere near you.\n", false);
 			}
 			//Dodge
@@ -55,7 +55,7 @@ package classes.Scenes.Areas.Swamp
 				else outputText("Just look at my glossy, dripping lips.  Imagine how great it would feel to have them locked against you.  Why resist?</i>\"\n", false);
 			}
 			
-			else if (player.findStatusEffect(StatusEffects.DriderKiss) < 0) {
+			else if (!player.hasStatusEffect(StatusEffects.DriderKiss)) {
 				//(HIT? + 10 lust)
 				game.dynStats("lus", 10);
 				outputText("Before you can move, she's right on top of you, leaning ", false);
@@ -79,7 +79,7 @@ package classes.Scenes.Areas.Swamp
 				}
 				//(Get hit 3rd+ time)
 				else {
-					outputText("This time you barely move.  Your body is too entranced by the idea of another venom-laced kiss to resist.  Glorious purple goo washes into your mouth as her lips meet yours, sealing tight but letting your tongue enter her mouth to swirl around and feel the venom drip from her fangs.  It's heavenly!  Your " + player.skin() + " grows hot and tingly, and you ache to be touched so badly.  Your " + player.nippleDescript(0) + "s feel hard enough to cut glass, and a growing part of you admits that you'd love to feel the drider's chitinous fingers pulling on them.", false);
+					outputText("This time you barely move.  Your body is too entranced by the idea of another venom-laced kiss to resist.  Glorious purple goo washes into your mouth as her lips meet yours, sealing tight but letting your tongue enter her mouth to swirl around and feel the venom drip from her fangs.  It's heavenly!  Your [skin] grows hot and tingly, and you ache to be touched so badly.  Your " + player.nippleDescript(0) + "s feel hard enough to cut glass, and a growing part of you admits that you'd love to feel the drider's chitinous fingers pulling on them.", false);
 					//(HIT? + 20 lust)
 					game.dynStats("lus", 20);
 					if (player.hasCock() || player.hasVagina()) {
@@ -113,15 +113,15 @@ package classes.Scenes.Areas.Swamp
 			game.spriteSelect(77);
 			if (lust > 70 && rand(4) == 0) driderMasturbate();
 			//1/4 chance of silence if pc knows spells
-			else if (player.hasSpells() && player.findStatusEffect(StatusEffects.WebSilence) < 0 && rand(4) == 0) {
+			else if (player.hasSpells() && !player.hasStatusEffect(StatusEffects.WebSilence) && rand(4) == 0) {
 				spiderSilence();
 			}
 			//1/4 chance of disarm
-			else if (player.findStatusEffect(StatusEffects.Disarmed) < 0 && player.weaponName != "fists" && rand(4) == 0) {
+			else if (!player.hasStatusEffect(StatusEffects.Disarmed) && player.weaponName != "fists" && rand(4) == 0) {
 				spiderDisarm();
 			}
 			//Always web unless already webbed
-			else if (player.spe >= 2 && (player.findStatusEffect(StatusEffects.Web) < 0 || rand(2) == 0)) {
+			else if (player.spe >= 2 && (!player.hasStatusEffect(StatusEffects.Web) || rand(2) == 0)) {
 				spiderMorphWebAttack();
 			}
 			//Kiss!

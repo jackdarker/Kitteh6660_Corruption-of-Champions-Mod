@@ -28,6 +28,8 @@ package classes
 			if (player.hasKeyItem("Bow") >= 0 || player.hasKeyItem("Kelt's Bow") >= 0)
 				combatStats += "<b>Bow Skill:</b> " + Math.round(player.statusEffectv1(StatusEffects.Kelt)) + " / 100\n";
 				
+			combatStats += "<b>Critical Hit Chance:</b> " + Math.round(combat.getCritChance()) + "%\n";	
+			
 			combatStats += "<b>Damage Resistance:</b> " + (100 - Math.round(player.damagePercent(true))) + "-" + (100 - Math.round(player.damagePercent(true) - player.damageToughnessModifier(true))) + "% (Higher is better.)\n";
 
 			combatStats += "<b>Lust Resistance:</b> " + (100 - Math.round(player.lustPercent())) + "% (Higher is better.)\n";
@@ -200,14 +202,15 @@ package classes
 			bodyStats += "<b>Fertility (Base) Rating:</b> " + Math.round(player.fertility) + "\n";
 			bodyStats += "<b>Fertility (With Bonuses) Rating:</b> " + Math.round(player.totalFertility()) + "\n";
 			
-			if (player.cumQ() > 0)
+			if (player.cumQ() > 0) {
 				bodyStats += "<b>Virility Rating:</b> " + Math.round(player.virilityQ() * 100) + "\n";
 				if (flags[kFLAGS.HUNGER_ENABLED] >= 1) bodyStats += "<b>Cum Production:</b> " + addComma(Math.round(player.cumQ())) + " / " + addComma(Math.round(player.cumCapacity())) + "mL (" + Math.round((player.cumQ() / player.cumCapacity()) * 100) + "%) \n";
 				else bodyStats += "<b>Cum Production:</b> " + addComma(Math.round(player.cumQ())) + "mL\n";
+			}
 			if (player.lactationQ() > 0)
 				bodyStats += "<b>Milk Production:</b> " + addComma(Math.round(player.lactationQ())) + "mL\n";
 			
-			if (player.findStatusEffect(StatusEffects.Feeder) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.Feeder)) {
 				bodyStats += "<b>Hours Since Last Time Breastfed Someone:</b>  " + player.statusEffectv2(StatusEffects.Feeder);
 				if (player.statusEffectv2(StatusEffects.Feeder) >= 72)
 					bodyStats += " (Too long! Sensitivity Increasing!)";
@@ -250,7 +253,7 @@ package classes
 			if (player.findPerk(PerkLib.SpiderOvipositor) >= 0 || player.findPerk(PerkLib.BeeOvipositor) >= 0)
 				bodyStats += "<b>Ovipositor Total Egg Count: " + player.eggs() + "\nOvipositor Fertilized Egg Count: " + player.fertilizedEggs() + "</b>\n";
 				
-			if (player.findStatusEffect(StatusEffects.SlimeCraving) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.SlimeCraving)) {
 				if (player.statusEffectv1(StatusEffects.SlimeCraving) >= 18)
 					bodyStats += "<b>Slime Craving:</b> Active! You are currently losing strength and speed.  You should find fluids.\n";
 				else {
@@ -264,6 +267,120 @@ package classes
 			if (bodyStats != "")
 				outputText("\n<b><u>Body Stats</u></b>\n" + bodyStats, false);
 			// End Body Stats
+			
+			
+			// Begin Racial Scores display -Foxwells
+			var raceScores:String = "";
+			
+			if (player.humanScore() > 0) {
+				raceScores += "<b>Human Score:</b> " + player.humanScore() + "\n";
+			}
+			if (player.mutantScore() > 0) {
+				raceScores += "<b>Mutant Score:</b> " + player.mutantScore() + "\n";
+			}
+			if (player.demonScore() > 0) {
+				raceScores += "<b>Demon Score:</b> " + player.demonScore() + "\n";
+			}
+			if (player.goblinScore() > 0) {
+				raceScores += "<b>Goblin Score:</b> " + player.goblinScore() + "\n";
+			}
+			if (player.gooScore() > 0) {
+				raceScores += "<b>Goo Score:</b> " + player.gooScore() + "\n";
+			}
+			if (player.cowScore() > 0) {
+				raceScores += "<b>Cow Score:</b> " + player.cowScore() + "\n";
+			}
+			if (player.minoScore() > 0) {
+				raceScores += "<b>Minotaur Score:</b> " + player.minoScore() + "\n";
+			}
+			if (player.catScore() > 0) {
+				raceScores += "<b>Cat Score:</b> " + player.catScore() + "\n";
+			}
+			if (player.dragonneScore() > 0) {
+				raceScores += "<b>Dragonne Score:</b> " + player.dragonneScore() + "\n";
+			}
+			if (player.manticoreScore() > 0) {
+				raceScores += "<b>Manticore Score:</b> " + player.manticoreScore() + "\n";
+			}
+			if (player.lizardScore() > 0) {
+				raceScores += "<b>Lizard Score:</b> " + player.lizardScore() + "\n";
+			}
+			if (player.salamanderScore() > 0) {
+				raceScores += "<b>Salamander Score:</b> " + player.salamanderScore() + "\n";
+			}
+			if (player.dragonScore() > 0) {
+				raceScores += "<b>Dragon Score:</b> " + player.dragonScore() + "\n";
+			}
+			if (player.nagaScore() > 0) {
+				raceScores += "<b>Naga Score:</b> " + player.nagaScore() + "\n";
+			}
+			if (player.sandTrapScore() > 0) {
+				raceScores += "<b>Sand Trap Score:</b> " + player.sandTrapScore() + "\n";
+			}
+			if (player.harpyScore() > 0) {
+				raceScores += "<b>Avian Score:</b> " + player.harpyScore() + "\n";
+			}
+			if (player.sharkScore() > 0) {
+				raceScores += "<b>Shark Score:</b> " + player.sharkScore() + "\n";
+			}
+			if (player.sirenScore() > 0) {
+				raceScores += "<b>Siren Score:</b> " + player.sirenScore() + "\n";
+			}
+			if (player.dogScore() > 0) {
+				raceScores += "<b>Dog Score:</b> " + player.dogScore() + "\n";
+			}
+			if (player.wolfScore() > 0) {
+				raceScores += "<b>Wolf Score:</b> " + player.wolfScore() + "\n";
+			}
+			if (player.foxScore() > 0) {
+				raceScores += "<b>Fox Score:</b> " + player.foxScore() + "\n";
+			}
+			if (player.kitsuneScore() > 0) {
+				raceScores += "<b>Kitsune Score:</b> " + player.kitsuneScore() + "\n";
+			}
+			if (player.echidnaScore() > 0) {
+				raceScores += "<b>Echidna Score:</b> " + player.echidnaScore() + "\n";
+			}
+			if (player.mouseScore() > 0) {
+				raceScores += "<b>Mouse Score:</b> " + player.mouseScore() + "\n";
+			}
+			if (player.ferretScore() > 0) {
+				raceScores += "<b>Ferret Score:</b> " + player.ferretScore() + "\n";
+			}
+			if (player.raccoonScore() > 0) {
+				raceScores += "<b>Raccoon Score:</b> " + player.raccoonScore() + "\n";
+			}
+			if (player.bunnyScore() > 0) {
+				raceScores += "<b>Naga Score:</b> " + player.bunnyScore() + "\n";
+			}
+			if (player.kangaScore() > 0) {
+				raceScores += "<b>Kangaroo Score:</b> " + player.kangaScore() + "\n";
+			}
+			if (player.horseScore() > 0) {
+				raceScores += "<b>Horse Score:</b> " + player.horseScore() + "\n";
+			}
+			if (player.deerScore() > 0) {
+				raceScores += "<b>Deer Score:</b> " + player.deerScore() + "\n";
+			}
+			if (player.satyrScore() > 0) {
+				raceScores += "<b>Satyr Score:</b> " + player.satyrScore() + "\n";
+			}
+			if (player.rhinoScore() > 0) {
+				raceScores += "<b>Rhino Score:</b> " + player.rhinoScore() + "\n";
+			}
+			if (player.spiderScore() > 0) {
+				raceScores += "<b>Spider Score:</b> " + player.spiderScore() + "\n";
+			}
+			if (player.pigScore() > 0) {
+				raceScores += "<b>Pig Score:</b> " + player.pigScore() + "\n";
+			}
+			if (player.beeScore() > 0) {
+				raceScores += "<b>Bee Score:</b> " + player.beeScore() + "\n";
+			}
+			
+			if (raceScores != "")
+				outputText("\n<b><u>Racial Scores</u></b>\n" + raceScores, false);
+			// End Racial Scores display -Foxwells
 
 			// Begin Misc Stats
 			var miscStats:String = "";
@@ -295,6 +412,21 @@ package classes
 			
 			if (flags[kFLAGS.TIMES_ORGASMED] > 0)
 				miscStats += "<b>Times Orgasmed:</b> " + flags[kFLAGS.TIMES_ORGASMED] + "\n";
+				
+			if (getGame().bimboProgress.ableToProgress()) {
+				if (flags[kFLAGS.TIMES_ORGASM_DICK] > 0) 
+					miscStats += "<i>Dick tension:</i> " + flags[kFLAGS.TIMES_ORGASM_DICK] + "\n";
+				if (flags[kFLAGS.TIMES_ORGASM_ANAL] > 0) 
+					miscStats += "<i>Butt tension:</i> " + flags[kFLAGS.TIMES_ORGASM_ANAL] + "\n";
+				if (flags[kFLAGS.TIMES_ORGASM_VAGINAL] > 0) 
+					miscStats += "<i>Pussy tension:</i> " + flags[kFLAGS.TIMES_ORGASM_VAGINAL] + "\n";
+				if (flags[kFLAGS.TIMES_ORGASM_TITS] > 0) 
+					miscStats += "<i>Tits tension:</i> " + flags[kFLAGS.TIMES_ORGASM_TITS] + "\n";
+				if (flags[kFLAGS.TIMES_ORGASM_LIPS] > 0) 
+					miscStats += "<i>Lips tension:</i> " + flags[kFLAGS.TIMES_ORGASM_LIPS] + "\n";
+				miscStats += "<i>Bimbo score:</i> " + Math.round(player.bimboScore() * 10) + "\n";
+			}
+
 			
 			if (miscStats != "")
 				outputText("\n<b><u>Miscellaneous Stats</u></b>\n" + miscStats);
@@ -335,7 +467,7 @@ package classes
 			// Begin Interpersonal Stats
 			var interpersonStats:String = "";
 			
-			if (flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] > 0) {
+			if (getGame().dungeons.palace.anzuScene.anzuRelationshipLevel() > 0) {
 				interpersonStats += "<b>Anzu's Affection:</b> " + flags[kFLAGS.ANZU_AFFECTION] + "%\n";
 				interpersonStats += "<b>Anzu's Relationship Level:</b> " + (flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 1 ? "Acquaintances" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 2 ? "Friend" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 3 ? "Close Friend" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 4 ? "Lover" : "Undefined") + "\n";
 			}
@@ -386,7 +518,7 @@ package classes
 				interpersonStats += "<b>Katherine's Submissiveness:</b> " + getGame().telAdre.katherine.submissiveness() + "\n";
 			}
 
-			if (player.findStatusEffect(StatusEffects.Kelt) >= 0 && flags[kFLAGS.KELT_BREAK_LEVEL] == 0 && flags[kFLAGS.KELT_KILLED] == 0) {
+			if (player.hasStatusEffect(StatusEffects.Kelt) && flags[kFLAGS.KELT_BREAK_LEVEL] == 0 && flags[kFLAGS.KELT_KILLED] == 0) {
 				if (player.statusEffectv2(StatusEffects.Kelt) >= 130)
 					interpersonStats += "<b>Submissiveness To Kelt:</b> " + 100 + "%\n";
 				else
@@ -939,7 +1071,7 @@ package classes
 							_add(new PerkClass(PerkLib.FocusedMind));
 						
 						if (player.findPerk(PerkLib.Archmage) >= 0 && player.findPerk(PerkLib.Channeling) >= 0  &&
-						(player.findStatusEffect(StatusEffects.KnowsWhitefire) >= 0
+						(player.hasStatusEffect(StatusEffects.KnowsWhitefire)
 						|| player.findPerk(PerkLib.FireLord) >= 0 
 						|| player.findPerk(PerkLib.Hellfire) >= 0 
 						|| player.findPerk(PerkLib.EnlightenedNinetails) >= 0
@@ -948,11 +1080,11 @@ package classes
 				}
 				// Spell-boosting perks
 				// Battlemage: auto-use Might
-				if (player.findPerk(PerkLib.Channeling) >= 0 && player.findStatusEffect(StatusEffects.KnowsMight) >= 0 && player.inte >= 80) {
+				if (player.findPerk(PerkLib.Channeling) >= 0 && player.hasStatusEffect(StatusEffects.KnowsMight) && player.inte >= 80) {
 						_add(new PerkClass(PerkLib.Battlemage));
 				}
 				// Spellsword: auto-use Charge Weapon
-				if (player.findPerk(PerkLib.Channeling) >= 0 && player.findStatusEffect(StatusEffects.KnowsCharge) >= 0 && player.inte >= 80) {
+				if (player.findPerk(PerkLib.Channeling) >= 0 && player.hasStatusEffect(StatusEffects.KnowsCharge) && player.inte >= 80) {
 						_add(new PerkClass(PerkLib.Spellsword));
 				}
 			}

@@ -84,7 +84,7 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPetOptedOut():Boolean
 		{
 			var testVal:* = undefined;
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -98,7 +98,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetScore():Number
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -107,7 +107,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetScoreSet(newVal:Number):void
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -117,7 +117,7 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPetScoreChange(changeVal:Number):void
 		{
 			var newVal:* = undefined;
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -135,7 +135,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetTier():Number
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -144,7 +144,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetTierSet(newVal:Number):void
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -189,7 +189,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetEvent():Number
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -198,7 +198,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetEventSet(newVal:Number):void
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -208,7 +208,7 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPetEventChange(changeVal:Number):void
 		{
 			var newVal:* = undefined;
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -226,7 +226,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetScratch():Number
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -235,7 +235,7 @@ package classes.Scenes.Places.Prison
 		
 		public function prisonCaptorPetScratchSet(newVal:Number):void
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -245,7 +245,7 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPetScratchChange(changeVal:Number):void
 		{
 			var newVal:* = undefined;
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyPet) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyPet))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyPet,0,0,0,0);
 			}
@@ -981,7 +981,7 @@ package classes.Scenes.Places.Prison
 		{
 			var behaviorCounter:int = undefined;
 			outputText("(Placeholder) (Training Crate Masturbate) Overwhelmed with desire, you sheepishly masturbate, staining your bedding with your fluids.\n\n");
-			player.orgasm();
+			player.orgasm('Generic');
 			behaviorCounter = player.statusEffectv3(StatusEffects.PrisonCaptorEllyStatus) - 2;
 			outputText("(Placeholder) new behavior value is " + behaviorCounter + "\n\n");
 			player.changeStatusValue(StatusEffects.PrisonCaptorEllyStatus,3,behaviorCounter);
@@ -1103,7 +1103,7 @@ package classes.Scenes.Places.Prison
 					behaviorCounter = player.statusEffectv3(StatusEffects.PrisonCaptorEllyStatus) + 1;
 					outputText("(Placeholder) new behavior value is " + behaviorCounter + "\n\n");
 					player.changeStatusValue(StatusEffects.PrisonCaptorEllyStatus,3,behaviorCounter);
-					player.orgasm();
+					player.orgasm('Generic');
 					corChange = -0.25;
 					dynStats("cor", corChange);
 				}
@@ -1476,7 +1476,7 @@ package classes.Scenes.Places.Prison
 				prison.changeWill(10);
 				player.refillHunger(40);
 				prisonCaptorPetScoreChange(2);
-				player.orgasm();
+				player.orgasm('Lips');
 				prisonCaptorPetTierUpdate();
 				shortName = consumables.C_BREAD;
 			}

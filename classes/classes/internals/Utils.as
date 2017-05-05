@@ -35,7 +35,28 @@ package classes.internals
 			for (var x:int = 1; x < stringList.length - 1; x++) concat += ", " + stringList[x];
 			return concat + " and " + stringList[stringList.length - 1];
 		}
-		
+
+		/**
+		 * Convert a mixed array to an array of strings
+		 * 
+		 * Some string lists (color lists for example) may contain strings and arrays containing 2+ strings.
+		 * e. g.: ["blue", "green", ["black", "white", "gray"], ["red", "orange"], "blue"]
+		 * With this method such an array would be converted to contain only string.
+		 * So the above example would return:
+		 * ["blue", "green", "black, white and gray", "red and orange", "blue"]
+		 * 
+		 * @param   list  An array with mixed strings and arrays of strings
+		 * @return  An array of strings
+		 */
+		public static function convertMixedToStringArray(list:Array):Array
+		{
+			var returnArray:Array = [];
+			for (var i:String in list)
+				returnArray.push((list[i] is Array) ? formatStringArray(list[i]) : list[i]);
+
+			return returnArray;
+		}
+
 		public static function num2Text(number:int):String {
 			if (number >= 0 && number <= 10) return NUMBER_WORDS_NORMAL[number];
 			return number.toString();
@@ -98,7 +119,7 @@ package classes.internals
 		 * @param	... args	Collection to look in
 		 * @return				Boolean true/false if found/not found.
 		 */
-		public function InCollection(tar:*, ... args):Boolean
+		public static function InCollection(tar:*, ... args):Boolean
 		{
 			if (args.length == 0) return false;
 			
@@ -150,7 +171,20 @@ package classes.internals
 			}
 			return error;
 		}
-		
+		/**
+		 * numberOfThings(0,"brain") = "no brains"
+		 * numberOfThings(1,"head") = "one head"
+		 * numberOfThings(2,"tail") = "2 tails"
+		 * numberOfThings(3,"hoof","hooves") = "3 hooves"
+		 */
+		public static function numberOfThings(n:int, name:String, pluralForm:String = null):String
+		{
+			pluralForm = pluralForm || (name + "s");
+			if (n == 0) return "no " + pluralForm;
+			if (n == 1) return "one " + name;
+			return n + " " + pluralForm;
+		}
+
 		/* None of these functions are called anymore
 		// lazy(obj,arg1,...,argN)() = obj[arg1]...[argN]
 		public static function lazyIndex(obj:*,...args):Function{

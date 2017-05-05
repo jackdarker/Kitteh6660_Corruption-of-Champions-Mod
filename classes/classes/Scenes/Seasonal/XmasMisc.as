@@ -78,7 +78,6 @@ package classes.Scenes.Seasonal {
 			menu();
 			addButton(0,"Yes",helpWithTheCandyCane);
 			addButton(1,"No",declineCandyCaneCawks);
-			//simpleChoices("Yes",9999,"No",9999,"",0,"",0,"",0);
 			dynStats("lus", 10+player.lib/10, "resisted", false);
 		}
 
@@ -220,7 +219,7 @@ package classes.Scenes.Seasonal {
 				
 				outputText("\n\nThe happy girl suddenly hugs you as you're in the process of putting your prick back into your [armor].  The silvery glow around her pale skin looks stronger now, so strong that you're almost sure you can see it.  \"<i>Oh, thank you!</i>\" she starts, but quickly composes herself.  \"<i>For, um, helping me.  Up.</i>\"  She lets go and backs away from you.  \"<i>I've gotta be going though, see you around!  Enjoy the weather!</i>\"  With that, she wings off into the skies.  She lands atop a nearby tree, arms outstretched in an odd pose.  The silvery glow surrounding her is still visible, even at a distance.  You shake your head and return to camp, wondering who in the world that was.  Not long after you return, the air warms once more and the snow melts, leaving the ground a slushy mess in spots.");
 			}
-			player.orgasm();
+			player.orgasm('Dick');
 			doNext(playerMenu);
 		}
 
@@ -231,7 +230,7 @@ package classes.Scenes.Seasonal {
 			outputText("\n\nThe harpy gets the message and attacks your needy cunt with an almost-violent intensity.  A yelp escapes you despite yourself, but she holds you close and keeps it up unrelentingly.  Your vision nearly fogs with lusty sensation.  You roll your head back and close your eyes, drifting away on the sea of arousal building inside of your body.  At the pace she's going and with her expert technique, it's not long before that sea overflows into orgasm.  Your thoughts blank as the muscles of your [cunt] clench, your juices spraying into the mouth of the harpy.  She drinks them thirstily, tongue still lapping away as you slowly come down from your climax.  You finally let the woman go, and she removes herself from between your legs almost reluctantly while you bathe in the afterglow.");
 			outputText("\n\nShe suddenly embraces you as you readjust your [armor].  The silvery glow around her pale skin looks stronger now, so strong that you're almost sure you can see it.  \"<i>Oh, thank you!</i>\" she starts, but quickly composes herself.  \"<i>For, um, helping me.  Up.</i>\"  She lets go and backs away from you.  \"<i>I've gotta be going though, see you around!  Enjoy the weather!</i>\"  With that, she wings off into the skies.  She lands atop a nearby tree, arms outstretched in an odd pose.  The silvery glow surrounding her is still visible, even at a distance.  You shake your head and return to camp, wondering who in the world that was.  Not long after you return, the air warms once more and the snow melts, leaving the ground a slushy mess in spots.");
 			//(end female)
-			player.orgasm();
+			player.orgasm('Dick');
 			doNext(playerMenu);
 		}
 
@@ -354,7 +353,7 @@ package classes.Scenes.Seasonal {
 			outputText("\n\n\Replacing your clothes, you give Kami one last glance over before you leave.  She's lying happily encumbered on the floor, covered in a combination of your fluids.  She'll probably be good to head home later - that is, if she can still walk.");
 			//[Player heads back to camp, An hour passes, Lust is reduced to zero and KamiEnc = 1]
 			flags[kFLAGS.KAMI_ENCOUNTER] = 1;
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", -2);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -390,7 +389,7 @@ package classes.Scenes.Seasonal {
 			
 			outputText("\n\nKami, on the other hand, needs a tad more encouragement.  She desperately diddles her unused slit for as long as she can take it, her own belated orgasm finally erupting messily into your asshole moments later.  \"<i>Oh doll, I - ungh - needed that more than anything.  If you come back before the end of winter, we should definitely try this again.</i>\"  You give a thumbs up in approval of Kami's idea, turning around to head back to camp. Before you go, however, you take the opportunity to get a good squeeze of her ample tits, quickly taking off with complete satisfaction.");
 			//[Player heads back to camp, An hour passes, Asshole tightness is reduced, Lust is reduced to zero and KamiEnc = 1]
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("sen", 1);
 			doNext(camp.returnToCampUseOneHour);
 			flags[kFLAGS.KAMI_ENCOUNTER] = 1;
@@ -430,7 +429,7 @@ package classes.Scenes.Seasonal {
 			
 			outputText("\n\nYou gather your thoughts for a second, exhausted from the actual ordeal.  You slowly put back your [armor] while sharing an appreciative farewell to the now-satiated waitress - of who is panting so profusely she can't even return the gesture.");
 			//[Player heads back to camp, An hour passes, Lust is reduced to zero and KamiEnc = 1]
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", -3);
 			flags[kFLAGS.KAMI_ENCOUNTER] = 1;
 			doNext(camp.returnToCampUseOneHour);
@@ -524,7 +523,7 @@ package classes.Scenes.Seasonal {
 			//Lust sated
 			//end encounter
 			//Receive \"<i>Peppermint White</i>\"
-			player.orgasm();
+			player.orgasm('Anal');
 			inventory.takeItem(consumables.PEPPWHT, camp.returnToCampUseOneHour);
 		}
 
@@ -824,7 +823,7 @@ package classes.Scenes.Seasonal {
 			//Female Nieve
 			//Must have a penis or at least a 3.5 inch clit
 			//Nieve's capacity is about 130.
-			if ((player.hasCock() || (player.hasVagina() && player.clitLength >= 3.5)) && player.lust >= 33) {
+			if ((player.hasCock() || (player.hasVagina() && player.getClitLength() >= 3.5)) && player.lust >= 33) {
 				if (flags[kFLAGS.NIEVE_GENDER] == 2) addButton(1,"Fuck Her",fuckNieve);
 			}
 			//Get Fucked by Gurumash
@@ -919,7 +918,7 @@ package classes.Scenes.Seasonal {
 			var x:int = -1;
 			if (player.hasCock()) {
 				x = player.cockThatFits(130);
-				if (x <= 0 && player.hasVagina() && player.clitLength >= 3.5 && rand(2) == 0) x = -1;
+				if (x <= 0 && player.hasVagina() && player.getClitLength() >= 3.5 && rand(2) == 0) x = -1;
 				else x = player.smallestCockIndex();
 			}
 			outputText("You look your naked, icy lover up and down, thinking of all the things you could do to her.  She raises a white eyebrow at you curiously while you take in her statuesque form.  A thin layer of frost covers her flesh, giving her pale blue skin a sparkling, shimmering appearance.  You find yourself getting aroused at all the potentialities.  Your " + player.cockClit(x) + " rises to attention as you ponder it, and with a smirk, you finally settle on something.");
@@ -935,8 +934,8 @@ package classes.Scenes.Seasonal {
 				else outputText("  \"<i>Mmm,</i>\" she smacks her lips and takes a quick breath, \"<i>Such a nice example of a candycane right here.  Let's go in for another taste.</i>\"");
 			}
 			else {
-				if (player.clitLength < 6) outputText("\"<i>It's so cute, [Master],</i>\" Nieve says while catching a breath, \"<i>Like a little toy cock.</i>\"");
-				else if (player.clitLength >= 24) outputText("  She has to take a breath almost immediately, saying, \"<i>By the fat man's beard this thing is huge.  You must make the rest of this world jealous.</i>\"");
+				if (player.getClitLength() < 6) outputText("\"<i>It's so cute, [Master],</i>\" Nieve says while catching a breath, \"<i>Like a little toy cock.</i>\"");
+				else if (player.getClitLength() >= 24) outputText("  She has to take a breath almost immediately, saying, \"<i>By the fat man's beard this thing is huge.  You must make the rest of this world jealous.</i>\"");
 				else outputText("  \"<i>Mmm,</i>\" she smacks her lips and takes a quick breath, \"<i>Such a nice example of a candycane right here.  Let's go in for another taste.</i>\"");
 			}
 			outputText("  And with that she dives back down onto your " + player.cockClit(x) + ".  Her head bobs and bows, giving the sensation of an icecube running up and down your ");
@@ -988,8 +987,8 @@ package classes.Scenes.Seasonal {
 			//(Clitoris) 
 			else {
 				outputText("  Nieve nuzzles and lavishes your elongated love button, showering it with attention. \"<i>I didn't know clits could get this big,</i>\" she says with wonder in her voice. \"<i>");
-				if (player.clitLength < 5) outputText("It's just like a little cock");
-				else if (player.clitLength < 9) outputText("It's just like a cock");
+				if (player.getClitLength() < 5) outputText("It's just like a little cock");
+				else if (player.getClitLength() < 9) outputText("It's just like a cock");
 				else outputText("I bet even men get jealous of this bad girl");
 				outputText(".</i>\"");
 			}
@@ -1027,8 +1026,8 @@ package classes.Scenes.Seasonal {
 				else outputText("Though you can't fit your entire " + player.cockClit(x) + " inside, you are amazed at how much she takes.  Her pale blue stomach bulges with every thrust.  Soon Nieve is wriggling, her eyes slightly open as she bites her lip in ecstasy.");
 			}
 			else {
-				if (player.clitLength <= 4) outputText("Your meager clit isn't much, but at this angle you manage to hit all the right places.  Soon Nieve is wriggling around, eyes staring up at you, urging you on faster and faster.");
-				else if (player.clitLength <= 12) outputText("At this angle you manage to hit all the right places.  Soon Nieve is wriggling around, eyes tightly shut as she whispers dirty words you can't even make out.");
+				if (player.getClitLength() <= 4) outputText("Your meager clit isn't much, but at this angle you manage to hit all the right places.  Soon Nieve is wriggling around, eyes staring up at you, urging you on faster and faster.");
+				else if (player.getClitLength() <= 12) outputText("At this angle you manage to hit all the right places.  Soon Nieve is wriggling around, eyes tightly shut as she whispers dirty words you can't even make out.");
 				else if (player.cockArea(x) <= 24) outputText("Nieve's cunt feels like an icy vice on your oversized clitty, but even so, you manage to hit all the right places.  Soon she is wriggling around, eyes tightly shut as she pants for breath.");
 				//(Cocksize 130+/Clit 48+)
 				else outputText("Though you can't fit your entire " + player.cockClit(x) + " inside, you are amazed at how much she takes.  Her pale blue stomach bulges with every thrust.  Soon Nieve is wriggling, her eyes slightly open as she bites her lip in ecstasy.");
@@ -1050,7 +1049,7 @@ package classes.Scenes.Seasonal {
 			outputText("\n\nExhausted, you slump backwards, splaying out in the snow.  You leave your anatomy to work itself out for now, just savoring the afterglow and catching your breath as much as you can.  Nieve, however, seems to have other things in mind.  She pulls away from you, twists around, and gets on her hands and knees between your legs.");
 			
 			outputText("\n\n\"<i>So messy, [Master],</i>\" she notes with a smile.  \"<i>Allow me to clean you up.</i>\"  Her cool mouth descends on your member, licking and sucking away all of your juices and hers, leaving you spotless.  She seems to delight in the flavor, and once she's done, she leans in and gives you a big, sloppy kiss that tastes more like mint than anything else.  She then cuddles up next to you, her cold body somehow comforting, until you've recuperated enough to head back to the camp proper.");
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", -2);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1114,7 +1113,7 @@ package classes.Scenes.Seasonal {
 			outputText(".");
 			
 			outputText("\n\nYou both rest in that position, Nieve still trickling cum into you even though he stopped moving minutes ago.  You turn your head to look at him and notice his face a few inches from yours.  It's clear that at the moment he's barely conscious, and you shift a bit to kiss him, thanking him for a job well done.  After a little while you both recover, redress, and silently go back to business.  Looking back at him as you leave, you know you want to do it again real soon.");
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("sen", -2);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1145,7 +1144,7 @@ package classes.Scenes.Seasonal {
 			outputText("\n\nYou come to your senses after what seems a couple of hours, Nieve resting peacefully on and still connected. He seems to have passed out and is pleasantly resting his head on your [chest].  You lay there, still flushed and warm from your recent activity despite the ice cold body on you.  You feel comfortable enough to doze off again.");
 			
 			outputText("\n\nAnother hour passes and you wake up clean and dressed, laying next to Nieve.  You noticed he's probably been watching you for the last several minutes.  You get up, pat yourself off, then with one hand tussle his snow-white hair, while uttering the words, \"<i>Good boy.</i>\"");
-			player.orgasm();
+			player.orgasm('Vaginal');
 			dynStats("sen", -2);
 			doNext(camp.returnToCampUseOneHour);
 		}

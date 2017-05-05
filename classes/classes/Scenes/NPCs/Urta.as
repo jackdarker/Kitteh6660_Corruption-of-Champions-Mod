@@ -89,7 +89,7 @@
 				if (flags[kFLAGS.URTA_TIME_SINCE_LAST_CAME] == 0) flags[kFLAGS.URTA_CUM_NO_CUM_DAYS]++;
 				else flags[kFLAGS.URTA_CUM_NO_CUM_DAYS] = 0;
 				if (flags[kFLAGS.URTA_PC_AFFECTION_COUNTER] > 0) {
-					flags[kFLAGS.URTA_PC_AFFECTION_COUNTER] -= .5;
+					flags[kFLAGS.URTA_PC_AFFECTION_COUNTER] -= .25;
 					if (flags[kFLAGS.URTA_PC_AFFECTION_COUNTER] < 0) flags[kFLAGS.URTA_PC_AFFECTION_COUNTER] = 0;
 				}
 			}
@@ -332,7 +332,10 @@ public function urtaBarApproach():void {
 		else outputText("nervously", false);
 		outputText(" while she awaits your reply.  It seems you could tell her to stay away from Scylla, enjoy Scylla, or just tell her you don't want to see her again.  What do you do?", false);
 		//[No Scylla] [Scylla Okay] [Leave Her]
-		simpleChoices("No Scylla", tellUrtaNoMoreScylla, "Scylla Okay", tellUrtaMoreScyllaIsFine, "Leave Her", leaveUrtaAfterScyllaConfrontation, "", null, "", null);
+		menu();
+		addButton(0, "No Scylla", tellUrtaNoMoreScylla);
+		addButton(1, "Scylla Okay", tellUrtaMoreScyllaIsFine);
+		addButton(4, "Leave Her", leaveUrtaAfterScyllaConfrontation);
 		return;
 	}
 	//TO ZE FLIPOUT!
@@ -390,13 +393,16 @@ public function urtaBarApproach():void {
 				else outputText("\n\nYou don't think it's likely Urta would agree to host your eggs in her present state; wait until she's turned down her inhibitions before asking.");
 			}
 			//[URTAZ PLACE] [Suck Off] [Eat Out] [Vixen & Cream]
-			//simpleChoices("Her Place",goBackToUrtasForLuvinz,"Suck Off",blowUrtaUnderTheTableLuv,"Eat Out",eatUrtaOutNomNomPussy,"",0,"",0);
 			menu();
 			addButton(0,"Her Place",goBackToUrtasForLuvinz, null, null, null, "Go to Urta's apartment for sex.");
 			if (flags[kFLAGS.URTA_CUM_NO_CUM_DAYS] >= 5) addButton(1,"Suck Off",slurpFawkesCocksForFunAndInflation, null, null, null, "Suck Urta's dick until she cums! \n\nNote: Given how long she hasn't relieved, this is most likely going to fill your belly.");
 			else addButton(1,"Suck Off",blowUrtaUnderTheTableLuv, null, null, null, "Suck Urta's dick until she cums!");
 			addButton(2, "Eat Out", eatUrtaOutNomNomPussy, null, null, null, "Get a taste of Urta's vagina! (And optionally, drink a glass of her cum.)");
-			if (player.hasCock() && !player.isTaur()) addButton(3, "Vixen & Cream", vixenAndCreamPart1, false, null, null, "Try something special! \n\nNOTE: This is very long! Don't select this if you have ADHD.");
+			if (player.hasCock() && !player.isTaur()) {
+				addButton(3, "Vixen & Cream", vixenAndCreamPart1, false, null, null, "Try something special! \n\nNOTE: This is very long! Don't select this if you have ADHD.");
+			} else {
+				addDisabledButton(3, "Vixen & Cream", "This scene requires you to have cock. It can't accomodate taurs.");
+			}
 			addButton(14, "Leave", telAdre.barTelAdre);
 			return;
 		}
@@ -411,7 +417,6 @@ public function urtaBarApproach():void {
 				temp = giveTheFoxSomeEggs;
 			}
 			//As per normal drunk-fawks
-			//simpleChoices("Jerkoff",getAPublicFacialFromUrta,"Anal Ride",takeUrtaInTheButtPublically,"Lay Eggs",temp,"Spank Her",spank,"Leave",barTelAdre);
 			menu();
 			addButton(0,"Jerkoff",getAPublicFacialFromUrta);
 			addButton(1,"Anal Ride",takeUrtaInTheButtPublically);
@@ -419,7 +424,7 @@ public function urtaBarApproach():void {
 			addButton(3,"Spank Her",spank);
 			if (flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] == -2 && RaphaelLikes() && flags[kFLAGS.URTA_X_RAPHAEL_HAPPENED] == 0) {
 				outputText("\n\nYou know Urta and Raphael get along about as well as cats and dogs, but it might be fun to have them double-team you in the dark.");
-				addButton(8,"3SomeSurprise",urtaAndRaphaelSurprise);
+				addButton(4,"3SomeSurprise",urtaAndRaphaelSurprise);
 			}
 			addButton(14,"Leave",telAdre.barTelAdre);
 			return;
@@ -433,7 +438,10 @@ public function urtaBarApproach():void {
 		outputText("You spend a moment looking over your shoulder, but can't for the life of you figure out what she was freaking out about.  She must be really drunk!  You turn back to scold her, but Urta has vanished!  She must have left in a hurry – she left her bottle of \"<i>John Doe</i>\" behind, and still half-full.  The bar's back-door swings closed, maybe she went that way.  What do you do?", false);
 
 		//(LEAVE HER TABLE) (DRINK HER BOOZE) (BACKDOOR)
-		simpleChoices("Backdoor", urtaFollowedOutBack, "Drink Booze", drinkUrtasBooze, "", null, "", null, "Leave", telAdre.barTelAdre);
+		menu();
+		addButton(0, "Backdoor", urtaFollowedOutBack);
+		addButton(1, "Drink Booze", drinkUrtasBooze);
+		addButton(14, "Leave", telAdre.barTelAdre);
 		return;
 	}
 	//[URTA FRIEND APPROACH]
@@ -450,7 +458,6 @@ public function urtaBarApproach():void {
 			if (flags[kFLAGS.URTA_TIMES_EGG_PREGGED] == 0) outputText("\n\nHmm... sounds like she wants to fuck almost as badly as you want to get these eggs out of you.  Besides, didn't Urta say to you once that she's basically barren and sterile?  You'd be doing her a favor by letting her carry your eggs, wouldn't you?  Let's see if she's drunk enough to let you fill her full...");
 			temp = giveTheFoxSomeEggs;
 		}
-		//simpleChoices("Jerkoff",getAPublicFacialFromUrta,"Anal Ride",takeUrtaInTheButtPublically,"Lay Eggs",temp,"Spank Her",spank,"Leave",barTelAdre);
 		menu();
 		addButton(0,"Jerkoff",getAPublicFacialFromUrta);
 		addButton(1,"Anal Ride",takeUrtaInTheButtPublically);
@@ -458,7 +465,7 @@ public function urtaBarApproach():void {
 		addButton(3,"Spank Her",spank);
 		if (flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] == -2 && RaphaelLikes() && flags[kFLAGS.URTA_X_RAPHAEL_HAPPENED] == 0) {
 			outputText("\n\nYou know Urta and Raphael get along about as well as cats and dogs, but it might be fun to have them double-team you in the dark.");
-			addButton(8,"3SomeSurprise",urtaAndRaphaelSurprise);
+			addButton(4,"3SomeSurprise",urtaAndRaphaelSurprise);
 		}
 		addButton(14,"Leave",telAdre.barTelAdre);
 		return;
@@ -483,7 +490,6 @@ public function urtaBarApproach():void {
 		else outputText("\n\nYou don't think it's likely Urta would agree to host your eggs in her present state; wait until she's turned down her inhibitions before asking.");
 	}
 	//[Under Table BJ] [Public Jerkoff onto your face] [Public Buttfucking (Receiver)] [Tender lovemaking @ Urtas] [Minotaur Cum-Addict Special?] [TABLE FUCK]
-	//simpleChoices("Hidden BJ",blowUrtaUnderTable,"Urta's Place",goBackToUrtasForLuvinz,"",0,"",0,"Leave",barTelAdre);
 	menu();
 	addButton(0,"Urta's Place",goBackToUrtasForLuvinz, null, null, null, "Go to Urta's apartment for sex.");
 	if (flags[kFLAGS.URTA_CUM_NO_CUM_DAYS] >= 5) addButton(1,"Hidden BJ",slurpFawkesCocksForFunAndInflation, null, null, null, "Suck Urta's dick until she cums! \n\nNote: Given how long she hasn't relieved, this is most likely going to fill your belly.");
@@ -512,7 +518,9 @@ private function drinkUrtasBoozePtTwo():void {
 	outputText("She shakes her massive horse-meat more than a few times, shuddering lightly with pleasure as her tip flares a bit in response.  Urta stumbles over moaning, \"<i>This ish all your fault!  You damned... sexy... mmm... letsh fuck!</i>\"\n\n", false);
 	outputText("The stumbling hermaphrodite is openly rubbing herself as she closes in on you.  What do you do?", false);
 	//[RUN!] [LET HER]
-	simpleChoices("Run!", drinkUrtasBoozeRun, "Let Her", drinkUrtasBoozeLetHer, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Run!", drinkUrtasBoozeRun);
+	addButton(1, "Let Her", drinkUrtasBoozeLetHer);
 }
 
 private function drinkUrtasBoozeRun(): void{
@@ -529,7 +537,7 @@ private function drinkUrtasBoozeLetHer():void {
 	flags[kFLAGS.TIMES_FUCKED_URTA]++;
 	flags[kFLAGS.URTA_TIME_SINCE_LAST_CAME] = 5;
 	hideUpDown();
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", -2);
 	//[LET HER]
 	clearOutput();
@@ -601,8 +609,12 @@ private function urtaFollowedOutBack():void {
 	outputText("Urta moans and cries, \"<i>Ooh, just go down! Please cum and go down!  Why won't you go awayyyyyy...</i>\" eventually breaking off into blubbering sobbing, interrupted by the occasional involuntary gasp of pleasure.\n\n", false);
 	//[Sneak away] [Watch] [Masturbate With Her] [Fuck Her]
 	outputText("(You could fuck her, masturbate with her, watch, or leave her like that.)",false);
-	dynStats("lus", 5+player.lib/20);
-	simpleChoices("Fuck Her", urtaFuckHer, "MutualMasturb", dualUrtaMasturbation, "Watch", watchUrtaJerkIt, "", null, "Leave", urtaSneakAwayFromMasturbate);
+	dynStats("lus", 5 + player.lib / 20);
+	menu();
+	addButton(0, "Fuck Her", urtaFuckHer);
+	addButton(1, "MutualMasturb", dualUrtaMasturbation);
+	addButton(2, "Watch", watchUrtaJerkIt);
+	addButton(4, "Leave", urtaSneakAwayFromMasturbate);
 }
 
 //[Sneak Away]
@@ -714,7 +726,7 @@ private function dualUrtaMasturbation():void {
 
 	outputText("You waste no time cleaning up and stagger back inside after her, sated and happy with your new friend and her 'benefits'.", false);
 	doNext(camp.returnToCampUseOneHour);
-	player.orgasm();
+	player.orgasm('Generic');
 }
 
 //[FUCK HER]
@@ -887,7 +899,7 @@ public function urtaFuckHer(afterBefriending:Boolean = false):void {
 		}
 	}
 	doNext(afterBefriending ? camp.returnToCampUseFourHours : camp.returnToCampUseOneHour);
-	player.orgasm();
+	player.orgasm('Generic');
 }
 
 
@@ -985,7 +997,7 @@ internal function takeUrtaInTheButtPublically():void {
 	}
 	if (player.hasVagina()) {
 		outputText("Heat spreads through your loins as your " + player.vaginaDescript(0) + " engorges with blood, allowing your " + player.clitDescript() + " to ", false);
-		if (player.clitLength < 2) outputText("peep out", false);
+		if (player.getClitLength() < 2) outputText("peep out", false);
 		else outputText("grow to its full size", false);
 		outputText(".  ", false);
 		if (player.vaginas[0].vaginalWetness < VAGINA_WETNESS_SLICK) outputText("Moisture beads on your lips, signaling just how turned on this total violation is making you.", false);
@@ -1035,7 +1047,7 @@ internal function takeUrtaInTheButtPublically():void {
 	outputText("Urta sighs and takes a sip of her drink, giving you a quick peck on the side of your neck.  You start to rise, but the drunken hermaphrodite grabs you and holds you down, \"<i>Let's just stay like this a little longer...</i>\"\n\n", false);
 
 	outputText("You shrug and relax, cuddling with her while her massive load is plugged inside you.  She keeps you there for the better part of an hour, kissing you, nipping at your neck, and sharing her drinks with you.  When you finally do get a chance to leave, you're stumbling slightly from the alcohol and your asshole gapes and drips whiteness behind you.  You don't notice the trail of cum until you get back to your camp, and it brings a blush to your cheeks.", false);
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1167,17 +1179,24 @@ internal function goBackToUrtasForLuvinzII():void {
 
 	outputText("Urta is clearly looking to take a more passive role, and she begins stroking herself as she asks, \"<i>How do you want to fuck, lover?</i>\"", false);
 	//[M: VAGINAL] [F: RIDE] [GENDERLESS/M: RIDE ANAL]
-	var vaginal:Function = null;
-	var femaleRides:Function = null;
-	if (player.totalCocks() > 0) vaginal = dudeFuckingUrtasCooch;
-	if (player.hasVagina()) femaleRides = rideUrtaTenderFemale;
-	//simpleChoices("Fuck Vagina",vaginal,"Ride (Vaginal)",femaleRides,"Ride (Anal)",tenderTakeItUpTheAssFromUrta,"No Condoms",condomlessUrtaInHouseSmex,"",0);
 	menu();
-	addButton(0,"Fuck Vagina",vaginal);
-	addButton(1,"Ride(Vaginal)",femaleRides);
-	addButton(2,"Ride(Anal)",tenderTakeItUpTheAssFromUrta);
-	addButton(3,"No Condoms",condomlessUrtaInHouseSmex);
-	if (player.isGoo() && player.hasGooSkin()) addButton(4,"Goo (Weird)",urtaGooTesticleVoreRuinedOrgasms);
+	if (player.totalCocks() > 0) {
+		addButton(0, "Fuck Vagina", dudeFuckingUrtasCooch);
+	} else {
+		addDisabledButton(0, "Fuck Vagina", "This scene requires you to have cock.");
+	}
+	if (player.hasVagina()) {
+		addButton(1, "Ride(Vaginal)", rideUrtaTenderFemale);
+	} else {
+		addDisabledButton(1, "Ride(Vaginal)", "This scene requires you to have vagina.");
+	}
+	addButton(2, "Ride(Anal)", tenderTakeItUpTheAssFromUrta);
+	addButton(3, "No Condoms", condomlessUrtaInHouseSmex);
+	if (player.isGoo() && player.hasGooSkin()) {
+		addButton(4, "Goo (Weird)", urtaGooTesticleVoreRuinedOrgasms);
+	} else {
+		addDisabledButton(4, "Goo (Weird)", "This scene requires you to have goo body.");
+	}
 }
 
 private function rideUrtaTenderFemale():void {
@@ -1273,7 +1292,7 @@ private function rideUrtaTenderFemale():void {
 	outputText("\n\nShe blushes as if realizing what she's said and turns to start cleaning up.  You give the nervous fox a hug and squeeze her breasts mischievously before breaking it.  She smiles over her shoulder at you and says, \"<i>Thanks again.  You better get going though, I know you've got things that need doing.  Come by the Wet Bitch again soon and see me, OK?</i>\"\n\n", false);
 	outputText("You nod before you leave, feeling satisfied and a warm glow from something other than lust.", false);
 	//if (flags[kFLAGS.URTA_FERTILE] == 1) player.knockUp(21,515,80);
-	player.orgasm();
+	player.orgasm('Vaginal');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1331,7 +1350,7 @@ private function dudeFuckingUrtasCooch():void {
 	outputText(" as she says, \"<i>Thank you so much, lover.  I forget how good it can be in my... vagina.  Maybe we could do this again?</i>\"\n\n", false);
 
 	outputText("You give her a happy nod, and the two of you cuddle a bit longer before you leave to return to camp.", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -2);
 	knockUpUrtaChance();
 	doNext(camp.returnToCampUseOneHour);
@@ -1343,9 +1362,16 @@ private function fuckUrtasVagButTooBig():void {
 	clearOutput();
 	outputText("You let her know that you want her just the way she is and climb into bed behind her.  She watches you apprehensively over her shoulder and objects, \"<i>I'm sorry lover, but that's WAYYYY too big to fit in any hole I've got.  Maybe I should go ahead and take you?  Or would you rather help me off under the table back at the bar?</i>\"", false);
 	//[GET BUTT FUCKED] [GET CUNT-FUCKED] [BAR BJ] [Fuck it I'm leaving!]
-	var vaginal:Function = null;
-	if (player.hasVagina()) vaginal = rideUrtaTenderFemale;
-	simpleChoices("Ride Vaginal", vaginal, "Ride Anal", tenderTakeItUpTheAssFromUrta, "Bar BJ", blowUrtaUnderTable, "No Condom", condomlessUrtaInHouseSmex, "Leave", fuckItAndLeave);
+	menu();
+	if (player.hasVagina()) {
+		addButton(0, "Ride Vaginal", rideUrtaTenderFemale);
+	} else {
+		addDisabledButton(0, "Ride Vaginal");
+	}
+	addButton(1, "Ride Anal", tenderTakeItUpTheAssFromUrta);
+	addButton(2, "Bar BJ", blowUrtaUnderTable);
+	addButton(3, "No Condom", condomlessUrtaInHouseSmex);
+	addButton(4, "Leave", fuckItAndLeave);
 }
 
 private function fuckItAndLeave():void {
@@ -1384,7 +1410,7 @@ private function tenderTakeItUpTheAssFromUrta():void {
 		}
 	}
 	//Butt Stretched used to determine how long since last enlargement
-	if (player.findStatusEffect(StatusEffects.ButtStretched) < 0) player.createStatusEffect(StatusEffects.ButtStretched,0,0,0,0);
+	if (!player.hasStatusEffect(StatusEffects.ButtStretched)) player.createStatusEffect(StatusEffects.ButtStretched,0,0,0,0);
 	//Reset the timer on it to 0 when restretched.
 	else player.changeStatusValue(StatusEffects.ButtStretched,1,0);
 	if (player.totalCocks() > 0) {
@@ -1435,7 +1461,7 @@ private function tenderTakeItUpTheAssFromUrta():void {
 	if (player.cumQ() > 750) outputText("  You really are a messy, " + player.mf("boy","girl") + " aren't you?", false);
 	outputText("</i>\"\n\n", false);
 	outputText("She untangles herself from you, the filled end of her condom loudly popping free from your backside as she disengages herself from you.  The two of you do your best to clean up and get dressed, and you give her a quick but passionate kiss before ducking out the door to check up on your camp.", false);
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1462,7 +1488,10 @@ private function marbleCockuBlockuUrta():void {
 	}
 	outputText("Do you answer honestly, refuse to answer, or lie?", false);
 	//[Honestly] [Refuse] [Lie]
-	simpleChoices("Honestly", TellUrtaDAHTRUUUUF, "Refuse", trufftrufftrufftruff, "Lie", lietoUrtaAboutMarble, "", null, "", null);
+	menu();
+	addButton(0, "Honestly", TellUrtaDAHTRUUUUF);
+	addButton(1, "Refuse", trufftrufftrufftruff);
+	addButton(2, "Lie", lietoUrtaAboutMarble);
 }
 
 //[Honestly]
@@ -1483,7 +1512,10 @@ private function TellUrtaDAHTRUUUUF():void {
 		//(Toughen Up – Let her know she's great in the sack but you not relationship material.)
 		//(Walk Out – Fuck her, she cheated on me!)
 		//[Comfort] [Toughen Up] [Walk Out]
-		simpleChoices("Comfort", comfortUrtaAfterTellinTruuf, "Toughen Up", toughenUpUrtaAfterTellingTruuf, "Walk Out", walkoutOnUrtaAfterTellingTruff, "", null, "", null);
+		menu();
+		addButton(0, "Comfort", comfortUrtaAfterTellinTruuf);
+		addButton(1, "Toughen Up", toughenUpUrtaAfterTellingTruuf);
+		addButton(2, "Walk Out", walkoutOnUrtaAfterTellingTruff);
 	}
 	else {
 		outputText("</i>\"");
@@ -1548,7 +1580,9 @@ private function trufftrufftrufftruff():void {
 	outputText("You refuse to answer the question, telling Urta that what happens outside the walls has no impact on what the two of you have here.  She disagrees as her fairly meek attitude slips away, replaced with a sterner expression, \"<i>No.  It matters to me.  I want to know about your life and if you won't even answer... then you aren't as kind as I thought you were.</i>\"\n\n", false);
 	outputText("\n\nIt looks like you've have to tell her the truth or lie...", false);
 	//[Truth] [Lie]
-	simpleChoices("Truth", TellUrtaDAHTRUUUUF, "Lie", lietoUrtaAboutMarble, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Truth", TellUrtaDAHTRUUUUF);
+	addButton(1, "Lie", lietoUrtaAboutMarble);
 }
 
 //[Lie]
@@ -1647,7 +1681,11 @@ public function eatUrtaOutNomNomPussy():void {
 
 	outputText("Finished at last, Urta's member rapidly deflates, the scent of her cum on your " + player.hairDescript() + " and her juice on your " + player.face() + " lingers.  You slide up into the booth next to your blissed out lover.", false);
 	//[Give Glass] [Drink Glass] [Set Aside] [(New) Take Some Home]
-	simpleChoices("Give Glass", giveUrtaCumGlass, "Drink Glass", drinkUrtasCumGlass, "Set Aside", setAsideUrtaCumGlass, "TakeSomeHome", takeUrtasCumHomeWithYou, "", null);
+	menu();
+	addButton(0, "Give Glass", giveUrtaCumGlass);
+	addButton(1, "Drink Glass", drinkUrtasCumGlass);
+	addButton(2, "Set Aside", setAsideUrtaCumGlass);
+	addButton(3, "TakeSomeHome", takeUrtasCumHomeWithYou);
 }
 
 //[GIVE GLASS]
@@ -1825,7 +1863,7 @@ private function rideUrtasCoochLoveyDovey():void {
 	outputText("Smiling, the two of you embrace, though you're careful not to get any of the cum on you.  Urta waves you out so she can get to cleaning, and by the time you leave you've got a spring in your step and a satisfied grin on your face.", false);
 	doNext(camp.returnToCampUseOneHour);
 	//if (flags[kFLAGS.URTA_FERTILE] == 1) player.knockUp(21,515,80);
-	player.orgasm();
+	player.orgasm('Vaginal');
 	if (player.sens > 30) dynStats("sen", -1);
 }
 
@@ -1921,7 +1959,7 @@ private function rideUrtaInButtAtHomeLove():void {
 	else outputText("Urta sighs contentedly and laughs, \"<i>I guess I don't have much of a mess to clean for once!</i>\"", false);
 
 	outputText("\n\nThe fox staggers up on weak legs, her now flaccid but still huge member swinging between her knees as she redresses.  You do the same, and the two of you part with another tender kiss and a whispered, \"<i>I love you.</i>\"\n", false);
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", 1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1988,7 +2026,7 @@ private function oralFiestyUberExplosionUrta():void {
 
 		outputText("The fox giggles and returns to cuddling and licking you.  You rest with a happy smile plastered on your " + player.face() + " from the experience.  After all the snuggling, you both rise and get dressed.  Urta finds a new dress in the closet and with a long goodbye kiss, you go your separate ways.\n\n", false);
 		doNext(camp.returnToCampUseOneHour);
-		player.orgasm();
+		player.orgasm('Vaginal');
 		dynStats("sen", -1);
 		return;
 	}
@@ -2041,7 +2079,7 @@ private function oralFiestyUberExplosionUrta():void {
 	outputText("You climb off of her, panting and breathless as you flop into the bed next to her.  She snuggles up to you, cuddling you and kissing you on the lips and giving you a taste of your own lust.  Sinking into the soft bed, you relax with her for quite some time.  Eventually you've both recovered, and Urta playfully shoves you out of bed and onto the floor.  She springs out after you, her maleness still semi-erect as she gets dressed in her work uniform.\n\n", false);
 
 	outputText("Urta blows you another kiss and says, \"<i>Gotta go!  Be good, and don't do anyone I wouldn't, OK?  Love you!</i>\"", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -2052,30 +2090,38 @@ internal function urtaHomeLuvLuvinsMenu():void {
 	outputText("She caresses a nipple and visibly shivers as she says, \"<i>You teased me the whole way here, and I'm COMPLETELY ready for you, any way you could want.</i>\"\n\n", false);
 	outputText("She blushes and continues, \"<i>So, what'll it be, lover?  A little injection of fox-cream or something else?</i>\"", false);
 	//[Ride Vaginal] [Ride Anal] [69]
-	/*if (player.gender == 3) simpleChoices("Ride Vag",rideUrtasCoochLoveyDovey,"Ride Anal",rideUrtaInButtAtHomeLove,"69",oralFiestyUberExplosionUrta,"Vag Fuck",urtasCoochiNeedsFuckedLove,"No Condoms",condomlessUrtaInHouseSmex);
-	if (player.gender == 2) simpleChoices("Ride Vag",rideUrtasCoochLoveyDovey,"Ride Anal",rideUrtaInButtAtHomeLove,"69",0,"No Condoms",condomlessUrtaInHouseSmex,"",0);
-	if (player.gender == 1) simpleChoices("Ride Vag",0,"Ride Anal",rideUrtaInButtAtHomeLove,"69",oralFiestyUberExplosionUrta,"Vag Fuck",urtasCoochiNeedsFuckedLove,"No Condoms",condomlessUrtaInHouseSmex);
-	if (player.gender == 0) simpleChoices("Ride Vag",0,"Ride Anal",rideUrtaInButtAtHomeLove,"69",0,"",0,"",0);*/
 	outputText("\n\nHow do you want to fuck with the vixen?");
 	menu();
 	if (player.hasVagina()) {
 		outputText("  She could ride your vagina.");
-		addButton(0,"Ride Vag",rideUrtasCoochLoveyDovey);
+		addButton(0, "Ride Vag", rideUrtasCoochLoveyDovey);
+	} else {
+		addDisabledButton(0, "Ride Vag", "This scene requires you to have vagina.");
 	}
 	outputText("  She could fuck your ass.");
-	addButton(1,"Ride Ass",rideUrtaInButtAtHomeLove);
+	addButton(1, "Ride Ass", rideUrtaInButtAtHomeLove);
 	if (player.hasCock()) {
 		outputText("  Urta could 69 with you, let you fuck her pussy, or you could even fuck her cunt full of jizz and then lick her to a second cum.");
-		addButton(2,"69",oralFiestyUberExplosionUrta);
-		addButton(3,"Vag Fuck",urtasCoochiNeedsFuckedLove);
-		addButton(5,"FuckAndLick",lickOutUrtaAtHome);
+		addButton(2, "69", oralFiestyUberExplosionUrta);
+		addButton(3, "Vag Fuck", urtasCoochiNeedsFuckedLove);
+		addButton(5, "FuckAndLick", lickOutUrtaAtHome);
+	} else {
+		addDisabledButton(2, "69", "This scene requires you to have cock.");
+		addDisabledButton(3, "Vag Fuck", "This scene requires you to have cock.");
+		addDisabledButton(5, "FuckAndLick", "This scene requires you to have cock.");
 	}
-	if (player.gender > 0) {
+	if (!player.isGenderless()) {
 		outputText("  There's always the option to ask her to go condomless for a bit of extra fun.");
-		addButton(4,"No Condoms",condomlessUrtaInHouseSmex);
+		addButton(4, "No Condoms", condomlessUrtaInHouseSmex);
+	} else {
+		addDisabledButton(4, "No Condoms", "This scene requires you to have genitals.");
 	}
-	if (player.isGoo() && player.hasGooSkin()) addButton(6,"Goo (Weird)",urtaGooTesticleVoreRuinedOrgasms);
-	if (flags[kFLAGS.URTA_PETPLAY_DONE] >= 0 && player.gender > 0) addButton(7,"Collar",urtaPetPlayDeletedForeverBecauseThirdProovedMeWrongAboutDice);
+	if (player.isGoo() && player.hasGooSkin()) {
+		addButton(6,"Goo (Weird)",urtaGooTesticleVoreRuinedOrgasms);
+	} else {
+		addDisabledButton(6, "Goo (Weird)", "This scene requires you to have goo body.");
+	}
+	if (flags[kFLAGS.URTA_PETPLAY_DONE] >= 0 && !player.isGenderless()) addButton(7, "Collar", urtaPetPlayDeletedForeverBecauseThirdProovedMeWrongAboutDice);
 }
 
 private function urtasCoochiNeedsFuckedLove():void {
@@ -2181,7 +2227,7 @@ private function urtasCoochiNeedsFuckedLove():void {
 
 	outputText("You and Urta go your separate ways after that, both stinking of sex and with a sense of deep satisfaction.", false);
 	knockUpUrtaChance();
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -2295,6 +2341,9 @@ private function urtaAndScyllaBoningLikeBitchesSober():void {
 	else outputText("lover");
 	outputText("'s lusty slip-up and skittish responses, pinching her booty for good measure while you decide just how to get involved in the potential <i>ménage à trois</i>.\n\nWhat do you do?");
 	dynStats("lus", 10 + player.lib/5, "resisted", false);
+	menu();
+	addDisabledButton(0, "Fuck Fox");
+	addDisabledButton(1, "Worshipped");
 	//Get worshipped requires gigantic dong
 	var worship:Function = null;
 	var fuck:Function = null;
@@ -2308,7 +2357,9 @@ private function urtaAndScyllaBoningLikeBitchesSober():void {
 	}
 	outputText("  Whatever you do, with Scylla involved, it's sure to get out of hand.");
 	//[Fuck Nun Nipple] [Fuck Urta] [Get Worshipped]
-	simpleChoices("Fuck Fox", fuck, "Worshipped", worship, "", null, "", null, "Back", telAdre.barTelAdre);
+	addButton(0, "Fuck Fox", fuck);
+	addButton(1, "Worshipped", worship);
+	addButton(14, "Back", telAdre.barTelAdre);
 }
 //Fuck Urta while scylla sucks sober
 private function fuckUrtaWhileScyllaSucksSober():void {
@@ -2365,7 +2416,7 @@ private function fuckUrtaWhileScyllaSucksSober():void {
 	else outputText("  You give her a quick hug and depart, smiling when you realize the brief touch made her even longer.");
 	knockUpUrtaChance();
 	//-2 sens, -100 lust
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -2420,7 +2471,7 @@ private function dockWithUrtaUnderScyllasSoberSupervision():void {
 	outputText("\n\nBefore long, the mixed jizz inflates Scylla's tits to a tremendous size, big enough to completely wrap around your titanic cock.  They each leak their own white mixture, though it smells more of milk than your cum.  Regardless, you pump out more semen with abandon, gunking up the poor nun's throat with seed and causing twin streamers of jizz to spurt from her nose.  Through it all, she continually swallows, hungrily devouring every drop of Urta-tainted spunk that can feed her.  Her throat bobs with gleeful delight, and you lose track of how long you spend orgasming, eventually blacking out when your poor, frazzled nerves can handle no more.");
 	flags[kFLAGS.URTA_SCYLLA_BIG_DICK_TIMES_DONE]++;
 	//{-100 lust,+1 corruption, }
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("cor", 1);
 	if (player.cumQ() < 5000) player.cumMultiplier += 2;
 	if (player.balls > 0) player.ballSize += 1;
@@ -2510,7 +2561,7 @@ private function watchTwoHotBitchesAndJerkIt():void {
 	outputText("  Before you can answer, she gives your ass a slap and finds a water barrel to wash up in.  Scylla finishes her 'meal' and looks up at you, her alabaster skin turning completely crimson before she too runs off to clean up.\n\n", false);
 	outputText("You smile happily and pick up your " + player.armorName + ".  It's past time you checked up on your camp.", false);
 	if (urtaLove()) outputText("  You give your lover's back a wistful grin and muse over how good her taste in women is as you leave.", false);
-	player.orgasm();
+	player.orgasm('Generic');
 	//+luv
 	urtaLove(2);
 	//+comfort
@@ -2585,7 +2636,7 @@ private function makeUrtaSitOnYourLapWithScylla():void {
 	outputText("Did her cock just twitch?  No, you scold yourself; it couldn't have, not after two orgasms like that.  Urta hooks her arm around the giggling nun's midsection and pulls the stumbling sister towards the doorway.  Scylla looks back at you and half-giggles, half-slurs, \"<i>Tee-hee, thish ish so much fun!  I love you guysh!</i>\"\n\n", false);
 
 	outputText("You make your way out with your head low, but you do see Scylla and Urta walking up the stairs towards a truly private room.  They each look a little unsteady and neither of Scylla's hands can be seen, but you're sure they'll be ok.", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", 1, "sen", 1, "cor", .5);
 	//+luv
 	urtaLove(3);
@@ -2608,7 +2659,11 @@ private function tellUrtaNoMoreScylla():void {
 	if (urtaLove()) outputText("Just please, don't doubt my love for you.  ", false);
 	outputText("Do I need to stop drinking too?", false);
 	//[Drink More] [Drink Less] [No Change] [Leave Her]
-	simpleChoices("Drink More", tellUrtaToBeADrunkenHussy, "Drink Less", tellUrtaToStopBeingALush, "No Change", tellUrtaToStayTheSame, "Leave Her", leaveUrtaAfterScyllaConfrontation, "", null);
+	menu();
+	addButton(0, "Drink More", tellUrtaToBeADrunkenHussy);
+	addButton(1, "Drink Less", tellUrtaToStopBeingALush);
+	addButton(2, "No Change", tellUrtaToStayTheSame);
+	addButton(4, "Leave Her", leaveUrtaAfterScyllaConfrontation);
 }
 //[Scylla Okay]
 private function tellUrtaMoreScyllaIsFine():void {
@@ -2619,7 +2674,11 @@ private function tellUrtaMoreScyllaIsFine():void {
 	else outputText("Me and her, we've been partners in the guard for a long time, but the sex is just mechanical, to sate us.  You don't have to worry about her stealing me away.  ", false);
 	outputText("But what about my drinking or how I get when I'm drunk?  It doesn't bother you, does it?", false);
 	//[Drink More] [Drink Less] [No Change] [Leave Her]
-	simpleChoices("Drink More", tellUrtaToBeADrunkenHussy, "Drink Less", tellUrtaToStopBeingALush, "No Change", tellUrtaToStayTheSame, "Leave Her", leaveUrtaAfterScyllaConfrontation, "", null);
+	menu();
+	addButton(0, "Drink More", tellUrtaToBeADrunkenHussy);
+	addButton(1, "Drink Less", tellUrtaToStopBeingALush);
+	addButton(2, "No Change", tellUrtaToStayTheSame);
+	addButton(4, "Leave Her", leaveUrtaAfterScyllaConfrontation);
 }
 //[Leave Her]
 private function leaveUrtaAfterScyllaConfrontation():void {
@@ -2684,7 +2743,9 @@ private function amilyXUrtaUrtaFallout(): void {
 
 	outputText("(You can tell her that it's okay, and you're actually kind of glad that your girls are getting along in such a fun way.  Or, you could crush the bitch's heart for daring to fuck YOUR woman.)", false);
 	//[It's Okay] [Heartbreak]
-	simpleChoices("It's Okay", itsOkayUrtaAmilyIsHot, "Heartbreak", crushUrtasHeart, "", null, "", null, "", null);
+	menu();
+	addButton(0, "It's Okay", itsOkayUrtaAmilyIsHot);
+	addButton(1, "Heartbreak", crushUrtasHeart);
 }
 
 //[It's Okay]
@@ -2739,7 +2800,7 @@ private function crushUrtasHeart():void {
 			outputText("While she’s away you proceed to strip off your clothes, fold them neatly and place then in a safe corner of the room.  While waiting for Urta to return, you strike a few poses on a nearby mirror, trying to find the best one for when your foxy lover returns.  Once satisfied, you lay on her bed and wait for her return.\n\n");
 			outputText("Urta returns, wobbling a little less; her erection must have started to subside or else she somehow got herself a little under control while she was gone.  She offers you a thick, cheap-looking clay mug.  “<i>I only have water; is that okay?</i>” she asks nervously.  She then catches sight of you and her eyes bulge out; she almost drops the mug, but manages to catch it before she spills more than half of its contents.\n\n");
 			outputText("You laugh inwardly... who knew teasing was so much fun?  You tell her water is fine and that she should bring it to you.  Urta just stares at you for a few moments, jolting back to reality when you repeat yourself.  Swallowing hard, she awkwardly advances towards you; you almost think you can see her meaty prick straining against the reinforced metal and leather of her chastity belt.  She really is hard-pressed to withstand temptation, even with that thing on.  Finally reaching you, she gingerly stretches out her hands to offer you the mug.\n\n");
-			outputText("You take the mug and tip on your mouth, purposely letting some spill, forming rivulets of water across your " + player.skin(true, false) + ", " + (player.hasBreasts() ? "past your breasts and down" : "down your chest and over ") + " your belly.  With a look of mock disappointment, you tell Urta you seem to have spilled some water, maybe she should take care of it?  Urta nods her head and immediately starts to head for a closet to fetch you a towel.  But you quickly stop her, by telling her that you want her to lick you clean.\n\n");
+			outputText("You take the mug and tip on your mouth, purposely letting some spill, forming rivulets of water across your [skin.noadj], " + (player.hasBreasts() ? "past your breasts and down" : "down your chest and over ") + " your belly.  With a look of mock disappointment, you tell Urta you seem to have spilled some water, maybe she should take care of it?  Urta nods her head and immediately starts to head for a closet to fetch you a towel.  But you quickly stop her, by telling her that you want her to lick you clean.\n\n");
 			outputText("“<i>L-lick you!  What do I look like, an animal!?</i>” Urta snaps, indignantly, tail bristling in outrage.  You calmly remind her of her current predicament... and that you, alone, hold the keys to her freedom.  The fox-morph glares at you, growling deeply enough to remind you you’re basically teasing a fox the size of a human being.  You just smile back at her, confident she won’t hurt you.  She stares into your eyes levelly, but, seeing you won’t back down, finally gives in.  “<i>Oh, very well,</i>” she sighs, then tries her level best to sashay towards you.  “<i>You going to get on the bed? Or are you going to make me get down on my hands and knees?</i>” she huffs.  You merely ask her what does she think you’re going to do?\n\n");
 			outputText("Urta heaves a long suffering sigh and kneels down before you.  Gently taking hold of your [leg], she leans her head in and sticks out her long, broad tongue, running it gently up one running trail of water.  Despite her initial protests, Urta is very thorough, making sure she gets every little bit of moisture from your [skin], replacing the water with her saliva.  You enjoy both the treatment and the power you have over your fox-herm girlfriend immensely.  You congratulate her on her dedication by gently patting her head and stroking your hand along her hair and triangular ears.  At one point you realize that her tail is wagging... quite happily actually... making you question her earlier protests.\n\n");
 			outputText("When she finally hikes her way all the way up to your chin, you take a hold of her head and pull her into another deep kiss, invading her mouth with your [tongue], tangling and dancing with her own canine tongue, moaning into the kiss to excite Urta as best as you can.  Urta is eager to kiss you back, snaking her arms around the back of your neck in order to pull your face against hers.  Through the sounds of your kiss, you become aware of a faint but constant dripping sound.  Breaking the kiss, the two of you look at the floor; Urta’s cock might be physically restrained, but nothing’s stopping it from bubbling precum, which has pooled inside of her cock-tube and is now seeping through the padding and the leather to drip noisily onto the floor.  Urta blushes fiercely.  “<i>Well, I did say this wasn’t good for me - I’m too excited for it,</i>” she says, defending herself.\n\n");
@@ -2786,7 +2847,6 @@ private function friendsTalkExpack():void {
 }
 
 public function urtaDialogueMenu():void {
-	//choices("Urta",urtaDiscussesSelf,"Edryn",urtaDiscussesEdryn,"The Watch",urtaDiscussesTheWatch,"Alcoholism",urtaDiscussesAlcholism,"",0);
 	menu();
 	addButton(0,"Urta",urtaDiscussesSelf);
 	addButton(1,"Edryn",urtaDiscussesEdryn);
@@ -2809,26 +2869,25 @@ private function urtaDiscussesSelf():void {
 		outputText("“<i>You wanna talk about me?</i>” she asks" + (urtaJustFriends() ? "" : ", blushing softly") + ".  “<i>Well, there isn't THAT much to tell, but what do you want to know?</i>”   She seems surprisingly pleased to have the chance to talk.");
 	else outputText("“<i>Well, I don't think there's that much to tell,</i>” she says with a smile.  She idly blows a bang out of her face and exhales, “<i>Well, lover, I'm an open book for you, what do you want to know?</i>”");
 	//[Family] [Sex/Romance] [Employment] [Prejudice]
-	if (urtaJustFriends())
-		simpleChoices("Flirt", flirtWithUrta, "Employment", urtaDiscussesEmployment, "Prejudice", urtaDiscussesPrejudice, "", null, "Back", urtaDialogueMenu);
-	else if (flags[kFLAGS.URTA_QUEST_STATUS] == .5)
-		simpleChoices("Infertility",kGAMECLASS.urtaQuest.infertilityQuestions,
-				"Romance&Sex",urtaDiscussesSexAndRomance,
-				"Employment",urtaDiscussesEmployment,
-				"Prejudice",urtaDiscussesPrejudice,
-				"Back",urtaDialogueMenu);
-	else if (flags[kFLAGS.URTA_QUEST_STATUS] == 1)
-		simpleChoices("Fertility",urtaFertilityDiscussion,
-				"Romance&Sex",urtaDiscussesSexAndRomance,
-				"Employment",urtaDiscussesEmployment,
-				"Prejudice",urtaDiscussesPrejudice,
-				"Back",urtaDialogueMenu);
-	else
-		simpleChoices("Family",urtaDiscussesFamily,
-				"Romance&Sex",urtaDiscussesSexAndRomance,
-				"Employment",urtaDiscussesEmployment,
-				"Prejudice",urtaDiscussesPrejudice,
-				"Back",urtaDialogueMenu);
+	menu();
+	addButton(2, "Employment", urtaDiscussesEmployment);
+	addButton(3, "Prejudice", urtaDiscussesPrejudice);
+	addButton(14, "Back",urtaDialogueMenu);
+	if (urtaJustFriends()) {
+		addButton(1, "Flirt", flirtWithUrta);
+	}
+	else if (flags[kFLAGS.URTA_QUEST_STATUS] == .5) {
+		addButton(0, "Infertility", kGAMECLASS.urtaQuest.infertilityQuestions);
+		addButton(1, "Romance&Sex", urtaDiscussesSexAndRomance);
+	}
+	else if (flags[kFLAGS.URTA_QUEST_STATUS] == 1) {
+		addButton(0, "Fertility", urtaFertilityDiscussion);
+		addButton(1, "Romance&Sex", urtaDiscussesSexAndRomance);
+	}
+	else {
+		addButton(0, "Family", urtaDiscussesFamily);
+		addButton(1, "Romance&Sex", urtaDiscussesSexAndRomance);
+	}
 }
 
 public function flirtWithUrta():void {
@@ -2932,7 +2991,11 @@ private function urtaDiscussesEdryn():void {
 		outputText("\n\n\"<i>I don't need to worry about her stealing you away from me, do I, lover?</i>\" the gray fox teases.  She smirks knowingly and continues, \"<i>I'm joking, though she is a hottie, isn't she?  What do you want to know?</i>\"");
 	//[History Together] [Working Together] [Romance?]
 	var discussRomance:Function = (urtaJustFriends() ? null : urtaDiscussesEdrynRomance);
-	simpleChoices("History", urtaDiscussesEdrynHistory, "Working", urtaDiscussesWorkingWithEdryn, "Romance", discussRomance, "", null, "Back", urtaDialogueMenu);
+	menu();
+	addButton(0, "History", urtaDiscussesEdrynHistory);
+	addButton(1, "Working", urtaDiscussesWorkingWithEdryn);
+	addButton(2, "Romance", discussRomance);
+	addButton(14, "Back", urtaDialogueMenu);
 }
 
 //[=The Watch=]
@@ -2943,7 +3006,12 @@ private function urtaDiscussesTheWatch():void {
 	if (!urtaLove()) outputText("\n\nUrta perks up at that, her spine stiffening with obvious pride as she takes a hearty swig of her drink.  \"<i>What do you want to know?</i>\" she asks happily.");
 	else outputText("\n\nUrta stiffens proudly, unintentionally thrusting her chest forward before realizing the show she's making of her own cleavage.  She colors and asks, \"<i>What do ya wanna know?</i>\"");
 	//[Membership] [Role in the city] [Crime & Punishment] [Reach of the Watch] [Interesting Cases]
-	simpleChoices("Membership",urtaDiscussesWatchMembership,"Role",urtaDiscussesWatchRole,"Crime",urtaDiscussesCrimeAndPunishment,"Reach",urtaDiscussesTheWatchsReach,"Back",urtaDialogueMenu);
+	menu();
+	addButton(0, "Membership", urtaDiscussesWatchMembership);
+	addButton(1, "Role", urtaDiscussesWatchRole);
+	addButton(2, "Crime", urtaDiscussesCrimeAndPunishment);
+	addButton(3, "Reach", urtaDiscussesTheWatchsReach);
+	addButton(14, "Back", urtaDialogueMenu);
 }
 
 //[=Alcoholism=]
@@ -2978,7 +3046,11 @@ private function urtaDiscussesAlcholism():void {
 			outputText("lover.  I don't think I've ever had anyone accept me like you have - even Edryn kind of holds back from me.  You... you're different.  Maybe it's because you're an off-worlder, I don't know, but meeting you has been the best thing to happen to me since I joined the guard.  Honestly... I feel like I could probably stop - I don't really need it anymore, though I do seem to wind up having a lot of fun when I do.</i>\"");
 		outputText("[pg]Urta falls silent, waiting for you to speak.  Will you tell her to start drinking less?  Will you tell her that you are fine with her drinking habits, now that she's explained her startling change in behavior and her reasons for doing so?  Will you break up with her if she's that much of an alcoholic? Or do you want her to drink even more - perhaps you find her so much more fun to be with when she's blink stinking drunk?");
 		//[Drink More] [Drink Less] [No Change] [Break Up]
-		simpleChoices("Drink More", urtaDiscussAlcoholDrinkMore, "Drink Less", urtaDiscussAlcoholDrinkLess, "Be Yourself", urtaDiscussAlcoholNoChange, "Break Up", breakUpWithTheBitchOverAlcoholism, "", null);
+		menu();
+		addButton(0, "Drink A Lot", urtaDiscussAlcoholDrinkMore);
+		addButton(1, "Drink A Little", urtaDiscussAlcoholDrinkLess);
+		addButton(2, "Be Yourself", urtaDiscussAlcoholNoChange);
+		addButton(3, "Break Up", breakUpWithTheBitchOverAlcoholism);
 	}
 	else {
 		outputText("You tell Urta that you want to discuss her newfound drinking habits.  The grey-furred fox-morph meets your gaze calmly.  \"<i>Really?  What more do you have in mind?</i>\" she asks.");
@@ -2989,7 +3061,10 @@ private function urtaDiscussesAlcholism():void {
 				outputText("  \"<i>You said you didn't mind me drinking as much as I do... are you going to ask me to cut down?</i>\" she asks, calmly and clearly assuming that's what you intend.");
 			else
 				outputText("  \"<i>I said it before, I'll say it again, I'm not going to stop drinking entirely - there's nothing wrong with a few cold ones to take the edge off.  I don't drink myself stupid any more; that should be enough for you,</i>\" she replies, defensively.");
-		simpleChoices("Drink A Lot", urtaDiscussAlcoholDrinkMore, "Drink A Little", urtaDiscussAlcoholDrinkLess, "Be Yourself", urtaDiscussAlcoholNoChange, "Break Up", null, "", null);
+		menu();
+		addButton(0, "Drink A Lot", urtaDiscussAlcoholDrinkMore);
+		addButton(1, "Drink A Little", urtaDiscussAlcoholDrinkLess);
+		addButton(2, "Be Yourself", urtaDiscussAlcoholNoChange);
 	}
 }
 
@@ -2999,7 +3074,7 @@ private function urtaDiscussAlcoholDrinkMore():void {
 	urtaSprite();
 	outputText("You blush a little bit and ask why she thinks you want her to drink LESS.  She stares at you quizzically and your blush deepens as you explain that when she gets drunk, lets her guard down, and gets so aggressive, you... well, you like it.  A lot.  Her ears perk up at your words, though her expression is a little uncertain while you explain it.  By the time you finish, something warm brushes by your leg and gently 'thunks' the table.  Clearly, she's as into the idea of encouraging her unrestrained, carefree self as you are.");
 	if (pregnancy.type == PregnancyStore.PREGNANCY_PLAYER) {
-		outputText("\n\nUrta smiles, gently at first, though it carries a bit of a predatory glint by the time she waves down a waitress and orders a full bottle of non-alcholic beer.  You give her a rueful smile, a stroke under the table, and a kiss just bursting with tongue before you conclude the conversation.  Urta's chuckles, \"<i>After the baby I'll be sure to have a little liquid motivation on hand.</i>\"");
+		outputText("\n\nUrta smiles, gently at first, though it carries a bit of a predatory glint by the time she waves down a waitress and orders a full bottle of non-alcoholic beer.  You give her a rueful smile, a stroke under the table, and a kiss just bursting with tongue before you conclude the conversation.  Urta's chuckles, \"<i>After the baby I'll be sure to have a little liquid motivation on hand.</i>\"");
 	}
 	else {
 		outputText("\n\nUrta smiles, gently at first, though it carries a bit of a predatory glint by the time she waves down a waitress and orders a full bottle of Barkardi 151.  You give her a rueful smile, a stroke under the table, and a kiss just bursting with tongue before you conclude the conversation.  Urta's already half-way through the bottle of alcohol by the time you reach the door - you have a feeling the fox-herm's going to be a lot of fun from now on...");
@@ -3109,7 +3184,9 @@ private function urtaDiscussesSexAndRomance():void {
 	if (player.inte < 60) dynStats("int", .5);
 	urtaLove(.5);
 	//[Leave] [Tease]
-	simpleChoices("Tease Her", urtaDiscussionTeaseAfterRomance, "", null, "", null, "", null, "Leave", urtaDiscussionLeaveAfterRomance);
+	menu();
+	addButton(0, "Tease Her", urtaDiscussionTeaseAfterRomance);
+	addButton(14, "Leave", urtaDiscussionLeaveAfterRomance);
 }
 
 //[==Leave==]
@@ -3234,7 +3311,9 @@ private function urtaDiscussesEdrynRomance():void {
 			outputText("\n\nShe shakes her head.  \"<i>But I owed you this truth, at the least.  So... what'll be?  Can we be honest, polygamous lovers?   Or is that too weird for you?</i>\"  She stares at you and takes a fortifying drink of whiskey, shuddering nervously as she awaits your response.");
 			outputText("\n\nYou ponder what you should do for a moment.  Will you accept Urta's little indiscretions?  Or will you refuse to have anything to do with her if she can't be faithful to you alone?");
 			//[Accept] [Reject]
-			simpleChoices("Accept", urtaDiscussesEdrynNonLoveAccept, "Reject", urtaDiscussesEdrynNonLoveREJECT, "", null, "", null, "", null);
+			menu();
+			addButton(0, "Accept", urtaDiscussesEdrynNonLoveAccept);
+			addButton(1, "Reject", urtaDiscussesEdrynNonLoveREJECT);
 		}
 		//Subsequent Regular Variant:
 		else {
@@ -3271,7 +3350,10 @@ private function urtaDiscussesEdrynRomance():void {
 			outputText("\n\n\"<i>I didn't want to keep it secret from you, but I was scared you'd hate me for not telling you this to start with,</i>\" Urta suddenly blurts out, looking up at you with wet eyes.  \"<i>I... I won't blame you if you do anyway, but I love you, [name], more than anyone else in the world,</i>\" she states desperately.  \"<i>It's just a matter of physical relief for me - you're the one I love, the only one I love, and she's happy for me to be with you.  I just... I just can't stop having sex entirely, because I'd never be able to stay sane - you aren't here often enough for me to release my pent-up urges, and you'll never be there while you're still out there fighting the demons.  I want YOU and only you, but with our lives like they are now, I can't.  Please tell me you understand,</i>\" she begs.");
 			outputText("\n\nIt's quite clear that she means what she's saying.  Can you accept this arrangement, maybe even be happy about it, or will you break up with her over this breach of trust?");
 			//[Happy] [Tolerate] [Breakup]
-			simpleChoices("Happy", urtaDiscussesEdrynLoveHappy, "Tolerate", urtaDiscussesEdrynLoveTolerate, "Break Up", urtaDiscussesEdrynLoveBreakup, "", null, "", null);
+			menu();
+			addButton(0, "Happy", urtaDiscussesEdrynLoveHappy);
+			addButton(1, "Tolerate", urtaDiscussesEdrynLoveTolerate);
+			addButton(2, "Break Up", urtaDiscussesEdrynLoveBreakup);
 		}
 		else {
 			outputText("With a smirk, you ask Urta how things have been between her and Edryn lately.");
@@ -3472,7 +3554,7 @@ internal function spankTheShitOutOfUrtaAndMakeHerCreamHerselfFromProstateStimula
 		outputText("\n\nWhen your vulpine lover finally calms from her orgasm, you pull out of her stretched asshole with a wet pop, your cum leaking out of her to join the mess on the floor.");
 		outputText("\n\n\"<i>Ow,</i>\" Urta declares, before falling face-first onto the edge of the table - which promptly tips and dumps her into the nasty mix of spilled booze and cum.");
 		outputText("\n\nYou give Urta one last palm on the ass before leaving, careful to edge around the huge mess on the floor.");
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("sen", -1);
 	}
 	//{PC Don't Got the Dick but Do Got a Tamani Dildo Which is Almost as Good!}
@@ -3508,7 +3590,10 @@ private function urtaDiscussessKatherine():void {
 	else if (affection < 32) { //Willing to have sober sex
 		outputText("“<i>Mmmm yeah Kath,</i>” she says dreamily, then shakes her head and laughs.  “<i>Guess that about sums things up, huh?  Yeah I like Kath, I like her quite a bit.  She’s a good watch officer and she’s a good lover in a threesome.</i>”  Urta looks a little nervous, but presses on.  “<i>So... what do you think of the two of us, when you’re not around, you know?</i>”\n\n");
 		outputText("You could tell Urta not to have sex with Katherine except when you’re around, tell her it’s alright for them to have sex whenever they want or encourage them to fuck each other’s brains out.");
-		simpleChoices("Don't Fuck", urtaKathSexDont, "Whenever", urtaKathSexWhenever, "Encourage", urtaKathSexEncourage, "", null, "", null);
+		menu();
+		addButton(0, "Don't Fuck", urtaKathSexDont);
+		addButton(1, "Whenever", urtaKathSexWhenever);
+		addButton(2, "Encourage", urtaKathSexEncourage);
 		return;
 	}
 	else { //Lovers
@@ -3636,7 +3721,7 @@ public function giveTheFoxSomeEggs():void {
 	//First time, tag for triggering freakout!
 	if (flags[kFLAGS.URTA_EGG_FORCE_EVENT] == 0) flags[kFLAGS.URTA_EGG_FORCE_EVENT] = 48;
 	player.dumpEggs();
-	player.orgasm();
+	player.orgasm('Ovi');
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -3698,7 +3783,7 @@ private function repeatUrtaEgging():void {
 	outputText("\n\nThe drunken vixen giggles and taps you playfully on the nose.  \"<i>Naughty, naughty [name]... but, if you got eggs for me, I'll hatch 'em for yah, I guesh.  Jusht make sure you put them in the right hole, okay?  I don't want no eggs up da butt.</i>\"  She giggles again and gets up, heedless of the way her erection is ");
 	if (!urtaLove()) outputText("blatantly hanging out of her stockings and drooling pre-cum everywhere");
 	else outputText("vulgarly bulging her dress and rendering it sopping wet from her arousal");
-	outputText(", before sashaying in a drunkenly exaggerated fashion out towards the alleyway where you and she first began your relationship- and where you first 'impreggnated' her.");
+	outputText(", before sashaying in a drunkenly exaggerated fashion out towards the alleyway where you and she first began your relationship- and where you first 'impregnated' her.");
 
 	outputText("\n\nYou follow close behind, striving to avoid slipping in the fox-goo trail she leaves in her wake.  By the time you catch up, she's already stripped down and is leaning over a crate for support, idly stroking her huge mare-prick with a free hand even as her tail wags in anticipation.  \"<i>Well, whatcha waiting for, lover?  Come 'n' geddit!</i>\"");
 
@@ -3775,7 +3860,7 @@ private function repeatUrtaEgging():void {
 		pregnancy.knockUpForce(PregnancyStore.PREGNANCY_DRIDER_EGGS, 72);
 	flags[kFLAGS.URTA_FLATBELLY_NOTICE] = 0;
 	player.dumpEggs();
-	player.orgasm();
+	player.orgasm('Ovi');
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -3794,13 +3879,22 @@ private function condomlessUrtaInHouseSmex():void {
 	else outputText("\n\nUrta rolls her eyes and declares, \"<i>Fine, but you'll help me clean up the mess, love.</i>\"  She's practically panting as she says so, cock jutting in the air as ribbons of pre dangle from that rigid tower.  Watching through lusty, half-hidden eyes, the vixen seems curious as to just how messy you want to get.");
 	//[Peg Her Ass] [Fill Me Up]
 	menu();
-	if (player.hasCock()) {
-		if (player.cockThatFits(urtaCapacity()) >= 0) addButton(0,"Peg Her Ass",pegUrtasAssMessy);
-		else outputText("\n\n<b>You're too big to peg her ass and make her bust a nut all over herself.</b>");
+	if (player.cockThatFits(urtaCapacity()) >= 0) {
+		addButton(0, "Peg Her Ass", pegUrtasAssMessy);
+	} else {
+		addDisabledButton(0, "Peg Her Ass", "This scene requires you to have fitting cock.");
 	}
-	if (player.hasVagina()) addButton(1,"Fill Me Up",fillMeUpPleaseUrta);
-	if (player.gender > 0 && player.isNaga()) addButton(2,"TailFun",nagaOnUrtaMess);
-	addButton(4,"Back", goBackToUrtasForLuvinz);
+	if (player.hasVagina()) {
+		addButton(1, "Fill Me Up", fillMeUpPleaseUrta);
+	} else {
+		addDisabledButton(1, "Fill Me Up", "This scene requires you to have vagina.");
+	}
+	if (!player.isGenderless() && player.isNaga()) {
+		addButton(2, "TailFun", nagaOnUrtaMess);
+	} else {
+		addDisabledButton(2, "TailFun", "This scene requires you to have naga tail and genitals.");
+	}
+	addButton(14, "Back", goBackToUrtasForLuvinz);
 }
 //[Peg Her Ass]
 private function pegUrtasAssMessy():void {
@@ -3890,7 +3984,7 @@ private function pegUrtasAssMessy():void {
 	else outputText("smiling devilishly");
 	outputText(".");
 	outputText("\n\nUrta smirks, glancing from your hardening groin up to your eyes, and says, \"<i>Come on, you horn-dog, let's go clean up your mess.  You can help me fill a few condoms later.</i>\"");
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", .2, "sen", -3);
 	flags[kFLAGS.URTA_COMFORTABLE_WITH_OWN_BODY] += 2;
 	urtaLove(2);
@@ -4020,7 +4114,7 @@ private function fillMeUpPleaseUrta():void {
 	flags[kFLAGS.TIMES_FUCKED_URTA]++;
 	player.slimeFeed();
 	if (flags[kFLAGS.URTA_FERTILE] == 1) player.knockUp(PregnancyStore.PREGNANCY_URTA, PregnancyStore.INCUBATION_URTA, 25);
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("lib", .2, "sen", -3);
 }
 
@@ -4041,7 +4135,7 @@ private function lippleBondUrtaScylla():void {
 	outputText(images.showImage("urta-syclla-3some","vert"), false);
 	outputText("With a grin, you approach the busty - bustier duo and lower yourself level with the woman doing most of the work.  Urta watches you with evident anticipation, probably thinking about whether you intend to join in on the oral assault on her - maybe give some attention to her overfilled balls, swelling bigger and bigger under Scylla's tender caresses, or the wet slit of a prize behind them, but you have a different thing in mind for them.");
 
-	outputText("\n\nYou do reach out between Urta's legs just to avoid making her feel left out... or maybe it just goes with the spirit of the teasing you want to give her.  Her balls have already grown beyond their normal size and Scylla is intensely kneading them, so you have to reach around them to actually touch her pussy.  Sure enough, it's soaking wet and feeling the touches on both of her sexual organs causes Urta to moan loudly.  As you rub on her pussy lips gently, only giving the occassional flip to her clit, you direct your other hand elsewhere - to the nun's habit.  Slowly, you run your hand over one of her heaving, magnificent breasts, causing her eyes to dart to you rather than her 'meal'.  Scylla blushes as you press a single finger on the habit covering her mountainous cleavage, almost feeling the breath of her tit-lips on your arms as her breasts swell with air.  You increase the pressure and, surely enough, with her next breath in, the habit simply gives way, and your finger is suddenly inside the ripped folds.  Both you and Urta watch in amazement as you pull the increasingly-ripped dark cloth away, exposing Scylla's cream-filled, squishy jug of a left tit.  Your fingers purposely brush against her lipple, the ruby mouth trying to suck in a thumb as you feel the heat and wetness of it.  You pull the busty nun towards yourself, lowering your [face] towards the leftmost of her lips, and pressing your own against hers.  Scylla squirms in your embrace, moaning into Urta's cock, whom in turns shivers herself from both the sensation and the sight, and you can feel her female sex squelch as it gushes some fluid over your fingers.");
+	outputText("\n\nYou do reach out between Urta's legs just to avoid making her feel left out... or maybe it just goes with the spirit of the teasing you want to give her.  Her balls have already grown beyond their normal size and Scylla is intensely kneading them, so you have to reach around them to actually touch her pussy.  Sure enough, it's soaking wet and feeling the touches on both of her sexual organs causes Urta to moan loudly.  As you rub on her pussy lips gently, only giving the occasional flip to her clit, you direct your other hand elsewhere - to the nun's habit.  Slowly, you run your hand over one of her heaving, magnificent breasts, causing her eyes to dart to you rather than her 'meal'.  Scylla blushes as you press a single finger on the habit covering her mountainous cleavage, almost feeling the breath of her tit-lips on your arms as her breasts swell with air.  You increase the pressure and, surely enough, with her next breath in, the habit simply gives way, and your finger is suddenly inside the ripped folds.  Both you and Urta watch in amazement as you pull the increasingly-ripped dark cloth away, exposing Scylla's cream-filled, squishy jug of a left tit.  Your fingers purposely brush against her lipple, the ruby mouth trying to suck in a thumb as you feel the heat and wetness of it.  You pull the busty nun towards yourself, lowering your [face] towards the leftmost of her lips, and pressing your own against hers.  Scylla squirms in your embrace, moaning into Urta's cock, whom in turns shivers herself from both the sensation and the sight, and you can feel her female sex squelch as it gushes some fluid over your fingers.");
 
 	if (urtaLove()) outputText("\n\n\"<i>Hey, love, that's unfair... why's she the one getting the kisses? Trying to make me jealous?</i>\"\n\nYou smile, wondering if Urta even noticed where the lip that you're kissing is located.");
 	else outputText("\n\n\"<i>I... guess she has more of these to kiss with, but... umm...</i>\"  Seeing you entranced with Scylla's tits and lipples, not to mention being interrupted by the nun's slurps, half-moans, and her own sensations, Urta stops mid-sentence.");
@@ -4062,7 +4156,7 @@ private function lippleBondUrtaScylla():void {
 	//[if (cocks > 2)
 	if (player.cockTotal() > 2) outputText("  The barrage of sensations is intensified when Scylla also gets a bit greedy, grabbing another tool and starting to jerk it off as well.");
 
-	outputText("\n\nAs you're being sucked inside Scylla's breast, Urta moans loudly at the intense sensation of finding herself inside the overstuffed, warm, wet folds of Scylla's breast as her cock is being lapped at.  Both of you reflexively buck your hips, pushing through any resistance the tits may offer at a later point and lodge the two lucky cocks deep inside the nun's chest.  This causes her to throw her own head back and moan in ecstasy at the mind-blowingly filling intrustion into her chest.  [EachCock] is stimulated with");
+	outputText("\n\nAs you're being sucked inside Scylla's breast, Urta moans loudly at the intense sensation of finding herself inside the overstuffed, warm, wet folds of Scylla's breast as her cock is being lapped at.  Both of you reflexively buck your hips, pushing through any resistance the tits may offer at a later point and lodge the two lucky cocks deep inside the nun's chest.  This causes her to throw her own head back and moan in ecstasy at the mind-blowingly filling intrusion into her chest.  [EachCock] is stimulated with");
 	//[if (cocks > 1)
 	if (player.cockTotal() > 1) outputText(" either");
 	outputText(" the holy woman's ravenous lipples and inner, erotic tit-flesh in a mutually ecstatic, sensations-filled manner");
@@ -4147,7 +4241,7 @@ private function lippleBondUrtaScylla():void {
 	outputText("\n\n\"<i>... No worries, [name].  I'll be fine soon, and she should be too... you can get going, if you need to.  I... don't think I'll be needing another meal anytime soon...  In fact, this is the first time I think I might've gorged myself to the point of sinning and... illness...</i>\"");
 
 	outputText("\n\nYou help the two women lie down safely and comfortably, waiting a bit to make sure Scylla will at least be able to move soon and help Urta get someplace to rest, before leaving the two of them to enjoy their afterglow.");
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -2, "cor", .25);
 	if (player.cumQ() < 500) player.cumMultiplier += 2;
 	if (player.cumQ() < 1500) player.cumMultiplier += 2;
@@ -4244,7 +4338,7 @@ private function nagaOnUrtaMess():void {
 
 	outputText("\n\nAfter a much more tender, if still affectionate couple activity, Urta lets you leave, but not before kissing you and sending you home with a blush.  \"<i>I guess I should let you do more unusual stuff to me more often...</i>\"  She trails off as you march back to your camp...");
 
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("sen", -2, "cor", .25);
 	if (player.hasCock()) {
 		if (player.cumQ() < 500) player.cumMultiplier += 2;
@@ -4351,7 +4445,7 @@ private function lickOutUrtaAtHome():void {
 	//Boost love
 	urtaLove(3);
 	//Drain lust, slimefeed, reduce libido
-	player.orgasm();
+	player.orgasm('Lips');
 	player.slimeFeed();
 	knockUpUrtaChance();
 	if (player.lib > 50) dynStats("lib", -1);
@@ -4493,7 +4587,7 @@ private function raphaelAndUrtaPartTwo():void {
 	//Slimefeed
 	player.slimeFeed();
 	//-3 sensitivity, reset lust.
-	player.orgasm();
+	player.orgasm('Vaginal');
 	dynStats("sen", -3);
 	flags[kFLAGS.URTA_X_RAPHAEL_HAPPENED]++;
 	doNext(camp.returnToCampUseOneHour);
@@ -4685,7 +4779,7 @@ private function urtasRuinedOrgasmsFromGooPartII():void {
 	if (edrynAvailable) outputText("Edryn");
 	else outputText("a newly dressed Olivia");
 	outputText(" collapse onto the couch, exhausted.  \"<i>Gimme ten minutes, then we'll go on patrol,</i>\"  Urta says waving a hand tiredly.  You grin and take your leave, slipping out the front door and heading back to camp.  The sun blazes high in the sky, around noon, so you've lost about a day stuck inside one person or another.");
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("sen", 2);
 	model.time.days++;
 	model.time.hours = 11;
@@ -4892,7 +4986,7 @@ private function doggyStyle():void {
 	outputText("\n\nExhausted, you slouch forwards, suddenly aware of the large, almost pregnant belly you're sporting as it makes contact with the slick, wet floor below.  You tentatively reach down with one weak hand, cradling your sloshing cum belly as you flop over onto your side, completely spent.  Urta curls up behind you, her cock still firmly inside, plugging all that warm seed inside.  You nuzzle back into her and drift off into a relaxing, orgasm-induced nap.");
 
 	outputText("\n\n...");
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("sen", 2);
 	flags[kFLAGS.URTA_TIME_SINCE_LAST_CAME] += 4;
 	flags[kFLAGS.URTA_COMFORTABLE_WITH_OWN_BODY] += 2;
@@ -5005,7 +5099,7 @@ private function getAPetReward():void {
 	flags[kFLAGS.URTA_TIME_SINCE_LAST_CAME] += 2;
 	flags[kFLAGS.URTA_COMFORTABLE_WITH_OWN_BODY] += 2;
 	outputText("...");
-	player.orgasm();
+	player.orgasm('Lips');
 	menu();
 	addButton(0,"Next",feedTheBeastPartII);
 }
@@ -5024,7 +5118,7 @@ private function feedTheBeastPartII():void {
 private function urtaTakesPCOnWalkies():void {
 	clearOutput();
 	outputText(images.showImage("urta-home-petplay-walkies"), false);
-	outputText("\"<i>Ah, I know just what we should do!</i>\" She claps her hands together and rummages through her dresser.  Urta throws on a simple little yellow sundress and makes her way to the door.  \"<i>Come on, pet</i>\" she says with a mischevious smirk, patting her leg and holding up a leather leash. \"<i>It's time to go for a walk!</i>\"");
+	outputText("\"<i>Ah, I know just what we should do!</i>\" She claps her hands together and rummages through her dresser.  Urta throws on a simple little yellow sundress and makes her way to the door.  \"<i>Come on, pet</i>\" she says with a mischievous smirk, patting her leg and holding up a leather leash. \"<i>It's time to go for a walk!</i>\"");
 
 	outputText("\n\nYou blanch at the thought.  Walking around Tel'Adre... like this?!  Letting everyone see you on your hands and knees, following Urta around like a lost puppy?  It's just so... degrading!  But yet, as nude as you are, you can't hide your body's reaction to this idea. Your skin grows warm, while ");
 	if (player.hasCock()) outputText("[eachCock] grows hard beneath you");
@@ -5077,7 +5171,7 @@ private function urtaTakesPCOnWalkies():void {
 		outputText("With a twinkle of mischief in your eyes, you slide your arm around her narrow waist, and press Urta close to your [chest]. At first she lets out a short gasp at your boldness, but it soon turns into a long, sensuous moan. ");
 		outputText("\n\nYou hungrily seize those gorgeous, glossy black lips of hers. Your lips are intimately locked with your grey furred lover, and her delicately sweet flavor fills your mouth. She melts in your arms.");
 		outputText("\n\nIt's not long before she's sliding her hands around you. Her fingertips lightly claw at your shoulderblades. She's desperately trying to pull you closer, simply unable to get enough of your kisses.");
-		outputText("\n\nWhen you pull away, you both share a long, heated look. Her breathing is heavy, and her rich green eyes look positively drunk; not with alcohol, but with love and desire for you. Her scritchy fingers gently stroke your back and twirl in intimate little circles, causing electric shivers to run down your spine.");
+		outputText("\n\nWhen you pull away, you both share a long, heated look. Her breathing is heavy, and her rich green eyes look positively drunk; not with alcohol, but with love and desire for you. Her scratchy fingers gently stroke your back and twirl in intimate little circles, causing electric shivers to run down your spine.");
 		outputText("\n\n\"<i>Mmmm... that's more like it. If I could get a kiss like that every day, I could die happy.</i>\" Urta swoons a little and affectionately nuzzles your cheek. You can feel her racing heart through her chest and beautifully formed breasts, beating rapidly against your own. \"<i>... So, does that mean we're going to play...?</i>\"");
 		outputText("\n\nWith a devilish gleam in your eye, you inform her that she'll just have to wait to 'play' until later. "); 
 		//1st dynamic text of Vixen & Cream
@@ -5157,7 +5251,7 @@ private function urtaTakesPCOnWalkies():void {
 	private function vixenAndCreamPart3():void {
 		clearOutput();
 		outputText(images.showImage("urta-vixen-and-cream-part3"));
-		outputText("You groan and let your head rest back, your hips lightly jerking as your furry lover wonderously sucks you off. Each twitch of your lower body is met with a moan of satisfaction from your tentative lover, the vibrations of which travel through your bliss-filled shaft.");
+		outputText("You groan and let your head rest back, your hips lightly jerking as your furry lover wondrously sucks you off. Each twitch of your lower body is met with a moan of satisfaction from your tentative lover, the vibrations of which travel through your bliss-filled shaft.");
 		if (player.balls > 0) {
 			outputText("\n\nFrom below, her soft, furry fingers reach up and cradle your [balls], even as she sensuously sucks you off. Soon she is squeezing and massaging your sensitive sack, shaking up your semen-filled milkshake before it spills between her lips.");
 			outputText("\n\nYou can't be anything but a slave to her magical hands and mouth, pressing your cock and balls forward like some kind of primal offering. It seems to be a tribute to her liking, as Urta noisily sucks you off. ");
@@ -5197,7 +5291,7 @@ private function urtaTakesPCOnWalkies():void {
 		outputText("\n\nYou reach up and run your hand through her head fur, telling her that she's been good. Your vulpine lover gives a gorgeous little blush and buries her cum-coated face in your shoulder. ");
 		outputText("\n\nAs you caress her silky soft ears, Urta also makes another admission. \"<i>I was also really good and kept some for you, so you should be </i>extra proud<i>...</i>\" Pulling back, she opens her mouth and shows her her sperm covered tongue. Her tonsils have been literally bathed in your naughty spunk.");
 		outputText("\n\nShe then shares this delightful present with you, leaning forward and pressing her stained lips passionately against yours. You return her affections and soon you are both feverishly making out, once again unable to keep your hands off each other.");
-		player.orgasm();
+		player.orgasm('Generic');
 		doNext(vixenAndCreamPart4);
 	}
 	
@@ -5276,7 +5370,7 @@ private function urtaTakesPCOnWalkies():void {
 		outputText("\n\nWith such a public display of affection – not to mention the noise you were making – there’s no doubt of the devotion you have for each other.");
 		outputText("\n\nAfter what seems like a delightful eternity, Urta pulls back and looks wistfully into your eyes. \"<i>Um… drinks tomorrow, then?</i>\" Her voice is breathy and excited. It seems she likes being shown off.");
 		player.changeFatigue(40);
-		player.orgasm();
+		player.orgasm('Generic');
 		player.slimeFeed();
 		if (player.lib < 60) dynStats("lib", 1);
 		for (var i:int = 0; i < 3; i++) { //Attempt 3x

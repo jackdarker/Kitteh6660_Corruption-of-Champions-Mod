@@ -1,12 +1,23 @@
 ﻿package classes.Scenes.Areas.Lake{
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
-	import classes.GlobalFlags.kGAMECLASS;
+import classes.Scenes.API.Encounter;
 
-	public class Kaiju extends AbstractLakeContent {
+public class Kaiju extends AbstractLakeContent implements Encounter {
 
 	public function Kaiju()
 	{
+	}
+
+
+	public function encounterName():String {
+		return "kaiju";
+	}
+
+	public function encounterChance():Number {
+		return player.level >= 5
+			   && flags[kFLAGS.KAIJU_DISABLED] == 0
+			   && player.hasStatusEffect(StatusEffects.BoatDiscovery) ? 1 : 0;
 	}
 
 //const KAIJU_MEETINGS:int = 910;
@@ -17,7 +28,7 @@
 
 //First encounter
 //Boat
-public function kaijuMeeting():void {
+public function execEncounter():void {
 	clearOutput();
 	if (flags[kFLAGS.KAIJU_MEETINGS] == 0) {
 		outputText("Your explorations take you to a small island you haven't seen before.  It appears to be a large, smooth rock hill jutting out of the water.  Do you explore it?");
@@ -25,6 +36,7 @@ public function kaijuMeeting():void {
 		menu();
 		addButton(0,"Yes",meetDatKaijuYo);
 		addButton(1,"No",noMeetingKaijus);
+		addButton(2,"Never",noMeetingKaijus, true);
 	}
 	else {
 		if (flags[kFLAGS.FACTORY_SHUTDOWN] == 2 && !kaijuCock()) kaijuGrowsWangus();
@@ -38,9 +50,13 @@ private function kaijuCock():Boolean {
 }
 
 //[If no]
-private function noMeetingKaijus():void {
+private function noMeetingKaijus(never:Boolean=false):void {
 	clearOutput();
 	outputText("You continue rowing on, away from the hilly island.");
+	if (never) {
+		outputText(" It would be better to avoid it in future as well.");
+		flags[kFLAGS.KAIJU_DISABLED] = 1;
+	}
 	//[There is still a chance of finding the hill later]
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -62,7 +78,7 @@ private function meetDatKaijuYo():void {
 	menu();
 	
 	addButton(0,"Compliment",complimentKaiju);
-	if (player.gender > 0) addButton(1,"Flirt",flirtWithKaiju);
+	if (!player.isGenderless()) addButton(1,"Flirt",flirtWithKaiju);
 	addButton(2,"Insult",insultTheKaijuFirstMeeting);
 }
 
@@ -76,7 +92,7 @@ private function insultTheKaijuFirstMeeting():void {
 		outputText("\n\n\"<i>You are too rude,</i>\" she says in a huff.  \"<i>But I know how to fix you!</i>\" she begins to rise, standing to her full towering height.  Though much of her legs are still beneath the waves, her genitalia are in full display.  The lips of her feminine sex are moist, dripping with lake water and substantial moisture of their own.  They are surprisingly pink against the almost olive green of the rest of her.  But most shocking of all is that where a clit should be is instead a massive, gigantic green dong!");
 		outputText("\n\n\"<i>How about you put that mean mouth of yours to some good,</i>\" she tells you as she roughly picks you up between two large fingers and brings you to her stiffening cock.");
 		//[If player has learned the Whitefire spell]
-		if (player.findStatusEffect(StatusEffects.KnowsWhitefire) >= 0 && (player.findPerk(PerkLib.BloodMage) < 0 && player.fatigue + player.spellCost(30) > 100)) {
+		if (player.hasStatusEffect(StatusEffects.KnowsWhitefire) && (player.findPerk(PerkLib.BloodMage) < 0 && player.fatigue + player.spellCost(30) > 100)) {
 			outputText("\n\nSensing her desires, you try to quickly think of how to avoid pleasing the giant's large cock.  It occurs to you that you could use the spell whitefire to attack her.  Do you cast it?");
 			//[Yes][No]
 			menu();
@@ -173,7 +189,7 @@ private function letKaijuHaveWayWithYou():void {
 		outputText(" rest on her perky pink naughty bit.  She coos in delight as her hand slowly rubs your private parts along her firm nipple.  She begins to bounce ever so slightly, which at her size means a verifiable mountain of boob begins smacking heavily against your lower body.  \"<i>Oh yes,</i>\" she says, moaning in ecstasy, \"<i>fuck my breast!</i>\"  You don't really seem to have a choice in the matter as she picks up the pace, almost violently slamming you against her smooth green skin and stiff pink nipple.  Despite the relatively soft flesh of her mammary, it is still hundreds of pounds of tit flesh.  As if unsatisfied with just smothering you in boob she takes one green pinkie finger and begins to spank you in a manner she probably believes to be quite soft but lands quite hard on your [butt].  A small number of spankings begin to leave your ass red and tingling, each strike pushing your " + player.multiCockDescriptLight() + " further into soft breast and firm nipple.  \"<i>Please, cum on me!</i>\" she commands, and almost as if on cue your body obeys, jizz flying and coating her breast with as much sperm as your body can produce.");
 		//[if PC has balls]
 		if (player.balls > 0) outputText("  Your [balls] begin to ache as you slowly empty your load onto green flesh.");
-		player.orgasm();
+		player.orgasm('Dick');
 	}
 	//[if player has vagina]
 	else if (player.hasVagina()) {
@@ -182,7 +198,7 @@ private function letKaijuHaveWayWithYou():void {
 		outputText("  Something wet begins to leak out from the stiff, female member in your stuffed hole, and with a shock you realize she must be lactating!  The giantess's milk lubricates your passage, allowing her to ease more of her throbbing stiffness into you until finally her nipple bottoms out, your pussy lips kissing pink areola.  Your [vagina] clamps down on her, pinching her nipple and driving her deeper into what quickly turns into an ecstatic orgasm.  Her lactating tit suddenly erupts, pouring what must be gallons of corrupt milk into your womb, quickly distending your belly until you look pudgy, and then pregnant - with triplets!");
 		
 		outputText("\n\nHer nipple pops out, spurting milk all over you, soaking your skin in slick whiteness.  You hope it's good for your skin.");
-		player.orgasm();
+		player.orgasm('Vaginal');
 
 	}
 	//[if player is genderless]
@@ -237,7 +253,7 @@ private function flirtWithKaiju():void {
 		if (player.hasCock()) outputText("  [EachCock] spasms as you release your load onto her pussy walls, making them just a bit more slick with your contribution.");
 		if (player.hasVagina()) outputText("  Your own pussy releases its own feminine juices, soaking your thighs even further in wetness.");
 		//[Lust decreases, end sensitivity scene]
-		player.orgasm();
+		player.orgasm('Generic');
 	}
 	outputText("\n\nHer vaginal muscles clamp down on you tightly as she finally orgasms, the intense pressure and moistness sending you flying downwards and you slide out of her slick twat, slipping past her pink pussy lips and crashing into her waiting hand.");
 	
@@ -259,7 +275,7 @@ private function flirtWithKaiju():void {
 			if (player.hasCock()) outputText("thick cum");
 			outputText(".  You look out upon the lake to see much of it has taken on a remarkably more milky white color.  Even for a giant that was a prodigious amount of cum she unleashed!");
 			//[lust decreases, end corrupted herm scene]
-			player.orgasm();
+			player.orgasm('Vaginal');
 		}
 	}
 	outputText("\n\nThe giant's knees seem to give way beneath her and she falls on her shapely yet massive ass.  \"<i>Wow,</i>\" she says as she puts you back in the boat with your clothes.  Her green cheeks have surprisingly turned red from her exertions.  \"<i>That's much better than when I'm with myself.  Visit me again sometime, kay?</i>\" she asks.");
@@ -276,17 +292,19 @@ private function repeatKaijuEncounter():void {
 	spriteSelect(103);
 	outputText("As you row through the lake you encounter a familiar sight, a giant shell as big as an island.  As you row near it the terrapin giantess, Venus emerges from the corrupted waters.  One giant green hand plays with her titanic jugs as the other remains in the water playing with her unseen sex.  It takes several moments before she notices you.  \"<i>Oh my, it's you again, my favorite voyeur!  Did you come back for a little peek, or do you want to have some real fun?</i>\"");
 	menu();
-	var drafts:int = 0;
-	//[If PC has 15 incubus drafts (regular or pure) and Venus is not already a herm]
-	if (player.itemCount(consumables.INCUBID) + player.itemCount(consumables.P_DRAFT) >= 10 && !kaijuCock()) {
-		outputText("\n\nIt occurs to you that you have enough Incubi Drafts on you to even affect someone of the turtle girl’s great size.  Maybe you could give her a cock?");
-		addButton(5,"Give Cock",yesTurnKaijuFuta);
-	}
 	//[Peek][Hug Boobs][Fuck][Urethra Fuck (only if Venus is a herm)][Talk][Leave]
 	addButton(0,"Peek",peekAtSomePhatAssKaijuButt);
 	addButton(1,"Hug Boobs",kaijuRepeatBoobHug);
 	addButton(2,"Fuck",fuckThisGiantYouDumbCunt);
-	if (kaijuCock()) addButton(3,"UrethraFuck",urethraFuckDatGiantCock);
+	if (kaijuCock()) addButton(3, "UrethraFuck", urethraFuckDatGiantCock);
+	else {
+		//[If PC has 15 incubus drafts (regular or pure) and Venus is not already a herm]
+		if (player.itemCount(consumables.INCUBID) + player.itemCount(consumables.P_DRAFT) >= 10) {
+			outputText("\n\nIt occurs to you that you have enough Incubi Drafts on you to even affect someone of the turtle girl’s great size.  Maybe you could give her a cock?");
+			addButton(3,"Give Cock",yesTurnKaijuFuta);
+		} else 
+			addDisabledButton(3, "Give Cock", "Maybe with ten Incubi Drafts you could transform her?.");
+	}
 	addButton(4,"Talk",talkToKaiju);	
 	addButton(14,"Leave",leaveRepeatKaiju);
 }
@@ -304,9 +322,9 @@ private function kaijuRepeatBoobHug():void {
 	
 	outputText("\n\n\"<i>Oh my, it seems someone is enjoying my special hug,</i>\" the giant beauty says noticing your rising arousal.  The lusty giant removes the lower half of your [armor] revealing your ");
 	if (player.hasCock()) outputText(player.multiCockDescriptLight());
-	if (player.gender == 3) outputText(" and ");
+	if (player.isHerm()) outputText(" and ");
 	if (player.hasVagina()) outputText("[vagina]");
-	if (player.gender == 0) outputText("bare groin");
+	if (player.isGenderless()) outputText("bare groin");
 	outputText(".  \"<i>Let's have some fun!</i>\"");
 	
 	//[if player has cock]
@@ -316,7 +334,7 @@ private function kaijuRepeatBoobHug():void {
 		if (player.balls > 0) outputText(" and [balls]");
 		outputText(" rest on her perky pink naughty bit.  She coos in delight as her hand slowly rubs your private parts along her firm nipple.  She begins to bounce ever so slightly, which at her size means a verifiable mountain of boob begins smacking heavily against your lower body.  \"<i>Oh yes,</i>\" she says, moaning in ecstasy, \"<i>fuck my breast!</i>\"  You don't really seem to have a choice in the matter as she picks up the pace, almost violently slamming you against her smooth green skin and stiff pink nipple.  Despite the relatively soft flesh of her mammary, it is still hundreds of pounds of tit flesh.  As if unsatisfied with just smothering you in boob she takes one green pinkie finger and begins to spank you in a manner she probably believes to be quite soft but lands quite hard on your [butt].  A small number of spankings begin to leave your ass red and tingling, each strike pushing your " + player.multiCockDescriptLight() + " further into her soft breast and firm nipple.  \"<i>Please, cum on me!</i>\" she commands, and almost as if on cue your body obeys, jizz flying and coating her breast with as much sperm as your body can produce.");
 		if (player.balls > 0) outputText("  Your [balls] begin to ache as you slowly empty your load onto green flesh.");
-		player.orgasm();
+		player.orgasm('Dick');
 	}
 	//[if player has vagina]
 	if (player.hasVagina()) {
@@ -324,10 +342,10 @@ private function kaijuRepeatBoobHug():void {
 		player.cuntChange(14,true,true,false);
 		outputText("  Something wet begins to leak out from the stiff female member in your stuffed hole, and with a shock you realize she must be lactating!  The giantess milk lubricates your passage, allowing her to ease more of her throbbing stiffness into you until finally her nipple bottoms out, your pussy lips kissing pink areola.  Your [vagina] clamps down on her, pinching her nipple and driving her deeper into what quickly turns into an ecstatic orgasm.  Her lactating tit suddenly erupts, pouring what must be gallons of corrupt milk into your womb, quickly distending your belly until you look pudgy, and then pregnant - with triplets!");
 		outputText("\n\nHer nipple pops out, spurting milk all over you, soaking your skin in slick whiteness. You hope it's good for your skin.");
-		player.orgasm();
+		player.orgasm('Vaginal');
 	}
 	//[if player is genderless]
-	if (player.gender == 0) {
+	if (player.isGenderless()) {
 		outputText("\n\nThe giantess begins to moan as she rubs you around her nipple, firmly pressing your body into her breast.  She moves you over to her other breast, using your body to tease her other stiffening nipple.  \"<i>Would you mind licking it?  Please?</i>\" she asks, pressing your face to her nipple.  You open your mouth to stick out your tongue when suddenly she pushes it up against your mouth, quickly getting the first few inches of pink nipple past your lips.  Your mouth is stuffed with nipple flesh, your tongue pushed to the bottom of your mouth.  She slowly forces more of herself into your, her nipple sliding down into your throat.  Her moans grow louder when you suddenly feel liquid spurting down into your gut.  She has begun lactating, pumping you full of tainted turtle milk!  You quickly fill up as your stomach expands with gallons of white fluid, until you're gurgling with milk, the stuff leaking around the nipple in your mouth.  When you feel like you will soon burst she pops her nip out and coats you with her milk.");
 	}
 	//[All genders]
@@ -375,7 +393,7 @@ private function fuckThisGiantYouDumbCunt():void {
 		if (player.hasCock()) outputText("  [EachCock] spasms as you release your load onto her pussy walls, making them just a bit more slick with your contribution.");
 		if (player.hasVagina()) outputText("  Your own pussy releases its own feminine juices, soaking your thighs even further in wetness.");
 		//[Lust decreases, end sensitivity scene]
-		player.orgasm();
+		player.orgasm('Generic');
 
 	}
 	else {
@@ -400,7 +418,7 @@ private function fuckThisGiantYouDumbCunt():void {
 				if (player.gender == 3) outputText(" and ");
 				if (player.hasCock()) outputText("thick cum");
 				outputText(".");
-				player.orgasm();
+				player.orgasm('Vaginal');
 			}
 			outputText("  You look out upon the lake to see much of it has taken on a remarkably more milky white color. Even for a giant that was a prodigious amount of cum she unleashed!");
 			//[lust decreases, end corrupted herm scene]
@@ -441,7 +459,7 @@ private function urethraFuckDatGiantCock():void {
 	outputText("\n\nYou wake up about an hour later, dressed and in your boat, already docked back at shore.  The green giant Venus must have caught you.");
 	//[Corruption increases slightly, lust is decreased]
 	flags[kFLAGS.KAIJU_BAD_END_COUNTER]++;
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("cor", 1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -604,7 +622,7 @@ private function mockDatTurtleGirl():void {
 	if (player.hasCock()) outputText(" as you cum in your [armor]");
 	outputText(".  You can feel the spasming of the giant's cock as you feel the pressure from her shaft increase as a load of cum rushes through it, erupting out of her tip like a volcano with globs of white lava.  \"<i>Well, that's a hell of a load,</i>\" she says, seeming quite proud of herself.  She sets you back down in your boat and roughly shoves it out further into the lake.  \"<i>Learn some manners you meanie!</i>\" she calls out.");
 	//[Lust is decreased, Venus is removed from the game]
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("cor", 1);
 	flags[kFLAGS.KAIJU_DISABLED] = 1;
 	doNext(camp.returnToCampUseOneHour);
@@ -634,7 +652,7 @@ private function helpNewFutaKaijuGetOff():void {
 	
 	outputText("\n\nYou clean yourself up, get dressed, and wave goodbye before leaving the giantess, who's still blissed out from her intense orgasm.");
 	//[Corruption increases slightly, lust is decreased]
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("cor", 1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -684,7 +702,7 @@ private function yesTurnKaijuFuta():void {
 	outputText("\n\nYou wake up about an hour later, dressed and in your boat, already docked back at shore.  The green giant Venus is there, sitting nearby and gazing out over the lake before your movements attract her attention.  \"<i>Hey there voyeur,</i>\" she says happily, a lot calmer than she was with you in her cock, but still with the ever present haze of lust in her eyes.  \"<i>Look, I just wanted to thank you. Not a lot of people are cool with me, what with my size and perverse delights that’d probably make a succubus faint, don’t act like you don’t know.  But you’ve been pretty cool, even when I shove you into sex holes where whole people probably shouldn’t go.  And, you gave me a cock.  I wanted a dick even before I started soaking up corrupt fluids like a sponge, and now I have one thanks to you. So... thanks babe,</i>\" she finishes before wading back out into the lake.  What a strange, grateful girl.");
 	flags[kFLAGS.KAIJU_COCK] = 1;
 	//[Corruption increases slightly, lust is decreased]
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("cor", 1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -779,7 +797,8 @@ private function badEndPartTwo():void {
 	outputText("  All this intense pleasure is too much for you and you reach one of the hardest, messiest orgasms of your life, and by the way the green giant’s pussy clenches and soaks you even further in her fluids you know she has reached yet another climax as well, and yet she doesn’t stop thrusting that tree in and out of her abused turtle snatch, taking you for a further ride as you get pulled along with the corrupt foliage, attached by the tireless vines.");
 	
 	outputText("\n\nIt is many hours before the pressure and pleasure becomes too much for even the slutty giant, but rather than end it she merely ratchets her sexual perversion down a peg, taking the tree out of her soaked cunt for now, but still diddling herself off to smaller orgasms with you.  You’re helpless as she uses you as a living dildo, pushing you as far into her dripping cunt as you will go, smacking you repeatedly into her G-spot and bringing herself to orgasm after orgasm.  Her massaging walls and inquisitive fingers bring you to orgasm almost as much.  Even in the haze of her lust, she still cares enough to get you off.  But that doesn’t seem to stop her from pumping you into her pussy for hours, only taking you out to feed you more of her milk to keep you going.  Finally, her arms grow tired, and even her impossible libido wanes. Hopefully you’ll be able to leave her and head back to camp soon... or so you thought.\n\nWhether through magic or gods only know how, she seems to have formed a boulder into a smooth, wide, bulbous yet short (relatively speaking) vaginal plug, which she uses to plug up her hole with you still trapped inside.  It appears you’re to now call her vagina home, a live in sex toy only taken out to be fed milk and pleasure her in various ways.");
-	player.orgasm();
+	player.orgasm('Generic');
+	player.orgasm('Anal', false);
 	dynStats("lib", 5, "sen", 30, "cor", 4);
 	getGame().gameOver();
 }

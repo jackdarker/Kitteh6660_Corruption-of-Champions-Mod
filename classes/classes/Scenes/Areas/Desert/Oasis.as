@@ -8,7 +8,7 @@
 		{
 		}
 
-		public function oasisEncounter():void {
+public function oasisEncounter():void {
 	spriteSelect(46);
 	//Find oasis, sit there.
 	outputText("You wander in the desert for what seems like hours, sweating profusely in the sweltering heat. Eventually you come across a small watering hole surrounded by scrappy trees and shrubs. It would be foolish not to take this opportunity to drink, freshen up and paddle your " + player.legs() + " in the cooling water, so you settle into what little shade you can find for a quick break.\n\n", true);
@@ -18,14 +18,17 @@
 	outputText("The group is composed of roughly twenty tan skinned demons, mostly humanoid in shape with many and varied corruptions across the group. You see demonic high heels, twisting horns and swinging cocks of all shapes and sizes. There even seems to be a bull head in there somewhere. You also make out plenty of breasts ranging from tiny ones to a pair that require a second person to carry them, and with those breasts a wide range of pussies, dripping and dry, sometimes nestled below some form of demonic dick. The small tribe carry no weapons and what little clothing they wear is well shredded, except for one hefty male wearing a cloak of what appears to be snakeskin across his broad shoulders. You assume from his clothing and the size of his equipment that this male is the leader. He, along with the others, is in good spirits and they all look fairly non-threatening, although you've learned not to trust anything that looks non-threatening in this place. Especially if it can carry its cock over its shoulder.\n\n", false);
 	//OH noes! Cheese it!
 	outputText("The demons don't notice you until they are quite close, the glare of the surrounding sand making you very difficult to see in the shade of your scrappy bush. They ignore you, intent on the refreshing waters of the oasis, but you can't stay hidden forever. A small keen eyed demon eventually spots you and lets out a  cry of alarm, pointing you out to the others. More eyes than twenty heads should really possess are now pointed straight at you.\n\n<b>What do you do?</b>", false);
-	simpleChoices("Talk", oasisTalk, "Fight", chooseToFight, "", null, "", null, "Leave", oasisRunAway);
+	menu();
+	addButton(0, "Talk", oasisTalkAccept);
+	addButton(1, "Fight", chooseToFight);
+	addButton(14, "Leave", oasisRunAway);
 }
 
-		private function chooseToFight():void{
-			startCombat(new DemonPack());
-			spriteSelect(46);
-			playerMenu();
-		}
+private function chooseToFight():void{
+	startCombat(new DemonPack());
+	spriteSelect(46);
+	playerMenu();
+}
 
 private function oasisRunAway():void {
 	spriteSelect(46);
@@ -48,7 +51,9 @@ private function oasisTalk():void {
 	//Offer...
 	outputText("At this your repertoire of desert conversation topics is exhausted and it occurs to you that it may be easier to break the ice somewhere it is possible for ice to form. At the edge of slipping over into awkward silence the leader speaks. 'It is quite the strike of fortune that you would come to us just as we were to rest and feast. Perhaps you wish to partake with us?' A flash of panic runs over your mind, and you turn over the phrase a few times in your head. After a few seconds you conclude that 'partake with us' really cannot mean 'be a delicious entree' and entertain the thought of staying to feast.  As if sensing your hesitation the leader speaks again. \"<i>We have not feasted in a long time, and we do hunger for it so.  This one promises to be a feast of grand proportions, and it should be a shame for you to miss such an opportunity.</i>\"\n\n", false);
 	outputText("<b>Do you stay or try to leave?</b>", false);
-	simpleChoices("Stay", oasisTalkAccept, "", null, "", null, "", null, "Leave", oasisTalkDecline);
+	menu();
+	addButton(0, "Stay", oasisTalkAccept);
+	addButton(14, "Leave", oasisTalkDecline);
 }
 
 private function oasisTalkDecline():void {
@@ -67,7 +72,7 @@ private function oasisTalkAccept():void {
 	else outputText("legs falling open in the process.  ", false);
 	outputText("Suddenly the silence is broken by a shrill screeching laugh, then a howl and the movement of the demons begins to accelerate. The deep bass laugh of the demon leader breaks over you like a crashing wave and the demons shriek with frenzied lust as they take you on the sand of the oasis.", false);
 	//Count voluntary submissions
-	if (player.findStatusEffect(StatusEffects.VoluntaryDemonpack) < 0) player.createStatusEffect(StatusEffects.VoluntaryDemonpack,0,0,0,0);
+	if (!player.hasStatusEffect(StatusEffects.VoluntaryDemonpack)) player.createStatusEffect(StatusEffects.VoluntaryDemonpack,0,0,0,0);
 	else {
 		player.addStatusValue(StatusEffects.VoluntaryDemonpack,1,1);
 	}
@@ -159,7 +164,7 @@ internal function oasisSexing():void {
 	if ((monster.HP < 1 || monster.lust >= monster.eMaxLust()) && getGame().inCombat) {
 		outputText("You fuck and fuck until not a single demon is capable of servicing your needs. They lie moaning and panting at the edge of the oasis, unable to move. You survey the fallen fiends with just a touch of pride and a whole lot of satisfaction, your body feeling stronger for the endurance exercise.", false);
 		combat.cleanupAfterCombat();
-		player.orgasm();
+		player.orgasm('Generic');
 		dynStats("cor", 1.5);
 		return;
 	}
@@ -167,13 +172,13 @@ internal function oasisSexing():void {
 	else if ((player.HP < 1 || player.lust >= player.maxLust()) && getGame().inCombat) {
 		//►Oasis Demons Defeat PC as part of antm
 		//Antmorph stuff
-		if (monster.findStatusEffect(StatusEffects.phyllafight) >= 0) {
+		if (monster.hasStatusEffect(StatusEffects.phyllafight)) {
 			outputText("You sought to save the ant-girl from being raped, and looking around, you don't see her anywhere.  She must have gotten away safely.  Mission... accomplished?  Wait, that ungrateful little bitch just left you to suffer in her place!  Your ass is gonna be sore for a while, but not as sore as your pride...  ");
 			flags[kFLAGS.ANTS_PC_FAILED_PHYLLA] = 1;
 		}
 		outputText("The demons fuck you like animals until you can't come any more. Every one of your orifices is filled and you pump out orgasm after orgasm until you black out from the abuse.", false);
 		combat.cleanupAfterCombat();
-		player.orgasm();
+		player.orgasm('Generic');
 		dynStats("tou", .5, "cor", 3);
 		return;
 	}
@@ -183,7 +188,7 @@ internal function oasisSexing():void {
 		return;
 	}
 	outputText("You fuck for hours; 'feasting' with the demons. Pain, pleasure and exhaustion intermingle and no matter how hard you try to cling to consciousness you are in no state to concentrate. You dangle over the edge for what seems like eternity before another orgasm, stronger than any other, hits you like a solid wall and you black out. For a little while you drift in and out of conscious reality to find your body still the object of demonic attentions until eventually you wake to find that the seemingly endless string of orgasms has stopped. Looking around you see what demons remain awake engaged solely in fucking each other. Tender and sore from the abuse and still finding it hard to concentrate you gather your clothes and steal away, leaving them to the tail end of their orgy. In the aftermath you feel like you've just run an endurance race, but the rubbed raw sensitivity of your brutally fucked body tells another tale.", false);
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("tou", .5, "sen", .5, "cor", 4);
 	if (getGame().inCombat) combat.cleanupAfterCombat();
 	else doNext(playerMenu);

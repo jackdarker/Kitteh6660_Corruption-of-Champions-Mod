@@ -6,16 +6,91 @@ package classes.Scenes.Areas.Lake
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
+import classes.Scenes.API.Encounter;
+import classes.Scenes.API.Encounters;
 
-	public class GooGirlScene extends AbstractLakeContent
-	{
+public class GooGirlScene extends AbstractLakeContent implements Encounter {
 		public function GooGirlScene()
 		{
 		}
 
+	public function encounterName():String {
+		return "gooGirl";
+	}
+
+	private const _encounter:Encounter = Encounters.complex(Encounters.fn.ifLevelMin(2), {
+		name  : "spyOnGooAndOozeSex",
+		call  : spyOnGooAndOozeSex,
+		chance: function ():Number {
+			//Chance of seeing ooze convert goo! More common if factory blew up
+			//Else pretty rare.
+			if (flags[kFLAGS.FACTORY_SHUTDOWN] == 2) return 0.2;
+			return 0.05;
+		}
+	}, {
+		name  : "googirl",
+		call  : encounterGooGirl,
+		chance: gooGirlChance
+	}, {
+		name  : "slime",
+		call  : encounterSlime,
+		chance: slimeChance
+	});
+
+	public function gooGirlChance():Number {
+		//50% odds of slime-girl, 75% if shutdown factory, 25% if overload
+		switch (flags[kFLAGS.FACTORY_SHUTDOWN]) {
+			case 1: return 0.75;
+			case 2: return 0.25;
+			default: return 0.5;
+		}
+	}
+	public function slimeChance():Number {
+		return 1.0 - gooGirlChance();
+	}
+	public function encounterChance():Number {
+		return _encounter.encounterChance();
+	}
+	public function execEncounter():void {
+		_encounter.execEncounter();
+	}
+
 //VARS
 //const GOOGIRL_BIRTHS:int = 384;
 //const GOOGIRL_CONSECUTIVE_LOSSES:int = 385;
+
+	public function encounterSlime():void {
+		flags[kFLAGS.TIMES_MET_OOZE]++;
+		spriteSelect(25);
+		//High int starts on even footing.
+		if (player.inte >= 25) {
+			outputText("A soft shuffling sound catches your attention and you turn around, spotting an amorphous green mass sliding towards you!  Realizing it's been spotted, the ooze's mass surges upwards into a humanoid form with thick arms and wide shoulders.  The beast surges forward to attack!", true);
+			startCombat(new GreenSlime());
+			if (flags[kFLAGS.FACTORY_SHUTDOWN] == 1) outputText("\n\n<b>You are amazed to encounter a slime creature with the factory shut down - most of them have disappeared.</b>", false);
+			return;
+		}
+		//High speed starts on even footing.
+		if (player.spe >= 30) {
+			outputText("You feel something moist brush the back of your ankle and instinctively jump forward and roll, coming up to face whatever it is behind you.  The nearly silent, amorphous green slime that was at your feet surges vertically, its upper body taking the form of a humanoid with thick arms and wide shoulders, which attacks!", true);
+			startCombat(new GreenSlime());
+			if (flags[kFLAGS.FACTORY_SHUTDOWN] == 1) outputText("\n\n<b>You are amazed to encounter a slime creature with the factory shut down - most of them have disappeared.</b>", false);
+			return;
+		}
+		//High strength gets stunned first round.
+		if (player.str >= 40) {
+			outputText("Without warning, you feel something moist and spongy wrap around your ankle, nearly pulling you off balance.  With a ferocious tug, you pull yourself free and turn to face your assailant.  It is a large green ooze that surges upwards to take the form of humanoid with wide shoulders and massive arms.  It shudders for a moment, and its featureless face shifts into a green version of your own! The sight gives you pause for a moment, and the creature strikes!", true);
+			if (flags[kFLAGS.FACTORY_SHUTDOWN] == 1) outputText("\n\n<b>You are amazed to encounter a slime creature with the factory shut down - most of them have disappeared.</b>", false);
+			startCombat(new GreenSlime());
+			outputText("\n\n", false);
+			monster.eAttack();
+			return;
+		}
+		//Player's stats suck and you should feel bad.
+		outputText("Without warning, you feel something moist and spongy wrap around your ankle, pulling you off balance!  You turn and try to pull your leg away, struggling against a large green ooze for a moment before your foot comes away with a *schlorp* and a thin coating of green fluid.  The rest of the ooze rises to tower over you, forming a massive green humanoid torso with hugely muscled arms and wide shoulders.  Adrenaline rushes into your body as you prepare for combat, and you feel your heart skip a beat as your libido begins to kick up as well!", true);
+		if (flags[kFLAGS.FACTORY_SHUTDOWN] == 1) outputText("\n\n<b>You are amazed to encounter a slime creature with the factory shut down - most of them have disappeared.</b>", false);
+		dynStats("lib", 1, "lus", 10);
+		startCombat(new GreenSlime());
+	}
 
 		private function gooGirl():GooGirl
 		{
@@ -50,7 +125,7 @@ package classes.Scenes.Areas.Lake
 //New Perk – Slime Core (requires goo player, random drop rate?)
 		private function coreDropChance():void
 		{
-			if (rand(4) == 0 && player.findStatusEffect(StatusEffects.SlimeCraving) >= 0 && player.findPerk(PerkLib.SlimeCore) < 0 && player.isGoo() && player.gooScore() >= 4) {
+			if (rand(4) == 0 && player.hasStatusEffect(StatusEffects.SlimeCraving) && player.findPerk(PerkLib.SlimeCore) < 0 && player.isGoo() && player.gooScore() >= 4) {
 				outputText("\n\nAs the goo-girl slithers away, into the lake's placid waves, you notice she seems to have left behind a small blob. Upon investigation, it appears to be a tiny, ruby heart, encased in a slimy " + gooColor8() + " membrane. As you reach to pick it up, the jelly ball quivers and pulses with a warm, cheerful light. Your fingers close on it and the nucleus slides through your palm, into your body!\n\n", false);
 
 				outputText("There is a momentary pressure in your chest and a few memories that are not your own flicker before your eyes. The dizzying sight passes and the slime core settles within your body, imprinted with your personality and experiences. There is a comforting calmness from your new nucleus and you feel as though, with your new memories, you will be better able to manage your body's fluid requirements.\n\n", false);
@@ -155,7 +230,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("You awaken with a sputtering hack, water and gooey " + gooColor() + " cum spilling from your lungs. You've been returned to shore and other than a full-body soreness and a splitting headache, you seem none the worse for wear. Who knew cute little slimes could be so aggressive when they don't have sex organs to suck on?", false);
 			player.slimeFeed();
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("sen", 4);
 			combat.cleanupAfterCombat();
 		}
@@ -165,7 +240,7 @@ package classes.Scenes.Areas.Lake
 		{
 			clearOutput();
 			var x:Number = player.biggestCockIndex();
-			outputText("Reeling, you stumble backwards, trying and failing to shake the dizziness from your eyes. The " + gooColor() + " girl nods, emboldened, and leaps at you, her gushing body splashing heavily against your chest, knocking you to the ground. Your landing takes the breath from your throat and you struggle weakly as the " + gooColor5() + " muck below the girl's knees flows around your limbs, sucking your hands and feet into her slimy membrane with a slurping schlick. Trying to pull free, you stretch her body this way and that, but the goo holds fast, bonding you to her slippery form like warm, elastic shackles. The slime gurgles with pleasure at your struggles, her body rippling with your weak movements, her mouth curled into a happy grin. She gives you a wicked wink and rubs her hands over your hips, her dripping fingers slipping under your " + player.armorName + " and spreading across your flesh like a second skin. With squeezing tickles her groping digits massage her sludgy muck into your " + player.skin() + ". Pursing her mouth into a cute pucker, she grips your vestments between her lips and deftly pulls them aside just enough to let your " + player.cockDescript(x) + " flop free.\n\n", false);
+			outputText("Reeling, you stumble backwards, trying and failing to shake the dizziness from your eyes. The " + gooColor() + " girl nods, emboldened, and leaps at you, her gushing body splashing heavily against your chest, knocking you to the ground. Your landing takes the breath from your throat and you struggle weakly as the " + gooColor5() + " muck below the girl's knees flows around your limbs, sucking your hands and feet into her slimy membrane with a slurping schlick. Trying to pull free, you stretch her body this way and that, but the goo holds fast, bonding you to her slippery form like warm, elastic shackles. The slime gurgles with pleasure at your struggles, her body rippling with your weak movements, her mouth curled into a happy grin. She gives you a wicked wink and rubs her hands over your hips, her dripping fingers slipping under your " + player.armorName + " and spreading across your flesh like a second skin. With squeezing tickles her groping digits massage her sludgy muck into your [skin]. Pursing her mouth into a cute pucker, she grips your vestments between her lips and deftly pulls them aside just enough to let your " + player.cockDescript(x) + " flop free.\n\n", false);
 
 			outputText("The heat from the slime girl's engulfing second skin begins seeping into your core, leaving you panting while beads of sweat trickle down your brow. She notices your discomfort and lowers her head to nudge your veiny phallus with her tiny, vestigial nose. The girl follows up with a playful kiss, cobalt lips pliant and moist. The fire around your skin goes from uncomfortable to suffocating as your cock surges to life, and the girl pouts at the look of dismay on your face. Her eyes light up with an idea and she opens her mouth as wide as your fist, revealing a thin, " + gooColor2() + " tongue swirling behind her lips. The goo-girl presses the tip of her tongue at the tip of your head and a wonderful flash of cold floods your groin, chilly shivers soothing your overheated body like an icy glass of water in the desert. Your voice wavers as you laugh in relief, her wet, whirling tongue lapping along your pulsing shaft, growing longer and more flexible with each passing moment. After a few minutes of her licking, the girl's tongue has grown long enough to wrap around your " + player.cockDescript(x) + " several times. Using it like a slimy tendril, she strokes up and down your manhood in tightening coils of " + gooColor4() + ", slimy drool giving your cock an almost indigo appearance.\n\n", false);
 
@@ -185,7 +260,7 @@ package classes.Scenes.Areas.Lake
 			else outputText("The girl's expression goes from pleased triumph to mild panic when your orgasm shows no sign of flagging, load after load racing into her body. She quickly snakes her tongue out of your urethra and tries to pull off of your " + player.cockDescript(x) + ", but her arm is too deep in your ass and she finds herself stuck! You rest your hands on the " + gooColor4() + " sludge of her goopy hair, fingers sinking into her slime as she tries to make room for your gushing, ivory torrent.  You clench your eyes in pleasure and surrender yourself to the feeling, your groin a font of creamy seed.  When you finally slow and open your eyes, you're a little surprised to find that the girl has become almost entirely white!  Her translucent skin retains a bit of the lake's " + monster.skinTone + " hue, but top to bottom, the goo-girl's body swirls with your cum, leaving her with the fattened appearance of pale pregnancy.", false);
 			outputText("  Her arm slides out of your rump and the goo-girl practically rolls into the lake, splashing into the depths lazily. It sure didn't feel like you lost that fight, you reflect while taking delicious swallows of cold air.", false);
 			player.slimeFeed();
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", 4);
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
@@ -196,7 +271,7 @@ package classes.Scenes.Areas.Lake
 		{
 			var x:Number = player.biggestCockIndex();
 			clearOutput();
-			outputText("You can't take anymore and your hands fall at your sides as you sink to your knees. The goo-girl, sensing your surrender, happily claps her hands together in a wet, slapping motion and slides against you. Her soft, moist body squishes against yours as she runs her hands up and down your shoulders, fingers slipping under your " + player.armorName + ", sliding it off of you easily. The puddle of " + gooColor2() + " slime that makes up her lower torso laps at your " + player.legs() + ", warm muck sucking at your " + player.skin() + " with eager splashes. From the amorphous blob, two long, slender legs emerge and wrap themselves around the small of your back as she drapes her arms around your neck, drawing you into an embrace that squeezes her gooey chest against yours, her breasts twin globes of seething heat. She smiles innocently and her face shimmers as she stares into your eyes, drawing you tighter into her heat before leaning in and placing her " + gooColor7() + " lips against yours, kissing you with a curious, experimental hesitance at first that slowly becomes a gleeful pleasure, her wet tongue filling your mouth with the slimy girl's pulsing vibrations. You return her kiss, pressing your own tongue into her jelly-like throat, the squishy folds parting before your intrusion, happy pulses of warmth radiating from her quivering membrane.\n\n", false);
+			outputText("You can't take anymore and your hands fall at your sides as you sink to your knees. The goo-girl, sensing your surrender, happily claps her hands together in a wet, slapping motion and slides against you. Her soft, moist body squishes against yours as she runs her hands up and down your shoulders, fingers slipping under your " + player.armorName + ", sliding it off of you easily. The puddle of " + gooColor2() + " slime that makes up her lower torso laps at your " + player.legs() + ", warm muck sucking at your [skin] with eager splashes. From the amorphous blob, two long, slender legs emerge and wrap themselves around the small of your back as she drapes her arms around your neck, drawing you into an embrace that squeezes her gooey chest against yours, her breasts twin globes of seething heat. She smiles innocently and her face shimmers as she stares into your eyes, drawing you tighter into her heat before leaning in and placing her " + gooColor7() + " lips against yours, kissing you with a curious, experimental hesitance at first that slowly becomes a gleeful pleasure, her wet tongue filling your mouth with the slimy girl's pulsing vibrations. You return her kiss, pressing your own tongue into her jelly-like throat, the squishy folds parting before your intrusion, happy pulses of warmth radiating from her quivering membrane.\n\n", false);
 
 			outputText("When you break the kiss, a trail of " + gooColor3() + " goo still joining your lips to hers, you notice that she's slid her body entirely around yours, up to your neck! You struggle, but don't have the energy to fight against the slime's engulfing, gel-like form. Every inch of your bare flesh has the slight pressure of the girl's membrane against it, like too-tight clothes in a warm bathtub. You wriggle inside of her and she blinks in surprise, her mouth narrowing to a cooing pucker. Her eyes light up and she points a squishy hand at her mouth, her lips bulging a bit, filling with puffy goo. You shake your head, not understanding, until your body explains the meaning of her gesture. The supple suction of the girl's engulfing body gives way to the startling sensation of mouths, pressed against every sensitive inch of your flesh. The breath in your lungs catches in your throat as warm, wet, eager mouths wrap their yielding lips around your " + player.clitDescript() + " and " + player.nippleDescript(0) + ", semi-solid tongues teasing and flicking the tender organs. Sucking heat swallows " + player.sMultiCockDesc() + ", stroking the shaft", false);
 			if (player.cockTotal() > 1) outputText("s", false);
@@ -207,7 +282,7 @@ package classes.Scenes.Areas.Lake
 			outputText("  Your spurting ecstasy floods the girl's jelly body, coloring her " + gooColor3() + " body white as she drinks deeply, coaxing a few seconds of gasping spasms into long, seed-spewing minutes of climaxing euphoria.", false);
 
 			outputText("When you finally run dry, every muscle in your body aches with exhaustion and it feels like you haven't had anything to drink in months.  The slime slowly disentangles herself from your twitching form, ejecting you from the womb-like ardor of her squishy interior.  When she reforms her slender body, the goo-girl's belly bulges with your creamy load.  She gives you a beaming smile and pats her belly, sending ripples through her body with each wobbling slap.  The girl waves goodbye and slides back into the lake, giving you enough time to catch your breath and let your body recover.", false);
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", 4);
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
@@ -217,7 +292,8 @@ package classes.Scenes.Areas.Lake
 		private function femaleLoseToGooGal():void
 		{
 			clearOutput();
-			outputText("You sway, finding it difficult to maintain your balance. When you fall, your " + player.buttDescript() + " splashes wetly in the enveloping folds of the goo-girl's eager slime. You weakly hold your hand up to keep her back, but the wide-eyed victor disregards the gesture with playful disdain. She slithers against you, moist muck slurping at your flesh with a hungry heat. Her semi-solid hands take yours, pulling your arms apart to bare your chest. She cranes her dripping head around your shoulders, skillfully removing your " + player.armorName + " with only her mouth. Your " + player.chestDesc() + " heave as the irrepressible heat of the slime sears your " + player.nippleDescript(0) + "s until beads of sweat well up on your " + player.skin() + " and trickle down your curves, leaving a wet sheen over your body.\n\n", false);
+			outputText("You sway, finding it difficult to maintain your balance. When you fall, your " + player.buttDescript() + " splashes wetly in the enveloping folds of the goo-girl's eager slime. You weakly hold your hand up to keep her back, but the wide-eyed victor disregards the gesture with playful disdain. She slithers against you, moist muck slurping at your flesh with a hungry heat. Her semi-solid hands take yours, pulling your arms apart to bare your chest. She cranes her dripping head around your shoulders, skillfully removing your " + player.armorName + " with only her mouth. Your " + player.chestDesc() + " heave as the irrepressible heat of the slime sears your " + player.nippleDescript(0) + "s until beads of sweat well up on your [skin] and trickle down your curves, leaving a wet sheen over your body.\n\n", false);
+			var titsOrgasm:Boolean = false;
 
 			//[If the player is pregnant]
 			if (player.pregnancyIncubation <= 280 && player.pregnancyIncubation >= 1) {
@@ -232,10 +308,11 @@ package classes.Scenes.Areas.Lake
 				//[player breast size increase, lactation activated/ amount increases]
 				player.breastRows[0].breastRating++;
 				player.boostLactation(1);
+				titsOrgasm = true;
 			}
 			//[Pregnancy continued]
 			if (player.pregnancyIncubation <= 280 && player.pregnancyIncubation >= 1) {
-				outputText("The fluid woman squeezes her goopy breasts against yours and the globes jiggle with their liquid weight. The " + gooColor() + " girl wriggles against you with an ecstatic expression, delighting in the quivering vibrations of your body. She presses her palms to your breasts and the warm goo engulfs your " + player.nippleDescript(0) + " with a wet plop. She plays with your tits, rolling them in her hands while the slurping goop of her body sucks at your swollen mammaries. She bends down to pepper your pulsing tit-flesh with tiny, moist kisses that leave " + gooColor() + " lip prints on your " + player.skin() + ". Rocking her body against yours, the girl's expression mimicks the helpless, agonized bliss of your face, her cheeks even flushing indigo to imitate your blush. She darts in and gives you a deep, full-bodied kiss of pregnant joy and your " + player.allBreastsDescript() + " burst with creamy milk, even as your climax leaves your body as quivering as the goo-girl's. Feeding on your sexual release, she arches her back and her hearts flicker wildly, her body losing some of its focus as it appears to melt under her orgasmic heat.\n\n", false);
+				outputText("The fluid woman squeezes her goopy breasts against yours and the globes jiggle with their liquid weight. The " + gooColor() + " girl wriggles against you with an ecstatic expression, delighting in the quivering vibrations of your body. She presses her palms to your breasts and the warm goo engulfs your " + player.nippleDescript(0) + " with a wet plop. She plays with your tits, rolling them in her hands while the slurping goop of her body sucks at your swollen mammaries. She bends down to pepper your pulsing tit-flesh with tiny, moist kisses that leave " + gooColor() + " lip prints on your [skin]. Rocking her body against yours, the girl's expression mimicks the helpless, agonized bliss of your face, her cheeks even flushing indigo to imitate your blush. She darts in and gives you a deep, full-bodied kiss of pregnant joy and your " + player.allBreastsDescript() + " burst with creamy milk, even as your climax leaves your body as quivering as the goo-girl's. Feeding on your sexual release, she arches her back and her hearts flicker wildly, her body losing some of its focus as it appears to melt under her orgasmic heat.\n\n", false);
 
 				outputText("Thick trails of milk squirt into the slime's hands and down her arms, filling the girl's " + gooColor() + " body with your creamy milk.", false);
 				if (player.lactationQ() <= 1000) outputText("  She drains you in no time, hands hungrily sucking for more in goopy kisses on your overtaxed nipples.", false);
@@ -243,10 +320,11 @@ package classes.Scenes.Areas.Lake
 				else if (player.lactationQ() <= 2000) outputText("  She drinks gratefully, nursing you with her permeable body until the pout of her belly sloshes heavily with the pale ivory of your motherly bounty.", false);
 				else outputText("  You bite your lip and let go, torrents of rich, pearl fluid rushing through her arms and inflating the surprised girl before your eyes. The milk gushing into her fills the goo from base to breast, giving the once-" + gooColor5() + " girl an opalescent shine, her over-filled body bloated as if she were carrying triplets.", false);
 				outputText("  She gives you a fond bop on the chin and a loving stroke on your belly before sloshing back into the lake, her seething heat still clinging to your body like a lingering hug.", false);
+				titsOrgasm = true;
 			}
 			//[If the player isn't pregnant]
 			else {
-				outputText("The goo-girl flashes a broad smile and tickles under your chin to get your attention. Apparently trying to communicate her intent, she puffs out her cheeks and pats her belly, jiggling her amorphous frame in the process. Next, she taps your nose and pats your belly, slapping your " + player.skin() + " with a moist splat of her hand. Your expression remains blank and she sighs soundlessly, turning cold in annoyance. The slime presses you on your back and lifts your " + player.legs() + " into the air. In a splattering motion, the goo lets her lower half sink into the thick sludge of her feet until only her upper torso remains. Then, with impatient force, she descends on your " + player.vaginaDescript(0) + ", her yielding breasts rolling across your lower body.\n\n", false);
+				outputText("The goo-girl flashes a broad smile and tickles under your chin to get your attention. Apparently trying to communicate her intent, she puffs out her cheeks and pats her belly, jiggling her amorphous frame in the process. Next, she taps your nose and pats your belly, slapping your [skin] with a moist splat of her hand. Your expression remains blank and she sighs soundlessly, turning cold in annoyance. The slime presses you on your back and lifts your " + player.legs() + " into the air. In a splattering motion, the goo lets her lower half sink into the thick sludge of her feet until only her upper torso remains. Then, with impatient force, she descends on your " + player.vaginaDescript(0) + ", her yielding breasts rolling across your lower body.\n\n", false);
 
 				outputText("The girl's face finds your all-too-eager pussy swiftly enough, her tongue tracing every fleshy fold of your labia while the warming slime of her lips suck at the moisture of your rapidly lubricating slit. She pushes a little harder, forcing the oozing length of her tongue inside of you, its pulsing surface expanding and contracting, leaving you squirming and gasping, biting at one of your knuckles while the goo prods the limits of your womanhood. Seemingly satisfied, she screws her face into an expression of intense focus and slaps her head down, between your thighs. The delicate features of her nose and face press against your lower lips with an insistence that practically melts you before, shockingly, her head begins to squeeze into your " + player.vaginaDescript(0) + "!\n\n", false);
 
@@ -262,7 +340,7 @@ package classes.Scenes.Areas.Lake
 					player.knockUp(PregnancyStore.PREGNANCY_GOO_GIRL, PregnancyStore.INCUBATION_GOO_GIRL, 1, 1);
 				}
 			}
-			player.orgasm();
+			player.orgasm(titsOrgasm ? 'Tits' : 'Vaginal');
 			dynStats("sen", 4);
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
@@ -276,7 +354,6 @@ package classes.Scenes.Areas.Lake
 			if (player.vaginas.length == 0) {
 				outputText("You feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  You look down and behold a vagina.  ", false);
 				player.createVagina();
-				player.genderCheck();
 			}
 			outputText("There is a lurching in your belly that steals the breath from you. As seconds pass, the quivering kicks increase and you're forced to the ground as your womb feels like it's been set aflame by the heat pouring from your stowaway goo-girl. You pant and spread your labia with two fingers, the chill of your hands on your inflamed sex so sweet that you almost cum from the mere touch. Your cervix clenches involuntarily and you try to relax as much as possible, but the slime inside of you hardly needs the help. Squishing and slurping in gouts of syrupy fluid, she trickles from your uterus, sliding out of your tunnel in spurting gouts. You sigh and let her force her seething warmth from within you, the small puddle of ooze growing larger as it pools together. Finally, the small, red heart pops out of your tunnel and you allow yourself a big gulp of chill air to resuscitate your seared lungs.\n\n", false);
 			monster = new GooGirl();//because if we don't, the gooColor4() goes crazy.
@@ -293,80 +370,82 @@ package classes.Scenes.Areas.Lake
 			outputText("The excitement of your scuffle proves too much for the goo-girl to keep up with and she collapses into the slime of her lower torso, her skin wiggling as she struggles to maintain cohesion. Her expression is one of disappointment, and she looks at you with big, hopeful eyes, reaching out a hand, as if to offer an apology for her over-exuberance.\n\n", false);
 
 			//Victory – Neuter
-			if (player.gender == 0 || player.lust < 33 || flags[kFLAGS.SFW_MODE] > 0) {
+			if (flags[kFLAGS.SFW_MODE] > 0) {
 				outputText("The goo-girl, while an unusual creature, seems unable to communicate and clearly has nothing of value.  Of no particular use in your quest, you shoo the dripping blob back to the shore. She seems disappointed at first, but bounces back quickly enough, spotting movement in the lake.  She splashes in and takes off at top speed, " + gooColor9() + " blur while you take your leave.", false);
 				combat.cleanupAfterCombat();
+				return;
 			}
-			else {
-				outputText("With the goo-girl defeated, her unusual body is at your mercy.  What do you do?", false);
-				var sex1S:String = "";
-				var sex1N:Function =null;
-				var sex2S:String = "";
-				var sex2N:Function =null;
-				var sex3S:String = "";
-				var sex3N:Function =null;
-				var sex4S:String = "";
-				var sex4N:Function =null;
-				var valeria:Function = kGAMECLASS.valeria.valeriaAndGooThreeStuff;
-				if (player.armorName != "goo armor" || player.isButtPregnant() || player.isPregnant()) valeria = null;
-				var eggs:Function =null;
-				if (player.canOvipositBee()) eggs = layBeeEggsInGoo;
+			
+			outputText("With the goo-girl defeated, her unusual body is at your mercy.  What do you do?", false);
+			menu();
+			
+			addDisabledButton(0, "DickSex", "This scene requires you to have cock and sufficient arousal.");
+			addDisabledButton(1, "BigDickSex", "This scene requires you to have huge cock and sufficient arousal.");
+			addDisabledButton(2, "Herm Sex", "This scene requires you to be herm and have sufficient arousal.");
+			addDisabledButton(3, "FemFuck", "This scene requires you to be female and have sufficient arousal.");
+			addDisabledButton(4, "Exhib.Fuck", "This scene requires you to be female exhibitionist and have sufficient arousal."); // actually, should be fitting herms as well
+			addDisabledButton(5, "Breastfeed", "This scene requires you to have enough milk.");
+			addDisabledButton(6, "Lay Eggs", "This scene requires you to have bee ovipositor and enough eggs.");
+			addDisabledButton(7, "Valeria", "This scene requires you to have goo armor, sufficient arousal and not be pregnant.");
+			
+			if ((flags[kFLAGS.GOO_TFED_MEAN] == 0 && flags[kFLAGS.GOO_TFED_NICE] == 0) && flags[kFLAGS.TIMES_FUCKED_NORMAL_GOOS] >= 2)
+				addDisabledButton(8, "Make Slave", "Maybe if you drugged one of these things with a black egg and some succubi milk, you could make it your pet?");
+			
+			addButton(14, "Leave", combat.cleanupAfterCombat);
+			
+			if (player.lust >= 33) {
 				if (player.hasCock()) {
-					if (player.cocks[player.smallestCockIndex()].cockLength < 24) {
-						sex1S = "DickSex";
-						sex1N = createCallBackFunction(gooMaleRape,2);
+					if (player.smallestCockLength() < 24) {
+						addButton(0, "DickSex", createCallBackFunction(gooMaleRape, 2));
 					}
 					if (player.longestCockLength() >= 24) {
-						sex2S = "BigDickSex";
-						sex2N = createCallBackFunction(gooMaleRape,1);
-					}
-					if (player.hasVagina()) {
-						sex3S = "Herm Sex";
-						sex3N = victoryHermSex;
+						addButton(1, "BigDickSex", createCallBackFunction(gooMaleRape, 1));
 					}
 				}
-				else if (player.hasVagina()) {
-					sex1S = "Fuck";
-					sex1N = normalFemaleRapesAGooGirl;
-					if (flags[kFLAGS.PC_FETISH] >= 1) {
-						sex2S = "Exhib.Fuck";
-						sex2N = exhibitionismGooGirlVictoryRape;
+				if (player.isHerm()) {
+					addButton(2, "Herm Sex", victoryHermSex);
+				}
+				if (player.isFemale()) {
+					addButton(3, "FemFuck", normalFemaleRapesAGooGirl);
+					if (flags[kFLAGS.PC_FETISH] >= 1 || player.cor >= 66 - player.corruptionTolerance() || player.findPerk(PerkLib.Pervert) >= 0) {
+						addButton(4, "Exhib.Fuck", exhibitionismGooGirlVictoryRape);
 					}
 				}
-				if (player.findPerk(PerkLib.Feeder) >= 0) {
-					sex4S = "Breastfeed";
-					sex4N = victoryRapeAGooGalAsFeeder;
-				}
-				var gooTF:Function = null;
-				//corrupt chances
-				if ((flags[kFLAGS.GOO_TFED_MEAN] == 0 && flags[kFLAGS.GOO_TFED_NICE] == 0) && flags[kFLAGS.TIMES_FUCKED_NORMAL_GOOS] >= 2) {
-					if (player.cor < 50 && (player.hasItem(consumables.SUCMILK) || player.hasItem(consumables.P_S_MLK)) && (player.hasItem(consumables.BLACKEG) || player.hasItem(consumables.L_BLKEG))) {
-						kGAMECLASS.latexGirl.pureGooRecruitmentStart();
-						return;
-					}
-					else if (flags[kFLAGS.PC_KNOWS_ABOUT_BLACK_EGGS] > 0) {
-						//Recruitment:
-						//Notice After Victory:
-						if (flags[kFLAGS.TIMES_THOUGHT_ABOUT_GOO_RECRUITMENT] == 0) {
-							outputText("\n\nWith this quivering lump of goo before you, a devilish idea comes to mind.  What would it take to make one of these aqueous sluts your willing slave?  ...Something to make them a little solid - perhaps one of those black eggs to make its skin a little more solid and restrainable?  Maybe a succubi milk to help make it a little more human-like, and the increased libido certainly couldn't hurt.");
-							flags[kFLAGS.TIMES_THOUGHT_ABOUT_GOO_RECRUITMENT]++;
-						}
-						//(Repeat)
-						else {
-							outputText("\n\nAs you survey your victory, you remember the idea you had before - maybe if you drugged one of these things with a black egg and some succubi milk, you could make it your pet?");
-						}
-						if ((player.hasItem(consumables.SUCMILK) || player.hasItem(consumables.P_S_MLK)) && (player.hasItem(consumables.BLACKEG) || player.hasItem(consumables.L_BLKEG))) {
-							outputText("  Good thing you have those handy!");
-							gooTF = kGAMECLASS.latexGirl.meanGooGirlRecruitment;
-						}
-					}
-				}
-				if (valeria != null) {
+				if (player.armorName == "goo armor" && !player.isButtPregnant() && !player.isPregnant()) {
 					outputText("\n\nValeria's armored form seems to ebb towards the puddled goo-woman before you, almost eager to close the distance with her despite her pledge to protect you. ");
 					if (flags[kFLAGS.TIMES_VALERIA_GOO_THREESOMED] == 0) outputText("Do you offer a threesome with the girl to Valeria? It could get a little weird....");
 					else outputText("Do you offer a threesome with the girl to Valeria? She'll likely try flood with you with more sloshing, shuddering pleasure than your body can handle.");
+					addButton(7, "Valeria", kGAMECLASS.valeria.valeriaAndGooThreeStuff, undefined, undefined, undefined, "Have a treesome with Valeria.");
 				}
-				choices(sex1S, sex1N, sex2S, sex2N, sex3S, sex3N, sex4S, sex4N, "Lay Eggs", eggs, "", null, "", null, "Valeria", valeria, "Make Slave", gooTF, "Leave", combat.cleanupAfterCombat);
+			}
+			if (player.findPerk(PerkLib.Feeder) >= 0 || player.lactationQ() >= 500) {
+				addButton(5, "Breastfeed", victoryRapeAGooGalAsFeeder);
+			}
+			if (player.canOvipositBee()) {
+				addButton(6, "Lay Eggs", layBeeEggsInGoo);
+			}
+			//corrupt chances
+			if ((flags[kFLAGS.GOO_TFED_MEAN] == 0 && flags[kFLAGS.GOO_TFED_NICE] == 0) && flags[kFLAGS.TIMES_FUCKED_NORMAL_GOOS] >= 2) {
+				if (player.cor < 50 + player.corruptionTolerance() && (player.hasItem(consumables.SUCMILK) || player.hasItem(consumables.P_S_MLK)) && (player.hasItem(consumables.BLACKEG) || player.hasItem(consumables.L_BLKEG))) {
+					kGAMECLASS.latexGirl.pureGooRecruitmentStart();
+					return;
+				}
+				else if (flags[kFLAGS.PC_KNOWS_ABOUT_BLACK_EGGS] > 0) {
+					//Recruitment:
+					//Notice After Victory:
+					if (flags[kFLAGS.TIMES_THOUGHT_ABOUT_GOO_RECRUITMENT] == 0) {
+						outputText("\n\nWith this quivering lump of goo before you, a devilish idea comes to mind.  What would it take to make one of these aqueous sluts your willing slave?  ...Something to make them a little solid - perhaps one of those black eggs to make its skin a little more solid and restrainable?  Maybe a succubi milk to help make it a little more human-like, and the increased libido certainly couldn't hurt.");
+						flags[kFLAGS.TIMES_THOUGHT_ABOUT_GOO_RECRUITMENT]++;
+					}
+					//(Repeat)
+					else {
+						outputText("\n\nAs you survey your victory, you remember the idea you had before - maybe if you drugged one of these things with a black egg and some succubi milk, you could make it your pet?");
+					}
+					if ((player.hasItem(consumables.SUCMILK) || player.hasItem(consumables.P_S_MLK)) && (player.hasItem(consumables.BLACKEG) || player.hasItem(consumables.L_BLKEG))) {
+						outputText("  Good thing you have those handy!");
+						addButton(8, "Make Slave", kGAMECLASS.latexGirl.meanGooGirlRecruitment);
+					}
+				}
 			}
 		}
 
@@ -415,7 +494,7 @@ package classes.Scenes.Areas.Lake
 				outputText("If only all of Mareth's denizens were so accommodating, you muse, as you gather your things and depart.", false);
 				coreDropChance();
 			}
-			player.orgasm();
+			player.orgasm('Dick');
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
 		}
@@ -441,7 +520,7 @@ package classes.Scenes.Areas.Lake
 			//Corrupt victory ooze – (After specific sex scenes while the player has a 70+ corruption score)
 			if (player.cor >= 85 && rand(2) == 0) outputText("\n\nAs you're leaving, you happen to glance back at the lake and notice something strange; the sludge left by the melting shell of the goo-girl is quivering with renewed life! The swirling opalescence of your corrupt seed is clearly visible through her membrane, her " + gooColor11() + " slowly bleeding into a pale emerald hue. Your eyes widen as the muck regains solidity, first a head and then shoulders slowly rising from the puddle. The empty girl regains her shape, but the rippling within her does not stop. Gradually, her breasts shrink, flattening against her chest while a viridian phallus rises from between her legs.  Your cum floats down her torso and inflates a pair of jiggling, slimy balls.  The potency of your semen has reanimated the goo-girl, it seems, but has transformed her into an instinctual, mindless ooze. She- now a he- stares vacantly at you, the slick, green cock at his base stiffening, before he plunges into the lake. You'll have to check on your new son one of these days.", false);
 			coreDropChance();
-			player.orgasm();
+			player.orgasm('Dick');
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
 		}
@@ -465,7 +544,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("When you regain consciousness, your breasts finally feel empty, milked dry by your rough treatment of the goo-girl. Shaking your head, you look for a sign of the girl and spot something a short distance off in the lake. You almost don't recognize her at first, until you notice the tiny, jiggling horns poking out of the sides of her head. The cow-slime has apparently captured a shark girl and an anemone, her pale " + gooColor() + " membrane wrapping around their bodies like giant fists. She's holding them to each giant breast, kneading their faces against her quivering membrane as her periwinkle nipples gush with your milk, soaking their heads and filling their senses with your addictive fragrance. In short order, they wrap their mouths around the " + gooColor5() + " faucets and begin to drink deeply, the cow-goo's face a silent mirror of your previous climax. Two more girls being taught the joys of lactation, you murmur, touching yourself with a gleeful shudder. Forcing yourself to master the desire to keep watching, you clean yourself up and head out, pleased gurgles fading into the distance.", false);
 			coreDropChance();
-			player.orgasm();
+			player.orgasm('Tits');
 			//You've now been milked, reset the timer for that
 			player.addStatusValue(StatusEffects.Feeder, 1, 1);
 			player.changeStatusValue(StatusEffects.Feeder, 2, 0);
@@ -479,7 +558,7 @@ package classes.Scenes.Areas.Lake
 			clearOutput();
 			outputText("The slimy girl wobbles back and forth, curiously eyeing you with her mouth turned up in an expectant smile. Glancing around, you notice that your little scuffle with the slime has attracted several onlookers! From deeper in the lake, a grey-tinted shark girl and violet-colored anemone seem to be watching you with mild interest while on the shore a robed man has interrupted his secretive journey to eye the two of you warily. Further away, a small minotaur stands, surprisingly far from the mountains, sniffing the air and taking his measure of potential mates. The variety of eyes upon your body brings a cold sweat to your brow and you bite your lower lip with a ragged suck of air between your teeth. Fists clenched, you bow your head as your pulse quickens. With trembling hands, you reach up and loosen your " + player.armorName + " with deliberate slowness, stripping them from your form until you stand, bare skin exposed to all five viewers. With a nervous smile, you move closer to the goo-girl. Every step you take is followed so carefully by your watchers that it sends a thrill of excitement to your gut that ignites your loins with a steady dripping between your thighs. The slime girl purses her lips at your advance before seeming to notice the figures watching the two of you with a delighted clap of her mitt-like hands.\n\n", false);
 
-			outputText("You close the distance with the " + gooColor8() + " girl and she rises up out of her puddle to meet you shoulder to shoulder, wrapping her slimy arms around your waist with an eager grope. You blush at the warm contact and can almost hear the intake of breath from your audience when you press your " + player.allBreastsDescript() + " into your partner's, flesh and membrane squishing against each other and gooshing out at the sides, as your stiff nipples rub against her slippery peaks. The goo's mouth opens in a silent moan and her wobbly membrane begins dripping thick beads of " + gooColor2() + ". The goo rubs against you in a steady, circular motion, her hands tracing the small of your back and up along your spine, her slippery slickness covering your skin in a " + gooColor4() + " film so thin and shimmering that it looks almost as though she is oiling your body with a " + gooColor6() + " lacquer. In your lust-filled mind, it is as if the gazes on your exposed form are filling your flesh with the heat of their desire until you realize that your body temperature actually is increasing with each passing second. The goo-girl's oil seems to retain the slime's rippling warmth and it caresses your torso with her playful glee, infectious giddiness adding fuel to the fetish worming its way through your brain. You guide your hands over your hips and across your " + player.skin() + ", spreading the glistening oil over you with a faint squeak of pleasure that just barely carries into the ears of your watchers. The shark girl's teeth gnash the open air, the water between her legs churning, while the anemone's wavy hair tendrils rub against one another in impatience. The robed man hasn't budged, but the minotaur's loin cloth has been pushed aside by his stiffening erection, the flaring head pulsing higher and higher with each trembling gasp that sighs from your chest.\n\n", false);
+			outputText("You close the distance with the " + gooColor8() + " girl and she rises up out of her puddle to meet you shoulder to shoulder, wrapping her slimy arms around your waist with an eager grope. You blush at the warm contact and can almost hear the intake of breath from your audience when you press your " + player.allBreastsDescript() + " into your partner's, flesh and membrane squishing against each other and gooshing out at the sides, as your stiff nipples rub against her slippery peaks. The goo's mouth opens in a silent moan and her wobbly membrane begins dripping thick beads of " + gooColor2() + ". The goo rubs against you in a steady, circular motion, her hands tracing the small of your back and up along your spine, her slippery slickness covering your skin in a " + gooColor4() + " film so thin and shimmering that it looks almost as though she is oiling your body with a " + gooColor6() + " lacquer. In your lust-filled mind, it is as if the gazes on your exposed form are filling your flesh with the heat of their desire until you realize that your body temperature actually is increasing with each passing second. The goo-girl's oil seems to retain the slime's rippling warmth and it caresses your torso with her playful glee, infectious giddiness adding fuel to the fetish worming its way through your brain. You guide your hands over your hips and across your [skin], spreading the glistening oil over you with a faint squeak of pleasure that just barely carries into the ears of your watchers. The shark girl's teeth gnash the open air, the water between her legs churning, while the anemone's wavy hair tendrils rub against one another in impatience. The robed man hasn't budged, but the minotaur's loin cloth has been pushed aside by his stiffening erection, the flaring head pulsing higher and higher with each trembling gasp that sighs from your chest.\n\n", false);
 
 			outputText("Your hands find the goo-girl's and your fingers entwine around the girl's oozing digits, palms pressed together hard enough to send ripples down her arms. You lean forward and lick the side of her face, surprised to find that, despite the girl's heat, she tastes cold and sweet, like " + gooColor10() + " washed in a mountain stream. She kisses your cheek, leaving a " + gooColor5() + " lip-print on your skin before moving to your mouth. Tilting your head, you lean into her and lock your lips against her pliant mouth, sharing body heat with the slime as you slide your tongue into her gooey maw, the crimson organ vibrant inside her translucent head. Forming a tongue of her own, she wraps the moist duplicate around the original, coiling around your sensitive muscle, exciting your taste buds with a feast of milky flavors. You cast a quick glance at your watchers and a wave of gratification washes through you as you see the anemone stroking a phallus between her tendril-like legs under the lake's surface. The human's hands have disappeared inside his robe, but you can practically feel him touching himself to the sight of your heated embrace. The minotaur now stands at full mast and his face is flushing with the precursors to a rutting passion. Time to up the ante.\n\n", false);
 
@@ -489,7 +568,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("Your orgasms are as loud as you can make them, screaming, cursing, and praying in consecutive breaths until you're hoarse and your body is sore with exhaustion. The goo-girl looks just as drained from the performance, cradling you in her gooey body as much as resting against yours. The effect of your show has left your viewers wanting more, it seems, as they've partnered off. The anemone has entwined the shark girl and is giving her enough to keep the vicious female snarling in ecstatic throes as the two churn the water to thick foam. The stray minotaur has taken the man from behind and, despite its formidable size, has pulled his victim to the very hilt of its member, swollen balls slapping against his legs while the stuffed man jerks himself off again, lost in some private memory of your display. You give the goo-girl a kiss on her " + gooColor7() + "-flavored face as thanks for the wonderful time and she musses your hair playfully. You give them a final show as you slowly put your " + player.armorName + " back on, gradually covering up your oil-slick skin before leaving the monsters to their own sport.", false);
 			coreDropChance();
-			player.orgasm();
+			player.orgasm('Generic');
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
 		}
@@ -503,7 +582,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("With your hands wrapped around the goo-girl's waist, you take a step forward. The pliant ooze of the girl's body squelches at the pressure of your legs straining against her membrane, spilling out to the side of her hips and she perks her head up, unfamiliar with what you're trying to do. You push harder, keeping her in place as you move against her, more forcefully this time. Her body squeaks with the slapping pressure against her yielding form and she furrows her brow, pointing at her mouth and between her legs. You just smile and pull her against you harder and harder, her expression becoming pinched with the force of your attempt to move through her. Finally, her mouth gapes in discomfort and her membrane parts, gooey legs becoming permeable and squishing around " + player.legs() + ", engulfing your lower body in her " + gooColor4() + " slime. Your " + player.vaginaDescript(0) + " sinks into the muck of the girl's body and her heat washes over you in a wonderful embrace of fluid tightness that caresses as much as it gurgles across your sensitive flesh. Wet and soft, the inside of the girl's gelatinous form sculpts itself around yours like a slimy mold. As delightful as the moist embrace is for you, it seems to be getting the goo off even more, the rest of her membrane trembling, unable to maintain firmness in the assault of your invading body. You easily push your arms into her shoulders and down the dripping shafts of her " + gooColor8() + " limbs, fingers siding into hers like moist gloves of gelatin.  Your " + player.allBreastsDescript() + " goosh against her back and the tiny red heart in her chest retreats into her head as your orbs sink into the translucent girl's sapphire torso and rest within her wobbling breasts, her tits cupping your flush mounds like huge, warm mouths, her " + gooColor5() + " nipples tweaking yours ever so slightly as they pop into the pert nubs. You take another deep breath and release it, savoring the sensation as her back slowly closes up around your shoulder blades, sealing you to the neck in the goo-girl's body.\n\n", false);
 
-			outputText("The sensations are so strange all over your body that it is overwhelming at first. You have to steady your breathing to keep the heat and tightness from subsuming your mind, so you take inventory of your body, focusing the cresting ecstasy of complete immersion down to more manageable chunks. The slime embracing your " + player.clitDescript() + " vibrates ever so slightly, teasing you so lightly it is maddening, your fingers twitching with the desire to rub yourself more vigorously. The goo around your pussy and ass is less coy, pressing inward with every heartbeat, penetrating you by inches as the bunch at your feet rolls upward to fill every nook and crevice of your curves with its oily " + gooColor2() + ". The goo inside you is just thick enough to make it difficult for you to take deep breaths, but soft enough to let your body squeeze and clench with gushing spasms that leave you swaying in place, not daring to move too much. Your breasts feel weightless, suspended in the thick fluid of the goo's body, leaving you light-headed and almost giddy, unable to help yourself as you play with your chest, wobbling the " + gooColor2() + " mammaries and giggling at the endless ripples that radiate over your chest, the motion sending curtains of heat rolling over your sensitive " + player.skin() + ".\n\n", false);
+			outputText("The sensations are so strange all over your body that it is overwhelming at first. You have to steady your breathing to keep the heat and tightness from subsuming your mind, so you take inventory of your body, focusing the cresting ecstasy of complete immersion down to more manageable chunks. The slime embracing your " + player.clitDescript() + " vibrates ever so slightly, teasing you so lightly it is maddening, your fingers twitching with the desire to rub yourself more vigorously. The goo around your pussy and ass is less coy, pressing inward with every heartbeat, penetrating you by inches as the bunch at your feet rolls upward to fill every nook and crevice of your curves with its oily " + gooColor2() + ". The goo inside you is just thick enough to make it difficult for you to take deep breaths, but soft enough to let your body squeeze and clench with gushing spasms that leave you swaying in place, not daring to move too much. Your breasts feel weightless, suspended in the thick fluid of the goo's body, leaving you light-headed and almost giddy, unable to help yourself as you play with your chest, wobbling the " + gooColor2() + " mammaries and giggling at the endless ripples that radiate over your chest, the motion sending curtains of heat rolling over your sensitive [skin].\n\n", false);
 
 			outputText("Taking slow, shallow gulps of air, you finally master yourself and are able to move, albeit slowly. At your first step, the goo-girl sucks up the slime pooling at your feet and thickens the jiggling gel-encasement around you. Her head pokes out next to your shoulder, her expression one of eye-clenching bliss at the vibrations of your body inside her. She can feel every twitch of your over-stimulated flesh, every pulse of blood through your veins, and every muscle contraction of your building orgasm. The trivial sensation you take for granted are transmitted through the tightly-fitting body-suit you've made of her. A sudden resolve strikes you, and you launch yourself forward, breaking into a swift run across the shore of the lake. Next to yours, the girl's head silently moans at the muscles thrumming within her body. You clench your bobbing breasts with one hand, squeezing your nipples through the goo-suit and the shimmering, slick membrane begins to bead with droplets of sapphire sweat, your ministrations overwhelming the girl's ability to maintain consistency. The heat of her orgasm feeding into your own, it's all you can do to keep your " + player.legs() + " from slipping out from underneath you.  Your free arm lifts of its own accord and you realize with a start that she's not completely helpless as she moves your hand to your crotch, bracing your thumb firmly against your pulsing clit. You let out a soft gasp and try to pull your hand away, but the goo-glove controls your limb as firmly as if it were hers. She slides one finger after another into your goo-stuffed cunt and the penetrating firmness pushes her slimy-soft dildo deeper against your inner walls.\n\n", false);
 
@@ -511,7 +590,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("You aren't sure how much time has passed when you finally regain your senses. The goo-girl nuzzles your cheek affectionately, perhaps thanking you for the unique experience. Slowly, regretfully, she flows off of you, suckling ooze lapping at your limbs with slurping kisses all over your body. When the two of you are finally separated, you notice that she's maintained your proportions exactly, a " + gooColor3() + " mirror of your body, jiggling alluringly. You sigh as she flows back into the lapping waves of the lake, missing the heat of her embrace already. Admittedly, you don't know if trying to wear her for an extended length of time would've been a good idea- you'd never get anything done! Retracing your steps, you recover your " + player.armorName + " and head back to camp.", false);
 			coreDropChance();
-			player.orgasm();
+			player.orgasm('Vaginal');
 			player.slimeFeed();
 			combat.cleanupAfterCombat();
 		}
@@ -546,7 +625,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("\n\nThis continues on for quite some time with the honey googirl greedily sucking down everything it can from your ovipositor, stroking it and squeezing your abdomen to work out all of its sweet fluid and eggs.  When you finally decide enough is enough, you retract your black tube and rise back up to your [feet].  Turning to look at the goo, you see her idly rubbing at her distended honey-colored belly, imitating a pregnant mother before she slides back down the lakeshore; your numerous eggs bounce around inside her infused body.  She turns one last time to you and waves before sinking below the surface.");
 			player.dumpEggs();
-			player.orgasm();
+			player.orgasm('Ovi');
 			combat.cleanupAfterCombat();
 		}
 	}

@@ -20,7 +20,7 @@
 				//Get hit – 10+ lust
 				game.dynStats("lus", 5 + player.lib / 20);
 				outputText("Taken off-guard by the unexpected sexual display, you fail to move out of the way, and the wormy jism splatters you from the chest down.", false);
-				if (player.findStatusEffect(StatusEffects.Infested) >= 0 && player.totalCocks() > 0) {
+				if (player.hasStatusEffect(StatusEffects.Infested) && player.totalCocks() > 0) {
 					outputText("  The worms inside you begin moving and squirming. A few of your cum-soaked parasites crawl out from your shivering " + player.multiCockDescriptLight() + " as if attempting to meet the new arrivals.  You desperately want to brush them away, but the pleasure in your crotch is too good to fight, and you find yourself staying your hand as each and every one of the new worms makes it way into your " + player.multiCockDescriptLight() + ".", false);
 					if (player.balls > 0) outputText("  Your " + player.ballsDescriptLight() + " grow weightier as the worms settle into their new home, arousing you beyond measure.", false);
 					else outputText("  You can feel them shifting around inside you as they adjust to their new home, arousing you beyond measure.", false);
@@ -36,7 +36,7 @@
 			else {
 				outputText("You sidestep the gush of wormy fluid, letting it splatter against the rocks behind you.", false);
 				//(If infested +10 lust:  
-				if (player.findStatusEffect(StatusEffects.Infested) >= 0  && player.hasCock()) {
+				if (player.hasStatusEffect(StatusEffects.Infested)  && player.hasCock()) {
 					if (player.hasCock()) {
 						outputText("  Despite avoiding the torrent of infected seed, your own wormy ", false);
 						if (player.balls > 0) outputText(player.ballsDescriptLight(), false);
@@ -52,7 +52,7 @@
 					}
 				}
 				//if aroused by worms +5 lust:
-				else if (player.findStatusEffect(StatusEffects.WormsOn) >= 0 && player.findStatusEffect(StatusEffects.WormsHalf) < 0) {
+				else if (player.hasStatusEffect(StatusEffects.WormsOn) && !player.hasStatusEffect(StatusEffects.WormsHalf)) {
 					game.dynStats("lus", 5);
 					outputText("  The idea of being covered in the beast's infested seed arouses you slightly, but you shake your head violently and clear away the unwelcome thought.", false);
 				}
@@ -66,18 +66,21 @@
 		{
 			if (hpVictory) {
 				outputText("The hellhound's flames dim and the heads let out a whine before the creature slumps down, defeated, unconscious, and yet still drooling worms.", true);
-				game.combat.cleanupAfterCombat();
 			} else {
 				outputText("Unable to bear its unnatural arousal, the infested hellhound's flames dim as he stops his attack. The two heads look at you, whining plaintively.  The hellhound slowly pads over to you and nudges its noses at your crotch.  It seems he wishes to pleasure you.\n\n", true);
-				if (player.gender > 0 && player.lust >= 33) {
-					outputText("You realize your desires aren't quite sated.  You could let it please you.  Do you?", false);
-					game.simpleChoices("Fuck it", game.mountain.hellHoundScene.hellHoundGetsRaped, "", null, "", null, "", null, "Leave", game.combat.cleanupAfterCombat);
-				}
-				else {
-					outputText("You turn away, not really turned on enough to be interested in such an offer from such a beast.", false);
-					game.combat.cleanupAfterCombat();
+			}
+			
+			game.menu();
+			
+			game.addButtonDisabled(0, "Lick", "Make him use his tongues. This scene requires you to have genitals and sufficient arousal. This scene requires lust victory.");
+			
+			if (player.lust >= 33 && !player.isGenderless()) {
+				if (!hpVictory) {
+					game.addButton(0, "Lick", game.mountain.hellHoundScene.hellHoundGetsRaped, undefined, undefined, undefined, "Make him use his tongues.");
 				}
 			}
+			
+			game.addButton(14, "Leave", game.combat.cleanupAfterCombat);
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -130,12 +133,15 @@
 			this.temperment = TEMPERMENT_LOVE_GRAPPLES;
 			this.level = 5;
 			this.gems = 10 + rand(10);
-            this.drop = new WeightedDrop().add(consumables.CANINEP, 3)
-            					.addMany(1, consumables.BULBYPP,
-            							consumables.KNOTTYP,
-            							consumables.BLACKPP,
-            							consumables.DBLPEPP,
-            							consumables.LARGEPP);
+			this.drop = new WeightedDrop()
+ 					.add(consumables.CANINEP, 6)
+ 					.add(consumables.WOLF_PP, 1)
+ 					.addMany(2,
+ 						consumables.BULBYPP,
+ 						consumables.KNOTTYP,
+ 						consumables.BLACKPP,
+ 						consumables.DBLPEPP,
+ 						consumables.LARGEPP);
 			this.special1 = hellhoundFire;
 			this.special2 = hellhoundScent;
 			this.special3 = hellHoundWormCannon;

@@ -217,7 +217,7 @@ package classes.Scenes.Areas.Lake
 			}
 			//After any zealot rape
 			//Reduce intelligence, set lust to zero, then add some lust based on libido and corruption
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("int", -1, "cor", 2);
 			//Trigger bad end if player's intelligence is less than 10 after being drained.
 			if (player.inte < 10 && rand(2) == 0) {
@@ -253,13 +253,26 @@ package classes.Scenes.Areas.Lake
 			if (monster.HP < 1) outputText("The zealot collapses from his wounds, too hurt to continue controlling his powers.", false);
 			//Defeated by lust
 			else outputText("The zealot quivers for a moment before collapsing, his desires becoming too great for even him to control.", false);
-			if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
-				outputText("\n\nDo you want to take advantage of his vulnerable state to sate your lusts?", false);
-				var bikiniTits:Function = null;
-				if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor") bikiniTits = createCallBackFunction2((player.armor as LustyMaidensArmor).lustyMaidenPaizuri,player,monster);
-				simpleChoices("Yes", zealotWinRape, "", null, "", null, "B.Titfuck", bikiniTits, "Leave", combat.cleanupAfterCombat);
+			
+			if (flags[kFLAGS.SFW_MODE] > 0) {
+				combat.cleanupAfterCombat();
+				return;
 			}
-			else combat.cleanupAfterCombat();
+			
+			menu();
+			
+			addDisabledButton(0, "Sex", "This scene requires you to have genitals and sufficient arousal.");
+			// Button 1 is used for Lusty Maidens Armor special scene and is hidden without it
+			
+			if (player.lust >= 33 && !player.isGenderless()) {
+				outputText("\n\nDo you want to take advantage of his vulnerable state to sate your lusts?");
+				addButton(0, "Sex", zealotWinRape);
+				
+				if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor")
+					addButton(1, "B.Titfuck", (player.armor as LustyMaidensArmor).lustyMaidenPaizuri, player, monster);
+			}
+			
+			addButton(14, "Leave", combat.cleanupAfterCombat);
 		}
 
 
@@ -291,7 +304,7 @@ package classes.Scenes.Areas.Lake
 				outputText("Your lusts sated for now, you rise up off of him and put your " + player.armorName + " back on.  You decide to leave him lying there, still coughing from the blow to his stomach.  ", false);
 				player.cuntChange(monster.cockArea(0), true);
 			}
-			player.orgasm();
+			player.orgasm('Generic');
 			combat.cleanupAfterCombat();
 		}
 	}

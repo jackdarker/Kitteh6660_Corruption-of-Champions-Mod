@@ -18,24 +18,21 @@ package classes.Scenes.Dungeons.Factory
 			menu();
 			// demon bad end available
 			if (player.demonScore() >= 4 && player.cor > 75) {
-				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there ", false);
-				if (player.gender == 1) outputText("stud", false);
-				else outputText("sexy", false);
-				outputText("!</i>\"  She stops, sniffing the air, a curious expression on her face as she slowly circles you, her heals clicking loudly on the floor.  A knowing grin blooms across her face as understanding hits her.\n\n", false); 
+				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there " + player.mf("stud", "sexy") + "!</i>\"  She stops, sniffing the air, a curious expression on her face as she slowly circles you, her heals clicking loudly on the floor.  A knowing grin blooms across her face as understanding hits her.\n\n", false);
 				outputText("She exclaims, \"<i>Omigawsh!  You're the champion!  Your, like, soul is still there and everything!  But, you're like, completely corrupt an' stuff!  Ya know what'd be fun?  I could fuck you 'til you cum so hard your soul melts out an' you turn into a demon.  Wouldn't that be great?</i>\"\n\n", false);
 				outputText("The secretarial demoness pulls out a file and fiddles with her nails, murmuring, \"<i>I guess if you don't wanna, we could just hook you up in the factory.  What's it gonna be?</i>\"", false);
 				if (flags[kFLAGS.CODEX_ENTRY_SUCCUBUS] <= 0) {
 					flags[kFLAGS.CODEX_ENTRY_SUCCUBUS] = 1;
 					outputText("<b>New codex entry unlocked: Succubus!</b>\n\n")
 				}
-				simpleChoices("Fight", doFightSuccubus, "Go Demon", goDemon, "Hook Up", talkSuccubusYes, "", null, "", null);
+				menu();
+				addButton(0, "Fight", doFightSuccubus);
+				addButton(1, "Go Demon", goDemon);
+				addButton(2, "Hook Up", talkSuccubusYes);
 			}
 			//Not recognized
 			else if (player.humanScore() <= 3) {
-				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there ", false);
-				if (player.gender == 1) outputText("stud", false);
-				else outputText("sexy", false);
-				outputText("!  You haven't seen a confused human about calling itself a champion have you?</i>\"\n\nShe shakes her more-than-ample bosom from side to side as she licks her lips and offers, \"<i>If you do, be sure and bring them back here ok?  We've got their spot all ready for them, but that little prick Zetaz fucked up the pickup.  Tell you what – if you bring me the 'champion' I'll ", false);
+				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there " + player.mf("stud", "sexy") + "!  You haven't seen a confused human about calling itself a champion have you?</i>\"\n\nShe shakes her more-than-ample bosom from side to side as she licks her lips and offers, \"<i>If you do, be sure and bring them back here ok?  We've got their spot all ready for them, but that little prick Zetaz fucked up the pickup.  Tell you what – if you bring me the 'champion' I'll ", false);
 				if (player.totalCocks() > 0) outputText("give you the blowjob of a lifetime", false);
 				else if (player.hasVagina()) outputText("lick your honeypot 'til you soak my face", false);
 				else outputText("give you a new addition and show you how to use it", false);
@@ -44,18 +41,21 @@ package classes.Scenes.Dungeons.Factory
 					flags[kFLAGS.CODEX_ENTRY_SUCCUBUS] = 1;
 					outputText("<b>New codex entry unlocked: Succubus!</b>\n\n")
 				}
-				simpleChoices("Fight", doFightSuccubus, "It's Me!", talkSuccubusItsMe, "Leave", getGame().dungeons.factory.roomLobby, "", null, "", null);
+				menu();
+				addButton(0, "Fight", doFightSuccubus);
+				addButton(1, "It's Me!", talkSuccubusItsMe);
+				addButton(2, "Leave", getGame().dungeons.factory.roomLobby);
 			}
 			else {
-				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there ", false);
-				if (player.gender == 1) outputText("stud", false);
-				else outputText("sexy", false);
-				outputText("!  What's a cute little morsel like you doing by yourself out here?</i>\"", false);
+				outputText("The busty succubus turns, her barely contained breasts jiggling obscenely as she notices you, \"<i>Oh, like hi there " + player.mf("stud", "sexy") + "!  What's a cute little morsel like you doing by yourself out here?</i>\"", false);
 				if (flags[kFLAGS.CODEX_ENTRY_SUCCUBUS] <= 0) {
 					flags[kFLAGS.CODEX_ENTRY_SUCCUBUS] = 1;
 					outputText("<b>New codex entry unlocked: Succubus!</b>\n\n")
 				}
-				simpleChoices("Fight", doFightSuccubus, "Talk", talkSuccubus, "Run", getGame().dungeons.factory.roomLobby, "", null, "", null);
+				menu();
+				addButton(0, "Fight", doFightSuccubus);
+				addButton(1, "Talk", talkSuccubus);
+				addButton(2, "Run", getGame().dungeons.factory.roomLobby);
 			}
 		}
 		
@@ -64,14 +64,18 @@ package classes.Scenes.Dungeons.Factory
 			spriteSelect(55);
 			outputText("\"<i>I suppose I really should thank you for coming down all by your lonesome.  The boss is gonna be sooo happy we found you.  Just think, in an hour or two we can get you strapped in and working with the others,</i>\"  says the secretarial succubus as she saunters over, still sipping her coffee, \"<i>You're so cute!  I tell you what, if you agree to come with me, I'll, like, make sure the experience is pleasurable.</i>\"\n\n", true);
 			outputText("She runs a stocking covered foot up your leg and thigh, almost to your groin.  Giggling, the succubus pulls it away and asks, \"<i>So are you ready and willing?</i>\"", false);
-			simpleChoices("For what?", talkSuccubusForWhat, "Yes", talkSuccubusYes, "No", talkSuccubusNo,"", null,"", null);
-			return;
+			menu();
+			addButton(0, "For what?", talkSuccubusForWhat);
+			addButton(1, "Yes", talkSuccubusYes);
+			addButton(2, "No", talkSuccubusNo);
 		}
 		
 		private function talkSuccubusForWhat():void {
 			spriteSelect(55);
 			outputText("The succubus looks at you with a bemused expression, \"<i>You haven't figured it out yet?  Really?  What do you think we make at this factory, bubble-gum?</i>\" she asks with a cruel smile, \"<i>We take human and once-human champions like you, pump you full of aphrodisiacs, body-altering drugs, and corrupting agents, and then milk you of your tainted fluids continually for the rest of your life!  And don't even start to ask why, I'll tell you – there are still pockets of purity out there that repel cute demons like me.  So the best way to deal with those is just to release a river of drug-filled sex-juice at them.  By the time the area dries off, the locals welcome us with open arms... and spread legs.</i>\"", true);
-			simpleChoices("Sick!", talkSuccubusNo, "Sounds Fun", talkSuccubusYes,"", null,"", null,"", null);
+			menu();
+			addButton(0, "Sick!", talkSuccubusNo);
+			addButton(1, "Sounds Fun", talkSuccubusYes);
 		}
 		
 		private function talkSuccubusItsMe():void {
@@ -97,11 +101,10 @@ package classes.Scenes.Dungeons.Factory
 			outputText("Advancing slowly, the succubus gives you a hungry look.  She extends a hand, allowing her fingers to lengthen into razor-sharp claws.  With a single expert slash, she cuts away everything holding together your " + player.armorName + ".  They fall into a discarded pile, already forgotten as your ", false);
 			//[genderless]
 			if (player.gender == 0) {
-				outputText("entire body blushes read before the sexy seductress.  She looks at you, frowning as she murmers, \"<i>Now this just won't do.  You look more like a " + player.mf("boy", "girl") + " to me, so why don't I make the plumbing match the exterior?</i>\"\n\n", false);  
+				outputText("entire body blushes read before the sexy seductress.  She looks at you, frowning as she murmurs, \"<i>Now this just won't do.  You look more like a " + player.mf("boy", "girl") + " to me, so why don't I make the plumbing match the exterior?</i>\"\n\n", false);  
 				outputText("Her palm caresses your crotch, stoking the warmth inside you until it blazes white-hot with new sensation.  Your skin ripples and parts, ", false);
 				if (player.biggestTitSize() <= 1) {
 					outputText("pushed apart the thick flesh of a powerful demonic member, complete with two swollen balls.", false);
-					player.gender = 1;
 					player.createCock();
 					player.cocks[0].cockLength = 10;
 					player.cocks[0].cockThickness = 2;
@@ -111,7 +114,6 @@ package classes.Scenes.Dungeons.Factory
 				}
 				else {
 					outputText("gushing with fluids as it shapes itself into a hungry demonic cunt.", false);  
-					player.gender = 2;
 					player.createVagina();
 					player.vaginas[0].vaginalWetness = VAGINA_WETNESS_SLICK;
 				}
@@ -174,8 +176,8 @@ package classes.Scenes.Dungeons.Factory
 			else if (player.gender == 2) {
 				outputText(player.vaginaDescript(0) + " grows wet and ready, practically juicing itself as the demoness' hand caresses your inner thigh.  She teases, \"<i>Oh my! You're so wet and ready and I haven't even touched your moist little cum-receptacle.  You're a slut aren't you?  Who else would be so turned on by the idea of cumming until all your humanity drips out?</i>\"\n\n", false);
 				outputText("The words make you blush hard, shaming you and stoking the growing fire between your " + player.legs() + ".  You know two things for certain: she's right and you're more turned on that ever.  You don't resist as the demoness easily lifts you up, setting you down on a table with your " + player.legs() + " spread.  \"<i>There,</i>\" she comments, \"<i>now your juicy snatch is on display, just like you've always wanted.</i>\"\n\n", false);
-				outputText("She effortlessly swings her lissomelegs onto the table as she pulls herself up, mounting you as a man might.  You can feel waves of heat rolling off her sex, bathing your own slit in her warmth.  ", false);
-				if (player.clitLength >= 2) outputText("Your " + player.clitDescript() + " pushes free, nuzzling against her hairless cunt and slipping inside, as if drawn in by its desire.  She openly moans, and begins rocking on top of you.  You gasp in delight as she rides your " + player.clitDescript() + ", fucking and grinding against it.  ", false);
+				outputText("She effortlessly swings her lissome legs onto the table as she pulls herself up, mounting you as a man might.  You can feel waves of heat rolling off her sex, bathing your own slit in her warmth.  ", false);
+				if (player.getClitLength() >= 2) outputText("Your " + player.clitDescript() + " pushes free, nuzzling against her hairless cunt and slipping inside, as if drawn in by its desire.  She openly moans, and begins rocking on top of you.  You gasp in delight as she rides your " + player.clitDescript() + ", fucking and grinding against it.  ", false);
 				else outputText("She lowers herself down, rubbing smooth hairless netherlips over you, smearing you with her fragrant demon-honey.  You feel her clit grinding on your own, drawing out gasps of delight from both of your mouths as she relentlessly scissors against you.  ", false);
 				outputText("In no time flat you feel your climax building.  Your " + player.vaginaDescript(0) + " quivers and grows wetter in anticipation.  Tugging on your aching " + player.nippleDescript(0) + "s and aching for release, you squirm under your demonic mistress, smashing your " + player.vaginaDescript(0) + " against her in a lewd attempt to find your orgasm.  It does not happen, and you moan in disappointment as the pleasure continues to build, oblivious to your desire for orgasm.\n\n", false);
 				outputText("\"<i>Have you hit it yet?</i>\" the succubus asks as she rocks on top of you, \"<i>I've placed a block inside you.  Don't worry, it's temporary, it'll only stop you from orgasming for a few days...</i>\"\n\n", false);
@@ -196,8 +198,8 @@ package classes.Scenes.Dungeons.Factory
 				//Buh.  Zombie fen need brains.
 				outputText(player.multiCockDescript() + " and " + player.vaginaDescript(0) + " grow wet and ready, both starting to leak fluids as the succubus' hand traces your inner thigh.  She teases, \"<i>Oh my! You're so wet and ready and I haven't even touched your moist little cum-receptacle.  And that throbbing cock!  How obscene!  You're a slut aren't you?  Who else would be so turned on by the idea of cumming until your humanity is splattered between my legs?</i>\"\n\n", false);
 				outputText("The words make you blush hard, shaming you and stoking the growing fire between your legs.  You know two things for certain: she's right and you're more turned on that ever.  You don't resist as the demoness easily lifts you up, setting you down on a table with your legs spread.  \"<i>There,</i>\" she comments, \"<i>now all of your fun-parts are on display.  Maybe I should call in an incubus and a few imps to watch.  I bet you'd like that wouldn't you?</i>\"\n\n", false);
-				outputText("She effortlessly swings her lissomelegs onto the table as she pulls herself up, mounting you in a single swift motion.  You can feel waves of heat rolling off her sex, bathing your " + player.cockDescript(0) + " in her warmth.  ", false);
-				if (player.clitLength >= 2) outputText("Your " + player.clitDescript() + " pushes free, nuzzling against her tight asshole and slipping inside, as if drawn in by its desire.  She openly moans, and begins rocking on top of you.  You gasp in delight as she rides your " + player.clitDescript() + ", fucking her ass and grinding against it.", false);
+				outputText("She effortlessly swings her lissome legs onto the table as she pulls herself up, mounting you in a single swift motion.  You can feel waves of heat rolling off her sex, bathing your " + player.cockDescript(0) + " in her warmth.  ", false);
+				if (player.getClitLength() >= 2) outputText("Your " + player.clitDescript() + " pushes free, nuzzling against her tight asshole and slipping inside, as if drawn in by its desire.  She openly moans, and begins rocking on top of you.  You gasp in delight as she rides your " + player.clitDescript() + ", fucking her ass and grinding against it.", false);
 				else outputText("She lowers herself down, rubbing smooth hairless netherlips over your crotch and vulva, smearing you with her fragrant demon-honey.  You feel her clit grinding on your belly, drawing out gasps of delight from both of your mouths as she relentlessly works her body against your own.", false);
 				outputText("\n\nMarvelous heat and wetness wraps your " + player.cockDescript(0) + " tightly.  You sigh happily, already lost in the feeling of having a succubus' tight walls wriggling around you.  Were you not already so corrupt, you would probably be cumming already, but as it is, you can lie there and enjoy it, reveling in the sensations your unholy lover is spreading through your body.  You shiver, finally approaching your climax, but as it nears you find yourself denied by something deep inside you, pushing away your release and hiding it somewhere inaccessible.\n\n", false);
 				outputText("\"<i>Have you hit it yet?</i>\" the succubus asks as she rocks on top of you, \"<i>I've placed a block inside you.  Don't worry, it's temporary, it'll only stop you from orgasming for a few days...</i>\"\n\n", false);
@@ -216,7 +218,7 @@ package classes.Scenes.Dungeons.Factory
 				outputText(" demon-cock for a few more orgasms.", false);
 				outputText("  Before you get into that, you spy a small piece of pink crystal on the floor between your legs.  You snatch it and devour it before the succubus has a chance and eat it, turning part of your soul into new-found demonic strength before you return to a long night of sex...", false);
 			}
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("str", 2,"tou", 2, "spe", 2, "int", 2, "lib", 2, "sen", 2, "cor", 100);
 			doNext(doBadEndDemon);
 		}
@@ -301,7 +303,7 @@ package classes.Scenes.Dungeons.Factory
 					outputText("\n\nYou pant with exertion and pull back, only to have your " + player.cockDescript(0) + " plunge right back in. Beginning another rough fucking session, your hips force-fuck her beyond your control.  Exhausted, you lean over her, figuring you may as well enjoy your double's wondrous breasts until your demonic cock has finally sated itself.  You just hope you don't black out from the waves of pleasure each of your new nubs radiates.\n\n\nHours later you pull away, sated.  For now.", false); 
 				}
 				outputText("\n\nThe succubus licks her fingers clean, looking totally recovered.  In the blink of an eye, she dashes out the door, disappearing.", false);
-				player.orgasm();
+				player.orgasm('Dick');
 				dynStats("cor", 5);
 				combat.cleanupAfterCombat();
 			}
@@ -310,22 +312,22 @@ package classes.Scenes.Dungeons.Factory
 				if (monster.HP < 1) outputText("Your foe staggers and falls hard on her ass, utterly defeated.  Her bruises and lacerations slowly fade and heal, regenerating with the aid of her demonic powers.  You easily tear through her clothes, leaving only the damaged stockings that gird her legs. It doesn't take much to force her down on her back and straddle her as you disrobe, ready to take your pleasure.\n\n", false);
 				else outputText("Your foe drops to her knees, stuffing three digits into her greedy snatch as arousal overcomes her desire to subdue you.  With great care, you approach your insensible enemy and tear off her clothes, leaving her wearing only the remains of her stockings as you force her down on her back.  As if possessing a will of their own, her legs lewdly spread as you disrobe.\n\n", false);
 				outputText("Her budding clit rises from between her folds, hardening like a tiny three inch dick.\n\n", false);
+				menu();
+				addButton(0, "Scissor", doScissorSuccubus);
 				if (player.biggestLactation() > 1) {
 					outputText("<b>You could scissor with her, or maybe force-feed her some of the milk you've backed up.  Which will it be?</b>", false);
-					simpleChoices("Scissor",doScissorSuccubus,"Force Feed",doForcefeedSuccubus,"", null,"", null,"", null);
-				}
-				//No choices if not lactating...
-				else {
-					doScissorSuccubus();
+					addButton(1, "Force Feed", doForcefeedSuccubus);
+				} else {
+					addDisabledButton(1, "Force Feed");
 				}
 			}
 		}
 		public function doScissorSuccubus():void {
 			outputText("You shiver with anticipation as you hook your leg under her thick thighs, lining up your " + player.vaginaDescript(0) + " as you press forwards.  The anticipation builds as your matched honeypots grow ever closer.  Making contact, your folds part as her purplish-red clit slips betwixt your nether-lips, vibrating slightly in tune with the succubus' heartbeats.  You gasp, feeling your own " + player.clitDescript() + " erecting and rubbing against her smooth mound.\n\n", false);
-			if (player.clitLength >= 3) outputText("You groan with wanton desire as your " + player.clitDescript() + " continues to grow and grow until reaching full size and slipping inside the defeated slut's sloppy pleasure-hole.  ", false);
+			if (player.getClitLength() >= 3) outputText("You groan with wanton desire as your " + player.clitDescript() + " continues to grow and grow until reaching full size and slipping inside the defeated slut's sloppy pleasure-hole.  ", false);
 			outputText("It takes only a few seconds to get the succubus' juices really flowing, the sounds of your grinding hips dissolving into a cacophony of liquid squelches.  The gooey corrupt fem-cum tingles, spreading warmth through every patch of skin it touches.  Your locked hips writhe and twist with her's, eliciting pants and squeals from the both of you.  In no time flat, you find yourself cumming and feel your " + player.vaginaDescript(0) + "'s muscles clench hungrily with an unquenchable desire to be filled.  The succubus shivers in pleasure, probably feeding off your orgasm.  You back off, fingering your " + player.vaginaDescript(0) + " languidly and denying her a full meal.  Pouting, the succubus dips her fingers back in, determined to cum.", false);
 			outputText("\n\nYou turn away with a bemused sigh.  When you glance back, she has vanished!", false);
-			player.orgasm();
+			player.orgasm('Vaginal');
 			dynStats("cor", 1);
 			combat.cleanupAfterCombat();
 			//doNext(roomBreakRoom);
@@ -431,7 +433,7 @@ package classes.Scenes.Dungeons.Factory
 				if (player.cumQ() > 400) outputText("Freed at last, your body clenches powerfully as a massive eruption of cum launches from your " + player.cockDescript(0) + " onto her waiting foot.  The succubus looks on incredulously as her entire foot is soaked with your sticky whiteness, forgetting to move as the second wave of cum drenches her to the ankle and rains down over your stomach.  She giggles and moves it back to your cock, massaging your slick spooge into your cock with her foot, wringing an even bigger explosion of cum from your tortured body.  Flopping back, she gets her other foot in on the action, milking you between her feet as you soak yourself completely with bigger and bigger eruptions until at last your orgasm begins to wane.  She slides forwards, rubbing against you and smearing the mess over herself with a blissful expression.", false);
 				outputText("\n\n\"<i>Good boy,</i>\" she croons, mopping the cum up as it seems to wick into her stockings, \"<i>You'll do well once we get you on the line.</i>\"  You don't have time to ponder the significance of that as you lose consciousness.", false);
 				//ONWARD TO BAD-END-IA!
-				player.orgasm();
+				player.orgasm('Dick');
 				doNext(getGame().dungeons.factory.doBadEndGeneric);
 			}
 			else {
@@ -454,7 +456,7 @@ package classes.Scenes.Dungeons.Factory
 				player.cocks[0].cockLength = 16;
 				player.cocks[0].cockThickness = 1.5;
 				//[[[[To bad end!]]]
-				player.orgasm();
+				player.orgasm('Vaginal');
 				doNext(getGame().dungeons.factory.doBadEndGeneric);
 			}
 		}
@@ -470,7 +472,7 @@ package classes.Scenes.Dungeons.Factory
 			//Tits – regular
 			if (player.biggestLactation() < 1) outputText("Your " + player.nippleDescript(0)  + "s begin prodding painfully against your " + player.armorName + ", every touch serving to make them harder and more erect.  ", false);
 			//Tits – lactating
-			if (player.biggestLactation() >= 1 && player.biggestLactation() < 3) outputText("Your " + player.nippleDescript(0) + "s get painfully hard as you feel milk begin backing up inside your " + player.allBreastsDescript() + ".   The succubus glances down mischieviously as her hands begin to grope you through your " + player.armorName + ", squeezing out a few drops of milk.  ", false);
+			if (player.biggestLactation() >= 1 && player.biggestLactation() < 3) outputText("Your " + player.nippleDescript(0) + "s get painfully hard as you feel milk begin backing up inside your " + player.allBreastsDescript() + ".   The succubus glances down mischievously as her hands begin to grope you through your " + player.armorName + ", squeezing out a few drops of milk.  ", false);
 			//Tits – megalactating
 			if (player.biggestLactation() >= 3) outputText("Your " + player.nippleDescript(0) + "s get painfully hard as milk begins drooling down your over-productive chest, making your " + player.armorName + " slide across your leaky milk-spouts in an agonizingly pleasurable way.  ", false); 
 			//Cock – single
@@ -486,9 +488,9 @@ package classes.Scenes.Dungeons.Factory
 			//Vagooooz
 			if (player.vaginas.length > 0) {
 				//'uge clit
-				if (player.clitLength >= 4.5) outputText("Popping from between your thighs, your " + player.clitDescript() + " responds to the sheer hotness of the situation by making itself known.   You squeeze your legs tightly together, hungry for additional sensation.  ", false);
+				if (player.getClitLength() >= 4.5) outputText("Popping from between your thighs, your " + player.clitDescript() + " responds to the sheer hotness of the situation by making itself known.   You squeeze your legs tightly together, hungry for additional sensation.  ", false);
 				//big clit
-				if (player.clitLength > 1 && player.clitLength < 4.5) outputText("A wave of pleasure erupts from between your legs as your " + player.clitDescript() + " pops free.    You squeeze your legs tightly together, hungry for the additional sensations.  ", false);
+				if (player.getClitLength() > 1 && player.getClitLength() < 4.5) outputText("A wave of pleasure erupts from between your legs as your " + player.clitDescript() + " pops free.    You squeeze your legs tightly together, hungry for the additional sensations.  ", false);
 				//slick
 				if (player.vaginas[0].vaginalWetness >= VAGINA_WETNESS_SLICK) outputText("Squishing wetly, your bottoms become soggy with the flood of fluids leaking from your " + player.vaginaDescript(0) + ".   Your legs spread apart on their own, begging for any kind of intrusion.  ", false);
 				//normal
@@ -541,13 +543,13 @@ package classes.Scenes.Dungeons.Factory
 				outputText("Later on, you are briefly pulled out of your reverie by a familiar warm fluid flowing down your throat.  You come to your senses and see Marble looking down at you with an odd expression on her face.  ", false);
 				outputText("She seems to be in a state of bliss. Looking down, you see that she is wearing some kind of pair of pink panties.  Marble gasps and the surface of the panties ripples; it's a living thing!\n\nYou look around and realize you aren't alone.  ", false);
 			}
-			else if (player.findStatusEffect(StatusEffects.CampMarble) >= 0) {
+			else if (player.hasStatusEffect(StatusEffects.CampMarble)) {
 				outputText("You are given a brief moment of clarity as you see Marble standing in front of you.  ", false);
 				outputText("She seems to be in a state of bliss. Looking down, you see that she is wearing some kind of pair of pink panties.  Marble gasps and the surface of the panties ripples; it's a living thing!\n\nYou look around and realize you aren't alone.  ", false);
 			}
 			else outputText("Later on, in a moment of clarity, you look around and realize you aren't alone.  ", false);		
 			outputText("In rows alongside you are a large number of other captives, every single one endowed with freakishly sized breasts, and nearly all gifted with throbbing demonic dicks.  Some small analytical part of you notes that the farther down the line they are, the older and larger they have become.   You look down and see your own massive tits, shiny tainted nipples still pumping out streams of milk.  The huge throbbing demon-cock between your legs begins to get hard as the machines crank back up, filling you full of happy horniness.", false);
-			if (player.statusEffectv3(StatusEffects.Marble) == 1 || player.findStatusEffect(StatusEffects.CampMarble) >= 0) outputText("  With Marble here too, you'll be around for a long time.", false);
+			if (player.statusEffectv3(StatusEffects.Marble) == 1 || player.hasStatusEffect(StatusEffects.CampMarble)) outputText("  With Marble here too, you'll be around for a long time.", false);
 			getGame().gameOver();
 		}
 		

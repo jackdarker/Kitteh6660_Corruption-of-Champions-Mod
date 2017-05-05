@@ -109,7 +109,10 @@ public function encounterTamanisDaughters():void {
 		if (flags[kFLAGS.TAMANI_TIMES_HYPNOTISED] >= 10) outputText(", your wife", false);
 		outputText(".  You realize now that the other goblins must be your daughters.  Another crowd of small women emerges from the bushes, closing in a ring around you, preventing any chance of escape.  The largest of the younger goblin-women steps forwards, her " + tdCup() + " breasts jiggling, barely contained by the bondage ropes she has tied around herself.  She stops once she's next to her mother and Tamani explains, \"<i>I just can't keep their aching cunts at home anymore!  They're fertile adults now and they're wanting to get some experience with real dicks.  I figured you wouldn't mind helping them out a little.</i>\"\n\nWhat do you do? (Fight them off, Fuck them willingly, Let them fuck you)", false);
 		//[Fuck Them] [Let Them] [Fight]
-		simpleChoices("Fight", fightTamanisDaughters, "Fuck Them", fuckYoDaughtersHomie, "Let Them", legTamanisDaughtersRAEPYou, "", null, "", null);
+		menu();
+		addButton(0, "Fight", fightTamanisDaughters);
+		addButton(1, "Fuck Them", fuckYoDaughtersHomie);
+		addButton(2, "Let Them", legTamanisDaughtersRAEPYou);
 		return;
 	}
 	tamaniPresent = false;
@@ -122,11 +125,18 @@ public function encounterTamanisDaughters():void {
 	if (flags[kFLAGS.TIMES_FUCKED_TAMANIS_DAUGHTERS] == 0) {
 		outputText("She calls out, \"<i>We're tired of getting leftovers, so we're coming to the source.  Are you going to give us what we want?</i>\"\n\n", false);
 		//[Fuck them] [Fight] [Play Dumb]
-		simpleChoices("Fight", fightTamanisDaughters, "Fuck Them", fuckYoDaughtersHomie, "Play Dumb", playDumbToTamanisDaughters, "Let Them", legTamanisDaughtersRAEPYou, "", null);
+		menu();
+		addButton(0, "Fight", fightTamanisDaughters);
+		addButton(1, "Fuck Them", fuckYoDaughtersHomie);
+		addButton(2, "Let Them", legTamanisDaughtersRAEPYou);
+		addButton(3, "Play Dumb", playDumbToTamanisDaughters);
 	}
 	else {
 		outputText("She calls out, \"<i>We came back for more cream!  Come on, let's fuck again!</i>\"\n\nIt doesn't look like 'no' is a word they understand.  What do you do?</i>", false);
-		simpleChoices("Fight", fightTamanisDaughters, "Fuck Them", fuckYoDaughtersHomie, "Let Them", legTamanisDaughtersRAEPYou, "", null, "", null);
+		menu();
+		addButton(0, "Fight", fightTamanisDaughters);
+		addButton(1, "Fuck Them", fuckYoDaughtersHomie);
+		addButton(2, "Let Them", legTamanisDaughtersRAEPYou);
 	}
 }
 
@@ -149,7 +159,10 @@ private function playDumbToTamanisDaughters():void {
 	outputText("litters one way or another!</i>\"\n\n", false);
 	
 	//[Fuck them] [Fight] [Let them have their way with you]
-	simpleChoices("Fuck Them", fuckYoDaughtersHomie, "Fight", fightTamanisDaughters, "", null, "Let Them", legTamanisDaughtersRAEPYou, "", null);
+	menu();
+	addButton(0, "Fuck Them", fuckYoDaughtersHomie);
+	addButton(1, "Fight", fightTamanisDaughters);
+	addButton(2, "Let Them", legTamanisDaughtersRAEPYou);
 }
 
 //[Fight Them]
@@ -346,7 +359,7 @@ private function fuckYoDaughtersHomie():void {
 			dynStats("tou", -.75, "int", -1, "lib", .5);
 		}
 	}
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", 1, "cor", 1);
 	//Knock the bitches up, boost libido, corruption
 	if (tamaniPresent) kGAMECLASS.forest.tamaniScene.tamaniKnockUp(); //If she wasn't pregnant she will be now
@@ -701,7 +714,7 @@ private function legTamanisDaughtersRAEPYou():void {
 		}
 	}
 	//knock bitches up, slight libido gain, slight strength/toughness loss.
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("str", -.5,"int", -.5, "lib", 1, "cor", 1);
 	if (tamaniPresent) kGAMECLASS.forest.tamaniScene.tamaniKnockUp(); //If she wasn't pregnant she will be now
 	knockUpDaughters();
@@ -743,7 +756,7 @@ private function tamaniDaughtersCombatLossDrain():void {
 	}
 	//(Shit taurs go!)
 	else {
-		outputText("The hands holding you slowly lower you down onto your back, guiding you into a combination chair and harness designed to accommodate a centuar's size and shape.  Before you know it, straps secure your " + player.legs() + " into tightly bound restraints.  A moment later your, hands are strapped into equally firm cuffs.  By this point, your lust-dulled mind has begun to worry, and you start to struggle, but binding leather straps are passed over your chest, midsection, and hindquarters, then tightened against the chair to completely restrain you.  Perhaps the only ", false);
+		outputText("The hands holding you slowly lower you down onto your back, guiding you into a combination chair and harness designed to accommodate a centaur's size and shape.  Before you know it, straps secure your " + player.legs() + " into tightly bound restraints.  A moment later your, hands are strapped into equally firm cuffs.  By this point, your lust-dulled mind has begun to worry, and you start to struggle, but binding leather straps are passed over your chest, midsection, and hindquarters, then tightened against the chair to completely restrain you.  Perhaps the only ", false);
 		if (cocks > 1) outputText(" things not restrained are your " + player.multiCockDescriptLight() + ", standing at attention despite, or perhaps because of, your predicament.\n\n", false);
 		else outputText(" thing not restrained is your " + player.multiCockDescriptLight() + ", standing at attention despite, or perhaps because of, your predicament.\n\n", false);
 	}
@@ -846,7 +859,7 @@ private function tamaniDaughtersCombatLossDrain():void {
 	//boost cum production slightly.
 	player.cumMultiplier += .3;
 	//increase libido, slight corruption, minus stregth and speed.
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("str", -.5,"int", -.5, "lib", 1, "cor", 1);
 }
 
@@ -859,7 +872,10 @@ private function tamaniDaughtersBadEndChoice():void {
 	if (player.statusEffectv1(StatusEffects.Exgartuan) == 1) outputText("Exgartuan barks, \"<i>Hell yes I do!</i>\" but the goblin only smirks down for a moment before looking back at you.\n\n", false);
 	
 	outputText("(Options: Yes, No, I'd rather fill your cunts individually & personally)", false);
-	simpleChoices("Yes", tamaniDaughtersYesBadEndMePlease, "No", tamaniDaughtersDeclineBadEnd, "Individual", tamanisDaughtersFillIndividuallyBADEND, "", null, "", null);
+	menu();
+	addButton(0, "Yes", tamaniDaughtersYesBadEndMePlease);
+	addButton(1, "No", tamaniDaughtersDeclineBadEnd);
+	addButton(2, "Individual", tamanisDaughtersFillIndividuallyBADEND);
 }
 
 //[Yes]
@@ -1016,7 +1032,7 @@ private function loseToDaughtersWithTamaniThere():void {
 	kGAMECLASS.forest.tamaniScene.tamaniKnockUp();
 	flags[kFLAGS.TAMANI_TIMES_HYPNOTISED]++;
 	//daughter countdown reset. 
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("str", -.5,"int", -.5, "lib", 1, "sen", 1, "cor", 1);
 	if (getGame().inCombat) combat.cleanupAfterCombat();
 	else doNext(camp.returnToCampUseOneHour);
@@ -1067,10 +1083,10 @@ internal function loseToDaughters():void {
 	spriteSelect(57);
 	if (player.lust >= player.maxLust()) {
 		//worms r gross mmmmkay?
-		if (player.findStatusEffect(StatusEffects.Infested) >= 0) {
+		if (player.hasStatusEffect(StatusEffects.Infested)) {
 			kGAMECLASS.mountain.wormsScene.infestOrgasm();
 			outputText("\n\nThe goblins sigh and say, \"<i>Dad, that's just gross.  Don't get me wrong, we're still gonna have you knock us up, but I hate the feeling of those worms inside me.</i>\"", false);
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 		outputText("\n\nYou give up, you're just too turned on by the sea of sexually charged deviants to resist them anymore.  You're ready to fuck them all.", false);
 		if (player.cockTotal() == 0) {

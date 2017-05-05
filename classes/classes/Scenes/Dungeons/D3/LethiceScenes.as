@@ -46,6 +46,7 @@ package classes.Scenes.Dungeons.D3
 			if (player.cor < 90)
 				goFight();
 			else {
+				outputText("Do you fight Lethice and attempt to overthrow her or join her in ruling over Mareth, spreading even more corruption?");
 				menu();
 				addButton(0,"Fight",goFight);
 				addButton(1,"Consort",joinHer);
@@ -92,10 +93,14 @@ package classes.Scenes.Dungeons.D3
 			if(player.hasCock())
 			{
 				addButton(0,"Plow Her",plowHer);
+			} else {
+				addDisabledButton(0, "Plow Her", "This scene requires you to have cock.");
 			}
 			if(player.hasVagina())
 			{
 				addButton(1,"Queen Her",queenHer);
+			} else {
+				addDisabledButton(1, "Queen Her", "This scene requires you to have vagina.");
 			}
 			addButton(2,"Boob Play",boobPlay,hpVictory);
 			var hasLethicite:Boolean = player.hasKeyItem("Sheila's Lethicite") > 0 || player.hasKeyItem("Stone Statue Lethicite") > 0;
@@ -791,7 +796,7 @@ package classes.Scenes.Dungeons.D3
 			outputText("\n\n<i>“As for you,”</i> Mistress adds, tugging your leash as she reclines back in her throne, <i>“I expect you to make me cum even harder. Right now.”</i>");
 			outputText("\n\nYou bark eagerly and lunge up into her lap, burying your face between your loving Mistress’s thighs as the doors slam closed behind you, sealing the Champion of Ingnam’s fate...");
 			dynStats("cor", 70);
-			player.orgasm();
+			player.orgasm('Generic');
 			getGame().gameOver();
 			removeButton(1);
 		}
@@ -968,7 +973,7 @@ package classes.Scenes.Dungeons.D3
 				levelOfFuckedness += 25;
 			if(getGame().camp.campCorruptJojo())
 				levelOfFuckedness += 10;
-			if(player.findStatusEffect(StatusEffects.WandererDemon) >= 0)
+			if(player.hasStatusEffect(StatusEffects.WandererDemon))
 				levelOfFuckedness += 10;
 			if(flags[kFLAGS.AMILY_FOLLOWER] == 2)
 				levelOfFuckedness += 10;
@@ -1003,11 +1008,11 @@ package classes.Scenes.Dungeons.D3
 				levelOfFuckedness -= 20;
 			if(getGame().camp.followerKiha())
 				levelOfFuckedness -= 15;
-			if(player.findStatusEffect(StatusEffects.PureCampJojo) >= 0)
+			if(player.hasStatusEffect(StatusEffects.PureCampJojo))
 				levelOfFuckedness -= 5;
 			if(flags[kFLAGS.KATHERINE_UNLOCKED] == 4)
 				levelOfFuckedness -= 5;
-			if(player.findStatusEffect(StatusEffects.CampRathazul) >= 0)
+			if(player.hasStatusEffect(StatusEffects.CampRathazul))
 				levelOfFuckedness -= 5;
 			if (flags[kFLAGS.CORRUPTED_MARAE_KILLED] > 0)
 				levelOfFuckedness -= 20;

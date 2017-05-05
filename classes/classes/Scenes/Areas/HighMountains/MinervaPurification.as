@@ -10,10 +10,10 @@ package classes.Scenes.Areas.HighMountains
 	{
 		
 		public function checkRathazul():Boolean {
-			return (player.findStatusEffect(StatusEffects.CampRathazul) >= 0 || player.statusEffectv2(StatusEffects.MetRathazul) >= 3);
+			return (player.hasStatusEffect(StatusEffects.CampRathazul) || player.statusEffectv2(StatusEffects.MetRathazul) >= 3);
 		}
 		public function checkJojo():Boolean {
-			return (player.findStatusEffect(StatusEffects.PureCampJojo) >= 0);
+			return (player.hasStatusEffect(StatusEffects.PureCampJojo));
 		}
 		public function checkMarae():Boolean {
 			return (flags[kFLAGS.FACTORY_SHUTDOWN] == 1 && flags[kFLAGS.MARAE_QUEST_COMPLETE] >= 1);
@@ -275,8 +275,8 @@ package classes.Scenes.Areas.HighMountains
 
 			outputText("\n\nThe new Minerva's colors have changed, which is the first thing you notice. What was once blue is now a rich, warm golden color, while gray has brightened to marble-white. Her beautiful fiery-red hair is now tipped with gold, and her feathers have become a brilliant snow-white, also tipped with gold. You watch as she opens her eyes - to little surprise now, her vividly electric blue irises are a golden shade of amber, though you are surprised that the sclera are still pure black. It says something about how startling this color change is when it grabs your attention first. Her hips have widened as if in anticipation of birthing many future children, becoming the hips a harpy broodmother would be proud of, her ass swelling into a luscious round peach of taut flesh, while her breasts have grown into whopping G-cup mammaries, as if ready to suckle the many children those hips would invite her to bring into the world. ");
 			if (flags[kFLAGS.MINERVA_CORRUPTION_PROGRESS] != 0) outputText(" You think, but you can't be certain, that her balls may have shrunk, if only a little.");
-			else outputText(" Looking at her you can clearly see her balls have swollen up to the size of cantaloupes) Finally, and most startlingly, she has sprouted a second pair of wings, maybe half the size of the original ones, further down her back.");
-			outputText(" But the changes don't matter to you. You rush to Minerva and desperately ask if the siren's alright. Minerva's eyes are already darting over her new body, the now golden siren now trying to comprehend what just happened to her. She is pulled from her baffled inspection by your rushing into the water and your question of her health. \"<i>I... I think I'm alright... there was no pain when... whatever just happened, happened, but... look at me... what am I? What happened to me?</i>\" she says slowly, before closing her eyes and gently inspecting her new form with her hands, her twin pairs of wings shifting and stretching out to their length before curling back. \"<i>It's gone... I can't feel that squirming demon's presence in my body anymore. Its foul corruption has been purged from my blood.</i>\"");
+			else outputText(" Looking at her you can clearly see her balls have swollen up to the size of cantaloupes.");
+			outputText(" Finally, and most startlingly, she has sprouted a second pair of wings, maybe half the size of the original ones, further down her back. But the changes don't matter to you. You rush to Minerva and desperately ask if the siren's alright. Minerva's eyes are already darting over her new body, the now golden siren now trying to comprehend what just happened to her. She is pulled from her baffled inspection by your rushing into the water and your question of her health. \"<i>I... I think I'm alright... there was no pain when... whatever just happened, happened, but... look at me... what am I? What happened to me?</i>\" she says slowly, before closing her eyes and gently inspecting her new form with her hands, her twin pairs of wings shifting and stretching out to their length before curling back. \"<i>It's gone... I can't feel that squirming demon's presence in my body anymore. Its foul corruption has been purged from my blood.</i>\"");
 
 			outputText("\n\nJojo looks relieved to hear that. \"<i>That's wonderful news! Though, uh, I must confess I have no understanding as to why your proportions and color have changed so drastically.</i>\" he admits.");
 
@@ -289,7 +289,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nAs soon as Jojo is out of sight, Minerva wastes no time in showing you her appreciation, grabbing you and pulling you against her now much more curvy frame and cuddling you against her soft flesh, resting your head on her very soft breasts. \"<i>And you, my love, you have done me an even greater service. Not only did you find someone that would cleanse my body and save me from that squirmy beast inside me, you saved me from my despair as well. Coming here so often, being so kind to me, I can never express just how grateful I am to you. I can only make this most solemn promise to you.</i>\" she says with a gentle smile and blush on her cheeks. \"<i>I swear to you I will only ever sing for you, my great savior, my blessed champion.</i>\" She says, ending her words with a gentle, bird-like coo before leaning down and planting a tender kiss on your lips.");
 
 			outputText("\n\nYou smile and kiss her back tenderly, telling her that you're just happy you were able to help.");
-			outputText("\n\nMinerva strokes you gently and holds you against her, the golden siren looking thoughtful. \"<i>I'm not sure how to explain it, but I feel filled with new purpose... like this change is the start of something great.</i>\" she says, before smiling shyly at you. \"<i>I don't know if it will work. but... I.... I want you to be the father/mother of my offspring. You, who saved me from my terrible fate.</i>\" ");
+			outputText("\n\nMinerva strokes you gently and holds you against her, the golden siren looking thoughtful. \"<i>I'm not sure how to explain it, but I feel filled with new purpose... like this change is the start of something great.</i>\" she says, before smiling shyly at you. \"<i>I don't know if it will work. but... I.... I want you to be the " + (player.hasCock() ? "father" : player.hasVagina() ? "mother" : player.mf("father", "mother")) + " of my offspring. You, who saved me from my terrible fate.</i>\" ");
 
 			outputText("\n\nWhen you hear her request you wonder if it would really work. You could be the ");
 			if (player.hasCock()) outputText("father");
@@ -405,7 +405,7 @@ package classes.Scenes.Areas.HighMountains
 			}
 			//Hermaphrodite PCs
 			else if (player.gender == 3) {
-				outputText("Grinning, you playfully ask who is going to be doing the fathering and the mothering. Since you're both herms either of you could do the job");
+				outputText("Grinning, you playfully ask who is going to be doing the fathering and the mothering. Since you're both herms either of you could do the job.");
 				if (!player.isPregnant()) {
 					outputText("\n\nOr you could do both, since you're both herms and can get each other pregnant. It's a good question despite the joking. Minerva looks at you before pouting in thought. \"<i>Well... you know.... we don't have to choose, we could take turns. you could take me, and I could take you, and we could have our children together, my love,</i>\" she suggests as her finger draws circles around one of your breasts teasingly, before grinning and pulling you down onto the soft moss by the clear waters, enfolding you into her warm soft embrace again. \"<i>I want you to start though. I want you to be the one I willingly give myself to like this. You will be the first one ever I willingly let into my pussy.</i>\"");
 				}
@@ -425,8 +425,8 @@ package classes.Scenes.Areas.HighMountains
 		
 		public function declineToMakeBaby():void {
 			clearOutput();
-			outputText("Looking at the new Minerva makes it hard to say no, but you're afraid you have to decline, at least for now. Your job as a champion is important and you have to focus on your duties, but you promise her that you would be honored to be the father/mother of her young in the future. Your words put a disappointed look on the would-be broodmother's face. Clearly she was hoping you would help her start a family right here and now. When you promise to come back another time and help her she perks back up, though she still doesn't look as happy as she was before. \"<i>I'll hold you to that, my love. As the one who saved me from my fate, I want you to be the one who gives me my children and you better be ready! I want to have lots and lots of babies!</i>\" she says with a grin and, as if to emphasize her point, ");
-			if (player.gender == 1) outputText("her warm hand naughtily reaches down and grabs the bulge in your " + player.armorName + ", before gently squeezing");
+			outputText("Looking at the new Minerva makes it hard to say no, but you're afraid you have to decline, at least for now. Your job as a champion is important and you have to focus on your duties, but you promise her that you would be honored to be the " + (player.hasCock() ? "father" : player.hasVagina() ? "mother" : player.mf("father", "mother")) + " of her young in the future. Your words put a disappointed look on the would-be broodmother's face. Clearly she was hoping you would help her start a family right here and now. When you promise to come back another time and help her she perks back up, though she still doesn't look as happy as she was before. \"<i>I'll hold you to that, my love. As the one who saved me from my fate, I want you to be the one who gives me my children and you better be ready! I want to have lots and lots of babies!</i>\" she says with a grin and, as if to emphasize her point, ");
+			if (player.gender == 1) outputText("her warm hand naughtily reaches down " + player.clothedOrNakedLower("and grabs the bulge in your " + player.armorName, "towards your naked crotch") + ", before gently squeezing");
 			else if (player.gender == 2) outputText("her warm hand reaches down and slips into your " + player.armorName + " teasingly, her fingers exploring until they find your womanhood and rub it gently, the golden siren giving you a naughty sharky grin. Clearly she can't wait to start her family with you.");
 			else if (player.gender == 3) outputText("her warm hand reaches down to grab the bulge in your " + player.armorName + ", squeezing your maleness teasingly. At the same time she guides your hand between her legs where you can clearly feel her surprisingly hot nethers pressing against your fingers.");
 			else outputText("her warm hand reaches down and slips into your " + player.armorName + " only to feel nothing. \"<i>Wait, you don't have anything to help either of us with having a child,</i>\" she says. She adds \"<i>Come back when you've got a gender, okay?</i>\"");
@@ -655,10 +655,12 @@ package classes.Scenes.Areas.HighMountains
 			addButton(0, "Appearance", pureMinervaAppearance);
 			addButton(1, "Talk", minervaTalkSelect);
 			if (player.lust >= 33) addButton(2, "Sex", pureMinervaSexMenu);
+			else addButtonDisabled(2, "Sex", "You are not horny enough.");
 			addButton(3, "Eat", kGAMECLASS.highMountains.minervaScene.eatSomethingYouCunt);
 			addButton(4, "Drink", kGAMECLASS.highMountains.minervaScene.getADrinkYouBitch);
 			addButton(5, "Spar", kGAMECLASS.highMountains.minervaScene.fightMinerva);
 			if (kGAMECLASS.highMountains.minervaScene.minervaRomanced() && model.time.hours >= 20) addButton(6, "Sleep With", sleepWithMinerva);
+			else addDisabledButton(6, "Sleep With", "Available at evenings with high enough affection.");
 			//if (flags[kFLAGS.MINERVA_CHILDREN] > 0) addButton(7, "Children", checkUpOnMinervaChildren);
 			if (kGAMECLASS.highMountains.minervaScene.pregnancy.isPregnant) addButton(7, "Pregnancy", checkPregnancy);
 			if (player.hasKeyItem("Marae's Seed") >= 0) addButton(8, "Plant Seed", growTreePostPurification);
@@ -903,7 +905,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("<b>Three hours pass...</b>\n\n", true)
 			outputText("You wake up, feeling refreshed. You take a good look at your newborn sirenic daughters. Already, they have grown quite a bit! They're now four feet tall. You thank Minerva for letting you sleep with her and you hug her. Next, you pick up the sirenic daughters and give them a playful hug.\n\n", false)
 			outputText("They look so excited! They yell \"<i>" + player.mf("Daddy!", "Mommy!") +  "</i>\" You finally set them down on the ground and tell Minerva and her daughters that you have to return to your camp.");
-			outputText("\"<i>Come back any time, love,</i>\" she says before she kisses you on your cheek. You finlly set your way back to your camp.");
+			outputText("\"<i>Come back any time, love,</i>\" she says before she kisses you on your cheek. You finally set your way back to your camp.");
 			awardAchievement("Getaway", kACHIEVEMENTS.GENERAL_GETAWAY);
 			dynStats("cor", -4);
 			sleepWithMinervaHeal();
@@ -927,7 +929,6 @@ package classes.Scenes.Areas.HighMountains
 		private function pureMinervaSexMenu():void {
 			menu();
 			clearOutput();
-			var btnIdx:int = 0;
 			outputText("Minerva grins and slides her arms around you. \"<i>Oh darling, you know I'm always ready to have some fun with you.</i>\" Playfully she reaches down and cups your crotch, gently massaging your "); 
 			if (player.hasCock()) outputText(player.cockDescript());
 			if (player.hasCock() && player.hasVagina()) outputText(" and ");
@@ -936,16 +937,23 @@ package classes.Scenes.Areas.HighMountains
 			outputText(". \"<i>So darling, how do you want it today?</i>\" ");
 			if (player.hasVagina()) outputText("\"<i>Want me to stuff that hot little cunt of yours? Or maybe I should prod your delightful rump?</i>\"");
 			
-			if (player.hasCock() && player.cockThatFits(kGAMECLASS.highMountains.minervaScene.minervaACapacity()) >= 0) addButton(btnIdx++, "FuckHerButt", fuckMinervasAsshole);
+			addDisabledButton(0, "FuckHerButt", "This scene requires you to have fitting cock.");
+			addDisabledButton(1, "FuckCowgirl", "This scene requires you to have fitting cock.");
+			addDisabledButton(2, "RestrainFuck", "This scene requires you to have fitting cock.");
+			// 3 - always on
+			// 4 - always on
+			addDisabledButton(5, "Get BJ", "This scene requires you to have cock.");
+			
+			if (player.hasCock() && player.cockThatFits(kGAMECLASS.highMountains.minervaScene.minervaACapacity()) >= 0) addButton(0, "FuckHerButt", fuckMinervasAsshole);
 			if (player.hasCock() && player.cockThatFits(kGAMECLASS.highMountains.minervaScene.minervaVCapacity()) >= 0)
 			{
-				addButton(btnIdx++, "FuckCowgirl", minervaCowgirlSex);
-				addButton(btnIdx++, "RestrainFuck", fuckMinervaWithHerHandsBehindHerBack);
+				addButton(1, "FuckCowgirl", minervaCowgirlSex);
+				addButton(2, "RestrainFuck", fuckMinervaWithHerHandsBehindHerBack);
 			}
-			addButton(btnIdx++, "TakeHerDick", chooseVagOrAss);
-			addButton(btnIdx++, "EatHerOut", goDownOnAHermAndLoveItYouDirtySlutYou);
+			addButton(3, "TakeHerDick", chooseVagOrAss);
+			addButton(4, "EatHerOut", goDownOnAHermAndLoveItYouDirtySlutYou);
 			if (player.hasCock())
-				addButton(btnIdx++, "Get BJ", letMinervaSuckYouOff);
+				addButton(5, "Get BJ", letMinervaSuckYouOff);
 			addButton(14, "Leave", pureMinervaMenu);
 		}
 		
@@ -1013,7 +1021,7 @@ package classes.Scenes.Areas.HighMountains
 			}
 			//PC returns to main camp menu
 			flags[kFLAGS.TIMES_BUTTFUCKED_MINERVA]++;
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", -1);
 			if (getGame().inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
@@ -1055,7 +1063,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nMinerva lets out a disappointed sigh. \"<i>I know, you have an important job to do. I'll miss you though, please come back to visit soon. ");
 			if (flags[kFLAGS.MINERVA_CHILDREN] > 0) outputText("I know the girls would love to see you again. ");
 			outputText("You can be sure that I'll be eagerly looking forward to your next visit my love.</i>\" You give her a last-minute hug, promising that you'll be back as soon as time permits.");
-			player.orgasm();
+			player.orgasm('Dick');
 			kGAMECLASS.highMountains.minervaScene.tryToImpregnateMinerva();
 			dynStats("lus", 20);
 			doNext(camp.returnToCampUseOneHour);			
@@ -1122,7 +1130,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nWith an amused grin, you give the sharky herm a pat on the rump before heading out, your hand sliding along that sexy tail of hers as you let the well-fucked woman rest.");
 			//PC returns to camp
 			dynStats("sen", -1);
-			player.orgasm();
+			player.orgasm('Dick');
 			kGAMECLASS.highMountains.minervaScene.tryToImpregnateMinerva();
 			dynStats("lus", 20);
 			if (getGame().inCombat) combat.cleanupAfterCombat();
@@ -1225,7 +1233,7 @@ package classes.Scenes.Areas.HighMountains
 			}
 			player.slimeFeed();
 			flags[kFLAGS.TIMES_MINERVA_LAPSEXED]++;
-			player.orgasm();
+			player.orgasm('Vaginal');
 			dynStats("sen", -1);
 			if (getGame().inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
@@ -1318,7 +1326,7 @@ package classes.Scenes.Areas.HighMountains
 			else outputText("\n\nThe lovestruck siren sighs and sits up, looking up at you with affection clearly written on her face. \"<i>I hope you'll come back soon, I always feel so much happier when you're around,</i>\" she says as she brings a hand to her chest, holding it over her heart.");
 			player.slimeFeed();
 			flags[kFLAGS.TIMES_MINERVA_LAPSEXED]++;
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("sen", -1);
 			if (getGame().inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
@@ -1470,7 +1478,7 @@ package classes.Scenes.Areas.HighMountains
 			
 			outputText("\n\nDeciding to relax for a while after your sexual exertion, you curl up on the soft moss with Minerva, both of you just basking in the warmth that the spring gives off, and the softness of the moss, content with each other's presence. Unfortunately, you know you have to go; the call of your duty to this land is too great, and despite the comfort of this place, you must go. Pulling away from the siren you promise to return and visit her soon.");
 			//PC returns to camp.
-			player.orgasm();
+			player.orgasm('Dick');
 
 			if (getGame().inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
@@ -1586,7 +1594,7 @@ package classes.Scenes.Areas.HighMountains
 				outputText(" As soon as she feels the seed filling her again Minerva bursts into a seconds orgasm, her wings flaring out as she rams her hips down against your own, her feet sliding underneath you as she clenches her hips and thighs, crushing herself against you as her body squeezes and milks your swollen pulsating prick for every drop you can give. The new found pressure keeping much of your second load contained within the tight hungry confines of her womb. \"<i>Yes! Yesss! Fill me! Fill me so much! Give our babies all the cream they want! Make them swim in it!</i>\" the wanton herm screams as she cums so hard above you, demanding that you fill her up with everything you can muster.");
 				outputText("\n\nThough her womb swells with the immense load Minerva can only hold so much inside, the remainder of your pressurized load gushing out in great spurts from between your fleshy connection, a small pool soaking your hips and thighs as you finally finish your orgasm. Despite how much you have done already neither of you are even close to being done, Minerva's hormone flooded body craving more pleasure, more sex to feed her insatiable craving for your fertile cock cream, your own body still roiling with incredible lust thanks to all the siren venom inside you, your need to rut and breed not allowing you rest.");
 				outputText("\n\nAs if to emphasize how much she wants you Minerva lifts off you with a wet sloppy pop, a rush of thick jizz flows like a waterfall from her soaking cunt as she gets down onto her hands and knees, chest resting on her big milky tits with her arms cradling the massive bulge of her belly. With her round juicy ass presented so wonderfully to you, the taut round peach of gold and cream flesh swaying back and forth as her tail rises and legs spread. \"<i>More lover! Fuck your siren, let out all your lust, breed my hungry golden pussy!</i>\" her words are the last straw that breaks your restrains, grabbing hold of her hips you get up from your position and ram yourself back inside with a wet squish of combined sexual juices as you continue the ravenous rut, the overpowered need to mate and breed could keep you both like this for hours.");
-				player.orgasm();
+				player.orgasm('Dick');
 				doNext(postPregnancyStage3Sex);
 				return;
 			}
@@ -1599,7 +1607,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nLooking over to you Minerva smiled, a bright blush on her now clean face, reaching out for you she pulls you over to her, helping you by resting you against the tree. \"<i>I guess we went a bit too far huh? I've never felt so satisfied in my life! Here let me help you, I'll clean you up and then, how about we rest, you can stay the night even! Rest up and relax a little?</i>\" she asks with a smile and a hopeful glitter in her golden-amber eyes. Letting out a sigh you nod your head, too tired from the crazy sex-a-thon you and Minerva just went through to fight, perhaps a good sleep will fix you right up.");
 			outputText("\n\nGrinning ear to ear, Minerva seems to be somewhat revitalized by your acceptance, pulling you closer the siren broodmother gets to work on you, her tongue happily licking up the cum caked mess that is your body. It's a big job but before long you're mostly cleaned, if a little damp from the licking. Letting out a deep sigh your lover relaxes next to you, her arms cradling her massive belly, swollen by not only your soon to be birthed offspring but what you can only guess has to be perhaps a dozen liters of thick sticky baby cream. As if sensing your thoughts Minerva pats her belly gently. \"<i>So warm, I've never felt so full before in my life. You know, as perverted as it is, I'm sure the little ones appreciate the warmth, even if they are swimming in their daddy's sperm...</i>\" she says before shaking her head. \"<i>Well no matter. Let's just...rest for a while...</i>\" The tired siren says before cuddling up against her, her freshly cleaned body still so swollen with your fresh sperm injections, it will be some time before she absorbs it all. For now though all you can think of is resisting, the urge to sleep soon overcoming you as your head rests against Minerva's shoulder.");
 			cheatTime(1); //Ensure that the clock is not at 6am to prevent weirdness.
-			player.orgasm();
+			player.orgasm('Generic');
 			player.changeFatigue(30);
 			doNext(postPregnancyStage3Sleep);
 		}

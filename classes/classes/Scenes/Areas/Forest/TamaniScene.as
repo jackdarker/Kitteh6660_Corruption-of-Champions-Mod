@@ -1,8 +1,9 @@
 ﻿package classes.Scenes.Areas.Forest{
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.API.Encounter;
 
-	public class TamaniScene extends BaseContent implements TimeAwareInterface {
+public class TamaniScene extends BaseContent implements TimeAwareInterface,Encounter {
 
 //const TIMES_OVIPOSITED_TAMANI:int = 581;
 //const TAMANI_TIME_OUT:int = 580;
@@ -29,6 +30,25 @@ Males:
 */
 
 		public var pregnancy:PregnancyStore;
+	public var tamaniDaughtersScene:TamainsDaughtersScene = new TamainsDaughtersScene();
+
+	public function encounterChance():Number {
+		return flags[kFLAGS.TAMANI_TIME_OUT] == 0
+			   && player.gender > 0
+			   && flags[kFLAGS.TAMANI_BAD_ENDED] == 0
+			   && (player.totalCocks() > 0
+				   || player.hasKeyItem("Deluxe Dildo") < 0) ? 1 : 0;
+	}
+
+	public function encounterName():String {
+		return "tamani";
+	}
+
+	public function execEncounter():void {
+		if (player.totalCocks() > 0 && flags[kFLAGS.TAMANI_DAUGHTER_PREGGO_COUNTDOWN] == 0 && flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] >= 24) {
+			tamaniDaughtersScene.encounterTamanisDaughters();
+		} else encounterTamani();
+	}
 
 		public function TamaniScene()
 		{
@@ -99,7 +119,10 @@ private function tamaniFemaleEncounter():void {
 	outputText("A goblin leaps out from behind a rock outcropping.  She keeps her arms folded across her " + tamaniChest() + " and glares at you.  The little thing is only about four feet tall, with pink and black dyed hair cut into a cute little 'do.  The greenish-gray skin of her breasts bulges out around her arms, supported by a few leather straps, amplifying her cleavage.  Her cunt lips are pierced multiple times, inflamed, and slightly parted.  There really isn't any clothing on her to hide them, just more of the ever-present straps wrapping around her thighs.\n\n", false);
 	outputText("She says, \"<i>There's only so much cock around, and I got dibs on ALL of it, O.K. skank?</i>\"\n\n", false);
 	//[Umm OK?] [No]
-	simpleChoices("Umm OK?", tamaniFemaleYes, "No", tamaniFemaleNo, "PreferGirls", preferTamaniFemdom, "", null, "", null);
+	menu();
+	addButton(0, "Umm OK?", tamaniFemaleYes);
+	addButton(1, "No", tamaniFemaleNo);
+	addButton(2, "PreferGirls", preferTamaniFemdom);
 }
 
 //(Umm OK?)
@@ -135,7 +158,9 @@ private function tamaniMaleFirstEncounter():void {
 	outputText("A goblin leaps out from behind a rock outcropping.  For something so small, she has a lot of curves.  She advances towards you, rolling her hips in a suggestive way, immediately diverting your blood-flow to your crotch.  The little thing is only about four feet tall, with pink and black dyed hair cut into a cute little 'do.  The greenish-gray skin of her breasts jiggles pleasantly with every step, supported by a few leather straps, amplifying her cleavage.  Her cunt lips are pierced multiple times, inflamed, and slightly parted.  There really isn't any clothing on her to hide them, just more of the ever-present straps wrapping around her thighs.\n\n", false);
 	outputText("The goblin makes you an offer that's difficult to turn down, \"<i>Hey there stud, want to fuck me pregnant?  I promise my box will milk your dick dry.  Just let Tamani take care of all your boners OK?</i>\"", false);
 	//[Fuck Her] [Refuse]
-	simpleChoices("Fuck Her", tamaniFirstTimeConsentual, "Refuse", tamaniFirstTimeRefusal, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Fuck Her", tamaniFirstTimeConsentual);
+	addButton(1, "Refuse", tamaniFirstTimeRefusal);
 }
 //[Fuck Her – Consentual First Time]
 private function tamaniFirstTimeConsentual():void {
@@ -189,7 +214,7 @@ private function tamaniFirstTimeConsentual():void {
 		//([CORRUPT]
 		if (player.cor > 66) outputText("  Your " + player.cockDescript(0) + " twitches at the thought, ready and wanting more.", false);
 	}
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", .5, "sen", -1, "cor", .5);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -201,7 +226,9 @@ private function tamaniFirstTimeRefusal():void {
 	outputText("Tamani's eyes widen in surprise, \"<i>Don't let the size fool you, big " + player.mf("boy", "girl") + ". I can take more than you think,</i>\" she says while her hands begins playing with her box, \"<i>Are you sure you don't want to just let off a little steam?</i>\"\n\n", false);
 	//[Fuck Her (Goes to fuck her - consensual first time)]
 	//[No means no]
-	simpleChoices("Fuck Her", tamaniFirstTimeConsentual, "No", tamaniSecondRefusal, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Fuck Her", tamaniFirstTimeConsentual);
+	addButton(1, "No", tamaniSecondRefusal);
 	dynStats("lus", 5);
 }
 //[No Means No]
@@ -230,7 +257,10 @@ private function tamaniMaleRepeatEncounter():void {
 	//[Take Her – win sex] 
 	//[Let Her – Get dommed] 
 	//[No – starts fight]
-	simpleChoices("Take Her", tamaniSexWon, "Let Her", tamaniSexLetHer, "No", tamaniStartFight, "", null, "", null);
+	menu();
+	addButton(0, "Take Her", tamaniSexWon);
+	addButton(1, "Let Her", tamaniSexLetHer);
+	addButton(2, "No", tamaniStartFight);
 }
 
 private function tamaniStartFight():void {
@@ -342,11 +372,11 @@ internal function tamaniSexLetHer():void {
 		if (getGame().inCombat) {
 			outputText("  After the stress and strain of a lost fight and the stress of having your seed so expertly stolen, you lie down on your flank and go to sleep.", false);
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 		//(Noncombat end: 
 		else {
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("lus", +10);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -385,12 +415,12 @@ internal function tamaniSexLetHer():void {
 			if (getGame().inCombat) {
 				outputText("You black out, exhausted from the ordeal.", false);
 				combat.cleanupAfterCombat();
-				player.orgasm();
+				player.orgasm('Dick');
 			}
 			//(Noncombat end: 
 			else {
 				outputText("You lie there, recovering from the intense sex.  After a little while you manage to get up and redress, but the scent of horny goblin stays with you for hours.", false);
-				player.orgasm();
+				player.orgasm('Dick');
 				dynStats("lus", +10);
 				doNext(camp.returnToCampUseOneHour);
 			}
@@ -437,12 +467,12 @@ internal function tamaniSexLetHer():void {
 			if (getGame().inCombat) {
 				outputText("You black out, exhausted from the ordeal.", false);
 				combat.cleanupAfterCombat();
-				player.orgasm();
+				player.orgasm('VaginalAnal');
 			}
 			//(Noncombat end: 
 			else {
 				outputText("You lie there, recovering from the intense sex.  After a little while you manage to get up and redress, but the scent of horny goblin stays with you for hours.", false);
-				player.orgasm();
+				player.orgasm('VaginalAnal');
 				dynStats("lus", +10);
 				doNext(camp.returnToCampUseOneHour);
 			}
@@ -489,7 +519,7 @@ internal function tamaniSexLost():void {
 	outputText("\n\n", false);
 	
 	outputText("Tamani removes the ring once you have finished.  She seals the bottle and places it in her pouch as you drop to the ground, exhausted.  All you can do is watch as she walks away, her ass swaying confidently from side to side.  Your last thought before you pass out is how much easier it would've been to just fuck her.", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", .5, "sen", -1, "cor", .5);
 	combat.cleanupAfterCombat();
 }
@@ -536,7 +566,7 @@ internal function tamaniSexWon():void {
 		else outputText("sweet cock has ", false);
 		outputText("any more cream to give to me?</i>\"\n\n", false);
 		outputText("She doesn't give you a chance to answer as she wobbles off, jiggling pleasantly in all the right places, \"<i>Of course you do.  I'll be back for the rest later!</i>\"\n\n", false);
-		player.orgasm();
+		player.orgasm('Dick');
 		if (getGame().inCombat) combat.cleanupAfterCombat();
 		else doNext(camp.returnToCampUseOneHour);
 	}
@@ -563,7 +593,7 @@ internal function tamaniSexWon():void {
 		outputText("She doesn't give you a chance to answer as she staggers up and strikes a sexy pose, \"<i>Of course you do.  I'll be back for the rest later!</i>\"\n\n", false);
 		
 		outputText("Tamani wiggles in the sexiest way as she leaves, arousing your body all over again...", false);
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("lus", 35);
 		if (getGame().inCombat) combat.cleanupAfterCombat();
 		else doNext(camp.returnToCampUseOneHour);
@@ -577,7 +607,9 @@ private function tamaniPregnantEncounter():void {
 	outputText("Tamani strolls out from behind a boulder, and wow is she ever pregnant.  It doesn't diminish the look of lust in her eyes when she meets your gaze, but her hands do keep rubbing the outside of her belly, only pausing to squeeze drops of milk from her nipples.  Her leather straps seem to fit her even better than before, accentuating her expanding curves and looking fantastic on her pregnant form.\n\n", false);
 	outputText("She parts her legs and rubs her lower lips while she begs you, \"<i>Please fuck me!   I'm so horny from the pregnancy and I can't wait to give you daughters so you can knock me up all over again!</i>\"", false);
 	//[Fuck Her] [Refuse]
-	simpleChoices("Fuck Her", tamaniPregnantFuck, "Refuse", tamaniPregnantRefusal, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Fuck Her", tamaniPregnantFuck);
+	addButton(1, "Refuse", tamaniPregnantRefusal);
 }
 
 //[Refuse]
@@ -615,7 +647,7 @@ private function tamaniPregnantFuck():void {
 		outputText("For her part, Tamani staggers to her feet, letting you flop free as a river of your cum pours between her legs, soaking your lower body.  She staggers over to your face, pleasure-drunk, and leans down to give you another sloppy kiss.\n\n", false);
 		
 		outputText("\"<i>Thanks for the good fuck, " + player.mf("stud","lover") + ",</i>\" she says, smiling cruelly as you find yourself getting hard again from her drug-laced kisses.  Tamani doesn't hang around to help though; she waddles off, cradling her belly and smiling.\n\n", false);
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("lus", 25);
 	}
 	//(Doesn't Fit)
@@ -631,7 +663,7 @@ private function tamaniPregnantFuck():void {
 		flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] += 3;
 
 		outputText("Tamani comes over to you and gives you a sloppy goodbye kiss, sending an immediate surge of hardness and desire to your groin.  She looks back and giggles, then waddles off, patting her pouches and dripping with your spooge.", false);
-		player.orgasm();
+		player.orgasm('Dick');
 	}
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -784,7 +816,7 @@ internal function getRapedByTamaniYouHypnoSlut():void {
 		
 		outputText("A surge of pride spreads through you at her praise, and you lean down to give your wife a long french kiss before heading back to camp.  On the way back your head slowly clears, and you wonder what came over you back there?!", false);
 		tamaniKnockUp();
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("int", -.5, "sen", -1);
 	}
 	//[DOESNT FIT]
@@ -833,7 +865,7 @@ internal function getRapedByTamaniYouHypnoSlut():void {
 		
 		outputText("A surge of pride spreads through you at her praise, and you get up to give your wife a long french kiss before heading back to camp.  On the way back your head slowly clears, and you wonder what came over you back there?!", false);
 		tamaniKnockUp()
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("int", -.5, "sen", -1);
 	}
 	if (getGame().inCombat) combat.cleanupAfterCombat();
@@ -842,28 +874,48 @@ internal function getRapedByTamaniYouHypnoSlut():void {
 
 public function tamaniVictoryMenu():void {
 	flags[kFLAGS.TAMANI_DEFEAT_COUNTER]++;
-	if (player.lust >= 33 && player.totalCocks() > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
-		outputText(" You could fuck her, but if that's the case why did you bother fighting her?");
-		outputText("\n\nWhat do you do to her?");
-		menu();
-		addButton(0, "Fuck", tamaniSexWon);
-		if (player.cockThatFits(monster.analCapacity()) >= 0) addButton(1, "Buttfuck", tamaniAnalShits);
-		else addButtonDisabled(1, "Buttfuck", player.cockTotal() == 1 ? "Your cock is too big to fit in Tamani's ass." : "None of your cocks will fit in Tamani's ass.");
-		if (!getGame().forest.tamaniScene.pregnancy.isPregnant && player.canOvipositSpider()) addButton(2, "Lay Eggs", tamaniBeaten); //NOT PREGGERS
-		if (flags[kFLAGS.TAMANI_DEFEAT_COUNTER] >= 4 && monster.HP <= 0) addButton(3, "NO MORE!", killTamaniChoice);
-		addButton(4, "Leave", combat.cleanupAfterCombat);
-	}
-	else {
-		if (flags[kFLAGS.TAMANI_DEFEAT_COUNTER] >= 4 && monster.HP <= 0) {
-			outputText(" If you're tired of Tamani trying to force herself upon you, you could resolve to not see her again.");
-			addButton(3, "NO MORE!", killTamaniChoice);
-			addButton(4, "Leave", combat.cleanupAfterCombat);
-		}
-		else {
-			combat.cleanupAfterCombat();
-		}
+	
+	if (flags[kFLAGS.SFW_MODE] > 0) {
+		outputText("You smile in satisfaction as Tamani collapses, unable to continue fighting.");
 		
+		combat.cleanupAfterCombat();
+		return;
 	}
+	
+	menu();
+	
+	if (flags[kFLAGS.TAMANI_DEFEAT_COUNTER] >= 4) {
+		outputText(" If you're tired of Tamani trying to force herself upon you, you could resolve to not see her again.");
+		addButton(10, "NO MORE!", killTamaniChoice);
+	}
+	addButton(14, "Leave", combat.cleanupAfterCombat);
+	
+	
+	if (flags[kFLAGS.SFW_MODE] <= 0) {
+		addDisabledButton(0, "Fuck", "This scene requires you to have cock and sufficient arousal.");
+		addDisabledButton(1, "Buttfuck", "This scene requires you to have fitting cock and sufficient arousal.");
+		addDisabledButton(2, "Lay Eggs", "This scene requires you to have spider ovipositor and enough eggs. She should not be pregnant.");
+		
+		if (player.lust >= 33 && player.hasCock()) {
+			outputText(" You could fuck her, but if that's the case why did you bother fighting her?");
+			addButton(0, "Fuck", tamaniSexWon);
+			if (player.cockThatFits(monster.analCapacity()) >= 0)
+				addButton(1, "Buttfuck", tamaniAnalShits);
+		}
+		if (!pregnancy.isPregnant && player.canOvipositSpider())
+			addButton(2, "Lay Eggs", tamaniBeaten); //NOT PREGGERS
+		
+		if (player.hasKeyItem("Deluxe Dildo") < 0) {
+			addButton(3, "Take Dildo", tamaniStealDildo, undefined, undefined, undefined, "This bad girl doesn't deserve a good toy.");
+		}
+	}
+}
+
+private function tamaniStealDildo():void {
+	outputText("And to the victor go the spoils. You open her satchel and take a look inside. ");
+	outputText("\n\n<b>(You find a well-crafted pink dildo inside! There are also some other stuff.)</b>");
+	player.createKeyItem("Deluxe Dildo", 0, 0, 0, 0);
+	combat.cleanupAfterCombat();
 }
 
 internal function tamaniAnalShits():void {
@@ -882,7 +934,7 @@ internal function tamaniAnalShits():void {
 
 	outputText("You can feel the cum building up inside you, and you know that you won't be able to hold out much longer.  Looking down, you can see that Tamani isn't far from orgasm, either.  Her fingers slip rapidly in and out of her cunt, and the look on her face is one of thoughtless bliss.  She shudders and goes limp in your grasp just as you cum, painting the insides of her ass with your semen.  Her eyes are still rolled up into the back of her head as you pull your softening prick out of her ass.  You drop her, letting her legs fall back to the ground with a dull thud.  She turns over onto her side, looking up at you.  Between exhausted pants, she manages to say, \"<i>Don't... think that I... enjoyed that... or anything... I'll be back for you, and you better not...</i>\" before she passes out.  You shake your head and laugh at the stubborn little slut as you tuck " + player.sMultiCockDesc() + " back into your " + player.armorName + " and head back to your camp.", false);
 	
-	player.orgasm();
+	player.orgasm('Dick');
 	combat.cleanupAfterCombat();
 }
 
@@ -917,7 +969,7 @@ internal function tamaniBeaten():void {
 	//Don't encounter Tamani for 3 days if fertilized
 	if (player.fertilizedEggs() == 0) pregnancy.knockUpForce(PregnancyStore.PREGNANCY_DRIDER_EGGS, 72);
 	player.dumpEggs();
-	player.orgasm();
+	player.orgasm('Ovi');
 	combat.cleanupAfterCombat();
 }
 

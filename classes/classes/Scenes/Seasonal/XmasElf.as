@@ -41,23 +41,29 @@
 			}
 			awardAchievement("Naughty or Nice", kACHIEVEMENTS.HOLIDAY_CHRISTMAS_I);
 			outputText("You wonder out loud, \"<i>So this... present is mine?</i>\"\n\n", false);
-			if (player.cor >= 90 || flags[kFLAGS.JOJO_STATUS] >= 5 || player.findStatusEffect(StatusEffects.Exgartuan) >= 0 || getGame().amilyScene.amilyCorrupt() || flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0 || flags[kFLAGS.SOPHIE_BIMBO] > 0 || flags[kFLAGS.NIAMH_STATUS] > 0)
+			menu();
+			addButton(0, "OpenPresent", openXmasPresent);
+			addDisabledButton(1, "Unwrap Elf");
+			addButton(4, "Decline", declineXmasPresent);
+			
+			if (player.cor >= 90 + player.corruptionTolerance() || flags[kFLAGS.JOJO_STATUS] >= 5 || player.hasStatusEffect(StatusEffects.Exgartuan) || getGame().amilyScene.amilyCorrupt() || flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0 || flags[kFLAGS.SOPHIE_BIMBO] > 0 || flags[kFLAGS.NIAMH_STATUS] > 0)
 			{
 				outputText("She nods, bouncing up and down in excitement and flushing slightly, \"<i>Yup, just tear the lid off and get your gift!</i>\"\n\n", false);
 				if (flags[kFLAGS.PC_ENCOUNTERED_CHRISTMAS_ELF_BEFORE] > 0) outputText("Here we go again...\n\n");
-				//[Open Present] [Unwrap Elf] [Decline]
-				simpleChoices("OpenPresent", openXmasPresent, "", null, "Decline", declineXmasPresent, "", null, "", null);
+				//[Open Present] [Decline]
+				addDisabledButton(1, "Unwrap Elf", "This scene is not available for naughty kids.");
 				return;
 			}
-			if (player.gender == 0)
+			if (player.isGenderless())
 			{
 				outputText("She nods, bouncing up in down in excitement, \"<i>Yup!  Just open it up!  Are you ready?</i>\"\n\n", false);
-				simpleChoices("OpenPresent", openXmasPresent, "", null, "Decline", declineXmasPresent, "", null, "", null);
+				//[Open Present] [Decline]
+				addDisabledButton(1, "Unwrap Elf", "This scene requires you to have genitals.");
 				return;
 			}
 			outputText("She nods, bouncing up in down in excitement, \"<i>Yup!  You can unwrap it or unwrap me.  What'll it be?</i>\"\n\n", false);
 			//[Open Present] [Unwrap Elf] [Decline]
-			simpleChoices("OpenPresent", openXmasPresent, "Unwrap Elf", unwrapElfyPresent, "Decline", declineXmasPresent, "", null, "", null);
+			addButton(1, "Unwrap Elf", unwrapElfyPresent);
 		}
 
 		//[Decline]
@@ -75,7 +81,7 @@
 			spriteSelect(9);
 			clearOutput();
 			outputText("You easily rip through the ribbons holding the box together and pull off the top.   You gasp in ", false);
-			if (player.cor >= 90 || flags[kFLAGS.JOJO_STATUS] >= 5 || player.findStatusEffect(StatusEffects.Exgartuan) >= 0 || getGame().amilyScene.amilyCorrupt() || flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0 || flags[kFLAGS.SOPHIE_BIMBO] > 0 || flags[kFLAGS.NIAMH_STATUS] > 0) {
+			if (player.cor >= 90 + player.corruptionTolerance() || flags[kFLAGS.JOJO_STATUS] >= 5 || player.hasStatusEffect(StatusEffects.Exgartuan) || getGame().amilyScene.amilyCorrupt() || flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0 || flags[kFLAGS.SOPHIE_BIMBO] > 0 || flags[kFLAGS.NIAMH_STATUS] > 0) {
 				//[Bad Present]
 				outputText("shock at the box's contents – a nine inch cock with damn near a dozen buzzing, elliptical devices taped to it.  A pair of coal lumps rattles around underneath it, positioned as if they were the dick's testicles.\n\n", false);
 				
@@ -88,7 +94,7 @@
 			else if (player.cor <= 33) {
 				//Great present!
 				outputText("surprise at the box's contents - there's a careful arranged set of equipment here, made from woven spider-silk!  Somebody must think you're pretty good.\n\n");
-				if (rand(2) == 0) inventory.takeItem(armors.SS_ROBE, playerMenu);
+				if (player.inte > player.str) inventory.takeItem(armors.SS_ROBE, playerMenu);
 				else inventory.takeItem(armors.SSARMOR, playerMenu);
 				flags[kFLAGS.PC_ENCOUNTERED_CHRISTMAS_ELF_BEFORE] = date.fullYear;
 			}
@@ -100,8 +106,8 @@
 			}
 			else {
 				//[Mediocre Present]
-				outputText("surprise at the box's contents – there is a single vial of succubi's delight packed inside.  It's going to be a white Christmas after all...\n\n", false);
-				inventory.takeItem(consumables.SDELITE, playerMenu);
+				outputText("surprise at the box's contents – there is a single vial of untainted succubi's delight packed inside.  It's going to be a white Christmas after all...\n\n", false);
+				inventory.takeItem(consumables.PSDELIT, playerMenu);
 				flags[kFLAGS.PC_ENCOUNTERED_CHRISTMAS_ELF_BEFORE] = date.fullYear;
 			}
 		}
@@ -120,26 +126,21 @@
 			else outputText("easily ", false);
 			outputText("reach around and grab hold of her fur-lined tube-top, yanking it up over her head in a smooth motion.  Her now exposed breasts are small but well formed.  Her skin is very pale, practically white, and it provides a stark contrast for her hard, cherry-red nipples.   She wiggles happily when you grab her short red skirt and undo the clasp, yanking it off to fully expose her.  The elf's sex is rosy pink in color, and her outer lips are puffy with arousal.   Her slit is completely hairless, and an intricate tattoo of a snowflake sits just above it.  You glance up at her hat and down at her stocking-clad legs and think, 'those can stay.'\n\n", false);
 			
-			if (player.gender == 1) dickXmasElfGo();
-			else if (player.gender == 2) vagFuckXmasElf();
-			else {
-				outputText("Which part will you ravish her with?\n\n");
-				menu();
-				addButton(0,"Male",futaDickXmasElfClr);
-				addButton(1,"Female",futaVagXmasElfClr);
+			menu();
+			if (player.hasCock()) {
+				addButton(0, "Male", dickXmasElfGo);
+			} else {
+				addDisabledButton(0, "Male", "This scene requires you to have cock.");
+			}
+			if (player.hasCock()) {
+				addButton(1, "Female", vagFuckXmasElf);
+			} else {
+				addDisabledButton(1, "Female", "This scene requires you to have cock.");
 			}
 		}
-		public function futaDickXmasElfClr():void {
-			clearOutput();
-			dickXmasElfGo();
-		}
-		public function futaVagXmasElfClr():void {
-			clearOutput();
-			vagFuckXmasElf();
-		}
-
 
 		public function dickXmasElfGo():void {
+			clearOutput();
 			//(Dickfuck)
 			if (player.cockArea(0) < 80) {
 				outputText("She pushes you down onto your bedroll and whispers, \"<i>Time to enjoy your present.</i>\"\n\n", false);
@@ -189,7 +190,7 @@
 				if (player.balls > 0) outputText("r " + player.ballsDescriptLight(), false);
 				outputText(", a gentle pressure that builds higher and higher until you feel about to explode.  You need to cum, and you squirm in the elf's grasp, trembling and shuddering as one of her hands slips over a particularly sensitive spot. A bead of pre-cum rolls out of your " + player.cockHead() + " and starts sliding down the shaft, followed by another, and another, and another.\n\n", false);
 				
-				outputText("Your 'present' asks with gradually rising authority, \"<i>Do you feel the naughtyness leaking out?  It feels good doesn't it?  Yes it does, but that's just the start.  You've got a lot of pent up naughty that needs to come out so you'll be good and see me next year.  So be a good boy and cum out all those bad thoughts for me please.</i>\"\n\n", false);
+				outputText("Your 'present' asks with gradually rising authority, \"<i>Do you feel the naughtiness leaking out?  It feels good doesn't it?  Yes it does, but that's just the start.  You've got a lot of pent up naughty that needs to come out so you'll be good and see me next year.  So be a good boy and cum out all those bad thoughts for me please.</i>\"\n\n", false);
 				
 				outputText("She flips around to the far side of your dick and hugs it tightly, squeezing it from base to tip in a fluid motion makes your abdominals clench with unexpected orgasm.   The first 'squirt' of cum is more like a geyser going off.  ", false);
 				if (player.cumQ() < 500) outputText("You recoil from shooting out so much – it's far and away more than you're normally capable of.  ", false);
@@ -200,11 +201,12 @@
 			//(Go to followup for fucking scene)
 			//[Next]
 			doNext(xmasFuckFollowup);
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 
 		//[FEMALE SCENE]	
 		public function vagFuckXmasElf():void {
+			clearOutput();
 			outputText("She pushes you down onto your bedroll and whispers, \"<i>Time to enjoy your present.</i>\"\n\n", false);
 			outputText("The elf winks and spreads her legs, revealing her obviously aroused sex to you.  She winks and you see her muscles clench.  The moist lips of her vagina slowly spread apart, and a blunt white object begins to squeeze out.  Is she laying an egg?  Wait- no, more of the object slides out and you can see now that it's tubular in shape, like some sort of sex-toy, and it's covered in a spiraling red pattern.  The object continues its slow journey downwards, roughly six inches hanging free as the elf grunts and moans, her face flushed.   She grips it with both hands and pulls it slowly.  It reminds you the soldiers in training back home the first time they tried to draw a sword – a mix of awkwardness and excitement.\n\n", false);
 			
@@ -230,7 +232,7 @@
 
 			outputText("You black out to the following words: \"<i>Good girl.  Keep cumming, let out all those naughty thoughts.  I can't wait to see you next year!</i>\"", false);
 			doNext(xmasFuckFollowupFems);
-			player.orgasm();
+			player.orgasm('Vaginal');
 		}
 			
 		//MANTASTIC FOLLOWUP:

@@ -105,7 +105,7 @@ private function fapArenaPageII():void {
 	outputText("You firmly settle your " +  player.legs()  + " on the ground, bracing yourself to the imminent handjob you're going to receive, and the one you're going to give.  Your old warrior reflexes start kicking in and you ease your grasp on the cock in your right hand and start calming yourself.  You feel ready when - ", false);
 	outputText("\"<i>GO!</i>\"\n\n", false);
 
-	outputText("You instantly wince a little as the hand holding your " + player.cockDescript(x) + " starts rocking up and down energetically.  By the gods, he's good at this, whatever he is.  You suddenly remember your own hand has a job to do and you proceed to rub the shaft on your right, slowly at first and gaining more and more pace as you get more confident.  Soon you're furiously stroking it, trying to match your left partner's rhythm in intensity.  Since there wasn't any handjob stamina contest organized in Ingam, you're fairly inexperienced at this and try to imitate your left partner as best as you can, using the pleasure he's inflicting on you as a suggestion for how to treat your own victim.  You rub the sensitive points, you tickle the urethra and give gentle squeezes with your palm as your hand slowly works its way up and down the massive cock it's stroking.  Your best effort, however, goes into ignoring the hand expertly working your own " +  player.cockDescript(x)  + ", massaging it viciously in order to pump the semen up in your urethra.  Your erection gets bigger, if that is even possible; but you manage to hold off the incoming orgasm.\n\n", false);
+	outputText("You instantly wince a little as the hand holding your " + player.cockDescript(x) + " starts rocking up and down energetically.  By the gods, he's good at this, whatever he is.  You suddenly remember your own hand has a job to do and you proceed to rub the shaft on your right, slowly at first and gaining more and more pace as you get more confident.  Soon you're furiously stroking it, trying to match your left partner's rhythm in intensity.  Since there wasn't any handjob stamina contest organized in Ingnam, you're fairly inexperienced at this and try to imitate your left partner as best as you can, using the pleasure he's inflicting on you as a suggestion for how to treat your own victim.  You rub the sensitive points, you tickle the urethra and give gentle squeezes with your palm as your hand slowly works its way up and down the massive cock it's stroking.  Your best effort, however, goes into ignoring the hand expertly working your own " +  player.cockDescript(x)  + ", massaging it viciously in order to pump the semen up in your urethra.  Your erection gets bigger, if that is even possible; but you manage to hold off the incoming orgasm.\n\n", false);
 	
 	outputText("You continue stroking the pecker vigorously while trying to ignore the handjob your own " + player.cockDescript(x) + " is getting, and your efforts are rewarded: soon pre-cum starts dribbling from the tip of the tool you're jerking off, and your hand proceeds to smear that cock in its own juice; you notice it grows slightly bigger.  There is a profound silence in the tent; you only hear a few soft thuds resulting from dick skin being stretched: FAP FAP FAP FAP FAP FAP FAP FAP...  Occasionally a player will break the silence as their lips let a loud, pleasure-filled moan.\n\n", false);
 	
@@ -407,19 +407,19 @@ private function fapResults(place:Number = 3):void {
 				break;
 		}
 		flags[kFLAGS.FAP_ARENA_VICTORIES]++;
-		player.orgasm();
+		player.orgasm('Dick');
 		inventory.takeItem(itype, camp.returnToCampUseOneHour);
 	}
 	//[if you didn't win]
 	else if (place == 2) {
 		outputText("You awkwardly remove the dick from your ass and start dressing yourself.  Before you go, the cute little referee waves at you, her coy smile and nude body somehow awakening " + player.sMultiCockDesc() + " again.  Ye Gods, it never ends.  \"<i>I hope you enjoyed this session. Better luck next time...</i>\"", false);
-		player.orgasm();
+		player.orgasm('Anal');
 		doNext(camp.returnToCampUseOneHour);
 	}
 	//[if you lost]
 	else {
 		outputText("You awkwardly remove the dick from your ass, start cleaning yourself from all the dirt and cum before leaving the tent.  Before you go, the nude referee approaches you and gently squeezes your " + player.cockDescript(x) + "; you still wince from the pounding it took earlier.  \"<i>Awww, looks like you had a rough time, didn't you?  Well, it happens sometimes.  Hopefully you will get better at this.  See you next game!</i>\"", false);
-		player.orgasm();
+		player.orgasm('Anal');
 		doNext(camp.returnToCampUseOneHour);
 	}
 	

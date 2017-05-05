@@ -42,7 +42,7 @@ Sex Life: The shark girls treat sex like a game or a sport, constantly battling 
 public function sharkGirlEncounter(exploreLoc:Number = 0):void {
 	//Set 'PC met Sharkgirls' for Izma stuff
 	if (flags[kFLAGS.IZMA_ENCOUNTER_COUNTER] == 0) flags[kFLAGS.IZMA_ENCOUNTER_COUNTER] = 1;
-	if (player.findStatusEffect(StatusEffects.SharkGirl) < 0) player.createStatusEffect(StatusEffects.SharkGirl,0,0,0,0);
+	if (!player.hasStatusEffect(StatusEffects.SharkGirl)) player.createStatusEffect(StatusEffects.SharkGirl,0,0,0,0);
 	else if (player.statusEffectv1(StatusEffects.SharkGirl) >= 7 && player.totalCocks() > 0) {
 		spriteSelect(70);
 		sharkBadEnd();
@@ -76,6 +76,13 @@ public function sharkGirlEncounter(exploreLoc:Number = 0):void {
 internal function sharkWinChoices():void {
 	clearOutput();
 	spriteSelect(70);
+	
+	if (flags[kFLAGS.SFW_MODE] > 0) {
+		outputText("You smile in satisfaction as the " + monster.short + " collapses, unable to continue fighting.", true);
+		combat.cleanupAfterCombat();
+		return;
+	}
+	
 	//HP Win
 	if (monster.HP < 1) {
 		outputText("The shark-girl falls, clearly defeated.");
@@ -85,15 +92,21 @@ internal function sharkWinChoices():void {
 		outputText("The shark-girl begins masturbating, giving up on dominating you.  The sight is truly entrancing.");
 		dynStats("lus", 15);
 	}
-	if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
-		outputText("  Do you have your way with her or leave?");
-		menu();
+	
+	menu();
+	addDisabledButton(0, "Use Dick", "This scene requires you to have cock and sufficient arousal.");
+	addDisabledButton(1, "Pussy Oral", "This scene requires you to have vagina and sufficient arousal.");
+	addDisabledButton(2, "Dildo Rape", "This scene requires you to have the Deluxe Dildo.");
+	
+	if (player.lust >= 33) {
+		if (!player.isGenderless())
+			outputText("  Do you have your way with her or leave?");
 		if (player.hasCock()) addButton(0, "Use Dick", sharkgirlDickFuck);
 		if (player.hasVagina()) addButton(1, (player.isNaga() ? "Pussy Oral" : "Pussy w/69"), sharkgirlSixtyNine);
 		if (player.hasKeyItem("Deluxe Dildo") >= 0) addButton(2, "Dildo Rape", sharkGirlGetsDildoed);
-		addButton(4, "Leave", combat.cleanupAfterCombat);
 	}
-	else combat.cleanupAfterCombat();
+	
+	addButton(14, "Leave", combat.cleanupAfterCombat);
 }
 
 //Male and Herm: 
@@ -107,7 +120,7 @@ private function sharkgirlDickFuck():void {
 		if (x < 0) x = player.smallestCockIndex();
 		//[if (monster.lust >= monster.eMaxLust())
 		if (monster.lust >= monster.eMaxLust()) outputText("You slither towards the furiously masturbating shark-girl. She lies on her back, desperately trying to relieve herself of her lust. She eyes you for a second, but her focus quickly returns to your own sex, moaning and sighing loudly. You admire the scene for a moment, but decide that she must be punished for her attempt to rape you.\n\n", false);
-		else outputText("You slither towards the defeated shark-girl. She lies on her back, clearly weakend and in pain from the fight. You pity the poor girl for a moment, but you quickly remember that she just tried to rape you. Overcome by the need for revenge and the need to sate your lusts, you decide to punish her for her painful advances on you.\n\n", false);
+		else outputText("You slither towards the defeated shark-girl. She lies on her back, clearly weakened and in pain from the fight. You pity the poor girl for a moment, but you quickly remember that she just tried to rape you. Overcome by the need for revenge and the need to sate your lusts, you decide to punish her for her painful advances on you.\n\n", false);
 
 		outputText("You grab the shark-girl by her hips and lift them up.  Before she can reach out to steady herself, you twist her around and thrust her front side into the ground.  She groans and makes a weak attempt to push herself back up, but her arms quickly give out under her weight and she falls back into the sand.  Your tail deftly snaps out and snatches the bikini she is wearing, and rips it off.  She looks back at you and gives an indignant \"<i>hmph</i>\" before laying her head back down, resigning herself to whatever fate you have planned for her.  Looking down at her pussy, you can see that it's grown moist with anticipation.  You have other plans for her, however, and you coil your tail around hers tightly and grab her hips in your hands.  She yelps in surprise as you lift her lower half up a bit, easily supporting her weight with your tail's considerable strength.  Her feet are still touching the ground, but her legs are not supporting her.  You lift her tail up a bit more, exposing her tight anus.  Your intentions dawn on her quickly, and you see her eyes begin to water.  \"<i>No,</i>\" she begs, \"<i>not like that...</i>\"  The tiniest of sobs escapes her, and you roll your eyes at the pitiful display.  You don't really want to see her cry, so you decide on something of a compromise.\n\n", false);
 
@@ -128,7 +141,7 @@ private function sharkgirlDickFuck():void {
 		outputText("The shark girl cries out in orgasm, her pussy tightening as the feelers wrap around your cock. The pleasure drives you over the edge, and you pump your load of cum into her needy pussy, the feelers milking you for every drop you have. You pull out, satisfied, and as you turn to leave you see the shark girl rubbing cum into her cunt and winking at you.", false);
 	}
 	combat.cleanupAfterCombat();
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -1);
 	if (player.cor < 33) dynStats("cor", 1);
 }
@@ -165,7 +178,7 @@ private function sharkgirlSixtyNine():void {
 		outputText("Thoroughly satisfied, you leave the shark girl on the ground covered in your fluids and depart for your camp.", false);
 	}
 	combat.cleanupAfterCombat();
-	player.orgasm();
+	player.orgasm('Lips');
 	dynStats("sen", -1);
 	if (player.cor < 33) dynStats("cor", 1);
 }
@@ -320,7 +333,7 @@ internal function sharkLossRape():void {
 		outputText("The shark girl eventually sighs happily and relaxes her grip on your hair, pulling your head away a few inches. \"<i>Not bad bitch, not bad. Now get on your back.</i>\" You obey your mistress's command and flop onto your back. A sense of joy fills you as she positions her crotch in front of your face and moves her own head between your legs. You quickly resume eating her out, and this time she joins in the feast. It's not too long before the two of you orgasm, spraying girl-cum onto each other's faces.\n\n", false);
 		outputText("The shark girl stands to leave and winks at you before diving back into the water. You eventually pass out from the exertion.", false);
 		//(Corruption +2, Intelligence -4)
-		player.orgasm();
+		player.orgasm('Vaginal');
 		if (player.cor < 30) dynStats("cor", 1);
 		combat.cleanupAfterCombat();
 		return;
@@ -339,7 +352,7 @@ internal function sharkLossRape():void {
 		outputText("The shark girl has no such qualms and rides you like a mechanical bull, hammering up and down your " + player.cockDescript(0) + " with incredible speed. It certainly feels nice, but the rough nature of the ride also certainly hurts. You'll be walking funny for a while after this, that's for sure.\n\n", false);
 		
 		outputText("Eventually, her vagina clamps down on your cock and she cries out in orgasm. You grunt loudly and cum a few seconds after, pumping your seed into her womb. The shark girl leans over and plants a tiny kiss on your lips. \"<i>Good boy. I'll be sure to see you again</i>\". She gets up again and you watch her re-enter the water before you pass out.", false);
-		player.orgasm();
+		player.orgasm('Dick');
 		dynStats("sen", 1);
 		if (player.cor < 30) dynStats("cor", 1);
 		combat.cleanupAfterCombat();

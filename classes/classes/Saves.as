@@ -1,10 +1,15 @@
-﻿package classes
+package classes
 {
 
+	import classes.BodyParts.UnderBody;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kACHIEVEMENTS;
 	import classes.Scenes.Inventory;
 	import classes.Scenes.Places.TelAdre.Katherine;
+	import classes.internals.LoggerFactory;
+	import classes.internals.Serializable;
+	import classes.internals.SerializationUtils;
+	import mx.logging.ILogger;
 
 	CONFIG::AIR 
 	{
@@ -28,6 +33,7 @@
 
 
 public class Saves extends BaseContent {
+	private static const LOGGER:ILogger = LoggerFactory.getLogger(Saves);
 
 	private static const SAVE_FILE_CURRENT_INTEGER_FORMAT_VERSION:int		= 816;
 		//Didn't want to include something like this, but an integer is safer than depending on the text version number from the CoC class.
@@ -55,7 +61,7 @@ public var file:FileReference;
 public var loader:URLLoader;
 
 public var saveFileNames:Array = ["CoC_1", "CoC_2", "CoC_3", "CoC_4", "CoC_5", "CoC_6", "CoC_7", "CoC_8", "CoC_9", "CoC_10", "CoC_11", "CoC_12", "CoC_13", "CoC_14"];
-public var versionProperties:Object = { "legacy" : 100, "0.8.3f7" : 124, "0.8.3f8" : 125, "0.8.4.3":119, "latest" : 119 };
+public var versionProperties:Object = {"test" : 0, "legacy" : 100, "0.8.3f7" : 124, "0.8.3f8" : 125, "0.8.4.3":119, "latest" : 119};
 public var savedGameDir:String = "data/com.fenoxo.coc";
 
 public var notes:String = "";
@@ -452,23 +458,14 @@ public function deleteScreen():void
 		s++;
 	}
 	addButton(14, "Back", returnToSaveMenu);
-	/*
-	choices("Slot 1", delFuncs[0], 
-			"Slot 2", delFuncs[1], 
-			"Slot 3", delFuncs[2], 
-			"Slot 4", delFuncs[3], 
-			"Slot 5", delFuncs[4], 
-			"Slot 6", delFuncs[5], 
-			"Slot 7", delFuncs[6], 
-			"Slot 8", delFuncs[7], 
-			"Slot 9", delFuncs[8], 
-			"Back", returnToSaveMenu);*/
 }
 
 public function confirmDelete():void
 {
 	outputText("You are about to delete the following save: <b>" + flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] + "</b>\n\nAre you sure you want to delete it?", true);
-	simpleChoices("No", deleteScreen, "Yes", purgeTheMutant, "", null, "", null, "", null);
+	menu();
+	addButton(0, "No", deleteScreen);
+	addButton(1, "Yes", purgeTheMutant);
 }
 
 public function purgeTheMutant():void
@@ -613,6 +610,7 @@ public function savePermObject(isFile:Boolean):void {
 		
 		saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] = flags[kFLAGS.SHOW_SPRITES_FLAG];
 		saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
+		saveFile.data.flags[kFLAGS.PRISON_ENABLED] = flags[kFLAGS.PRISON_ENABLED];
 		saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] = flags[kFLAGS.WATERSPORTS_ENABLED];
 		
 		saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE] = flags[kFLAGS.USE_OLD_INTERFACE];
@@ -651,8 +649,9 @@ public function savePermObject(isFile:Boolean):void {
 }
 
 public function loadPermObject():void {
-	var saveFile:* = SharedObject.getLocal("CoC_Main", "/");
-	trace("Loading achievements!")
+	var permObjectFileName:String = "CoC_Main";
+	var saveFile:* = SharedObject.getLocal(permObjectFileName, "/");
+	LOGGER.info("Loading achievements from {0}!", permObjectFileName);
 	//Initialize the save file
 	//var saveFile:Object = loader.data.readObject();
 	if (saveFile.data.exists)
@@ -664,6 +663,7 @@ public function loadPermObject():void {
 			
 			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
 			if (saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] != undefined) flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
+			if (saveFile.data.flags[kFLAGS.PRISON_ENABLED] != undefined) flags[kFLAGS.PRISON_ENABLED] = saveFile.data.flags[kFLAGS.PRISON_ENABLED];
 			
 			if (saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE] != undefined) flags[kFLAGS.USE_OLD_INTERFACE] = saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE];
 			if (saveFile.data.flags[kFLAGS.USE_OLD_FONT] != undefined) flags[kFLAGS.USE_OLD_FONT] = saveFile.data.flags[kFLAGS.USE_OLD_FONT];
@@ -695,7 +695,7 @@ public function loadPermObject():void {
 
 		if (saveFile.data.permObjVersionID != undefined) {
 			getGame().permObjVersionID = saveFile.data.permObjVersionID;
-			trace("Found internal permObjVersionID:", getGame().permObjVersionID);
+			LOGGER.debug("Found internal permObjVersionID:{0}", getGame().permObjVersionID);
 		}
 
 		if (getGame().permObjVersionID < 1039900) {
@@ -706,7 +706,7 @@ public function loadPermObject():void {
 			achievements[kACHIEVEMENTS.GENERAL_BAD_ENDER] = 0;
 			getGame().permObjVersionID = 1039900;
 			savePermObject(false);
-			trace("PermObj internal versionID updated:", getGame().permObjVersionID);
+			LOGGER.debug("PermObj internal versionID updated:{0}", getGame().permObjVersionID);
 		}
 	}
 }
@@ -856,7 +856,6 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.ascensionPerkPoints = player.ascensionPerkPoints;
 		//Appearance
 		saveFile.data.startingRace = player.startingRace;
-		saveFile.data.gender = player.gender;
 		saveFile.data.femininity = player.femininity;
 		saveFile.data.thickness = player.thickness;
 		saveFile.data.tone = player.tone;
@@ -881,11 +880,13 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.antennae = player.antennae;
 		saveFile.data.horns = player.horns;
 		saveFile.data.hornType = player.hornType;
+		// <mod name="BodyParts.Skin and UnderBody" author="Stadler76">
+		saveFile.data.underBody = player.underBody;
+		// </mod>
 		// <mod name="Predator arms" author="Stadler76">
 		saveFile.data.clawTone = player.clawTone;
 		saveFile.data.clawType = player.clawType;
 		// </mod>
-		saveFile.data.wingDesc = player.wingDesc;
 		saveFile.data.wingType = player.wingType;
 		saveFile.data.lowerBody = player.lowerBody;
 		saveFile.data.legCount = player.legCount;
@@ -901,7 +902,6 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.ballSize = player.ballSize;
 		saveFile.data.hoursSinceCum = player.hoursSinceCum;
 		saveFile.data.fertility = player.fertility;
-		saveFile.data.clitLength = player.clitLength;
 		
 		//Preggo stuff
 		saveFile.data.pregnancyIncubation = player.pregnancyIncubation;
@@ -915,8 +915,8 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		   myLocalData.data.girlEffectArray.push(new Array());
 		 }*/
 
+		
 		saveFile.data.cocks = [];
-		saveFile.data.vaginas = [];
 		saveFile.data.breastRows = [];
 		saveFile.data.perks = [];
 		saveFile.data.statusAffects = [];
@@ -941,26 +941,9 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 			saveFile.data.cocks[i].pLongDesc = player.cocks[i].pLongDesc;
 			saveFile.data.cocks[i].sock = player.cocks[i].sock;
 		}
-		//Set Vaginal Array
-		for (i = 0; i < player.vaginas.length; i++)
-		{
-			saveFile.data.vaginas.push([]);
-		}
-		//Populate Vaginal Array
-		for (i = 0; i < player.vaginas.length; i++)
-		{
-			saveFile.data.vaginas[i].type = player.vaginas[i].type;
-			saveFile.data.vaginas[i].vaginalWetness = player.vaginas[i].vaginalWetness;
-			saveFile.data.vaginas[i].vaginalLooseness = player.vaginas[i].vaginalLooseness;
-			saveFile.data.vaginas[i].fullness = player.vaginas[i].fullness;
-			saveFile.data.vaginas[i].virgin = player.vaginas[i].virgin;
-			saveFile.data.vaginas[i].labiaPierced = player.vaginas[i].labiaPierced;
-			saveFile.data.vaginas[i].labiaPShort = player.vaginas[i].labiaPShort;
-			saveFile.data.vaginas[i].labiaPLong = player.vaginas[i].labiaPLong;
-			saveFile.data.vaginas[i].clitPierced = player.vaginas[i].clitPierced;
-			saveFile.data.vaginas[i].clitPShort = player.vaginas[i].clitPShort;
-			saveFile.data.vaginas[i].clitPLong = player.vaginas[i].clitPLong;
-		}
+		
+		saveFile.data.vaginas = SerializationUtils.serializeVector(player.vaginas as Vector.<*>);
+		
 		//NIPPLES
 		saveFile.data.nippleLength = player.nippleLength;
 		//Set Breast Array
@@ -1619,7 +1602,6 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		//Appearance
 		if (saveFile.data.startingRace != undefined)
 			player.startingRace = saveFile.data.startingRace;
-		player.gender = saveFile.data.gender;
 		if (saveFile.data.femininity == undefined)
 			player.femininity = 50;
 		else
@@ -1767,12 +1749,15 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		else
 			player.hornType = saveFile.data.hornType;
 
+		// <mod name="BodyParts.Skin and UnderBody" author="Stadler76">
+		if (saveFile.data.underBody is UnderBody)
+			player.underBody.setAllProps(saveFile.data.underBody);
+		// </mod>
 		// <mod name="Predator arms" author="Stadler76">
 		player.clawTone = (saveFile.data.clawTone == undefined) ? ""               : saveFile.data.clawTone;
 		player.clawType = (saveFile.data.clawType == undefined) ? CLAW_TYPE_NORMAL : saveFile.data.clawType;
 		// </mod>
 
-		player.wingDesc = saveFile.data.wingDesc;
 		player.wingType = saveFile.data.wingType;
 		player.lowerBody = saveFile.data.lowerBody;
 		player.tailType = saveFile.data.tailType;
@@ -1813,7 +1798,6 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		player.ballSize = saveFile.data.ballSize;
 		player.hoursSinceCum = saveFile.data.hoursSinceCum;
 		player.fertility = saveFile.data.fertility;
-		player.clitLength = saveFile.data.clitLength;
 		
 		//Preggo stuff
 		player.knockUpForce(saveFile.data.pregnancyType, saveFile.data.pregnancyIncubation);
@@ -1862,39 +1846,9 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 			}
 				//trace("LoadOne Cock i(" + i + ")");
 		}
-		//Set Vaginal Array
-		for (i = 0; i < saveFile.data.vaginas.length; i++)
-		{
-			player.createVagina();
-		}
-		//Populate Vaginal Array
-		for (i = 0; i < saveFile.data.vaginas.length; i++)
-		{
-			player.vaginas[i].vaginalWetness = saveFile.data.vaginas[i].vaginalWetness;
-			player.vaginas[i].vaginalLooseness = saveFile.data.vaginas[i].vaginalLooseness;
-			player.vaginas[i].fullness = saveFile.data.vaginas[i].fullness;
-			player.vaginas[i].virgin = saveFile.data.vaginas[i].virgin;
-			if (saveFile.data.vaginas[i].type == undefined) player.vaginas[i].type = 0;
-			else player.vaginas[i].type = saveFile.data.vaginas[i].type;
-			if (saveFile.data.vaginas[i].labiaPierced == undefined) {
-				player.vaginas[i].labiaPierced = 0;
-				player.vaginas[i].labiaPShort = "";
-				player.vaginas[i].labiaPLong = "";
-				player.vaginas[i].clitPierced = 0;
-				player.vaginas[i].clitPShort = "";
-				player.vaginas[i].clitPLong = "";
-			}
-			else
-			{
-				player.vaginas[i].labiaPierced = saveFile.data.vaginas[i].labiaPierced;
-				player.vaginas[i].labiaPShort = saveFile.data.vaginas[i].labiaPShort;
-				player.vaginas[i].labiaPLong = saveFile.data.vaginas[i].labiaPLong;
-				player.vaginas[i].clitPierced = saveFile.data.vaginas[i].clitPierced;
-				player.vaginas[i].clitPShort = saveFile.data.vaginas[i].clitPShort;
-				player.vaginas[i].clitPLong = saveFile.data.vaginas[i].clitPLong;
-			}
-				//trace("LoadOne Vagina i(" + i + ")");
-		}
+		player.vaginas = new Vector.<VaginaClass>();
+		SerializationUtils.deserializeVector(player.vaginas as Vector.<*>, saveFile.data.vaginas, VaginaClass);
+		
 		//NIPPLES
 		if (saveFile.data.nippleLength == undefined)
 			player.nippleLength = .25;
@@ -2296,12 +2250,12 @@ public function unFuckSave():void
 		}
 	}
 	
-	if (player.findStatusEffect(StatusEffects.KnockedBack) >= 0)
+	if (player.hasStatusEffect(StatusEffects.KnockedBack))
 	{
 		player.removeStatusEffect(StatusEffects.KnockedBack);
 	}
 	
-	if (player.findStatusEffect(StatusEffects.Tentagrappled) >= 0)
+	if (player.hasStatusEffect(StatusEffects.Tentagrappled))
 	{
 		player.removeStatusEffect(StatusEffects.Tentagrappled);
 	}
@@ -2312,7 +2266,7 @@ public function unFuckSave():void
 
 	if (player.gems < 0) player.gems = 0; //Force fix gems
 	
-	if (player.findStatusEffect(StatusEffects.SlimeCraving) >= 0 && player.statusEffectv4(StatusEffects.SlimeCraving) == 1) {
+	if (player.hasStatusEffect(StatusEffects.SlimeCraving) && player.statusEffectv4(StatusEffects.SlimeCraving) == 1) {
 		player.changeStatusValue(StatusEffects.SlimeCraving, 3, player.statusEffectv2(StatusEffects.SlimeCraving)); //Duplicate old combined strength/speed value
 		player.changeStatusValue(StatusEffects.SlimeCraving, 4, 1); //Value four indicates this tracks strength and speed separately
 	}
@@ -2432,8 +2386,8 @@ public function unFuckSave():void
 		}
 
 		if (flags[kFLAGS.TAMANI_PREGNANCY_TYPE] != 0) return; //Must be a new format save
-		if (player.findStatusEffect(StatusEffects.TamaniFemaleEncounter) >= 0) player.removeStatusEffect(StatusEffects.TamaniFemaleEncounter); //Wasn't used in previous code
-		if (player.findStatusEffect(StatusEffects.Tamani) >= 0) {
+		if (player.hasStatusEffect(StatusEffects.TamaniFemaleEncounter)) player.removeStatusEffect(StatusEffects.TamaniFemaleEncounter); //Wasn't used in previous code
+		if (player.hasStatusEffect(StatusEffects.Tamani)) {
 			if (player.statusEffectv1(StatusEffects.Tamani) == -500) { //This used to indicate that a player had met Tamani as a male
 				flags[kFLAGS.TAMANI_PREGNANCY_INCUBATION] = 0;
 				flags[kFLAGS.TAMANI_MET]                  = 1; //This now indicates the same thing

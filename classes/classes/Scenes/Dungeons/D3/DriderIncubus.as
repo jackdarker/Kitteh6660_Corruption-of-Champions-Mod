@@ -120,7 +120,8 @@ package classes.Scenes.Dungeons.D3
 			}
 			else
 			{
-				opts = [this.bite,spiderMorphWebAttack,this.kick,this.kick,this.doubleStrike,this.doubleStrike];
+				opts = [spiderMorphWebAttack, this.kick, this.kick, this.doubleStrike, this.doubleStrike];
+				if (this.fatigue < 100) opts.push(this.bite);
 				opts[rand(opts.length)]();
 			}
 		}
@@ -135,7 +136,7 @@ package classes.Scenes.Dungeons.D3
 			else
 			{
 				opts = [this.arouseSpell,this.arouseSpell];
-				if (player.findStatusEffect(StatusEffects.TaintedMind) < 0 && !this._seenResolute)
+				if (!player.hasStatusEffect(StatusEffects.TaintedMind) && !this._seenResolute)
 				{
 					opts.push(this.taintedMind);
 				}
@@ -227,11 +228,12 @@ package classes.Scenes.Dungeons.D3
 		
 		private function bite():void
 		{
+			this.fatigue += 20;
 			var amount:Number = 0;
 			var evade:String = player.getEvasionReason();
-			if (player.findStatusEffect(StatusEffects.Stunned) >= 0 || player.spe <= 1 && player.findStatusEffect(StatusEffects.Web) >= 2)
+			if (player.hasStatusEffect(StatusEffects.Stunned) || player.spe <= 1 && player.statusEffectv1(StatusEffects.Web) >= 2)
 			{
-				if (player.findStatusEffect(StatusEffects.DriderIncubusVenom) >= 0)
+				if (player.hasStatusEffect(StatusEffects.DriderIncubusVenom))
 				{
 					player.changeStatusValue(StatusEffects.DriderIncubusVenom,1,5);
 				}
@@ -279,7 +281,7 @@ package classes.Scenes.Dungeons.D3
 				else {
 					outputText(" Those needle-like canines punch into you, delivering their venomous payload! You already feel weaker, your muscles not responding as effectively.");
 					outputText("<i>“I do love watching you struggle.”</i> He flashes a crooked smile.");
-					if (player.findStatusEffect(StatusEffects.DriderIncubusVenom) >= 0)
+					if (player.hasStatusEffect(StatusEffects.DriderIncubusVenom))
 						player.changeStatusValue(StatusEffects.DriderIncubusVenom,1,5);
 					else
 						player.createStatusEffect(StatusEffects.DriderIncubusVenom,5,0,0,0);
@@ -477,7 +479,7 @@ package classes.Scenes.Dungeons.D3
 		
 		private function bootyTwerking():void
 		{
-			outputText("The goblin gives up on her futile chase for the moment. Instead of trying to lay her hands on her treasured scepter, she spins around, raising her cushy-looking ass into the air. She twists and gyrates, making her voluminous asscheeks bounce independantly. Sometimes they audibly clap together. A few assembled demonic slaves applaud her performance, and the drider can’t help but spare her a few hungry glances.");
+			outputText("The goblin gives up on her futile chase for the moment. Instead of trying to lay her hands on her treasured scepter, she spins around, raising her cushy-looking ass into the air. She twists and gyrates, making her voluminous asscheeks bounce independently. Sometimes they audibly clap together. A few assembled demonic slaves applaud her performance, and the drider can’t help but spare her a few hungry glances.");
 			lust += 5;
 		}
 		

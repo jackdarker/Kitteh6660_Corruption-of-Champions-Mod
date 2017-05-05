@@ -24,11 +24,21 @@ package classes.Scenes.Areas
 		public var valkyrieScene:ValkyrieScene = new ValkyrieScene();
 		public var yetiScene:YetiScene = new YetiScene();
 		public var giantScene:FrostGiantScene = new FrostGiantScene();
+		public var amarokScene:AmarokScene = new AmarokScene();
 		
 		public function GlacialRift() 
 		{
 		}
-		
+		public function isDiscovered():Boolean {
+			return flags[kFLAGS.DISCOVERED_GLACIAL_RIFT] > 0;
+		}
+
+		public function discover():void {
+			flags[kFLAGS.DISCOVERED_GLACIAL_RIFT] = 1;
+			outputText("You walk for some time, roaming the hard-packed and pink-tinged earth of the demon-realm of Mareth. As you progress, a cool breeze suddenly brushes your cheek, steadily increasing in intensity and power until your clothes are whipping around your body in a frenzy. Every gust of wind seems to steal away part of your strength, the cool breeze having transformed into a veritable arctic gale. You wrap your arms around yourself tightly, shivering fiercely despite yourself as the hard pink dirt slowly turns to white; soon you’re crunching through actual snow, thick enough to make you stumble with every other step. You come to a stop suddenly as the ground before you gives way to a grand ocean, many parts of it frozen in great crystal islands larger than any city.\n\n");
+			outputText("<b>You've discovered the Glacial Rift!</b>");
+			doNext(camp.returnToCampUseTwoHours);
+		}
 		public function exploreGlacialRift():void {
 			flags[kFLAGS.DISCOVERED_GLACIAL_RIFT]++
 			doNext(playerMenu);
@@ -44,6 +54,7 @@ package classes.Scenes.Areas
 			if (rand(3) == 0) choice[choice.length] = 4; //Freebie items!
 			if (rand(15) == 0 && player.hasKeyItem("Camp - Ornate Chest") < 0) choice[choice.length] = 5; //Ornate Chest
 			if (flags[kFLAGS.ANZU_PALACE_UNLOCKED] < 1) choice[choice.length] = 6; //Find Anzu's palace
+			choice[choice.length] = 7; //Amarok
 			choice[choice.length] = 99; //Find nothing!
 			
 			//DLC april fools
@@ -118,6 +129,10 @@ package classes.Scenes.Areas
 					break;
 				case 6: //Find Anzu's Palace!
 					getGame().dungeons.palace.anzuScene.initialPalaceEncounter();
+					break;
+				case 7: //Amarok
+					outputText("As your feet carry you through the barren tundra, you can't shake the feeling of being watched. Your paranoia gets the better of you, and you come to a stop to listen for anything nearby. You hear nothing. You turn around just to be sure, and see nothing. You laugh at your silliness and continue walking, now with a hand on your " + player.weaponName + ". As though on cue, you hear a snarl from behind you. You whip around and strike with your " + player.weaponName + ", barely keeping an enormous wolf from tackling you. Between its black fur and golden eyes, you aren't quite sure how you managed to miss it. It hardly matters, though-- the wolf, most definitely an Amarok, has already recovered and is preparing another attack. It's time for a fight!", true);
+					startCombat(new Amarok());
 					break;
 				default:
 					outputText("You spend an hour trudging through the bleak and bitingly cold glaciers but you don’t find anything interesting.", true);

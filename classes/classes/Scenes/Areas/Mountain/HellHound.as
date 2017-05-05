@@ -7,12 +7,12 @@
 	{
 		protected function hellhoundFire():void {
 			//Blind dodge change
-			if(findStatusEffect(StatusEffects.Blind) >= 0) {
+			if(hasStatusEffect(StatusEffects.Blind)) {
 				outputText(capitalA + short + " completely misses you with a wave of dark fire! Thank the gods it's blind!", false);
 				combatRoundOver();
 				return;
 			}
-			/*if(player.hasStatusEffect(StatusEffects.Web_dash_Silence) >= 0) {
+			/*if(player.hasStatusEffect(StatusEffects.Web_dash_Silence)) {
 				outputText("You reach inside yourself to breathe flames, but as you ready to release a torrent of fire, it backs up in your throat, blocked by the webbing across your mouth.  It causes you to cry out as the sudden, heated force explodes in your own throat.\n", false);
 				changeFatigue(10);
 				takeDamage(10+rand(20));
@@ -47,7 +47,7 @@
 			doNext(game.playerMenu);
 		}
 		protected function hellhoundScent():void {
-			if(player.findStatusEffect(StatusEffects.NoFlee) >= 0) {
+			if(player.hasStatusEffect(StatusEffects.NoFlee)) {
 				if(spe == 100) {
 					hellhoundFire();
 					return;
@@ -70,31 +70,24 @@
 		{
 			if (hpVictory) {
 				outputText("The hellhound's flames dim and the heads let out a whine before the creature slumps down, defeated and nearly unconscious.", true);
-				//Rape if not naga, turned on, and girl that can fit!
-				if (player.hasVagina() && player.lust >= 33 && !player.isNaga()) {
-					outputText("  You find yourself musing that you could probably take advantage of the poor 'doggy'.  Do you fuck it?", false);
-					game.simpleChoices("Fuck it", game.mountain.hellHoundScene.hellHoundPropahRape, "", null, "", null, "", null, "Leave", game.combat.cleanupAfterCombat);
-				} else {
-					game.combat.cleanupAfterCombat();
-				}
 			} else {
 				outputText("Unable to bear hurting you anymore, the hellhound's flames dim as he stops his attack. The two heads look at you, whining plaintively.  The hellhound slowly pads over to you and nudges its noses at your crotch.  It seems he wishes to pleasure you.\n\n", true);
-				var temp2:Function =null;
-				if (player.gender > 0 && player.lust >= 33) {
-					outputText("You realize your desires aren't quite sated.  You could let it please you", false);
-					//Rape if not naga, turned on, and girl that can fit!
-					if (player.hasVagina() && player.lust >= 33 && !player.isNaga()) {
-						outputText(" or make it fuck you", false);
-						temp2 = game.mountain.hellHoundScene.hellHoundPropahRape;
-					}
-					outputText(".  What do you do?", false);
-					game.simpleChoices("Lick", game.mountain.hellHoundScene.hellHoundGetsRaped, "Fuck", temp2, "", null, "", null, "Leave", game.combat.cleanupAfterCombat);
+			}
+			game.menu();
+			
+			game.addButtonDisabled(0, "Fuck it", "Ride his twin cocks. This scene requires you to have vagina and sufficient arousal. This scene can not accomodate naga body.");
+			game.addButtonDisabled(1, "Lick", "Make him use his tongues. This scene requires you to have genitals and sufficient arousal. This scene requires lust victory.");
+			
+			if (player.lust >= 33 && !player.isGenderless()) {
+				if (player.hasVagina() && !player.isNaga()) {
+					game.addButton(0, "Fuck it", game.mountain.hellHoundScene.hellHoundPropahRape, undefined, undefined, undefined, "Ride his twin cocks.");
 				}
-				else {
-					outputText("You turn away, not really turned on enough to be interested in such an offer.", false);
-					game.combat.cleanupAfterCombat();
+				if (!hpVictory) {
+					game.addButton(1, "Lick", game.mountain.hellHoundScene.hellHoundGetsRaped, undefined, undefined, undefined, "Make him use his tongues.");
 				}
 			}
+			
+			game.addButton(14, "Leave", game.combat.cleanupAfterCombat);
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -146,12 +139,15 @@
 			this.temperment = TEMPERMENT_LOVE_GRAPPLES;
 			this.level = 5;
 			this.gems = 10+rand(10);
-			this.drop = new WeightedDrop().add(consumables.CANINEP, 3)
-					.addMany(1, consumables.BULBYPP,
-							consumables.KNOTTYP,
-							consumables.BLACKPP,
-							consumables.DBLPEPP,
-							consumables.LARGEPP);
+			this.drop = new WeightedDrop()
+					.add(consumables.CANINEP, 6)
+					.add(consumables.WOLF_PP, 1)
+					.addMany(2,
+						consumables.BULBYPP,
+						consumables.KNOTTYP,
+						consumables.BLACKPP,
+						consumables.DBLPEPP,
+						consumables.LARGEPP);
 			this.tailType = TAIL_TYPE_DOG;
 			this.special1 = hellhoundFire;
 			this.special2 = hellhoundScent;

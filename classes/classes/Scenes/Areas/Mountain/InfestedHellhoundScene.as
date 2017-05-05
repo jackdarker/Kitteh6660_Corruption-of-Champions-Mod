@@ -40,7 +40,7 @@ package classes.Scenes.Areas.Mountain
 			}
 			clearOutput();
 			//[BOTH INFESTED]
-			if (player.totalCocks() > 0 && player.findStatusEffect(StatusEffects.Infested) >= 0) {
+			if (player.totalCocks() > 0 && player.hasStatusEffect(StatusEffects.Infested)) {
 				//(LUST)
 				if (player.lust >= player.maxLust()) {
 					outputText("No amount of shame from the act of submitting to such a beast can overpower the furnace of lust raging in your loins.  ", false);
@@ -55,13 +55,13 @@ package classes.Scenes.Areas.Mountain
 				outputText("The beast takes a sniff at your groin, then backs away, looking confused.  You glance down and realize just how hard you've become.  A few of your worms are hanging from the " + player.cockHead() + " of your " + player.cockDescript(0) + ", starting to flow out in a steady stream.  It feels better than it has any right to.   A shadow falls across you as the hellhound moves over you, its imposing twin members hard and pulsating above you.  Hot splatters of jism drip onto your chest as the beast's worms begin escaping, forcing thick globules of dog-semen out along with them.\n\n", false);
 
 				outputText("Overcome by the worms, both you and the beast begin orgasming, without external stimulation of any kind.  Worms and cum mix together on top of you, slowly building into a large mound that covers the better part of your torso.  Exhausted and drained, you both squirt weakly, emptying the last of your smallest worms into the pile.   Your eyes close as the beast lies down with you, and together the two of you lose consciousness as your newly birthed worm colony squirms away.", false);
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("lib", 1, "sen", 1, "cor", 1);
 				player.cumMultiplier += .5;
 				combat.cleanupAfterCombat();
 			}
 			//[PLAYER'S COCKS ARE BIG ENOUGH TO BE INFECTED]
-			else if (player.findStatusEffect(StatusEffects.Infested) < 0 && player.biggestCockArea() >= 40 && player.hasCock()) {
+			else if (!player.hasStatusEffect(StatusEffects.Infested) && player.biggestCockArea() >= 40 && player.hasCock()) {
 				//(LUST)
 				if (player.lust >= player.maxLust()) {
 					outputText("No amount of shame from the act of submitting to such a beast can overpower the furnace of lust raging in your loins.  ", false);
@@ -108,7 +108,7 @@ package classes.Scenes.Areas.Mountain
 				}
 				//(+infested)
 				player.createStatusEffect(StatusEffects.Infested, 0, 0, 0, 0);
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("lib", 1, "sen", 1, "cor", 1);
 				player.cumMultiplier += .2;
 				if (flags[kFLAGS.EVER_INFESTED] == 0) {
@@ -151,12 +151,14 @@ package classes.Scenes.Areas.Mountain
 				//random chance of big lust boost as worms evacuate 
 				//your body.  When worms leave they take with them up 
 				//to 5 fertility, to a minimum of 10. 
-				if (player.findStatusEffect(StatusEffects.WormPlugged) >= 0)
+				if (player.hasStatusEffect(StatusEffects.WormPlugged))
 					player.addStatusValue(StatusEffects.WormPlugged, 1, 1 + rand(5));
 				else
 					player.createStatusEffect(StatusEffects.WormPlugged, 1 + rand(5), 0, 0, 0);
-				player.knockUpForce(PregnancyStore.PREGNANCY_WORM_STUFFED, 100 + player.statusEffectv1(StatusEffects.WormPlugged)); //Will be cleared when the WormPlugged effect ends
-				player.orgasm();
+				
+				//TODO add some text if already pregnant?
+				player.knockUp(PregnancyStore.PREGNANCY_WORM_STUFFED, 100 + player.statusEffectv1(StatusEffects.WormPlugged),100,1); //Will be cleared when the WormPlugged effect ends
+				player.orgasm('Vaginal');
 				dynStats("lib", 1, "cor", 1);
 				combat.cleanupAfterCombat();
 			}
@@ -188,7 +190,7 @@ package classes.Scenes.Areas.Mountain
 				outputText("Unable to support yourself any longer, you collapse, your hips held up by the demonic black dog-dick lodged in your orifice.  They keep cumming and cumming, until your body takes a slow slide off to the ground.  Your eyes drift closed, lulled to sleep by the squirming warmth plugging your " + player.assholeDescript() + " and coating your back.", false);
 				outputText("  ", false);
 				player.buttChange(monster.cockArea(0), true);
-				player.orgasm();
+				player.orgasm('Anal');
 				dynStats("lib", 1, "cor", 1);
 				combat.cleanupAfterCombat();
 			}

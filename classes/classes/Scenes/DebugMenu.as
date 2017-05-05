@@ -51,6 +51,7 @@ package classes.Scenes
 				addButton(2, "Flag Editor", flagEditor, null, null, null, "Edit any flag. \n\nCaution: This might screw up your save!");
 				addButton(3, "Reset NPC", resetNPCMenu, null, null, null, "Choose a NPC to reset.");
 				if (player.isPregnant()) addButton(4, "Abort Preg", abortPregnancy);
+				addButton(5, "DumpEffects", dumpEffectsMenu, null, null, null, "Display your status effects");
 				addButton(7, "HACK STUFFZ", styleHackMenu, null, null, null, "H4X0RZ");
 				addButton(14, "Exit", playerMenu);
 			}
@@ -60,7 +61,14 @@ package classes.Scenes
 				doNext(playerMenu);
 			}
 		}
-		
+		private function  dumpEffectsMenu():void {
+			clearOutput();
+			for each (var effect:StatusEffectClass in player.statusEffects) {
+				outputText("'"+effect.stype.id+"': "+effect.value1+" "+effect.value2+" "+effect.value3+" "+effect.value4+"\n");
+			}
+			doNext(playerMenu);
+		}
+
 		//Spawn items menu
 		private function itemSpawnMenu():void {
 			setItemArrays();
@@ -87,7 +95,7 @@ package classes.Scenes
 			var buttonPos:int = 0; //Button positions 4 and 9 are reserved for next and previous.
 			for (var i:int = 0; i < 12; i++) {
 				if (array[((page-1) * 12) + i] != undefined) {
-					if (array[((page-1) * 12) + i] != null) addButton(buttonPos, array[((page-1) * 12) + i].shortName, inventory.takeItem, array[((page-1) * 12) + i], createCallBackFunction2(displayItemPage, array, page));
+					if (array[((page-1) * 12) + i] != null) addButton(buttonPos, array[((page-1) * 12) + i].shortName, inventory.takeItem, array[((page-1) * 12) + i], curry(displayItemPage, array, page));
 				}
 				buttonPos++;
 				if (buttonPos == 4 || buttonPos == 9) buttonPos++;
@@ -557,6 +565,7 @@ package classes.Scenes
 			player.legCount = 2;
 			player.skinType = SKIN_TYPE_FUR;
 			player.skinDesc = "fur";
+			player.underBody.restore(); // Restore the underbody for now
 			//Draconic TF
 			player.hornType = HORNS_DRACONIC_X2;
 			player.horns = 4;
@@ -578,8 +587,14 @@ package classes.Scenes
 			player.lowerBody = LOWER_BODY_TYPE_CAT;
 			player.legCount = 2;
 			//Draconic TF
-			player.skinType = SKIN_TYPE_LIZARD_SCALES;
-			player.skinDesc = "scales";
+			player.skinType = SKIN_TYPE_DRAGON_SCALES;
+			player.skinAdj = "tough";
+			player.skinDesc = "shield-shaped dragon scales";
+			player.furColor = player.hairColor;
+			player.underBody.type = UNDER_BODY_TYPE_DRAGON;
+			player.underBody.copySkin({        // copy the main skin props to the underBody skin ...
+				desc: "ventral dragon scales"  // ... and only override the desc
+			});
 			player.tongueType = TONGUE_DRACONIC;
 			player.hornType = HORNS_DRACONIC_X2;
 			player.horns = 4;

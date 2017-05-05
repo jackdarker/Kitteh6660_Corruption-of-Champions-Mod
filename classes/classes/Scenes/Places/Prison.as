@@ -161,7 +161,7 @@ package classes.Scenes.Places
 				}
 				if (oldEsteem < 85 && player.esteem >= 85)
 				{
-					outputText("\n<b>Your self-esteem is now very high. Your ability to recover your willpower is greatly increaed, your powerful sense of self-worth makes ignoring the criticisms and demands of others second nature, and your intelligence greatly aids you in the process of unlearning any submissive tendencies you may have.</b>\n",false);
+					outputText("\n<b>Your self-esteem is now very high. Your ability to recover your willpower is greatly increased, your powerful sense of self-worth makes ignoring the criticisms and demands of others second nature, and your intelligence greatly aids you in the process of unlearning any submissive tendencies you may have.</b>\n",false);
 				}
 			}
 			if (player.esteem > oldEsteem) showStatUp("esteem");
@@ -211,7 +211,7 @@ package classes.Scenes.Places
 				}
 				if (oldObey >= 70 && player.obey < 70 || oldObey < 45 && player.obey >= 45)
 				{
-					outputText("\n<b>Your ability to resist the demands of those who would dominate you is now essentially nonexistent. It still brings you great shame to give up agency over your actions, but you find yourself starting to crave that shame. While you manage to exert the willpower to resist an order from time to time, you are begining to wonder if you are doing so out of a genuine desire for self determinance, or simply because the experience of being punished is becoming exciting to you.</b>\n",false);
+					outputText("\n<b>Your ability to resist the demands of those who would dominate you is now essentially nonexistent. It still brings you great shame to give up agency over your actions, but you find yourself starting to crave that shame. While you manage to exert the willpower to resist an order from time to time, you are beginning to wonder if you are doing so out of a genuine desire for self determinance, or simply because the experience of being punished is becoming exciting to you.</b>\n",false);
 				}
 				if (oldObey >= 90 && player.obey < 90 || oldObey < 70 && player.obey >= 70)
 				{
@@ -1027,14 +1027,14 @@ package classes.Scenes.Places
 				player.itemSlot(i).emptySlot();
 			}
 			flags[kFLAGS.PRISON_DOOR_UNLOCKED] = 0;
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyStatus) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyStatus))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyStatus,0,0,0,0);
 			}
 			
 			if ((trainingFeed.prisonCaptorFeedingQuestTrainingExists()) && ((trainingFeed.prisonCaptorFeedingQuestTrainingIsComplete()) || (trainingFeed.prisonCaptorFeedingQuestTrainingIsTimeUp())))
 			{
-				outputText("\n\n(Placeholder) Mistress Elly wecomes you back from your slutty adventures in the outside world.\n\n");
+				outputText("\n\n(Placeholder) Mistress Elly welcomes you back from your slutty adventures in the outside world.\n\n");
 				trainingFeed.prisonCaptorFeedingQuestTrainingResolve();
 				return false;
 			}
@@ -1047,7 +1047,7 @@ package classes.Scenes.Places
 			if (player.statusEffectv1(StatusEffects.PrisonCaptorEllyStatus) > 0)
 			{
 				outputText("\n\nMomentarily she breaks her piercing stare and speaks. \"<i>Welcome back, slave</i>\" she intones in a voice every bit as beautiful and compelling as her face, \"<i>I take it your field education went well. Did you give yourself a lesson about fighting back by letting a few nice minotaurs rape you? Or maybe you went for some 'archery lessons' with that centaur fellow.</i>\" She leans in close to you gives your " + player.assDescript() + " a fierce but playful slap. \"<i>You could certainly learn some useful things from him.</i>\" She closes the distance further, and her natural, musky, alluring scent washes over you. For a moment you aren't sure if you want to fall to your knees and embrace her or cower pitifully in the shadow of her overpowering presence. Your gaze becomes transfixed on the mesmerizing movements of her deliciously pouty crimson lips.",false);
-				outputText("\n\n\"<i>Whatever you may have been doing, I'm pleased that you've decided to come back and continue your formal education with me. I know you are eager for it to be complete, but rememeber it takes time to understand that you are...</i>\" Defying all reason, she somehow moves even closer to you.",false);
+				outputText("\n\n\"<i>Whatever you may have been doing, I'm pleased that you've decided to come back and continue your formal education with me. I know you are eager for it to be complete, but remember it takes time to understand that you are...</i>\" Defying all reason, she somehow moves even closer to you.",false);
 				outputText("\n\n\"<i>a pliable...</i>\" Her strawberry tongue traces the contours of her lips as she purrs the word, then darts out to tease yours. Shivers run down your spine.",false);
 				outputText("\n\n\"<i>obedient...</i>\" The fingers of her right hand gently caress your " + player.chestDesc() + ".",false);
 				outputText("\n\n\"<i>servile...</i>\" The fingers of her left hand forcefully probe your " + player.assholeDescript() + ".",false);
@@ -1137,7 +1137,7 @@ package classes.Scenes.Places
 			outputText(images.showImage("prison-cell"), false);
 			switch(flags[kFLAGS.PRISON_PUNISHMENT]) {
 				case 0: //Default cell
-					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eylets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
+					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eyelets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
 					break;
 				case 1: //Stockades
 					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eyelets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
@@ -1147,14 +1147,14 @@ package classes.Scenes.Places
 					outputText("You are confined in a dark stone box. You can't move more than an inch in either direction, but you can stand up or sit down. A collection of monstrous dildos extend from the horizontal bar directly underneath you, doing their best to demoralize you. A small slit in the panel allows you to see the cell. \n\n");
 					break;
 				case 3: //BJ Trainer
-					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eylets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
+					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eyelets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
 					punishments.prisonCaptorPunishmentBJTrainerDescribeStatus(true);
 					break;
 				case 4: //Training Crate
 					outputText("(Placeholder) You are confined to the training crate as part of your lesson.");
 					break;
 				default:
-					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eylets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
+					outputText("You are in a dimly lit but spacious cell. However, the size of the room is little comfort to you as it is filled with all manner of restraints and torture devices. Eyelets, metal rings, bars and hooks are scattered around the ceiling, floor and walls providing a near endless variety of ways to restrain a person. A wooden stockade is installed in the center of the room, a whipping post and a rack stand in one corner, and in another there is a large and ominous floor to ceiling stone box. \n\n");
 			}
 			if (model.time.hours >= 6 && model.time.hours <= 20) outputText("Mercifully, fresh air and sunlight can enter the room through narrow slit windows opposite the door.");
 			else outputText("You can see the blood-red moon contrasting against black sky through the narrow slit windows.");
@@ -1299,7 +1299,7 @@ package classes.Scenes.Places
 					removeButton(4);
 				}
 				addButton(8, "Masturbate", getGame().masturbation.masturbateMenu);
-				if (((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= 66) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) && !(player.findStatusEffect(StatusEffects.Exgartuan) >= 0 && player.statusEffectv2(StatusEffects.Exgartuan) == 0) || flags[kFLAGS.SFW_MODE] >= 1) addButton(8, "Meditate", getGame().masturbation.masturbateMenu);
+				if (((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= 66) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) && !(player.hasStatusEffect(StatusEffects.Exgartuan) && player.statusEffectv2(StatusEffects.Exgartuan) == 0) || flags[kFLAGS.SFW_MODE] >= 1) addButton(8, "Meditate", getGame().masturbation.masturbateMenu);
 			}
 			//Alter menu depending on punishment.
 			if (flags[kFLAGS.PRISON_PUNISHMENT] == 1) {
@@ -1489,7 +1489,7 @@ package classes.Scenes.Places
 			dynStats("lus", 20);
 			changeObey(1, inPrison);
 			changeEsteem( -1, inPrison);
-			if (player.findStatusEffect(StatusEffects.BonusACapacity) < 0) {
+			if (!player.hasStatusEffect(StatusEffects.BonusACapacity)) {
 				player.createStatusEffect(StatusEffects.BonusACapacity, 2, 0, 0, 0);
 			}
 			else {
@@ -1842,7 +1842,7 @@ package classes.Scenes.Places
 				return;
 			}
 			prisonLoadGuard(true);
-			outputText("You pound on the door for what feels like an eternity.  Just as you are beginining to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
+			outputText("You pound on the door for what feels like an eternity.  Just as you are beginning to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
 			outputText(prisonGuard.guardCaptitalA + " " + prisonGuard.guardType + " bursts through the door but before " + prisonGuard.guardPronoun1 + " can react you jump at " + prisonGuard.guardPronoun2 + " in rage.\n",false);
 			prisonEscapeFightStart();
 		}
@@ -1863,7 +1863,7 @@ package classes.Scenes.Places
 				return;
 			}
 			prisonLoadGuard(true);
-			outputText("You call out for your guard for what feels like an eternity.  Just as you are beginining to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
+			outputText("You call out for your guard for what feels like an eternity.  Just as you are beginning to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
 			outputText("As the " + prisonGuard.guardType + " enters the room, " + prisonGuard.guardPronoun1 + " sees you kneeling on all fours presenting your " + player.buttDescript() + " to him like a bitch in heat. As seductively as you can, you ask " + prisonGuard.guardPronoun2 + " how long it has been since " + prisonGuard.guardPronoun1 + " had a good fuck and offer " + prisonGuard.guardPronoun2 + " one in exchange for your freedom.\n\n",false);
 			sexyScore = rand(100);
 			sexyScore = sexyScore + prisonGuard.guardEscapeSeduceBonus;
@@ -1909,7 +1909,7 @@ package classes.Scenes.Places
 				return;
 			}
 			prisonLoadGuard(true);
-			outputText("You call out for your guard for what feels like an eternity.  Just as you are beginining to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
+			outputText("You call out for your guard for what feels like an eternity.  Just as you are beginning to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
 			outputText("As the " + prisonGuard.guardType + " enters the room, you quickly start talking. As cleverly as you can, you point out that there is a large sum of gems sitting with your gear somewhere just outside the door, and offer " + prisonGuard.guardPronoun2 + " as much as " + prisonGuard.guardPronoun1 + " wants in exchange for your freedom.\n\n",false);
 			charmScore = rand(100);
 			charmScore = charmScore + prisonGuard.guardEscapeBribeBonus;
@@ -1961,7 +1961,7 @@ package classes.Scenes.Places
 				outputText("You spend a few minutes trying to steel yourself for your escape attempt but before long you find yourself overwhelmed by the hopelessness of your situation and with fear of what your " + prisonCaptor.captorTitle + " would do if you were caught in the act. You quickly decide not to press your luck any further.",false);
 				return;
 			}
-			outputText("You pound on the door for what feels like an eternity.  Just as you are beginining to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
+			outputText("You pound on the door for what feels like an eternity.  Just as you are beginning to lose hope that anyone will hear you, the sound of footsteps comes echoing down the hallway.\n\n",false);
 			outputText(prisonGuard.guardCaptitalA + " " + prisonGuard.guardType + " bursts through the door and briefly looks around in confusion.\n\n",false);
 			stealthScore = rand(100);
 			stealthScore = stealthScore + prisonGuard.guardEscapeSneakBonus;
@@ -2103,8 +2103,11 @@ package classes.Scenes.Places
 		//Conclusion
 		public function captorChanceChoose():void {
 			clearOutput();
-			outputText("As you make your way back to camp, you can't help but think about how easy it is to find yourself knocked unconscious and left helpless in the wilderness of Mareth. While slave hunters have never plucked you off the ground in such a state before, now that you've bumbled into being captured by them you consider that they might come hunting for you now that you've escaped. You give it a moment's thought. Are you now in danger of being recaptured should you be defeated in combat?",false);
-			simpleChoices("Likely", chooseLikelyChance, "Maybe", chooseMaybeChance, "Never", chooseNeverChance, "", null, "", null);
+			outputText("As you make your way back to camp, you can't help but think about how easy it is to find yourself knocked unconscious and left helpless in the wilderness of Mareth. While slave hunters have never plucked you off the ground in such a state before, now that you've bumbled into being captured by them you consider that they might come hunting for you now that you've escaped. You give it a moment's thought. Are you now in danger of being recaptured should you be defeated in combat?", false);
+			menu();
+			addButton(0, "Likely", chooseLikelyChance);
+			addButton(1, "Maybe", chooseMaybeChance);
+			addButton(2, "Never", chooseNeverChance);
 		}
 		
 		public function chooseLikelyChance():void
@@ -2172,11 +2175,11 @@ package classes.Scenes.Places
 			}
 			else if (player.obey < 45)
 			{
-				outputText(" You are discomforted to realize that a good part of you is dissapointed by this fact, and somewhere in the back of your mind you find yourself considering exploring a few dark alleys the next time you visit the more unsavory corners of Mareth.",false);
+				outputText(" You are discomforted to realize that a good part of you is disappointed by this fact, and somewhere in the back of your mind you find yourself considering exploring a few dark alleys the next time you visit the more unsavory corners of Mareth.",false);
 			}
 			else if (player.obey < 70)
 			{
-				outputText(" Suddenly you are overcome with dissapointment by this fact, and you find yourself actively fantasizing about exploring dark alleys the next time you visit the more unsavory corners of Mareth.",false);
+				outputText(" Suddenly you are overcome with disappointment by this fact, and you find yourself actively fantasizing about exploring dark alleys the next time you visit the more unsavory corners of Mareth.",false);
 			}
 			else
 			{
@@ -2450,9 +2453,11 @@ package classes.Scenes.Places
 				}
 				billieScene.prisonCaptorBillieEventChange(1);
 				trace("Elly");
-				outputText(prisonCaptor.captorTitle + " " + prisonCaptor.captorName + " enters the room to find you writhing on the floor with unmanageable lust and is clearly amused by your pathetic state of afairs. After a moment's thought " + prisonCaptor.captorPronoun1 + " comes to a decision and says, \"<i>Beg me to fuck you, and I might take pity on you.</i>\"\n\n",false);
-				outputText("Do you give in to your lust and beg your " + prisonCaptor.captorTitle + " to fuck you, or do you try to resist? " + prisonWillCostDescript(15),false);
-				simpleChoices("Beg",prisonCaptorBegSubmit,"Resist",prisonCaptorBegResist,"",null,"",null,"",null);
+				outputText(prisonCaptor.captorTitle + " " + prisonCaptor.captorName + " enters the room to find you writhing on the floor with unmanageable lust and is clearly amused by your pathetic state of affairs. After a moment's thought " + prisonCaptor.captorPronoun1 + " comes to a decision and says, \"<i>Beg me to fuck you, and I might take pity on you.</i>\"\n\n",false);
+				outputText("Do you give in to your lust and beg your " + prisonCaptor.captorTitle + " to fuck you, or do you try to resist? " + prisonWillCostDescript(15), false);
+				menu();
+				addButton(0, "Beg", prisonCaptorBegSubmit);
+				addButton(1, "Resist", prisonCaptorBegResist);
 				return true;
 			}
 			//Pet dreams
@@ -2640,7 +2645,7 @@ package classes.Scenes.Places
 			else
 			{
 				selector = rand(10);
-				if (player.findStatusEffect(StatusEffects.Heat) >= 0)
+				if (player.hasStatusEffect(StatusEffects.Heat))
 				{
 					selector = 6;
 				}
@@ -2674,9 +2679,10 @@ package classes.Scenes.Places
 						{
 							outputText("Your");
 						}
-						outputText(" abdomen is wracked with spasms of pleasure as a fountain of clear, viscous fluid erupts from your [cunt] and coats your Mistress' head and torso. She allows herself to indulge in a moment of ecstasy, rubbing your juices into her firm, shapely tits with her left hand while using them to massage her dick with her right. Despite being lost in your own pleasure, you cannot help but feel gratifed watching her face, eyes closed, head tilted back, mouth agape, fiery red bangs haphazardly scattered across her face in sticky strands. Then the moment passes, and she speaks.");
+						outputText(" abdomen is wracked with spasms of pleasure as a fountain of clear, viscous fluid erupts from your [cunt] and coats your Mistress' head and torso. She allows herself to indulge in a moment of ecstasy, rubbing your juices into her firm, shapely tits with her left hand while using them to massage her dick with her right. Despite being lost in your own pleasure, you cannot help but feel gratified watching her face, eyes closed, head tilted back, mouth agape, fiery red bangs haphazardly scattered across her face in sticky strands. Then the moment passes, and she speaks.");
 					}
 					outputText("\"<i>Do you understand now, slave? Your body craves my abuse. Embrace it -- once you do, your life will become an unending river of pleasure</i>\"");
+					player.orgasm('Generic');
 					//buttChange(12,true,true,false); //Doesn't count as it would be a waste of virginity.
 					break;
 				case 3:
@@ -2690,6 +2696,7 @@ package classes.Scenes.Places
 						outputText("(Placeholder) \"<i>You're going to get a special treat today, [boy], but first you need to beg me to put a baby in your dirty [cunt].</i>\" After a brief hesitation, you do so. She makes you present yourself like a bitch in heat while continuing to beg. Finally she gives you want you want, and fills your womb with her potent seed.\n\n");
 						player.knockUp(PregnancyStore.PREGNANCY_IMP, 350, 50);
 						player.cuntChange(32,true,true,false);
+						player.orgasm('Vaginal');
 						break;
 					}
 				case 7:
@@ -2712,10 +2719,10 @@ package classes.Scenes.Places
 					
 					outputText(" to make you spurt. Your body wants to be used by my dick and filled with my seed. You are a cocksucking, anal loving, cum-slut. Accept it.</i>\"");
 					player.buttChange(32,true,true,false);
+					player.orgasm('Anal');
 			}
 			player.slimeFeed();
 			changeObey(1,inPrison);
-			player.orgasm();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -2730,7 +2737,7 @@ package classes.Scenes.Places
 			else
 			{
 				selector = rand(10);
-				if (player.findStatusEffect(StatusEffects.Heat) >= 0)
+				if (player.hasStatusEffect(StatusEffects.Heat))
 				{
 					selector = 6;
 				}
@@ -2754,11 +2761,13 @@ package classes.Scenes.Places
 					{
 						outputText("With four fingers in your bum and you teetering on the agonizing edge of orgasm, she decides to give you a second chance. She gives you a chance to beg her for her cock, and you take it. She then stands between your legs, replaces the fingers in your ass with the tip of her enormous cock. However, instead of fucking you, she tells you that you will need to show your contrition and fuck yourself. Overwhelmed by lust, you immediately respond, clumsily shifting your weight forward and backward until you find your self swinging wildly, stuffing yourself brutally with her fleshy shaft. Before long your exertion pays off and you orgasm.\n\n");
 						player.buttChange(32,true,true,false);
+						player.orgasm('Anal');
 					}
 					else
 					{
 						outputText("Eventually she squeezes her entire hand inside. She holds it still, and begins to push your body back and forth so that the swinging motion forces her fist in and out of your sphincter, all the while continuing to expertly hold you at the edge of orgasm. Only after minutes of this agonizing treatment does she allow you to orgasm.");
 						//buttChange(20,true,true,false); //Must have phallus for anal virginity! Therefore this doesn't count.
+						player.orgasm('Generic');
 					}
 					if (player.hasCock())
 					{
@@ -2774,7 +2783,7 @@ package classes.Scenes.Places
 						{
 							outputText(" Your");
 						}
-						outputText(" abdomen is wracked with spasms of pleasure as a fountain of clear, viscous fluid erupts from your [cunt] and coats your Mistress' head and torso. She allows herself to indulge in a moment of ecstasy, rubbing your juices into her firm, shapely tits with her left hand while using them to massage her dick with her right. Despite being lost in your own pleasure, you cannot help but feel gratifed watching her face, eyes closed, head tilted back, mouth agape, fiery red bangs haphazardly scattered across her face in sticky strands. Then the moment passes, and she speaks.");
+						outputText(" abdomen is wracked with spasms of pleasure as a fountain of clear, viscous fluid erupts from your [cunt] and coats your Mistress' head and torso. She allows herself to indulge in a moment of ecstasy, rubbing your juices into her firm, shapely tits with her left hand while using them to massage her dick with her right. Despite being lost in your own pleasure, you cannot help but feel gratified watching her face, eyes closed, head tilted back, mouth agape, fiery red bangs haphazardly scattered across her face in sticky strands. Then the moment passes, and she speaks.");
 					}
 					outputText("\" <i>Do you understand now, slave? Your body craves my abuse. Embrace it -- once you do, your life will become an unending river of pleasure</i>\"");
 					break;
@@ -2785,16 +2794,17 @@ package classes.Scenes.Places
 					if (player.hasVagina())
 					{
 						outputText("(Placeholder) \"<i>You're going to get a special treat today, [boy], but first you need to beg me to put a baby in your dirty [cunt].</i>\" You petulantly refuse, ");
-						if (player.findStatusEffect(StatusEffects.Heat) >= 0)
+						if (player.hasStatusEffect(StatusEffects.Heat))
 						{
 							outputText("but she simply laughs, walks up to you, and begins to stroke her dick in your face. In a matter of seconds your raging hormones get the better of you and you coyly acquiesce, and ask her to fuck your [pussy]. She makes you present yourself like a bitch in heat while continuing to beg. Finally she gives you want you want, and fills your womb with her potent seed.\n\n");
 						}
 						else
 						{
-							outputText(" and in response she binds your arms tightly behind your back, affixes a wide spreader bar between your knees, and shove your [face] to the floor. \"<i>You misunderstand, slave. You have no choice. I will be filling your sweet little baby hole with cum, but first you <b>will</b> beg me to do it.</i>\" She then begins to finger your [clit], quickly filling you with unmanagable lust. [if (esteem < 40) \"It's not long before your willpower drains\"][if (esteem >= 40) \"You hold out as long as you can, but eventually you cave to your lust\"] and beg her to fuck your [pussy] and make you her breeder bitch. She does so, and you cum explosively the moment you feel her warm juices begin to fill your womb.");
+							outputText(" and in response she binds your arms tightly behind your back, affixes a wide spreader bar between your knees, and shove your [face] to the floor. \"<i>You misunderstand, slave. You have no choice. I will be filling your sweet little baby hole with cum, but first you <b>will</b> beg me to do it.</i>\" She then begins to finger your [clit], quickly filling you with unmanageable lust. [if (esteem < 40) \"It's not long before your willpower drains\"][if (esteem >= 40) \"You hold out as long as you can, but eventually you cave to your lust\"] and beg her to fuck your [pussy] and make you her breeder bitch. She does so, and you cum explosively the moment you feel her warm juices begin to fill your womb.");
 						}
 						player.cuntChange(32,true,true,false);
 						player.knockUp(PregnancyStore.PREGNANCY_IMP, 350, 70);
+						player.orgasm('Vaginal');
 						break;
 					}
 				case 7:
@@ -2817,11 +2827,11 @@ package classes.Scenes.Places
 					
 					outputText(" to make you spurt. Your body wants to be used by my dick and filled with my seed. You are a cocksucking, anal loving, cum-slut. Accept it.</i>\"");
 					player.buttChange(32,true,true,false);
+					player.orgasm('Anal');
 			}
 			outputText("(Placeholder) Afterwards, " + prisonCaptor.captorPronoun1 + " leaves you hogtied to help you remember to obey in the future. ",false);
 			player.slimeFeed();
 			player.changeStatusValue(StatusEffects.PrisonRestraints,2,2);
-			player.orgasm();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -2829,7 +2839,9 @@ package classes.Scenes.Places
 		{
 			outputText("[captorTitle] [captorName] wears a beguiling half smile while studying you intently with [captorhis] piercing eyes, then reaches a decision. \"<i>A good fucking should suffice; whether you try to resist or not, your own body is going to correct your bad behavior today. Either way we're both going to enjoy this, so the only question is how hard you want to make it for yourself?</i>\"[if (lust > 75) \" You wonder if [captorhe] can see just how horny you currently are as you consider how to respond.\"]\n\n");
 			outputText("Do you give in and take your punishment submissively, or do you make an effort to resist?");
-			simpleChoices("Submit", prisonCaptorPunishmentFuckSubmit, "Resist", prisonCaptorPunishmentFuckResist, "", null, "", null, "", null);
+			menu();
+			addButton(0, "Submit", prisonCaptorPunishmentFuckSubmit);
+			addButton(1, "Resist", prisonCaptorPunishmentFuckResist);
 		}
 		
 		public function prisonCaptorPunishmentFuckSubmit():void
@@ -2910,7 +2922,7 @@ package classes.Scenes.Places
 				}
 				else
 				{
-					outputText("You know you are expected to eat it without complaint and your only desire is to relish the humilation of doing so. You are filled with a wonderful mixture of arousal and shame as you dutifully consume the sticky soup.",false);
+					outputText("You know you are expected to eat it without complaint and your only desire is to relish the humiliation of doing so. You are filled with a wonderful mixture of arousal and shame as you dutifully consume the sticky soup.",false);
 					dynStats("lus", 10);
 				}
 				prisonItemBreadHeatEffect();
@@ -2948,16 +2960,15 @@ package classes.Scenes.Places
 				{
 					if (player.pregnancyIncubation == 0)
 					{
-						if (player.findStatusEffect(StatusEffects.Heat) >= 0)
+						if (player.hasStatusEffect(StatusEffects.Heat))
 						{
 							outputText("Your mind clouds as your " + player.vaginaDescript(0) + " moistens.  Despite already being in heat, the desire to copulate constantly grows even larger.",false);
-							temp = player.findStatusEffect(StatusEffects.Heat);
 							if (player.statusEffectv1(StatusEffects.Heat) < 100) player.addStatusValue(StatusEffects.Heat, 1, 10);
 							if (player.statusEffectv2(StatusEffects.Heat) < 100) player.addStatusValue(StatusEffects.Heat, 2, 10);
 							if (player.statusEffectv3(StatusEffects.Heat) < 720) player.addStatusValue(StatusEffects.Heat, 3, 96);
 							dynStats("lib", 10);
 						}
-						if (player.findStatusEffect(StatusEffects.Heat) < 0)
+						if (!player.hasStatusEffect(StatusEffects.Heat))
 						{
 							outputText("Your mind clouds as your " + player.vaginaDescript(0) + " moistens.  Your hands begin stroking your body from top to bottom, your sensitive skin burning with desire.  Fantasies about bending over and presenting your needy pussy to a male overwhelm you as you realize <b>you have gone into heat</b>!", false);
 							player.createStatusEffect(StatusEffects.Heat, 20, 20, 96, 0);
@@ -2978,7 +2989,7 @@ package classes.Scenes.Places
 		
 		public function prisonCaptorTrainingStatusUpdate():void
 		{
-			if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyStatus) < 0)
+			if (!player.hasStatusEffect(StatusEffects.PrisonCaptorEllyStatus))
 			{
 				player.createStatusEffect(StatusEffects.PrisonCaptorEllyStatus,1,0,0,0);
 			}
@@ -3143,7 +3154,7 @@ package classes.Scenes.Places
 					outputText("Normal");
 				}
 				outputText("\n",false);
-				if (player.findStatusEffect(StatusEffects.PrisonCaptorEllyStatus) > 0)
+				if (player.hasStatusEffect(StatusEffects.PrisonCaptorEllyStatus))
 				{
 					outputText("<b>Mistress Elly Training Level: </b>" + player.statusEffectv1(StatusEffects.PrisonCaptorEllyStatus) + " (",false);
 					switch(player.statusEffectv1(StatusEffects.PrisonCaptorEllyStatus))

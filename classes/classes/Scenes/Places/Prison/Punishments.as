@@ -93,7 +93,7 @@ package classes.Scenes.Places.Prison
 					player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP);
 					player.slimeFeed();
 					player.refillHunger(25);
-					player.orgasm();
+					player.orgasm('VaginalAnal');
 					prison.changeEsteem(-3,prison.inPrison);
 					prison.changeObey(1,prison.inPrison);
 					break;
@@ -108,10 +108,6 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPunishmentStockadesFreedom():void
 		{
 			clearOutput();
-			var begEvent:Function = null;
-			var acceptEvent:Function = null;
-			var rejectEvent:Function = null;
-			
 			//Check to see if the player is ready to be released
 			if (player.statusEffectv4(StatusEffects.PrisonCaptorEllyStatus) < 2 + rand(5))
 			{
@@ -121,21 +117,20 @@ package classes.Scenes.Places.Prison
 				return;
 			}
 			outputText("(Placeholder) You are given a chance to be released from the stockades -- all you need do is admit that you deserved to be punished, and apologize for what you did wrong. ",false);
-			begEvent = prisonCaptorPunishmentStockadesFreedomBeg;
-			acceptEvent = prisonCaptorPunishmentStockadesFreedomAccept;
-			rejectEvent = prisonCaptorPunishmentStockadesFreedomReject;
-			
 			//Checks Player "Self Esteem" and "Obedience" to see whether the player will beg for freedom or simply accept it 
-			if (player.esteem > 40 || player.obey < 10)
-			{
-				begEvent = null;
+			outputText("Do you accept your " + prison.prisonCaptor.captorTitle + "'s terms, or do refuse? " + prison.prisonWillCostDescript(15), false);
+			menu();
+			if (player.esteem > 40 || player.obey < 10) {
+				addDisabledButton(0, "Beg");
+			} else {
+				addButton(0, "Beg", prisonCaptorPunishmentStockadesFreedomBeg);
 			}
-			if (player.esteem < 20 && player.obey > 45)
-			{
-				acceptEvent = null;
+			if (player.esteem < 20 && player.obey > 45) {
+				addDisabledButton(1, "Accept");
+			} else {
+				addButton(1, "Accept", prisonCaptorPunishmentStockadesFreedomAccept);
 			}
-			outputText("Do you accept your " + prison.prisonCaptor.captorTitle + "'s terms, or do refuse? " + prison.prisonWillCostDescript(15),false);
-			simpleChoices("Beg",begEvent,"Accept",acceptEvent,"Reject",rejectEvent,"",null,"",null);
+			addButton(2, "Reject", prisonCaptorPunishmentStockadesFreedomReject);
 		}
 		
 		public function prisonCaptorPunishmentStockadesFreedomReject():void
@@ -169,7 +164,7 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPunishmentStockadesFreedomBeg():void
 		{
 			clearOutput();
-			outputText("(Placeholder) You break down and beg your " + prison.prisonCaptor.captorTitle + " to release you, and promise to do as " + prison.prisonCaptor.captorPronoun1 + " commands in the future. You are then given a chance to demonstrate your commitment as " + prison.prisonCaptor.captorPronoun1 + " walks around behind you and allows you to stuggle to fuck yourself on " + prison.prisonCaptor.captorPronoun3 + " cock. After much struggle your [vagOrAss] is fill with jizz, but you are left horny and needing release.",false);
+			outputText("(Placeholder) You break down and beg your " + prison.prisonCaptor.captorTitle + " to release you, and promise to do as " + prison.prisonCaptor.captorPronoun1 + " commands in the future. You are then given a chance to demonstrate your commitment as " + prison.prisonCaptor.captorPronoun1 + " walks around behind you and allows you to struggle to fuck yourself on " + prison.prisonCaptor.captorPronoun3 + " cock. After much struggle your [vagOrAss] is fill with jizz, but you are left horny and needing release.",false);
 			player.slimeFeed();
 			dynStats("lus", 50);
 			prison.changeEsteem(-5,prison.inPrison);
@@ -417,7 +412,7 @@ package classes.Scenes.Places.Prison
 			{
 				player.buttChange(1.7 * newVal,true,true,false);
 			}
-			player.orgasm();
+			player.orgasm('VaginalAnal');
 			prison.changeEsteem(-5,prison.inPrison);
 			prison.changeObey(2,prison.inPrison);
 			doNext(camp.returnToCampUseOneHour);
@@ -426,23 +421,20 @@ package classes.Scenes.Places.Prison
 		public function prisonCaptorPunishmentConfinementFreedom():void
 		{
 			clearOutput();
-			var begEvent:Function = null;
-			var acceptEvent:Function = null;
-			var rejectEvent:Function = null;
 			outputText("(Placeholder) You are given a chance to be released from the isolation chamber -- all you need do is admit that you deserved to be punished, thank your " + prison.prisonCaptor.captorTitle + " for the lesson, and apologize for what you did wrong. ",false);
-			begEvent = prisonCaptorPunishmentConfinementFreedomBeg;
-			acceptEvent = prisonCaptorPunishmentConfinementFreedomAccept;
-			rejectEvent = prisonCaptorPunishmentConfinementFreedomReject;
-			if (player.esteem > 40 || player.obey < 10)
-			{
-				begEvent = null;
+			outputText("Do accept your " + prison.prisonCaptor.captorTitle + "'s terms, or do you refuse? " + prison.prisonWillCostDescript(15), false);
+			menu();
+			if (player.esteem > 40 || player.obey < 10) {
+				addDisabledButton(0, "Beg");
+			} else {
+				addButton(0, "Beg", prisonCaptorPunishmentConfinementFreedomBeg);
 			}
-			if (player.esteem < 20 && player.obey > 45)
-			{
-				acceptEvent = null;
+			if (player.esteem < 20 && player.obey > 45) {
+				addDisabledButton(1, "Accept");
+			} else {
+				addButton(1, "Accept", prisonCaptorPunishmentConfinementFreedomAccept);
 			}
-			outputText("Do accept your " + prison.prisonCaptor.captorTitle + "'s terms, or do you refuse? " + prison.prisonWillCostDescript(15),false);
-			simpleChoices("Beg",begEvent,"Accept",acceptEvent,"Reject",rejectEvent,"",null,"",null);
+			addButton(2, "Reject", prisonCaptorPunishmentConfinementFreedomReject);
 		}
 		
 		public function prisonCaptorPunishmentConfinementFreedomReject():void
@@ -544,7 +536,7 @@ package classes.Scenes.Places.Prison
 			}
 			outputText("(Placeholder) A devious look crosses your " + prison.prisonCaptor.captorTitle + "'s face. \"<i>Normally, this kind of behavior would call for stern punishment. But today, I think I'll teach you a lesson of a different kind. You still seem to be holding onto the idea that you want to be free. I'm going to show you that deep down in your soul you have already accepted the fact that I own both your body and your mind.</i>\"\n\n",false);
 			outputText("Two containers are brought into the room by imp guards. The larger of the two looks like it has a capacity of roughly twenty gallons, the smaller maybe five. Your " + prison.prisonCaptor.captorTitle + " points to the smaller one and says, \"<i>Copies of the keys to your restraints and to the door are inside this basin. As you see, it has a narrow neck that your hands won't be able to reach into, but don't lose hope: they have been attached to an object that will float. If you fill the basin with enough fluid, the keys will float up through the narrow opening and you will be able to take and use them to free yourself. However, you won't be able to fill the basin without a bit of effort. As you can see, the basin has a lid which is attached by a pneumatic tube to this device here.</i>\"\n\n",false);
-			outputText("Your eyes follow the tube across the room to the larger container, which " + prison.prisonCaptor.captorPronoun1 + " has had the imps set up about six feet away from the basin with the keys inside. The cask seems to have no obvious opening on top, but where the tube connects to the container there is a complicated valve with, unsurprisingly, a large, thick dildo attached. You notice that in addition to an opening at the tip, about six or seven inches down the shaft of the dildo there are a series of holes spread around the girthy circumfrence of the thing. You realize that sucking only on the head of the cock will do nothing thanks to those holes -- you will have to swallow the shaft to the point where the holes are all inside your mouth if you want anything to come of your efforts. You are starting to get a good idea of what you are meant to do with this contraption, but " + prison.prisonCaptor.captorTitle + " " + prison.prisonCaptor.captorName + " wants to be sure you fully understand and spells it out for you.\n\n",false);
+			outputText("Your eyes follow the tube across the room to the larger container, which " + prison.prisonCaptor.captorPronoun1 + " has had the imps set up about six feet away from the basin with the keys inside. The cask seems to have no obvious opening on top, but where the tube connects to the container there is a complicated valve with, unsurprisingly, a large, thick dildo attached. You notice that in addition to an opening at the tip, about six or seven inches down the shaft of the dildo there are a series of holes spread around the girthy circumference of the thing. You realize that sucking only on the head of the cock will do nothing thanks to those holes -- you will have to swallow the shaft to the point where the holes are all inside your mouth if you want anything to come of your efforts. You are starting to get a good idea of what you are meant to do with this contraption, but " + prison.prisonCaptor.captorTitle + " " + prison.prisonCaptor.captorName + " wants to be sure you fully understand and spells it out for you.\n\n",false);
 			outputText("\"<i>Form a good seal around the holes on this dick and suck hard, and the fluid you need will come out. Suck enough fluid through that valve, and the pressure generated will cause the pneumatic tube to open the lid to the basin giving you a few moments to deliver the fluid in your mouth to the basin. Do be careful not to waste the opportunity; it takes quite a while for my men to fill one of these casks with cum so you won't get another chance any time soon. Repeat this process until the basin is full, and you earn your freedom. Simple, yes?</i>\" As " + prison.prisonCaptor.captorPronoun1 + " continues speaking, she binds your arms behind your back and hobbles your legs.\n\n ",false);
 			outputText("\"<i>A small extra degree of difficulty. I do want you to feel like you've really earned it, after all. But don't worry, you'll have plenty of time to work at it. Ten hours should suffice, I think. Maybe even a little more if I feel generous. In any case, it will be more than enough time for a person who truly craves freedom to fill the basin and get the keys. But as I said, deep down you don't want freedom. Deep down you love being nothing more than a piece of flesh here to entertain me. I have no doubt that you will spend the next half a day sucking on that dildo and crawling back and forth to that basin with your mouth full of jizz, ostensibly to reach those keys. But really, you will be doing it because you enjoy the abject humiliation of the act. And that, ultimately, will be the lesson you learn today.</i>\" And with that " + prison.prisonCaptor.captorPronoun1 + " leaves you alone in your cell once again.\n\n ",false);
 			player.changeStatusValue(StatusEffects.PrisonCaptorEllyStatus,3,10 + rand(3));
@@ -599,7 +591,7 @@ package classes.Scenes.Places.Prison
 			outputText("and spit the prodigious load into the opening just before the lid closes again. \n\n",false);
 			if (rand(65) > player.spe)
 			{
-				outputText("Unfortunately, thoughout the next hour as you attempt to make subsequent trips between the cask and the basin much of the time you are too slow and clumsy to reach the basin before the pneumatic tube loses pressure and the lid claps shut. When this happens you have no choice but to either swallow your mouthful of cum or let it dribble down your chin, and go back to try again.\n\n",false);
+				outputText("Unfortunately, throughout the next hour as you attempt to make subsequent trips between the cask and the basin much of the time you are too slow and clumsy to reach the basin before the pneumatic tube loses pressure and the lid claps shut. When this happens you have no choice but to either swallow your mouthful of cum or let it dribble down your chin, and go back to try again.\n\n",false);
 			}
 			else
 			{
@@ -708,7 +700,7 @@ package classes.Scenes.Places.Prison
 				}
 				else if (statusVal <= 90)
 				{
-					outputText(" Your face, " + player.allChestDesc() + ", knees, and indeed pratically your whole body are coated in a sticky residue from wallowing back and forth in the lake of cum that has formed between the cask and the basin. ",false);
+					outputText(" Your face, " + player.allChestDesc() + ", knees, and indeed practically your whole body are coated in a sticky residue from wallowing back and forth in the lake of cum that has formed between the cask and the basin. ",false);
 				}
 				else
 				{

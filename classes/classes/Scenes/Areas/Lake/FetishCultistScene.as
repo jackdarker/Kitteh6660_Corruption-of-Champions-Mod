@@ -5,12 +5,21 @@ package classes.Scenes.Areas.Lake
 {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.API.Encounter;
 
-	public class FetishCultistScene extends AbstractLakeContent
-	{
+public class FetishCultistScene extends AbstractLakeContent implements Encounter {
 		public function FetishCultistScene()
 		{
 		}
+
+
+	public function encounterName():String {
+		return "fetishCultist";
+	}
+
+	public function encounterChance():Number {
+		return player.level >= 2 && flags[kFLAGS.FACTORY_SHUTDOWN] > 0 ? 1 : 0;
+	}
 
 		/*
 		 (first draft)
@@ -22,8 +31,16 @@ package classes.Scenes.Areas.Lake
 		 Loot: Could drop a random set of clothing or a costume on death.
 		 */
 
-		public function fetishCultistEncounter():void
-		{
+		public function execEncounter():void {
+			if (!player.hasStatusEffect(StatusEffects.FetishOn)) {
+				player.createStatusEffect(StatusEffects.FetishOn, 0, 0, 0, 0);
+				outputText("While exploring, you notice something unusual on the lake.  This something is quickly moving towards you at a surprising rate, much faster than anything you've ever seen before.  Wary of meeting new things in this world after your previous experiences, you decide to slip behind a nearby hill and watch it while hidden.  Soon the object comes into view and you can see that it is a boat of some kind.  It looks almost like a large open box on the water with some kind of gazebo on it.  Despite how fast it is moving, you can't see any oars or means of moving the boat.  It slows somewhat when it gets close to the shore, but is still going about as fast as you can run when it hits the shore and extends some kind of gangplank onto the lake shore.  With a close up view, you estimate that it is six feet across, ten feet long, and doesn't actually seem to have very much of it underwater.  You guess that it must be magic in some way.  There are several robe-clad figures on board.\n\n", true);
+				outputText("After a moment, a number of the figures disembark down the gangplank and immediately go off in different directions.  You count half a dozen of them, and guess that they are female when one of them passes by close to you and you see the hole in her outfit over her naughty bits.  You look back at the boat to see it close the gangplank, and move back onto the lake, with only one of the figures still on board.  Surprised to hear a sudden yell, you look to the side and see the clothing of the one who passed you earlier shift and twist before becoming some pink outfit that clings to her backside.  You are stunned for a moment as she disappears from sight before you shake your head and move on.  It seems there are new residents to the lake.\n\n<b>(Fetish Cultists can now be encountered!)</b>", false);
+				//(increase player lust from the sights they saw)
+				dynStats("lus", 5);
+				doNext(camp.returnToCampUseOneHour);
+
+			} else {
 			outputText("You see a largely human-looking young woman in the distance in a strange, whorish outfit, seemingly lost in prayers that sound like nonsense to you.  Finally noticing your presence, she confronts you with a lewd smile on her face.\n\nShe has clearly lost her grasp on sanity, and filled the void with pure perversion.", true);
 			if (flags[kFLAGS.CODEX_ENTRY_FETISHFOLLOWERS] <= 0) {
 				flags[kFLAGS.CODEX_ENTRY_FETISHFOLLOWERS] = 1;
@@ -32,6 +49,7 @@ package classes.Scenes.Areas.Lake
 			startCombat(new FetishCultist());
 			spriteSelect(19);
 			doNext(playerMenu);
+		}
 		}
 
 		public function cultistRapesYou():void
@@ -72,7 +90,7 @@ package classes.Scenes.Areas.Lake
 							if (player.armor == armors.C_CLOTH) outputText("You find your " + player.armorName + " back on your body with no sign of the strange clothes you were wearing before.  ", false);
 							else outputText("You are still wearing the " + player.armorName + " that she gave you, and there is no sign of your old clothes.  ", false);
 							outputText("The ordeal has also left you with a slightly dulled mind, and some of the desire you felt still lingers.", false);
-							player.orgasm();
+							player.orgasm('Dick');
 							dynStats("int", -2);
 							dynStats("lus", 10);
 							combat.cleanupAfterCombat();
@@ -124,7 +142,7 @@ package classes.Scenes.Areas.Lake
 						if (player.armor != armors.C_CLOTH) outputText("You find your " + player.armorName + " back on your body with no sign of the strange clothes you were wearing before.  ", false);
 						else outputText("You are still wearing the " + player.armorName + " that she gave you, and there is no sign of your old clothes.  ", false);
 						outputText("The ordeal has also left you with a slightly dulled mind, and some of the desire you felt still lingers.", false);
-						player.orgasm();
+						player.orgasm('Generic');
 						dynStats("int", -2);
 						dynStats("lus", 10);
 						combat.cleanupAfterCombat();
@@ -180,7 +198,7 @@ package classes.Scenes.Areas.Lake
 						if (player.armor != armors.C_CLOTH) outputText("You find your " + player.armorName + " back on your body with no sign of the strange clothes you were wearing before.  ", false);
 						else outputText("You are still wearing the " + player.armorName + " that she gave you, and there is no sign of your old clothes.  ", false);
 						outputText("The ordeal has also left you with a slightly dulled mind, and some of the desire you felt still lingers.", false);
-						player.orgasm();
+						player.orgasm('Generic');
 						dynStats("int", -2);
 						dynStats("lus", 10);
 						combat.cleanupAfterCombat();
@@ -263,7 +281,6 @@ package classes.Scenes.Areas.Lake
 					outputText("Soon you have a fully formed " + player.cockDescript(0) + " standing tall and proud where your old femininity used to lie.  The nurse sets the syringe aside and climbs on top of your legs. She giggles softly before lowering herself and taking your " + player.cockDescript(0) + " between her breasts and starts rubbing and playing with them while running your " + player.cockDescript(0) + " between them.  It is an exquisite experience having her tit fuck your brand new " + player.cockDescript(0) + ", and you notice that she seems to be enjoying it just as much as you are.  It doesn't take long for her ministrations to make you cum between her breasts, and cum you do.  Satisfied, the nurse rises from you and says \"<i>Looks to me like its working properly.  For now, I've got to go take care of another patient. Don't you do anymore running about until I get back, ok?  I'll be back to check on your progress as soon as I'm able!</i>\"  She gives you a wink, and turns to walk out the door.", false);
 					dynStats("sen", 3);
 					changed = true;
-					player.genderCheck();
 					changedCock = true;
 				}
 				//(5 - if player has no genitals)
@@ -273,7 +290,6 @@ package classes.Scenes.Areas.Lake
 					outputText("Soon you have a fully formed " + player.cockDescript(0) + " standing tall and proud where your bare crotch used to lie.  The nurse sets the syringe aside and climbs on top of your legs. She giggles softly before lowering herself and taking your " + player.cockDescript(0) + " between her breasts and starts rubbing and playing with them while running your " + player.cockDescript(0) + " between them.  It is an exquisite experience having her tit fuck your brand new " + player.cockDescript(0) + ", and you notice that she seems to be enjoying it just as much as you are.  It doesn't take long for her ministrations to make you cum between her breasts, and cum you do.  Satisfied, the nurse rises from you and says \"<i>That was fun, maybe later we can practice more.  For now, I've got to go take care of another patient. Don't you do anymore running about until I get back, ok?  I'll be back to check on your progress as soon as I'm able!</i>\"  She gives you a wink, and turns to walk out the door.", false);
 					dynStats("sen", 3);
 					changed = true;
-					player.genderCheck();
 					changedCock = true;
 				}
 				//Check for bad-end start!
@@ -286,7 +302,7 @@ package classes.Scenes.Areas.Lake
 					}
 					else outputText("You are still wearing the " + player.armorName + " that she gave you, and there is no sign of your old clothes.  ", false);
 					outputText("The ordeal has also left you with a slightly dulled mind, and some of the desire you felt still lingers.  ", false);
-					player.orgasm();
+					player.orgasm('Generic');
 					dynStats("int", -2);
 					dynStats("lus", 10);
 					combat.cleanupAfterCombat();
@@ -380,7 +396,7 @@ package classes.Scenes.Areas.Lake
 					if (player.armor != armors.C_CLOTH) outputText("You find your " + player.armorName + " back on your body with no sign of the strange clothes you were wearing before.  ", false);
 					else outputText("You are still wearing the " + player.armorName + " that she gave you, and there is no sign of your old clothes.  ", false);
 					outputText("The ordeal has also left you with a slightly dulled mind, and some of the desire you felt still lingers.", false);
-					player.orgasm();
+					player.orgasm('Generic');
 					dynStats("int", -2);
 					dynStats("lus", 10);
 					combat.cleanupAfterCombat();
@@ -435,7 +451,7 @@ package classes.Scenes.Areas.Lake
 				//(after either)
 				outputText("You get dressed and notice that the cultist is still lying on the ground in the perverted nun outfit, with a look of utter bliss on her face.  ", false);
 				outputText("Satisfied, you continue on your way.", false);
-				player.orgasm();
+				player.orgasm('Generic');
 			}
 			else if (monster.armorName == "swimsuit") {
 				//(scene requires that the PC not be genderless)
@@ -468,11 +484,18 @@ package classes.Scenes.Areas.Lake
 				//increase PC's lust thanks to foreplay
 				dynStats("lus", 30);
 				//player chooses between; penetrate vagina, vibrator vagina, nevermind.  Options as appropriate.
-				var vibe:Function =null;
-				var fuckVag:Function =null;
-				if (player.hasVagina()) vibe = swimsuitVibrators;
-				if (player.hasCock()) fuckVag = plugSwimsuitVag;
-				simpleChoices("FuckHerVag", fuckVag, "Vibrator", vibe, "", null, "", null, "Leave", combat.cleanupAfterCombat);
+				menu();
+				if (player.hasCock()) {
+					addButton(0, "FuckHerVag", plugSwimsuitVag);
+				} else {
+					addDisabledButton(0, "FuckHerVag", "This scene requires you to have cock.");
+				}
+				if (player.hasVagina()) {
+					addButton(1, "Vibrator", swimsuitVibrators);
+				} else {
+					addDisabledButton(1, "Vibrator", "This scene requires you to have vagina.");
+				}
+				addButton(14, "Leave", combat.cleanupAfterCombat);
 				return;
 			}
 			else {
@@ -486,7 +509,7 @@ package classes.Scenes.Areas.Lake
 					if (player.cor < 40) outputText("Feeling uncomfortable at this, you start to pull away, but her expression turns instantly into a look of pure horror and her body becomes completely tense.  As you move back to her, her body relaxes and her expression returns to the tear-stricken face.  Obviously this is an act and she would be far more bothered by you if you left her without finishing the job.  ", false);
 					outputText("Filled with new determination, you push your " + player.cockDescript(0) + " into her love hole and start to rape her roughly.  Despite the tears, she starts moaning, clearly enjoying the rough treatment.  A little while into the rape, she starts to move against you, almost lovingly.  It is quite clear that she has a lot of experience, but is giving you free reign to do whatever you want.   Feeling in complete control, you decide that this game isn't too bad.  Before long you reach your orgasm and you blow your load deep inside her.", false);
 					outputText("\n\nYou get dressed and notice that the cultist is still lying on the ground with her farm hand outfit torn from her, with a look of utter bliss on her face.  Satisfied, you continue on your way.", false);
-					player.orgasm();
+					player.orgasm('Dick');
 				}
 				//(if player has a vagina)
 				else if (player.vaginas.length > 0) {
@@ -495,7 +518,7 @@ package classes.Scenes.Areas.Lake
 					if (player.cor < 40) outputText("Feeling uncomfortable at this, you start to pull away, but her expression turns instantly into a look of pure horror and her body becomes completely tense.  As you move back to her, her body relaxes and her expression returns to the tear stricken face.  Obviously this is an act and she would be far more bothered by you if you left her without finishing the job.  ", false);
 					outputText("With new determination, you yell at her to lick harder, and to push in as much as she can, or her mother will die.  This time when she starts licking you, she does it almost lovingly.  It is quite clear that she has a lot of experience and, regardless of her words, she obviously wants this.  Feeling in complete control, you think that this game isn't too bad.  Under her expert flicks, you quickly reach a climax.  You pull her head back and tell her that now she has to clean you up.  You specify that she can't just lick this time, she has to drink your excretions.\n\n", false);
 					outputText("A few minutes later, you close your " + player.armorName + " back up, and look back at the cultist.  She is lying on the ground in her farm hand outfit with a look of utter bliss on her face.  Satisfied, you continue on your way.", false);
-					player.orgasm();
+					player.orgasm('Vaginal');
 				}
 				if (player.gender == 0) {
 					outputText("You make her rub your body down, but you don't really have a means to rape her.  Afterwards you do feel better, but didn't get any real release.  Disappointed, you continue on your way.", false);
@@ -534,7 +557,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("You stand up and clean yourself off, thoroughly satisfied with the encounter.  The cultist, on the other hand, collapses in a quivering pile of pleasure on the ground.", false);
 			//set PC's lust to minimum
-			player.orgasm();
+			player.orgasm('Generic');
 			combat.cleanupAfterCombat();
 		}
 
@@ -562,7 +585,7 @@ package classes.Scenes.Areas.Lake
 				}
 				outputText("For hours you're left on the ground writhing in pain and pleasure from the cultist roughly forcing the false cock in and out of you while she moans with pleasure around the quivering shaft inside her.  The sensations are too much for you, and you can do nothing but just lie there and take it.  The cultist brings you to multiple orgasms before you finally pass out from the pain and overstimulation.", false);
 				//increase libido, decrease sensitivity
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("lib", 1, "sen", -3);
 				//victory becomes a defeat, even event
 				hideUpDown();
@@ -571,7 +594,7 @@ package classes.Scenes.Areas.Lake
 				player.lust = player.maxLust();
 				flags[kFLAGS.COMBAT_BONUS_XP_VALUE] = monster.XP;
 				combat.cleanupAfterCombat();
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("lib", 1, "sen", -3);
 			}
 			//It fits!
@@ -593,7 +616,7 @@ package classes.Scenes.Areas.Lake
 				else outputText("a torrent", false);
 				outputText(" of your lady juices.  You shudder for a moment and look down at it on the ground.  It seems to have, deflated a bit?  There is a clear fluid flowing out of the top of the toy.  A thump sound brings the cultist back to your attention, but only briefly as you see she is writhing on the ground in pleasure from the toy still inside her.  You shake your head and get dressed again.", false);
 				//end scene
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("lib", 1, "sen", -3);
 				combat.cleanupAfterCombat();
 			}
@@ -672,7 +695,7 @@ package classes.Scenes.Areas.Lake
 			//[You have found 1xBee Honey]
 			flags[kFLAGS.FORCE_BEE_TO_PRODUCE_HONEY] = 1;
 			//set lust to 0, increase sensitivity slightly
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("lib", .2);
 			//You've now been milked, reset the timer for that
 			player.addStatusValue(StatusEffects.Feeder, 1, 1);

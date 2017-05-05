@@ -115,14 +115,18 @@ internal function isabellaMoovesInGreeting():void {
 		outputText("Isabella still seems to think that moving in would be a good idea; do you accept her proposal, or demur for now?  She doesn't seem too dead-set on the idea.", false);
 		//(Raise threshold for next occurance to current affection + 15)
 		//[Accept - Use standard] [Normal Menu Options]
-		var suck:Function = null;
-		if (player.hasCock()) {
-			if (player.cocks[player.shortestCockIndex()].cockLength < 9)
-				suck = isabellaScene.izzyGivesSmallWangsFreeOral;
+		menu();
+		addButton(0, "Talk", isabellaScene.talkWithIsabella);
+		addButton(1, "Drink", isabellaScene.nomOnMommaIzzysTits);
+		if (player.shortestCockLength() < 9) {
+			addButton(2, "Get Licked", isabellaScene.izzyGivesSmallWangsFreeOral);
+		} else {
+			addDisabledButton(2, "Get Licked", "She likes to lick small cocks.");
 		}
-		choices("Talk", isabellaScene.talkWithIsabella, "Drink", isabellaScene.nomOnMommaIzzysTits, "Get Licked", suck,
-			"Fight 4 Rape", isabellaScene.fightIsabella, "Offer Oral", isabellaScene.volunteerToSlurpCowCunt, "Accept Offer", moveTheBitchIn,
-			"", null, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+		addButton(3, "Fight 4 Rape", isabellaScene.fightIsabella);
+		addButton(4, "Offer Oral", isabellaScene.volunteerToSlurpCowCunt);
+		addButton(5, "Accept Offer", moveTheBitchIn);
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 	flags[kFLAGS.ISABELLA_TIMES_OFFERED_FOLLOWER]++;
 }
@@ -134,14 +138,17 @@ private function turnDownIsabellaFollower():void {
 	outputText("You push back from Isabella's smothering embrace with a little bit of frustration.  As soon as she realizes what's going on, the heavy-breasted woman's cheeks color in embarrassment and she retreats to her shield, her hands kneading the hard metal edge nervously.  You inform her that it would be best she remain here for now, at least until you've succeeded in your mission and brought peace to this strange place.\n\n", false);
 	
 	outputText("Isabella sighs and slumps down against her metal defender at your words.  Eventually, she answers, \"<i>I... understand, " + player.short + ".  I shall continue mein lonely vigil.  Vas zere somezing else I could do for you, ja?</i>\"\n\n", false);
-	var suck:Function = null;
-	if (player.hasCock()) {
-		if (player.cocks[player.shortestCockIndex()].cockLength < 9)
-			suck = isabellaScene.izzyGivesSmallWangsFreeOral;
+	menu();
+	addButton(0, "Talk", isabellaScene.talkWithIsabella);
+	addButton(1, "Drink", isabellaScene.nomOnMommaIzzysTits);
+	if (player.shortestCockLength() < 9) {
+		addButton(2, "Get Licked", isabellaScene.izzyGivesSmallWangsFreeOral);
+	} else {
+		addDisabledButton(2, "Get Licked", "She likes to lick small cocks.");
 	}
-	choices("Talk", isabellaScene.talkWithIsabella, "Drink", isabellaScene.nomOnMommaIzzysTits, "Get Licked", suck,
-		"Fight 4 Rape", isabellaScene.fightIsabella, "Offer Oral", isabellaScene.volunteerToSlurpCowCunt, "", null,
-		"", null, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+	addButton(3, "Fight 4 Rape", isabellaScene.fightIsabella);
+	addButton(4, "Offer Oral", isabellaScene.volunteerToSlurpCowCunt);
+	addButton(14, "Leave", camp.returnToCampUseOneHour);
 }
 //Move Ze Bitch In! 
 private function moveTheBitchIn():void {
@@ -258,19 +265,50 @@ private function backToCamp():void
 	doNext(kGAMECLASS.farm.farmCorruption.rootScene);
 }
 
-private function isabellasAppearance():void {
+/*
+ * Using const variables so text changes also affect the tests, otherwise fixing simple spelling errors will break the tests.
+ * If anyone has a better idea, let me know @brrritssocold
+ */
+
+/**
+ * This scene is used if there are no pregnancy events stored for the given pregnancy.
+ */
+public static const DESC_APPEAR_NO_EVENTS_FOR_PREG_TYPE:String = "you cannot help but question as to whether or not your seed was \"planted\" in the Bovine Braud's womb.";
+/**
+ * Display addition information if the player has a high amount of cum.
+ */
+public static const DESC_APPEAR_PLAYER_HIGH_CUMQ:String = "and your potent babymaking skills, ";
+/**
+ * Display addition information if the player has a high amount of libido.
+ */
+public static const DESC_APPEAR_PLAYER_HIGH_LIBIDO:String = "Every once in a while when the wind blows just right you get a pleasing view of her well lubricated womanhood between her legs. ";
+/**
+ * Description of isabella if not pregnant
+ */
+public static const DESC_APPEAR_EVENT_NOT_PREGNANT:String = "The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is sheer, white silk that barely hides anything from you, least of all her exotic, quad-tipped nipples. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.";
+/**
+ * Description of isabella if she is in the first event stage of pregnancy
+ */
+public static const DESC_APPEAR_EVENT_FIRST_STAGE_PREGNANT:String = "The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Since you did the deed you often find her on her plump, toned, derriere. ";
+/**
+ * Description of isabella if she is in the last event stage of pregnancy
+ */
+public static const DESC_APPEAR_EVENT_LAST_STAGE_PREGNANT:String = "The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. The large woman knees shake slightly when she stands. You find yourself staring at the Bovine's large, exposed bust as it shifts with every breath, her poor exotic nipples slowly leaking out milk in a constant trickle that leaves her melon-like belly glazed and slick, already prepared to feed your offspring. Every once in awhile, you hear a giggle escape the braud as she rubs her large swollen belly. Upon further questioning she simply responds that \"it kicked.\" Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time. Isabella seems to be suffering chronic bouts of pain (mock contractions, perhaps?), but still manages to smile when she sees you look her way. You don't think it'll be long now.";
+
+protected function isabellasAppearance():void {
 	clearOutput();
-	
+
 	if (isabellaScene.pregnancy.isPregnant) {
 		switch(isabellaScene.pregnancy.event) {
+			case 0: //Just in case
 			case 1:
 				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is sheer, white silk that barely hides anything from you, least of all her exotic, quad-tipped nipples. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time. Very little has changed since you two decided to have a child. Despite the fact that Isabella is off her birth controlling herbs, "); 
-				if (player.cumQ() >= 500) outputText("and your potent babymaking skills, "); 
-				outputText("you cannot help but question as to whether or not your seed was \"planted\" in the Bovine Braud's womb.");
+				if (player.cumQ() >= 500) outputText(DESC_APPEAR_PLAYER_HIGH_CUMQ); 
+				outputText(DESC_APPEAR_NO_EVENTS_FOR_PREG_TYPE);
 				break;
 			case 2:
-				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Since you did the deed you often find her on her plump, toned, derriere. ");
-				if (player.lib >= 60) outputText("Every once in a while when the wind blows just right you get a pleasing view of her well lubricated womanhood between her legs. "); 
+				outputText(DESC_APPEAR_EVENT_FIRST_STAGE_PREGNANT);
+				if (player.lib >= 60) outputText(DESC_APPEAR_PLAYER_HIGH_LIBIDO); 
 				outputText("Several times you've asked her if she is okay but she assures you it is just swollen ankles. Isabella's top is sheer, white silk that barely hides anything from you, least of all her exotic, quad-tipped nipples, and what you hope is a new slightly protruding baby bump. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
 				break;
 			case 3:
@@ -283,7 +321,7 @@ private function isabellasAppearance():void {
 				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. She can walk now without too much trouble, you must admit she carries children well. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top cannot contain her large tummy which pops out slightly underneath. Your throat feels a little parched looking at the consistently wet stains near her quad tipped nipples. It would seem that her pregnancy has increased her already potent milk production. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. You cannot help but feel bad when you see her flinch from a cramp making it's way through her body. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
 				break;
 			case 6:
-				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is made of a fine silk, and it clings tightly to her recently expanded bosom and stomach. Unfortunately for the once exquisite garment, the cowgirls increased lactation has stained the white blouse. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. You often find yourself avoiding her gaze. You remember hearing about mothers back in Ingham going through mood swings but nothing could have prepared you for this! It seems as though when she isn't yelling at you, she's smothering you. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
+				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is made of a fine silk, and it clings tightly to her recently expanded bosom and stomach. Unfortunately for the once exquisite garment, the cowgirls increased lactation has stained the white blouse. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. You often find yourself avoiding her gaze. You remember hearing about mothers back in Ingnam going through mood swings but nothing could have prepared you for this! It seems as though when she isn't yelling at you, she's smothering you. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
 				break;
 			case 7:
 				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. You're surprised she's managed to retain her figure with how much more she's been eating lately. You make a mental note to check on your food stores later when you hear her stomach growl again. Isabella's top is made of a fine silk and once had a pure white color that contrasted nicely with her skin. Now the fragile thing looks like its about to split in two! Her breasts are barely contained by the straining garment, and her belly almost completely pops out underneath it, the bovine braud allowing her top to ride over the swell of her stomach to prevent it from tearing apart. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. A fine layer of sweat clings to her brow despite the fact that it is relatively cool outside.She even has a pair of cow ears that flick back and forth from time to time.");
@@ -292,18 +330,27 @@ private function isabellasAppearance():void {
 				outputText("Isabella seems to sleep a lot more nowadays. It seems her pregnancy has had quite a large drain on her energy.The cow-girl is about seven and a half feet tall, when standing. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella no longer wears her fine silk shirt, not wanting to damage it any further. Her impressive bust sways ever so slightly whenever she moves and her nipples have perked up because of the cool air. She is constantly caressing the heavy load of her rounded belly and occasionally casts a glance your way. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Struck across the woman's face is a look of pure satisfaction and bliss. It seems despite all the hardships she couldn't be happier. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
 				break;
 			case 9:
-				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. The large woman knees shake slightly when she stands. You find yourself staring at the Bovine's large, exposed bust as it shifts with every breath, her poor exotic nipples slowly leaking out milk in a constant trickle that leaves her melon-like belly glazed and slick, already prepared to feed your offspring. Every once in awhile, you hear a giggle escape the braud as she rubs her large swollen belly. Upon further questioning she simply responds that \"it kicked.\" Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time. Isabella seems to be suffering chronic bouts of pain (mock contractions, perhaps?), but still manages to smile when she sees you look her way. You don't think it'll be long now.");
+			case 10:
+				outputText(DESC_APPEAR_EVENT_LAST_STAGE_PREGNANT);
 				break;
+			default: //Failsafe
+				outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is sheer, white silk that barely hides anything from you, least of all her exotic, quad-tipped nipples. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
 		}
 	}
 	else {
-		outputText("The cow-girl is about seven and a half feet tall. Instead of feet, she has hooves, complete with fur that grows part-way up her legs. Her olive skirt only covers the upper portion of her dusky, spotted thighs, and it flares out deliciously from her swaying hips. Isabella's top is sheer, white silk that barely hides anything from you, least of all her exotic, quad-tipped nipples. Unlike most of the rest of her, her face is not spotted with dark and white patches. Instead it is pure, unbroken chocolate in color. Two small, bovine horns sprout from her head, emerging from the tangle of her unruly, red curls. She even has a pair of cow ears that flick back and forth from time to time.");
+		outputText(DESC_APPEAR_EVENT_NOT_PREGNANT);
 	}
 	doNext(callForFollowerIsabella);
 }
 
 private function campIzzySexMenu():void {
 	spriteSelect(31);
+	menu();
+	addDisabledButton(2, "Hotdog");
+	addDisabledButton(4, "TentacleSex");
+	addDisabledButton(5, "Get Sucked");
+	addDisabledButton(6, "Fuck Her");
+	
 	var tentacle:Function = null;
 	if (izzyTentacleRapeBool() && player.lust >= 33) tentacle = tentacleBoneFollowerIzzy;
 	var hotdog:Function = null;
@@ -329,8 +376,13 @@ private function campIzzySexMenu():void {
 	if (player.hasCock() && player.lust >= 33) hotdog = repeatGermanBratwurstInCamp;
 	var fuckHer:Function = null;
 	if (player.cockThatFits(164) >= 0 && player.lust >= 33) fuckHer = fuckIsabella;
-	choices(bjTogText, bjToggle, "Drink Milk", isabellaScene.nomOnMommaIzzysTits, "Hotdog", hotdog, "Service Her", isabellaScene.volunteerToSlurpCowCunt, "TentacleSex", tentacle,
-		"Get Sucked", getSucked, "Fuck Her", fuckHer, "", null, "", null, "", null);
+	addButton(0, bjTogText, bjToggle);
+	addButton(1, "Drink Milk", isabellaScene.nomOnMommaIzzysTits);
+	addButton(2, "Hotdog", hotdog);
+	addButton(3, "Service Her", isabellaScene.volunteerToSlurpCowCunt);
+	addButton(4, "TentacleSex", tentacle);
+	addButton(5, "Get Sucked", getSucked);
+	addButton(6, "Fuck Her", fuckHer);
 	addButton(14, "Back", callForFollowerIsabella);
 }
 
@@ -490,7 +542,7 @@ public function isabellaMorningWakeupCall():void {
 	outputText("</i>\"\n\n", false);
 	
 	outputText("You slump down while the tension oozes from your frame.  By the time you can move again, Isabella has walked off towards her section of camp.  Is it just you, or does her ass have a particularly sensuous sway this morning?", false);
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -1.5);
 	doNext(playerMenu);
 }
@@ -652,7 +704,7 @@ private function repeatGermanBratwurstInCamp():void {
 	}
 	flags[kFLAGS.ISABELLA_TIME_SINCE_LAST_HOTDOGGING] = 1;
 	flags[kFLAGS.ISABELLA_TIMES_HOTDOGGED]++;
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -726,7 +778,7 @@ private function tentacleBoneFollowerIzzy():void {
 	
 	//[if wings]
 	if (player.canFly() && player.str >= 90) {
-		outputText("\"<i>Time for a wild ride, sweetheart.</i>\"  You flap your " + player.wingDesc + " wings, mobilizing all your muscles in order to lift yourself off.  The weight you are burdened with is absurdly heavy, and you groan and pant in your attempts at taking off; eventually, you manage to part from the possessive surface little by little, grunting in triumph as you see your redoubled effort paying off; soon you're way up in the sky and Isabella's dickflesh prison is wobbling back and forth as you drag her under you. If it weren't for your colossal tentacle strength, the poor cow-girl would probably crash to the earth in a matter of seconds.  You keep ascending until Isabella realizes how high you both are and shrieks.  \"<i>", false);
+		outputText("\"<i>Time for a wild ride, sweetheart.</i>\"  You flap your [wings], mobilizing all your muscles in order to lift yourself off.  The weight you are burdened with is absurdly heavy, and you groan and pant in your attempts at taking off; eventually, you manage to part from the possessive surface little by little, grunting in triumph as you see your redoubled effort paying off; soon you're way up in the sky and Isabella's dickflesh prison is wobbling back and forth as you drag her under you. If it weren't for your colossal tentacle strength, the poor cow-girl would probably crash to the earth in a matter of seconds.  You keep ascending until Isabella realizes how high you both are and shrieks.  \"<i>", false);
 		if (isabellaAccent()) outputText("But... but vait!  I'm going to fall- I'm going to...</i>\"\n\n", false);
 		else outputText("But... but wait!  I'm going to fall- I'm going to...</i>\"\n\n", false);
 		
@@ -749,7 +801,7 @@ private function tentacleBoneFollowerIzzy():void {
 	if (t6 >= 0) outputText("But wait, that's not enough.  Another of your tentacle peckers is being left behind, unsatisfied.  With a coy smile, you agitate it in front of Isabella's eyes as she tries to get used to being triple-penetrated in the air.  Her eyes, first filled with longing, are becoming worried as she wonders what could possibly be done with your " + player.cockDescript(t6) + ".  A sudden stretch down there makes her realize that you're going to fill her with some more junk; pressing your " + player.cockDescript(t5) + " against one side of her nether-lips, you forcefully bring your " + player.cockDescript(t6) + " to her already stuffed vaginal entrance, trying to fit one more rod.  After a few unsuccessful attempts that make her clench and tense repeatedly, you finally manage to get a few inches inside; you then easily slide in the rest of your vegetal meat, effectively double-penetrating her cunt. Your " + player.cockDescript(t6) + " soon matches your " + player.cockDescript(t5) + " in speed and intensity, your pair of dicks literally competing with each other in a ruthless cunt-ravaging contest.\n\n", false);
 	//[if 7th cock] - TITS
 	if (t7 >= 0) {
-		outputText("Abundantly entranced by the sight of her nude body being violated, you want to abuse it even more. Her enormous, jiggling tits are too tempting for you to resist; before you even think of it your " + player.cockDescript(t7) + " is already slithering against her naked flesh, sneaking along her naked belly as it finds a way between her watermelon-like globes. They start leaking their own delicious milk, her fluids joining your own as her body is being painted white. With ease and expert precision you slide your rod between her boobs, making them bounce and spin as you effortlessy titfuck her. Her breasts are so soft... your " + player.cockDescript(t7) + ", almost moving of its own will, decides to encircle her enticing orbs of flesh, grinding against her hard nipples and leaking sap-like pre-cum all over her chest.", false);
+		outputText("Abundantly entranced by the sight of her nude body being violated, you want to abuse it even more. Her enormous, jiggling tits are too tempting for you to resist; before you even think of it your " + player.cockDescript(t7) + " is already slithering against her naked flesh, sneaking along her naked belly as it finds a way between her watermelon-like globes. They start leaking their own delicious milk, her fluids joining your own as her body is being painted white. With ease and expert precision you slide your rod between her boobs, making them bounce and spin as you effortlessly titfuck her. Her breasts are so soft... your " + player.cockDescript(t7) + ", almost moving of its own will, decides to encircle her enticing orbs of flesh, grinding against her hard nipples and leaking sap-like pre-cum all over her chest.", false);
 		//[if 8th cock] - TITS 2
 		if (t8 >= 0) outputText("  It is soon joined by your " + player.cockDescript(t8) + ", each prick taking care of a nipple, teasing the holes with shallow penetrations by her hard nubs, the pre-cum battling against the flow of milk in the opposite direction and stretching your urethra with a sensation that makes you shiver wildly.", false);
 		outputText("  You keep man-, or dick-, handling her tits while the rest of your peckers viciously pound her; your ", false);
@@ -799,7 +851,7 @@ private function tentacleBoneFollowerIzzy():void {
 	outputText("feels empty, devoid of any fluid left to spray on her.  ", false);
 	
 	outputText("You keep holding her with " + player.sMultiCockDesc() + " for a moment, both of you enjoying the powerful embrace as you literally dick-hug her.  The entirety of her body is dripping with your jism but she doesn't seem to care.  Eventually, you put her down, letting her splat in the puddle of juices that formed below your junk-prison.  At last, you unfold your arms.\n\n", false);
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("lib", -1, "sen", -1, "cor", .3);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -893,7 +945,9 @@ private function izzyMilkingMeinMilkersMya2():void {
 	outputText("  What do you say?", false);
 
 	//[I'll Allow It][Mine Mine MINE!]
-	simpleChoices("Allow It", AllowIzzyMilkerUse, "MINE!", noMilkingMilky, "", null, "", null, "", null);
+	menu();
+	addButton(0, "Allow It", AllowIzzyMilkerUse);
+	addButton(1, "MINE!", noMilkingMilky);
 }
 
 //[I'll Allow It]
@@ -991,7 +1045,10 @@ private function isabellaSparMenu():void {
 	if (isabellaAccent()) outputText("Isabella asks, \"<i>Vhat stakes should ve use?  Vould you rather we spar light or fight like ze creatures of zis world?</i>\"", false);
 	else outputText("Isabella asks, \"<i>How should we fight?  Would you rather we spar light or fight like the creatures of this world?</i>\"", false);
 	outputText("\n\n(Do you spar 'light' with no consequences for losing, or would you rather spar 'hard' (with full consequences for loss/win)?)", false);
-	simpleChoices("Light", createCallBackFunction(sparring, 2), "Hard", createCallBackFunction(sparring, 1), "", null, "", null, "Back", callForFollowerIsabella);
+	menu();
+	addButton(0, "Light", sparring, 2);
+	addButton(1, "Hard", sparring, 1);
+	addButton(14, "Back", callForFollowerIsabella);
 }
 
 private function sparring(type:int = 1):void {
@@ -1046,7 +1103,9 @@ private function isabellaBurps():void {
 		outputText("Her eyes widen as realization strikes her.  \"<i>Back away,</i>\" she warns, weakly waving an arm at you. \"<i>Allergy...</i>\" It seems as if something might be coming. Do you flee from the pained cow-girl, or do you attempt to assist her with her problem?  Though, judging by her reaction, assistance might be a poor plan...", false);
 	
 		//put 'run' and 'help' buttons root hurr
-		simpleChoices("Run", runAwayFromIzzyBurps, "Help", getIzzyBurped, "", null, "", null, "", null);
+		menu();
+		addButton(0, "Run", runAwayFromIzzyBurps);
+		addButton(1, "Stay", getIzzyBurped);
 	}
 	//Repeat
 	else {
@@ -1056,7 +1115,9 @@ private function isabellaBurps():void {
 		else outputText("You're sure about this, huh?</i>\" she asks to confirm, shaking the bottle at you gently.  \"<i>You know what this does to me.</i>\"  Your mischievous smile is the only answer she needs.  She easily gulps down the potion, already rubbing her belly in apparent anticipation.  She notices your curious glance and answers with a nervous chuckle.  \"<i>It's one of those things...</i>\" she tries to explain while waiting for the onset of her reaction.  \"<i>Making you more like me... it's comforting somehow.</i>\"\n\n", false);
 
 		outputText("\"<i>Aaah, I can feel it,</i>\" she warns, and sure enough, the bottom hem of her top lifts to reveal an unhurriedly-swelling ponch.  \"<i>Are you ready, or are you having second thoughts?</i>\"  Your gaze falls to her gurgling pot-belly as you mull over her question.  Do you see any harm in getting another dose of Izzy-gas, or would you like to duck out of this one?", false);
-		simpleChoices("Run", runAwayFromIzzyBurps, "Stay", getIzzyBurped, "", null, "", null, "", null);
+		menu();
+		addButton(0, "Run", runAwayFromIzzyBurps);
+		addButton(1, "Stay", getIzzyBurped);
 	}
 }
 
@@ -1225,7 +1286,7 @@ private function declineIzzysCowBurpApology():void {
 	spriteSelect(31);
 	if (flags[kFLAGS.ISABELLA_PROBOVA_BURP_COUNT] == 1) {
 		outputText("As strange as the situation is, you're too weirded out to reassure Isabella, at least for now, and you relay that to her.  Though crestfallen, she takes the news well, apologizing - sincerely and soberly - once more before moving back to her designated camping spot.  ", false);
-		if (player.findStatusEffect(StatusEffects.BurpChanged) >= 0) {
+		if (player.hasStatusEffect(StatusEffects.BurpChanged)) {
 			outputText("  Happily, after about an hour, you go back to your old form, leaving the belch-borne bovine bounty behind.", false);
 			player.removeStatusEffect(StatusEffects.BurpChanged);
 		}
@@ -1242,9 +1303,9 @@ private function acceptCowpology():void {
 	clearOutput();
 	spriteSelect(31);
 	//Clear burps!
-	if (player.findStatusEffect(StatusEffects.BurpChanged) >= 0)
+	if (player.hasStatusEffect(StatusEffects.BurpChanged))
 		player.removeStatusEffect(StatusEffects.BurpChanged);
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("sen", -1);
 	//FIRST TIME
 	if (flags[kFLAGS.ISABELLA_PROBOVA_BURP_COUNT] == 1) {
@@ -1347,8 +1408,8 @@ internal function receiveAllTheCowTOngues():void {
 
 	outputText("\n\nYou can feel orgasm fast approaching.  Digging your fingers into Isabella's scalp to push her face further into your crotch so that just a little more of her great big tongue can delve into you.  Finally, you feel the very tip of her licker flick against the mouth of your cervix.");
 
-	outputText("\n\nThat touch to your deepest reaches sets you off.  You cry out and cum, clamping down hard on Isabella's head and  tongue so that she cannot pull out, entrapped as you squirt fem-cum onto her face and hair, soaking her in your juices as you buck your hips");
-	if (player.clitLength < 1) outputText(", your clit grinding into her nose,");
+	outputText("\n\nThat touch to your deepest reaches sets you off.  You cry out and cum, clamping down hard on Isabella's head and tongue so that she cannot pull out, entrapped as you squirt fem-cum onto her face and hair, soaking her in your juices as you buck your hips");
+	if (player.getClitLength() < 1) outputText(", your clit grinding into her nose,");
 	outputText(" until you've finally soaked her in enough cum to let her out.");
 
 	outputText("\n\nYou grunt as she exits, but your orgasm carries on and on until you're a half-conscious wreck, writhing in Isabella's chair as the cow looms over you, a self-satisfied grin on her face.  ");
@@ -1358,7 +1419,7 @@ internal function receiveAllTheCowTOngues():void {
 
 	outputText("\n\nYou give her a weak thumbs-up before passing out for a quick nap in her comfy chair.");
 	if (isabellaAccent()) outputText("  A bit confused, she nonetheless leaves and returns with a drink, setting it beside you before leaving you to your rest.");
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("sen", -1);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1437,7 +1498,7 @@ private function fuckIsabella():void {
 		else outputText("\n\n\"<i>Gods, was I ever wrong about big cocks.  That was... You're incredible with that thing, [name].</i>\"");
 	}
 	outputText("\n\nYou grin and rub the big cow's hair before getting dressed.");
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("sen", -1);
 	isabellaKnockUpAttempt();
 	doNext(camp.returnToCampUseOneHour);
@@ -1547,7 +1608,7 @@ private function isabellaBarnFuckPartII():void {
 	outputText("\n\nYou laugh, and rest your head in the pillowy warmth of her milk-stained bosom.  You're nearly ready to drift off into a post-coitus drowse when you hear a sharp voice behind you, \"<i>Isabella?  You alright in there?</i>\"");
 	
 	outputText("\n\nYou look over your shoulders as Whitney throws the door open, her pitchfork at the ready, as if expecting some demon.  You grin sheepishly, your bare [ass] staring the farmer girl right in the face as your trouser snake drips onto the barn floor.  Silently, Whitney turns on a heel and withdraws, closing the door behind her.  A silent moment passes before you and Isabella erupt in laughter, both reaching for your clothes.");
-	player.orgasm();
+	player.orgasm('Dick');
 	dynStats("lib", -1, "sen", -3);
 	player.changeFatigue(-25);
 	isabellaKnockUpAttempt();

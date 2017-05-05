@@ -7,15 +7,26 @@ package classes.Scenes.Areas.Forest
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.Items.Armors.LustyMaidensArmor;
+import classes.Scenes.API.Encounter;
 
-	public class AkbalScene extends BaseContent
+public class AkbalScene extends BaseContent implements Encounter
 	{
+
+	public function encounterChance():Number {
+		return 1;
+	}
+
 		public function AkbalScene()
 		{
 		}
 
+	public function encounterName():String {
+		return "akbal";
+	}
+
 		public function akbalDefeated(hpVictory:Boolean):void{
 			flags[kFLAGS.AKBAL_SUBMISSION_STATE] = 1;
+			menu();
 			if (hpVictory) //[General Victory]
 			{
 				/*if (rand(10) == 0) {
@@ -29,29 +40,30 @@ package classes.Scenes.Areas.Forest
 			} else //[Victory via Lust]
 			{
 				outputText("Akbal falls to the ground, unable to go on. Yet a growl still rumbles in his chest, and you quickly recognize the submissive gesture when he bows his head, his cat belly hugging the ground.  His body begins shifting, and soon he has a vaguely humanoid form. You assume this is the form he uses for sex, as his lust is out of control.\n\n", true);
-				if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0)
+				outputText("You walk around Akbal's lust crazed form with a smile on your face. The demon's growl continues as he awaits your judgment.", false);
+				
+				if (flags[kFLAGS.SFW_MODE] <= 0)
 				{
-					outputText("You walk around Akbal's beaten and lust crazed form with a smile on your face. The demon's growl continues as he awaits your judgment.", false);
-					var vagoo:Function =null;
-					var vagooLick:Function =null;
-					var buttFuck:Function =null;
-					var bikiniTits:Function =null;
-					if (player.hasVagina())
-					{
-						vagoo = girlsRapeAkbal;
-						vagooLick = rapeAkbalForcedFemaleOral;
+					addDisabledButton(0, "Butt-fuck", "This scene requires you to have cock and sufficient arousal.");
+					addDisabledButton(1, "Take Vaginally", "This scene requires you to have vagina and sufficient arousal.");
+					addDisabledButton(2, "Force Lick", "This scene requires you to have vagina and sufficient arousal.");
+					// Button 3 is used for Lusty Maidens Armor special scene and is hidden without it
+					
+					if (player.lust >= 33) {
+						if (player.hasCock())
+							addButton(0, "Butt-fuck", rapeAkbal);
+						if (player.hasVagina())
+						{
+							addButton(1, "Take Vaginally", girlsRapeAkbal);
+							addButton(2, "Force Lick", rapeAkbalForcedFemaleOral);
+							if (player.biggestTitSize() >= 4 && player.armor is LustyMaidensArmor)
+								addButton(3, "B.Titfuck", (player.armor as LustyMaidensArmor).lustyMaidenPaizuri);
+						}
+						
 					}
-					if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armor is LustyMaidensArmor)
-						bikiniTits = (player.armor as LustyMaidensArmor).lustyMaidenPaizuri;
-					if (player.hasCock())
-						buttFuck = rapeAkbal;
-					outputText("\n\nDo you rape him?", false);
-					//Rape / Don't Rape
-					kGAMECLASS.simpleChoices("Butt-fuck", buttFuck, "Take Vaginally", vagoo, "Force Lick", vagooLick, "B.Titfuck", bikiniTits, "Leave", combat.cleanupAfterCombat);
-					return;
 				}
 			}
-			combat.cleanupAfterCombat();
+			addButton(14, "Leave", combat.cleanupAfterCombat);
 		}
 
 		public function akbalWon(hpVictory:Boolean,pcCameWorms:Boolean):void{
@@ -127,7 +139,7 @@ package classes.Scenes.Areas.Forest
 				outputText("Akbal snarls as you leave, the creatures that once feared him using his aroused state to get revenge on the 'god' of the terrestrial fire.  Even after you've reached the edge of the forest, the jaguar demon's pained howls can still be heard – though, just barely over the high-pitched laughter of the demon imps and the cackling of the goblin females.", false);
 			}
 			//END CENTAUR STUFF
-			player.orgasm();
+			player.orgasm('Vaginal');
 			dynStats("cor+",1);
 			combat.cleanupAfterCombat();
 		}
@@ -209,7 +221,7 @@ package classes.Scenes.Areas.Forest
 
 					outputText("As you leave Akbal snarls as the creatures that once feared him use his overtly aroused state to get revenge on the \"god\" of the terrestrial fire.  Even after you've reached the edge of the forest the wails of the jaguar demon can still be heard but just barely over the high pitched laughter of the demon imps and goblin females.", false);
 				}
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("cor", 1);
 				combat.cleanupAfterCombat();
 					//END NAGA STUFF
@@ -297,7 +309,7 @@ package classes.Scenes.Areas.Forest
 
 					outputText("As you leave Akbal snarls as the creatures that once feared him use his overtly aroused state to get revenge on the \"god\" of the terrestrial fire.  Even after you've reached the edge of the forest the wails of the jaguar demon can still be heard but just barely over the high pitched laughter of the demon imps and goblin females.", false);
 				}
-				player.orgasm();
+				player.orgasm('Generic');
 				dynStats("cor", 1);
 				combat.cleanupAfterCombat();
 				return;
@@ -356,7 +368,7 @@ package classes.Scenes.Areas.Forest
 				outputText("With a sadistic laugh you ride out your orgasm until you're reduced to a shuddering heap on the floor.  After you've recovered, you stand and gather your " + player.armorName + ", leaving Akbal in a groaning mess behind you.  He howls as he claws the ground, his barbed cock still rock hard beneath him.  As you walk away, you notice a group of imps watching you and the jaguar demon with their cocks out and leaking, their jagged teeth spread into feral grins.  You even spy a few goblins mixed in the crowd, and each is twirling a bottle of liquid while playing with their snatches.\n\n", false);
 				outputText("Akbal snarls as you leave, the creatures that once feared him using his aroused state to get revenge on the 'god' of the terrestrial fire.  Even after you've reached the edge of the forest, the jaguar demon's pained howls can still be heard – though, just barely over the high-pitched laughter of the demon imps and the cackling of the goblin females.", false);
 			}
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("cor", 1);
 			combat.cleanupAfterCombat();
 		}
@@ -491,7 +503,7 @@ package classes.Scenes.Areas.Forest
 				player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP, 101);
 
 				player.cuntChange(monster.cockArea(0), true, true, false);
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("cor", 1);
 			}
 			//TOIGHT
@@ -534,7 +546,7 @@ package classes.Scenes.Areas.Forest
 					outputText("He sits, dazed as your cum covers his groin, his meat still shiny from the torrent you dropped down upon it. Nevertheless, his face is twisted into a purr", false);
 				outputText(" as he sags against the tree trunk, overwhelmed by the pleasure. With a satisfied grin of your own, you pick up your " + player.armorName + " and head out. Perhaps you should look out for the \"<i>God of Terrestrial fire</i>\" again sometime...", false);
 				//{No Penetration or fluids exchanged = No corruption increase? Poss. Sensitivity increase/decrease due to fur and/or saliva}
-				player.orgasm();
+				player.orgasm('Vaginal');
 			}
 			//= = = =
 			//Loose
@@ -581,7 +593,7 @@ package classes.Scenes.Areas.Forest
 				outputText(", his face twisted into a snarl of pleasure and satisfaction.\n\n", false);
 
 				outputText("You slowly come down from your orgasmic high, struggling to remove yourself from the demon's lap and heading unsteadily towards your " + player.armorName + " as fresh feline seed pours down your body, wincing at the slight bruising to your womanhood. Rubbing a hand over your stomach, you start to wonder if perhaps it was a touch risky to allow a demon to shoot his seed into your womb. However, despite the mild throbbing, you feel refreshed and oddly strengthened by Akbal's potent seed, glancing over your shoulder to see the once proud god reveling in his own release. Perhaps it wouldn't be a bad idea to seek him out some other time...", false);
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("cor", 1);
 				//Imp pregnancy
 				//Preggers chance!
@@ -677,8 +689,7 @@ package classes.Scenes.Areas.Forest
 		//2. AKBAL'S MY BITCH
 
 		//[First Encounter]
-		public function supahAkabalEdition():void
-		{
+		public function execEncounter():void {
 			spriteSelect(2);
 			//Make sure that the buttchange is set correctly
 			//when submitting.  Gotta stretch em all!
@@ -719,7 +730,10 @@ package classes.Scenes.Areas.Forest
 
 			outputText("The aura pouring forth from this 'Akbal' is anything but god-like; you recognize the demon for what it truly is.  Yet its ivory teeth and sharp claws prove to you that it can make good on its threat.  What do you do?", false);
 			//Talk / Fight / Run
-			simpleChoices("Talk", superAkbalioTalk, "Fight", startuAkabalFightomon, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+			menu();
+			addButton(0, "Talk", superAkbalioTalk);
+			addButton(1, "Fight", startuAkabalFightomon);
+			addButton(14, "Leave", camp.returnToCampUseOneHour);
 		}
 
 		//[Talk]
@@ -730,7 +744,9 @@ package classes.Scenes.Areas.Forest
 			outputText("After a few moments of silence you ask, \"<i>What do you mean, 'submit'?</i>\" Akbal grins, revealing a row of wicked ivory teeth as he opens his mouth. You suddenly feel the demon's powerful body pinning you down, a wide tongue licking your neck and claws tickling your back in a way that is both horrifying and sensual. Yet after a moment of taking it in, you realize that he is still there in front of you, unmoved and grinning. You can guess what the image means: he wants you to become his mate for a day to make up for invading his territory.  What do you do?\n\n", false);
 
 			//Submit / Fight
-			simpleChoices("Fight", startuAkabalFightomon, "Submit", akbalSubmit, "", null, "", null, "", null);
+			menu();
+			addButton(0, "Fight", startuAkabalFightomon);
+			addButton(1, "Submit", akbalSubmit);
 		}
 
 		//[Encounter if previously submitted]
@@ -741,7 +757,10 @@ package classes.Scenes.Areas.Forest
 			outputText("As you walk through the forest, you hear a purring coming from behind you.  Turning around reveals that Akbal has come to find you.  He uses his head to push you in the direction of his territory, obviously wanting to dominate you again.\n\n", false);
 			outputText("What do you do?", false);
 			//Submit / Deny / Fight
-			simpleChoices("Submit", akbalSubmit, "Deny", akbalDeny, "Fight", startuAkabalFightomon, "", null, "", null);
+			menu();
+			addButton(0, "Submit", akbalSubmit);
+			addButton(1, "Deny", akbalDeny);
+			addButton(4, "Fight", startuAkabalFightomon);
 		}
 
 		//[Deny]
@@ -765,7 +784,9 @@ package classes.Scenes.Areas.Forest
 			else
 				outputText("dodging roll places you a good distance away from him.  Do you fight or flee?\n\n", false);
 			//Fight / Flee
-			simpleChoices("Fight", startuAkabalFightomon, "", null, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+			menu();
+			addButton(0, "Fight", startuAkabalFightomon);
+			addButton(14, "Leave", camp.returnToCampUseOneHour);
 		}
 
 		//[Encounter if previously fought and lost]
@@ -776,7 +797,10 @@ package classes.Scenes.Areas.Forest
 			outputText("A chorus of laughter sounds inside your mind as the jaguar demon, Akbal, drops to the ground in front of you.  His masculine voice says, \"<i>Well, if it isn't the defiant welp who, in all their great idiocy, has wandered into my territory again.  Will you submit, or do I have to teach you another harsh lesson?</i>\"\n\n", false);
 
 			//Submit / Fight / Run
-			simpleChoices("Submit", akbalSubmit, "Fight", startuAkabalFightomon, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+			menu();
+			addButton(0, "Submit", akbalSubmit);
+			addButton(1, "Fight", startuAkabalFightomon);
+			addButton(14, "Leave", camp.returnToCampUseOneHour);
 		}
 
 		//[Fight]
@@ -856,11 +880,11 @@ package classes.Scenes.Areas.Forest
 				dynStats("cor", 4 + rand(8));
 				//[+ 1-2 Speed]
 				dynStats("spe", 1 + rand(2));
-				player.orgasm();
+				player.orgasm('Anal');
 				//[Chance of butt growth]
 				if (player.buttRating < 8)
 				{
-					outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accomodate the demon's wishes...", false);
+					outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accommodate the demon's wishes...", false);
 					player.buttRating++;
 				}
 				player.createStatusEffect(StatusEffects.PostAkbalSubmission, 0, 0, 0, 0);
@@ -934,11 +958,11 @@ package classes.Scenes.Areas.Forest
 				dynStats("cor", 4 + rand(8));
 				//[+ 1-2 Speed]
 				dynStats("spe", 1 + rand(2));
-				player.orgasm();
+				player.orgasm('Anal');
 				//[Chance of butt growth]
 				if (player.buttRating < 8)
 				{
-					outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accomodate the demon's wishes...", false);
+					outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accommodate the demon's wishes...", false);
 					player.buttRating++;
 				}
 				player.createStatusEffect(StatusEffects.PostAkbalSubmission, 0, 0, 0, 0);
@@ -1014,11 +1038,11 @@ package classes.Scenes.Areas.Forest
 			dynStats("cor", 4 + rand(8));
 			//[+ 1-2 Speed]
 			dynStats("spe", 1 + rand(2));
-			player.orgasm();
+			player.orgasm('Anal');
 			//[Chance of butt growth]
 			if (player.buttRating < 8)
 			{
-				outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accomodate the demon's wishes...", false);
+				outputText("\n\nIn your sleep, your ass plumps up slightly, growing to accommodate the demon's wishes...", false);
 				player.buttRating++;
 			}
 			player.createStatusEffect(StatusEffects.PostAkbalSubmission, 0, 0, 0, 0);
@@ -1157,7 +1181,7 @@ package classes.Scenes.Areas.Forest
 				outputText("  Tingling in your sleep, your [butt] jiggles slightly as it softens along with the rest of your body, changed by Akbal's saliva to be a softer, more pleasant fuck.");
 				player.modTone(30, 5);
 			}
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("cor", 5);
 			player.slimeFeed();
 			player.createStatusEffect(StatusEffects.PostAkbalSubmission, 0, 0, 0, 0);
@@ -1174,7 +1198,7 @@ package classes.Scenes.Areas.Forest
 			outputText("As you explore the deep woods you begin to hear a soft slurping sound. In this world you know that any strange sound, especially the wet ones, most likely means something dangerous is up ahead... or something dangerous is fucking something a little less dangerous.  As you cautiously advance you spy the pelt of the jaguar demon, Akbal.  The demon jaguar sits in the middle of the clearing with one leg extended as he repeatedly swipes his wide tongue against his hole, probably cleaning up imp spunk thanks to you.  He is so utterly focused on the task that he doesn’t notice your approach.");
 			flags[kFLAGS.AKBAL_BITCH_Q] = 1;
 			//{corruption < 40/choose no}
-			if ((player.cor < 40 && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0 && player.findPerk(PerkLib.Pervert) < 0 && player.findPerk(PerkLib.Sadist) < 0) || player.lust < 33)
+			if ((player.cor < 40 - player.corruptionTolerance() && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0 && player.findPerk(PerkLib.Pervert) < 0 && player.findPerk(PerkLib.Sadist) < 0) || player.lust < 33)
 				akbitchNoThnx(false);
 			//{corruption > 40}
 			else
@@ -1239,37 +1263,41 @@ package classes.Scenes.Areas.Forest
 
 			flags[kFLAGS.AKBAL_TIMES_BITCHED]++;
 			menu();
-			addButton(0, "Normal", basicAkbitchScene);
-			//AMB Strength Scene
-			//70+
-			if (player.str >= 70)
-				addButton(1, "Strong", akbitchHighStrengthVariant);
-			//AMB Speed Scene
-			//70
-			if (player.spe >= 70)
-				addButton(2, "Fast", akbalBitchSpeed);
-			//AMB Toughness Scene
-			//70
-			if (player.tou >= 70)
-				addButton(3, "Toughness", akbitchToughness);
-		}
-
-		//Basic AMB Scene (no +70 stats)
-		private function basicAkbitchScene():void
-		{
-			clearOutput();
-			outputText("With a grin, you tug on Akbal’s collar, and he lets out a barely suppressed purr.  ");
-			if (flags[kFLAGS.AKBAL_TIMES_BITCHED] == 1)
-				outputText("The smile on your [face] spreads even wider as the unexpected sound tells you you’ve turned this demonic sexual predator into your own personal slut.  As if to confirm this, h");
-			else
-				outputText("H");
-			outputText("e lifts his tail, giving you a perfect view of his entire package, from his self-lubing sphincter to his full balls, and rock-hard, demon-cat dick.  Through lust, his will has been broken, and now he is yours.");
-			outputText("\n\nWhat will you do with him?");
-
-			menu();
+			
+			addDisabledButton(0, "Fuck Him", "This scene requires you to have cock.");
+			// 1 - normal ride is always available
+			addDisabledButton(1, "Str.Fuck", "This scene requires you to have cock and superior strength.");
+			addDisabledButton(6, "Str.Ride", "This scene requires you to have superior strength.");
+			addDisabledButton(2, "Spd.Fuck", "This scene requires you to have cock and superior speed.");
+			addDisabledButton(7, "Spd.Ride", "This scene requires you to have superior speed.");
+			addDisabledButton(3, "Tou.Fuck", "This scene requires you to have cock and superior toughness.");
+			addDisabledButton(8, "Tou.Ride", "This scene requires you to have superior toughness.");
+			
 			if (player.hasCock())
 				addButton(0, "Fuck Him", buttFuckbuttFuckbuttFuckAkbal);
-			addButton(1, "Ride Him", topAkbitchFromDaBottom);
+			addButton(5, "Ride Him", topAkbitchFromDaBottom);
+			
+			//AMB Strength Scene
+			//70+
+			if (player.str >= 70) {
+				if (pc.hasCock())
+					addButton(1, "Str.Fuck", akbitchHighStrengthVariant, 0, undefined, undefined, "Forcefully fuck him with your cock.");
+				addButton(6, "Str.Ride", akbitchHighStrengthVariant, 1, undefined, undefined, "Forcefully ride his cock.");
+			}
+			//AMB Speed Scene
+			//70
+			if (player.spe >= 70) {
+				if (pc.hasCock())
+					addButton(2, "Spd.Fuck", akbalBitchSpeed, 0, undefined, undefined, "Intensely fuck him with your cock.");
+				addButton(7, "Spd.Ride", akbalBitchSpeed, 1, undefined, undefined, "Intensely ride his cock.");
+			}
+			//AMB Toughness Scene
+			//70
+			if (player.tou >= 70) {
+				if (pc.hasCock())
+					addButton(3, "Tou.Fuck", akbitchToughness, 0, undefined, undefined, "Thoroughfully fuck him with your cock.");
+				addButton(8, "Tou.Ride", akbitchToughness, 1, undefined, undefined, "Thoroughfully ride his cock.");
+			}
 		}
 
 		//Butt Fuck - Vaginal - Anal
@@ -1277,6 +1305,14 @@ package classes.Scenes.Areas.Forest
 		{
 			clearOutput();
 			outputText(images.showImage("akbal-deepwoods-male-buttfuck"));
+			
+			outputText("With a grin, you tug on Akbal’s collar, and he lets out a barely suppressed purr.  ");
+			if (flags[kFLAGS.AKBAL_TIMES_BITCHED] == 1)
+				outputText("The smile on your [face] spreads even wider as the unexpected sound tells you you’ve turned this demonic sexual predator into your own personal slut.  As if to confirm this, h");
+			else
+				outputText("H");
+			outputText("e lifts his tail, giving you a perfect view of his entire package, from his self-lubing sphincter to his full balls, and rock-hard, demon-cat dick.  Through lust, his will has been broken, and now he is yours.\n\n");
+			
 			//[if (hasCock = true)]
 			if (player.hasCock())
 				outputText("You widen your stance as you sink into the demon’s moist depths with a grin.");
@@ -1332,7 +1368,7 @@ package classes.Scenes.Areas.Forest
 
 			outputText("\n\nYou look back at your new bitch with a grin while he regains his senses.  As you leave the forest you hear a promise from Akbal’s chorus of voices, \"<i>You will regret this... Champion.</i>\"");
 
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("cor", 3);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1341,6 +1377,14 @@ package classes.Scenes.Areas.Forest
 		{
 			clearOutput();
 			outputText(images.showImage("akbal-deepwoods-male-akbalonback"));
+			
+			outputText("With a grin, you tug on Akbal’s collar, and he lets out a barely suppressed purr.  ");
+			if (flags[kFLAGS.AKBAL_TIMES_BITCHED] == 1)
+				outputText("The smile on your [face] spreads even wider as the unexpected sound tells you you’ve turned this demonic sexual predator into your own personal slut.  As if to confirm this, h");
+			else
+				outputText("H");
+			outputText("e lifts his tail, giving you a perfect view of his entire package, from his self-lubing sphincter to his full balls, and rock-hard, demon-cat dick.  Through lust, his will has been broken, and now he is yours.\n\n");
+			
 			//[{if goo legs}]
 			if (player.isGoo())
 				outputText("You lay down in the soft grass with a mischievous grin.  Using the collar, you yank Akbal forward, causing his mouth to splash into your [vagOrAss].  Instantly your entire form feels as if waves of pure ecstasy are cascading through you.  The feeling peaks and recedes in an unpredictable pattern and you’re lost in the feel of the demon’s mystic saliva as you ride out your orgasm, reveling in the heat of his tongue coated in that wonderful spit.  When you can stand it no more, you push the demon onto his back and look upon his rigid tool as it leaks and quivers while pointing to the sky.");
@@ -1362,6 +1406,7 @@ package classes.Scenes.Areas.Forest
 
 		private function topAkbitchFromBottomDuex():void
 		{
+			var analOrgasm:Boolean = false;
 			clearOutput();
 			outputText(images.showImage("akbal-deepwoods-male-akbalonback2"));
 			//-page turn-
@@ -1391,13 +1436,14 @@ package classes.Scenes.Areas.Forest
 				else
 					outputText(" climaxes");
 				outputText(".  Your [vagOrAss] spasms around the demon’s embedded cock as [eachCock] paints his chest and face with a generous coating of baby batter.  Your orgasm rages on, covering the demon cat in your sex fluids, matting his fur and darkening it with more seed than you ever thought possible.");
+				analOrgasm = true;
 			}
 			//[if (hasCock = false)
 			else
 				outputText("\n\nEvery nerve ending in your body explodes as you convulse atop the jaguar.  With a hoarse groan, your [vagOrAss] begins to spasm around the embedded pleasure rod as it gushes more fluid than you thought possible.  Soon the Jaguar is soaked from waist to thigh.");
 
 			outputText("\n\nYou look back at your new bitch with a grin while he regains his senses.  As you leave the forest, you hear a promise from Akbal’s chorus of voices, \"<i>You will regret this... Champion.</i>\"");
-			player.orgasm();
+			player.orgasm(analOrgasm ? 'Anal' : 'Vaginal');
 			dynStats("cor", 3);
 			if (player.hasVagina())
 				player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP, 101);
@@ -1406,11 +1452,11 @@ package classes.Scenes.Areas.Forest
 
 		//AMB Strength Scene
 		//70+
-		private function akbitchHighStrengthVariant():void
+		private function akbitchHighStrengthVariant(ride:Boolean=false):void
 		{
 			clearOutput();
 			outputText("With a wicked grin, you rip off your [armor] and grab the bound demon by the scruff on his neck.  He does this sexy little wiggle as you hoist him until he reaches eye level, easily manipulating his light weight as you inspect his slim, toned body.  His chest heaves, his nipples stand at attention, and his erect demon-cat dick drools a heavy river of thick cream, darkening the fur on his sack and inner thighs.  This is going to be fun.");
-			if (player.hasCock())
+			if (player.hasCock() && !ride)
 			{
 				outputText(images.showImage("akbal-deepwoods-male-highstrength"));
 				//if (hasCock = true)
@@ -1470,7 +1516,7 @@ package classes.Scenes.Areas.Forest
 				//{corruption > 90}
 				else
 					outputText("\n\nYou stand and Akbal’s legs flop from where you had them pinned to his chest.  You gather your [armor] and dress before aiming a wicked slap at Akbal’s tender cheeks and leaving him tied up for the imps and goblins you spy watching the two of you from the trees.\n\nYou tell him he is all theirs and share a conspiratorial grin as you head back to camp.");
-				player.orgasm();
+				player.orgasm('Dick');
 				dynStats("cor", 3);
 				doNext(camp.returnToCampUseOneHour);
 			}
@@ -1520,7 +1566,7 @@ package classes.Scenes.Areas.Forest
 				if (player.hasCock())
 					outputText("  [EachCock] swells and explodes, shooting cream all over Akbal’s thighs, chest and face as you unload thick white rope after rope.");
 
-				player.orgasm();
+				player.orgasm('VaginalAnal');
 				dynStats("cor", 3);
 				if (player.hasVagina())
 					player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP, 101);
@@ -1530,7 +1576,7 @@ package classes.Scenes.Areas.Forest
 
 		//AMB Speed Scene
 		//70
-		private function akbalBitchSpeed():void
+		private function akbalBitchSpeed(ride:Boolean=false):void
 		{
 			clearOutput();
 			outputText("Akbal groans as he lies face first in the dirt.  His body has already morphed into a more humanoid form.  You smile as you watch him hump the grass, two hollows forming in his ass cheeks as they clench and unclench.  The sight of him futilely trying to stimulate himself gets you so hot you practically rip off your [armor] and grab the tied up demon with a grin.");
@@ -1539,7 +1585,7 @@ package classes.Scenes.Areas.Forest
 			var x:int = player.biggestCockIndex();
 
 			//[if (hasCock = true)]
-			if (player.hasCock())
+			if (player.hasCock() && !ride)
 			{
 				outputText(images.showImage("akbal-deepwoods-male-highspeed"));
 				outputText("\n\nYou pull his tail until the bound demon jaguar is face down, ass up.  His muscular cheeks part themselves thanks to previous incursions.  His soft pink hole shines with the natural lube he creates.  He lifts his spotted tail and spreads his legs, letting you know he’s ready.  You plant your [feet] and lean over his body. With your [cock biggest] in hand, you position your [cockHead biggest] at his rear entrance.  With your free hand, you aim a slap at the demon’s waiting rump, watching the furry, round cheeks jiggle as a dollop of lube drips out of the waiting hole.  Needing no further invitation you begin to push into the demon.");
@@ -1574,7 +1620,7 @@ package classes.Scenes.Areas.Forest
 			{
 				outputText(images.showImage("akbal-deepwoods-female-highspeed"));
 				outputText("\n\nYou grab Akbal’s leg and use it to roll the tied up demon over until his rigid length is pointing to the sky.  The tall and ribbed demon cat dick excretes a natural lube along with the white pre-cum drooling down its front.  It looks very inviting but the Jaguar’s face, his wide tongue and black lips, look even more so.");
-				outputText("\n\nYou stand in a squat above the demon’s face.  Before you even have the chance to smash your [vagOrAss] onto his lips, he lunges upward, shoving his face into you before you are ready.  A cascading rush ofecstasyy enters your body the moment his saliva touches your [vagOrAss].  You fall and the demon follows as you spread your legs wider, giving him an easier target for his bliss inducing oral ministrations.  He slathers your [vagOrAss] with a generous amount of saliva while using his wide tongue to lap at your exposed privates.  When he begins teasing your ");
+				outputText("\n\nYou stand in a squat above the demon’s face.  Before you even have the chance to smash your [vagOrAss] onto his lips, he lunges upward, shoving his face into you before you are ready.  A cascading rush of ecstasy enters your body the moment his saliva touches your [vagOrAss].  You fall and the demon follows as you spread your legs wider, giving him an easier target for his bliss inducing oral ministrations.  He slathers your [vagOrAss] with a generous amount of saliva while using his wide tongue to lap at your exposed privates.  When he begins teasing your ");
 				if (player.hasVagina())
 					outputText("clit");
 				else
@@ -1584,7 +1630,7 @@ package classes.Scenes.Areas.Forest
 				//{tight/virgin vagorass}
 				if ((!player.hasVagina() && player.ass.analLooseness < 2) || (player.hasVagina() && player.looseness() <= 2))
 				{
-					outputText("\n\nWhen the mushroom-shaped head of Akbal’s monstrous dick touches your [vagOrAss], a lightning bolt of ecstasy shoots through your body.  The saliva coating your [vagOrAss] mixes with the fluid coating the demon’s dick and makes you call out from the very depths of your soul.  As if the heated, almost drug-like pleasure wasn’t enough, your [vagOrAss] is being stretched, somehow taking the full length of Akbal’s monster dick without a problem.  Once you’ve fully enveloped him, the barbs begn to vibrate, pulsing like sex beads that send you into overdrive.\n\nYou begin to bounce.  Your body cries out for more and you answer the call by bouncing up and down the entire length of Akbal’s wonderfully rigid dick as fast as you can.  Each time you crash your [vagOrAss] into his, there is a hard clap, and soon, you’re going so fast it sounds like excited applause.  Beneath you, Akbal shakes as you ride him faster and harder than he’s ever been ridden before.  The tightness of your [vagOrAss] seems to be rare treat to such a well-endowed demon.");
+					outputText("\n\nWhen the mushroom-shaped head of Akbal’s monstrous dick touches your [vagOrAss], a lightning bolt of ecstasy shoots through your body.  The saliva coating your [vagOrAss] mixes with the fluid coating the demon’s dick and makes you call out from the very depths of your soul.  As if the heated, almost drug-like pleasure wasn’t enough, your [vagOrAss] is being stretched, somehow taking the full length of Akbal’s monster dick without a problem.  Once you’ve fully enveloped him, the barbs begin to vibrate, pulsing like sex beads that send you into overdrive.\n\nYou begin to bounce.  Your body cries out for more and you answer the call by bouncing up and down the entire length of Akbal’s wonderfully rigid dick as fast as you can.  Each time you crash your [vagOrAss] into his, there is a hard clap, and soon, you’re going so fast it sounds like excited applause.  Beneath you, Akbal shakes as you ride him faster and harder than he’s ever been ridden before.  The tightness of your [vagOrAss] seems to be rare treat to such a well-endowed demon.");
 				}
 				//{medium vagorass}
 				else if ((!player.hasVagina() && player.ass.analLooseness < 4) || (player.hasVagina() && player.looseness() < 4))
@@ -1622,14 +1668,14 @@ package classes.Scenes.Areas.Forest
 				if (player.hasVagina())
 					player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP, 101);
 			}
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("cor", 3);
 			doNext(camp.returnToCampUseOneHour);
 		}
 
 		//AMB Toughness Scene
 		//70
-		private function akbitchToughness():void
+		private function akbitchToughness(ride:Boolean=false):void
 		{
 			clearOutput();
 			//[if (toughness > 70)]
@@ -1657,7 +1703,7 @@ package classes.Scenes.Areas.Forest
 			outputText("\n\nHow dare a bitch speak to its master in such a way?  Angered by his defiance, you begin to spank his upturned cheek again.  Without mercy or pity for the demon’s cries, you fill the air with the sound of his ass being slapped silly by the blur that is your free hand.  After a few minutes of serious palm-lashing, you switch hands and continue.  The demon continues to writhe and even begins begging for mercy.  He occasionally tries to quiet himself but you are past mere compliance.  Only once your new hand is stinging as fiercely as your old one do you stop.  You grab his ass, and the demon’s entire body tenses but he doesn’t make a sound.  This makes you smile.  As you rub and fondle his burning ass-cheeks, you let him know exactly who is in charge.  You tell him how much of a bitch you know he is.  You even laugh at him for telling you he was a \"<i>god</i>\".  He takes your verbal abuse silently and without retort.  With one slap for finality, you untie the demon’s hands.  He looks off across his clearing as if thinking about making a mad dash for it.  You tug his collar, silently reminding him he’s still bound to you.  A grin spreads across your [face] as he finally truly gives in.");
 
 			//[if (hasCock = true)]
-			if (player.hasCock())
+			if (player.hasCock() && !ride)
 			{
 				outputText(images.showImage("akbal-deepwoods-male-hightoughness"));
 				outputText("\n\nYou tell the demon to put his ass up. When he does, you aid him by shoving his chest into the ground, making sure he arches his back properly.  His furry ass naturally parts, revealing his little dripping pink rosebud.  You begin to shed your [armor], and his hole flexes a few times, causing a creamy lube to drip down his scrotum.  [EachCock] is rigid as you expose yourself to the air.  Akbal wiggles his ass at you and you realize how badly he wants you inside him.  It appears this demon has decided to be a good little bitch.  You grab your [cock biggest] and grin as you lower yourself to mount him.");
@@ -1774,7 +1820,7 @@ package classes.Scenes.Areas.Forest
 			}
 			if (player.hasVagina())
 				player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP, 101);
-			player.orgasm();
+			player.orgasm('VaginalAnal');
 			dynStats("cor", 3);
 			doNext(camp.returnToCampUseOneHour);
 		}

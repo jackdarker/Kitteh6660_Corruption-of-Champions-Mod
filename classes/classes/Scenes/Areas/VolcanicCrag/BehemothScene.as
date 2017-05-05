@@ -230,7 +230,7 @@ package classes.Scenes.Areas.VolcanicCrag
 				outputText("You've had many children during your time in Mareth, and you're still grateful for each father decent enough to stay with you and help.  It's nearly novel to be covered in cum during this because you <i>want</i> to be, not because some imp took advantage of you, and you curl up afterwards against his soft fur, his muscles comforting to push up against.\n\n") }
 			outputText("Eventually, you make one final push larger than the rest and a small furry creature pops out of your womb and cunt, thankfully currently devoid of spines. \"<i>Wow,</i>\" the behemoth says, wiping off your new offspring before setting him to your breasts, his infant claws too soft to hurt as he kneads you. \"<i>I love you,</i>\" he says, still mindblown, and you smile at him as he watches you both in utter amazement. ");
 			player.cuntChange(48, true);
-			player.orgasm();
+			player.orgasm('Vaginal');
 			flags[kFLAGS.BEHEMOTH_CHILDREN]++;
 			if (flags[kFLAGS.BEHEMOTH_CHILDREN] == 1) {
 				outputText("\"<i>I can't believe I finally have a family.  Thank you so much.,</i>\"");
@@ -296,7 +296,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			outputText(".");
 			outputText("The behemoth shoots huge torrents of cum, far more than his balls could possibly hold. You watch him cumming and cumming, never seeming to stop. He does stop and by the time he finished cumming, he has created quite the pool! With the two of you exhausted from the ordeal, you lay on top of him and rest for a while.");
 			outputText("\n\nYou give him a kiss on one of his cheeks and let him know that you'll be going. \"<i>See you later,</i>\" the behemoth says with a smile on his face. You redress and leave back to your camp.");
-			player.orgasm();
+			player.orgasm('Dick');
 			flags[kFLAGS.BEHEMOTH_ANAL_PITCH]++;
 			if (kGAMECLASS.inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
@@ -356,7 +356,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			if (player.gender == 0) outputText("your whole body shakes in overwhelming pleasure.");
 			outputText("  You'd collapse if you were under your own power, but the behemoth carefully lifts you off his cock and spooge floods out of your [ass], coating his legs and the hard ground.  He waits for the dripping to slow before setting you down gently and lying next to you, the two of you sharing the wet spot.  \"<i>I love having someone to fuck,</i>\" he says warmly, his arm over you in claim as you feel his muscles spasm in aftershocks and you rest for a while, sure nothing would pick a fight with him.\n\n");
 			outputText("You wake up some time later and kiss his cheek before letting him know you'll be going.  \"<i>See you later,</i>\" he says as he lets you up, though he doesn't bother getting up. The main thing you remember as " + player.clothedOrNaked("he watches you redress and ") + "you walk back to your camp is his expression of utter contentment, and your mood carries on for the rest of the day.");
-			player.orgasm();
+			player.orgasm('Anal');
 			player.slimeFeed();
 			HPChange(player.maxHP() / 4, false);
 			flags[kFLAGS.BEHEMOTH_ANAL_CATCH]++;
@@ -372,20 +372,22 @@ package classes.Scenes.Areas.VolcanicCrag
 			outputText(images.showImage("behemoth-vag-catch"), false);
 			//Sorry, no centaur variant.
 			outputText("You definitely want that " + (silly() ? "dig bick": "big dick") + " in your [vagina]. ");
-			outputText("" + player.clothedOrNaked("You strip out of your [armor] until you're naked. You make sure to toss your [armor] into a neat pile. ") + "You present your naked body and more importantly, your [vagina] to the behemoth.  You notice that his erection is tenting under his loincloth. He shifts it aside to expose his large pecker and says excitedly, \"<i>Now that's some wonderful pussy you've got there! I'll go gentle on you and make sure you enjoy the experience.</i>\"");
-			outputText("\n\nThe behemoth guides you to his bed and instructs you to lie down on the bed, which you follows obediently. You spread your [legs] to expose your womanhood" + (player.hasCock() ? " and manhood": "") + ". The Behemoth gives you a smile and slowly slides his long, prehensile tongue into your muff. \"<i>Gotta loosen you up first. Learned that the hard way with those goblins. Poor gals never stood a chance.</i>\" Ecstasy floods your system as he licks your [pussy]. Behemoth’s rough tongue slowly inches its way in, rubbing in all your pleasure spots. You end up cumming when the tongue forces it way into your womb. Behemoth slowly stands up and removes his femcum covered tongue out of your [pussy]. He licks his lips and says, “<i>Delicious... that should do it. Now for the main course.</i>” Behemoth holds his massive cock in his hand and positions it right outside your vagina. You can’t take it anymore and yell \"<i>Stop teasing me and fuck me with your ginormous cock already!</i>\" That was all the motivation Behemoth needed. In one quick stroke he penetrates your cooter and pushes it in all the way to your womb.");
+			outputText("" + player.clothedOrNaked("You toss your [armor] into a neat pile as you strip off your clothes. ") + "It's hot enough you're completely comfortable as you present yourself and your [vagina] to the behemoth, his erection tenting his loincloth as he shifts it aside to expose himself. \"<em>Wow</em>,\" he says, looking at you like you're the only person he's seen in ages. \"<i>That is a gorgeous pussy you've got there: I'll be gentle, I promise.</i>\"");
+			outputText("\n\nHe guides you to his bed and for you to lie down, which you do, the sheets already warm. You spread your [legs] to expose yourself" + (player.hasCock() ? ", your cock pointing up even though it won't get much play today, ": "") + " and he grins, leaning over you. \"<i>Gotta loosen you up first,</i>\" he says, his long tongue brushing over your cooter as a starting taste. \"<i>Learned that the hard way with those goblins. It'll be better for you, though, yeah?</i>\"")
+			outputText("\n\nYou know it will, and your [skinFurScales] shivers as he licks your [clit], his tongue pleasantly rough before he works his way downwards, gently spreading your labia with the back of a claw before brushing his tongue into your [vagina]. It's long enough to rub all the good spots, and he takes his time about it, too, even when you grab his mane and pull him close. He licks around your cervix and you come hard, femspunk getting on his fur.");
+			outputText("\n\nHe doesn't mind, of course, and he licks it off his lips and face while you recover, his hands casually massaging his massive cock. \"<em>Ready for round two?</em>\" he asks, like there's a chance you wouldn't be, and you yell at him to stop teasing you and get to it. And he does, with gusto, pouncing on you as he slides his prick in with deceptive ease, a moan escaping you both as his abs ripple.");
 			player.cuntChange(45, true, true);
-			if (isVirgin) outputText("\n\n\"<i>I'm so glad you've saved your virginity for me. By the time people reached the endgame levels, none of them are virgin,</i>\" the behemoth says with a smile. ");
-			outputText("\n\nThe Behemoth starts to piston inside and out of your [pussy] and picks up the pace gradually. ");
-			if (flags[kFLAGS.BEHEMOTH_CHILDREN] <= 0) outputText("\"<i>I want to be a father someday. If I could start a family, that would be great,</i>\" the Behemoth says. ");
-			outputText("\n\nHis cock feels great in your [vagina]! His cock feels great in your cooter! You continue to moan and groan in pleasure as the Behemoth continues to pound away with cervix-breaking force. ");
-			outputText("Your [chest] keeps rocking back and forth" + (player.isLactating() ? ", spilling milk" : "") + ".");
-			outputText("Your eyes widen as the behemoth announces, \"<i>Got to cum!</i>\" and unleashes his full torrents of cum right into your womb. Your womb is assaulted by Behemoth’s hot jizz. Overflowing with pleasure, you hook your legs together behind Behemoth while he fills you up. By Marae, how much is he cumming? You're already stuffed with your belly bulging forwards as if you were 9 months and he’s still not stopping. Gradually the amount pouring in slows down and when Behemoth finally pull out his cock, all the excessive cum spills out of your cunt. ");
-			if (player.hasCock()) outputText("Your [cock] shoots ropes of jism at the Behemoth.");
-			outputText("\n\nSpent, the behemoth lays next to you and says, \"<i>I love you, " + player.mf("dude", "chick") + "." + (flags[kFLAGS.BEHEMOTH_VAGINAL_CATCH] == 0 ? " If you ever get pregnant, I want to let you know that pregnancy lasts <b>two months</b>. My cum won't fertilize your womb if you're not pure enough." : "") + "</i>\" You smile at him while rubbing your cum-filled belly and fall into a nice nap.");
+			if (isVirgin) outputText("\n\n\"<i>Oh, wow, you're a virgin?</i>\" he says, amazed. \"<i>Hardly anyone is in the endgame; I'm flattered.</i>\"");
+			outputText("\n\nThe behemoth pistons in and out of you, leaking pre, and you can completely believe his stories of invigorating cum with how great you feel as your [pussy] clenches around him, eager for more. ");
+			if (flags[kFLAGS.BEHEMOTH_CHILDREN] <= 0) outputText("\"<i>I want to be a father someday. If I could start a family, that would be great,</i>\" the Behemoth says, watching you meaningfully, and you blush. ");
+			outputText("\n\nHe pounds away as you press up into him to meet him, his muscles rippling above you, and your [chest] feels great against him. ");
+			if (player.isLactating()) outputText("Your milk soaks his fur under the pressure, though, and you hope he'll enjoy licking it off later. ");
+			outputText("\n\n\"<i>Got to cum!</i>\" he cries, and you clench in preparation as he spews torrents of cum into your womb, hot and unbelievably filling. Moaning, you hook your [legs] around him as he fills you up, his strength seeping into you with his spunk, and it doesn't end. By Marae, how much can his balls hold? You're already stuffed with your belly bulging like you're pregnant and due with twins and he's not done, the fluid making you orgasm hard enough it hurts. ");
+			if (player.hasCock()) outputText("Your own [cock] tries to match him for it as best you can, and you're filled with pride as you paint him with your own spunk. ");
+			outputText("\n\nHe finally finishes and pulls out, all his cum drenching you, him, and his bed. He joins you in the wet spot (not that there even IS a dry spot now) and purrs. \"<i>I love you, " + player.mf("dude", "lady") + "." + (flags[kFLAGS.BEHEMOTH_VAGINAL_CATCH] == 0 ? " Just so you know, though, if that knocked you up -- my kind takes a long time to grow, okay? And it won't take if you aren't pure." : "") + "</i>\" You smile at him while rubbing your cum-filled belly and fall into a nice nap.");
 			outputText("\n\n<b>Some time later...</b>");
 			outputText("\n\nYou wake up from your nap refreshed and invigorated and give the Behemoth a kiss before you " + player.clothedOrNaked("redress yourself in your [armor], and ") + "make your way back to your camp.");
-			player.orgasm();
+			player.orgasm('Vaginal');
 			player.slimeFeed();
 			if (flags[kFLAGS.BEHEMOTH_CHILDREN] < 3 && player.cor < 25 + player.corruptionTolerance()) player.knockUp(PregnancyStore.PREGNANCY_BEHEMOTH, PregnancyStore.INCUBATION_BEHEMOTH, 50 + (flags[kFLAGS.BEHEMOTH_CHILDREN] * 15) + player.cor);
 			flags[kFLAGS.BEHEMOTH_VAGINAL_CATCH]++;
@@ -402,7 +404,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			if (hungerRefill < 40) hungerRefill = 40;
 			outputText(images.showImage("behemoth-blowjob"), false);
 			outputText("Your eyes draw near the big bulge in his loincloth and you lick your lips as if you're hungry. ");
-			if (player.findStatusEffect(StatusEffects.LustyTongue) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.LustyTongue)) {
 				outputText("Your body tingles with arousal as your " + player.tongueDescript() + " makes contact with your lips. ");
 				dynStats("lus", 30);
 			}
@@ -417,6 +419,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			outputText("\n\nYou lay next to him and rest for an hour before you say your goodbyes to the behemoth and walk back to your camp.");
 			flags[kFLAGS.BEHEMOTH_COCK_SUCKED]++;
 			dynStats("str", 0.5, "tou", 0.5, "lus", 30);
+			player.orgasm('Lips',false);
 			if (kGAMECLASS.inCombat) combat.cleanupAfterCombat();
 			else doNext(camp.returnToCampUseOneHour);
 		}

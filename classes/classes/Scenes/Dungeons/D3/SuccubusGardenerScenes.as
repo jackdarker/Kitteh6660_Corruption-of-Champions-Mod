@@ -301,9 +301,9 @@
 			outputText(" with foreign wetness. The vines' lubricant is surprisingly warm on your skin, and the feeling of rivulets of it running down the crack of your [butt] and over your [asshole] is surprisingly pleasant.");
 			if (player.isBiped()) outputText(" Your [legs] are eased open, but who are you to stop them? You're as wet as anything, and if spreading wide is the next step towards scratching your itch, so be it.");
 			outputText(" Your [clit] must look like a");
-			if (player.clitLength > 6) outputText(" glistening, cum-soaked shaft");
-			else if (player.clitLength > 3) outputText(" tiny, cum-soaked cock");
-			else if (player.clitLength > 1) outputText(" swollen, lube-lacquered gumball");
+			if (player.getClitLength() > 6) outputText(" glistening, cum-soaked shaft");
+			else if (player.getClitLength() > 3) outputText(" tiny, cum-soaked cock");
+			else if (player.getClitLength() > 1) outputText(" swollen, lube-lacquered gumball");
 			else outputText(" glistening, pink target");
 			outputText(" by now. You roll your [hips] as much as your position will allow. Your passion inflamed pussy has thus far avoided the tentacles' affections, though it's the one part that wants them more than anything.");
 			
@@ -327,14 +327,14 @@
 			
 			//Back to normal.
 			outputText("\n\nMore cum splatters across the exterior of your womanhood a moment before an enclosure envelops your [clit].");
-			if (player.clitLength > 6) outputText(" It stretches some around the cock-sized button");
-			else if (player.clitLength > 3) outputText(" It has no trouble handling your plus-sized button");
+			if (player.getClitLength() > 6) outputText(" It stretches some around the cock-sized button");
+			else if (player.getClitLength() > 3) outputText(" It has no trouble handling your plus-sized button");
 			else outputText(" Your tiny button seems dwarfed by the tube enveloping it");
 			outputText(", but that doesn't make it feel heavenly. It gently pulsates around your buzzer, rippling and squeezing, rhythmically whipping electric lashes of sensation into your fuck-crazed body one after another.");
 			
 			outputText("\n\nThe fleshy spear ravaging your honeypot quivers and slows, then thrusts hard enough to rock your body");
 			if (player.biggestTitSize() > 2) outputText(" and jiggle your tits");
-			outputText(", pressing itself flat against your cervix before finally exploding, creaming your insides with a thick layer of molten-hot seed. You would groan or whimper if your throat wasn't crammed so full of plantcock. Instead, your eyes roll back under their fluttering lids, revealing a narrow band of white as you lose all control. Your body shakes like a seizure victim's, all except for the muscles down south. They're too busy clenching and squeezing the lengthy intrudor, wringing every drop of lust-imbued cum");
+			outputText(", pressing itself flat against your cervix before finally exploding, creaming your insides with a thick layer of molten-hot seed. You would groan or whimper if your throat wasn't crammed so full of plantcock. Instead, your eyes roll back under their fluttering lids, revealing a narrow band of white as you lose all control. Your body shakes like a seizure victim's, all except for the muscles down south. They're too busy clenching and squeezing the lengthy intruder, wringing every drop of lust-imbued cum");
 			if (player.isPregnant()) outputText(" to splatter against your occupied womb.");
 			else outputText(" to fill your womb, to make it round with life so that others can feel what you're feeling.");
 			
@@ -391,7 +391,7 @@
 			
 			outputText("\n\n<i>\"Yessss,\"</i> you hiss, forgetting your role in the heat of the moment.");
 			
-			outputText("\n\nStars erupt in your vision as you're kicked in the head, and you're not sure which is worse - the ache of her none-to-subtle reprimand or the void of sensation on your throbbing tool. The phantom memeory of her warm, soft toes cradling your veiny fuckstick teases you worse than anything she could say, and you look up at her, a hurtful look plain on your face.");
+			outputText("\n\nStars erupt in your vision as you're kicked in the head, and you're not sure which is worse - the ache of her none-to-subtle reprimand or the void of sensation on your throbbing tool. The phantom memory of her warm, soft toes cradling your veiny fuckstick teases you worse than anything she could say, and you look up at her, a hurtful look plain on your face.");
 			
 			outputText("\n\nHer visage is painted with displeasure, but hints of possessive affection as well. It would be easy to confirm it for a kind of motherly displeasure were it not for the glint of prideful ownership in her eyes. <i>\"Pets don't talk,\"</i> she explains. <i>\"I'll fix that later, but for right now, you can be my good little puppy, right?\"</i>");
 			
@@ -418,7 +418,7 @@
 			else if (player.isTaur()) outputText(" your hooves");
 			else outputText(" fours");
 			outputText(".");
-			if (!player.isTaur()) outputText(" You scrabble over, unusued to having to move in such a way,");
+			if (!player.isTaur()) outputText(" You scrabble over, unused to having to move in such a way,");
 			else outputText(" You gallop over and drop down on your forelegs");
 			outputText(" and plant your [face] right into the succubus' milk. It's a little thicker than milk normally is and stickier too, like honey, but it's also sweeter. The ambrosial fluid fills your mouth with scintillating, indescribable flavor that sets");
 			if (player.tailType != 0)

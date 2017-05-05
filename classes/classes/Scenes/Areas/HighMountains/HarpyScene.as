@@ -20,34 +20,45 @@ package classes.Scenes.Areas.HighMountains
 		public function harpyVictoryuuuuu():void
 		{
 			clearOutput();
+			
+			if (flags[kFLAGS.SFW_MODE] > 0) {
+				outputText("You smile in satisfaction as the " + monster.short + " collapses, unable to continue fighting.", true);
+				combat.cleanupAfterCombat();
+				return;
+			}
+			
 			//(Enemy defeated by damage) 
 			if (monster.HP < 1) outputText("The harpy screams out in one last, pained cry before her wings give way, the feathered woman collapsing into a weary heap.", true);
 			//(Enemy defeated by lust)
 			else outputText("The harpy can't contain her lust anymore and crumples to the ground before you, on her knees with her plush, heavy ass resting on her feet. She coos pathetically, with one hand between her legs furiously fingering herself, and the other pressed against your crotch, a needy look in her eyes.", false);
-			//Genderless get nothing.
-			if (player.gender == 0) {
-				combat.cleanupAfterCombat();
-				return;
-			}
+			
+			menu();
+			addDisabledButton(0, "Anal", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(1, "Pussy", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(2, "Oral", "This scene requires you to have genitals and sufficient arousal.");
+			addDisabledButton(3, "Scissor", "This scene requires you to have vagina and sufficient arousal. It does not accomodate naga tail.");
+			addDisabledButton(4, "Clit Fuck", "This scene requires you to have huge clit and sufficient arousal.");
+			addDisabledButton(5, "Lay Eggs", "This scene requires you to have spider ovipositor, fangs and enough eggs.");
+			
 			//Rape options
-			if (player.lust >= 33 && flags[kFLAGS.SFW_MODE] <= 0) {
+			if (player.lust >= 33) {
 				outputText("  What do you do to her?", false);
-				menu();
 				if (player.hasCock()) {
 					if (player.cockThatFits(monster.analCapacity()) >= 0) addButton(0, "Anal", winAndRapeHarpyAnally, null, null, null, "Put your cock to a good use and take the harpy from behind.");
 					if (player.cockThatFits(monster.vaginalCapacity()) >= 0) addButton(1, "Pussy", victoryHarpyGetsHerPussyRaped, null, null, null, "That harpy's pussy looks inviting...");
 				}
-				addButton(2, "Oral", WinOnHarpyAndOralRape);
+				addButton(2, "Oral", WinOnHarpyAndOralRape, null, null, null, "Those lips are inviting, but her drugged lipstick can be dangerous.");
 				if (player.hasVagina()) {
-					if (player.isNaga()) outputText("  If you weren't a naga, you could scissor her.");
-					else addButton(3, "Scissor", harpyScissorSurprise, null, null, null, "Get into some girl-on-girl activity with the harpy.");
-					if (player.clitLength >= 3.5) addButton(4, "Clit Fuck", clitFuckAHarpy, null, null, null, "Fuck the harpy with your big clit.");
+					if (!player.isNaga()) addButton(3, "Scissor", harpyScissorSurprise, null, null, null, "Get into some girl-on-girl activity with the harpy.");
+					if (player.getClitLength() >= 3.5) addButton(4, "Clit Fuck", clitFuckAHarpy, null, null, null, "Fuck the harpy with your big clit.");
 				}
-				if (player.canOvipositSpider() && (player.faceType == FACE_SNAKE_FANGS || player.faceType == FACE_SPIDER_FANGS)) addButton(5, "Lay Eggs", spoidahsLegEggsInHarpeis, null, null, null, "Use your ovipositor to lay the eggs into harpy.");
-				addButton(14, "Leave", combat.cleanupAfterCombat);
 			}
-			//Not horny?  Iz over
-			else combat.cleanupAfterCombat();
+			
+			if (player.canOvipositSpider() && (player.faceType == FACE_SNAKE_FANGS || player.faceType == FACE_SPIDER_FANGS)) {
+				addButton(5, "Lay Eggs", spoidahsLegEggsInHarpeis, null, null, null, "Use your ovipositor to lay the eggs into harpy.");
+			}
+			
+			addButton(14, "Leave", combat.cleanupAfterCombat);
 		}
 
 		public function harpyLossU():void
@@ -154,7 +165,7 @@ package classes.Scenes.Areas.HighMountains
 				outputText("In your last conscious moment before you pass out from the hit, you hear the harpy sisters cackling above you.", false);
 			}
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("lib", 1);
 		}
 
@@ -280,7 +291,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("After a few hours, when you wake, every muscle in your body is aching as though you've just run a marathon. Looking down at your " + player.legs() + " in a weary haze, you see signs that even after you'd blacked out, your body had continued to be abused by the three lust-crazed harpies.", false);
 			player.changeFatigue(20);
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("str", -1, "tou", -1, "lib", 1, "sen", 2);
 		}
 
@@ -357,7 +368,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("Once your flow of seed subsides, you pull free of the fat-reared harpy.  She collapses into an orgasm-wracked pile on the ground, her plump ass and tender thighs waving in the air for whomever comes along after you.  You wipe yourself down and continue on your way, pleased with the brutal fuck and looking forward to your NEXT encounter...", false);
 
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 
 		private function winAndRapeHarpyAnally():void
@@ -414,7 +425,7 @@ package classes.Scenes.Areas.HighMountains
 
 			outputText("Still leaking seed, you pull free of her gaping ass, and dump the worthless bird-slut on the floor in a heap. Passed out and woefully exposed, her lush holes await whatever horny beast or demon will come alone after you.", false);
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Dick');
 		}
 
 
@@ -518,7 +529,7 @@ package classes.Scenes.Areas.HighMountains
 			player.lust = player.maxLust();
 			flags[kFLAGS.COMBAT_BONUS_XP_VALUE] = monster.XP;
 			combat.cleanupAfterCombat();
-			player.orgasm();
+			player.orgasm('Lips');
 			dynStats("lib", 1);
 		}
 
@@ -563,7 +574,7 @@ package classes.Scenes.Areas.HighMountains
 
 			outputText("\n\nGrinning at the girl, you shift so that your legs intertwine, steadying yourself as your crotch hovers above her own.  Your firm grip on her leg allows you to spread her thighs even further, your knee blocking her from closing her legs.  She's writhing madly by now, trying to break your grip and do something to quench the need between her legs, most of the feathers on her thighs having become a sodden mess.  Gently thrusting your hips, your slick lips brush tantalisingly across the harpy's own, drawing out a soft sigh from your own mouth and a gasp of pleasure from the other party.  Releasing her leg, you reposition it so that it is now trapped by your own. You move a hand to her breasts and start pinching and flicking the hard nubs of her nipples, teasing her with the lack of attention to her pussy.  She moans and quivers, clenching her teeth as she tries desperately not to cry out.  You move your hips again, putting a little more force behind it this time and fully grinding your crotches together.  The feeling of her wet lips slipping across your own, your stiff button bumping into hers, is overpowering.  You moan loudly, but it is completely muffled as your partner arches her back and cries out like the little slut she is, her body spasming wildly.  Was that all it took to push her over the edge?  Unluckily for her, you're not even close to finishing yet.");
 
-			outputText("\n\nHer sensitive snatch is still quivering as you continue to slide against it, the small feathers on her thighs tickling your " + player.skin() + " as you mash together faster and faster.[if (isHerm = true) \"  Your [cock] bounces with each thrust that hits, the harpy's stomach with a sharp slap and spraying ropes of pre-cum over her, covering her abdomen and the bottom of her breasts with thick streaks of fluid.\"]  The harpy shudders with each long stroke of your hips and you lean forwards, lying your upper body down on top of hers and squashing your [chest] against her own pert tits.[if (isHerm = true) \"  The move traps your throbbing [cock] between your two taut, sweat-slicked bodies, the crushing sensation nearly making you peak.  You steel yourself though, your shaft instead releasing a veritable flood of pre-cum, the slick juice pooling in the harpy's bellybutton and making its way down the cleft of her pussy, soaking both the ground and your interlocked thighs even more.\"]  Your move the hand that had been playing with her nipples, sliding it sensually down her side, [if (isHerm = true) \"smearing some of the pre-cum leaking from between your bodies into the girl's skin as it goes, eventually \"]slipping around to her full asscheeks and squeezing one of the soft pillows roughly.  You start pulling her hips so they slam into yours in time with your own thrusts, relishing in the force of the contact between your two bodies, feeling the ripples of her luscious ass with each hit. Her heavy panting seems to get even more husky as your face gets closer to hers, hard nipples gently prod your boobs as her chest heaves with exertion. Her recent orgasm does little to help her body keep up with your savage assault.");
+			outputText("\n\nHer sensitive snatch is still quivering as you continue to slide against it, the small feathers on her thighs tickling your [skin] as you mash together faster and faster.[if (isHerm = true) \"  Your [cock] bounces with each thrust that hits, the harpy's stomach with a sharp slap and spraying ropes of pre-cum over her, covering her abdomen and the bottom of her breasts with thick streaks of fluid.\"]  The harpy shudders with each long stroke of your hips and you lean forwards, lying your upper body down on top of hers and squashing your [chest] against her own pert tits.[if (isHerm = true) \"  The move traps your throbbing [cock] between your two taut, sweat-slicked bodies, the crushing sensation nearly making you peak.  You steel yourself though, your shaft instead releasing a veritable flood of pre-cum, the slick juice pooling in the harpy's bellybutton and making its way down the cleft of her pussy, soaking both the ground and your interlocked thighs even more.\"]  Your move the hand that had been playing with her nipples, sliding it sensually down her side, [if (isHerm = true) \"smearing some of the pre-cum leaking from between your bodies into the girl's skin as it goes, eventually \"]slipping around to her full asscheeks and squeezing one of the soft pillows roughly.  You start pulling her hips so they slam into yours in time with your own thrusts, relishing in the force of the contact between your two bodies, feeling the ripples of her luscious ass with each hit. Her heavy panting seems to get even more husky as your face gets closer to hers, hard nipples gently prod your boobs as her chest heaves with exertion. Her recent orgasm does little to help her body keep up with your savage assault.");
 
 			outputText("\n\nFully aware of the threat of her lipstick, you avoid her gasping mouth and instead dip to her collarbone, nipping at her sweat slicked skin as you increase the speed of your hips, the sound of your twat slapping into hers echoing from the surrounding rocks.  Every time you connect, your lower body tenses with pleasure, bringing you closer and closer to your peak and triggering a low groan in your throat.  She bites her lip as you move your mouth to her jawline, biting and kissing along it as you move up to her pointed ear.  Her eyes are squeezed closed and you swear you can still hear her whimpering slightly over the moans that continue to force their way out of her throat, as well as the constant, wet slap of your bodies.  You suck on her earlobe slightly, teasing it with your teeth as you force yourself on her with ever increasing speed, pulling her into you more forcefully each time and digging your hand into her plush rear.  Your twats slap together with each thrust, lips obscenely mashing and slipping against one another, grinding slightly before you pull away again.  Every so often one of your clits will slide up the other's cleft, drenching it with fluid and drawing out a tortured screech from both of you.  Each time you pound into the girl below you another load of femcum spatters and leaks from both of your bodies onto the slick rock beneath, leaving thick streams of fluid running down both your bodies.[if (isHerm = true) \"  More pre leaks from your [cock] as your bodies smack together around it, the soft, wet flesh milking your shaft for all it's worth. Every time you pull back, it aches from the lack of contact, throbbing painfully and drawing forth another glob of sticky wetness that adds to the mess on the stomach of the submissive bird-girl.\"]");
 
@@ -580,7 +591,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nEventually, your body too drained to continue, you stop and release the harpy's cheeks, letting her ass drop back down onto the drenched rock.  You pant heavily, lying back and giving yourself a few minutes to recover before disentangling from her body.  Your strength slowly returns to you and you start to don your armor once more, readying yourself for the trip back to camp.  You're glad you didn't leave your [armor] too close, considering how wet the floor managed to become during your interlude.  It seems as though it'll still get drenched though, considering how your thighs are soaked and your pussy[if (isHerm = true)  and your slightly sore cock] still oozes copiously from the ridiculously energetic session, but apparently it was all too much for the harpy who has now curled up and started snoring gently on the rocky ground.  Her lower body is utterly soaked, the feathers matted together with your shared juices, and her rear still has bright red handprints where you were holding her as you rode out your climax.[if (isHerm = true)   Her tits are also covered with fluid, white jizz starting to drip its way down her body towards the already overwhelming puddle of femspunk on the floor.]  You even catch a glimpse of her pussy between her thick thighs, smirking at how it continues to quiver and leak slightly, still enjoying the aftershocks of her last climax.");
 
 			outputText("\n\nYou smile to yourself as you grab a few gems from the slumbering girl, making a mental note to visit the mountains again sometime.");
-			player.orgasm();
+			player.orgasm('Vaginal');
 			combat.cleanupAfterCombat();
 		}
 
@@ -643,7 +654,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("\n\nFinally relieved of your uncountable eggs, you pull out of your surrogate, ovipositor retracting, and watch as she slowly slides down the boulder face; she comes to rest on her knees, feathered arms wrapping around her swollen midsection.  The harpy looks back at you, her eyelids drooping as her breathing slows, and you lean in to give her a quick kiss on the cheek before you suit up and head back to camp.");
 
 			player.dumpEggs();
-			player.orgasm();
+			player.orgasm('Ovi');
 			combat.cleanupAfterCombat();
 		}
 
@@ -683,12 +694,12 @@ package classes.Scenes.Areas.HighMountains
 				player.lust = player.maxLust();
 				flags[kFLAGS.COMBAT_BONUS_XP_VALUE] = monster.XP;
 				combat.cleanupAfterCombat();
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("lib", .5, "sen", -1);
 			}
 			else {
 				outputText(" the harpy's eyes close, and she slips into unconsciousness.  You give her round bottom a little pat before you depart, still shivering from the cascades of pleasure it brought you.");
-				player.orgasm();
+				player.orgasm('Vaginal');
 				dynStats("sen", -1);
 				combat.cleanupAfterCombat();
 			}

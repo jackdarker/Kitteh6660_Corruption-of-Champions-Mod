@@ -30,7 +30,10 @@ package classes.Scenes.Areas.Swamp
 			else {
 				outputText("He breaks into a smile and says, \"<i>Hi there!  I haven't seen anyone else with a shred of sanity in FOREVER.  Would you mind just, talking with me?</i>\"", false);
 				//[Fight] [Talk] [Leave]
-				simpleChoices("Fight", fightSpiderBoy, "Talk", talkToSpiderBoy, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+				menu();
+				addButton(0, "Fight", fightSpiderBoy);
+				addButton(1, "Talk", talkToSpiderBoy);
+				addButton(14, "Leave", camp.returnToCampUseOneHour);
 			}
 			if (flags[kFLAGS.CODEX_ENTRY_ARACHNES] <= 0) {
 				flags[kFLAGS.CODEX_ENTRY_ARACHNES] = 1;
@@ -53,9 +56,16 @@ package classes.Scenes.Areas.Swamp
 			player.refillHunger(20, false);
 			outputText("He starts talking first, telling of how his people were a young race of transformed off-worlders.  The demons put a quick end to that, and recruited a large amount of the more aggressive driders and arachnes from his tribe.  He quickly explains that arachne are like him, but with chitinous exoskeletons covering their whole body, except for the face.  Driders on the other hand, have the body of a human from the hips up but a giant spider body below.\n\n", false);
 			outputText("You talk of your own people, and the good times you had in Ingnam growing up, but you keep coming back to the sadness of losing so many young adults to becoming champions.  Eventually you go over your own selection, training, and eventual journey.  The spider-morph listens with rapt attention the whole way through.\n\n", false);
-			outputText("\"<i>Wow,</i>\" comments the arachnid male, \"<i>that's quite the story.  Thank you so much for talking to me today.  Here, take this.  If you ever want to have your own venom or webbing, eat as much of it as you can.  Who knows, maybe it'll help you take down the demons somehow?</i>\"\n\n", false);
-			outputText("He stands and gives you a bundle of pink fibers with a nervous bow.  You look down at the gossamer strands in your hands, and when you glance back up, he's gone.  ", false);
-			inventory.takeItem(consumables.S_GOSSR, camp.returnToCampUseOneHour);
+			outputText("\"<i>Wow,</i>\" comments the arachnid male, \"<i>that's quite the story.  Thank you so much for talking to me today.  Here, take this.  ");
+			if (rand(6) != 0) {
+				outputText("If you ever want to have your own venom or webbing, eat as much of it as you can.  Who knows, maybe it'll help you take down the demons somehow?</i>\"\n\n", false);
+				outputText("He stands and gives you a bundle of pink fibers with a nervous bow.  You look down at the gossamer strands in your hands, and when you glance back up, he's gone.  ", false);
+				inventory.takeItem(consumables.S_GOSSR, camp.returnToCampUseOneHour);
+			} else {
+				outputText("Spider webs are tougher than steel.  A skilled artisan can make an excellent fabric using it.  Or you can just twist it into a rope.  Who knows, maybe it'll help you take down the demons somehow?</i>\"\n\n", false);
+				outputText("He stands and gives you a bundle of white fibers with a nervous bow.  You look down at the gossamer strands in your hands, and when you glance back up, he's gone.  ", false);
+				inventory.takeItem(useables.T_SSILK, camp.returnToCampUseOneHour);
+			}
 		}
 
 //*Victory Pretext:rr
@@ -63,25 +73,41 @@ package classes.Scenes.Areas.Swamp
 		{
 			clearOutput();
 			spriteSelect(74);
-			var mount:Function =null;
-			var buttfuck:Function =null;
-			var frot:Function =null;
-			if (player.hasVagina()) mount = victoryCowgirlRidingOnSpiderBoi;
-			if (player.hasCock()) {
-				if (player.cockThatFits(monster.analCapacity()) != -1) buttfuck = victoryButtFuck;
-				if (player.biggestCockArea() > monster.analCapacity()) frot = victoryFrotTheSpoidah;
+	
+			if (flags[kFLAGS.SFW_MODE] > 0) {
+				outputText("You smile in satisfaction as the " + monster.short + " collapses, unable to continue fighting.", true);
+				combat.cleanupAfterCombat();
+				return;
 			}
-			var bikiniTits:Function = null;
-			if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor") bikiniTits = createCallBackFunction2((player.armor as LustyMaidensArmor).lustyMaidenPaizuri,player,monster);
 			outputText("The male spider-morph collapses onto his hands and knees, ", false);
 			if (monster.lust >= monster.eMaxLust()) outputText("masturbating with furious abandon, working his ebon dick with such vigor that the spider's pre-cum-slicked dick-skin noisily slides itself back and forth over his fattened glans; it becomes apparent just how much foreskin he truly has at this point, as even with his frenzied rubbing his glans remains shrouded in the thick excess skin while his fist slaps lewdly against his groin.  Dribbles of pre-cum leak from between his fingers to spill on the ground.", false);
 			else outputText("wobbling back and forth as he tries to stay up and fight.  There's no way he can oppose you, as beaten as he is now.", false);
-			if (player.gender > 0 && player.lust >= 33 && flags[kFLAGS.SFW_MODE] <= 0) {
+			
+			menu();
+			addDisabledButton(0, "Mount", "This scene requires you to have vagina and sufficient arousal.");
+			addDisabledButton(1, "FuckHisButt", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(2, "Frot", "This scene requires you to have overly big cock and sufficient arousal.");
+			// Button 3 is used for Lusty Maidens Armor special scene and is hidden without it
+			
+			if (!player.isGenderless() && player.lust >= 33) {
 				outputText("\n\nWhat do you do?", false);
-				//[CHOICES]
-				simpleChoices("Mount", mount, "FuckHisButt", buttfuck, "Frot", frot, "B.Titfuck", bikiniTits, "Leave", combat.cleanupAfterCombat);
+				if (player.hasVagina()) {
+					addButton(0, "Mount", victoryCowgirlRidingOnSpiderBoi);
+					if (player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor") {
+						addButton(3, "B.Titfuck", (player.armor as LustyMaidensArmor).lustyMaidenPaizuri, player, monster);
+					}
+				}
+				if (player.hasCock()) {
+					if (player.cockThatFits(monster.analCapacity()) != -1) {
+						addButton(1, "FuckHisButt", victoryButtFuck);
+					}
+					if (player.biggestCockArea() > monster.analCapacity()) {
+						addButton(2, "Frot", victoryFrotTheSpoidah);
+					}
+				}
 			}
-			else combat.cleanupAfterCombat();
+			
+			addButton(14, "Leave", combat.cleanupAfterCombat);
 		}
 
 //Loss selector
@@ -160,7 +186,7 @@ package classes.Scenes.Areas.Swamp
 			else if (player.cumQ() < 1000) outputText("streams", false);
 			else outputText("rivers", false);
 			outputText(" of semen sliding out of the abused opening.  He rolls onto his side and pants, still leaking his thick goo from the limp, weak little cock between his legs.  You bend down and wipe your dick off on his face, letting him lick at it like a trained puppy.  Once cleaned, you get dressed and wander back to camp, leaving the spider to recover from the ordeal.", false);
-			player.orgasm();
+			player.orgasm('Dick');
 			combat.cleanupAfterCombat();
 		}
 
@@ -199,7 +225,7 @@ package classes.Scenes.Areas.Swamp
 			outputText("\n\n", false);
 
 			outputText("You stretch and sigh with contentment, looking over your cum-covered conquest while he tries to clean himself off.  Absolutely perfect.", false);
-			player.orgasm();
+			player.orgasm('Dick');
 			combat.cleanupAfterCombat();
 		}
 
@@ -227,7 +253,7 @@ package classes.Scenes.Areas.Swamp
 			player.cuntChange(monster.cockArea(0), true, true, false);
 			outputText("\n\n", false);
 
-			outputText("You pinch the arachnid male's nipple as you begin to bounce up and down upon him.  Each lewd slap of your " + player.buttDescript() + " on his groin is accompanied by a rippling spasm of pleasure in your " + player.vaginaDescript() + ", inadvertantly milking the thick-skinned member with the muscular spasms.  He moans and begins trying to lift his hips to meet you.  You deny him, slamming your body down harder with every downward motion to crush him back into the moist swamp-earth.\n\n", false);
+			outputText("You pinch the arachnid male's nipple as you begin to bounce up and down upon him.  Each lewd slap of your " + player.buttDescript() + " on his groin is accompanied by a rippling spasm of pleasure in your " + player.vaginaDescript() + ", inadvertently milking the thick-skinned member with the muscular spasms.  He moans and begins trying to lift his hips to meet you.  You deny him, slamming your body down harder with every downward motion to crush him back into the moist swamp-earth.\n\n", false);
 
 			outputText("\"<i>Ungh... uh... c-c-coming!</i>\" whines the spider-morph, trembling underneath you.  His cock squirts and dumps its inhuman seed into your innermost depths.  Squishing wetly, you can feel pump after pump of the thick spooge being forced past your cervix to burrow in your womb.  The male finishes his climax and sags down into the loam, panting.  Reaching down, you give him an irritated slap.  Your victim's dick actually starts wilting inside you while you ride him, spooge slopping past your lips with each thrust.  The nerve of some men!\n\n", false);
 
@@ -249,7 +275,7 @@ package classes.Scenes.Areas.Swamp
 			player.slimeFeed();
 			//Pregnancy Goes Here
 			player.knockUp(PregnancyStore.PREGNANCY_SPIDER, PregnancyStore.INCUBATION_SPIDER, 151);
-			player.orgasm();
+			player.orgasm('Vaginal');
 			combat.cleanupAfterCombat();
 		}
 
@@ -318,7 +344,7 @@ package classes.Scenes.Areas.Swamp
 			outputText("Crossing your eyes, you grab the ground with both hands and struggle to hold on.  There's... too much... too much pleasure for you to think.  Muscles randomly seize and twitch throughout your body, and though the ", false);
 			if (player.cumQ() >= 500) outputText("semen continues to leak out at the same pace", false);
 			else outputText("semen trails off as you empty", false);
-			outputText(", you're absolutely drowning in a sea of bliss.  The waves of sexual indulgence threaten to drag you under their frothing crests.  Slowly, your self-control washes away, eroded by the all-encompasing pleasure " + player.sMultiCockDesc() + " is experiencing.\n\n", false);
+			outputText(", you're absolutely drowning in a sea of bliss.  The waves of sexual indulgence threaten to drag you under their frothing crests.  Slowly, your self-control washes away, eroded by the all-encompassing pleasure " + player.sMultiCockDesc() + " is experiencing.\n\n", false);
 
 			outputText("You begin to mumble, \"<i>fuckmefuckmefuckmefuckme,</i>\" like some kind of religious mantra.\n\n", false);
 
@@ -327,7 +353,7 @@ package classes.Scenes.Areas.Swamp
 			else outputText(player.SMultiCockDesc() + " explodes again, dumping every remaining drop from your " + player.ballsDescriptLight() + " directly onto your " + player.chestDesc() + " and belly.", false);
 			outputText("  Your eyelids flutter and droop, your tongue lolls out of your mouth, and you start drooling all over yourself.  Zombie-like, your body keeps shaking, locked in orgasm, even after the spider dumps you in the dirt and walks away.", false);
 			player.slimeFeed();
-			player.orgasm();
+			player.orgasm('Anal');
 			combat.cleanupAfterCombat();
 		}
 
@@ -360,7 +386,7 @@ package classes.Scenes.Areas.Swamp
 			else if (player.wetness() >= 2) outputText("wet", false);
 			else outputText("moist", false);
 			outputText(" mons, teasing against your vulva until your " + player.clitDescript() + " emerges from its hood, ", false);
-			if (player.clitLength >= 3) outputText("frotting against him", false);
+			if (player.getClitLength() >= 3) outputText("frotting against him", false);
 			else outputText("grinding along the underside of his dick", false);
 			outputText(".  You start rocking your " + player.hipDescript() + " encouragingly, trying to snare his marvelous maleness, but every time you catch his tip within your lips, he changes the angle and swivels away, teasing you.\n\n", false);
 
@@ -376,7 +402,7 @@ package classes.Scenes.Areas.Swamp
 			outputText(", ", false);
 			if (player.hasCock()) outputText(player.sMultiCockDesc() + " becomes so full and hard it feels like it could burst, ", false);
 			outputText("and your " + player.clitDescript() + " ", false);
-			if (player.clitLength >= 4) outputText("bounces up and down on your belly with each beat of your heart", false);
+			if (player.getClitLength() >= 4) outputText("bounces up and down on your belly with each beat of your heart", false);
 			else outputText("seems to pulsate with every beat of your heart", false);
 			outputText(".\n\n", false);
 
@@ -392,7 +418,7 @@ package classes.Scenes.Areas.Swamp
 
 			outputText("You sigh and close your eyes, slowly slumping down while your hips keep twitching.  You've been sated, and though your body keeps hungering for more, you slip into unconsciousness.", false);
 			player.slimeFeed();
-			player.orgasm();
+			player.orgasm('Vaginal');
 			player.knockUp(PregnancyStore.PREGNANCY_SPIDER, PregnancyStore.INCUBATION_SPIDER);
 			combat.cleanupAfterCombat();
 		}
@@ -404,7 +430,6 @@ package classes.Scenes.Areas.Swamp
 			if (player.vaginas.length == 0) {
 				outputText("You feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  You look down and behold a vagina.  ", false);
 				player.createVagina();
-				player.genderCheck();
 			}
 			outputText("You shudder violently, your stomach growling fiercely at you. It feels as if something is moving around in your womb, and you bend over on all fours, raising your ass into the air as if it is the most natural thing in the world. A slimy green fluid starts leaking out of your " + player.vaginaDescript(0) + ", making a small puddle on the ground. The sensation is extremely pleasurable as you feel it running down your thighs. Groaning, you start to push out a small, smooth green ball, and the action makes your " + player.vaginaDescript(0) + " so much wetter.  You push out another, and another, each ball rubbing against your inner walls before dropping into the slimy pool of goo. After the sixth, you orgasm, ", false);
 			//[if male/herm]
@@ -417,7 +442,7 @@ package classes.Scenes.Areas.Swamp
 			outputText("You awaken later on, a sticky feeling between your legs to go with your wet pussy", false);
 			if (player.hasCock()) outputText(" and raging hard on", false);
 			outputText(". Looking around, you notice the slimy pool appears to have dried up, but the broken eggshells show that you weren't just dreaming. Tiny dots in the dirt form a trail leading to the swamp, and you can only guess where your offspring went.\n", false);
-			player.orgasm();
+			player.orgasm('Vaginal');
 		}
 	}
 }

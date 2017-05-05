@@ -29,7 +29,10 @@ public function bunnbunbunMeet():void {
 		
 		outputText("Even though nearly a minute has passed, the bunny-lass is STILL frozen and staring.  She hasn't done anything since realizing that you're looking at her.  Well, it looks like the ball's in your court.  What do you do?", false);
 		//[Talk] [Rape Her]
-		simpleChoices("Talk", talkToBunnyBunBun, "Rape Her", rapeBunBun, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+		menu();
+		addButton(0, "Talk", talkToBunnyBunBun);
+		addButton(1, "Rape Her", rapeBunBun);
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 	//Met her
 	else {
@@ -44,39 +47,34 @@ public function bunnbunbunMeet():void {
 		outputText("She claps both hands over her mouth, leaving her swollen prick to bounce precipitously while she awaits your response.\n\n", false);
 		
 		outputText("(If you're going to sex her, which of her body parts will you use?", false);
-		dynStats("lus", 5+player.lib/20);
-		var DickInV:Function = null;
-		var Vagina:Function = null;
-		var sixtyNine:Function = null;
-		var eggs:Function = null;
-		if (player.cockThatFits(40) >= 0) {
-			Vagina = bunbunGetsFucked;
-			outputText("  Fuck her vagina?", false);
-		}
-		else if (player.cockTotal() > 0) outputText("  <b>You're too to big fit inside her...</b>", false);
+		dynStats("lus", 5 + player.lib / 20);
 		
-		//Dick requires one 40 area or smaller.
+		menu();
+		addDisabledButton(0, "Your Vagina", "This scene requires you to have vagina.");
+		addDisabledButton(1, "Her Vagina", "This scene requires you to have fitting cock.");
+		addDisabledButton(2, "69", "This scene requires you to have genitals.");
+		addDisabledButton(3, "LayYourEggs", "This scene requires you to have ovipositor and enough eggs.", "Lay Your Eggs");
+		// 4 - anal always available
+		
 		if (player.hasVagina()) {
-			DickInV = bunbunFucksYourVag;
-			outputText("  Her dick in your vagina?", false);
+			addButton(0, "Your Vagina", bunbunFucksYourVag, undefined, undefined, undefined, "Her dick in your vagina?");
 		}
-		if (player.gender > 0) {
-			sixtyNine = bunbun69;
-			outputText("  Sixty-nine her?", false);
+		//Dick requires one 40 area or smaller.
+		if (player.cockThatFits(40) >= 0) {
+			addButton(1, "Her Vagina", bunbunGetsFucked, undefined, undefined, undefined, "Fuck her vagina?");
 		}
-		
-		if (player.canOviposit() && player.lust >= 33) {
+		if (!player.isGenderless()) {
+			addButton(2, "69", bunbun69, undefined, undefined, undefined, "Sixty-nine her?");
+		}
+		if (player.canOviposit()) {
 			if (!player.canOvipositBee() || rand(2) == 0)
-				eggs = ovipositBunnyEaster;
+				addButton(3, "LayYourEggs", ovipositBunnyEaster, undefined, undefined, undefined, "Fill her with your own eggs?");
 			else
-				eggs = layEggsInBunbuns;
+				addButton(3, "LayYourEggs", layEggsInBunbuns, undefined, undefined, undefined, "Fill her with your own eggs?");
 		}
+		addButton(4, "Your Ass", bunbunFucksPCInAss, undefined, undefined, undefined, "Her dick in your ass?");
 		
-		outputText("  Her dick in your ass?)", false);
-		//var Ass:Number = 0;
-		//Dick In V] [Dick in A] [Vagina] [Ass] [Leave]
-		choices("Your Vagina", DickInV, "Her Vagina", Vagina, "69", sixtyNine, "LayYourEggs", eggs, "Your Ass", bunbunFucksPCInAss,
-			"", null, "", null, "", null, "", null, "Leave", camp.returnToCampUseOneHour);
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 }
 //[Talk]
@@ -95,28 +93,27 @@ private function talkToBunnyBunBun():void {
 	
 	outputText("In no time flat she's on her back, playing with herself and lifting her balls to expose a bubblegum-pink gash.  You could 'help' her with that or you could leave.  Of course if you leave you doubt you'll find her again.  Maybe a good fucking will clear her head long enough for her to figure out how to leave this land and return to wherever she came from?\n\n", false);
 	outputText("(If you're going to sex her, which of her body parts will you use?", false);
-	var DickInV:Function = null;
-	var Vagina:Function = null;
-	var sixtyNine:Function = null;
-	//Dick requires one 40 area or smaller.
+	dynStats("lus", 5 + player.lib / 20);
+	
+	menu();
+	addDisabledButton(0, "Your Vagina", "This scene requires you to have vagina.");
+	addDisabledButton(1, "Her Vagina", "This scene requires you to have fitting cock.");
+	addDisabledButton(2, "69", "This scene requires you to have genitals.");
+	// 3 - anal always available
+	
 	if (player.hasVagina()) {
-		DickInV = bunbunFucksYourVag;
-		outputText("  Her dick in your vagina?", false);
+		addButton(0, "Your Vagina", bunbunFucksYourVag, undefined, undefined, undefined, "Her dick in your vagina?");
 	}
+	//Dick requires one 40 area or smaller.
 	if (player.cockThatFits(40) >= 0) {
-		Vagina = bunbunGetsFucked;
-		outputText("  Fuck her vagina?", false);
+		addButton(1, "Her Vagina", bunbunGetsFucked, undefined, undefined, undefined, "Fuck her vagina?");
 	}
-	else if (player.cockTotal() > 0) outputText("  <b>You're too big to fit inside her...</b>", false);
-	if (player.gender > 0) {
-		sixtyNine = bunbun69;
-		outputText("  Sixty-nine her?", false);
+	if (!player.isGenderless()) {
+		addButton(2, "69", bunbun69, undefined, undefined, undefined, "Sixty-nine her?");
 	}
-	outputText("  Her dick in your ass?)", false);
-	//var Ass:Number = 0;
-	//Dick In V] [Dick in A] [Vagina] [Ass] [Leave]
-	simpleChoices("Your Vagina",DickInV,"Your Ass",bunbunFucksPCInAss,"Her Vagina",Vagina,"69",sixtyNine,"Leave",camp.returnToCampUseOneHour);
-	dynStats("lus", 5+player.lib/20);
+	addButton(3, "Your Ass", bunbunFucksPCInAss, undefined, undefined, undefined, "Her dick in your ass?");
+	
+	addButton(14, "Leave", camp.returnToCampUseOneHour);	
 }
 //[Rape Her]
 private function rapeBunBun():void {
@@ -138,28 +135,26 @@ private function rapeBunBun():void {
 		
 		dynStats("lus", 10, "cor", 3);
 		outputText("(If you're going to sex her, which of her body parts will you use?", false);
-		var DickInV:Function = null;
-		var Vagina:Function = null;
-		var sixtyNine:Function = null;
-		//Dick requires one 40 area or smaller.
+		
+		menu();
+		addDisabledButton(0, "Your Vagina", "This scene requires you to have vagina.");
+		addDisabledButton(1, "Her Vagina", "This scene requires you to have fitting cock.");
+		addDisabledButton(2, "69", "This scene requires you to have genitals.");
+		// 3 - anal always available
+		
 		if (player.hasVagina()) {
-			DickInV = bunbunFucksYourVag;
-			outputText("  Her dick in your vagina?", false);
+			addButton(0, "Your Vagina", bunbunFucksYourVag, undefined, undefined, undefined, "Her dick in your vagina?");
 		}
+		//Dick requires one 40 area or smaller.
 		if (player.cockThatFits(40) >= 0) {
-			Vagina = bunbunGetsFucked;
-			outputText("  Fuck her vagina?", false);
+			addButton(1, "Her Vagina", bunbunGetsFucked, undefined, undefined, undefined, "Fuck her vagina?");
 		}
-		else if (player.cockTotal() > 0) outputText("  <b>You're too big to fit inside her...</b>", false);
-		if (player.gender > 0) {
-			sixtyNine = bunbun69;
-			outputText("  Sixty-nine her?", false);
+		if (!player.isGenderless()) {
+			addButton(2, "69", bunbun69, undefined, undefined, undefined, "Sixty-nine her?");
 		}
-		outputText("  Her dick in your ass?)", false);
-		//var Ass:Number = 0;
-		//Dick In V] [Dick in A] [Vagina] [Ass] [Leave]
-		simpleChoices("Your Vagina",DickInV,"Your Ass",bunbunFucksPCInAss,"Her Vagina",Vagina,"69",sixtyNine,"Leave",camp.returnToCampUseOneHour);
-
+		addButton(3, "Your Ass", bunbunFucksPCInAss, undefined, undefined, undefined, "Her dick in your ass?");
+		
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 }
 
@@ -193,7 +188,7 @@ private function bunbunFucksYourVag():void {
 	outputText("How much pre-cum can she squirt?!\n\n", false);
 	
 	outputText("You reach down and grab the bunny's hips for support as she bounces you again, higher this time.  A solid five or six inches of her length slide in and out of your " + player.vaginaDescript(0) + " before you slap into her, and a split second later, you're airborne again.  She bounces you harder and harder until each thrust of her muscled thighs is launching you nearly a foot off her loins and letting gravity guide you back down her shaft.", false);
-	if (player.clitLength >= 4) outputText("  Your " + player.clitDescript() + " bounces on her belly, tingling like mad every time it slaps into her tanned, sweat-slicked skin.", false);
+	if (player.getClitLength() >= 4) outputText("  Your " + player.clitDescript() + " bounces on her belly, tingling like mad every time it slaps into her tanned, sweat-slicked skin.", false);
 	if (player.biggestLactation() >= 1) outputText("  Milk begins to bead on your " + player.allBreastsDescript() + " from the sensation of the bunny's brutal, almost mechanical fucking.", false);
 	outputText("  The eager girl moans, \"<i>Ooooh fuckfuckyes... gotta fuck... gotta breed... ungh... eggs eggs eggs!</i>\"\n\n", false);
 	
@@ -205,7 +200,7 @@ private function bunbunFucksYourVag():void {
 	outputText("\n\n", false);
 	
 	outputText("The girl underneath you is thrashing and moaning, chanting, \"<i>Yes... eggs eggs EGGS! YES!</i>\" while her ovipositor-like cock robs you of your strength and slides egg-shaped bulges inside you.  Amazingly, your " + player.vaginaDescript(0) + " is awash with pleasure, and you reach down to ", false);
-	if (player.clitLength >= 4) outputText("fondle your " + player.clitDescript() + " a moment before wrapping your hand around it and stroking the girl-cock excitedly.", false);
+	if (player.getClitLength() >= 4) outputText("fondle your " + player.clitDescript() + " a moment before wrapping your hand around it and stroking the girl-cock excitedly.", false);
 	else outputText("caress your " + player.clitDescript() + " a moment before you start to circle it with a finger, teasing it expertly.", false);
 	if (player.cockTotal() > 0) {
 		outputText("  " + player.SMultiCockDesc() + " twitches and drools ", false);
@@ -243,7 +238,7 @@ private function bunbunFucksYourVag():void {
 	else {
 		player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_BABY, 60);
 	}
-	player.orgasm();
+	player.orgasm('Vaginal');
 	dynStats("lib", 1, "sen", -3);
 	doNext(camp.returnToCampUseEightHours);
 }
@@ -332,7 +327,7 @@ private function bunbunFucksPCInAss():void {
 	outputText("She walks away, her puffy tail twitching with the breeze while your eyes drift closed.", false);
 	//(Easter ass-preg + 8 hours pass)
 	player.buttKnockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS, 1, 1);
-	player.orgasm();
+	player.orgasm('Anal');
 	dynStats("lib", 1, "sen", 1);
 	doNext(camp.returnToCampUseEightHours);
 }
@@ -414,7 +409,7 @@ private function bunbunGetsFucked():void {
 	
 	outputText("You shrug and pick up one of her eggs, noticing that it's turned neon pink in color.  The bunny mumbles, \"<i>Have it, iz good for youuuu...</i>\" before she starts to snore and murmur out a sexual dream.\n\n", false);
 	
-	player.orgasm();
+	player.orgasm('Dick');
 
 	dynStats("lib", 1, "sen", 1);
 	inventory.takeItem(consumables.NPNKEGG, camp.returnToCampUseOneHour);
@@ -438,7 +433,7 @@ private function bunbun69():void {
 			outputText("Before you can return with a witty remark, the bunny has hopped off, leaving you alone in the field with your face in your palm.\n\n", false); 
 			//- Intelligence
 			//+ Lust
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("int", -2);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -455,7 +450,7 @@ private function bunbun69():void {
 
 			outputText("You wipe off what you can of the sticky goop and trot off with a scowl, leaving the hysterical rabbit to calm herself down.\n\n", false);
 			//- Intelligence
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("int", -2);
 			//+ Lust
 			//+ Pink Egg 
@@ -516,7 +511,8 @@ private function bunbun69():void {
 			player.tailType = TAIL_TYPE_RABBIT;
 			player.earType = EARS_BUNNY;
 			doNext(camp.returnToCampUseOneHour);
-			player.orgasm();
+			player.orgasm('Dick');
+			player.orgasm('Lips', false);
 			dynStats("lib", 1, "sen", 1);
 		}
 		//REGULAR SHOW
@@ -572,7 +568,8 @@ private function bunbun69():void {
 			player.tailType = TAIL_TYPE_RABBIT;
 			player.earType = EARS_BUNNY;
 			doNext(camp.returnToCampUseOneHour);
-			player.orgasm();
+			player.orgasm('Lips', false);
+			player.orgasm('Dick')
 			dynStats("lib", 1, "sen", 1);
 		}
 	}
@@ -612,7 +609,7 @@ private function bunbun69():void {
 		player.tailType = TAIL_TYPE_RABBIT;
 		player.earType = EARS_BUNNY;
 		doNext(camp.returnToCampUseOneHour);
-		player.orgasm();
+		player.orgasm('Vaginal');
 		dynStats("lib", 1, "sen", 1);
 	}
 }
@@ -664,7 +661,7 @@ public function layEggsInBunbuns():void {
 	}
 	outputText("\n\nFinally you find you no longer have any to give to the egg-obsessed rabbit girl and the ovipositor retracts into its slit.  Tired but blissful, she curls up to slumber, and you leave her to deal with having a stomach chock full of eggs 'n honey, returning to camp until you once again need a warm body to play host.");
 	player.dumpEggs();
-	player.orgasm();
+	player.orgasm('Ovi');
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -715,7 +712,7 @@ public function ovipositBunnyEaster():void {
 	outputText("\n\nThe hare goes limp after that, her eyes drifting shut as her tongue idly licks her spent seed from her face.  It looks like she got more eggs than she reckoned for.");
 	//ITS OVER
 	player.dumpEggs();
-	player.orgasm();
+	player.orgasm('Ovi');
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -856,7 +853,7 @@ private function fuckTheEggBoundBun():void {
 	else outputText("growing larger and larger as cum splatters in thick streams from her saturated pussy. Your seemingly endless gallons of flooding cum wash the remnants of her previous partners away, immersing the caramel woman in the fluid wealth of your liquid possession.");
 	outputText("  No sooner has your spunk taken root inside her, than the bunny's already colossal testes tremble anew.  Before your eyes, they balloon even larger, fattening with the profit of your claim.  You remain inside her a moment longer to marvel at the impossible bulk of her egg-stuffed body, before withdrawing and stepping back to clean yourself off.  Bulbous dollops of spunk bubble from her cunny as she impotently grinds her shaft against the mammoth bulk of her stoppered balls.  Satisfied, you head back to camp, leaving the bunny to the mercies of the next rescuer.");
 	//[End Encounter, corruption up]
-	player.orgasm();
+	player.orgasm('Generic');
 	dynStats("cor", 2);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -968,7 +965,7 @@ private function getEggflated():void {
 	}
 	outputText(player.modThickness(100,3));
 	outputText(player.modTone(0,3));
-	player.orgasm();
+	player.orgasm('Vaginal');
 	dynStats("lib", 1, "sen", -3);
 	doNext(camp.returnToCampUseEightHours);
 }

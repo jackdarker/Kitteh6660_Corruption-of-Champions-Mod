@@ -4,8 +4,9 @@ package classes.Scenes.Areas.Forest
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.Items.Mutations;
+import classes.Scenes.API.Encounter;
 
-	public class ErlKingScene extends BaseContent
+public class ErlKingScene extends BaseContent implements Encounter
 	{
 		public function ErlKingScene()
 		{
@@ -17,7 +18,15 @@ package classes.Scenes.Areas.Forest
 		protected function get changeLimit():int { return mutations.changeLimit; }
 		protected function set changeLimit(val:int):void { mutations.changeLimit = val; }
 
-		public function encounterWildHunt():void
+	public function encounterName():String {
+		return "erlking";
+	}
+
+	public function encounterChance():Number {
+		return flags[kFLAGS.ERLKING_DISABLED] == 0 ? 2 : 0;
+	}
+
+	public function execEncounter():void
 		{
 			if (flags[kFLAGS.WILD_HUNT_ENCOUNTERS] == 0)
 			{
@@ -178,7 +187,7 @@ package classes.Scenes.Areas.Forest
 			else
 			{
 				outputText("The baying of hounds fills the air, and the trees echo with the distant thunder of hooves as the first of the creatures bursts through the fog.  Stooped and low, this beast-man is mostly canine, with a sharp-toothed muzzle spread wide and panting.  His red-black tongue dangles with each breath, steam rising up from his jaws.  The hound’s pelt is midnight black, covering his muscular frame.  Strong arms hang low, almost touching the ground, muscles flexing as his surprisingly human hands open and close restlessly.  His legs are distinctly dog-like, ending in wide, black-clawed paws.  Between its stocky legs; you catch a glimpse of an arm-thick sheath and a heavy sack behind.  A broad tail wags behind him, swinging slowly and menacingly");
-				if (player.findStatusEffect(StatusEffects.MetWhitney) >= 0) outputText(", and for a moment all you can think of are Whitney’s canine peppers");
+				if (player.hasStatusEffect(StatusEffects.MetWhitney)) outputText(", and for a moment all you can think of are Whitney’s canine peppers");
 				outputText(".\n\n");
 
 				outputText("His baleful red eyes glare at you from beneath a dark brow.  The hound takes in a deep breath, his nostrils flaring, then throws his head back to howl.  The deafening sound is answered instantly by the crashing of brush as another beast man leaps through the undergrowth.  The fog falls to shreds as he leaps out behind you, flanking you with his fellow Hound.\n\n");
@@ -418,7 +427,7 @@ package classes.Scenes.Areas.Forest
 			inventory.takeItem(consumables.CANINEP, camp.returnToCampUseOneHour);
 			dynStats("sen-", 2, "lib+", 2, "cor+", 1, "lus=", 0);
 			player.changeFatigue(10);
-			player.orgasm();
+			player.orgasm('Generic');
 			player.slimeFeed();
 		}
 
@@ -467,6 +476,7 @@ package classes.Scenes.Areas.Forest
 			var gemFind:int = 10 + rand(15);
 
 			outputText("<b>You found " + gemFind + " gems.</b>\n\n");
+			player.gems += gemFind;
 
 			var selector:int = rand(4);
 
@@ -702,7 +712,7 @@ package classes.Scenes.Areas.Forest
 			//[+10 Fatigue, +1 Toughness / +1 Strength, 100 hp healed]			
 			if (player.tou < player.str) dynStats("toughness+", 1, "fatigue+", 10, "health+", 100, "lust=", 0);
 			else (dynStats("strength+", 1, "fatigue+", 10, "health+", 100, "lust=", 0));
-			player.orgasm();
+			player.orgasm('Generic');
 			player.slimeFeed();
 
 			menu();
@@ -784,7 +794,7 @@ package classes.Scenes.Areas.Forest
 			}
 
 			player.createKeyItem("Golden Antlers", 0, 0, 0, 0);
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("lust=", 0);
 			if (flags[kFLAGS.ERLKING_CANE_OBTAINED] == 0) {
 				inventory.takeItem(weapons.HNTCANE, camp.returnToCampUseOneHour);
@@ -865,7 +875,7 @@ package classes.Scenes.Areas.Forest
 
 			//[Libido + 2]
 			dynStats("lib+", 2, "lus=", 0);
-			player.orgasm();
+			player.orgasm('Dick');
 
 			menu();
 			doNext(camp.returnToCampUseOneHour);
@@ -891,7 +901,7 @@ package classes.Scenes.Areas.Forest
 
 			//[Sensitivity -2]
 			dynStats("sen-", 2, "lus=", 0);
-			player.orgasm();
+			player.orgasm('Dick');
 
 			menu();
 			doNext(camp.returnToCampUseOneHour);
@@ -917,7 +927,7 @@ package classes.Scenes.Areas.Forest
 
 			//[Sensitivity -2, Libido +2]
 			dynStats("sen-", 2, "lib+", 2, "lus=", 0);
-			player.orgasm();
+			player.orgasm('Vaginal');
 
 			menu();
 			doNext(camp.returnToCampUseOneHour);
@@ -1040,6 +1050,8 @@ package classes.Scenes.Areas.Forest
 				player.skinAdj = "";
 				player.skinDesc = "fur";
 				player.furColor = "brown";
+				player.underBody.type = UNDER_BODY_TYPE_FUR;
+				player.underBody.copySkin({furColor: "white"});
 				changes++;
 			}
 			//Change face to normal
@@ -1055,15 +1067,15 @@ package classes.Scenes.Areas.Forest
 				changes++;
 			}
 			//Change legs to cloven hooves
-			if (rand(4) == 0 && changes < changeLimit && player.earType == EARS_DEER && player.tailType == TAIL_TYPE_DEER && player.hasFur() && (player.lowerBody != LOWER_BODY_TYPE_DEERTAUR && player.lowerBody != LOWER_BODY_TYPE_CLOVEN_HOOFED)) {
+			if (rand(4) == 0 && changes < changeLimit && player.earType == EARS_DEER && player.tailType == TAIL_TYPE_DEER && player.hasFur() && player.lowerBody != LOWER_BODY_TYPE_CLOVEN_HOOFED) {
 				if (player.lowerBody == LOWER_BODY_TYPE_HOOFED) {
 					outputText("\n\nYou feel a sharp stinging sensation from your hooves, accompanied by a loud CRACK.  You look down in alarm, prancing from one hooved foot to another, realizing that your solid, heavy hooves have been replaced with delicate, cloven hooves.  You squint, also noting a subtle thinness across your legs in general--if you had to guess, you’d hazard that you’re looking <b>more deer-like than horse-like</b>.");
 				}
 				else {
 					outputText("\n\nYou feel a strange tightness from your feet and nearly topple over as your balance shifts.  You’re balancing on your toes for some reason.  You look down in amazement as your legs slim and lengthen, your feet elongating and darkening at the ends until you’re balancing on <b>two, graceful deer legs</b>.");
 				}
-				if (player.isTaur()) player.lowerBody = LOWER_BODY_TYPE_DEERTAUR;
-				else player.lowerBody = LOWER_BODY_TYPE_CLOVEN_HOOFED;
+				player.lowerBody = LOWER_BODY_TYPE_CLOVEN_HOOFED;
+				if (!player.isTaur() && !player.isBiped()) player.legCount = 2;
 				changes++;
 			}
 			// Genital Changes

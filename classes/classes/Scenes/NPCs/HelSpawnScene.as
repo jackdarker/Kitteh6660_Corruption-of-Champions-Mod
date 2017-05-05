@@ -238,7 +238,7 @@ internal function haveAKid():void {
 	outputText(".</i>\"  You start to reply, when you're suddenly upended, landing back on your back with Helia atop you, fingers brushing along the cock buried twixt her legs.  \"<i>Oh, don't think you're getting away that easy, lover mine... my love.  I've gotta make sure your seed took, and that... that's going to take all night long.</i>\"");
 	
 	outputText("\n\nYou gulp, and wince as Hel starts to move atop your battered cock - and not for the last time this sleepless night!");
-	player.orgasm();
+	player.orgasm('Dick');
 	menu();
 	addButton(0,"Next",HaveAHellKidPartII);
 	model.time.hours = 6;
@@ -922,7 +922,7 @@ private function snipermanders():void {
 	
 	outputText("\n\nBreathing hard, the young salamander draws back the bowstring, lining up on her target.  She chews on her lower lip, eyes squinting, deep in concentration, wanting to make this first shot count - to make you proud.  She looses the arrow, and gasps as it bolts away with lethal force... and sails across camp, well away from the target.");
 	//If Rath is @ camp:
-	if (player.findStatusEffect(StatusEffects.CampRathazul) >= 0) outputText("  You hear your old alchemist friend suddenly putting up a ruckus as the sounds of breaking glass echo throughout camp.  " + flags[kFLAGS.HELSPAWN_NAME] + " looks up at you nervously, but you ruffle her fiery hair and tell her to try again. Rath is probably just fine.");
+	if (player.hasStatusEffect(StatusEffects.CampRathazul)) outputText("  You hear your old alchemist friend suddenly putting up a ruckus as the sounds of breaking glass echo throughout camp.  " + flags[kFLAGS.HELSPAWN_NAME] + " looks up at you nervously, but you ruffle her fiery hair and tell her to try again. Rath is probably just fine.");
 	//else if Valeria/Latexy is at camp: 
 	else if (flags[kFLAGS.VALARIA_AT_CAMP] == 1) outputText("  You hear a sudden yelp of pain from across camp. Valeria slithers up to you with an irritated look on her gooey face, pointing an accusing finger at an arrow sticking out of her tit.  \"<i>Dammit, [name], I'm a googirl, not a pin cushion!</i>\"  You wave her off, and tell " + flags[kFLAGS.HELSPAWN_NAME] + " to try again.");
 	else if (latexGooFollower()) outputText("  You hear a sudden yelp of pain from across camp.  " + flags[kFLAGS.GOO_NAME] + " slithers up to you with an irritated look on her gooey face, pointing an accusing finger at an arrow sticking out of her tit.  \"<i>Dammit, [name], I'm a googirl, not a pin cushion!</i>\"  You wave her off, and tell " + flags[kFLAGS.HELSPAWN_NAME] + " to try again.");
@@ -1200,7 +1200,7 @@ private function talkToHelspawn():void {
 		outputText("\n\nShe grabs you by the [armor], pulling you back toward where she had been standing, near the center of camp.  A large cast-iron cauldron’s sitting on your firepit, full of a dark-green substance that’s bubbling along.  Your dusky dragoness lover, Kiha, is sitting on the edge of the pot, apparently immune to the scalding heat, a long wooden ladle grasped between her dexterous claws.  She grins up at you as you and your daughter wander over.  \"<i>Hey, Doofus, come for an early taste?</i>\"");
 		outputText("\n\n\"<i>C'mon, " + championRef() + ", try it!</i>\" " + flags[kFLAGS.HELSPAWN_NAME] + " adds happily.  \"<i>It's aunt Kiha's favorite recipe.</i>\"");
 		
-		outputText("\n\n\"<i>And it'll be YOUR favorite too, mini-doofus, just you wait,</i>\" the dragoness laughs, her foot making another slow, steady circuit around the pot, stirring the ingredients.  Grinning at you, Kiha lifts her landle up, letting you take it from between her toes.  The powerful reek of whatever it is they’re trying to cook almost overwhelms you when you bring it up to your lips, nearly staggering you.  By Marae, what did Kiha <i>put</i> in this?  Raw ass?");
+		outputText("\n\n\"<i>And it'll be YOUR favorite too, mini-doofus, just you wait,</i>\" the dragoness laughs, her foot making another slow, steady circuit around the pot, stirring the ingredients.  Grinning at you, Kiha lifts her ladle up, letting you take it from between her toes.  The powerful reek of whatever it is they’re trying to cook almost overwhelms you when you bring it up to your lips, nearly staggering you.  By Marae, what did Kiha <i>put</i> in this?  Raw ass?");
 		//[Oh God EW] [Um, yum?]
 		menu();
 		addButton(0,"Oh God Ew",ohGodEwKihaAndHelspawnSuckAtCooking);
@@ -1208,7 +1208,7 @@ private function talkToHelspawn():void {
 	}
 	//Talk 3
 	//{Needs Rath at camp]
-	else if (temp <= 1 && player.findStatusEffect(StatusEffects.CampRathazul) >= 0) {
+	else if (temp <= 1 && player.hasStatusEffect(StatusEffects.CampRathazul)) {
 		outputText("\"<i>" + flags[kFLAGS.HELSPAWN_NAME] + "!</i>\" you hear a ragged old voice call, \"<i>Get back here this instant!  I'm not done with you yet!</i>\"");
 		
 		outputText("\n\n\"<i>Coming!</i>\" " + flags[kFLAGS.HELSPAWN_NAME] + " calls back as Rathazul shuffles into view, waving around what looks like a tiny hammer.  Whispering, " + flags[kFLAGS.HELSPAWN_NAME] + " says, \"<i>Could you come with me, " + championRef() + "? Rathazul weirds me out.</i>\"");

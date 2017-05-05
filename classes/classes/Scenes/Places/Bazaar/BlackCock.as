@@ -31,7 +31,7 @@ package classes.Scenes.Places.Bazaar
 		}
 		
 		private function applyAndysSmokeEffect():void {
-			if (player.findStatusEffect(StatusEffects.AndysSmoke) >= 0) {
+			if (player.hasStatusEffect(StatusEffects.AndysSmoke)) {
 				if (player.statusEffectv2(StatusEffects.AndysSmoke) > -15) { //Maximum speed loss is -15.
 					player.addStatusValue(StatusEffects.AndysSmoke, 2, -5);
 					dynStats("spe", -5);
@@ -172,7 +172,7 @@ package classes.Scenes.Places.Bazaar
 				doNext(checkFoodMenu);
 				return;
 			}
-			if ((player.hunger >= 90 && flags[kFLAGS.HUNGER_ENABLED] > 0) || (player.findStatusEffect(StatusEffects.Fullness) >= 0 && flags[kFLAGS.HUNGER_ENABLED] == 0)) {
+			if ((player.hunger >= 90 && flags[kFLAGS.HUNGER_ENABLED] > 0) || (player.hasStatusEffect(StatusEffects.Fullness) && flags[kFLAGS.HUNGER_ENABLED] == 0)) {
 				outputText("<b>You are too full to consider eating that.</b>");
 				doNext(checkFoodMenu);
 				return;
@@ -237,7 +237,7 @@ package classes.Scenes.Places.Bazaar
 				default:
 					player.refillHunger(50);
 			}
-			if (player.findStatusEffect(StatusEffects.Fullness) < 0) player.createStatusEffect(StatusEffects.Fullness, 4, 0, 0, 0);
+			if (!player.hasStatusEffect(StatusEffects.Fullness)) player.createStatusEffect(StatusEffects.Fullness, 4, 0, 0, 0);
 			else player.changeStatusValue(StatusEffects.Fullness, 1, 4);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -424,7 +424,7 @@ package classes.Scenes.Places.Bazaar
 				outputText("\n\nThe two of your circle each other, wordlessly worshiping the other's cunnilingal skills while admiring the other's form. She jokes about you growing a dick for her and you return with a quip that makes her giggle.");
 			}
 			outputText("\n\nChuckling to yourself you aim yourself at Anita's heels. After you retrieve your [armor] from the ground and pull it on you begin to walk away. Anita whistles to get your attention; as you wave with a grin, and she yells, \"<i>Now ya'll cum back now ya hear?</i>\" You can't help smiling at her. Still feeling good about the flight you decide to take the scenic route to camp. With a few flaps of your [wings] you take to the sky again, enjoying this beautiful gift of flight that you've been given.");
-			player.orgasm();
+			player.orgasm('Generic');
 			flags[kFLAGS.BLACK_COCK_ANITA_SEX_COUNTER]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -457,7 +457,7 @@ package classes.Scenes.Places.Bazaar
 				}
 			}
 			else if (player.isTaur()) {
-				outputText("\n\nShe smiles big as she turns away and falls to her hands and knees, her ass pointed towards you as she assumes the perfect position. Her dripping wet pussy greets you, salavating for [eachCock] and sending a stirring heat through your body. You very unceremoniously raise your front twoto legs to mount her, shoving your [cockHead] into her dripping snatch.");
+				outputText("\n\nShe smiles big as she turns away and falls to her hands and knees, her ass pointed towards you as she assumes the perfect position. Her dripping wet pussy greets you, salivating for [eachCock] and sending a stirring heat through your body. You very unceremoniously raise your front twoto legs to mount her, shoving your [cockHead] into her dripping snatch.");
 				if (player.biggestCockLength() < 10) {
 					outputText("\n\nA growl comes from somewhere deep inside when you push forward. \n\n\"<i>You like that there tight pussy, doncha?</i>\" She groans through clenched teeth and you have to admit you're enjoying her tight wetness as she flexes her strong internal muscles against your embedded [cock]. \"<i>Fuck me hard stud,</i>\" she groans in that country drawl.");
 					outputText("\n\nYou bear down, pressing her into the ground as you fuck her wet cunt with body- jarring hammer blows. She screams beneath you, a shrill sound filled with so much ecstasy you know she has had another orgasm. You just continue to hammer her slim form into the dirt, listening her scream, groan and pant in response to your [cock] forcing its way in and out of her tiny body.");
@@ -482,7 +482,7 @@ package classes.Scenes.Places.Bazaar
 					outputText("\n\nAfter a few seconds of blissful rest you begin the process of disengaging your coils from the dozing harpy lady. [if (cumExtreme) \"<i>As you do, you notice a large amount of your own jism leaking from her slightly distended snatch, her pussy unable to soak it up. Looking down you see a huge puddle of mixed cum around the two of you, most of it yours.</i>\"] Once you've managed to release her the married woman stands on visibly wobbly legs and leaves you after saying, \"<i>You cum back here anytime, darlin'…</i>\" and with a smile you slither back to camp.");
 				//}
 			}
-			player.orgasm();
+			player.orgasm('Dick');
 			flags[kFLAGS.BLACK_COCK_ANITA_SEX_COUNTER]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -491,7 +491,7 @@ package classes.Scenes.Places.Bazaar
 			clearOutput();
 			outputText(images.showImage("anita-sex-sixtynine"));
 			outputText("Before she says anything you press your lips against hers, shoving her against the tall fence behind her with a lip-locked growl. Still connected at the lips you throw off your [armor] and push her little unbuttoned cut-offs down. She gasps against you, her voice a husky groan as you begin to trail kisses down her neck, hungry to both taste her and to be tasted.");
-			outputText("\n\nYou grind your body against her supple form. Your [fullChest] presses against her soft tits as the two of you pull at each other. As she sucks your neck you tell her how hard you're going to make her cum, how she's going to taste the evidence of your pleasure and with that the married hapry lady slides to the ground and rolls over until her ass is propped up against the fence and her head lies against the ground. With a grin you fold yourself into her.");
+			outputText("\n\nYou grind your body against her supple form. Your [fullChest] presses against her soft tits as the two of you pull at each other. As she sucks your neck you tell her how hard you're going to make her cum, how she's going to taste the evidence of your pleasure and with that the married harpy lady slides to the ground and rolls over until her ass is propped up against the fence and her head lies against the ground. With a grin you fold yourself into her.");
 			if (player.hasCock()) { //Males and hermaphrodites
 				outputText("\n\n");
 				if (player.balls > 0) {
@@ -529,11 +529,11 @@ package classes.Scenes.Places.Bazaar
 				outputText("\n\nSuddenly your face is wetter, and then there is a gushing of a lady cum spraying your face as below you the harpy lady screams in pure euphoric ecstasy. You continue, following through her orgasm until it has subsided and she is left trembling.");
 				outputText("\n\n\"<i>Aw shucks, darlin', you're good at this. I reckon we'll be here awhile.</i>\" Then she shoves her face back into your [asshole]. Instantly your [legs] begin to tingle.");
 				outputText("\n\nAs the tingle of warning becomes the full cacophonous boom of climax you are lost in sensations. It's like the pressure of a raging river breaking free of a dam, exploding in violent glory. It's the boom of dynamite shaking your entire being to the core. Anita's tongue and lips send convulsing shudders through your very soul as the harpy lady brings you to completion again and again and again, leaving you a shuddering mess as you do the same, every time her pussy exploding and squirting you with her very sweet lady spray.");
-				outputText("\n\nYou can't help it as your trembling [ass] forces your voice to come out in agonized groans and soul choking sobs. When she can take your cunnilgal skills no more the harpy lady falls, admitting defeat as her tongue leaves your [asshole].");
+				outputText("\n\nYou can't help it as your trembling [ass] forces your voice to come out in agonized groans and soul choking sobs. When she can take your cunnilingal skills no more the harpy lady falls, admitting defeat as her tongue leaves your [asshole].");
 				outputText("\n\n\"<i>Darlin', you are a gem,</i>\" Anita says, breasts rising and falling as she heaves. You smile at the complement. Without words the two of you kiss and you push her own sweet release into her mouth.</i>\"");
 			}
 			outputText("\n\nYours and Anita's breaths come out in ragged huffs as you both come down from your respective oral-induced highs. After a few seconds your breaths have quieted and the two of you rise, smiling at each other. In the midst of that post-orgasmic glow the two of you chat a little before pulling your respective outfits back on and departing each other's company with a final quick peck on the lips.");
-			player.orgasm();
+			player.orgasm('Lips');
 			flags[kFLAGS.BLACK_COCK_ANITA_SEX_COUNTER]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -710,7 +710,7 @@ package classes.Scenes.Places.Bazaar
 				}
 			}
 			outputText("\n\nAndy helps you to your feet, and gives you a quick embrace, \"<i>Gotta get back to work.</i>\" He says before grabbing his shirt and leaving you to redress.");
-			player.orgasm();
+			player.orgasm('Generic');
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -801,7 +801,7 @@ package classes.Scenes.Places.Bazaar
 			if (player.cumQ() >= 1000 && player.cumQ() < 2500) outputText("\n\nWith his lips corked by your spasming [cock] the satyr's trim muscular stomach swells until he looks pregnant.");
 			else if (player.cumQ() >= 2500) outputText("\n\nWith his lips corked by your spasming [cock] the satyr's belly floods with your baby batter, expanding his stomach until he looks like he's about to give birth to a litter of your babies.");
 			outputText("\n\nFeeling spent you give the satyr a pat on the head and stand. He sits there licking his lips and rubbing his face. [if (cock > 12) \"He makes a show of rubbing his throat and belly as well.\"] You tell him you're leaving and he tells you, \"<i>Until next time.</i>\" his breath reeking of your jizz as you leave him to nurse his belly full of cum.");
-			player.orgasm();
+			player.orgasm('Generic');
 			dynStats("sens", -1);
 			flags[kFLAGS.BLACK_COCK_ANDY_ORAL_GIVEN]++;
 			doNext(camp.returnToCampUseOneHour);
@@ -821,7 +821,7 @@ package classes.Scenes.Places.Bazaar
 				outputText("\n\nThe heated caress of his lips pulling at your [vagina] as he sucks at your [clit] sends a hoarse call trembling up into the air. Wet lips tug and nibble at the sensitive love button with the fevered need of a desperate man. Soft hands rub your [ass] as you grind your [pussy] back against those lips. He hums and you find yourself screaming as you push back with greater need. You convulse as his tongue begins tracing the tender contours of your feminine opening.");
 			}
 			outputText("\n\n\"<i>So good.</i>\" he says as he begins slurping your [pussy], \"<i>You taste like heaven, I love it.</i>\" He rubs his face into you, bathing his chin hairs in your wet opening before his tongue laps at you again and again before stretching lips suck the juices from your cunt like some natural cup full of his favorite beverage.");
-			player.orgasm();
+			player.orgasm('Vaginal');
 			flags[kFLAGS.BLACK_COCK_ANDY_ORAL_GIVEN]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -852,7 +852,7 @@ package classes.Scenes.Places.Bazaar
 			outputText("\n\n\"<i>So how was it?</i>\" Andy asks, a smile on his face.");
 			outputText("\n\nYou hold up a finger, asking for a moment as you wait for your body to calm down. Once you're relaxed enough to answer you tell him how much you liked having his big wet tongue inside your [ass].");
 			outputText("\n\nHe smiles big, \"<i>Good, we should do this again.</i>\" With that the two of you say your goodbyes and you leave The Black Cock.");
-			player.orgasm();
+			player.orgasm('Anal');
 			dynStats("sens", 1);
 			flags[kFLAGS.BLACK_COCK_ANDY_ORAL_GIVEN]++;
 			doNext(camp.returnToCampUseOneHour);
@@ -965,7 +965,7 @@ package classes.Scenes.Places.Bazaar
 					outputText("Andy Mathis looks up at you with a lazy smile as he holds his hand up, asking for a high five. With a chuckle and a shake of your head you give it to him before tugging your [cock], out of his cum greased backside. Feeling a little tired and sweaty you look down at your cum covered and lightly dozing fuck buddy, watching his chest rise and fall before you gather your [armor] and exit the building out the back door, headed back for camp now that you’ve had your fill.");
 				}
 			}
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sens", -1);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1089,7 +1089,7 @@ package classes.Scenes.Places.Bazaar
 			if (player.hasVagina()) player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR, 50); //2x chance of pregnancy
 			else player.buttKnockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR, 50);
 			player.slimeFeed();
-			player.orgasm();
+			player.orgasm('VaginalAnal');
 			dynStats("sens", 1);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1146,7 +1146,7 @@ package classes.Scenes.Places.Bazaar
 			addButton(1, "Nevermind", nevermindToHarrySex);
 		}
 		
-		private function haveHarryFuckYou():void {
+		protected function haveHarryFuckYou():void {
 			clearOutput();
 			outputText(images.showImage("harry-sex-getfucked"));
 			const HARRY_COCK_AREA:int = 18 * 3; //54
@@ -1207,7 +1207,7 @@ package classes.Scenes.Places.Bazaar
 			}
 			outputText("\n\nAs he helps you clean up he tells you how much he likes your ass. After chatting for a little bit he tells you he has to get back to work. As you walk out the tent flap all eyes are on you. After a few moments one of the satyrs sticks his fingers to his lips and gives a high pitched wolf whistle. Some of the tables with people in them erupt in stomping and clapping. Harry's harpy wife catches your eye and gives you a conspiratorial wink, rubbing her pussy through her tight little cut off pants as she watches you leave.");
 			flags[kFLAGS.BLACK_COCK_HARRY_SEX_COUNTER]++;
-			player.orgasm();
+			player.orgasm('Anal');
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -1251,7 +1251,7 @@ package classes.Scenes.Places.Bazaar
 				doNext(enterTheBlackCock);
 				return;
 			}
-			if ((player.hunger >= 90 && flags[kFLAGS.HUNGER_ENABLED] > 0) || (player.findStatusEffect(StatusEffects.Fullness) >= 0 && flags[kFLAGS.HUNGER_ENABLED] == 0)) {
+			if ((player.hunger >= 90 && flags[kFLAGS.HUNGER_ENABLED] > 0) || (player.hasStatusEffect(StatusEffects.Fullness) && flags[kFLAGS.HUNGER_ENABLED] == 0)) {
 				outputText("<b>You are too full to consider ordering that that.</b>");
 				doNext(enterTheBlackCock);
 				return;
@@ -1263,7 +1263,7 @@ package classes.Scenes.Places.Bazaar
 			player.refillHunger(35);
 			if (flags[kFLAGS.HUNGER_ENABLED] == 0) player.modThickness(100, 2);
 			player.modTone(0, 1);
-			if (player.findStatusEffect(StatusEffects.Fullness) < 0) player.createStatusEffect(StatusEffects.Fullness, 2, 0, 0, 0);
+			if (!player.hasStatusEffect(StatusEffects.Fullness)) player.createStatusEffect(StatusEffects.Fullness, 2, 0, 0, 0);
 			else player.changeStatusValue(StatusEffects.Fullness, 1, 2);
 			flags[kFLAGS.BLACK_COCK_FRIDAS_CAKE_EATEN_COUNTER]++;
 			doNext(camp.returnToCampUseOneHour);
@@ -1384,7 +1384,7 @@ package classes.Scenes.Places.Bazaar
 				}
 				outputText("\n\nFinally exhausted, you slump on one of the satyrs, embracing his warm body. The rest of the satyrs are finally spent as well. When you've finally recovered from the ordeal, you get yourself cleaned up" + player.clothedOrNaked(", redress yourself") + " and return to your camp.");
 			}
-			player.orgasm();
+			player.orgasm('VaginalAnal');
 			player.changeFatigue(25);
 			dynStats("lib", 1, "sens", 2, "cor", 1);
 			if (player.hasVagina()) player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR);
@@ -1435,11 +1435,11 @@ package classes.Scenes.Places.Bazaar
 				if (player.cumMultiplier < 50) player.cumMultiplier += 0.5;
 				changes++;
 			}
-			if (rand(3) == 0 && changes < changeLimit && player.hasVagina() && player.findStatusEffect(StatusEffects.BonusVCapacity) >= 0) {
+			if (rand(3) == 0 && changes < changeLimit && player.hasVagina() && player.hasStatusEffect(StatusEffects.BonusVCapacity)) {
 				outputText("\n\nYou feel a tingling sensation in your vagina… that was weird.");
-				if (player.findStatusEffect(StatusEffects.BonusVCapacity) >= 0) {
+				if (player.statusEffectv1(StatusEffects.BonusVCapacity) >= 0) {
 					player.addStatusValue(StatusEffects.BonusVCapacity, 1, -(rand(5) + 5));
-					if (player.findStatusEffect(StatusEffects.BonusVCapacity) <= 0) player.removeStatusEffect(StatusEffects.BonusVCapacity);
+					if (player.statusEffectv1(StatusEffects.BonusVCapacity) <= 0) player.removeStatusEffect(StatusEffects.BonusVCapacity);
 				}
 				changes++;
 			}
@@ -1450,10 +1450,10 @@ package classes.Scenes.Places.Bazaar
 				changes++;
 			}
 			if (rand(3) == 0 && changes < changeLimit && player.hasCock() && player.balls <= 0) {
-				outputText("Without warning your body begins to tremble as just below [eachCock] you feel a warm trickling sensation of fluid sliding down your body. Before you can check it, the sensation becomes ovewhelming as [eachCock] grows hard and ejaculates " + player.clothedOrNaked("into your [armor]", "all over the ground") + ". Once you've recovered from your intense orgasm you " + player.clothedOrNakedLower("remove your [armor] to ") + "clean yourself and find a <b>new pair of balls</b> hanging just below [eachCock].");
+				outputText("Without warning your body begins to tremble as just below [eachCock] you feel a warm trickling sensation of fluid sliding down your body. Before you can check it, the sensation becomes overwhelming as [eachCock] grows hard and ejaculates " + player.clothedOrNaked("into your [armor]", "all over the ground") + ". Once you've recovered from your intense orgasm you " + player.clothedOrNakedLower("remove your [armor] to ") + "clean yourself and find a <b>new pair of balls</b> hanging just below [eachCock].");
 				player.balls = 2;
 				player.ballSize = 1;
-				player.orgasm();
+				player.orgasm('Generic');
 				changes++;
 			}
 			//Transformations
@@ -1462,6 +1462,7 @@ package classes.Scenes.Places.Bazaar
 			if (rand(3) == 0 && changes < changeLimit && player.hasScales()) {
 				outputText("\n\nYou feel an odd rolling sensation as your scales begin to shift, spreading and reforming as they grow and disappear, <b>becoming normal human skin</b>.");
 				player.skinType = SKIN_TYPE_PLAIN;
+				player.underBody.restore();
 				changes++;
 			}
 			if (rand(3) == 0 && changes < changeLimit && player.armType != ARM_TYPE_HUMAN) {
@@ -1626,6 +1627,7 @@ package classes.Scenes.Places.Bazaar
 				player.skinAdj = "tough";
 				player.skinType = SKIN_TYPE_PLAIN;
 				player.skinDesc = "skin";
+				player.underBody.restore();
 				mutations.updateClaws(player.clawType);
 				changes++;
 			}
@@ -1723,7 +1725,7 @@ package classes.Scenes.Places.Bazaar
 			//Gain rhino horns
 			//Tier 1
 			if (rand(4) == 0 && changes < changeLimit && player.faceType == FACE_RHINO && player.hornType != HORNS_RHINO) {
-				outputText("\n\nYou begin to feel an annoying tingling sensation at the top of your head. Reaching up to inspect it you find the sharp nub of a horn protruding from the center of your forehead and growing. Once it'sits complete you estimate it to be about six inches long. If it were sharper and a little longer it would make a useful natural weapon.");
+				outputText("\n\nYou begin to feel an annoying tingling sensation at the top of your head. Reaching up to inspect it you find the sharp nub of a horn protruding from the center of your forehead and growing. Once it's complete you estimate it to be about six inches long. If it were sharper and a little longer it would make a useful natural weapon.");
 				player.horns = 1;
 				player.hornType = HORNS_RHINO;
 				changes++;
@@ -1788,7 +1790,7 @@ package classes.Scenes.Places.Bazaar
 			}
 			//Boost vaginal capacity without gaping
 			if (rand(3) == 0 && changes < changeLimit && player.hasVagina() && player.statusEffectv1(StatusEffects.BonusVCapacity) < 40) {
-				if (player.findStatusEffect(StatusEffects.BonusVCapacity) < 0) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
+				if (!player.hasStatusEffect(StatusEffects.BonusVCapacity)) player.createStatusEffect(StatusEffects.BonusVCapacity, 0, 0, 0, 0);
 				player.addStatusValue(StatusEffects.BonusVCapacity, 1, 5);
 				outputText("\n\nThere is a sudden... emptiness within your " + player.vaginaDescript(0) + ". Somehow you know you could accommodate even larger... insertions.");
 				changes++;
@@ -1796,7 +1798,7 @@ package classes.Scenes.Places.Bazaar
 			//Boost anal capacity without gaping
 			if (rand(3) == 0 && changes < changeLimit && player.hasVagina() && player.statusEffectv1(StatusEffects.BonusVCapacity) < 60) {
 				if (player.statusEffectv1(StatusEffects.BonusACapacity) < 60) {
-					if (player.findStatusEffect(StatusEffects.BonusACapacity) < 0) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
+					if (!player.hasStatusEffect(StatusEffects.BonusACapacity)) player.createStatusEffect(StatusEffects.BonusACapacity, 0, 0, 0, 0);
 					player.addStatusValue(StatusEffects.BonusACapacity, 1, 5);
 					outputText("\n\nYou feel... more accommodating somehow. Your " + player.assholeDescript() + " is tingling a bit, and though it doesn't seem to have loosened, it has grown more elastic.", false);
 					changes++;
@@ -1884,6 +1886,7 @@ package classes.Scenes.Places.Bazaar
 				player.skinDesc = "fur";
 				player.skinType = SKIN_TYPE_FUR;
 				player.furColor = "brown";
+				player.underBody.restore(); // Restore the underbody for now
 				changes++;
 			}
 			//Gain Echidna ears
@@ -1946,7 +1949,7 @@ package classes.Scenes.Places.Bazaar
 						outputText("Your tapered ferret tail begins to feel chilly as all of its fur falls out. It becomes tight as the majority of the tail’s length recedes into your body, leaving you with just a little stump for a tail.");
 						break;
 					case TAIL_TYPE_RHINO:
-						outputText("The tip of your long rino tail begins to itch as the fur begins to fall out. The entire length of your tail becomes tight as the majority of the tail’s length recedes into your body, leaving you with just a little stump for a tail.");
+						outputText("The tip of your long rhino tail begins to itch as the fur begins to fall out. The entire length of your tail becomes tight as the majority of the tail’s length recedes into your body, leaving you with just a little stump for a tail.");
 						break;
 					default: //Catch-all
 						outputText("You groan as you feel your tail shifting and reforming. By the time the sensation is over, you find that you have a little stump for a tail.");
@@ -1960,9 +1963,6 @@ package classes.Scenes.Places.Bazaar
 				outputText("\n\n");
 				switch(player.lowerBody) {
 					//Irregular lower body type
-					case LOWER_BODY_TYPE_CENTAUR: // should be done in other way now...
-						outputText("You collapse to the ground, a sharp pain encompassing your equine lower body. The pain quickly becomes so severe that you black out on the spot. Eventually you awake to find that you no longer have the lower body of a horse. You have just two legs again, and your feet look a lot like your old human feet. The only difference is that your toes are clawed, and the bottoms of your feet padded.");
-						break;
 					case LOWER_BODY_TYPE_NAGA:
 						outputText("You collapse to the ground, a sharp pain encompassing your serpentine tail. The pain quickly becomes so severe that you black out on the spot. Eventually you awake to find that you no longer have the lower body of a snake. You have two legs again, and your feet look a lot like your old human feet. The only difference is that your toes are clawed, and the bottoms of your feet padded.");
 						break;

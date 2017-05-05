@@ -2,22 +2,30 @@ package classes.Scenes.Areas.Lake
 {
 	import classes.*;
 	import classes.GlobalFlags.*;
-	
+import classes.Scenes.API.Encounter;
+
 	/**
 	 * ...
 	 * @author ...
 	 */
-	public class CalluScene extends AbstractLakeContent
-	{
+	public class CalluScene extends AbstractLakeContent implements Encounter {
 		
 		public function CalluScene() 
 		{
 			
 		}
 		
+	public function encounterName():String {
+		return "callu";
+	}
+
+// Base chance x0.5 or x2.5 if hungry
+	public function encounterChance():Number {
+		return 0.5 + (flags[kFLAGS.HUNGER_ENABLED] > 0 && player.hunger < 10 ? 2 : 0)
+	}
+
 		//Just want to do a quick Ottergirl event submission after you mentioned it!
-		public function ottahGirl():void
-		{
+	public function execEncounter():void {
 			clearOutput();
 			outputText(images.showImage("callu-intro"));
 			flags[kFLAGS.MET_OTTERGIRL]++;
@@ -60,15 +68,18 @@ package classes.Scenes.Areas.Lake
 				//[Facesitting] [Fuck Her] [Fish] [Skedaddle]
 			}
 			menu();
-			if (player.lust < 33) outputText("\n\nYou aren't aroused enough to fuck her.");
-			else {
+			
+			addDisabledButton(0, "Fuck Her", "This scene requires you to have fitting cock and sufficient arousal.");
+			addDisabledButton(1, "Facesitting", "This scene requires you to have sufficient arousal.");
+			
+			if (player.lust >= 33) {
 				//(If cocksize above 48")
 				if (player.hasCock()) {
 					if (player.shortestCockLength() > 48) outputText("\n\nUnfortunately, you don't think she can quite handle your cock.");
 					else addButton(0, "Fuck Her", ottergirlLikesDongs);
 				}
-				if (player.hasVagina() || !player.hasCock()) addButton(1, "Facesitting", ottersForGals);
-			}
+				addButton(1, "Facesitting", ottersForGals, undefined, undefined, undefined, "Lick her cunt and get some oral attention in turn.");
+			} else outputText("\n\nYou aren't aroused enough to fuck her.");
 			if (flags[kFLAGS.MET_OTTERGIRL] > 1) addButton(2, "Get Fish", getSomeFishYaFatty);
 			addButton(4, "Leave", avoidZeOtterPussy);
 		}
@@ -179,7 +190,7 @@ package classes.Scenes.Areas.Lake
 			outputText("\n\nFrom the same bag she pulls out a delicious smelling piece of cooked fish, wrapped in a large green leaf.  She hands it to you, saying simply, \"<i>Fish and a fuck, darlin'.  I got mine and you get yours.</i>\"  You nod absently, taking the piece of wrapped fish.  Callu gives your rapidly limpening cock a little pat on the head, before gathering up her things and heading off down the beach, leaving behind a trail of cum and other love juices.");
 
 			outputText("\n\nYou take a minute to recover before doing the same.  ");
-			player.orgasm();
+			player.orgasm('Dick');
 			dynStats("sen", -1);
 			inventory.takeItem(consumables.FISHFIL, camp.returnToCampUseOneHour);
 		}
@@ -238,7 +249,7 @@ package classes.Scenes.Areas.Lake
 
 			outputText("\n\nYou take several minutes to recover before doing the same.  ");
 
-			player.orgasm();
+			player.orgasm('VaginalAnal');
 			dynStats("sen", -1);
 			inventory.takeItem(consumables.FISHFIL, camp.returnToCampUseOneHour);
 		}
