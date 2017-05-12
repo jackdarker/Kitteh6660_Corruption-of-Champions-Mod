@@ -163,7 +163,7 @@ public function corruptCampJojo():void {
 			return;
 		}
 		//Offer lethicite jojo tf if the player is ready
-		if (!player.hasStatusEffect(StatusEffects.JojoTFOffer) && player.hasKeyItem("Marae's Lethicite") >= 0 && player.keyItemv2("Marae's Lethicite") < 3 && player.cor >= 75) {
+		if (!player.hasStatusEffect(StatusEffects.JojoTFOffer) && player.hasKeyItem("Marae's Lethicite") >= 0 && player.keyItemv2("Marae's Lethicite") < 3 && player.cor >= (75 - player.corruptionTolerance())) {
 			jojoMutationOffer();
 			player.createStatusEffect(StatusEffects.JojoTFOffer,0,0,0,0);
 			return;
@@ -2355,7 +2355,7 @@ public function lowCorruptionIntro():void
 	menu();
 	addButton(0, "Meditate", meditateInForest); // OH GOD NO SEND HELP
 	addButton(1, "Leave", camp.returnToCampUseOneHour);
-	if (player.cor > 10 && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0 && flags[kFLAGS.JOJO_STATUS] >= 0) addButton(4, "Rape", jojoRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 50 ? "  Why would you do that?": ""));
+	if (player.cor > (10 - player.corruptionTolerance()) && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0 && flags[kFLAGS.JOJO_STATUS] >= 0) addButton(4, "Rape", jojoRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 50 ? "  Why would you do that?": ""));
 }
 
 public function highCorruptionJojoEncounter():void {
@@ -2369,7 +2369,7 @@ public function highCorruptionJojoEncounter():void {
 	menu();
 	addButton(0, "Accept", getGame().jojoScene.meditateInForest);
 	addButton(1, "Decline", camp.returnToCampUseOneHour);
-	if (player.cor > 10 && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0 && flags[kFLAGS.JOJO_STATUS] >= 0) addButton(2, "Rape", getGame().jojoScene.jojoRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 50 ? "  Why would you do that?": ""));
+	if (player.cor > (10 - player.corruptionTolerance()) && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0 && flags[kFLAGS.JOJO_STATUS] >= 0) addButton(2, "Rape", getGame().jojoScene.jojoRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 50 ? "  Why would you do that?": ""));
 }
 
 //Repeat encounter
@@ -2555,7 +2555,7 @@ private function jojoCampMenu():void {
 	addButton(3, "Meditate", jojoFollowerMeditate);
 	addButton(4, jojoDefense, jojoDefenseToggle, null, null, null, (player.hasStatusEffect(StatusEffects.JojoNightWatch) ? "Request him to stop guarding the camp.": "Request him to guard the camp at night."));
 	if (player.hasStatusEffect(StatusEffects.Infested)) addButton(5, "Purge", wormRemoval, null, null, null, "Request him to purge the worms from your body.");
-	if (player.cor > 10 && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0) addButton(8, "Rape", jojoAtCampRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 25 ? "  Why would you do that?": ""));
+	if (player.cor > (10 + player.corruptionTolerance()) && player.lust >= 33 && player.gender > 0 && flags[kFLAGS.DISABLED_JOJO_RAPE] <= 0) addButton(8, "Rape", jojoAtCampRape, null, null, null, "Rape the poor monk mouse-morph." + (player.cor < 25 ? "  Why would you do that?": ""));
 	if (player.lust >= 33 && flags[kFLAGS.JOJO_STATUS] <= -3) addButton(8, "Sex", pureJojoSexMenu, null, null, null, "Initiate sexy time with the mouse-morph.");
 	addButton(14, "Leave", camp.campFollowers);
 }
@@ -2600,13 +2600,13 @@ public function talkMenu(from:Function = null):void
 	if (flags[kFLAGS.UNLOCKED_JOJO_TRAINING] == 0 && flags[kFLAGS.TIMES_TALKED_WITH_JOJO] >= 4) addButton(7, "Training", apparantlyJojoDOESlift, null, null, null, "Ask him if he's willing to train you.");
 	if (flags[kFLAGS.MINERVA_PURIFICATION_JOJO_TALKED] == 1 && flags[kFLAGS.MINERVA_PURIFICATION_PROGRESS] < 10) addButton(8, "Purification", kGAMECLASS.highMountains.minervaScene.minervaPurification.purificationByJojoPart1, null, null, null, "Ask him if he can exorcise the demonic parasite infesting Minerva.");
 	//Sex button
-	if (player.cor <= 10 && player.lust >= 33) {
+	if (player.cor <= (10 + player.corruptionTolerance()) && player.lust >= 33) {
 		addButton(9, "Sex?", offerSexFirstTime, null, null, null, "Ask him if he's willing to have sex with you.");
 		if (flags[kFLAGS.TIMES_TALKED_WITH_JOJO] < 4) addButtonDisabled(9, "Sex?", "You should socialize with Jojo a bit more.");
 		//if (player.hasStatusEffect(StatusEffects.EverRapedJojo)) addButtonDisabled(9, "Sex?". "You've raped Jojo in the past, now you can't ask him out.");
 	}
-	if (player.cor <= 10 && player.lust >= 33 && flags[kFLAGS.JOJO_STATUS] == -1) addButtonDisabled(9, "Sex?", "You need to spend more time with Jojo. \n\nTalk sessions: " + flags[kFLAGS.TIMES_TALKED_WITH_JOJO] + "/6 \nTraining sessions: " + flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] + "/10 \nMeditation sessions: " + player.statusEffectv1(StatusEffects.JojoMeditationCount) + "/10 \nYou must be pure enough and have sufficient lust as well.");
-	if (player.cor <= 10 && player.lust >= 33 && flags[kFLAGS.TIMES_TALKED_WITH_JOJO] >= 6 && flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] >= 10 && player.statusEffectv1(StatusEffects.JojoMeditationCount) >= 10 && flags[kFLAGS.JOJO_STATUS] > -3) addButton(9, "Sex?", offerSexFirstTimeHighAffection, null, null, null, "You've spent quite the time with Jojo, maybe you can offer him if he's willing to have sex with you?"); //Will unlock consensual sex scenes.
+	if (player.cor <= (10 + player.corruptionTolerance()) && player.lust >= 33 && flags[kFLAGS.JOJO_STATUS] == -1) addButtonDisabled(9, "Sex?", "You need to spend more time with Jojo. \n\nTalk sessions: " + flags[kFLAGS.TIMES_TALKED_WITH_JOJO] + "/6 \nTraining sessions: " + flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] + "/10 \nMeditation sessions: " + player.statusEffectv1(StatusEffects.JojoMeditationCount) + "/10 \nYou must be pure enough and have sufficient lust as well.");
+	if (player.cor <= (10 + player.corruptionTolerance()) && player.lust >= 33 && flags[kFLAGS.TIMES_TALKED_WITH_JOJO] >= 6 && flags[kFLAGS.TIMES_TRAINED_WITH_JOJO] >= 10 && player.statusEffectv1(StatusEffects.JojoMeditationCount) >= 10 && flags[kFLAGS.JOJO_STATUS] > -3) addButton(9, "Sex?", offerSexFirstTimeHighAffection, null, null, null, "You've spent quite the time with Jojo, maybe you can offer him if he's willing to have sex with you?"); //Will unlock consensual sex scenes.
 	if (flags[kFLAGS.JOJO_STATUS] <= -3) removeButton(9);
 	addButton(14, "Back", jojoCamp);
 }
@@ -3197,7 +3197,7 @@ public function offerSexFirstTimeHighAffection():void {
 	menu();
 	addButton(0, "Meditate", jojoFollowerMeditate);
 	addButton(1, "Drop It", noThanksToMeditate);
-	if (player.inte >= 60 && player.cor <= 10) addButton(2, "Confront", confrontChastity);
+	if (player.inte >= 60 && player.cor <= (10 + player.corruptionTolerance())) addButton(2, "Confront", confrontChastity);
 }
 
 public function confrontChastity():void {

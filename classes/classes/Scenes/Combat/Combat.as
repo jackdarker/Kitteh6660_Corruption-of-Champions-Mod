@@ -298,8 +298,8 @@ package classes.Scenes.Combat
 			{
 				outputText("\n<b>You'll need to close some distance before you can use any physical attacks!</b>");
 				if (isWieldingRangedWeapon()) {
-					if (flags[kFLAGS.FLINTLOCK_PISTOL_AMMO] <= 0 && player.weaponName == "flintlock pistol") addButton(0, "Reload&Approach", approachAfterKnockback, null, null, null, "Reload your flintlock pistol while approaching.", "Reload and Approach");
-					else addButton(0, "Shoot&Approach", approachAfterKnockback, null, null, null, "Fire a round at your opponent and approach.", "Reload and Approach");
+					if (flags[kFLAGS.FLINTLOCK_PISTOL_AMMO] <= 0 && player.weaponName == "flintlock pistol") addButton(10, "Reload&Approach", approachAfterKnockback, null, null, null, "Reload your flintlock pistol while approaching.", "Reload and Approach");
+					else addButton(10, "Fire&Approach", approachAfterKnockback, null, null, null, "Land a shot at your opponent and approach.", "Fire and Approach");
 				}
 				else addButton(0, "Approach", approachAfterKnockback, null, null, null, "Close some distance between you and your opponent.");
 				if (player.hasKeyItem("Bow") >= 0 || player.hasKeyItem("Kelt's Bow") >= 0) addButton(5, "Bow", combatAbilities.fireBow);
@@ -1487,7 +1487,7 @@ package classes.Scenes.Combat
 				var slap:Number = 3 + (player.maxHP() * 0.02);
 				outputText("<b>Your muscles twitch in agony as the acid keeps burning you. <b>(<font color=\"#800000\">" + slap + "</font>)</b></b>\n\n", false);
 			}
-			if (player.findPerk(PerkLib.ArousingAura) >= 0 && monster.lustVuln > 0 && player.cor >= 70) {
+			if (player.findPerk(PerkLib.ArousingAura) >= 0 && monster.lustVuln > 0 && player.cor >= (70 - player.corruptionTolerance())) {
 				if (monster.lust < 50) outputText("Your aura seeps into " + monster.a + monster.short + " but does not have any visible effects just yet.\n\n", false);
 				else if (monster.lust < 60) {
 					if (!monster.plural) outputText(monster.capitalA + monster.short + " starts to squirm a little from your unholy presence.\n\n", false);
@@ -1798,6 +1798,8 @@ package classes.Scenes.Combat
 		}
 		public function beginCombatImmediate(monster:Monster, _plotFight:Boolean):void {
 			beginCombat(monster, _plotFight);
+			if (prison.inPrison && prison.prisonCombatAutoLose) endLustLoss();
+			else playerMenu();
 		}
 		
 		public function display():void {
@@ -2169,11 +2171,13 @@ package classes.Scenes.Combat
 			//Calculations
 			var escapeMod:Number = 20 + monster.level * 3;
 			if (debug) escapeMod -= 300;
-			if (player.canFly()) escapeMod -= 20;
 			if (player.tailType == TAIL_TYPE_RACCOON && player.earType == EARS_RACCOON && player.findPerk(PerkLib.Runner) >= 0) escapeMod -= 25;
+			if (monster.hasStatusEffect(StatusEffects.Blind)) escapeMod -= 35;
+			if (monster.hasStatusEffect(StatusEffects.Illusion)) escapeMod -= 20; // Not as much as blindness, but it also affects speed by itself.
+			if (player.hasStatusEffect(StatusEffects.Blind) && (!player.canFly() || monster.canFly())) escapeMod += 35; // If you can fly you don't have to see where the sky is. But if your foe can fly too, it won't give you much.
 			if (monster.hasStatusEffect(StatusEffects.Stunned)) escapeMod -= 50;
-			
 			//Big tits doesn't matter as much if ya can fly!
+			if (player.canFly()) escapeMod -= 20;
 			else {
 				if (player.biggestTitSize() >= 35) escapeMod += 5;
 				if (player.biggestTitSize() >= 66) escapeMod += 10;
@@ -2183,6 +2187,7 @@ package classes.Scenes.Combat
 				if (player.ballSize >= 48 && player.balls > 0) escapeMod += 10;
 				if (player.ballSize >= 120 && player.balls > 0) escapeMod += 10;
 			}
+			
 			//ANEMONE OVERRULES NORMAL RUN
 			if (monster.short == "anemone") {
 				//Autosuccess - less than 60 lust
@@ -2212,6 +2217,25 @@ package classes.Scenes.Combat
 						return;
 					}
 				}
+			}
+			if (monster is Mimic) {
+				clearOutput();
+				if (player.hasStatusEffect(StatusEffects.KnockedBack)) {
+					outputText("It's not very difficult to run from the immobile creature.");
+					inCombat = false;
+					clearStatuses(false);
+					doNext(camp.returnToCampUseOneHour);
+				} else {
+					if (player.spe > rand(monster.spe + escapeMod) || player.getEvasionRoll()) {
+						outputText("You quickly bolt out from the creature's reach.");
+						player.createStatusEffect(StatusEffects.KnockedBack, 0, 0, 0, 0);
+						combatRoundOver();
+					} else {
+						outputText("You quickly bolt out from the creature, but the creature wraps its tentacles around your leg, preventing your escape.\n\n");
+						monster.doAI();
+					}
+				}
+				return;
 			}
 			//Ember is SPUCIAL
 			if (monster.short == "Ember") {

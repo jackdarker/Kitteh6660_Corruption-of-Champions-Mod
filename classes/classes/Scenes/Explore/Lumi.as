@@ -1,6 +1,7 @@
 ﻿package classes.Scenes.Explore{
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.Items.Consumable;
 
 	public class Lumi extends BaseContent{
 
@@ -115,7 +116,11 @@ private function lumiPurchase(itype:ItemType, cost:int):void {
 	outputText("You pay Lumi the gems, and she hands you " + itype.longName + " saying, \"<i>Here ya go!</i>\"\n\n", false);
 	player.gems -= cost;
 	statScreenRefresh();
-	inventory.takeItem(itype, lumiShop, lumiLabChoices);
+	
+	if (flags[kFLAGS.SHIFT_KEY_DOWN] == 1 && itype is Consumable) {
+		(itype as Consumable).useItem();
+		doNext(lumiLabChoices);
+	} else inventory.takeItem(itype, lumiLabChoices);
 }
 
 public function lumiEnhance():void {

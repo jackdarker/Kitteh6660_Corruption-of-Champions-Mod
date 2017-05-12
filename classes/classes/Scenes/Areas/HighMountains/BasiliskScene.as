@@ -100,7 +100,7 @@ package classes.Scenes.Areas.HighMountains
 				addButton(0, "Tongue", tongueBasiliskSmex, null, null, null, "Put that creature's tongue to a good use.");
 				if (player.cockThatFits(monster.analCapacity()) >= 0) {
 					addButton(1, "Ass (Gentle)", defeatBasiliskAndAnal, false, null, null, "Fuck the basilisk's ass gently!");
-					if (player.cor >= 66 - player.corruptionTolerance() || player.findPerk(PerkLib.Sadist) >= 0)
+					if (player.cor >= (66 - player.corruptionTolerance()) || player.findPerk(PerkLib.Sadist) >= 0)
 						addButton(2, "Ass (Cruel)", defeatBasiliskAndAnal, true, null, null, "Dominate and fuck the basilisk in the ass! He wouldn't like it though.");
 				}
 			}

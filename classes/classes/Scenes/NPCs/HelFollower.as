@@ -531,6 +531,7 @@ public function heliaFollowerMenu(display:Boolean = true):void {
 				if (display) outputText("\n\n<b>You are in Hardcore Mode. Are you sure you want to embark on the quest? You cannot return until you defeat the opponents and if you get defeated, your save file is permanently deleted.</b>");
 			}
 			//(Display Options: [Dungeon] [Not Yet])
+			menu();
 			addButton(0, "Dungeon", kGAMECLASS.dungeons.heltower.goToHeliaDungeon);
 			addButton(1, "Not Yet", kGAMECLASS.dungeons.heltower.notYet);
 		}

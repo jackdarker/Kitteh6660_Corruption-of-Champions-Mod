@@ -1064,7 +1064,7 @@ public class AkbalScene extends BaseContent implements Encounter
 			//(fighting Akbal disables this scene, but you retain the ability if you rape him after)
 			else if (flags[kFLAGS.PLAYER_RESISTED_AKBAL] == 0 && flags[kFLAGS.AKBAL_SUBMISSION_COUNTER] >= 8 && player.cor > 80)
 			{
-				if (player.cor < 80 || player.findPerk(PerkLib.FireLord) >= 0)
+				if (player.cor < (80 + player.corruptionTolerance()) || player.findPerk(PerkLib.FireLord) >= 0)
 				{
 					outputText("You awake in your camp feeling dangerous, powerful and fiercely satisfied.", false);
 				}
@@ -1081,7 +1081,7 @@ public class AkbalScene extends BaseContent implements Encounter
 				}
 			}
 			//[After 4th submission if corruption is greater than 40%]
-			else if (player.findPerk(PerkLib.Whispered) < 0 && player.cor >= 40)
+			else if (player.findPerk(PerkLib.Whispered) < 0 && player.cor >= (40 - player.corruptionTolerance()))
 			{
 				outputText("You awake in your camp with Akbal standing over you, the chorus of voices in your head reaching the apex of an agonizingly beautiful song, and then falling silent.  When you rise, Akbal licks your face before turning away and sprinting into the forest.\n\n", false);
 				if (player.findPerk(PerkLib.Whispered) < 0)
@@ -1198,7 +1198,7 @@ public class AkbalScene extends BaseContent implements Encounter
 			outputText("As you explore the deep woods you begin to hear a soft slurping sound. In this world you know that any strange sound, especially the wet ones, most likely means something dangerous is up ahead... or something dangerous is fucking something a little less dangerous.  As you cautiously advance you spy the pelt of the jaguar demon, Akbal.  The demon jaguar sits in the middle of the clearing with one leg extended as he repeatedly swipes his wide tongue against his hole, probably cleaning up imp spunk thanks to you.  He is so utterly focused on the task that he doesn’t notice your approach.");
 			flags[kFLAGS.AKBAL_BITCH_Q] = 1;
 			//{corruption < 40/choose no}
-			if ((player.cor < 40 - player.corruptionTolerance() && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0 && player.findPerk(PerkLib.Pervert) < 0 && player.findPerk(PerkLib.Sadist) < 0) || player.lust < 33)
+			if ((player.cor < (40 + player.corruptionTolerance()) && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0 && player.findPerk(PerkLib.Pervert) < 0 && player.findPerk(PerkLib.Sadist) < 0) || player.lust < 33)
 				akbitchNoThnx(false);
 			//{corruption > 40}
 			else

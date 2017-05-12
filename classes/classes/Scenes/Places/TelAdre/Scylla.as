@@ -621,7 +621,7 @@ private function scyllaPtVLeave():void {
 	clearOutput();
 	//[Lust down]
 	dynStats("lus", -10);
-	if (player.cor > 30) dynStats("cor", -1);
+	if (player.cor > (30 + player.corruptionTolerance())) dynStats("cor", -1);
 	outputText("You just don't feel right about interrupting and opt to take the high road, leaving them to their counseling. Nearly-forgotten warmth fills your chest and you smile with pride, despite yourself. You came here as a Champion to purge corruption and- despite every temptation- you acted like a good friend ought to. You walk back downstairs, with your head held high, and order a drink.", false);
 	cheatTime(1);
 	doNext(telAdre.barTelAdre);
@@ -648,8 +648,8 @@ private function scyllaPtVTakeAdvantage():void {
 	outputText(images.showImage("scylla-help-round-five-take-advantage"), false);
 	//[Corruption up]
 	dynStats("cor", 1);
-	if (player.cor < 30) dynStats("cor", 2);
-	if (player.cor < 60) dynStats("cor", 1);
+	if (player.cor < (30 + player.corruptionTolerance())) dynStats("cor", 2);
+	if (player.cor < (60 + player.corruptionTolerance())) dynStats("cor", 1);
 
 	var x:Number = player.biggestCockIndex();
 
