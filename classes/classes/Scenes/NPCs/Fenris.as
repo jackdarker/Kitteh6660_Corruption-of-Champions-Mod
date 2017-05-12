@@ -904,7 +904,7 @@ package classes.Scenes.NPCs{
 						}
 					}
 				}
-				if (kGAMECLASS.player.findStatusEffect(StatusEffects.FenrisCombatSupport) >= 0) { //? should be moved to player?
+				if (kGAMECLASS.player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) { //? should be moved to player?
 					if (kGAMECLASS.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
 						kGAMECLASS.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
 					}

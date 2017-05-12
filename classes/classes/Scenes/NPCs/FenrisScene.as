@@ -514,7 +514,7 @@ private function buildLocationToGoMenu():void {
 			addButton(5, "search mountain", goThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
 		}	
 	}
-	if (player.findStatusEffect(StatusEffects.ExploredDeepwoods) > 0) {
+	if (player.hasStatusEffect(StatusEffects.ExploredDeepwoods)) {
 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_DEEPWOOD)) {
 			addButton(6, "avoid deepwood", dontGoThere,Fenris.MAINFLAG_SEARCH_DEEPWOOD, 200, null, "");
 		} else {
@@ -884,7 +884,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 	} else if (dlgstage == 310) { //
 		outputText("\nTODO: You decide to unlock Fenris and he is happy about this.");
 		outputText("\n<B>You might now call Fenris for help in combat (added Physical Skill - Fenris Combat Support)</B>");
-		if (player.findStatusEffect(StatusEffects.FenrisCombatSupport) < 0) {
+		if (player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) {
 			player.createStatusEffect(StatusEffects.FenrisCombatSupport,0,0,0,0);
 		}
 		progressMainQuest(1);
@@ -1015,7 +1015,7 @@ public function loseToFenris():void {
 	Fenris.getInstance().increaseSelfEsteem(2, 50);
 	Fenris.getInstance().addXP(Fenris.getInstance().getLevel() * 30);
 	
-	if (monster.findStatusEffect(StatusEffects.Sparring) >= 0) {
+	if (monster.hasStatusEffect(StatusEffects.Sparring)) {
 		loseToFenrisDescr(true);
 	} else {
 		loseToFenrisDescr(false);

@@ -145,7 +145,7 @@ package classes.Scenes.NPCs
 		}
 		//just grabbed the player
 		if (PentacleState == 2) {
-			if (player.findStatusEffect(StatusEffects.bound) > 0) {
+			if (player.hasStatusEffect(StatusEffects.bound)) {
 				outputText("The pentacles increase their effort to entwine you.\n", false);
 				if (_pentacles >= 6) {
 					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n", false);
@@ -165,7 +165,7 @@ package classes.Scenes.NPCs
 		}
 		//try to grab player
 		if (PentacleState == 1) {
-			if (player.findStatusEffect(StatusEffects.bound) < 0) {
+			if (player.hasStatusEffect(StatusEffects.bound)) {
 				//Success Todo
 				if (false) {
 					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
@@ -261,7 +261,7 @@ package classes.Scenes.NPCs
 				if (damage > 0) damage = player.takeDamage(damage, true);
 			}*/
 			//Set flags for rounds
-			if (findStatusEffect(StatusEffects.Round) < 0) {
+			if (hasStatusEffect(StatusEffects.Round)) {
 				createStatusEffect(StatusEffects.Round,2,0,0,0);
 			} else addStatusValue(StatusEffects.Round, 1, 1);
 			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
@@ -300,7 +300,7 @@ package classes.Scenes.NPCs
 	}
 	override public function defeated(hpVictory:Boolean):void
 	{
-		if (findStatusEffect(StatusEffects.Sparring) >= 0) { }  //Todo
+		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
 		else {}
 		game.fenrisScene.winAgainstFenris();
 		
@@ -308,7 +308,7 @@ package classes.Scenes.NPCs
 
 	override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 	{
-		if (findStatusEffect(StatusEffects.Sparring) >= 0) { }  //Todo
+		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
 		else {}
 		game.fenrisScene.loseToFenris();
 	}

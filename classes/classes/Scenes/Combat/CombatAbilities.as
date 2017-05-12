@@ -1469,7 +1469,7 @@ package classes.Scenes.Combat
 			if (player.shield != ShieldLib.NOTHING) {
 				addButton(button++, "Shield Bash", shieldBash, null, null, null, "Bash your opponent with a shield. Has a chance to stun. Bypasses stun immunity. \n\nThe more you stun your opponent, the harder it is to stun them again.");
 			}
-			if (player.findStatusEffect(StatusEffects.FenrisCombatSupport)>0 && player.statusEffectv1(StatusEffects.FenrisCombatSupport)<=0) {
+			if (player.hasStatusEffect(StatusEffects.FenrisCombatSupport) && player.statusEffectv1(StatusEffects.FenrisCombatSupport)<=0) {
 				addButton(button++, "Call Fenris", FenrisCombatSupport, -1, null, null, "Call out for Fenris. It might take a while until [Fenris ey] appears.");
 			}
 			addButton(14, "Back", combat.combatMenu, false);
@@ -2528,7 +2528,7 @@ package classes.Scenes.Combat
 		}
 		
 		public function FenrisCombatSupport(Round:int):void { //function is called from CombatAbilitys and Combat
-			if ( player.findStatusEffect(StatusEffects.FenrisCombatSupport) < 0) {
+			if ( !player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) {
 				CoC_Settings.error("StatusEffects.FenrisCombatSupport not found in Player");
 				return; 
 			}
