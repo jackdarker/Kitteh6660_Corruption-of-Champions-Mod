@@ -8,6 +8,7 @@ package classes.Scenes.Combat
 	import classes.Scenes.Dungeons.D3.*;
 	import classes.Scenes.Dungeons.DeepCave.*;
 	import classes.Scenes.Dungeons.HelDungeon.*;
+	import classes.Scenes.Monsters.Mimic;
 	import classes.Scenes.NPCs.*;
 	import classes.Scenes.Places.TelAdre.UmasShop;
 
@@ -30,7 +31,7 @@ package classes.Scenes.Combat
 		}
 		
 		public function getWhiteMagicLustCap():Number {
-			var whiteLustCap:int = player.maxLust() * 0.75;
+			var whiteLustCap:Number = player.maxLust() * 0.75;
 			if (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < (10 + player.corruptionTolerance())) whiteLustCap += (player.maxLust() * 0.1);
 			if (player.findPerk(PerkLib.FocusedMind) >= 0) whiteLustCap += (player.maxLust() * 0.1);
 			return whiteLustCap;
@@ -1726,6 +1727,9 @@ package classes.Scenes.Combat
 				outputText("Amily easily glides around your attack thanks to her complete concentration on your movements.\n\n");
 				monster.doAI();
 				return;
+			}
+			if (player.hasStatusEffect(StatusEffects.KnockedBack) && monster is Mimic) {
+				outputText("You remember how Kelt told something like \"<i>only fight massive targets that have no chance to dodge.</i>\" Well, looks like you've found one.  ");
 			}
 			//Prep messages vary by skill.
 			if (player.statusEffectv1(StatusEffects.Kelt) < 30) {

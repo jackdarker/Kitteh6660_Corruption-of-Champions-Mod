@@ -191,14 +191,19 @@ package classes.Scenes.NPCs
 			return 60;
 		}
 
-		private function emberHasCock():Boolean
+		public function emberHasCock():Boolean
 		{
 			return (flags[kFLAGS.EMBER_GENDER] == 1 || flags[kFLAGS.EMBER_GENDER] == 3);
 		}
 
-		private function emberHasVagina():Boolean
+		public function emberHasVagina():Boolean
 		{
 			return (flags[kFLAGS.EMBER_GENDER] == 2 || flags[kFLAGS.EMBER_GENDER] == 3);
+		}
+
+		public function emberIsHerm():Boolean
+		{
+			return flags[kFLAGS.EMBER_GENDER] == 3;
 		}
 		
 		public function emberChildren():int
@@ -3044,7 +3049,7 @@ package classes.Scenes.NPCs
 			outputText("Your eyes are drawn to the 16 inches of cool, throbbing ");
 			if (flags[kFLAGS.EMBER_ROUNDFACE] == 0 || flags[kFLAGS.EMBER_INTERNAL_DICK] > 0) outputText("dragon");
 			else outputText("human");
-			outputText(" dick between Ember's legs, and you lick your lips hungrily.  Your " + player.vaginaDescript() + " throbs eagerly as you tell Ember you have certain itches you need to scratch... is Ember enough of a " + emberMF("man", "herm") + " to scratch them for you?");
+			outputText(" dick between Ember's legs, and you lick your lips hungrily.  Your " + player.vaginaDescript() + " throbs eagerly as you tell Ember you have certain itches you need to scratch... is Ember enough of a " + emberMF("man", "herm") + " to scratch them for you?\n\n");
 
 			//(Low Affection)
 			if (emberAffection() <= 25) {

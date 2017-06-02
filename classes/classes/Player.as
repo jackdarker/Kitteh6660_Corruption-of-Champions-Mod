@@ -281,9 +281,12 @@ use namespace kGAMECLASS;
 			//Agility boosts armor ratings!
 			var speedBonus:int = 0;
 			if (hasPerk(PerkLib.Agility)) {
-				if (armorPerk == "Light" || _armor.name == "nothing") speedBonus += Math.round(spe/8);
+				if (armorPerk == "Light" || armorPerk == "Adornment" || _armor.name == "nothing") speedBonus += Math.round(spe/8);
 				else if (armorPerk == "Medium") speedBonus += Math.round(spe/13);
 				if (speedBonus > 15) speedBonus = 15;
+			}
+			if (hasPerk(PerkLib.Juggernaut) && tou >= 75 && armorPerk == "Heavy") {
+				speedBonus += 10;
 			}
 			armorDef += speedBonus
 			//Acupuncture effect
@@ -617,6 +620,22 @@ use namespace kGAMECLASS;
 			else if (diff<8) return 1;
 			else if (diff<20) return 2;
 			else return 3;
+		}
+		
+		override public function getEvasionChance():Number 
+		{
+			var chance:Number = super.getEvasionChance();
+			if (hasPerk(PerkLib.Unhindered) && (armor == ArmorLib.NOTHING || armor.perk == "Adornment")) chance += Math.max(10 - upperGarment.armorDef - lowerGarment.armorDef, 0);
+			return chance;
+		}
+		
+		override public function getEvasionReason(useMonster:Boolean = true, attackSpeed:int = int.MIN_VALUE):String 
+		{
+			var inherented:String = super.getEvasionReason(useMonster, attackSpeed);
+			if (inherented != null) return inherented;
+			// evasionRoll is a field from Creature superclass
+			if (hasPerk(PerkLib.Unhindered) && InCollection(armorName, "nothing") && ((evasionRoll = evasionRoll - (10 - Math.max(10 - upperGarment.armorDef - lowerGarment.armorDef, 0))) < 0)) return "Unhindered";
+			return null;
 		}
 
 		//Body Type
@@ -2048,7 +2067,7 @@ use namespace kGAMECLASS;
 		}
 		
 		public function corruptionTolerance():int {
-			var temp:int = perkv1(PerkLib.AscensionTolerance) * 5;
+			var temp:int = perkv1(PerkLib.AscensionTolerance) * 5 * (1 - perkv2(PerkLib.AscensionTolerance));
 			if (flags[kFLAGS.MEANINGLESS_CORRUPTION] > 0) temp += 100;
 			return temp;
 		}

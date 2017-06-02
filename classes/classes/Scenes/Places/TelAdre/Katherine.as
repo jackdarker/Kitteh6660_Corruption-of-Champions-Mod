@@ -4015,7 +4015,7 @@ public function pcPenetratesKatDoubly():void {
 				addButton(1, "Cuddle", pcPenetratesKatDoublyNormalEnd);
 				return;
 			}
-			if (player.cor >= 75 || (player.findPerk(PerkLib.Pervert) >= 0 && player.cor >= 33) || player.findPerk(PerkLib.Sadist) >= 0) { //First time you have to be corrupt
+			if (player.cor >= (75 - player.corruptionTolerance()) || (player.findPerk(PerkLib.Pervert) >= 0 && player.cor >= 33) || player.findPerk(PerkLib.Sadist) >= 0) { //First time you have to be corrupt
 				outputText("your perverse mind comes up with a way to ‘help’ her.");
 				menu();
 				addButton(0, "Help", pcPenetratesKatDoublyHighCumCorrupt);
@@ -4558,7 +4558,7 @@ public function suckedNFuckedByKat():void {
 
 	outputText("But it's Katherine who cums first.  With a muffled yowl of delight she floods your hole");
 	if (player.hasVagina() && cockNumber > 1) outputText("s");
-	outputText(" with her spunk, gushing hot kitty-kum into your depths.  Your belly begins to swell from the spunk, bulging into a visible paunch");
+	outputText(" with her spunk, gushing hot kitty-cum into your depths.  Your belly begins to swell from the spunk, bulging into a visible paunch");
 	if (cumQ() > 500) outputText(" and it doesn't stop, growing and growing until you look pregnant and ready to deliver");
 	if (cumQ() > 1500) outputText(" and her " + (hasBalls() ? "swollen balls keep on going; by the time they finally run" : "massive prostate keeps on going; by the time it finally runs") + " dry, your belly is so heavy with deposited cum that you look like you're having triplets");
 	outputText(".  She slumps forward with a groan of blissed-out relief, spent from her climax.\n\n");
@@ -6091,7 +6091,7 @@ private function bathTimePenetrated():void {
 
 		outputText("With your hand in the way her cock can go no deeper.  You try to make it up to her by flexing your muscles, gently milking her " + cockAdj() + "erection.  Katherine throws her head back and starts to beg.  “<i>Oh please " + playerText() + "!  Please let me go, let me fuck you.  I need to go deeper.</i>”  Her cock" + cockMultiple(" is", "s are") + " throbbing and leaking globs of warm pre into your cunt" + cockMultiple(".", " and the stream."));
 		
-		if (flags[kFLAGS.KATHERINE_UNLOCKED] >= 4 && (player.cor >= 75 || (player.findPerk(PerkLib.Pervert) >= 0 && player.cor >= 33) || player.findPerk(PerkLib.Sadist) >= 0 || doneSubmissive(KBIT_SUB_ORGASM_DENIAL))) {
+		if (flags[kFLAGS.KATHERINE_UNLOCKED] >= 4 && (player.cor >= (75 - player.corruptionTolerance()) || (player.findPerk(PerkLib.Pervert) >= 0 && player.cor >= 33) || player.findPerk(PerkLib.Sadist) >= 0 || doneSubmissive(KBIT_SUB_ORGASM_DENIAL))) {
 			outputText("\n\nYou lick your lips.  Your poor little slut is so horny she can’t even move.  She’s so close to cumming, but she can’t make it there on her own.  You could hold her like this for hours and probably drive her out of her mind.  Or you could pull away and give her a nasty case of blue balls.");
 			menu();
 			addButton(0, "Let Her Cum", bathTimePenetratedNormalEnd);
@@ -6240,7 +6240,7 @@ private function bedroomBondage():void {
 		
 		outputText("You position yourself on the bed and line " + (player.cocks.length > 1 ? "up one of your dicks" : "your cock") + " with Kath’s slit.  " + (hasCock() ? "Her cum is still dripping on your back when you push inside her.  " : "") + "She’s incredibly wet and her pussy opens itself before you, " + (hasCock() ? "almost like it’s jealous of the treatment her male side received" : "begging for more even though she's shaking her head") + ".\n\n");
 
-		outputText("Unlike Katherine you haven’t cum yet and your cocks are aching for release.  You stroke her ");
+		outputText("Unlike Katherine you haven’t cum yet and your " + (player.cocks.length > 1 ? "cocks are" : "cock is") + " aching for release.  You stroke her ");
 		if (pregSize() == 0) {
 			outputText("flat tummy and ask her where she wants your seed.\n\n");
 			if (doneSubmissive(KBIT_SUB_BED_BOND))

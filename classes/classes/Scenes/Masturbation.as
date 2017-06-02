@@ -31,7 +31,7 @@ package classes.Scenes {
 					outputText("\n\nFortunately, you could smear honey all over your " + player.cockDescript() + " and relieve yourself if you want to.");
 					addButton(1, "Use Honey", masturbateGo);
 				}
-				if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= 66) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
+				if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= (66 + player.corruptionTolerance())) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
 					outputText("\n\nYou could meditate to cleanse your urges.");
 					addButton(2, "Meditate", meditate);
 				}
@@ -40,7 +40,7 @@ package classes.Scenes {
 			var button:int = 0;
 			
 			//FAP BUTTON GOAADFADHAKDADK
-			if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= 66) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
+			if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= (66 + player.corruptionTolerance())) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
 				if (player.hasStatusEffect(StatusEffects.Exgartuan) && player.statusEffectv2(StatusEffects.Exgartuan) == 0)
 					addButton(button++, "Masturbate", masturbateGo);
 				else if (player.findPerk(PerkLib.Enlightened) >= 0 && player.findPerk(PerkLib.HistoryReligious) < 0) {
@@ -75,7 +75,7 @@ package classes.Scenes {
 			if (fappingItems(false))
 				addButton(13 ,"Items", fappingItems);
 			else if (button == 1) { //If you can only masturbate or meditate the normal way then do that automatically
-				if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= 66) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
+				if ((player.findPerk(PerkLib.HistoryReligious) >= 0 && player.cor <= (66 + player.corruptionTolerance())) || (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10)) {
 					if (player.hasStatusEffect(StatusEffects.Exgartuan) && player.statusEffectv2(StatusEffects.Exgartuan) == 0)
 						masturbateGo();
 					else meditate();
@@ -2269,7 +2269,7 @@ package classes.Scenes {
 						player.orgasm('Vaginal');
 						dynStats("lib", -.5, "sen", 1, "cor", 1.5);
 						//Game over if fully corrupt!
-						if (player.cor >= 100) doNext(allNaturalSelfStimulationBeltBadEnd);
+						if (player.cor >= (100 + player.corruptionTolerance())) doNext(allNaturalSelfStimulationBeltBadEnd);
 						//Otherwise, 4 hours pass!
 						else doNext(camp.returnToCampUseFourHours);
 					}
@@ -2450,7 +2450,7 @@ package classes.Scenes {
 			outputText("You find a flat, comfortable " + description + " to sit down on and meditate.  As always, meditation brings a sense of peace and calm to you, but it eats up two hours of the day.");
 			
 			dynStats("lus", -50, "cor", -.3 - 0.3 * player.countCockSocks("alabaster"));
-			if (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < 10) HPChange(50, true);
+			if (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < (10 + player.corruptionTolerance())) HPChange(50, true);
 			player.changeFatigue(-10);
 			
 			doNext(camp.returnToCampUseTwoHours);

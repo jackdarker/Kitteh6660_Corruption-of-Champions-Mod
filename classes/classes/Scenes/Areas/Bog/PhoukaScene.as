@@ -154,7 +154,7 @@ package classes.Scenes.Areas.Bog
 				outputText(" if perhaps there's some way he could release you.")
 			else outputText(" if he really wants a taste of what you're going to give him.");
 
-			if (player.cor + rand(125) + pc.corruptionTolerance() + (player.level - 10) * 4 <= 110) { //Players with 0% corruption have a 12% chance that the Phouka is willing to talk, players with 100% corruption have a 92% chance
+			if (((player.cor + rand(125) + player.corruptionTolerance() + (player.level - 10)) * 4) <= 110) { //Players with 0% corruption have a 12% chance that the Phouka is willing to talk, players with 100% corruption have a 92% chance
 				//The phouka is not in the mood for talk, start the fight gagged as punishment for trying to talk
 				outputText("  You open your mouth to say something more to the ");
 				if (player.cor < 34)

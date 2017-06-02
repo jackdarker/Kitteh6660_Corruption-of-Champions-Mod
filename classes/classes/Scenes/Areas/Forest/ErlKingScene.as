@@ -48,8 +48,8 @@ public class ErlKingScene extends BaseContent implements Encounter
 		{
 			trace("Calculating Wild Hunt score.");
 			trace("Int + Spd = " + String(player.inte + player.spe));
-			trace("Base = " + String((player.inte + player.spe) - (player.fatigue * 2)));
-			var baseVal:int = (player.inte + player.spe) - (player.fatigue * 2);
+			var baseVal:int = (player.inte + player.spe) - (player.fatigue - player.maxFatigue() + 100) * 2;
+			trace("Base = " + baseVal);
 
 			/*
 			Conditional modifiers: +20 for Evade
@@ -76,6 +76,11 @@ public class ErlKingScene extends BaseContent implements Encounter
 			{
 				baseVal += 20;
 				trace("+20 for Runner");
+			}
+			if (player.hasPerk(PerkLib.Unhindered) && (player.armor == classes.Items.ArmorLib.NOTHING || player.armor.perk == "Adornment"))
+			{
+				baseVal += 20;
+				trace("+20 for Unhindered");
 			}
 			if (player.isDrider())
 			{
@@ -844,6 +849,10 @@ public class ErlKingScene extends BaseContent implements Encounter
 
 			//Suck My Dick  /  Fuck Her Ass  /  Eat My Pussy  /  Milk Her Dick  /  Gifts
 			menu();
+			addDisabledButton(0, "Suck Me");
+			addDisabledButton(1, "Assfuck");
+			addDisabledButton(2, "Eat Me");
+			
 			if (player.hasCock()) {
 				addButton(0, "Suck Me", gwynnSucksDicks);
 				addButton(1, "Assfuck", gwynnGetsButtfuxed);

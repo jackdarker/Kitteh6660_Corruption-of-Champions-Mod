@@ -125,12 +125,12 @@ package classes.Scenes.NPCs
 			}
 			if (model.time.hours == 6) {
 				//Pure amily flips her shit and moves out!
-				if (flags[kFLAGS.AMILY_FOLLOWER] == 1 && player.cor >= 66 + player.corruptionTolerance() && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0) {
+				if (flags[kFLAGS.AMILY_FOLLOWER] == 1 && player.cor >= (66 + player.corruptionTolerance()) && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0) {
 					amilyScene.farewellNote();
 					needNext = true;
 				}
 				//Amily moves back in once uncorrupt.
-				if (flags[kFLAGS.AMILY_TREE_FLIPOUT] == 0 && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0 && player.cor <= 25 + player.corruptionTolerance() && flags[kFLAGS.AMILY_FOLLOWER] == 0) {
+				if (flags[kFLAGS.AMILY_TREE_FLIPOUT] == 0 && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0 && player.cor <= (25 + player.corruptionTolerance()) && flags[kFLAGS.AMILY_FOLLOWER] == 0) {
 					amilyScene.amilyReturns();
 					needNext = true;
 				}
@@ -193,12 +193,12 @@ package classes.Scenes.NPCs
 				if (!player.hasStatusEffect(StatusEffects.Infested)) flags[kFLAGS.AMILY_GROSSED_OUT_BY_WORMS] = 0;
 			}
 			//Corrupt blow up! - requires you've met Amily
-			if (flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] == 0 && flags[kFLAGS.AMILY_MET] > 0 && (player.cor > 25 + player.corruptionTolerance() || player.cor > 75)) {
+			if (flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] == 0 && flags[kFLAGS.AMILY_MET] > 0 && (player.cor > (25 + player.corruptionTolerance()) || player.cor > (75 + player.corruptionTolerance()))) {
 				meetAmilyAsACorruptAsshat();
 				return;
 			}
 			//CORRUPTIONZ
-			if (flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] > 0 && player.cor > 25) {
+			if (flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] > 0 && player.cor > (25 + player.corruptionTolerance())) {
 				//Cook amily a snack if player doesnt have key item for it.
 				if (player.hasKeyItem("Potent Mixture") < 0 && flags[kFLAGS.AMILY_CORRUPTION] < 3) {
 					cookAmilyASnack();
@@ -214,7 +214,7 @@ package classes.Scenes.NPCs
 				}
 			}
 			//Amily Un-encounterable (worms):
-			if (flags[kFLAGS.AMILY_GROSSED_OUT_BY_WORMS] == 1 || player.cor > 25 + player.corruptionTolerance() || flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] > 0) {
+			if (flags[kFLAGS.AMILY_GROSSED_OUT_BY_WORMS] == 1 || player.cor > (25 + player.corruptionTolerance()) || flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] > 0) {
 				outputText("You enter the ruined village cautiously. There are burnt-down houses, smashed-in doorways, ripped-off roofs... everything is covered with dust and grime. For hours you explore, but you cannot find any sign of another living being, or anything of value. The occasional footprint from an imp or a goblin turns up in the dirt, but you don't see any of the creatures themselves. It looks like time and passing demons have stripped the place bare since it was originally abandoned. Finally, you give up and leave. You feel much easier when you're outside of the village - you had the strangest sensation of being watched while you were in there.", false);
 				doNext(camp.returnToCampUseOneHour);
 				return;
@@ -2534,12 +2534,12 @@ package classes.Scenes.NPCs
 			amilySprite();
 			if (flags[kFLAGS.AMILY_CLOTHING] == 0) flags[kFLAGS.AMILY_CLOTHING] = "rags";
 			//Amily freakout
-			if (player.cor >= 50 + player.corruptionTolerance() && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] == 0 && flags[kFLAGS.AMILY_FOLLOWER] == 1) {
+			if (player.cor >= (50 + player.corruptionTolerance()) && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] == 0 && flags[kFLAGS.AMILY_FOLLOWER] == 1) {
 				amilyTaintWarning();
 				return;
 			}
 			//Clear warning if PC is good!
-			if (player.cor < 50 + player.corruptionTolerance() && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0) flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] = 0;
+			if (player.cor < (50 + player.corruptionTolerance()) && flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] > 0) flags[kFLAGS.AMILY_CAMP_CORRUPTION_FREAKED] = 0;
 			//Preggo birthing!
 			if (pregnancy.isPregnant && pregnancy.incubation == 0 && flags[kFLAGS.AMILY_FOLLOWER] == 2) {
 				clearOutput();

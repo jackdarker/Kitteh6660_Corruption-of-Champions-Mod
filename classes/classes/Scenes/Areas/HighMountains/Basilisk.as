@@ -1,6 +1,7 @@
 package classes.Scenes.Areas.HighMountains
 {
 	import classes.*;
+	import classes.internals.ChainedAction;
 	import classes.internals.ChainedDrop;
 	import classes.GlobalFlags.*
 	
@@ -67,9 +68,14 @@ package classes.Scenes.Areas.HighMountains
 
 		override protected function performCombatAction():void
 		{
-			if (!player.hasStatusEffect(StatusEffects.BasiliskCompulsion) && rand(3) == 0 && !hasStatusEffect(StatusEffects.Blind)) compulsion();
-			else if (rand(3) == 0) basiliskTailSwipe();
-			else eAttack();
+			var actionChoices:ChainedAction = new ChainedAction(eAttack);
+
+			if (!player.hasStatusEffect(StatusEffects.BasiliskCompulsion) && !hasStatusEffect(StatusEffects.Blind))
+				actionChoices.add(compulsion, 1 / 3);
+
+			actionChoices.add(basiliskTailSwipe, 1 / 3);
+
+			actionChoices.exec();
 		}
 
 		override public function defeated(hpVictory:Boolean):void

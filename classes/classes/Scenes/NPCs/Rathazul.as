@@ -107,7 +107,7 @@ public class Rathazul extends NPCAwareContent implements TimeAwareInterface, Enc
 		player.createStatusEffect(StatusEffects.MetRathazul,0,0,0,0);
 	}
 	//Camp offer!
-	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 3 && player.statusEffectv3(StatusEffects.MetRathazul) != 1 && player.cor < 75) {
+	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 3 && player.statusEffectv3(StatusEffects.MetRathazul) != 1 && player.cor < (75 + player.corruptionTolerance())) {
 		outputText("\"<i>You know, I think I might be able to do this worn-out world a lot more good from your camp than by wandering around this lake.  What do you say?</i>\" asks the rat.\n\n(Move Rathazul into your camp?)", false);
 		doYesNo(rathazulMoveToCamp, rathazulMoveDecline);
 		//Set rathazul flag that he has offered to move in (1 time offer)

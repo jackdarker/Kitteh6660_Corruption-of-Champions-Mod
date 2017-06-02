@@ -1,31 +1,5 @@
 import classes.*;
 import flash.text.TextFormat;
-// // import flash.events.MouseEvent;
-// 
-// //const DOUBLE_ATTACK_STYLE:int = 867;
-// //const SPELLS_CAST:int = 868;
-// 
-// //Fenoxo loves his temps
-// var temp:int = 0;
-// 
-// //Used to set what each action buttons displays and does.
-// var args:Array = new Array();
-// var funcs:Array = new Array();
-// 
-// //Used for stat tracking to keep up/down arrows correct.
-// var oldStats = {};
-// model.oldStats = oldStats;
-// oldStats.oldStr  = 0;
-// oldStats.oldTou  = 0;
-// oldStats.oldSpe  = 0;
-// oldStats.oldInte = 0;
-// oldStats.oldSens = 0;
-// oldStats.oldLib  = 0;
-// oldStats.oldCor  = 0;
-// oldStats.oldHP   = 0;
-// oldStats.oldLust = 0;
-// 
-// model.maxHP = maxHP;
 
 public static const MAX_BUTTON_INDEX:int = 14;
 
@@ -110,14 +84,6 @@ public function clone(source:Object):* {
 	copier.position = 0;
 	return(copier.readObject());
 }
-
-/* Was only used in two places at the start of the game
-public function speech(output:String, speaker:String):void {
-	var speech:String = "";
-	speech = speaker + " says, \"<i>" + output + "</i>\"\n";
-	outputText(speech, false);
-}
-*/
 
 /**
  * Clear the text on screen.
@@ -255,14 +221,6 @@ public function getButtonText(index:int):String {
 		return mainView.bottomButtons[index].labelText;
 	}
 }
-
-/*public function setButtonToolTip(button:int, header:String = "", text:String = ""):void {
-	if (header == "") {
-		header = mainView.bottomButtons[button].labelText;
-	}
-	mainView.bottomButtons[button].toolTipHeader = header;
-	mainView.bottomButtons[button].toolTipText = text;
-}*/
 
 public function getButtonToolTipHeader(buttonText:String):String
 {
@@ -587,176 +545,6 @@ public function menu():void { //The newer, simpler menu - blanks all buttons so 
 }
 
 /**
- * Adds buttons that can be chosen. 
- * 
- * I highly recommend you <b>DO NOT</b> use this for new content. Use addButton() instead.
- */
-/*public function choices(text1:String, butt1:Function,
-						text2:String, butt2:Function,
-						text3:String, butt3:Function,
-						text4:String, butt4:Function,
-						text5:String, butt5:Function,
-						text6:String, butt6:Function,
-						text7:String, butt7:Function,
-						text8:String, butt8:Function,
-						text9:String, butt9:Function,
-						text0:String, butt0:Function):void { //New typesafe version
-							
-	menu();	
-	addButton(0, text1, butt1);
-	addButton(1, text2, butt2);
-	addButton(2, text3, butt3);
-	addButton(3, text4, butt4);
-	addButton(4, text5, butt5);
-	addButton(5, text6, butt6);
-	addButton(6, text7, butt7);
-	addButton(7, text8, butt8);
-	addButton(8, text9, butt9);
-	addButton(9, text0, butt0);
-}*/
-
-/****
-	This function is made for multipage menus of unpredictable length,
-	say a collection of items or places or people that can change
-	depending on certain events, past choices, the time of day, or whatever.
-
-	This is not the best for general menu use.  Use choices() for that.
-
-	This is a bit confusing, so here's usage instructions.
-	Pay attention to all the braces.
-
-	This is made to be used with an array that you create before calling it,
-	so that you can push as many items on to that array as you like
-	before passing that array off to this function.
-
-	So you can do something like this:
-		var itemsInStorage :Array = new Array();
-
-		// The extra square braces are important.
-		itemsInStorage.push( [ "Doohicky", useDoohickyFunc ] );
-		itemsInStorage.push( [ "Whatsit", useWhatsitFunc ] );
-		itemsInStorage.push( [ "BagOfDicks", eatBagOfDicks ] );
-		...
-
-		// see notes about cancelFunc
-		multipageChoices( cancelFunc, itemsInStorage );
-
-	cancelfunc is a function (A button event function, specifically)
-	that exits the menu.  Provide this if you want a Back button to appear
-	in the bottom right.
-
-	If you do not need a cancel function, perhaps because some or all
-	of the choices will exit the menu, then you can
-	pass null or 0 for the cancelFunction.
-
-		// This menu shows no Back button.
-		multipageChoices( null, itemsInStorage );
-
-	You can call it directly if you want, but that's ridiculous.
-		multipageChoices( justGoToCamp, [
-			[ "Do this", doThisEvent ],
-			[ "Do that", doThatEvent ],
-			[ "Do something", doSomethingEvent ],
-			[ "Fap", goFapEvent ],
-			[ "Rape Jojo", jojoRape ],
-			// ... more items here...
-			[ "What", goWhat ],
-			[ "Margle", gurgleFluidsInMouthEvent ] // no comma on last item.
-		]);
-****/
-/*public function multipageChoices( cancelFunction :*, menuItems :Array ) :void {
-	const itemsPerPage :int = 8;
-
-	var currentPageIndex :int;
-	var pageCount :int;
-
-	function getPageOfItems( pageIndex :int ) :Array {
-		var startItemIndex:int = pageIndex * itemsPerPage;
-
-		return menuItems.slice( startItemIndex, startItemIndex + itemsPerPage );
-	}
-
-	function flatten( pageItems :Array ) :Array {
-		var i:int, l:int;
-		var flattenedItems:Array = [];
-
-		for( i = 0, l = pageItems.length; i < l; ++i ) {
-			flattenedItems = flattenedItems.concat( pageItems[ i ] );
-		}
-
-		return flattenedItems;
-	}
-
-	function showNextPage() :void {
-		showPage( (currentPageIndex + 1) % pageCount );
-	}
-
-	function showPage( pageIndex :int ) :void {
-		var currentPageItems :Array; // holds the current page of items.
-
-		if ( pageIndex < 0 )
-			pageIndex = 0;
-		if ( pageIndex >= pageCount )
-			pageIndex = pageCount - 1;
-
-		currentPageIndex = pageIndex;
-		currentPageItems = getPageOfItems( pageIndex );
-
-		// I did it this way so as to use only one actual menu setting function.
-		// I figured it was safer until the menu functions stabilize.
-
-		// insert page functions.
-		// First pad out the items so it's always in a predictable state.
-		while( currentPageItems.length < 8 ) {
-			currentPageItems.push( [ "", 0 ] );
-		}
-
-		// Insert next button.
-		currentPageItems.splice( 4, 0, [
-			"See page " +
-				String( ((currentPageIndex + 1) % pageCount) + 1 ) + // A compelling argument for 1-indexing?
-				'/' +
-				String( pageCount ),
-			pageCount > 1 ? showNextPage : 0
-			// "Next Page", pageCount > 1 ? showNextPage : 0
-			]);
-
-		// Cancel/Back button always appears in bottom right, like in the inventory.
-		currentPageItems.push([
-			"Back", cancelFunction || 0
-			]);
-
-		choices.apply( null, flatten( currentPageItems ) );
-	}
-
-	pageCount = Math.ceil( menuItems.length / itemsPerPage );
-
-	if ( typeof cancelFunction != 'function' )
-		cancelFunction = 0;
-
-	showPage( 0 );
-}*/
-
-// simpleChoices and doYesNo are convenience functions. They shouldn't re-implement code from choices()
-/**
- * Adds five button that can be chosen. 
- * 
- * I highly recommend you <b>DO NOT</b> use this for new content. Use menu() + N x addButton() instead.
- */
-/*public function simpleChoices(text1:String, butt1:Function, 
-						text2:String, butt2:Function, 
-						text3:String, butt3:Function, 
-						text4:String, butt4:Function, 
-						text5:String, butt5:Function):void { //New typesafe version
-	menu();
-	addButton(0, text1, butt1);
-	addButton(1, text2, butt2);
-	addButton(2, text3, butt3);
-	addButton(3, text4, butt4);
-	addButton(4, text5, butt5);
-}*/
-
-/**
  * Clears all button and adds a 'Yes' and a 'No' button.
  * @param	eventYes The event parser or function to call if 'Yes' button is pressed.
  * @param	eventNo The event parser or function to call if 'No' button is pressed.
@@ -1058,22 +846,6 @@ public function stats(stre:Number, toug:Number, spee:Number, intel:Number, libi:
 	if (player.findPerk(PerkLib.Smart) >= 0 && intel >= 0) player.inte+=intel*player.perk(player.findPerk(PerkLib.Smart)).value1;
 	if (player.findPerk(PerkLib.Lusty) >= 0 && libi >= 0) player.lib+=libi*player.perk(player.findPerk(PerkLib.Lusty)).value1;
 	if (player.findPerk(PerkLib.Sensitive) >= 0 && sens >= 0) player.sens += sens * player.perk(player.findPerk(PerkLib.Sensitive)).value1;
-
-	// Uma's Str Cap from Perks (Moved to max stats)
-	/*if (player.findPerk(PerkLib.ChiReflowSpeed) >= 0)
-	{
-		if (player.str > UmasShop.NEEDLEWORK_SPEED_STRENGTH_CAP)
-		{
-			player.str = UmasShop.NEEDLEWORK_SPEED_STRENGTH_CAP;
-		}
-	}
-	if (player.findPerk(PerkLib.ChiReflowDefense) >= 0)
-	{
-		if (player.spe > UmasShop.NEEDLEWORK_DEFENSE_SPEED_CAP)
-		{
-			player.spe = UmasShop.NEEDLEWORK_DEFENSE_SPEED_CAP;
-		}
-	}*/
 	
 	//Keep stats in bounds
 	if (player.cor < 0) player.cor = 0;

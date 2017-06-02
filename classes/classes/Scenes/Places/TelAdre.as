@@ -2,6 +2,7 @@
 	import classes.*;
 	import classes.GlobalFlags.*;
 	import classes.Items.Armor;
+	import classes.Items.Consumable;
 	import classes.Scenes.Dungeons.DeepCave.ValaScene;
 	import classes.Scenes.Places.TelAdre.*;
 	import classes.Scenes.NPCs.Fenris;
@@ -137,18 +138,18 @@ private function encounterTelAdre():void {
 private function telAdreCrystal():void {
 	if (!getGame().telAdre.isDiscovered()) setStatus(true,false);
 	//-70+ corruption, or possessed by exgartuan
-	if (player.hasStatusEffect(StatusEffects.Exgartuan) || player.cor >= 70 + player.corruptionTolerance()) {
+	if (player.hasStatusEffect(StatusEffects.Exgartuan) || player.cor >= (70 + player.corruptionTolerance())) {
 		outputText("The crystal pendant begins to vibrate in the air, swirling around and glowing dangerously black.  Edryn snatches her hand back and says, \"<i>I'm sorry, but you're too far gone to step foot into our city.  If by some miracle you can shake the corruption within you, return to us.</i>\"\n\n", false);
 		outputText("You shrug and step back.  You could probably defeat these two, but you know you'd have no hope against however many friends they had beyond the walls.  You turn around and leave, a bit disgruntled at their hospitality.  After walking partway down the dune you spare a glance over your shoulder and discover the city has vanished!  Surprised, you dash back up the dune, flinging sand everywhere, but when you crest the apex, the city is gone.", false);
 		doNext(camp.returnToCampUseOneHour);
 		return;
 	}
 	//-50+ corruption or corrupted Jojo
-	else if (player.cor >= 50 || flags[kFLAGS.JOJO_STATUS] >= 5) {
+	else if (player.cor >= (50 + player.corruptionTolerance()) || flags[kFLAGS.JOJO_STATUS] >= 5) {
 		outputText("The crystal pendant shimmers, vibrating in place and glowing a purple hue.  Edryn steps back, watching you warily, \"<i>You've been deeply touched by corruption.  You balance on a razor's edge between falling completely and returning to sanity.  You may enter, but we will watch you closely.</i>\"\n\n", false);
 	}
 	//-25+ corruption or corrupted Marae
-	else if (player.cor >= 25 || flags[kFLAGS.FACTORY_SHUTDOWN] == 2) {
+	else if (player.cor >= (25 + player.corruptionTolerance()) || flags[kFLAGS.FACTORY_SHUTDOWN] == 2) {
 		outputText("The crystal pendant twirls in place, glowing a dull red.  Edryn takes a small step back and murmurs, \"<i>You've seen the darkness of this land first hand, but its hold on you is not deep.  You'll find sanctuary here.  The demons cannot find this place yet, and we promise you safe passage within the walls.</i>\"\n\n", false);
 	}
 	//-Low corruption/pure characters
@@ -280,10 +281,7 @@ private function armorShops():void {
 	addButton(3, "Weapons", weaponShop);
 	addButton(4, "Jewelry", jewelShopEntry);
 	addButton(5, "Clinic", umasShop.enterClinic);
-	if (flags[kFLAGS.CAMP_CABIN_PROGRESS] >= 4)
-	{
-		addButton(6, "Carpenter", carpentryShopEntry);
-	}
+	addButton(6, "Carpenter", carpentryShopEntry);
 	addButton(14,"Back",telAdreMenu);
 }
 
@@ -1143,7 +1141,11 @@ private function oswaldTransactBuy(slot:int = 1):void {
 	outputText("After examining what you've picked out with his fingers, Oswald hands it over, names the price and accepts your gems with a curt nod.\n\n");
 	player.gems -= int(buyMod * itype.value);
 	statScreenRefresh();
-	inventory.takeItem(itype, oswaldBuyMenu);
+	
+	if (flags[kFLAGS.SHIFT_KEY_DOWN] == 1 && itype is Consumable) {
+		(itype as Consumable).useItem();
+		doNext(oswaldBuyMenu);
+	} else inventory.takeItem(itype, oswaldBuyMenu);
 }
 	
 private function oswaldPawnMenu(returnFromSelling:Boolean = false):void { //Moved here from Inventory.as
@@ -1763,15 +1765,15 @@ public function weaponShop():void {
 	
 	menu();
 	addButton(0, consumables.W_STICK.shortName, weaponBuy, consumables.W_STICK);
-	addButton(0, weapons.CLAYMOR.shortName, weaponBuy, weapons.CLAYMOR);
-	addButton(0, weapons.WARHAMR.shortName, weaponBuy, weapons.WARHAMR);
-	addButton(0, weapons.KATANA.shortName, weaponBuy, weapons.KATANA);
-	addButton(0, weapons.SPEAR.shortName, weaponBuy, weapons.SPEAR);
-	addButton(0, weapons.WHIP.shortName, weaponBuy, weapons.WHIP);
-	addButton(0, weapons.W_STAFF.shortName, weaponBuy, weapons.W_STAFF);
-	addButton(0, weapons.S_GAUNT.shortName, weaponBuy, weapons.S_GAUNT);
-	addButton(0, weapons.DAGGER.shortName, weaponBuy, weapons.DAGGER);
-	addButton(0, weapons.SCIMITR.shortName, weaponBuy, weapons.SCIMITR);
+	addButton(1, weapons.CLAYMOR.shortName, weaponBuy, weapons.CLAYMOR);
+	addButton(2, weapons.WARHAMR.shortName, weaponBuy, weapons.WARHAMR);
+	addButton(3, weapons.KATANA.shortName, weaponBuy, weapons.KATANA);
+	addButton(4, weapons.SPEAR.shortName, weaponBuy, weapons.SPEAR);
+	addButton(5, weapons.WHIP.shortName, weaponBuy, weapons.WHIP);
+	addButton(6, weapons.W_STAFF.shortName, weaponBuy, weapons.W_STAFF);
+	addButton(7, weapons.S_GAUNT.shortName, weaponBuy, weapons.S_GAUNT);
+	addButton(8, weapons.DAGGER.shortName, weaponBuy, weapons.DAGGER);
+	addButton(9, weapons.SCIMITR.shortName, weaponBuy, weapons.SCIMITR);
 	addButton(10, weapons.MACE.shortName, weaponBuy, weapons.MACE);
 	addButton(11, weapons.FLAIL.shortName, weaponBuy, weapons.FLAIL);
 	if (player.hasKeyItem("Sheila's Lethicite") >= 0 || flags[kFLAGS.SHEILA_LETHICITE_FORGE_DAY] > 0) {
@@ -1988,35 +1990,55 @@ public function carpentryShopInside():void {
 	outputText("<i>So what will it be?</i>\n\n");
 	if (player.hasKeyItem("Carpenter's Toolbox") >= 0) camp.cabinProgress.checkMaterials();
 	menu();
-	addButton(0, "Buy Nails", carpentryShopBuyNails);
+	if (player.hasKeyItem("Carpenter's Toolbox") >= 0) {
+		addButton(0, "Buy Nails", carpentryShopBuyNails);
+	} else {
+		addDisabledButton(0, "Buy Nails", "You don't have a toolbox. How are you going to carry nails safely?");
+	}
 	addButton(1, "Buy Wood", carpentryShopBuyWood);
 	addButton(2, "Buy Stones", carpentryShopBuyStone);
-	addButton(5, "Sell Nails", carpentryShopSellNails);	
-	addButton(6, "Sell Wood", carpentryShopSellWood);
-	addButton(7, "Sell Stones", carpentryShopSellStone);
-	addButton(10, "Toolbox", carpentryShopBuySet);
-	addButton(11, "Nail box", carpentryShopBuyNailbox);
+	if (player.keyItemv1("Carpenter's Toolbox") > 0) {
+		addButton(5, "Sell Nails", carpentryShopSellNails);	
+	} else {
+		addDisabledButton(5, "Sell Nails", "You have no nails to sell.");	
+	}
+	if (flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] > 0) {
+		addButton(6, "Sell Wood", carpentryShopSellWood);
+	} else {
+		addDisabledButton(6, "Sell Wood", "You have no wood to sell.");
+	}
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] > 0) {
+		addButton(7, "Sell Stones", carpentryShopSellStone);
+	} else {
+		addDisabledButton(7, "Sell Stones", "You have no stones to sell.");
+	}
+	if (player.hasKeyItem("Carpenter's Toolbox") < 0) {
+		addButton(10, "Toolbox", carpentryShopBuySet);
+		addDisabledButton(11, "Nail box", "You need a Carpenter's Toolbox to make use of this.");
+	} else {
+		addDisabledButton(10, "Toolbox", "You already own a set of carpentry tools.");
+		if (player.hasKeyItem("Carpenter's Nail Box") < 0) {
+			addButton(11, "Nail box", carpentryShopBuyNailbox);
+		} else {
+			addDisabledButton(11, "Nail box", "You already own a nail box.");
+		}
+	}
+	
 	//addButton(12, "StoneBuildingsGuide", carpentryShopBuySet3);
 	addButton(14, "Leave", telAdreMenu);
 }
 //Buy nails
 public function carpentryShopBuyNails():void {
 	clearOutput();
-	if (player.hasKeyItem("Carpenter's Toolbox") >= 0) {
-		outputText("You ask him if he has nails for sale. He replies \"<i>Certainly! I've got nails. Your toolbox can hold up to two hundred nails. I'll be selling nails at a price of two gems per nail.</i>\" \n\n");
-		camp.cabinProgress.checkMaterials(1);
-		menu();
-		addButton(0, "Buy 10", carpentryShopBuyNailsAmount, 10);
-		addButton(1, "Buy 25", carpentryShopBuyNailsAmount, 25);
-		addButton(2, "Buy 50", carpentryShopBuyNailsAmount, 50);
-		addButton(3, "Buy 75", carpentryShopBuyNailsAmount, 75);
-		addButton(4, "Buy 100", carpentryShopBuyNailsAmount, 100);
-		addButton(14, "Back", carpentryShopInside)
-	}
-	else {
-		outputText("You ask him if he has nails for sale. He replies \"<i>I do. But I'm sorry, my friend. You don't have a toolbox. How are you going to carry nails safely?</i>\" ");
-		doNext(carpentryShopInside);
-	}
+	outputText("You ask him if he has nails for sale. He replies \"<i>Certainly! I've got nails. Your toolbox can hold up to " + camp.cabinProgress.maxNailSupply() + " nails. I'll be selling nails at a price of two gems per nail.</i>\" \n\n");
+	camp.cabinProgress.checkMaterials(1);
+	menu();
+	addButton(0, "Buy 10", carpentryShopBuyNailsAmount, 10);
+	addButton(1, "Buy 25", carpentryShopBuyNailsAmount, 25);
+	addButton(2, "Buy 50", carpentryShopBuyNailsAmount, 50);
+	addButton(3, "Buy 75", carpentryShopBuyNailsAmount, 75);
+	addButton(4, "Buy 100", carpentryShopBuyNailsAmount, 100);
+	addButton(14, "Back", carpentryShopInside)
 }
 
 private function carpentryShopBuyNailsAmount(amount:int):void {
@@ -2252,7 +2274,9 @@ public function carpentryShopBuySet():void {
 		doNext(carpentryShopInside);
 		return;
 	}
-	outputText("You walk around for a while until you see a wooden toolbox. It's filled with assorted tools. One of them is a hammer. Another one is a saw. Even another is an axe. There is a measuring tape. There's even a book with hundreds of pages, all about how to use tools and it even has project instructions! There's also a compartment in the toolbox for nails. Just what you need to build your cabin. \n\n");
+	outputText("You walk around for a while until you see a wooden toolbox. It's filled with assorted tools. One of them is a hammer. Another one is a saw. Even another is an axe. There is a measuring tape. There's even a book with hundreds of pages, all about how to use tools and it even has project instructions! There's also a compartment in the toolbox for nails.");
+	if (flags[kFLAGS.CAMP_CABIN_PROGRESS] >= 4) outputText(" Just what you need to build your cabin.\n\n");
+	else outputText(" Would be handy should you want to build something to make your life more comfortable.\n\n");
 	outputText("\"<i>Two hundred gems and it's all yours,</i>\" the shopkeeper says.\n\n");
 	if (player.gems >= 200) {
 		outputText("Do you buy it?");

@@ -588,6 +588,11 @@ package classes
 		}
 		public function orgasm(type:String = 'Default', real:Boolean = true):void
 		{
+			// None-tails original doc includes ability to recover fatigue with after-combat sex. Though it could be OP...
+			//if (game.inCombat && game.monster != null && (hasPerk(PerkLib.EnlightenedNinetails) || hasPerk(PerkLib.CorruptedNinetails))) {
+				//fatigue -= game.monster.level * 2;
+				//if (fatigue < 0) fatigue = 0;
+			//}
 			switch (type) {
 				// Start with that, whats easy
 				case 'Vaginal': if (kGAMECLASS.bimboProgress.ableToProgress() || flags[kFLAGS.TIMES_ORGASM_VAGINAL] < 10) flags[kFLAGS.TIMES_ORGASM_VAGINAL]++; break;
@@ -2511,7 +2516,7 @@ package classes
 
 		public function cuntChangeNoDisplay(cArea : Number) : Boolean {
 			if (vaginas.length == 0) return false;
-			var stretched : Boolean = vaginas[0].stretch(cArea, !hasPerk(PerkLib.FerasBoonMilkingTwat));
+			var stretched : Boolean = vaginas[0].stretch(cArea, vaginalCapacityBonus(), hasPerk(PerkLib.FerasBoonMilkingTwat));
 			
 			// Delay stretch recovery
 			if (cArea >= .5 * vaginalCapacity()) {
@@ -3580,9 +3585,6 @@ package classes
 			if (hasPerk(PerkLib.ImmovableObject) && tou >= 75) {
 				mult *= 0.9;
 			}
-			if (hasPerk(PerkLib.Juggernaut) && tou >= 75 && armorPerk == "Heavy") {
-				mult *= 0.9;
-			}			
 			
 			//--STATUS AFFECTS--
 			//Black cat beer = 25% reduction!
@@ -3671,6 +3673,8 @@ package classes
 		
 		/**
 		* Look into perks and special effects and @return summery extra chance to avoid attack granted by them.
+		* 
+		* Is overriden in Player to work with Unhindered.
 		*/
 		public function getEvasionChance():Number
 		{
@@ -3678,7 +3682,6 @@ package classes
 			if (hasPerk(PerkLib.Evade)) chance += 10;
 			if (hasPerk(PerkLib.Flexibility)) chance += 6;
 			if (hasPerk(PerkLib.Misdirection) && armorName == "red, high-society bodysuit") chance += 10;
-			if (hasPerk(PerkLib.Unhindered) && InCollection(armorName, "nothing")) chance += 10;
 			return chance;
 		}
 	   
@@ -3687,6 +3690,7 @@ package classes
 		public const EVASION_FLEXIBILITY:String = "Flexibility";
 		public const EVASION_MISDIRECTION:String = "Misdirection";
 		public const EVASION_UNHINDERED:String = "Unhindered";
+		protected var evasionRoll:Number = 0;
 	   
 		/**
 	    * Try to avoid and @return a reason if successfull or null if failed to evade.
@@ -3694,6 +3698,8 @@ package classes
 		* If attacker is null then you can specify attack speed for enviromental and non-combat cases. If no speed and attacker specified and then only perks would be accounted.
 		* 
 		* This does NOT account blind!
+		* 
+		* Is overriden in Player to work with Unhindered.
 	    */
 		public function getEvasionReason(useMonster:Boolean = true, attackSpeed:int = int.MIN_VALUE):String
 		{
@@ -3702,20 +3708,36 @@ package classes
 			if (attackSpeed != int.MIN_VALUE && spe - attackSpeed > 0 && int(Math.random() * (((spe - attackSpeed) / 4) + 80)) > 80) return "Speed";
 			//note, Player.speedDodge is still used, since this function can't return how close it was
 
-			var roll:Number = rand(100);
+			evasionRoll = rand(100);
 
 			// perks
-			if (hasPerk(PerkLib.Evade) && ((roll = roll - 10) < 0)) 
-			return "Evade";
-			if (hasPerk(PerkLib.Flexibility) && ((roll = roll - 6) < 0)) return "Flexibility";
-			if (hasPerk(PerkLib.Misdirection) && armorName == "red, high-society bodysuit" && ((roll = roll - 10) < 0)) return "Misdirection";
-			if (hasPerk(PerkLib.Unhindered) && InCollection(armorName, "nothing") && ((roll = roll - 10) < 0)) return "Unhindered";
+			if (hasPerk(PerkLib.Evade) && ((evasionRoll = evasionRoll - 10) < 0)) return "Evade";
+			if (hasPerk(PerkLib.Flexibility) && ((evasionRoll = evasionRoll - 6) < 0)) return "Flexibility";
+			if (hasPerk(PerkLib.Misdirection) && armorName == "red, high-society bodysuit" && ((evasionRoll = evasionRoll - 10) < 0)) return "Misdirection";
 			return null;
 		}
 	   
 		public function getEvasionRoll(useMonster:Boolean = true, attackSpeed:int = int.MIN_VALUE):Boolean
 		{
 			return getEvasionReason(useMonster, attackSpeed) != null;
+		}
+		
+		public function maxFatigue():Number
+		{
+			var max:Number = 100;
+			if (findPerk(PerkLib.ImprovedEndurance) >= 0) max += 20;
+			if (findPerk(PerkLib.AscensionEndurance) >= 0) max += perkv1(PerkLib.AscensionEndurance) * 5;
+			if (max > 999) max = 999;
+			return max;
+		}
+		
+		/**
+		 *Get the remaining fatigue of the Creature.
+		 *@return maximum amount of fatigue that still can be used
+		 */
+		public function fatigueLeft():Number
+		{
+			return maxFatigue() - fatigue;
 		}
 	}
 }

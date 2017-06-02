@@ -3693,7 +3693,7 @@ private function TeaseHighAnalXPArian():void {
 		player.orgasm('Dick');
 	}
 	else {
-		outputText("\n\nPity you don't have the necessary parts to play with [Arian em], though.  Still, maybe if you do something a little special for him, [Arian ey]'ll calm down and let you get some sleep...?");
+		outputText("\n\nPity you don't have the necessary parts to play with [Arian em], though.  Still, maybe if you do something a little special for [Arian em], [Arian ey]'ll calm down and let you get some sleep...?");
 		outputText("\n\nWith anyone else, you'd probably lube your fingers up first; given what a total buttslut Arian's turned [Arian emself] into, though, you doubt [Arian ey] needs it.  Gently, you begin pressing against [Arian eir] puckered tailhole with two fingers; eagerly it slips open, allowing you access with what you'd swear was a soft slurping sound. The interior is wet and slick, more like an aroused pussy than a normal anus, and you start to slowly thrust your fingers in and out of the warm, wet depths.");
 		outputText("\n\nPulling your hand out becomes increasingly difficult as Arian's ass basically sucks you in like a vacuum.  \"<i>Ohh... not stuffing... but feels good too....</i>\"");
 		

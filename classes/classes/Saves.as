@@ -7,7 +7,7 @@ package classes
 	import classes.Scenes.Inventory;
 	import classes.Scenes.Places.TelAdre.Katherine;
 	import classes.internals.LoggerFactory;
-	import classes.internals.Serializable;
+	import classes.internals.ISerializable;
 	import classes.internals.SerializationUtils;
 	import mx.logging.ILogger;
 

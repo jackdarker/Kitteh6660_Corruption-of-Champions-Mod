@@ -5,6 +5,7 @@ package classes.Scenes.Monsters
 	import classes.PerkLib;
 	import classes.GlobalFlags.*;
 	import classes.Scenes.Monsters.Mimic;
+	import classes.StatusEffects;
 	
 	public class MimicScene extends BaseContent
 	{
@@ -79,8 +80,13 @@ package classes.Scenes.Monsters
 					return;
 				} 
 				else { //you just escape, no fancy item!
-					outputText("and slowly reach towards it with one hand. As your fingers hover within inches of touching it, you feel a sudden sense of danger, and leap back just as dozens of tentacles sprout from the thing's surface. The strange creature lunges for you again, but you have already escaped its reach and, to your great relief, it appears to be immobile. ");
-					doNext(camp.returnToCampUseOneHour); //main screen
+					outputText("and slowly reach towards it with one hand. As your fingers hover within inches of touching it, you feel a sudden sense of danger, and leap back just as dozens of tentacles sprout from the thing's surface. The strange creature lunges for you again, but you have already escaped its reach and, to your great relief, it appears to be immobile.  Do you want to fight this creature? You can try to attack from a safe distance, but it would have the first strike should you try to approach for a melee strike.");
+					menu();
+					addButton(0, "Fight", function():*{
+						player.createStatusEffect(StatusEffects.KnockedBack, 0, 0, 0, 0);
+						startCombat(new Mimic(mimicAppearance));
+					});
+					addButton(14, "Leave", camp.returnToCampUseOneHour);
 					return;
 				}
 			}

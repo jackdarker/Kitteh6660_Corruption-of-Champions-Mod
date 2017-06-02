@@ -361,14 +361,14 @@ package classes.Scenes.Dungeons.AnzuPalace
 			outputText("\n\n\"<i>A little cold at start, but when you get accustomed, it becomes really nice. You know, if you want to have a better view, you can follow me to the roof.</i>\"");
 			outputText("\n\nThe roof of the palace, surrounded by the forest pines, lead to a truly magnificent view. The hills extend for all the horizon, while the soft sound of the wind brings peace to your mind. Above you, the sky, framed by the treetops completes the setting.");
 			if (flags[kFLAGS.LETHICE_DEFEATED] > 0) {
+				outputText("\n\n\"<i>When I’m bored or feel too nostalgic, I use to go here in the night. Makes me focus in what I have now. Previously, those stars didn't appear in the sky but for some reason those stars returned.</i>\"");			
+				outputText("\n\nYou tell Anzu of how you defeated Lethice and he congratulates you in your efforts, even giving you an appreciative nod for making the stars return. You chat in the top of the palace with Anzu about the constellations and shooting stars until the cold makes you ask him to go inside again.");
+			}
+			else {
 				outputText("\n\n\"<i>When I’m bored or feel too nostalgic, I use to go here in the night. Makes me focus in what I have now. In the end, the only thing that I really miss from my former world, are the things that I can’t have when looking at the sky.</i>\"");			
 				outputText("\n\nYou give him a confused look.");	
 				outputText("\n\n\"<i>Stars.</i>\"");	
 				outputText("\n\nThe lack of the stars in the night sky can be a little depressing. You recall how in the night, back on Ingnam you used to sit on the grass and count the stars of the sky. You chat in the top of the palace with Anzu about the constellations and shooting stars until the cold makes you ask him to go inside again.");	
-			}
-			else {
-				outputText("\n\n\"<i>When I’m bored or feel too nostalgic, I use to go here in the night. Makes me focus in what I have now. Previously, those stars didn't appear in the sky but for some reason those stars returned.</i>\"");			
-				outputText("\n\nYou tell Anzu of how you defeated Lethice and he congratulates you in your efforts, even giving you an appreciative nod for making the stars return. You chat in the top of the palace with Anzu about the constellations and shooting stars until the cold makes you ask him to go inside again.");
 			}
 			outputText("\n\nBack in the living room, you thank him for having showed his palace to you.");			
 			cheatTime(0.25);
