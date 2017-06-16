@@ -1712,7 +1712,7 @@
 		}
 
 // Fuck yo dog shit we full-on wolf bitches now -Foxwells
-public function wolfPepper(type: Number, player: Player): void {
+public function wolfPepper(/*type: Number,*/ player: Player): void {
     var tfSource: String = "wolfPepper";
     var temp2: Number = 0;
     var temp3: Number = 0;
