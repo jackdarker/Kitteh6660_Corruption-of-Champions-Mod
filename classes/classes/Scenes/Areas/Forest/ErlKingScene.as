@@ -291,7 +291,7 @@ public class ErlKingScene extends BaseContent implements Encounter
 
 			outputText("It seems the Erlking has no interest in chasing prey that won’t run.\n\n");
 
-			if (player.inte < 80) player.inte++;
+			if (player.inte100 < 80) player.inte++;
 
 			menu();
 			doNext(camp.returnToCampUseOneHour);
@@ -684,7 +684,7 @@ public class ErlKingScene extends BaseContent implements Encounter
 					player.cuntChange(12 * 3, true, true, false);
 					outputText("\n\n");
 
-					outputText("You wrap your arms around the trunk of the tree as his hands grip your flanks.  His own equine legs begin thrusting him against you, his ribbed cock sliding in and out of your [pussy], the ridges of his horselike shaft massaging you from the inside.  The force of his fucking ginds your [chest] against the tree.");
+					outputText("You wrap your arms around the trunk of the tree as his hands grip your flanks.  His own equine legs begin thrusting him against you, his ribbed cock sliding in and out of your [pussy], the ridges of his horselike shaft massaging you from the inside.  The force of his fucking grinds your [chest] against the tree.");
 					if (player.biggestLactation() > 0) outputText("  The friction begins milking you, making you ooze milk down the trunk.");
 					outputText("  The mild pain of abrasion couples with the pleasure of his forceful fucking and you feel your climax approaching.\n\n");
 
@@ -1017,7 +1017,7 @@ public class ErlKingScene extends BaseContent implements Encounter
 			//Gain deer ears
 			if (rand(3) == 0 && changes < changeLimit && player.earType != EARS_DEER) {
 				if (player.earType == -1) outputText("\n\nTwo painful lumps sprout on the top of your head, forming into tear-drop shaped ears, covered with short fur.  ");
-				if (player.earType == EARS_HUMAN) outputText("\n\nYour ears tug painfully on your face as they begin shifting, moving upwards to the top of your head and transforming into a upright animalistic ears.  ");
+				if (player.earType == EARS_HUMAN) outputText("\n\nYour ears tug painfully on your face as they begin shifting, moving upwards to the top of your head and transforming into an upright animalistic ears.  ");
 				if (player.earType == EARS_DOG) outputText("\n\nYour ears change shape, morphing into from their doglike shape into deer-like ears!  ");
 				if (player.earType > EARS_DOG) outputText("\n\nYour ears change shape, morphing into teardrop-shaped deer ears!  ");
 				outputText("<b>You now have deer ears.</b>");
@@ -1059,7 +1059,7 @@ public class ErlKingScene extends BaseContent implements Encounter
 				player.skinAdj = "";
 				player.skinDesc = "fur";
 				player.furColor = "brown";
-				player.underBody.type = UNDER_BODY_TYPE_FUR;
+				player.underBody.type = UNDER_BODY_TYPE_FURRY;
 				player.underBody.copySkin({furColor: "white"});
 				changes++;
 			}

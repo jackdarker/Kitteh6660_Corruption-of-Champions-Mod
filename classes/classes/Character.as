@@ -1,4 +1,4 @@
-﻿package classes 
+package classes 
 {
 import classes.Scenes.Places.TelAdre.UmasShop;
 import classes.Items.JewelryLib;
@@ -144,7 +144,7 @@ import classes.GlobalFlags.kFLAGS;
 				if (goal > oldN)
 					output = "\n\nThere's a tingling in your " + face() + " as it changes imperceptibly towards being more feminine. (+" + strength + ")";
 				else if (goal < oldN)
-					output = "\n\nThere's a tingling in your " + face() + " as it changes imperciptibly towards being more masculine. (+" + strength + ")";
+					output = "\n\nThere's a tingling in your " + face() + " as it changes imperceptibly towards being more masculine. (+" + strength + ")";
 			}
 			return output;
 		}
@@ -771,35 +771,7 @@ import classes.GlobalFlags.kFLAGS;
 		}
 
 
-		public function maxHP():Number
-		{
-			var max:Number = 0;
-			max += int(tou * 2 + 50);
-			if (findPerk(PerkLib.Tank) >= 0) max += 50;
-			if (findPerk(PerkLib.Tank2) >= 0) max += Math.round(tou);
-			if (findPerk(PerkLib.ChiReflowDefense) >= 0) max += UmasShop.NEEDLEWORK_DEFENSE_EXTRA_HP;
-			if (flags[kFLAGS.GRIMDARK_MODE] >= 1)
-				max += level * 5;
-			else
-				max += level * 15;
-			if (jewelryEffectId == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude;
-			max *= 1 + (countCockSocks("green") * 0.02);
-			max = Math.round(max);
-			if (max > 9999) max = 9999;
-			return max;
-		}
-		
-		public function maxLust():Number
-		{
-			var max:Number = 100;
-			if (game.player.demonScore() >= 4) max += 20;
-			if (findPerk(PerkLib.ImprovedSelfControl) >= 0) max += 20;
-			if (findPerk(PerkLib.BroBody) >= 0 || findPerk(PerkLib.BimboBody) >= 0 || findPerk(PerkLib.FutaForm) >= 0) max += 20;
-			if (findPerk(PerkLib.OmnibusGift) >= 0) max += 15;
-			if (findPerk(PerkLib.AscensionDesires) >= 0) max += perkv1(PerkLib.AscensionDesires) * 5;
-			if (max > 999) max = 999;
-			return max;
-		}
+
 		
 		public function maxHunger():Number
 		{
@@ -813,7 +785,7 @@ import classes.GlobalFlags.kFLAGS;
 			hairLength += amount;
 			if (hairType == HAIR_BASILISK_PLUME && hairLength > 8) hairLength = 8;
 			if (hairLength > 0 && tempHair == 0) {
-				game.outputText("\n<b>You are no longer bald.  You now have " + hairDescript() + " coating your head.\n</b>", false);
+				game.outputText("\n<b>You are no longer bald.  You now have " + hairDescript() + " coating your head.\n</b>");
 				return true;
 			}
 			else if (
@@ -826,7 +798,7 @@ import classes.GlobalFlags.kFLAGS;
 				(hairLength >= 40 && tempHair < 40) ||
 				(hairLength >= 40 && hairLength >= tallness && tempHair < tallness)
 			) {
-				game.outputText("\n<b>Your hair's growth has reached a new threshhold, giving you " + hairDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your hair's growth has reached a new threshold, giving you " + hairDescript() + ".\n</b>");
 				return true;
 			}
 			return false;
@@ -837,27 +809,27 @@ import classes.GlobalFlags.kFLAGS;
 			var tempBeard:Number = beardLength;
 			beardLength += amount;
 			if (beardLength > 0 && tempBeard == 0) {
-				game.outputText("\n<b>You feel a tingling in your cheeks and chin.  You now have " + beardDescript() + " coating your cheeks and chin.\n</b>", false);
+				game.outputText("\n<b>You feel a tingling in your cheeks and chin.  You now have " + beardDescript() + " coating your cheeks and chin.\n</b>");
 				return true;
 			}
 			else if (beardLength >= 0.2 && tempBeard < 0.2) {
-				game.outputText("\n<b>Your beard's growth has reached a new threshhold, giving you " + beardDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your beard's growth has reached a new threshold, giving you " + beardDescript() + ".\n</b>");
 				return true;
 			}
 			else if (beardLength >= 0.5 && tempBeard < 0.5) {
-				game.outputText("\n<b>Your beard's growth has reached a new threshhold, giving you " + beardDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your beard's growth has reached a new threshold, giving you " + beardDescript() + ".\n</b>");
 				return true;
 			}
 			else if (beardLength >= 1.5 && tempBeard < 1.5) {
-				game.outputText("\n<b>Your beard's growth has reached a new threshhold, giving you " + beardDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your beard's growth has reached a new threshold, giving you " + beardDescript() + ".\n</b>");
 				return true;
 			}
 			else if (beardLength >= 3 && tempBeard < 3) {
-				game.outputText("\n<b>Your beard's growth has reached a new threshhold, giving you " + beardDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your beard's growth has reached a new threshold, giving you " + beardDescript() + ".\n</b>");
 				return true;
 			}
 			else if (beardLength >= 6 && tempBeard < 6) {
-				game.outputText("\n<b>Your beard's growth has reached a new threshhold, giving you " + beardDescript() + ".\n</b>", false);
+				game.outputText("\n<b>Your beard's growth has reached a new threshold, giving you " + beardDescript() + ".\n</b>");
 				return true;
 			}
 

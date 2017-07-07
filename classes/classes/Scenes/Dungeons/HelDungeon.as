@@ -10,6 +10,8 @@ package classes.Scenes.Dungeons
 	import classes.Scenes.Dungeons.DungeonAbstractContent;
 	import classes.Scenes.Dungeons.DungeonCore;
 	import classes.Scenes.Dungeons.HelDungeon.*;
+	import classes.display.SpriteDb;
+	import classes.internals.*;
 	
 	import classes.Scenes.NPCs.*;
 	
@@ -262,7 +264,7 @@ package classes.Scenes.Dungeons
 		//[Armor] -> [Take]:
 		public function takeGooArmor4Realz():void {
 			clearOutput();
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			outputText("You reach out to grab the armor, but as soon as your finger brushes the shiny surface, a human-like face appears in the helm!  You recoil as a daintily feminine and bright blue face takes shape out of nowhere, staring at you with eyes afire with rage.  More of the gooey substance that makes up the girl's face fills out the armor, yanking it off the racks on feet made of goop.");
 			outputText("\n\nQuietly, the armored goo-girl growls, \"<i>You dare to disturb my rest, mortal? Prepare yourself for my vengeance!</i>\"");
 			outputText("\n\nWhat the fuck!? Oh well, looks like she wants a fight!");
@@ -272,7 +274,7 @@ package classes.Scenes.Dungeons
 		
 		//Goo Armor -- PC Defeated (PC has Gender)
 		public function gooArmorBeatsUpPC():void {
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			outputText("\n\nYou collapse, unable to resist the goo-armor's onslaught.  Laughing, she slithers out from underneath her armor, completely encasing you before you can do anything more than scream.  Laughing maniacally, the goo looms over you, hands on her hips.  \"<i>Tsk, tsk, tsk.  Not so eager to steal my armor now, are you?  Well... what am I to do with you, hmm?</i>\"  You struggle, but wrapped snugly in her goo, you can do little more than wiggle your hips and chest, accidentally moving yourself seductively.");
 			outputText("\n\nAs you realize your mistake, a little smile spreads on her face.  \"<i>Ah, I know... I haven't had my precious fluids in so very long...</i>\"");
 			//(PC has Vagina)
@@ -345,10 +347,10 @@ package classes.Scenes.Dungeons
 
 		//Goo Armor -- PC is Victorious (Intro)
 		public function beatUpGooArmor():void {
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			clearOutput();
 			outputText("Succumbing to your ");
-			if (monster.lust >= monster.eMaxLust()) outputText("erotic abilities");
+			if (monster.lust >= monster.maxLust()) outputText("erotic abilities");
 			else outputText("skill in battle");
 			outputText(", the armored goo slumps backwards against the wall, unable to stand.  You loom over her, grinning as you contemplate what to do with your helpless opponent.");
 
@@ -370,7 +372,7 @@ package classes.Scenes.Dungeons
 		}
 		//[Refuse Her]
 		public function refuseGooArmorOffer():void {
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			clearOutput();
 			//In Tower of the Phoenix
 			if (flags[kFLAGS.VALERIA_FOUND_IN_GLACIAL_RIFT] == 0) {
@@ -392,7 +394,7 @@ package classes.Scenes.Dungeons
 		}		
 		//[Refuse Polite]
 		public function refuseGooArmorOfferPolitely():void {
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			clearOutput();
 			//In Tower of the Phoenix
 			if (flags[kFLAGS.VALERIA_FOUND_IN_GLACIAL_RIFT] == 0) {
@@ -410,7 +412,7 @@ package classes.Scenes.Dungeons
 		}
 		//[Take Her]
 		public function takeGooArmorAndWearIt():void {
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			clearOutput();
 			armors.GOOARMR.useText();
 			player.armor.removeText();
@@ -594,7 +596,7 @@ package classes.Scenes.Dungeons
 		//[Valeria]
 		public function talkToValeria():void {
 			clearOutput();
-			spriteSelect(79);
+			spriteSelect(SpriteDb.s_valeria);
 			outputText("Now that you have a few moments to catch your breath, you ask your goo-armor what she thinks about the situation.");
 			outputText("\n\n\"<i>Oh, hi,</i>\" she laughs.  She pours half-way out of your armor, forming her face a few inches from yours.  Kiri leaps in shock, wide-eyed as your armor becomes a new person before you.");
 			outputText("\n\n\"<i>Well hey there, cutie,</i>\" Valeria says, giving Kiri a little wink.  The harpy shudders slightly and shakes the surprise off.");
@@ -611,8 +613,9 @@ package classes.Scenes.Dungeons
 
 		//[Torture Gear]
 		public function tortureGear():void {
+			clearOutput();
 			menu();
-			outputText("You walk up to the torture rack.  ", true);
+			outputText("You walk up to the torture rack.  ");
 			if (flags[kFLAGS.HEL_DUNGEON_TAKEN_WHIP] == 0 || flags[kFLAGS.HEL_DUNGEON_TAKEN_STRAPS] == 0 || flags[kFLAGS.HEL_DUNGEON_TAKEN_DAGGER] == 0) {
 				outputText("The rack contains: ");
 				if (flags[kFLAGS.HEL_DUNGEON_TAKEN_WHIP] == 0) {
@@ -1202,8 +1205,9 @@ package classes.Scenes.Dungeons
 		}
 		//ROOMS
 		public function roomGuardHall():void {
+			clearOutput();
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_GUARD_HALL;
-			outputText("<b><u>Guard Hall</u></b>\n", true);
+			outputText("<b><u>Guard Hall</u></b>\n");
 			outputText("You stand in what might have been a guard room once upon a time.  Now it is a ruined, ransacked mess.  It seems not to have been used in years, and the table, chairs, and spears lined up against the wall have all rotted away to almost nothing.");
 			dungeons.setDungeonButtons(roomStairwell, null, null, null);
 			//[If Armor has not been taken/fought with: 
@@ -1224,8 +1228,9 @@ package classes.Scenes.Dungeons
 
 		}
 		public function roomCellar():void {
+			clearOutput();
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_WINE_CELLAR;
-			outputText("<b><u>Wine Cellar</u></b>\n", true);
+			outputText("<b><u>Wine Cellar</u></b>\n");
 			dungeons.setDungeonButtons(null, null, null, null);
 			//(Accessed from the Trapdoor button)
 			outputText("You've dropped down into a small underground hidey-hole, with ");
@@ -1246,7 +1251,7 @@ package classes.Scenes.Dungeons
 		public function roomStairwell():void {
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_STAIR_WELL;
 			clearOutput();
-			outputText("<b><u>Stair Well</u></b>\n", true);
+			outputText("<b><u>Stair Well</u></b>\n");
 			dungeons.setDungeonButtons(null, roomGuardHall, null, null);
 			if (flags[kFLAGS.HEL_HARPIES_DEFEATED] == 0) {
 				outputText("You open the heavy double doors and cringe as a loud \"<i>SCREECH!</i>\" echoes out and up the next room - a wide open stairwell, it seems, with minimal cover.  The perfect place for a harpy to fight... Oh, shit!");
@@ -1276,8 +1281,9 @@ package classes.Scenes.Dungeons
 			}
 		}
 		public function roomDungeon():void {
+			clearOutput();
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_DUNGEON;
-			outputText("<b><u>Dungeon</u></b>\n", true);
+			outputText("<b><u>Dungeon</u></b>\n");
 			dungeons.setDungeonButtons(null, null, null, null);
 			//(Intro -- Before Fight)
 			if (flags[kFLAGS.HEL_BRIGID_DEFEATED] == 0) {
@@ -1312,8 +1318,9 @@ package classes.Scenes.Dungeons
 			}
 		}
 		public function roomMezzanine():void {
+			clearOutput();
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_MEZZANINE;
-			outputText("<b><u>Mezzanine</u></b>\n", true);
+			outputText("<b><u>Mezzanine</u></b>\n");
 			dungeons.setDungeonButtons(null, null, null, null);
 			//(Intro; Before Battle)
 			if (flags[kFLAGS.HEL_PHOENIXES_DEFEATED] == 0) {
@@ -1334,8 +1341,9 @@ package classes.Scenes.Dungeons
 			}
 		}
 		public function roomThroneRoom():void {
+			clearOutput();
 			kGAMECLASS.dungeonLoc = DungeonCore.DUNGEON_HEL_THRONE_ROOM;
-			outputText("<b><u>Throne Room</u></b>\n", true);
+			outputText("<b><u>Throne Room</u></b>\n");
 			dungeons.setDungeonButtons(null, null, null, null);
 			//Throne Room Descript (Before Combat!)
 			if (flags[kFLAGS.HEL_HARPY_QUEEN_DEFEATED] == 0) {

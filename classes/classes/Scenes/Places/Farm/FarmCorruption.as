@@ -2,11 +2,14 @@ package classes.Scenes.Places.Farm
 {
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.Items.Consumable;
 	import classes.Items.ConsumableLib;
 	import classes.Items.Consumables.SimpleConsumable;
 	import classes.ItemSlotClass;
 	import classes.Scenes.Dungeons.DeepCave.EncapsulationPod;
 	import classes.StatusEffects;
+	import classes.display.SpriteDb;
+	import classes.internals.*;
 	
 	/**
 	 * ...
@@ -390,7 +393,7 @@ package classes.Scenes.Places.Farm
 			addButton(14, "Back", rootScene);
 		}
 		
-		private function getItemObj(flag:int):SimpleConsumable
+		private function getItemObj(flag:int):Consumable
 		{
 			if (flag == kFLAGS.FARM_SUCCUMILK_STORED) return consumables.SUCMILK;
 			if (flag == kFLAGS.FARM_INCUDRAFT_STORED) return consumables.INCUBID;
@@ -403,7 +406,7 @@ package classes.Scenes.Places.Farm
 		
 		private function takeItems(flag:int):void
 		{
-			var item:SimpleConsumable = getItemObj(flag);
+			var item:Consumable = getItemObj(flag);
 			
 			if (flag == kFLAGS.FARM_EGG_STORED) flags[kFLAGS.FARM_EGG_COUNTDOWN] = 7;
 			flags[flag]--;
@@ -728,7 +731,7 @@ package classes.Scenes.Places.Farm
 		public function rootScene():void
 		{
 			clearOutput();
-			spriteSelect(62);
+			spriteSelect(SpriteDb.s_whitney);
 			
 			if (flags[kFLAGS.WHITNEY_DISABLED_FOR_DAY] == 2)
 			{
@@ -869,7 +872,7 @@ package classes.Scenes.Places.Farm
 			{
 				if (player.hasStatusEffect(StatusEffects.Milked))
 				{
-					outputText("\n\n<b>Your " + player.nippleDescript(0) + "s are currently too sore to be milked.  You'll have to wait a while.</b>", false);
+					outputText("\n\n<b>Your " + player.nippleDescript(0) + "s are currently too sore to be milked.  You'll have to wait a while.</b>");
 				}
 				
 				addButton(3,"Get Milked", farm.getMilked);
@@ -3274,7 +3277,7 @@ package classes.Scenes.Places.Farm
 
 			outputText("\n\nOnce she’s done tying you down the dog woman gets off the bed with a spring and disappears from your limited sightline, rummaging around her bedroom with ominous-sounding intent. Is she shifting particularly heavy things about just to torment you? You crane your neck to get a glimpse at what she’s holding as she returns to your side - and then cry out in shock as a black curtain falls down on the world.");
 
-			outputText("\n\n“<i>Stop fussing now, sweetheart,</i>” Whitney croons, adjusting the black, elastic blindfold so it is firmly secured over your eyes." + ((player.eyeType == EYES_FOUR_SPIDER_EYES) ? " Once she’s finished with that she places another blindfold over your second pair of eyes. You can only groan with laughter at the sheer level of preparation the dog woman is capable of." : "") + " “<i>Wouldn’t want you to see what’s coming, would we? That’d ruin half the fun.</i>” ");
+			outputText("\n\n“<i>Stop fussing now, sweetheart,</i>” Whitney croons, adjusting the black, elastic blindfold so it is firmly secured over your eyes." + ((player.eyeType == EYES_FOUR_SPIDER_EYES || player.eyeCount > 2) ? " Once she’s finished with that she places another blindfold over your additional eyes. You can only groan with laughter at the sheer level of preparation the dog woman is capable of." : "") + " “<i>Wouldn’t want you to see what’s coming, would we? That’d ruin half the fun.</i>” ");
 
 			outputText("\n\nShe crawls down to your lower body, taking her time now as she slides her hands across your abdomen and [hips] and sits herself down in front of [eachCock]" + ((player.balls > 0) ? ", making you twitch as she momentarily cups your [balls]" : "") + ". She teases you with slow, deliberate movements of her smooth digits, fully aware that all you can do now in your black space is lie there, feeling and listening to what she’s doing to you.");
 

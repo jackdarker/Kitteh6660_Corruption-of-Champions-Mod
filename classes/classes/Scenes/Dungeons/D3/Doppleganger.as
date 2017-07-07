@@ -73,9 +73,7 @@ package classes.Scenes.Dungeons.D3
 				doNext(game.combat.endHpVictory);
 				return;
 			}
-			
-			if (lust >= eMaxLust())
-			{
+			if (lust >= maxLust()) {
 				doNext(game.combat.endLustVictory);
 				return;
 			}
@@ -165,6 +163,10 @@ package classes.Scenes.Dungeons.D3
 			else if (spell == "whitefire")
 			{
 				player.takeDamage(10 + (player.inte / 3 + rand(player.inte / 2)), true);
+			}
+			else if (spell == "blackfire")
+			{
+				player.takeDamage(30 + (player.inte / 3 + rand(player.inte / 2)), true); //REST IN FUCK
 			}
 			
 			addTalkShit();

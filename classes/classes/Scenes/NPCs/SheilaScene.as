@@ -1288,7 +1288,7 @@ private function sheilaXPThreeSexyTimeGuardDuty():void {
 	
 	//set sheila xp = 4, small lib-based lust damage if lib < 40, or large if lib >= 40; advance time 1 hr
 	flags[kFLAGS.SHEILA_XP] = 4;
-	if (player.lib < 40) dynStats("lus", 5);
+	if (player.lib100 < 40) dynStats("lus", 5);
 	else dynStats("lus", 15);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -1377,7 +1377,7 @@ private function fuckBuddySheilaMeetingChatFamilyAndFriends():void {
 	
 	outputText("\n\n\"<i>And your mom?</i>\" you prompt.");
 	
-	outputText("\n\nSheila frowns.  \"<i>My mum is... kind of a big deal.  She's a nurse, which means she's exempt from regular duty and is only in the reserves.  She takes care of kids in the creche all the time.</i>\"");
+	outputText("\n\nSheila frowns.  \"<i>My mum is... kind of a big deal.  She's a nurse, which means she's exempt from regular duty and is only in the reserves.  She takes care of kids in the crèche all the time.</i>\"");
 	outputText("\n\nThat sounds nice enough... curious that Sheila doesn't seem to think so.");
 	
 	outputText("\n\n\"<i>Nurses have to help maintain the nursery, mate.  They're encouraged to take chemicals to ensure they're always heavily lactating.  Conventionally, they're also expected to make babies - a nurse that doesn't have children is at the bottom of the social ladder as far as respect goes, so all of them are also on fertility drugs, or having a root at all hours, or both.  Most days the first thing dad did when he got home was take mum into an empty wing for ten minutes... though when the nurseries were full, it was us who'd have to vacate so he could use the main room.</i>\"  Sheila looks at you glumly.  \"<i>I used to be secretly so rapt when he was in the military crew.  He'd come home too tired from training to shag, so I'd actually get to spend uninterrupted time with him, reading him the daily bulletins or washing his clothes in a little basin while he told me stories from his platoon.  On the other duties it was always 'Hattie, run 'round and catch your brothers and sisters, and start the cooking so your mum and I can have some alone time.'</i>\"");
@@ -1601,7 +1601,7 @@ private function fuckBuddySheilaMeetingChatKids():void {
 		//(else lib < 50)
 		else {
 			outputText("\n\n\"<i>So you could really do that?</i>\" you ask, changing tack.  \"<i>Have your own kid when you're only four?</i>\"");
-			outputText("\n\nSheila nods.  \"<i>Most of the captains don't encourage it because there aren't enough hours in the day to learn a trade right and raise your child, but when you're young and horny... those joeys typically get left with the creche, and adopted by one of the nurses.  My mum has one right now, I think.  Heartbreaking for the girl who makes it.</i>\"");
+			outputText("\n\nSheila nods.  \"<i>Most of the captains don't encourage it because there aren't enough hours in the day to learn a trade right and raise your child, but when you're young and horny... those joeys typically get left with the crèche, and adopted by one of the nurses.  My mum has one right now, I think.  Heartbreaking for the girl who makes it.</i>\"");
 			outputText("\n\n\"<i>Oh... personal experience?</i>\" you ask cautiously, looking at her.");
 			outputText("\n\n\"<i>What?  No...</i>\"  Sheila meets your gaze.  \"<i>I just see it too often because of who my mum is.  A poor young thing crying at our door in the small hours, begging to hold her baby just a bit longer, as mum and dad try to console her and get her to go home and sleep so she's not easy prey for some rapist wildlife the next day.  Can't be too careful when you get pregnant like falling downhill.</i>\"  She squeezes your hand and rests her forehead against your shoulder.  \"<i>Yours was my first, mate.</i>\"");
 			outputText("\n\nSheila sighs and says nothing more; seems like she's not in the mood to continue.  Eventually she gets up and, with a hug, leaves.");
@@ -2849,7 +2849,7 @@ private function sheilaGetsRapedWithADildont():void {
 internal function getBeatUpBySheila():void {
 	clearOutput();
 	outputText("You slump down before Sheila, breathing heavily; the woman ");
-	if (monster.lust < 75) {
+	if (monster.lust100 < 75) {
 		outputText("takes the opportunity to grab her catch and take off running!  Even if you wanted to, you couldn't catch her now... you collapse, head swimming in ");
 		if (player.HP < 1) outputText("colorful spots");
 		else outputText("fantasies of her, stark naked but for her hat and waiting with her legs open");
@@ -3196,7 +3196,7 @@ private function normalSheilaPregNotifNumberOne():void {
 	
 	outputText("\n\nMan, what?!  Your expression speaks volumes, and she launches into a hurried explanation without a word from you.");
 	
-	outputText("\n\n\"<i>It doesn't take long for us,</i>\" she says, blushing a bit.  \"<i>So you didn't see anything much on me... but I pushed out a little [name] last night.  Baby's nursing well and is fit as a bull.  I left the nipper with the creche for the day when I came out to hunt; one of the wet nurses probably has it in a snuggy pouch right now, waiting for mom to come home.  Should be able to tell the sex in a week after it's grown a bit.  Er... is this gonna be an issue between us, going forward?</i>\"  The woman looks hopefully at you, clearly eager for reassurance.");
+	outputText("\n\n\"<i>It doesn't take long for us,</i>\" she says, blushing a bit.  \"<i>So you didn't see anything much on me... but I pushed out a little [name] last night.  Baby's nursing well and is fit as a bull.  I left the nipper with the crèche for the day when I came out to hunt; one of the wet nurses probably has it in a snuggy pouch right now, waiting for mom to come home.  Should be able to tell the sex in a week after it's grown a bit.  Er... is this gonna be an issue between us, going forward?</i>\"  The woman looks hopefully at you, clearly eager for reassurance.");
 	//[Yep, Issue][Nah]
 	menu();
 
@@ -3894,7 +3894,7 @@ private function talkToDemonSheilaAboutWhatNow():void {
 private function demonSheilaTalkAnotherQuestion():void {
 	clearOutput();
 	//(if lust <=99)
-	if (player.lust <= 99) {
+	if (player.lust100 <= 99) {
 		outputText("Sheila reaches farther down, ");
 		//(cock)
 		if (player.hasCock()) outputText("slipping more of her finger and thumb around your penis");

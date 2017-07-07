@@ -1,6 +1,11 @@
 import classes.*;
 import flash.text.TextFormat;
 
+// at least one import or other usage of *class* so it won't be marked unused.
+import classes.internals.Profiling;
+import classes.internals.profiling.Begin;
+import classes.internals.profiling.End;
+
 public static const MAX_BUTTON_INDEX:int = 14;
 
 public function maxHP():Number {
@@ -62,19 +67,19 @@ public function HPChange(changeNum:Number, display:Boolean):Number
 public function HPChangeNotify(changeNum:Number):void {
 	if (changeNum == 0) {
 		if (player.HP >= maxHP())
-			outputText("You're as healthy as you can be.\n", false);
+			outputText("You're as healthy as you can be.\n");
 	}
 	else if (changeNum > 0) {
 		if (player.HP >= maxHP())
-			outputText("Your HP maxes out at " + maxHP() + ".\n", false);
+			outputText("Your HP maxes out at " + maxHP() + ".\n");
 		else
-			outputText("You gain <b><font color=\"#008000\">" + int(changeNum) + "</font></b> HP.\n", false);
+			outputText("You gain <b><font color=\"#008000\">" + int(changeNum) + "</font></b> HP.\n");
 	}
 	else {
 		if (player.HP <= 0)
-			outputText("You take <b><font color=\"#800000\">" + int(changeNum*-1) + "</font></b> damage, dropping your HP to 0.\n", false);
+			outputText("You take <b><font color=\"#800000\">" + int(changeNum*-1) + "</font></b> damage, dropping your HP to 0.\n");
 		else
-			outputText("You take <b><font color=\"#800000\">" + int(changeNum*-1) + "</font></b> damage.\n", false);
+			outputText("You take <b><font color=\"#800000\">" + int(changeNum*-1) + "</font></b> damage.\n");
 	}
 }
 		
@@ -90,7 +95,7 @@ public function clone(source:Object):* {
  */
 public function clearOutput():void {
 	forceUpdate();
-	currentText = "";
+	output.clear();
 	mainView.clearOutputText();
 	if (_gameState != 3) mainView.hideMenuButton( MainView.MENU_DATA );
 	mainView.hideMenuButton( MainView.MENU_APPEARANCE );
@@ -112,14 +117,14 @@ public function rawOutputText(output:String, purgeText:Boolean = false):void
 		//if (!debug) mainText.htmlText = output;
 		//trace("Purging and writing Text", output);
 		clearOutput();
-		currentText = output;
+		this.output.raw(output);
 		mainView.setOutputText( output );
 		// mainText.htmlText = output;
 	}
 	else
 	{
 		//trace("Adding Text");
-		currentText += output;
+		this.output.raw(output);
 		mainView.appendOutputText( output );
 		// mainText.htmlText += output;
 	}
@@ -132,11 +137,8 @@ public function rawOutputText(output:String, purgeText:Boolean = false):void
  * Output the text on main text interface.
  * @param	output The text to show. It can be formatted such as bold, italics, and underline tags.
  * @param	purgeText Clear the old text.
- * @param	parseAsMarkdown Parses the text using Markdown.
  */
-public function outputText(output:String, 
-						purgeText:Boolean = false, 
-						parseAsMarkdown:Boolean = false):void
+public function outputText(output:String):void
 {
 	// we have to purge the output text BEFORE calling parseText, because if there are scene commands in 
 	// the parsed text, parseText() will write directly to the output
@@ -146,26 +148,12 @@ public function outputText(output:String,
 	// It's needed since those buttons are available even when in the event-tester
 	mainView.hideTestInputPanel();
 
-	if (purgeText)
-	{
-		clearOutput();
-	}
-
-	output = this.parser.recursiveParser(output, parseAsMarkdown);
-
-	//OUTPUT!
-	if (purgeText) {
-		//if (!debug) mainText.htmlText = output;
-		currentText = output;
-	}
-	else {
-		currentText += output;
+	this.output.text(output);
 		//if (!debug) mainText.htmlText = currentText;
-	}
-	if (debug) 
+	/*if (debug)
 	{
 		mainView.setOutputText( currentText );
-	}
+	}*/
 
 }
 
@@ -486,7 +474,10 @@ public function addButton(pos:int, text:String = "", func1:Function = null, arg1
 	if (toolTipText == "") toolTipText = getButtonToolTipText(text);
 	if (toolTipHeader == "") toolTipHeader = getButtonToolTipHeader(text);
 	mainView.bottomButtons[pos].alpha = 1; // failsafe to avoid possible problems with dirty hack
-	mainView.showBottomButton(pos, text, callback, toolTipText, toolTipHeader);
+	mainView.showBottomButton(pos, text, function():void {
+		output.record("<br>["+text+"]<br>");
+		callback();
+	}, toolTipText, toolTipHeader);
 	//mainView.setOutputText( currentText );
 	output.flush();
 }
@@ -668,7 +659,8 @@ public function applyOperator(old:Number, op:String, val:Number):Number {
 }
 
 public function testDynStatsEvent():void {
-	outputText("Old: "+player.str+" "+player.tou+" "+player.spe+" "+player.inte+" "+player.lib+" "+player.sens+" "+player.lust+"\n",true);
+	clearOutput();
+	outputText("Old: "+player.str+" "+player.tou+" "+player.spe+" "+player.inte+" "+player.lib+" "+player.sens+" "+player.lust+"\n");
 	dynStats("tou", 1, "spe+", 2, "int-", 3, "lib*", 2, "sen=", 25,"lust/",2);
 	outputText("Mod: 0 1 +2 -3 *2 =25 /2\n");
 	outputText("New: "+player.str+" "+player.tou+" "+player.spe+" "+player.inte+" "+player.lib+" "+player.sens+" "+player.lust+"\n");
@@ -685,10 +677,12 @@ public function testDynStatsEvent():void {
  */
 public function dynStats(... args):void
 {
+	Begin("engineCore","dynStats");
 	// Check num of args, we should have a multiple of 2
 	if ((args.length % 2) != 0)
 	{
 		trace("dynStats aborted. Keys->Arguments could not be matched");
+		Profiling.End("engineCore","dynStats");
 		return;
 	}
 	
@@ -743,6 +737,7 @@ public function dynStats(... args):void
 		else
 		{
 			trace("dynStats aborted. Expected a key and got SHIT");
+			Profiling.End("engineCore","dynStats");
 			return;
 		}
 	}
@@ -766,7 +761,7 @@ public function dynStats(... args):void
 		  newLust - player.lust,
 		  newCor - player.cor,
 		  argVals[8],argVals[9]);
-	
+	End("engineCore","dynStats");
 }
 
 public function stats(stre:Number, toug:Number, spee:Number, intel:Number, libi:Number, sens:Number, lust2:Number, corr:Number, resisted:Boolean = true, noBimbo:Boolean = false):void
@@ -964,20 +959,4 @@ public function isPeaceful():Boolean {
 
 public function doNothing():void {
 	//This literally does nothing.
-}
-
-public function spriteSelect(choice:Number = 0):void {
-	var type:int = flags[kFLAGS.SPRITE_STYLE]; //0 for new, 1 for old.
-	if (flags[kFLAGS.SHOW_SPRITES_FLAG] == 0)
-	{
-		mainView.selectSprite(choice, type);
-	}
-	else
-	{
-		if (choice >= 0)
-		{
-			trace ("hiding sprite because flags");
-			mainView.selectSprite(-1);
-		}
-	}
 }

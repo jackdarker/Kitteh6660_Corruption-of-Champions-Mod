@@ -60,11 +60,11 @@ package classes.Scenes.Dungeons.D3
 				return "Positioned between you and the Demon Queen is an opponent of singular size and stature - the Minotaur King. He is a beast beyond measure, covered in shaggy fur and a few scraps of leather that do nothing to hide the pillar of flared cuntplow between his legs. In his hands is a gigantic axe, though he seems loathe to use it, preferring to rely on the erotic scent emanating from between his legs. He smells virile, strong, and more alluring than you’d expect. You’d best be careful not to dwell on it.";
 			}
 			str = "Still standing between you and the Demon Queen, the Minotaur King is breathing heavily. His cock is slathered with the residue of his own potent orgasm. His immense, 14 foot tall form hunches slightly as he stares at you, one hand still clutching to his axe. Driving him back to his peak would undoubtedly push him even beyond his considerable endurance. The only problem is that alluring <i>aroma</i> that surrounds him, suffusing the air with the scent of sweaty bedroom romps and sizzling pleasure. You better finish him quick.";
-			if (lust < 40)
+			if (lust100 < 40)
 			{
 				str += "\n\nBeneath his legs is a favorite slut, Excellia by name. She stays just out of his way, showcasing the curvaceous nature of her figure and the ripeness of her sex, occasionally running her fingers across a strange tattoo laid upon her belly. You’d best keep your attentions on the fight ahead.";
 			}
-			else if (lust < 80)
+			else if (lust100 < 80)
 			{
 				str += "\n\nBeneath his legs is the fallen form of his favored slut, Excellia. He steps carefully around the insensate cow-girl but never lets her out of arm’s reach, his eyes flicking to the moistness of her sex from time to time.";
 			}
@@ -230,7 +230,7 @@ package classes.Scenes.Dungeons.D3
 		
 		private function hpRestore():void
 		{
-			HP = eMaxHP();
+			HP = maxHP();
 			lustVuln += 0.15;
 			lust += 2;
 			_milkDrinks++;
@@ -241,36 +241,36 @@ package classes.Scenes.Dungeons.D3
 		
 		private function minoPheromones():void
 		{
-			outputText("The minotaur smiles at you and lifts his loincloth, flicking it at you.  Thick ropes of pre-cum fly through the air, ",false);
+			outputText("The minotaur smiles at you and lifts his loincloth, flicking it at you.  Thick ropes of pre-cum fly through the air, ");
 			if (rand(3) == 0)
 			{
-				outputText("slapping into your face before you can react!  You wipe the slick snot-like stuff out of your eyes and nose, ",false);
-				if (player.lust > 75)
+				outputText("slapping into your face before you can react!  You wipe the slick snot-like stuff out of your eyes and nose, ");
+				if (player.lust100 > 75)
 				{
-					outputText("swallowing it into your mouth without thinking.  ",false);
+					outputText("swallowing it into your mouth without thinking.  ");
 					game.dynStats("lus",15 + player.lib / 10);
 				}
 				else
 				{
-					outputText("feeling your heart beat with desire as your tongue licks the residue from your lips.  ",false);
+					outputText("feeling your heart beat with desire as your tongue licks the residue from your lips.  ");
 					game.dynStats("lus",7.5 + player.lib / 20);
 				}
 			}
 			else
 			{
-				outputText("right past your head.  ",false);
+				outputText("right past your head.  ");
 			}
-			outputText("The animalistic scent of it seems to get inside you, the musky aroma burning a path of liquid heat to your groin.",false);
+			outputText("The animalistic scent of it seems to get inside you, the musky aroma burning a path of liquid heat to your groin.");
 			game.dynStats("lus",15 + player.lib / 20);
 			if (player.findPerk(PerkLib.MinotaurCumAddict) >= 0 || flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] == 2)
 			{
 				if (rand(2) == 0)
 				{
-					outputText("\n<b>You shiver with need, wanting nothing more than to bury your face under that loincloth and slurp out every drop of goopey goodness.</b>",false);
+					outputText("\n<b>You shiver with need, wanting nothing more than to bury your face under that loincloth and slurp out every drop of goopey goodness.</b>");
 				}
 				else
 				{
-					outputText("\n<b>You groan and lick your lips over and over, craving the taste of him in your mouth.</b>",false);
+					outputText("\n<b>You groan and lick your lips over and over, craving the taste of him in your mouth.</b>");
 				}
 				game.dynStats("lus",5 + rand(5));
 			}

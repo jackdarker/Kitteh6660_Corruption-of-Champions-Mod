@@ -1,4 +1,4 @@
-﻿package classes
+package classes
 {
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -311,7 +311,7 @@
 			}
 			//Possible arousal descriptors
 			else if (rand(3) == 0 && !haveDescription) {
-				if (i_creature.lust > 50 && i_creature.lust < 75) {
+				if (i_creature.lust100 > 50 && i_creature.lust100 < 75) {
 					options = ["erect ",
 						"perky ",
 						"erect ",
@@ -320,7 +320,7 @@
 					description += randomChoice(options);
 					haveDescription = true;
 				}
-				if (i_creature.lust >= 75) {
+				if (i_creature.lust100 >= 75) {
 					options = ["throbbing ",
 						"trembling ",
 						"needy ",
@@ -1018,7 +1018,7 @@
 			 }*/
 			//FINAL FALLBACKS - lust descriptors
 			//Lust stuff
-			else if (i_creature.lust > 90) {
+			else if (i_creature.lust100 > 90) {
 				//lots of cum? drippy.
 				if (i_creature.cumQ() > 50 && i_creature.cumQ() < 200 && rand(2) == 0) {
 					//for hroses and dogs
@@ -1041,7 +1041,7 @@
 				}
 			}
 			//A little less lusty, but still lusty.
-			else if (i_creature.lust > 75) {
+			else if (i_creature.lust100 > 75) {
 				if (descripts == 0 && i_creature.cumQ() > 50 && i_creature.cumQ() < 200 && rand(2) == 0) {
 					description += "pre-leaking";
 					descripts = 1;
@@ -1057,7 +1057,7 @@
 				}
 			}
 			//Not lusty at all, fallback adjective
-			else if (i_creature.lust > 50) description += "hard";
+			else if (i_creature.lust100 > 50) description += "hard";
 			else description += "ready";
 			return description;
 		}
@@ -1327,7 +1327,7 @@
 
 			}
 			//lusty
-			if (i_creature.lust > 90 && (description == "") && rand(2) == 0 && !i_forcedSize) {
+			if (i_creature.lust100 > 90 && (description == "") && rand(2) == 0 && !i_forcedSize) {
 				options = ["eager",
 					"full",
 					"needy",
@@ -1566,7 +1566,7 @@
 				 descript += "mare-";
 				 }*/
 				//Horny descriptors - 75% chance
-				if (i_creature.lust > 70 && rand(4) < 3 && !haveDescription) {
+				if (i_creature.lust100 > 70 && rand(4) < 3 && !haveDescription) {
 					options = ["throbbing ",
 						"pulsating ",
 						"hard "];
@@ -1574,7 +1574,7 @@
 					haveDescription = true;
 				}
 				//High libido - always use if no other descript
-				if (i_creature.lib > 50 && rand(2) == 0 && !haveDescription) {
+				if (i_creature.lib100 > 50 && rand(2) == 0 && !haveDescription) {
 					options = ["insatiable ",
 						"greedy ",
 						"demanding ",
@@ -1871,7 +1871,7 @@
 					if (rand(7) == 0) return "colossal, muscly ass";
 					options = ["ginormous, muscle-bound ",
 						"colossal yet toned ",
-						"strong, tremdously large ",
+						"strong, tremendously large ",
 						"tremendous, muscled ",
 						"ginormous, toned ",
 						"colossal, well-defined "];
@@ -2159,6 +2159,7 @@
 					[SKIN_TYPE_DRAGON_SCALES, "scales"],
 					[SKIN_TYPE_FISH_SCALES, "scales"],
 					[SKIN_TYPE_WOOL, "wool"],
+					[SKIN_TYPE_FEATHERED, "feathers"],
 				]
 		);
 		public static const DEFAULT_SKIN_DESCS:Object = createMapFromPairs(
@@ -2221,6 +2222,7 @@
 					[FACE_WOLF, "wolf"],
 					[FACE_ECHIDNA, "echidna"],
 					[FACE_DEER, "deer"],
+					[FACE_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_TONGUE_NAMES:Object = createMapFromPairs(
@@ -2242,6 +2244,8 @@
 					[EYES_WOLF, "wolf"],
 					[EYES_DRAGON, "dragon"],
 					[EYES_BASILISK, "basilisk"],
+					[EYES_SPIDER, "spider"],
+					[EYES_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_EARS_NAMES:Object = createMapFromPairs(
@@ -2266,11 +2270,13 @@
 					[EARS_ECHIDNA, "echidna"],
 					[EARS_DEER, "deer"],
 					[EARS_SHEEP, "sheep"],
+					[EARS_IMP, "imp"],
+					[EARS_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_HORNS_NAMES:Object = createMapFromPairs(
 				[
-					[HORNS_NONE, "non-existant"],
+					[HORNS_NONE, "non-existent"],
 					[HORNS_DEMON, "demon"],
 					[HORNS_COW_MINOTAUR, "cow"],
 					[HORNS_DRACONIC_X2, "2 draconic"],
@@ -2280,12 +2286,14 @@
 					[HORNS_RHINO, "rhino"],
 					[HORNS_SHEEP, "sheep"],
 					[HORNS_RAM, "ram"],
+					[HORNS_IMP, "imp"],
 				]
 		);
 		public static const DEFAULT_ANTENNAE_NAMES:Object = createMapFromPairs(
 				[
-					[ANTENNAE_NONE, "non-existant"],
+					[ANTENNAE_NONE, "non-existent"],
 					[ANTENNAE_BEE, "bee"],
+					[ANTENNAE_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_ARM_NAMES:Object = createMapFromPairs(
@@ -2296,11 +2304,12 @@
 					[ARM_TYPE_WOLF, "wolf"],
 					[ARM_TYPE_PREDATOR, "predator"],
 					[ARM_TYPE_SALAMANDER, "salamander"],
+					[ARM_TYPE_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_TAIL_NAMES:Object = createMapFromPairs(
 				[
-					[TAIL_TYPE_NONE, "non-existant"],
+					[TAIL_TYPE_NONE, "non-existent"],
 					[TAIL_TYPE_HORSE, "horse"],
 					[TAIL_TYPE_DOG, "dog"],
 					[TAIL_TYPE_DEMONIC, "demonic"],
@@ -2327,11 +2336,13 @@
 					[TAIL_TYPE_DEER, "deer"],
 					[TAIL_TYPE_SALAMANDER, "salamander"],
 					[TAIL_TYPE_SHEEP, "sheep"],
+					[TAIL_TYPE_IMP, "imp"],
+					[TAIL_TYPE_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_WING_NAMES:Object = createMapFromPairs(
 				[
-					[WING_TYPE_NONE, "non-existant"],
+					[WING_TYPE_NONE, "non-existent"],
 					[WING_TYPE_BEE_LIKE_SMALL, "small bee-like"],
 					[WING_TYPE_BEE_LIKE_LARGE, "large bee-like"],
 					[WING_TYPE_HARPY, "harpy"],
@@ -2348,7 +2359,7 @@
 		);
 		public static const DEFAULT_WING_DESCS:Object = createMapFromPairs(
 				[
-					[WING_TYPE_NONE, "non-existant"],
+					[WING_TYPE_NONE, "non-existent"],
 					[WING_TYPE_BEE_LIKE_SMALL, "small bee-like"],
 					[WING_TYPE_BEE_LIKE_LARGE, "large bee-like"],
 					[WING_TYPE_HARPY, "large feathery"],
@@ -2370,7 +2381,6 @@
 					[LOWER_BODY_TYPE_DOG, "dog"],
 					[LOWER_BODY_TYPE_NAGA, "naga"],
 					[LOWER_BODY_TYPE_WOLF, "wolf"],
-					[LOWER_BODY_TYPE_CENTAUR, "centaur"],
 					[LOWER_BODY_TYPE_DEMONIC_HIGH_HEELS, "demonic high-heels"],
 					[LOWER_BODY_TYPE_DEMONIC_CLAWS, "demonic claws"],
 					[LOWER_BODY_TYPE_BEE, "bee"],
@@ -2389,8 +2399,9 @@
 					[LOWER_BODY_TYPE_FERRET, "ferret"],
 					[LOWER_BODY_TYPE_CLOVEN_HOOFED, "cloven-hoofed"],
 					[LOWER_BODY_TYPE_ECHIDNA, "echidna"],
-					[LOWER_BODY_TYPE_ECHIDNA, "deertaur"],
 					[LOWER_BODY_TYPE_SALAMANDER, "salamander"],
+					[LOWER_BODY_TYPE_IMP, "imp"],
+					[LOWER_BODY_TYPE_COCKATRICE, "cockatrice"],
 				]
 		);
 		public static const DEFAULT_PIERCING_NAMES:Object = createMapFromPairs(
@@ -2430,7 +2441,7 @@
 			[ANAL_WETNESS_DRY, "dry"],
 			[ANAL_WETNESS_NORMAL, "normal"],
 			[ANAL_WETNESS_MOIST, "moist"],
-			[ANAL_WETNESS_SLIMY, "slimym"],
+			[ANAL_WETNESS_SLIMY, "slimy"],
 			[ANAL_WETNESS_DROOLING, "drooling"],
 			[ANAL_WETNESS_SLIME_DROOLING, "slime-drooling"],
 		];
@@ -2475,7 +2486,7 @@
 		 */
 		public static function describeByScale(value:Number, scale:Array, lessThan:String = "less than", moreThan:String = "more than"):String
 		{
-			if (scale.length == 0) return "undescribeale";
+			if (scale.length == 0) return "indescribable";
 			if (scale.length == 1) return "about " + scale[0][1];
 			if (value < scale[0][0]) return lessThan + " " + scale[0][1];
 			if (value == scale[0][0]) return scale[0][1];

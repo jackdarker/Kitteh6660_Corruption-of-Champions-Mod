@@ -1,4 +1,4 @@
-﻿package classes.Scenes.Places.Bazaar {
+package classes.Scenes.Places.Bazaar {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.Items.Consumable;
@@ -201,6 +201,9 @@ public function setBenoitShop(setButtonOnly:Boolean = false):void {
 			}
 		}
 	}
+	else {
+		addButtonDisabled(0, flags[kFLAGS.TIMES_IN_BENOITS] == 0 ? "Market Stall" : benoitMF("Benoit", "Benoite"), "The shop is currently closed. Come back later.\n\nHours of operation: 9am to 5pm");
+	}
 }
 
 //Introduction Scenes
@@ -268,7 +271,7 @@ public function benoitIntro():void {
 
 			outputText("\n\nYou ask her what she's making.");
 
-			outputText("\n\n\"<i>My lunch; an omlette,</i>\" she says.");
+			outputText("\n\n\"<i>My lunch; an omelette,</i>\" she says.");
 
 			outputText("\n\nYour eyes are drawn almost magnetically to her now flat-again stomach and the realization sinks in just where she got the eggs. You ask how she could have done such a thing.");
 
@@ -282,7 +285,7 @@ public function benoitIntro():void {
 		}
 		else
 		{
-			outputText("The flat-bellied basilisk is tucking away into a plate laden with a heavy omlette when you arrive.");
+			outputText("The flat-bellied basilisk is tucking away into a plate laden with a heavy omelette when you arrive.");
 			outputText("\n\n\"<i>Ah, [name]! What can I azzist you wiz?</i>\"");
 		}
 	}
@@ -358,7 +361,7 @@ public function benoitsBuyMenu():void {
 	{
 		outputText("\"<i>Some may call zis junk,</i>\" says Benoit, indicating his latest wares.  \"<i>Me... I call it garbage.</i>\"");
 	}
-	outputText("\n\n<b><u>" + benoitMF("Benoit","Benoite") + "'s Prices</u></b>", false);
+	outputText("\n\n<b><u>" + benoitMF("Benoit","Benoite") + "'s Prices</u></b>");
 	outputText("\n" + ItemType.lookupItem(flags[kFLAGS.BENOIT_1]).longName + ": " + Math.round(buyMod * ItemType.lookupItem(flags[kFLAGS.BENOIT_1]).value));
 	outputText("\n" + ItemType.lookupItem(flags[kFLAGS.BENOIT_2]).longName + ": " + Math.round(buyMod * ItemType.lookupItem(flags[kFLAGS.BENOIT_2]).value));
 	outputText("\n" + ItemType.lookupItem(flags[kFLAGS.BENOIT_3]).longName + ": " + Math.round(buyMod * ItemType.lookupItem(flags[kFLAGS.BENOIT_3]).value));
@@ -368,7 +371,7 @@ public function benoitsBuyMenu():void {
 	addButton(2, flags[kFLAGS.BENOIT_3], benoitTransactBuy, 3);
 	if (player.keyItemv1("Backpack") < 5) addButton(5, "Backpack", buyBackpack, null, null, null, "This backpack will allow you to carry more items.");
 	if (flags[kFLAGS.BENOIT_PISTOL_BOUGHT] <= 0) addButton(6, "Flintlock", buyFlintlock);
-	if (flags[kFLAGS.BENOIT_CLOCK_BOUGHT] <= 0 && flags[kFLAGS.CAMP_CABIN_FURNITURE_NIGHTSTAND] > 0) addButton(7, "Alarm Clock", buyAlarmClock, null, null, null, "This mechanical clock looks like it was originally constructed by the Goblins before the corruption spreaded throughout Mareth.");
+	if (flags[kFLAGS.BENOIT_CLOCK_BOUGHT] <= 0 && flags[kFLAGS.CAMP_CABIN_FURNITURE_NIGHTSTAND] > 0) addButton(7, "Alarm Clock", buyAlarmClock, null, null, null, "This mechanical clock looks like it was originally constructed by the Goblins before the corruption spread throughout Mareth.");
 	addButton(14, "Back", benoitIntro);
 }
 
@@ -748,7 +751,15 @@ private function talkToBenoit():void {
 		var choice:int;
 		
 		/* BUILD ZE CHOICES!*/
-		var choices:Array = [0,1,2,3,4,5,6,7,8];
+		var choices:Array = [0, 1, 2, 3, 4, 5, 6, 7];
+		//option 8 (cockatrice talk) only, if met harpies and basilisks before
+		if (flags[kFLAGS.CODEX_ENTRY_HARPIES] > 0 && flags[kFLAGS.CODEX_ENTRY_BASILISKS] > 0) {
+			choices[choices.length] = 8;
+			if (flags[kFLAGS.COCKATRICES_UNLOCKED] <= 0) {
+				// higher chance, if not yet unlocked
+				choices[choices.length] = 8;
+			}
+		}
 		//option 9 is non-lover non-fem only
 		if (!benoitLover() && benoitMF("he","she") == "he") choices[choices.length] = 9;
 		//Special male benoit fucker only talks
@@ -820,8 +831,17 @@ private function talkToBenoit():void {
 			if (silly()) outputText("\n\nThe basilisk rubs Pierre behind the ear as " + benoitMF("he","she") + " thinks.  \"<i>I did once get a group of demons coming in ere, asking me what 'cheese omelette' is in basilisk.  When I told zem, zey ran away laughing, shouting 'Zat is all you can say! Zat is all you can say!'</i>\"  " + benoitMF("He","She") + " shrugs, irritated.  \"<i>Arseholes.</i>\"");
 		}
 		else if (choice == 8) {
-			outputText("You ask " + benoitMF("Benoit","Benoite") + " what results when basilisks mate with harpies.");
-			outputText("\n\n\"<i>Most of ze time?  Basilisks,</i>\" " + benoitMF("he","she") + " replies, carefully counting gems with " + benoitMF("his","her") + " fingers.  \"<i>Some of ze time?  'Arpies.  But ze arpies feed zeir basilisk children to zeir chicks if ze former do not get away in time, so it works out.  Really, we are doing zem and ze world a favor by stealing zeir eggs - if we weren't around ze 'ole world would be drowned in guano by now.</i>\"  Satisfied with the takings, " + benoitMF("he","she") + " stows the money away underneath the counter.  \"<i>Very rarely, you get cockatrices.  Now ZEY are weird-looking.</i>\"");
+			outputText("You ask [benoit name] what results when basilisks mate with harpies.");
+			outputText("\n\n\"<i>Most of ze time?  Basilisks,</i>\" [benoit ey] replies, carefully counting gems with [benoit eir] fingers."
+			          +"  \"<i>Some of ze time?  'Arpies.  But ze arpies feed zeir basilisk children to zeir chicks if ze former do not get away"
+			          +" in time, so it works out.  Really, we are doing zem and ze world a favor by stealing zeir eggs - if we weren't around ze"
+			          +" 'ole world would be drowned in guano by now.</i>\"  Satisfied with the takings, [benoit ey] stows the money away underneath"
+			          +" the counter.  \"<i>Very rarely, you get cockatrices.  Now ZEY are weird-looking.</i>\"");
+			if (flags[kFLAGS.COCKATRICES_UNLOCKED] <= 0) {
+				outputText("\n\n<b>Perhaps you should try to find one of these elusive hybrids."
+				          +" You suspect the high mountains would be the best place to look.</b>");
+				flags[kFLAGS.COCKATRICES_UNLOCKED] = 1;
+			}
 		}
 		else if (choice == 9) {
 			//non-lover non-fem only
@@ -1540,7 +1560,7 @@ private function suggestSexAfterBasiWombed(later:Boolean = true):void {
 //PC lays 2 eggs per 10 points of Fertility they have
 public function popOutBenoitEggs():void {
 	if (player.vaginas.length == 0) {
-		outputText("\nYou feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  <b>You look down and behold a new vagina</b>.\n", false);
+		outputText("\nYou feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  <b>You look down and behold a new vagina</b>.\n");
 		player.createVagina();
 	}
 	outputText("\nA sudden pressure in your belly rouses you, making you moan softly in pain as you feel your womb rippling and squeezing, the walls contracting around the ripe eggs inside you.  You drag yourself from your bedding, divesting yourself of your lower clothes and staggering out into the middle of the camp.  Squatting upright, you inhale deeply and start to concentrate.");
@@ -1810,7 +1830,7 @@ public function femoitSexIntro():void
 
 		outputText("\n\nYou cup her buttocks, squeezing the delightfully full, feminine globes, and promise her that she'll forget all about the weight of her eggs soon enough.");
 
-		outputText("\n\n\"<i>Promises, promises,</i>\" is the cheeky retort you get, which prompts you to playfully slap her right asscheek with your hand.  Your [cock] is already begining to swell with arousal, and you tantalizingly brush it against the outer lips of Benoite's pussy, sliding it back and forth and occasionally bumping its tip into her swollen belly.  Soon, it's hard as a rock, and slick with both pre-cum and Benoite's feminine equivalent.  The genderbent reptilian moans and growls in the back of her throat, arching her magnificent ass towards you to make it easier for you to tantalise her, your hands instinctively moving to grope and squeeze her luscious cheeks.");
+		outputText("\n\n\"<i>Promises, promises,</i>\" is the cheeky retort you get, which prompts you to playfully slap her right asscheek with your hand.  Your [cock] is already beginning to swell with arousal, and you tantalizingly brush it against the outer lips of Benoite's pussy, sliding it back and forth and occasionally bumping its tip into her swollen belly.  Soon, it's hard as a rock, and slick with both pre-cum and Benoite's feminine equivalent.  The genderbent reptilian moans and growls in the back of her throat, arching her magnificent ass towards you to make it easier for you to tantalise her, your hands instinctively moving to grope and squeeze her luscious cheeks.");
 
 		outputText("\n\n\"<i>Enough with ze teasing, put ze damn thing in already!</i>\" she barks at you.  She lifts one hand off of the ground and begins to rub and squeeze her chest in frustrated pleasure.");
 
@@ -1865,7 +1885,7 @@ public function femoitSexIntro():void
 
 			outputText("\n\nIt's huge and heavy, solid like a rock, the scaly skin stretched so taut over the eggs inside you're certain you can actually feel them through her skin. There are too many of them jam-packed in there to actually move, though, signaling just how remarkably gravid Benoite is.  Your examinations are cut off when Benoite suddenly grinds her ass insistently against your crotch. \"<i>Ze snuggling is nice, lovair, but I am in ze mood for somesing a leetle more... active,</i>\" the basilisk comments, her tone light and airy.");
 
-			outputText("\n\nYou feign offence, asking if it's so wrong for you to take such pride in having such an wonderfully, majestically fertile lover, caressing her distended belly with gentle sweeping strokes, sliding your fingers across her sensitive skin.  The basilisk moans softly, shivering with pleasure at the sensation, her tail sliding up to caress your [hips]. \"<i>You are such a flatterer,</i>\" she tells you.  \"<i>Mmm... but I must confess zat zis is quite nice also...</i>\" she emphasizes her point by wriggling back against you, doing her best to nestle against your body.");
+			outputText("\n\nYou feign offence, asking if it's so wrong for you to take such pride in having such a wonderfully, majestically fertile lover, caressing her distended belly with gentle sweeping strokes, sliding your fingers across her sensitive skin.  The basilisk moans softly, shivering with pleasure at the sensation, her tail sliding up to caress your [hips]. \"<i>You are such a flatterer,</i>\" she tells you.  \"<i>Mmm... but I must confess zat zis is quite nice also...</i>\" she emphasizes her point by wriggling back against you, doing her best to nestle against your body.");
 
 			outputText("\n\nOne hand continues to trace circles across her egg-laden womb, even as you move the other down to gently cup and squeeze her full bottom, rubbing the base of her tail before creeping down in between her legs. Dampness meets your probing fingers, letting you know your efforts have been rewarded, and you decide to give Benoite something a little more intense. Your [cock] begins to poke into the she-lizard's luscious ass, making her laugh that oh-so-filthy laugh of hers.  \"<i>And 'ere I sought zat you were just wanting to snuggle?  Well, come on z'en, my lovair; if you sink you know 'ow to use zat properly?</i>\"");
 

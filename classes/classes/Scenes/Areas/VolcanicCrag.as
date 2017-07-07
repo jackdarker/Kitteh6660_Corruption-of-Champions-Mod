@@ -13,11 +13,12 @@ package classes.Scenes.Areas
 	import classes.Scenes.API.Encounter;
 	import classes.Scenes.API.Encounters;
 	import classes.Scenes.API.FnHelpers;
+	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.VolcanicCrag.*;
 	
 	use namespace kGAMECLASS;
 	
-	public class VolcanicCrag extends BaseContent
+	public class VolcanicCrag extends BaseContent implements IExplorable
 	{
 		public var behemothScene:BehemothScene = new BehemothScene();
 		/* [INTERMOD:8chan]
@@ -73,19 +74,21 @@ package classes.Scenes.Areas
 		});
 	}
 
-		public function exploreVolcanicCrag():void {
+		public function explore():void {
 			flags[kFLAGS.DISCOVERED_VOLCANO_CRAG]++;
 			doNext(playerMenu);
 			explorationEncounter.execEncounter();
 		}
 
 		private function lootDrakHrt():void {
-			outputText("While you're minding your own business, you spot a flower. You walk over to it, pick it up and smell it. By Marae, it smells amazing! It looks like Drake's Heart as the legends foretold. ", true);
+			clearOutput();
+			outputText("While you're minding your own business, you spot a flower. You walk over to it, pick it up and smell it. By Marae, it smells amazing! It looks like Drake's Heart as the legends foretold. ");
 			inventory.takeItem(consumables.DRAKHRT, camp.returnToCampUseOneHour);
 		}
 
 		private function walk():void {
-			outputText("You spend one hour exploring the infernal landscape but you don't manage to find anything interesting.", true);
+			clearOutput();
+			outputText("You spend one hour exploring the infernal landscape but you don't manage to find anything interesting.");
 			doNext(camp.returnToCampUseOneHour);
 		}
 

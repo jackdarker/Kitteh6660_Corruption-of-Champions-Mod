@@ -282,7 +282,7 @@ package classes.Scenes.Areas.Bog
 			}
 			else { //Less obvious pregnancy or player not pregnant
 				outputText("<i>“You damn prude.  That does it! I don't have to sit around listening to this.  I try to be friendly like some people say ya should instead of just raping ya.  What's it get me, huh?”</i>");
-				if ((player.lust > 66) || ((player.cor > 50) && (player.lust > 33))) {
+				if ((player.lust100 > 66) || ((player.cor > 50) && (player.lust > 33))) {
 					outputText("\n\nYou begin to extract yourself from the bog.  As you do you feel the net of roots and vines rubbing against your body.  A little sex with this shapeshifter to tide you over might just hit the spot.");
 					menu();
 					phoukaSexAddStandardMenuChoices();
@@ -325,7 +325,7 @@ package classes.Scenes.Areas.Bog
 			}
 			else if (flags[kFLAGS.PHOUKA_LORE] == 3) {
 				flags[kFLAGS.PHOUKA_LORE] += 1;
-				outputText("\n\nOnce you're feeling warm and cozy despite the dampness of the bog this phouka starts to tell you more about his faerie cousins.  You already know the phouka like nothing more than to rape forest faeries if they can get them alone, but this one goes into more detail.\n\nHe tells you that faeries are supposed to be born out of special flowers after a 'magicy sparkly fucken ritual'. <i>“When the demons came they didn't like that faeries was so pure an chaste that they didn't even fuck to make babies.”</i> His face breaks into a wide smile as he says <i>“Turns out faeries always had all the right parts for carrying babies, just no men to knock 'em up.”</i>\n\n<i>“Anyways, best thing that ever happened was one of those demons used its brains for more than screwing for a while.  I don't know what perverted recipe it came up with, but they used that to made a few of us better.  We tried to share the joys of cock with those stuck up bitches an all they wanted was to 'cure' us.”</i> The bunny-morph spits that last word out like a curse. <i>“Anyway, we learned how ta get our own back.  When we find 'em alone, we catch those pint size pretties, we put 'em in a cage, an' we get ‘em blind drunk with whiskey.  Then we feed 'em rizza root 'til they're our size.  An' last we pump cum inside 'em until they've got a belly like an apple.  It's a sight to see, I tell ya.”</i>");
+				outputText("\n\nOnce you're feeling warm and cozy despite the dampness of the bog this phouka starts to tell you more about his faerie cousins.  You already know the phouka like nothing more than to rape forest faeries if they can get them alone, but this one goes into more detail.\n\nHe tells you that faeries are supposed to be born out of special flowers after a 'magicy sparkly fucken ritual'. <i>“When the demons came they didn't like that faeries was so pure and chaste that they didn't even fuck to make babies.”</i> His face breaks into a wide smile as he says <i>“Turns out faeries always had all the right parts for carrying babies, just no men to knock 'em up.”</i>\n\n<i>“Anyways, best thing that ever happened was one of those demons used its brains for more than screwing for a while.  I don't know what perverted recipe it came up with, but they used that to made a few of us better.  We tried to share the joys of cock with those stuck up bitches an all they wanted was to 'cure' us.”</i> The bunny-morph spits that last word out like a curse. <i>“Anyway, we learned how ta get our own back.  When we find 'em alone, we catch those pint size pretties, we put 'em in a cage, an' we get ‘em blind drunk with whiskey.  Then we feed 'em rizza root 'til they're our size.  An' last we pump cum inside 'em until they've got a belly like an apple.  It's a sight to see, I tell ya.”</i>");
 			}
 			else if (flags[kFLAGS.PHOUKA_LORE] == 4) {
 				//More can come later, right now we don’t increment here //flags[kFLAGS.PHOUKA_LORE] += 1;
@@ -573,7 +573,7 @@ package classes.Scenes.Areas.Bog
 			}
 			phoukaForm = PHOUKA_FORM_BUNNY;
 			outputText("\n\nThe bunny advances on you and says <i>“I can't wait to blow my load inside that nice pussy of yours.”</i> His paws split apart into fingers in a way you are sure would be excruciating for a real rabbit.  The bunny slides his hands over your belly while his nose sniffs at the back of your neck. [if (isPregnant = true)<i>“They say pregnant girls love ta fuck.  You ready for some meat?”</i>][if (isPregnant = false)His fingers begin to tease your [clit] as he asks you <i>“Ready for some meat?”</i>]");
-			if ((player.lust > 80) || (player.cor > 50))
+			if ((player.lust100 > 80) || (player.cor > 50))
 				outputText(" You can only moan in response.  The thought of this rabbit stuffing you has your [vagina] leaking already.");
 			else
 				outputText(" You are powerless to stop the bunny-morph as he undoes the last few straps holding your [armor] in place.");
@@ -691,7 +691,7 @@ package classes.Scenes.Areas.Bog
 				outputText("Even as the invader thrusts deeper you push back against it. <i>“Good girl, ya love horse cock, don't ya?”</i> whispers the " + phoukaName() + ".  ");
 			player.cuntChange(80, true);
 			outputText("\n\n[if (isPregnant = true)You feel the head smack against your cervix, but with a child already inside your womb, there's no way for it to go any deeper.  The horse morph bears down on you in a futile attempt to force more of his length inside.][if (isPregnant = false)His cock finds your cervix and the horse morph pushes forward with his powerful hind legs.  You black out, you can't tell for how long, but when you awaken you can feel his cockhead and several inches of his thick shaft pulsing inside your womb.  Every time his heart beats you feel it along the veins that are being squeezed by your violated cervix.  He stops moving and sighs <i>“That's what I needed girly.”</i>]\n\n");
-			if ((player.lust > 80) || (player.cor > 50))
+			if ((player.lust100 > 80) || (player.cor > 50))
 				outputText("You pant and moan, waiting for the inevitable flood from his cantaloupe-sized nuts.  You're ready to get off just from the feeling of being so stuffed, so violated.");
 			else {
 				outputText("You whimper in pain, hoping the " + phoukaName() + " will soon be done with you.  ");

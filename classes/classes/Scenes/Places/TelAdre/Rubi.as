@@ -1,8 +1,10 @@
-﻿package classes.Scenes.Places.TelAdre {
+package classes.Scenes.Places.TelAdre {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kACHIEVEMENTS;
+	import classes.display.SpriteDb;
+	import classes.internals.*;
 
 	public class Rubi extends TelAdreAbstractContent {
 public function Rubi(){
@@ -69,8 +71,8 @@ public function Rubi(){
 //const RUBI_SETUP:int = 1014;
 
 private function rubiSprite():void {
-	if (flags[kFLAGS.RUBI_HORNTYPE] > 0) spriteSelect(102);
-	else spriteSelect(101);
+	if (flags[kFLAGS.RUBI_HORNTYPE] > 0) spriteSelect(SpriteDb.s_rubi_horns);
+	else spriteSelect(SpriteDb.s_rubi_hornless);
 }
 
 private function initializeRubi():void {
@@ -243,7 +245,7 @@ internal function rubiIntros():Function {
 
 //Approach Rubi scenes
 public function approachRubiScenes():void {
-	outputText(images.showImage("rubi-at-cafe"), false);
+	outputText(images.showImage("rubi-at-cafe"));
 	clearOutput();
 	rubiSprite();
 	//(First time)
@@ -620,7 +622,7 @@ public function chatWithRubi():void {
 
 //Choose Rubi's Place?
 public function rubisFuckingHouseYouPervert():void {
-	outputText(images.showImage("rubi-at-house"), false);
+	outputText(images.showImage("rubi-at-house"));
 	clearOutput();
 	rubiSprite();
 	//(Not available to those with a centaur, naga or drider body.)
@@ -707,7 +709,7 @@ private function rubiSexMenu():void {
 	// 2 - always on
 	addDisabledButton(3, "Release", "This scene requires Rubi to be pent up.");
 	addDisabledButton(4, "Train", "This scene requires you to have overly large cock and high enough Rubi affection.");
-	addDisabledButton(5, "Train", "This scene requires Rubi to have decently sized cock and high enough affection.");
+	addDisabledButton(5, "Get Fucked", "This scene requires Rubi to have decently sized cock and high enough affection.");
 	addDisabledButton(6, "Hotdogging", "This scene requires you to have cock.");
 	
 	if (player.lust >= 33) {
@@ -794,7 +796,7 @@ private function rubiIsAShe():void {
 //Fuck Rubi
 //(available for players with cocks or large clits (at least 4</i>\")) (If Orgasm Denial is activated, adds 1 to Blue Balls)
 public function fuckRubi():void {
-	outputText(images.showImage("rubi-fuck"), false);
+	outputText(images.showImage("rubi-fuck"));
 	var x:int;
 	x = player.cockThatFits(rubiCapacity());
 	if (x < 0)
@@ -807,10 +809,10 @@ public function fuckRubi():void {
 	if (player.hasCock())
 	{
 		// trace("Rubi - PlayerHasCock");
-		outputText(player.cockDescript(x), false);
+		outputText(player.cockDescript(x));
 	}
 	else
-		outputText(player.clitDescript(), false);
+		outputText(player.clitDescript());
 	outputText(".");
 
 	var size:int = 0;
@@ -936,7 +938,7 @@ public function fuckRubi():void {
 //Dildo Fuck
 //(If the PC has the Deluxe Dildo) (If Orgasm Denial is activated, adds +2 to Blue Balls (Yay arousal drugs!))
 public function dildoFuckRubi():void {
-	outputText(images.showImage("rubi-dildo-fuck"), false);
+	outputText(images.showImage("rubi-dildo-fuck"));
 	clearOutput();
 	rubiSprite();
 	//(If PC has no cock)
@@ -1040,7 +1042,7 @@ public function dildoFuckRubi():void {
 
 //Tease
 public function teaseRubi():void {
-	outputText(images.showImage("rubi-tease"), false);
+	outputText(images.showImage("rubi-tease"));
 	clearOutput();
 	rubiSprite();
 	//(Normal and Incubus Rubi.  Activates Orgasm Denial and adds 1 to Blue Balls.)
@@ -1120,7 +1122,7 @@ public function teaseRubi():void {
 
 //Release
 public function releaseRubi():void {
-	outputText(images.showImage("rubi-orgasm-denial-release"), false);
+	outputText(images.showImage("rubi-orgasm-denial-release"));
 	clearOutput();
 	rubiSprite();
 	//Will deactivate Orgasm Denial.  To start Denying again, the PC will have to Tease.
@@ -1257,7 +1259,7 @@ private function interruptTheNTRsYouCrazyFool():void {
 
 //(Wait)
 private function waitAndGetNTRedLikeTheBoyBitchYouAre():void {
-	outputText(images.showImage("rubi-get-ntr-ed"), false);
+	outputText(images.showImage("rubi-get-ntr-ed"));
 	clearOutput();
 	rubiSprite();
 	outputText("You decide to wait and see how this plays out.  The man fully disrobes and it's not at all surprising to you that he's not fully human.  A pair of wolf-like ears are perched upon his head, while a fluffy white and grey tail extends from his waist.  The wolfman opens his mouth to speak, but you can't hear what he says from out here.  Whatever it was, it certainly got Rubi's attention.");
@@ -1358,7 +1360,7 @@ private function pimpOutRubi():void {
 
 //Actual Scene:
 private function chocoRubiMassage():void {
-	outputText(images.showImage("rubi-get-massage"), false);
+	outputText(images.showImage("rubi-get-massage"));
 	clearOutput();
 	rubiSprite();
 	outputText("You look over [rubi eir] supplies and decide that a pampered day at Rubi's \"spa\" is just what you need.  Allowing [rubi em] to escort you to [rubi eir] bed, you catch a few peeps of a pint-sized pup-tent in Rubi's bottoms.  [rubi Ey] doesn't seem aware of your prying gaze, but [rubi ey]'s blushing nonetheless, perhaps lost in [rubi eir] own less-than-pure thoughts as [rubi ey] guides you to the corner of [rubi eir] room.");
@@ -1456,7 +1458,7 @@ private function goInRubisClosetSoThatYouCanComeOutOfTheCloset():void {
 
 //Appearance
 private function rubiAppearance():void {
-	outputText(images.showImage("rubi-inspect-appearance"), false);
+	outputText(images.showImage("rubi-inspect-appearance"));
 	clearOutput();
 	rubiSprite();
 	outputText("You look over your naked, demon-morph lover.");
@@ -1505,7 +1507,7 @@ private function rubiAppearance():void {
 
 	outputText("\n\nBetween [rubi eir] legs is a ");
 	if (flags[kFLAGS.RUBI_COCK_SIZE] > 0) {
-		outputText(rubiCock() + ", which starts to perk up under your scrutiny. From experience, you know it can reach a impressive " + flags[kFLAGS.RUBI_COCK_SIZE] + " inches when erect.  ");
+		outputText(rubiCock() + ", which starts to perk up under your scrutiny. From experience, you know it can reach an impressive " + flags[kFLAGS.RUBI_COCK_SIZE] + " inches when erect.  ");
 		outputText("Under [rubi eir] cock swings a set of ");
 		if (flags[kFLAGS.RUBI_BLU_BALLS] >= 4 && flags[kFLAGS.RUBI_BLU_BALLS] < 9) outputText("cum-swollen ");
 		else if (flags[kFLAGS.RUBI_BLU_BALLS] >= 9) outputText("engorged, blue-tinged ");
@@ -2434,7 +2436,7 @@ private function anallyTrainYourBitchBoySlutHowToBeAnalForDCL():void {
 //Rubi must have at least a 5" cock
 //Requires 75 Affection
 private function getFuckedByRubi():void {
-	outputText(images.showImage("rubi-fucks-you"), false);
+	outputText(images.showImage("rubi-fucks-you"));
 	clearOutput();
 	rubiSprite();
 	outputText("Rather than wait for you to initiate something, Rubi takes you by the hands and leads you into the bedroom.  [rubi Ey] puts one arm on your shoulder and runs [rubi eir] fingers up through the hair on the back of your head before pulling you into a deep kiss.  Rubi's ");
@@ -2540,7 +2542,7 @@ private function getFuckedByRubi():void {
 //If Rubi is being teased, adds +1 to blueballs
 //-100 arousal for PC
 private function rubiHotdogging():void {
-	outputText(images.showImage("rubi-hotdogged"), false);
+	outputText(images.showImage("rubi-hotdogged"));
 	clearOutput();
 	rubiSprite();
 	outputText("You sit on the couch next to your sexy lover and pull [rubi em] onto your lap with one smooth motion.  Rubi giggles, wiggling in place for a moment before leaning down to kiss you on the lips.  You put one hand on [rubi eir] supple ass, and another on [rubi eir] back between [rubi eir] shoulders and pull [rubi em] close, pressing your [tongue] into [rubi eir] mouth.  You sensually explore your partner's mouth as [rubi ey] closes [rubi eir] eyes and moans.");
@@ -2603,7 +2605,7 @@ private function rubiHotdogging():void {
 
 //Tease
 private function teaseButtjobs():void {
-	outputText(images.showImage("rubi-tease-buttjob"), false);
+	outputText(images.showImage("rubi-tease-buttjob"));
 	clearOutput();
 	rubiSprite();
 	outputText("Grinning to yourself, you decide to tease the little demon " + rubiMF("boy","girl") + " a little further.  You plunge your thumb further into [rubi eir] ");
@@ -2638,7 +2640,7 @@ private function teaseButtjobs():void {
 
 //Pop
 private function popButtjobs():void {
-	outputText(images.showImage("rubi-pop-buttjob"), false);
+	outputText(images.showImage("rubi-pop-buttjob"));
 	clearOutput();
 	rubiSprite();
 	outputText("No, you figure Rubi has been so great lately [rubi ey] definitely deserves to cum.  You plunge your thumb further into [rubi eir] ");
@@ -3100,7 +3102,7 @@ private function giveRubiATFItem(itype:ItemType):void {
 
 //GRO+/REDUCTO
 private function rubiGrowPlusBreasts():void {
-	outputText(images.showImage("rubi-gro-plus-tits"), false);
+	outputText(images.showImage("rubi-gro-plus-tits"));
 	clearOutput();
 	rubiSprite();
 	outputText("You hand over the vial of blueish liquid.  Rubi takes a moment to look it over, before taking a deep breath and injecting half of the vial into one breast and the rest into [rubi eir] other breast.");
@@ -3129,7 +3131,7 @@ private function rubiGrowPlusBreasts():void {
 }
 //(If Penis)
 private function rubiPenisGroPlus():void {
-	outputText(images.showImage("rubi-gro-plus-penis"), false);
+	outputText(images.showImage("rubi-gro-plus-penis"));
 	clearOutput();
 	rubiSprite();
 	outputText("You hand over the vial of greenish liquid.  Rubi takes a moment to look it over, before taking a deep breath and injecting the entire thing into the base of [rubi eir] [rubi cock].");

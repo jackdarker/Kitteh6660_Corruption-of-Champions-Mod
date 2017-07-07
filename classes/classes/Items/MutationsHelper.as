@@ -152,9 +152,9 @@ package classes.Items
 		{
 			if (changes < changeLimit && player.hairType == HAIR_FEATHER && rand(4) == 0) {
 				//(long):
-				if (player.hairLength >= 6) outputText("\n\nA lock of your downy-soft feather-hair droops over your eye.  Before you can blow the offending down away, you realize the feather is collapsing in on itself.  It continues to curl inward until all that remains is a normal strand of hair.  <b>Your hair is no longer feathery!</b>", false);
+				if (player.hairLength >= 6) outputText("\n\nA lock of your downy-soft feather-hair droops over your eye.  Before you can blow the offending down away, you realize the feather is collapsing in on itself.  It continues to curl inward until all that remains is a normal strand of hair.  <b>Your hair is no longer feathery!</b>");
 				//(short)
-				else outputText("\n\nYou run your fingers through your downy-soft feather-hair while you await the effects of the item you just ingested.  While your hand is up there, it detects a change in the texture of your feathers.  They're completely disappearing, merging down into strands of regular hair.  <b>Your hair is no longer feathery!</b>", false);
+				else outputText("\n\nYou run your fingers through your downy-soft feather-hair while you await the effects of the item you just ingested.  While your hand is up there, it detects a change in the texture of your feathers.  They're completely disappearing, merging down into strands of regular hair.  <b>Your hair is no longer feathery!</b>");
 				player.hairType = HAIR_NORMAL;
 				changes++;
 				return true;
@@ -213,6 +213,20 @@ package classes.Items
 			}
 
 			return ["invalid", "invalid"]; // Will never happen. Suppresses 'Error: Function does not return a value.'
+		}
+
+		public function newCockatriceColors():Array
+		{
+			var cockatriceColors:Array = [
+				["blue",   "turquoise", "blue"],
+				["orange", "red",       "orange"],
+				["green",  "yellow",    "green"],
+				["purple", "pink",      "purple"],
+				["black",  "white",     "black"],
+				["blonde", "brown",     "blonde"],
+				["white",  "grey",      "white"],
+			];
+			return randomChoice(cockatriceColors);
 		}
 
 		public function updateClaws(clawType:int = CLAW_TYPE_NORMAL):String
@@ -426,6 +440,7 @@ package classes.Items
 
 				case "reptilum":
 				case "echidnaTFs":
+				case "TonOTrice":
 					if (player.findPerk(PerkLib.Oviposition) >= 0) return 0;
 					outputText("\n\nDeep inside yourself there is a change.  It makes you feel a little woozy, but passes quickly."
 					          +"  Beyond that, you aren't sure exactly what just happened, but you are sure it originated from your womb.\n");

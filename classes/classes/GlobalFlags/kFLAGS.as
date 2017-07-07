@@ -1315,9 +1315,9 @@ public static const UNKNOWN_FLAG_NUMBER_01306:int                               
 public static const UNKNOWN_FLAG_NUMBER_01307:int                                   = 1307;
 public static const UNKNOWN_FLAG_NUMBER_01308:int                                   = 1308;
 public static const UNKNOWN_FLAG_NUMBER_01309:int                                   = 1309;
-public static const UNKNOWN_FLAG_NUMBER_01310:int                                   = 1310;
-public static const UNKNOWN_FLAG_NUMBER_01311:int                                   = 1311;
-public static const UNKNOWN_FLAG_NUMBER_01312:int                                   = 1312;
+public static const COCKATRICES_UNLOCKED:int                                        = 1310; // Are cockatrice encounters unlocked?
+public static const TIMES_ENCOUNTERED_COCKATRICES:int                               = 1311; // Times encountered cockatrices
+public static const CODEX_ENTRY_COCKATRICES:int                                     = 1312; // Cockatrices codex entry unlocked
 public static const UNKNOWN_FLAG_NUMBER_01313:int                                   = 1313;
 public static const UNKNOWN_FLAG_NUMBER_01314:int                                   = 1314;
 public static const UNKNOWN_FLAG_NUMBER_01315:int                                   = 1315;
@@ -2345,9 +2345,9 @@ public static const PABLO_FREAKED_OUT_OVER_WORMS:int                            
 public static const TIMES_MINO_MUTUAL:int                                   	    = 2337; //How many times the Minotaur's "minoMutual" scene been accessed
 public static const BIMBO_MINISKIRT_PROGRESS_DISABLED:int                           = 2338;
 public static const AMAROK_LOSSES:int                                               = 2339; //Counts losses to Amarok. 5 = bad end
-public static const UNKNOWN_FLAG_NUMBER_02340:int                                   = 2340;
-public static const UNKNOWN_FLAG_NUMBER_02341:int                                   = 2341;
-public static const UNKNOWN_FLAG_NUMBER_02342:int                                   = 2342;
+public static const MRAPIER_BOUGHT:int                                  	    = 2340; //You only get one due to its OPness
+public static const GOTTEN_INQUISITOR_CORSET:int                                    = 2341;
+public static const GOTTEN_INQUISITOR_ROBES:int                                     = 2342;
 public static const UNKNOWN_FLAG_NUMBER_02343:int                                   = 2343;
 public static const UNKNOWN_FLAG_NUMBER_02344:int                                   = 2344;
 public static const UNKNOWN_FLAG_NUMBER_02345:int                                   = 2345;

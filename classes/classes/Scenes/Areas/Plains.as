@@ -9,11 +9,12 @@ package classes.Scenes.Areas
 	import classes.Scenes.API.Encounter;
 	import classes.Scenes.API.Encounters;
 	import classes.Scenes.API.FnHelpers;
+	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.Plains.*;
 
 	use namespace kGAMECLASS;
 
-	public class Plains extends BaseContent
+	public class Plains extends BaseContent implements IExplorable
 	{
 		public var bunnyGirl:BunnyGirl = new BunnyGirl();
 		public var gnollScene:GnollScene = new GnollScene();
@@ -135,7 +136,7 @@ package classes.Scenes.Areas
 				call: game.sheilaScene.sheilaEncounterRouter
 			});
 		}
-		public function explorePlains():void
+		public function explore():void
 		{
 			clearOutput();
 			flags[kFLAGS.TIMES_EXPLORED_PLAINS]++;

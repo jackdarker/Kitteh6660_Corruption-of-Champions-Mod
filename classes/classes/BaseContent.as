@@ -1,4 +1,4 @@
-﻿package classes 
+package classes 
 {
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -150,8 +150,11 @@
 			kGAMECLASS.inRoomedDungeonResume = v;
 		}
 
-		/** Displays the sprite on the lower-left corner. */
-		protected function spriteSelect(choice:Number = 0):void
+		/**
+		 * Displays the sprite on the lower-left corner.
+		 * Can accept frame index or SpriteDb.s_xxx (class extends Bitmap)
+		 * */
+		protected function spriteSelect(choice:Object = 0):void
 		{
 			kGAMECLASS.spriteSelect(choice);
 		}
@@ -220,14 +223,14 @@
 			kGAMECLASS.rawOutputText(output, purgeText);
 		}
 
-		protected function outputText(output:String, purgeText:Boolean = false, parseAsMarkdown:Boolean = false):void
+		protected function outputText(output:String):void
 		{
-			kGAMECLASS.outputText(output, purgeText, parseAsMarkdown);
+			kGAMECLASS.outputText(output);
 		}
 		
 		protected function clearOutput():void
 		{
-			kGAMECLASS.currentText = "";
+			kGAMECLASS.output.clear();
 			kGAMECLASS.mainView.clearOutputText();
 		}
 
