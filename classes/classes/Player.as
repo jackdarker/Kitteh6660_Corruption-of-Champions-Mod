@@ -1062,9 +1062,9 @@ use namespace kGAMECLASS;
 				cockatriceCounter++;
 			if (antennae == ANTENNAE_COCKATRICE)
 				cockatriceCounter++;
-			if (tongueType == TONGUE_LIZARD)
-				cockatriceCounter++;
 			if (cockatriceCounter > 2) {
+				if (tongueType == TONGUE_LIZARD)
+					cockatriceCounter++;
 				if (wingType == WING_TYPE_FEATHERED_LARGE)
 					cockatriceCounter++;
 				if (skinType == SKIN_TYPE_LIZARD_SCALES)
@@ -1193,21 +1193,21 @@ use namespace kGAMECLASS;
 		public function cowScore():Number
 		{
 			var minoCounter:Number = 0;
-			if (faceType == 0)
+			if (earType == EARS_COW)
 				minoCounter++;
-			if (faceType == 3)
+			if (tailType == TAIL_TYPE_COW)
+				minoCounter++;
+			if (hornType == HORNS_COW_MINOTAUR)
+				minoCounter++;
+			if (faceType == FACE_HUMAN && minoCounter > 0)
+				minoCounter++;
+			if (faceType == FACE_COW_MINOTAUR)
 				minoCounter--;
-			if (earType == 3)
-				minoCounter++;
-			if (tailType == 4)
-				minoCounter++;
-			if (hornType == 2)
-				minoCounter++;
-			if (lowerBody == 1 && minoCounter > 0)
+			if (lowerBody == LOWER_BODY_TYPE_HOOFED && minoCounter > 0)
 				minoCounter++;
 			if (tallness >= 73 && minoCounter > 0)
 				minoCounter++;
-			if (vaginas.length > 0)
+			if (vaginas.length > 0 && minoCounter > 0)
 				minoCounter++;
 			if (biggestTitSize() > 4 && minoCounter > 0)
 				minoCounter++;
@@ -1520,13 +1520,13 @@ use namespace kGAMECLASS;
 				kitsuneCounter++;
 			//If the character's kitsune score is greater than 1 and:
 			//If the character has "blonde","black","red","white", or "silver" hair, +1
-			if (kitsuneCounter > 0 && (InCollection(furColor, KitsuneScene.basicKitsuneHair) || InCollection(furColor, KitsuneScene.elderKitsuneColors)))
+			if (kitsuneCounter > 0 && (InCollection(hairOrFurColors, convertMixedToStringArray(KitsuneScene.basicKitsuneHair)) || InCollection(hairOrFurColors, KitsuneScene.elderKitsuneColors)))
 				kitsuneCounter++;
 			//If the character's femininity is 40 or higher, +1
 			if (kitsuneCounter > 0 && femininity >= 40)
 				kitsuneCounter++;
 			//If the character has fur, scales, or gooey skin, -1
-			if (hasFur() && !InCollection(furColor, KitsuneScene.basicKitsuneFur) && !InCollection(furColor, KitsuneScene.elderKitsuneColors))
+			if (hasFur() && !InCollection(hairOrFurColors, convertMixedToStringArray(KitsuneScene.basicKitsuneFur)) && !InCollection(hairOrFurColors, KitsuneScene.elderKitsuneColors))
 				kitsuneCounter--;
 			if (hasScales())
 				kitsuneCounter -= 2;
@@ -1745,8 +1745,6 @@ use namespace kGAMECLASS;
 			var mutantCounter:Number = 0;
 			if (faceType > 0)
 				mutantCounter++;
-			if (hasPlainSkin())
-				mutantCounter++;
 			if (tailType > 0)
 				mutantCounter++;
 			if (cocks.length > 1)
@@ -1756,6 +1754,8 @@ use namespace kGAMECLASS;
 			if (hasFuckableNipples())
 				mutantCounter++;
 			if (breastRows.length > 1)
+				mutantCounter++;
+			if (mutantCounter > 1 && hasPlainSkin())
 				mutantCounter++;
 			if (faceType == 1)
 			{
@@ -1803,9 +1803,9 @@ use namespace kGAMECLASS;
 		public function sirenScore():Number 
 		{
 			var sirenCounter:Number = 0;
-			if (faceType == 4 && tailType == 7 && wingType == WING_TYPE_FEATHERED_LARGE && armType == ARM_TYPE_HARPY)
+			if (faceType == FACE_SHARK_TEETH && tailType == TAIL_TYPE_SHARK && wingType == WING_TYPE_FEATHERED_LARGE && armType == ARM_TYPE_HARPY)
 				sirenCounter+= 4;
-			if (hasVagina()) 
+			if (sirenCounter > 0 && hasVagina()) 
 				sirenCounter++;
 			//if (hasCock() && findFirstCockType(CockTypesEnum.ANEMONE) >= 0)
 			//	sirenCounter++;
@@ -1819,7 +1819,7 @@ use namespace kGAMECLASS;
 				pigCounter++;
 			if (tailType == TAIL_TYPE_PIG)
 				pigCounter++;
-			if (faceType == FACE_PIG || FACE_BOAR)
+			if ([FACE_PIG, FACE_BOAR].indexOf(faceType) != -1)
 				pigCounter++;
 			if (lowerBody == LOWER_BODY_TYPE_CLOVEN_HOOFED)
 				pigCounter += 2;
@@ -2360,7 +2360,7 @@ use namespace kGAMECLASS;
 		
 		public function addToWornClothesArray(armor:Armor):void {
 			for (var i:int = 0; i < previouslyWornClothes.length; i++) {
-				if (previouslyWornClothes[i].shortName == armor.shortName) return; //Already have?
+				if (previouslyWornClothes[i] == armor.shortName) return; //Already have?
 			}
 			previouslyWornClothes.push(armor.shortName);
 		}
@@ -2682,7 +2682,11 @@ use namespace kGAMECLASS;
 			var maxTou:int = 100;
 			var maxSpe:int = 100;
 			var maxInt:int = 100;
-			
+			//Apply New Game+
+			maxStr += ascensionFactor();
+			maxTou += ascensionFactor();
+			maxSpe += ascensionFactor();
+			maxInt += ascensionFactor();
 			//Alter max speed if you have oversized parts. (Realistic mode)
 			if (flags[kFLAGS.HUNGER_ENABLED] >= 1)
 			{
@@ -2727,146 +2731,6 @@ use namespace kGAMECLASS;
 					maxSpe = UmasShop.NEEDLEWORK_DEFENSE_SPEED_CAP;
 				}
 			}
-			//Alter max stats depending on race
-			if (impScore() >= 4) {
-				maxSpe += 10;
-				maxInt -= 5;
-			}
-			if (sheepScore() >= 4) {
-				maxSpe += 10;
-				maxInt -= 10;
-				maxTou += 10;
-			}
-			if (wolfScore() >= 4) {
-				maxSpe -= 10;
-				maxInt += 5;
-				maxTou += 10;
-				maxStr += 5;
-			}
-			if (minoScore() >= 4) {
-				maxStr += 20;
-				maxTou += 10;
-				maxInt -= 10;
-			}
-			if (lizardScore() >= 4) {
-				maxInt += 10;
-				if (isBasilisk()) {
-					// Needs more balancing, especially other races, since dracolisks are quite OP right now!
-					maxTou += 5;
-					maxInt += 5;
-				}
-			}
-			if (cockatriceScore() >= 8) {
-				maxStr += 5;
-				maxSpe += 25;
-				maxInt += 15;
-			} else if (cockatriceScore() >= 6) {
-				maxSpe += 20;
-				maxInt += 5;
-			} else if (cockatriceScore() >= 4) {
-				maxStr -= 5;
-				maxSpe += 10;
-				maxInt += 5;
-			}
-			if (dragonScore() >= 4) {
-				maxStr += 5;
-				maxTou += 10;
-				maxInt += 10;
-			}
-			if (dogScore() >= 4) {
-				maxSpe += 10;
-				maxInt -= 10;
-			}
-			if (foxScore() >= 4) {
-				maxStr -= 10;
-				maxSpe += 5;
-				maxInt += 5;
-			}
-			if (catScore() >= 4) {
-				maxSpe += 5;
-			}
-			if (bunnyScore() >= 4) {
-				maxSpe += 10;
-			}
-			if (raccoonScore() >= 4) {
-				maxSpe += 15;
-			}
-			if (horseScore() >= 4 && !isTaur() && !isNaga()) {
-				maxSpe += 15;
-				maxTou += 10;
-				maxInt -= 10;
-			}
-			if (gooScore() >= 3) {
-				maxTou += 10;
-				maxSpe -= 10;
-			}
-			if (kitsuneScore() >= 4) {
-				if (tailType == 13) {
-					if (tailVenom == 1) {
-						maxStr -= 2;
-						maxSpe += 2;
-						maxInt += 1;
-					}
-					else if (tailVenom >= 2 && tailVenom < 9) {
-						maxStr -= tailVenom + 1;
-						maxSpe += tailVenom + 1;
-						maxInt += (tailVenom/2) + 0.5;
-					}
-					else if (tailVenom >= 9) {
-						maxStr -= 10;
-						maxSpe += 10;
-						maxInt += 5;
-					}
-				}
-			}
-			if (beeScore() >= 4) {
-				maxSpe += 5;
-				maxTou += 5;
-			}
-			if (spiderScore() >= 4) {
-				maxInt += 15;
-				maxTou += 5;
-				maxStr -= 10;
-			}
-			if (sharkScore() >= 4) {
-				maxStr += 10;
-				maxSpe += 5;
-				maxInt -= 5;
-			}
-			if (harpyScore() >= 4) {
-				maxSpe += 15;
-				maxTou -= 10;
-			}
-			if (sirenScore() >= 4) {
-				maxStr += 5;
-				maxSpe += 20;
-				maxTou -= 5;
-			}
-			if (demonScore() >= 4) {
-				maxSpe += 5;
-				maxInt += 5;
-			}
-			if (rhinoScore() >= 4) {
-				maxStr += 15;
-				maxTou += 15;
-				maxSpe -= 10;
-				maxInt -= 10;
-			}
-			if (satyrScore() >= 4) {
-				maxStr += 5;
-				maxSpe += 5;
-			}
-			if (salamanderScore() >= 4) {
-				maxStr += 5;
-				maxTou += 5;
-			}
-			if (isNaga()) maxSpe += 10;
-			if (isTaur() || isDrider()) maxSpe += 20;
-			//Apply New Game+
-			maxStr += ascensionFactor();
-			maxTou += ascensionFactor();
-			maxSpe += ascensionFactor();
-			maxInt += ascensionFactor();
 			//Might
 			if (hasStatusEffect(StatusEffects.Might)) {
 				maxStr += statusEffectv1(StatusEffects.Might);
@@ -3499,7 +3363,7 @@ use namespace kGAMECLASS;
 				skinTone = (choice is Array) ? choice[0] : choice;
 
 			if (doCopySkin)
-				underBody.copySkin();
+				copySkinToUnderBody();
 
 			if (choice is Array)
 				if (what == "fur")

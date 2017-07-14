@@ -231,7 +231,7 @@ package classes
 		public var clawTone:String = "";
 		public var clawType:Number = CLAW_TYPE_NORMAL;
 		// </mod>
-		public var underBody:UnderBody;
+		public var underBody:UnderBody = new UnderBody();
 
 		/*EarType
 		-1 - none!
@@ -583,7 +583,6 @@ package classes
 			_perks = [];
 			statusEffects = [];
 			//keyItems = new Array();
-			underBody = new UnderBody(this);
 		}
 
 		//Functions			
@@ -2159,6 +2158,12 @@ package classes
 			return (cocks[0].cockLength >= 20);
 		}
 
+		public function copySkinToUnderBody(p:Object = null):void
+		{
+			underBody.skin.setProps(skin);
+			if (p != null) underBody.skin.setProps(p);
+		}
+
 		public static const canFlyWings:Array = [
 			WING_TYPE_BEE_LIKE_LARGE,
 			WING_TYPE_BAT_LIKE_LARGE,
@@ -2668,6 +2673,22 @@ package classes
 		public function hasPlainSkin():Boolean
 		{
 			return skinType == SKIN_TYPE_PLAIN;
+		}
+
+		public function get hairOrFurColors():String
+		{
+			if (!isFluffy())
+				return hairColor;
+
+			if (!underBody.skin.isFluffy() || ["no", furColor].indexOf(underBody.skin.furColor) != -1)
+				return furColor;
+
+			// Uses formatStringArray in case we add more skin layers
+			// If more layers are added, we'd probably need some remove duplicates function
+			return formatStringArray([
+				furColor,
+				underBody.skin.furColor,
+			]);
 		}
 
 		public function isBiped():Boolean

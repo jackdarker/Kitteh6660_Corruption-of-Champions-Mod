@@ -1060,7 +1060,7 @@ public class ErlKingScene extends BaseContent implements Encounter
 				player.skinDesc = "fur";
 				player.furColor = "brown";
 				player.underBody.type = UNDER_BODY_TYPE_FURRY;
-				player.underBody.copySkin({furColor: "white"});
+				player.copySkinToUnderBody({furColor: "white"});
 				changes++;
 			}
 			//Change face to normal
