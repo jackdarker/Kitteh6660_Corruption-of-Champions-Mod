@@ -3723,6 +3723,8 @@ package classes.Scenes.NPCs
 			outputText("\n");
 			//PC Gives Live Birth
 			if (flags[kFLAGS.EMBER_OVIPOSITION] == 0) {
+				//Picture is here
+				outputText(images.showImage("birth-ember-live"));
 				//40% chance of boy, 40% chance of girl and 20% chance of both
 				//(If the PC has no pussy)
 				if (!player.hasVagina()) {
@@ -3807,6 +3809,8 @@ package classes.Scenes.NPCs
 			}
 			//PC Lays Egg
 			else {
+				//Picture is here
+				outputText(images.showImage("birth-ember-egg"));
 				//(If the PC has no pussy)
 				if (!player.hasVagina()) {
 					outputText("A terribly painful ripping feeling comes from your crotch. Reaching down to touch the tender spot you feel a spike of pleasure and moistness.  <b>You've grown a vagina!</b>\n\n");

@@ -1,4 +1,4 @@
-package classes
+﻿package classes
 {
 import classes.GlobalFlags.kFLAGS;
 import classes.GlobalFlags.kGAMECLASS;
@@ -609,7 +609,7 @@ use namespace kGAMECLASS;
 			}
 			return returnDamage;
 		}
-		
+
 		public function takeLustDamage(lustDmg:Number, display:Boolean = true, applyRes:Boolean = false):Number{
 			//Round
 			lustDmg = Math.round(lustDmg);
@@ -1805,7 +1805,7 @@ use namespace kGAMECLASS;
 			var sirenCounter:Number = 0;
 			if (faceType == FACE_SHARK_TEETH && tailType == TAIL_TYPE_SHARK && wingType == WING_TYPE_FEATHERED_LARGE && armType == ARM_TYPE_HARPY)
 				sirenCounter+= 4;
-			if (sirenCounter > 0 && hasVagina()) 
+			if (sirenCounter > 0 && hasVagina())
 				sirenCounter++;
 			//if (hasCock() && findFirstCockType(CockTypesEnum.ANEMONE) >= 0)
 			//	sirenCounter++;
@@ -2678,6 +2678,18 @@ use namespace kGAMECLASS;
 		}
 		
 		public override function getMaxStats(stats:String):int {
+			var obj:Object = getAllMaxStats();
+			if (stats == "str" || stats == "strength") return obj.str;
+			else if (stats == "tou" || stats == "toughness") return obj.tou;
+			else if (stats == "spe" || stats == "speed") return obj.spe;
+			else if (stats == "inte" || stats == "int" || stats == "intelligence") return obj.inte;
+			/* [INTERMOD: xianxia]
+			 else if (stats == "wis" || stats == "wisdom") return obj.wis;
+			 else if (stats == "lib" || stats == "libido") return obj.lib;
+			 */
+			else return 100;
+		}
+		public function getAllMaxStats():Object {
 			var maxStr:int = 100;
 			var maxTou:int = 100;
 			var maxSpe:int = 100;
@@ -2687,6 +2699,12 @@ use namespace kGAMECLASS;
 			maxTou += ascensionFactor();
 			maxSpe += ascensionFactor();
 			maxInt += ascensionFactor();
+			/* [INTERMOD: xianxia]
+			var maxWis:int = 100;
+			var maxLib:int = 100;
+			var newGamePlusMod:int = this.newGamePlusMod();
+			 */
+
 			//Alter max speed if you have oversized parts. (Realistic mode)
 			if (flags[kFLAGS.HUNGER_ENABLED] >= 1)
 			{
@@ -2740,11 +2758,16 @@ use namespace kGAMECLASS;
 				maxSpe -= statusEffectv2(StatusEffects.AndysSmoke);
 				maxInt += statusEffectv3(StatusEffects.AndysSmoke);
 			}
-			if (stats == "str" || stats == "strength") return maxStr;
-			else if (stats == "tou" || stats == "toughness") return maxTou;
-			else if (stats == "spe" || stats == "speed") return maxSpe;
-			else if (stats == "inte" || stats == "int" || stats == "intelligence") return maxInt;
-			else return 100;
+			return {
+				str:maxStr,
+				tou:maxTou,
+				spe:maxSpe,
+				inte:maxInt
+				/* [INTERMOD: xianxia]
+				wis:maxWis,
+				lib:maxLib
+				*/
+			};
 		}
 		
 		public function requiredXP():int {
