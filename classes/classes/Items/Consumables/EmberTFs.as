@@ -207,6 +207,30 @@ package classes.Items.Consumables
 				}
 				changes++;
 			}
+			//Restore non dragon neck
+			if (player.neck.type != NECK_TYPE_DRACONIC && changes < changeLimit && rand(4) == 0)
+				mutations.restoreNeck(tfSource);
+			//Gain Dragon Neck
+			//public function hasDraconicBackSide():Boolean { return hasDragonWings(true) && skinType == SKIN_TYPE_DRACONIC && hasReptileTail() && hasReptileArms() && hasReptileLegs(); }
+			//If you are considered a dragon-morph and if your backside is dragon-ish enough, your neck is eager to allow you to take a look at it, right? ;-)
+			if (!drakesHeart && !player.hasDragonNeck() && player.dragonScore() >= 6 && player.hasDraconicBackSide() && player.faceType == FACE_DRAGON && changes < changeLimit) {
+				mutations.restoreNeck(tfSource + "-forceRestoreNeck");
+				var nlChange:int = 4 + rand(5);
+				if (!player.hasNormalNeck()) { // Note: hasNormalNeck checks the length, not the type!
+					player.neck.modify(nlChange);
+					outputText("\n\nWith less pain than the last time your neck grows a few more inches reaching " + player.neck.len + " inches.");
+				} else {
+					player.neck.modify(nlChange, NECK_TYPE_DRACONIC);
+					// Growing a dragon neck may be limited to Ember's blood only in the future.
+					outputText("\n\nAfter you have finished " + (drakesHeart ? "eating the flower" : "drinking Ember's dragon blood") + " you start feeling a sudden pain in your neck. Your skin stretches and your spine grows a bit. Your neck has grown a few inches longer than that of a normal human reaching " + player.neck.len + " inches.");
+				}
+				if (player.hasDragonNeck() && !player.neck.pos) {
+					outputText("\n\nAfter the enlongation has finally ceased, your spine begins to readjust its position on your head until its settled at the backside of your head. After that you want to try out your new draconic neck and begin to bend your neck finding that you can bend it at ease like a snake can bend its tail. Eager to see, how you look from behind you quickly turn your head around. Staring at your magnificent draconic rear your mouth and eyes open wide in astonishment. You muster your tail, your backside fully covered in scales and finally, you unfold your wings. This is the first time, you can see every single scale of them. You look at them from all sides, flapping them slowly, just to watch them moving.");
+					outputText("  <b>You now have a fully grown dragon neck.</b>");
+					player.neck.pos = true;
+				}
+				changes++;
+			}
 			// <mod name="Predator arms" author="Stadler76">
 			//Gain Dragon Arms (Derived from ARM_TYPE_SALAMANDER)
 			if (player.armType != ARM_TYPE_PREDATOR && player.hasDragonScales() && player.lowerBody == LOWER_BODY_TYPE_DRAGON && changes < changeLimit && rand(3) == 0) {

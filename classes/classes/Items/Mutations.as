@@ -188,6 +188,9 @@ package classes.Items
 					player.shrinkTits();
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Demonic changes - higher chance with higher corruption.
 			if (rand(40) + player.cor / 3 > 35 && tainted) demonChanges(player);
@@ -487,6 +490,9 @@ package classes.Items
 					kGAMECLASS.rathazul.addMixologyXP(20);
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Demonic changes - higher chance with higher corruption.
 			if (rand(40) + player.cor / 3 > 35 && tainted) demonChanges(player);
@@ -607,6 +613,9 @@ package classes.Items
 				outputText("dumber.");
 				changes++;
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Restore arms to become human arms again
 			if (rand(4) == 0) restoreArms(tfSource);
@@ -1940,6 +1949,9 @@ package classes.Items
 					dynStats("lus", 10);
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (tainted && rand(5) == 0) updateOvipositionPerk(tfSource);
 			//General Appearance (Tail -> Ears -> Paws(fur stripper) -> Face -> Horns
 			//Give the player a bovine tail, same as the minotaur
@@ -2217,6 +2229,9 @@ package classes.Items
 				dynStats("lib", 2, "sen", 3, "lus", 10);
 				changes++;
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//Transformations:
 			//Mouth TF
@@ -2457,6 +2472,9 @@ package classes.Items
 				outputText("\n\nYou feel strange.  Fertile... somehow.  You don't know how else to think of it, but you know your body is just aching to be pregnant and give birth.");
 			}
 			//-VAGs
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(4) == 0) updateOvipositionPerk(tfSource);
 			if (player.hasVagina() && player.findPerk(PerkLib.BunnyEggs) < 0 && changes < changeLimit && rand(4) == 0 && player.bunnyScore() > 3) {
 				outputText("\n\nDeep inside yourself there is a change.  It makes you feel a little woozy, but passes quickly.  Beyond that, you aren't sure exactly what just happened, but you are sure it originated from your womb.\n\n");
@@ -2812,6 +2830,9 @@ package classes.Items
 					}
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//****************
 			//General Appearance:
@@ -3122,6 +3143,9 @@ package classes.Items
 					changes++;
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//****************
 			//Big Kanga Morphs
@@ -3325,6 +3349,9 @@ package classes.Items
 				player.buttRating++;
 				changes++;
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//***************
 			//Appearance Changes
@@ -3714,6 +3741,9 @@ package classes.Items
 						changes++;
 				}
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//[Grow Fur]
 			//FOURTH
@@ -3954,6 +3984,9 @@ package classes.Items
 			//**********************
 			//BIG APPEARANCE CHANGES
 			//**********************
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//[Grow Fox Tail]
 			if (player.tailType != TAIL_TYPE_FOX && changes < changeLimit && ((mystic && rand(2) == 0) || (!mystic && rand(4) == 0))) {
@@ -4264,6 +4297,9 @@ package classes.Items
 				player.ballSize++;
 				changes++;
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) == 0) updateOvipositionPerk(tfSource);
 			//-----------------------
 			// TRANSFORMATIONS

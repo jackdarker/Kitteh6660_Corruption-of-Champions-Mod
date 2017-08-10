@@ -527,6 +527,32 @@ package classes
 				else
 					outputText("  It has developed its own cute little spiral. You estimate it to be about "+numInchesOrCentimetres(12)+" long, "+numInchesOrCentimetres(2)+" thick and very sturdy. A very useful natural weapon.");
 			}
+			// neckLen
+			if (player.neck.type == NECK_TYPE_DRACONIC)
+			{
+				// length description
+				if (player.hasDragonNeck())
+					outputText("  Your neck starts at the backside of your head and is about two and a half feet long, roughly six inches longer, than your arm length.");
+				else {
+					var lengthText:String = "";
+					if (player.neck.len < 8) lengthText = "a few inches longer";
+					else if (player.neck.len < 13) lengthText = "somewhat longer";
+					else if (player.neck.len < 18) lengthText = "very long";
+					else lengthText = "extremely long";
+					outputText("  Where normal humans have a short neck, yours is " + lengthText + ", measuring " + player.neck.len + " inches.");
+				}
+
+				// bending your neck
+				if (player.hasDragonNeck())
+					outputText("  You manage to bend it in every direction you want and can easily take a look at your back.");
+				else {
+					if (player.neck.len < 10) outputText("  You can bend it a bit more than others with some effort.");
+					else if (player.neck.len < 16) outputText("  You can bend it more than others with low effort.");
+					else outputText("  You are able to bend it in almost every direction and with some effort you even manage to take a glimpse at your back.");
+				}
+			} else if (player.neck.type == NECK_TYPE_COCKATRICE) {
+				outputText("  Around your neck is a ruff of [neckColor] feathers which tends to puff out with your emotions.");
+			}
 			//BODY PG HERE
 			outputText("\n\nYou have a humanoid shape with the usual torso, arms, hands, and fingers.");
 			//WINGS!
@@ -574,7 +600,7 @@ package classes
 			// <mod name="BodyParts.UnderBody" author="Stadler76">
 			if (player.hasCockatriceSkin()) {
 				outputText("  You’ve got a thick layer of " + player.furColor + " feathers covering your body, while [skinFurScales] coat you from"
-				          +" chest to groin. Around your neck is a ruff of [underBody.skinFurScales] which tends to puff out with your emotions.");
+				          +" chest to groin.");
 			} else if (player.hasDifferentUnderBody()) {
 				outputText("  While most of your body is covered by [skinFurScales] you have [underBody.skinFurScales] covering your belly.");
 			}

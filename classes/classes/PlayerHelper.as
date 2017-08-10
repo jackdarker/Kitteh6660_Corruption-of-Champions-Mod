@@ -137,6 +137,37 @@ package classes
 			return game.bazaar.benoit.benoitBigFamily() && eyeType == EYES_BASILISK;
 		}
 
+		public function hasReptileTail():Boolean
+		{
+			return [TAIL_TYPE_LIZARD, TAIL_TYPE_DRACONIC, TAIL_TYPE_SALAMANDER].indexOf(tailType) != -1;
+		}
+
+		// For reptiles with predator arms I recommend to require hasReptileScales() before doing the armType TF to ARM_TYPE_PREDATOR
+		public function hasReptileArms():Boolean
+		{
+			return armType == ARM_TYPE_SALAMANDER || (armType == ARM_TYPE_PREDATOR && hasReptileScales());
+		}
+
+		public function hasReptileLegs():Boolean
+		{
+			return [LOWER_BODY_TYPE_LIZARD, LOWER_BODY_TYPE_DRAGON, LOWER_BODY_TYPE_SALAMANDER].indexOf(lowerBody) != -1;
+		}
+
+		public function hasDraconicBackSide():Boolean
+		{
+			return hasDragonWings(true) && hasDragonScales() && hasReptileTail() && hasReptileArms() && hasReptileLegs();
+		}
+
+		public function hasDragonNeck():Boolean
+		{
+			return neck.type == NECK_TYPE_DRACONIC && neck.isFullyGrown();
+		}
+
+		public function hasNormalNeck():Boolean
+		{
+			return neck.len <= 2;
+		}
+
 		public function featheryHairPinEquipped():Boolean
 		{
 			return hasKeyItem("Feathery hair-pin") >= 0 && keyItemv1("Feathery hair-pin") == 1;

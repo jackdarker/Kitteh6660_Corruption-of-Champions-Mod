@@ -1062,6 +1062,8 @@ use namespace kGAMECLASS;
 				cockatriceCounter++;
 			if (antennae == ANTENNAE_COCKATRICE)
 				cockatriceCounter++;
+			if (neck.type == NECK_TYPE_COCKATRICE)
+				cockatriceCounter++;
 			if (cockatriceCounter > 2) {
 				if (tongueType == TONGUE_LIZARD)
 					cockatriceCounter++;
@@ -1578,6 +1580,8 @@ use namespace kGAMECLASS;
 			if (armType == ARM_TYPE_PREDATOR && clawType == CLAW_TYPE_DRAGON)
 				dragonCounter++;
 			if (eyeType == EYES_DRAGON)
+				dragonCounter++;
+			if (hasDragonNeck())
 				dragonCounter++;
 			return dragonCounter;
 		}

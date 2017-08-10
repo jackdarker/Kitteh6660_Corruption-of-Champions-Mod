@@ -1,6 +1,7 @@
-package classes
+﻿package classes
 {
 
+	import classes.BodyParts.Neck;
 	import classes.BodyParts.UnderBody;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kACHIEVEMENTS;
@@ -897,6 +898,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		// <mod name="BodyParts.Skin and UnderBody" author="Stadler76">
 		saveFile.data.underBody = player.underBody;
 		// </mod>
+		saveFile.data.neck = player.neck;
 		// <mod name="Predator arms" author="Stadler76">
 		saveFile.data.clawTone = player.clawTone;
 		saveFile.data.clawType = player.clawType;
@@ -1780,6 +1782,8 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		if (saveFile.data.underBody is UnderBody)
 			player.underBody.setAllProps(saveFile.data.underBody);
 		// </mod>
+		if (saveFile.data.neck is Neck)
+			player.neck.setAllProps(saveFile.data.neck);
 		// <mod name="Predator arms" author="Stadler76">
 		player.clawTone = (saveFile.data.clawTone == undefined) ? ""               : saveFile.data.clawTone;
 		player.clawType = (saveFile.data.clawType == undefined) ? CLAW_TYPE_NORMAL : saveFile.data.clawType;

@@ -2044,6 +2044,11 @@ package classes
 			}
 			return description;
 		}
+
+		public static function neckDescript(i_creature:Creature):String
+		{
+			return DEFAULT_NECK_NAMES[i_creature.neck.type] + " neck";
+		}
 		
 		public static function wingsDescript(i_creature:Creature):String
 		{
@@ -2348,6 +2353,13 @@ package classes
 					[TAIL_TYPE_SHEEP, "sheep"],
 					[TAIL_TYPE_IMP, "imp"],
 					[TAIL_TYPE_COCKATRICE, "cockatrice"],
+				]
+		);
+		public static const DEFAULT_NECK_NAMES:Object = createMapFromPairs(
+				[
+					[NECK_TYPE_NORMAL, "normal"],
+					[NECK_TYPE_DRACONIC, "long draconic"],
+					[NECK_TYPE_COCKATRICE, "feathery cockatrice"],
 				]
 		);
 		public static const DEFAULT_WING_NAMES:Object = createMapFromPairs(

@@ -51,6 +51,7 @@
 				"hascock"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasCock();},
 				"hassheath"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasSheath();},
 				"hasbeak"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasBeak();},
+				"neckpos"			: function(thisPtr:*):* {return  kGAMECLASS.player.neck.pos;},
 				"isherm"			: function(thisPtr:*):* {return  (kGAMECLASS.player.gender == 3);},
 				"cumnormal"			: function(thisPtr:*):* {return  (kGAMECLASS.player.cumQ() <= 150);},
 				"cummedium"			: function(thisPtr:*):* {return  (kGAMECLASS.player.cumQ() > 150 && kGAMECLASS.player.cumQ() <= 350);},

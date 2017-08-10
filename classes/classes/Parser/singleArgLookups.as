@@ -72,6 +72,8 @@
 				"multicock"					: function(thisPtr:*):* { return kGAMECLASS.player.multiCockDescriptLight(); },
 				"multicockdescriptlight"	: function(thisPtr:*):* { return kGAMECLASS.player.multiCockDescriptLight(); },
 				"name"						: function(thisPtr:*):* { return kGAMECLASS.player.short;},
+				"neck"						: function(thisPtr:*):* { return kGAMECLASS.player.neckDescript(); },
+				"neckcolor"					: function(thisPtr:*):* { return kGAMECLASS.player.neck.color;},
 				"nipple"					: function(thisPtr:*):* { return kGAMECLASS.player.nippleDescript(0);},
 				"nipples"					: function(thisPtr:*):* { return kGAMECLASS.player.nippleDescript(0) + "s";},
 				"onecock"					: function(thisPtr:*):* { return kGAMECLASS.player.oMultiCockDesc();},
@@ -106,6 +108,7 @@
 				"boy"						: function(thisPtr:*):* { return kGAMECLASS.player.mf("boy", "girl"); },
 				"guy"						: function(thisPtr:*):* { return kGAMECLASS.player.mf("guy", "girl"); },
 				"wings"						: function(thisPtr:*):* { return kGAMECLASS.player.wingsDescript(); },
+				"wingcolor"					: function(thisPtr:*):* { return kGAMECLASS.player.wings.color; },
 				"tail"						: function(thisPtr:*):* { return kGAMECLASS.player.tailDescript(); },
 				"onetail"					: function(thisPtr:*):* { return kGAMECLASS.player.oneTailDescript(); },
 

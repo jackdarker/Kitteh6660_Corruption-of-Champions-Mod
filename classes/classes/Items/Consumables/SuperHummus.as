@@ -59,6 +59,7 @@ package classes.Items.Consumables
 			player.skinDesc = "skin";
 			player.skinAdj = "";
 			player.underBody.restore();
+			player.neck.restore();
 			player.tongueType = TONGUE_HUMAN;
 			player.eyeType = EYES_HUMAN;
 			if (player.fertility > 15) player.fertility = 15;

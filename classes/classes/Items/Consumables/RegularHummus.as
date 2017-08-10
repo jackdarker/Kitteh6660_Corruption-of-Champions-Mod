@@ -57,6 +57,9 @@ package classes.Items.Consumables
 				player.removePerk(PerkLib.Incorporeality);
 				changes++;
 			}
+			//Restore neck
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(5) == 0)
+				mutations.restoreNeck(tfSource);
 			//-Skin color change – light, fair, olive, dark, ebony, mahogany, russet
 			if ((player.skinTone !== "light" && player.skinTone !== "fair" && player.skinTone !== "olive" && player.skinTone !== "dark" && player.skinTone !== "ebony" && player.skinTone !== "mahogany" && player.skinTone !== "russet") && changes < changeLimit && rand(5) === 0) {
 				changes++;

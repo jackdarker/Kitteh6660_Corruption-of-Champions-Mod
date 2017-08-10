@@ -59,6 +59,9 @@ package classes.Items.Consumables
 				if (player.spe100 < 40) outputText("  Of course, you're nowhere near as fast as that.");
 				changes++;
 			}
+			//Neck restore
+			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Ovi perk loss
 			if (rand(5) === 0) {
 				mutations.updateOvipositionPerk(tfSource);
 			}
