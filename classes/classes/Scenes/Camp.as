@@ -106,6 +106,7 @@ private function doCamp():void { //Only called by playerMenu
 	//Update saves
 	if (flags[kFLAGS.ERLKING_CANE_OBTAINED] == 0 && player.hasKeyItem("Golden Antlers") >= 0) {
 		clearOutput();
+		outputText(images.showImage("item-gAntlers"));
 		outputText("Out of nowhere, a cane appears on your " + bedDesc() + ". It looks like it once belonged to the Erlking. Perhaps the cane has been introduced into the game and you've committed a revenge on the Erlking? Regardless, you take it anyway. ");
 		flags[kFLAGS.ERLKING_CANE_OBTAINED] = 1;
 		inventory.takeItem(weapons.HNTCANE, doCamp);
@@ -1374,6 +1375,9 @@ private function swimInStream():void {
 	outputText("You ponder over the nearby stream that's flowing. Deciding you'd like a dip, ");
 	if (player.armorName == "slutty swimwear") outputText("you are going to swim while wearing just your swimwear. ");
 	else outputText("you strip off your [armor] until you are completely naked. ");
+		if (player.gender == 3) outputText(images.showImage("camp-stream-herm"));
+		else if (player.gender == 2) outputText(images.showImage("camp-stream-female"));
+		else outputText(images.showImage("camp-stream-male"));
 	outputText("You step into the flowing waters. You shiver at first but you step in deeper. Incredibly, it's not too deep. ");
 	if (player.tallness < 60) outputText("Your feet aren't even touching the riverbed. ");
 	if (player.tallness >= 60 && player.tallness < 72) outputText("Your feet are touching the riverbed and your head is barely above the water. ");
@@ -1931,6 +1935,7 @@ public function sleepRecovery(display:Boolean = false):void {
 //Bad End if your balls are too big. Only happens in Realistic Mode.
 public function badEndGIANTBALLZ():void {
 	clearOutput();
+	outputText(images.showImage("badend-hBalls"));
 	outputText("You suddenly fall over due to your extremely large " + player.ballsDescriptLight() + ".  You struggle to get back up but the size made it impossible.  Panic spreads throughout your mind and your heart races.\n\n")
 	outputText("You know that you can't move and you're aware that you're going to eventually starve to death.")
 	menu();
@@ -1977,6 +1982,7 @@ private function callRathazulAndEscapeBadEnd():void {
 //Bad End if you starved to death.
 public function badEndHunger():void {
 	clearOutput();
+	outputText(images.showImage("badend-starve"));
 	player.hunger = 0.1; //For Easy Mode/Debug Mode.
 	outputText("Too weak to be able to stand up, you collapse onto the ground. Your vision blurs as the world around you finally fades to black. ");
 	if (companionsCount() > 0) {
@@ -1995,6 +2001,7 @@ public function badEndHunger():void {
 //Bad End if you have 100 min lust.
 public function badEndMinLust():void {
 	clearOutput();
+	outputText(images.showImage("badend-masti"));
 	outputText("The thought of release overwhelms you. You frantically remove your " + player.armorName + " and begin masturbating furiously.  The first orgasm hits you but the desire persists.  You continue to masturbate but unfortunately, no matter how hard or how many times you orgasm, your desires will not go away.  Frustrated, you keep masturbating furiously but you are unable to stop.  Your minimum lust is too high.  No matter how hard you try, you cannot even satisfy your desires.");
 	outputText("\n\nYou spend the rest of your life masturbating, unable to stop.");
 	player.orgasm('Generic');
@@ -2017,6 +2024,7 @@ public function allNaturalSelfStimulationBeltContinuation():void {
 public function allNaturalSelfStimulationBeltBadEnd():void {
 	spriteSelect(SpriteDb.s_giacomo);
 	clearOutput();
+	outputText(images.showImage("badend-stimbelt"));
 	outputText("Whatever the belt is, whatever it does, it no longer matters to you.  The only thing you want is to feel the belt and its creature fuck the hell out of you, day and night.  You quickly don the creature again and it begins working its usual lustful magic on your insatiable little box.  An endless wave of orgasms take you.  All you now know is the endless bliss of an eternal orgasm.\n\n");
 	outputText("Your awareness hopelessly compromised by the belt and your pleasure, you fail to notice a familiar face approach your undulating form.  It is the very person who sold you this infernal toy.  The merchant, Giacomo.\n\n");
 	outputText("\"<i>Well, well,</i>\" Giacomo says.  \"<i>The Libertines are right.  The creature's fluids are addictive. This poor " + player.mf("man", "woman") + " is a total slave to the beast!</i>\"\n\n");
@@ -2974,9 +2982,9 @@ private function updateAchievements():void {
 	if (flags[kFLAGS.KATHERINE_UNLOCKED] > 0 && flags[kFLAGS.KATHERINE_DICK_COUNT] <= 0) NPCsDedicked++;
 	if (flags[kFLAGS.MET_KITSUNES] > 0 && flags[kFLAGS.redheadIsFuta] == 0) NPCsDedicked++;
 	if (flags[kFLAGS.KELT_BREAK_LEVEL] == 4) NPCsDedicked++;
+	if (flags[kFLAGS.CAMP_WALL_STATUES] >= 100) awardAchievement("Terracotta Impy", kACHIEVEMENTS.GENERAL_TERRACOTTA_IMPY);
 	if (NPCsDedicked >= 3) awardAchievement("Dick Banisher", kACHIEVEMENTS.GENERAL_DICK_BANISHER);
 	if (NPCsDedicked >= 7) awardAchievement("You Bastard", kACHIEVEMENTS.GENERAL_YOU_BASTARD); //Take that, dedickers!
-	if (flags[kFLAGS.CAMP_WALL_STATUES] >= 100) awardAchievement("Terracotta Impy", kACHIEVEMENTS.GENERAL_TERRACOTTA_IMPY);
 }
 
 /*

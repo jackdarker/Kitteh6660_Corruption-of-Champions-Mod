@@ -1434,7 +1434,6 @@ package classes.Scenes
 			//Give birth (if it's time) to beeeeeeez
 			if (player.buttPregnancyIncubation == 1 && player.buttPregnancyType == PregnancyStore.PREGNANCY_BEE_EGGS) {
 				outputText("\n");
-				//Picture is here
 				outputText(images.showImage("birth-beegirl"));
 				outputText("There is a sudden gush of honey-colored fluids from your ass.  Before panic can set in, a wonderful scent overtakes you, making everything ok.  ");
 				if (player.cockTotal() > 0) outputText("The muzzy feeling that fills your head seems to seep downwards, making your equipment hard and tight.  ");
@@ -1545,7 +1544,6 @@ package classes.Scenes
 			if (player.pregnancyType == PregnancyStore.PREGNANCY_BUNNY && player.pregnancyIncubation == 1) {
 				outputText("\n");
 				displayedUpdate = true;
-				//Picture is here
 				outputText(images.showImage("birth-bunny"));
 				if (player.vaginas.length == 0) {
 					outputText("You feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  You look down and behold a vagina.  ");
@@ -1577,7 +1575,6 @@ package classes.Scenes
 			//Anemone birfs
 			//Anemone Pregnancy
 			if (player.pregnancyType == PregnancyStore.PREGNANCY_ANEMONE && player.pregnancyIncubation == 1) {
-				//Picture is here
 				outputText(images.showImage("birth-anemone"));
 				outputText("\n");
 				displayedUpdate = true;
@@ -1660,7 +1657,6 @@ package classes.Scenes
 			}
 			//Give birth if it's time (to an imp!)
 			if (player.pregnancyIncubation == 1 && player.pregnancyType == PregnancyStore.PREGNANCY_IMP) {
-				//Picture is here
 				outputText(images.showImage("birth-imp"));
 				outputText("\n");
 				//Add imp birth status - used to control frequency of night imp gangbag
@@ -1720,7 +1716,6 @@ package classes.Scenes
 			}
 			//Give birth if it's time (to a cowgirl!)
 			if (player.pregnancyIncubation == 1 && player.pregnancyType == PregnancyStore.PREGNANCY_MARBLE) {
-				//Picture is here
 				outputText(images.showImage("birth-cowgirl"));
 				if (prison.prisonLetter.deliverChildWhileInPrison()) return displayedUpdate;
 				player.knockUpForce(); //Clear Pregnancy
@@ -1796,7 +1791,6 @@ package classes.Scenes
 			}
 			//Give birth if it's time (to a minotaur!)
 			if (player.pregnancyIncubation == 1 && player.pregnancyType == PregnancyStore.PREGNANCY_MINOTAUR) {
-				//Picture is here
 				outputText(images.showImage("birth-minotaur"));
 				if (player.vaginas.length == 0) {
 					outputText("\nYou feel a terrible pressure in your groin... then an incredible pain accompanied by the rending of flesh.  <b>You look down and behold a new vagina</b>.\n");

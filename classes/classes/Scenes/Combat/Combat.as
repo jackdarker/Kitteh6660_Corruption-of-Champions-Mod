@@ -1,4 +1,4 @@
-//Combat 2.0
+﻿//Combat 2.0
 package classes.Scenes.Combat 
 {
 	import classes.*;
@@ -759,7 +759,8 @@ package classes.Scenes.Combat
 				if (monster.hasStatusEffect(StatusEffects.Blind))
 					outputText("Blind basilisk can't use his eyes, so you can actually aim your strikes!  ");
 				//basilisk counter attack (block attack, significant speed loss): 
-				else if (player.inte/5 + rand(20) < 25) {
+				else if (player.inte / 5 + rand(20) < 25) {
+					outputText("Holding the basilisk in your peripheral vision, you charge forward to strike it.  Before the moment of impact, the reptile shifts its posture, dodging and flowing backward skillfully with your movements, trying to make eye contact with you. You find yourself staring directly into the basilisk's face!  Quickly you snap your eyes shut and recoil backwards, swinging madly at the lizard to force it back, but the damage has been done; you can see the terrible grey eyes behind your closed lids, and you feel a great weight settle on your bones as it becomes harder to move.");
 					Basilisk.speedReduce(player,20);
 					player.removeStatusEffect(StatusEffects.FirstAttack);
 					combatRoundOver();
@@ -782,7 +783,7 @@ package classes.Scenes.Combat
 				if (rand(100) + player.inte/3 >= 50) {
 					temp = int(player.str/5 - rand(5));
 					if (temp == 0) temp = 1;
-					outputText("You strike at the amalgamation, crushing countless worms into goo, dealing <b><font color=\"#800000\">" + temp + "</font></b> damage.\n\n");
+					outputText("You strike at the amalgamation, crushing countless worms into goo, dealing <b><font color=\"" + mainViewManager.colorHpMinus() + "\">" + temp + "</font></b> damage.\n\n");
 					monster.HP -= temp;
 					if (monster.HP <= 0) {
 						doNext(endHpVictory);
@@ -958,7 +959,7 @@ package classes.Scenes.Combat
 			else {
 				outputText("You hit " + monster.a + monster.short + "! ");
 				if (crit) outputText("<b>Critical hit! </b>");
-				outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>")
+				outputText("<b>(<font color=\"" + mainViewManager.colorHpMinus() + "\">" + damage + "</font>)</b>")
 			}
 			if (player.findPerk(PerkLib.BrutalBlows) >= 0 && player.str > 75) {
 				if (monster.armorDef > 0) outputText("\nYour hits are so brutal that you damage " + monster.a + monster.short + "'s defenses!");
@@ -1105,7 +1106,7 @@ package classes.Scenes.Combat
 		public function getCritChance():Number {
 			var critChance:Number = 5;
 			if (player.findPerk(PerkLib.Tactician) >= 0 && player.inte >= 50) critChance += (player.inte - 50) / 5;
-			if (player.findPerk(PerkLib.Blademaster) >= 0 && (player.weaponVerb == "slash" || player.weaponVerb == "cleave" || player.weaponVerb == "keen cut") && player.shield == ShieldLib.NOTHING) critChance += 5;
+			if (player.findPerk(PerkLib.Blademaster) >= 0 && (player.weaponVerb.search("slash") >= 0 || player.weaponVerb.search("cleave") >= 0 || player.weaponVerb == "keen cut") && player.shield == ShieldLib.NOTHING) critChance += 5;
 			if (player.jewelry.effectId == JewelryLib.MODIFIER_CRITICAL) critChance += player.jewelry.effectMagnitude;
 			return critChance;
 		}
@@ -1181,9 +1182,9 @@ package classes.Scenes.Combat
 		public function getDamageText(damage:Number):String
 		{
 			var color:String;
-			if (damage > 0)  color = "#800000";
+			if (damage > 0)  color = mainViewManager.colorHpMinus();
 			if (damage == 0) color = "#000080";
-			if (damage < 0)  color = "#008000";
+			if (damage < 0)  color = mainViewManager.colorHpPlus();
 			return "<b>(<font color=\"" + color + "\">" + damage + "</font>)</b>";
 		}
 
@@ -1485,12 +1486,12 @@ package classes.Scenes.Combat
 					var bleed:Number = (2 + rand(4))/100;
 					bleed *= player.HP;
 					bleed = takeDamage(bleed);
-					outputText("<b>You gasp and wince in pain, feeling fresh blood pump from your wounds. (<font color=\"#800000\">" + temp + "</font>)</b>\n\n");
+					outputText("<b>You gasp and wince in pain, feeling fresh blood pump from your wounds. (<font color=\"" + mainViewManager.colorHpMinus() + "\">" + temp + "</font>)</b>\n\n");
 				}
 			}
 			if (player.hasStatusEffect(StatusEffects.AcidSlap)) {
 				var slap:Number = 3 + (player.maxHP() * 0.02);
-				outputText("<b>Your muscles twitch in agony as the acid keeps burning you. <b>(<font color=\"#800000\">" + slap + "</font>)</b></b>\n\n");
+				outputText("<b>Your muscles twitch in agony as the acid keeps burning you. <b>(<font color=\"" + mainViewManager.colorHpMinus() + "\">" + slap + "</font>)</b></b>\n\n");
 			}
 			if (player.findPerk(PerkLib.ArousingAura) >= 0 && monster.lustVuln > 0 && player.cor >= (70 - player.corruptionTolerance())) {
 				if (monster.lust100 < 50) outputText("Your aura seeps into " + monster.a + monster.short + " but does not have any visible effects just yet.\n\n");
@@ -1786,15 +1787,15 @@ package classes.Scenes.Combat
 				if (monster.armorDef <= 10) monster.armorDef = 0;
 				else monster.armorDef -= 10;
 			}
+			//Raises lust~ Not disabled because it's an item perk :3
+			if (player.findPerk(PerkLib.WellspringOfLust) >= 0 && player.lust < 50) {
+				player.lust = 50;
+			}
 			if (player.findPerk(PerkLib.Battlemage) >= 0 && player.lust >= 50) {
 				combatAbilities.spellMight(true); // XXX: message?
 			}
 			if (player.findPerk(PerkLib.Spellsword) >= 0 && player.lust100 < combatAbilities.getWhiteMagicLustCap()) {
 				combatAbilities.spellChargeWeapon(true); // XXX: message?
-			}
-			//Raises lust~ Not disabled because it's an item perk :3
-			if (player.findPerk(PerkLib.WellspringOfLust) >= 0 && player.lust < 50) {
-				player.lust = 50;
 			}
 			monster.str += 25 * player.newGamePlusMod();
 			monster.tou += 25 * player.newGamePlusMod();

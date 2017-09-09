@@ -1461,6 +1461,8 @@ package classes.Scenes.Places.Bazaar
 			//Transformations
 			//Neck restore
 			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Rear body restore
+			if (player.hasNonSharkRearBody() && changes < changeLimit && rand(5) == 0) mutations.restoreRearBody(tfSource);
 			//Ovi perk loss
 			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
 
@@ -1584,6 +1586,8 @@ package classes.Scenes.Places.Bazaar
 			}
 			//Neck restore
 			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Rear body restore
+			if (player.hasNonSharkRearBody() && changes < changeLimit && rand(5) == 0) mutations.restoreRearBody(tfSource);
 			//Ovi perk loss
 			if (rand(5) == 0) mutations.updateOvipositionPerk(tfSource);
 			// Special TFs
@@ -1602,10 +1606,16 @@ package classes.Scenes.Places.Bazaar
 			// Normal TFs
 			//------------
 			//Removes wings
-			if (rand(4) == 0 && changes < changeLimit && player.wingType > WING_TYPE_NONE) {
-				if (player.wingType == WING_TYPE_SHARK_FIN) outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into your spine. After a moment the pain passes, though your fin is gone!");
-				else outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into each of your shoulder-blades. After a moment the pain passes, though your wings are gone!");
-				player.wingType = WING_TYPE_NONE;
+			if (rand(4) == 0 && changes < changeLimit && (player.wingType != WING_TYPE_NONE || player.rearBody.type == REAR_BODY_SHARK_FIN)) {
+				if (player.rearBody.type == REAR_BODY_SHARK_FIN) {
+					outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into your spine."
+					          +" After a moment the pain passes, though your fin is gone!");
+					player.rearBody.restore();
+				} else {
+					outputText("\n\nA wave of tightness spreads through your back, and it feels as if someone is stabbing a dagger into each of your"
+					          +" shoulder-blades. After a moment the pain passes, though your wings are gone!");
+				}
+				player.wings.restore();
 				changes++;
 			}
 			//Fur/scales fall out
@@ -1739,7 +1749,7 @@ package classes.Scenes.Places.Bazaar
 				outputText("\n\nYou begin to feel an annoying tingling sensation at the edge of your nose, above your field of vision. Reaching up you feel the sharp edge of a curved horn growing out the edge of your face. The itchy tingle continues as you feel both of your horns become sharp and tall. You estimate your older horn to be a mere seven inches and your new horn to be around a foot long. They’ll be useful natural weapons.");
 				outputText("\n<b>(Gained physical special: Upheaval! Any time you lose your rhino face or horns, you will lose this ability.)</b>");
 				player.horns = 2;
-				player.tailType = HORNS_RHINO;
+				player.hornType = HORNS_RHINO;
 				changes++;
 			}
 			// Other Changes
@@ -2068,6 +2078,8 @@ package classes.Scenes.Places.Bazaar
 			}
 			//Neck restore
 			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);
+			//Rear body restore
+			if (player.hasNonSharkRearBody() && changes < changeLimit && rand(5) == 0) mutations.restoreRearBody(tfSource);
 			//Ovi perk gain
 			if (rand(4) == 0 && changes < changeLimit && player.echidnaScore() >= 3 && player.hasVagina() && player.findPerk(PerkLib.Oviposition) < 0) {
 				mutations.updateOvipositionPerk(tfSource);

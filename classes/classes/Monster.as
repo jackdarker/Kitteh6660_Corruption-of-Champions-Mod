@@ -79,6 +79,16 @@ package classes
 		protected function get undergarments():UndergarmentLib{
 			return game.undergarments;
 		}
+
+		protected function get images():ImageManager
+		{
+			return kGAMECLASS.images;
+		}
+
+		protected function set images(val:ImageManager):void
+		{
+			kGAMECLASS.images = val;
+		}
 		//For enemies
 		public var bonusHP:Number = 0;
 		public var bonusLust:Number = 0;

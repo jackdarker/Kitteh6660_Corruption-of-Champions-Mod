@@ -610,7 +610,7 @@ use namespace kGAMECLASS;
 			return returnDamage;
 		}
 
-		public function takeLustDamage(lustDmg:Number, display:Boolean = true, applyRes:Boolean = false):Number{
+		public function takeLustDamage(lustDmg:Number, display:Boolean = true, applyRes:Boolean = true):Number{
 			//Round
 			lustDmg = Math.round(lustDmg);
 			var lust:int = game.player.lust;
@@ -1583,6 +1583,8 @@ use namespace kGAMECLASS;
 				dragonCounter++;
 			if (hasDragonNeck())
 				dragonCounter++;
+			if (hasDragonRearBody())
+				dragonCounter++;
 			return dragonCounter;
 		}
 
@@ -1731,11 +1733,11 @@ use namespace kGAMECLASS;
 		public function sharkScore():Number
 		{
 			var sharkCounter:Number = 0;
-			if (faceType == 4)
+			if (faceType == FACE_SHARK_TEETH)
 				sharkCounter++;
-			if (wingType == 8)
+			if (rearBody.type == REAR_BODY_SHARK_FIN)
 				sharkCounter++;
-			if (tailType == 7)
+			if (tailType == TAIL_TYPE_SHARK)
 				sharkCounter++;
 			//skin counting only if PC got any other shark traits
 			if (hasPlainSkin() && sharkCounter > 0)
