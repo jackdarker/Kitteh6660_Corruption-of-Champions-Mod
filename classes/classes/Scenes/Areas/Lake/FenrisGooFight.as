@@ -25,7 +25,7 @@ package classes.Scenes.Areas.Lake
 		}
 		protected function gooThrow():void
 		{
-			outputText("The girl reaches into her torso, pulls a large clump of goo out, and chucks it at you like a child throwing mud. The slime splatters on your chest and creeps under your " + player.armorName + ", tickling your skin like fingers dancing across your body. ", false);
+			outputText("The girl reaches into her torso, pulls a large clump of goo out, and chucks it at you like a child throwing mud. The slime splatters on your chest and creeps under your " + player.armorName + ", tickling your skin like fingers dancing across your body. ");
 			var damage:Number = 1;
 			player.takeDamage(damage, true);
 			game.dynStats("lus", 5 + rand(3) + player.sens / 10);
@@ -51,18 +51,18 @@ package classes.Scenes.Areas.Lake
 		override public function teased(lustDelta:Number):void
 		{
 			if (lust <= 99) {
-				if (lustDelta <= 0) outputText("\nThe goo-girl looks confused by your actions, as if she's trying to understand what you're doing.", false);
-				else if (lustDelta < 13) outputText("\nThe curious goo has begun stroking herself openly, trying to understand the meaning of your actions by imitating you.", false);
-				else outputText("\nThe girl begins to understand your intent. She opens and closes her mouth, as if panting, while she works slimy fingers between her thighs and across her jiggling nipples.", false);
+				if (lustDelta <= 0) outputText("\nThe goo-girl looks confused by your actions, as if she's trying to understand what you're doing.");
+				else if (lustDelta < 13) outputText("\nThe curious goo has begun stroking herself openly, trying to understand the meaning of your actions by imitating you.");
+				else outputText("\nThe girl begins to understand your intent. She opens and closes her mouth, as if panting, while she works slimy fingers between her thighs and across her jiggling nipples.");
 			}
-			else outputText("\nIt appears the goo-girl has gotten lost in her mimicry, squeezing her breasts and jilling her shiny " + skinTone + " clit, her desire to investigate you forgotten.", false);
+			else outputText("\nIt appears the goo-girl has gotten lost in her mimicry, squeezing her breasts and jilling her shiny " + skinTone + " clit, her desire to investigate you forgotten.");
 			applyTease(lustDelta);
 			//Todo: also teases Fenris at same time?
 		}
 		private function looseToGoo(hpVictory:Boolean):void {
 			clearOutput();
 			var x:Number = player.biggestCockIndex();
-			outputText("Todo: get raped\n", false);
+			outputText("Todo: get raped\n");
 			player.slimeFeed();
 			player.orgasm();
 			game.dynStats("sen", 4);
@@ -77,7 +77,7 @@ package classes.Scenes.Areas.Lake
 			//Todo: Fenris-Level&Quest progression
 			Fenris.getInstance().addXP(10);
 			
-			outputText("\n\n<b>What do you do to her, and if anything, which of your body parts do you use?</b>", false);
+			outputText("\n\n<b>What do you do to her, and if anything, which of your body parts do you use?</b>");
 			game.menu();
 			game.addButton(1, "You Rape", _rapeFunc, null, null, null, "");
 			game.addButton(2, "Fenris rape", _rapeFunc, null, null, null, "");
@@ -88,7 +88,7 @@ package classes.Scenes.Areas.Lake
 		private function rapeFunc():void
 		{
 			clearOutput();
-			outputText("Todo: Fenris and you have your way with her.", false);
+			outputText("Todo: Fenris and you have your way with her.");
 			player.orgasm();
 			player.slimeFeed();
 			game.combat.cleanupAfterCombat();

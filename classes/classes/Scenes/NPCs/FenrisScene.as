@@ -310,37 +310,37 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 100) { //	
 		clearOutput();
-		outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n As the creature hears you, it swims quickly to the shore line , rushing out of the water and collecting some stuff from a flat rock.", false);	
-		outputText("\n As you come closer, you notice that this one is a kind of wolf-man. He has the head of a wolf and also his digitgrade legs and feet loke more like that of a canine. His torso and arms look more human, except that there a claws sprouting out of his finger-tips.", false);	
-		outputText("You asume that his gender is male because you notice a slight bulge,covered by the loincloth he is wearing and because his chest looks rather manly with small black nipples poking slightly through his dense fur.", false);
-		outputText("His pelt is of grey color, darker on his back and lighter on his belly and tighs.", false);	
-		outputText("\n Its hard to tell how old he is but actually he seems mor like a wolf-boy than a full grown adult.", false);	
+		outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n As the creature hears you, it swims quickly to the shore line , rushing out of the water and collecting some stuff from a flat rock.");	
+		outputText("\n As you come closer, you notice that this one is a kind of wolf-man. He has the head of a wolf and also his digitgrade legs and feet loke more like that of a canine. His torso and arms look more human, except that there a claws sprouting out of his finger-tips.");	
+		outputText("You asume that his gender is male because you notice a slight bulge,covered by the loincloth he is wearing and because his chest looks rather manly with small black nipples poking slightly through his dense fur.");
+		outputText("His pelt is of grey color, darker on his back and lighter on his belly and tighs.");	
+		outputText("\n Its hard to tell how old he is but actually he seems mor like a wolf-boy than a full grown adult.");	
 		menu();
 		addButton(0, "Next", greetingsFirstTime, 110, null, null, "");	
 	} else if (dlgstage == 110) { //
-		outputText("\n\n You try to start a conversation with him but he seems rather shy to answer your questions. Soon you decide to say good bye. Maybe he will loosen up a little bit over time." , false);
+		outputText("\n\n You try to start a conversation with him but he seems rather shy to answer your questions. Soon you decide to say good bye. Maybe he will loosen up a little bit over time.");
 		menu();
 		addButton(0, "Next", greetingsFirstTime, 120, null, null, "");	
 	} else if (dlgstage == 120) { //
-		outputText("\n\n As you leave, an odd idea comes to your mind: Maybe you should have tried to steal his loin cloth while he was busy in the lake. That might have given you the opportunity to check the rest of his \"gear\"...", false);
+		outputText("\n\n As you leave, an odd idea comes to your mind: Maybe you should have tried to steal his loin cloth while he was busy in the lake. That might have given you the opportunity to check the rest of his \"gear\"...");
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 200) { //
-		outputText("\n\n Todo: speak about where he came from." , false);
+		outputText("\n\n Todo: speak about where he came from.");
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 300) { //
-		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n" , false);
-		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n" , false);
+		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n");
+		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n");
 	
 		progressMainQuest(1);
 		menu();
 		addButton(0, "Next", greetingsFirstTime, 301, null, null, "");
 	} else if (dlgstage == 301) { //
-		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? </i>'" , false); //Todo: explain him about the flowers and bees
-		outputText("\n\n Well, maybe someone needs an introduction in this topic then...." , false); 
+		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? </i>'"); //Todo: explain him about the flowers and bees
+		outputText("\n\n Well, maybe someone needs an introduction in this topic then...."); 
 		Fenris.getInstance().upgradeSexEd(Fenris.SEXED_TOPIC_BASE); //unlocks Sex-Education Topics
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
@@ -783,18 +783,18 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_FORGEKEY1) {
 			outputText("Fenris asks you urgently if you found someone that could take care of the chastity device.\n");
 			outputText("'<i>Yeah, I found a blacksmith that knows a lot about those things. Unfortunatly <i>'  you sigh '<i> she also said that it is nearly impossible to reforge the key for it.<i>'\n");
-			outputText("\n He didnt seem to take that for a good message '<i>So that means I'm stuck with it?<i>'\n", false)
+			outputText("\n He didnt seem to take that for a good message '<i>So that means I'm stuck with it?<i>'\n")
 			menu();
 			addButton(0, "Next", questCagedDlg, 100, null, null, "");
 		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_SHRINKCOCK1) { //Todo: trigger only if PC unlocked fetish zealot
-			outputText("As you patrol around the lake, you can see a group of people gathering at a makeshift shelter.\n", false)
-			outputText("You decide to hide and spy on them before you take further steps.\n", false)
+			outputText("As you patrol around the lake, you can see a group of people gathering at a makeshift shelter.\n")
+			outputText("You decide to hide and spy on them before you take further steps.\n")
 			menu();
 			addButton(1, "Spy", questCagedDlg, 400, null, null, "");
 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_HUNTKEY1_SUCCESS) {
-			outputText("'<i>I have good news for you <i>' you boom proudly '<i> I got the key !<i>'\n", false);
-			outputText("Happy as he is , Fenris barks aloud, wagging nervously with his tail. \n", false)
+			outputText("'<i>I have good news for you <i>' you boom proudly '<i> I got the key !<i>'\n");
+			outputText("Happy as he is , Fenris barks aloud, wagging nervously with his tail. \n")
 			menu();
 			//if (playercorruption>50) {
 			//outputText("\nBut not so fast. YOU have the key, and YOU will decide if he is ready to be released. ")
@@ -896,38 +896,38 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 400) { // confront Fetish zealot 
-		outputText("\nYou can easily see that those people wear some strange cloths and gadgets.\n", false); //Todo: description leather-bondage and chastity stuff
+		outputText("\nYou can easily see that those people wear some strange cloths and gadgets.\n"); //Todo: description leather-bondage and chastity stuff
 		outputText("\nThere seems also a strained discussion going on. It's hard to hear some details but you catch something about 'wolf' and 'chastity'. One of them also grabs a shiny pendant dangling down at her neckchain and show it off to the other persons gathering around. ");
 		outputText("\nCould this be the key you are searching?");
-		outputText("\nSo what now? Maybe you can talk with those guys if they are friendly enough. But if not you might get into trouble since there are at least 4 or 5 of them. Of course you could also try to sneak away silently and come back when you are. ready. \n", false); 
+		outputText("\nSo what now? Maybe you can talk with those guys if they are friendly enough. But if not you might get into trouble since there are at least 4 or 5 of them. Of course you could also try to sneak away silently and come back when you are. ready. \n"); 
 		menu();
 		addButton(1, "Talk", questCagedDlg, 410, null, null, "");
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 410) { // 
-		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n", false);
-		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n", false);
-		outputText("\nTodo:BlaBla Gimme the key BlaBla Pay for it.\n", false); //Todo
+		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n");
+		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n");
+		outputText("\nTodo:BlaBla Gimme the key BlaBla Pay for it.\n"); //Todo
 		menu();
 		addButton(1, "Pay", questCagedDlg, 420, null, null, ""); // Todo: check if PC has enough money
 		addButton(2, "Fight", questCagedDlg, 430, null, null, "");
 		addButton(14, "Run", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 420) { 
 		clearOutput();
-		outputText("\nRumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n", false);
-		outputText("\n'<i>Oh thats not just the expense for the key, </i>' she responds smiling dangerously '<i>its also the charge for walking out of here freely. </i>'\n", false);
+		outputText("\nRumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n");
+		outputText("\n'<i>Oh thats not just the expense for the key, </i>' she responds smiling dangerously '<i>its also the charge for walking out of here freely. </i>'\n");
 		menu();
 		addButton(0, "Next", questCagedDlg, 421, null, null, ""); 
 	} else if (dlgstage == 421) { 
-		outputText("\nA little bit intimidated by this statement, you grab the key an walk away quickly.\n", false);
-		outputText("\nAt least you have the key now.\n", false);
+		outputText("\nA little bit intimidated by this statement, you grab the key an walk away quickly.\n");
+		outputText("\nAt least you have the key now.\n");
 		progressMainQuest(1);
 		menu()
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 430) { 
 		clearOutput();
-		outputText("\nYou ready yourself to fight those odd bunch of people and get that damned key.\n", false);
+		outputText("\nYou ready yourself to fight those odd bunch of people and get that damned key.\n");
 		//startCombat(new fetishZealotKeyFight());	Todo
-		outputText("\nAfter the battle you search for the key. But its nowhere to be found, darn.\n", false);
+		outputText("\nAfter the battle you search for the key. But its nowhere to be found, darn.\n");
 		progressMainQuest(2);
 	}
 }
@@ -953,7 +953,7 @@ private function afterLoinClothStealDlg(dlgstage:int = -1):void {
 	_dlgStage = dlgstage;
 	if (dlgstage <= 0 ) {
 		clearOutput();
-		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] says '<i> ...you didn't see a loin cloth lying around, no? </i>' \n", false);	
+		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] says '<i> ...you didn't see a loin cloth lying around, no? </i>' \n");	
 		menu();
 		addButton(0, "Nope", afterLoinClothStealDlg, 100, null, null, "Just pretend you didnt steal it"); 
 		addButton(2, "Attack", afterLoinClothStealDlg, 200, null, null, "Ready for some beating?");

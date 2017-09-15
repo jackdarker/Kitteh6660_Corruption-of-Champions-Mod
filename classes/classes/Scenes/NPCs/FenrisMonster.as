@@ -109,8 +109,8 @@ package classes.Scenes.NPCs
 	private function fenrisHowlOfDominance():void
 	{
 		HowlCooldown = 5;
-		outputText("Annoyed by your attempts to defeat him, he raises his wolfen head and calls a terrifiying howl.\n", false);
-		addHP(eMaxHP()*0.33);
+		outputText("Annoyed by your attempts to defeat him, he raises his wolfen head and calls a terrifiying howl.\n");
+		addHP(this.maxHP()*0.33);
 		fatigue += 10;
 	}
 	//
@@ -140,21 +140,21 @@ package classes.Scenes.NPCs
 		//Todo if fenris is aroused he will unleash his pentacles, try to grab  and pleasure player
 		
 		if (PentacleState >= 3 && PentacleState <=5 ) {
-			outputText("You are molested by the pentacles.\n", false);
+			outputText("You are molested by the pentacles.\n");
 			game.dynStats("lus", 5 + player.sens / 10); // Lust++
 		}
 		//just grabbed the player
 		if (PentacleState == 2) {
 			if (player.hasStatusEffect(StatusEffects.bound)) {
-				outputText("The pentacles increase their effort to entwine you.\n", false);
+				outputText("The pentacles increase their effort to entwine you.\n");
 				if (_pentacles >= 6) {
-					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n", false);
+					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n");
 					PentacleState = PentacleState+3;
 				}else if (_pentacles >= 4) {
-					outputText("Two of them slip around your waist and upper body while the others try to choke you.\n", false);
+					outputText("Two of them slip around your waist and upper body while the others try to choke you.\n");
 					PentacleState = PentacleState+2;
 				}else if (_pentacles >= 2) {
-					outputText("Both of them slip around your waist and upper body.\n", false);
+					outputText("Both of them slip around your waist and upper body.\n");
 					PentacleState = PentacleState+1;
 				}
 				game.dynStats("lus", 5 + player.sens / 10);
@@ -168,11 +168,11 @@ package classes.Scenes.NPCs
 			if (player.hasStatusEffect(StatusEffects.bound)) {
 				//Success Todo
 				if (false) {
-					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
+					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n");
 				}
 				//Fail
 				else {
-					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n", false);
+					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n");
 					game.dynStats("lus", (8+player.sens/20));
 					player.createStatusEffect(StatusEffects.bound, 0, 0, 0, 0);
 					PentacleState = 2;
@@ -181,7 +181,7 @@ package classes.Scenes.NPCs
 		}
 		//unleash tentacles
 		if (PentacleState < 1) {
-			outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see " + _pentacles + " tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n", false);
+			outputText("The werewolf-beast twists in agony. You think you made a hit but with terror you see " + _pentacles + " tentacles bursting from his back. With ridiciolous speed, they try to entwine you.\n");
 			PentacleState = 1;
 		}
 		return true;
@@ -220,23 +220,23 @@ package classes.Scenes.NPCs
 			/*
 			//Blind dodge change
 			if (findStatusEffect(StatusEffects.Blind) >= 0 && rand(3) < 1) {
-				outputText(capitalA + short + " completely misses you with a blind attack!\n", false);
+				outputText(capitalA + short + " completely misses you with a blind attack!\n");
 			}
 			//Determine if dodged!
 			else if (player.spe - spe > 0 && int(Math.random() * (((player.spe-spe) / 4) + 80)) > 80) {
-				outputText("You nimbly dodge the wolfs attack!", false);
+				outputText("You nimbly dodge the wolfs attack!");
 			}
 			//Determine if evaded
 			else if (player.findPerk(PerkLib.Evade) >= 0 && rand(100) < 10) {
-				outputText("Using your skills at evading attacks, you anticipate and sidestep " + a + short + "'s attack.\n", false);
+				outputText("Using your skills at evading attacks, you anticipate and sidestep " + a + short + "'s attack.\n");
 			}
 			//("Misdirection"
 			else if (player.findPerk(PerkLib.Misdirection) >= 0 && rand(100) < 10 && player.armorName == "red, high-society bodysuit") {
-				outputText("Using Raphael's teachings, you anticipate and sidestep " + a + short + "' attacks.\n", false);
+				outputText("Using Raphael's teachings, you anticipate and sidestep " + a + short + "' attacks.\n");
 			}
 			//Determine if cat'ed
 			else if (player.findPerk(PerkLib.Flexibility) >= 0 && rand(100) < 6) {
-				outputText("With your incredible flexibility, you squeeze out of the way of " + a + short + "", false);
+				outputText("With your incredible flexibility, you squeeze out of the way of " + a + short + "");
 			}
 			//Determine damage - str modified by enemy toughness!
 			else
@@ -246,15 +246,15 @@ package classes.Scenes.NPCs
 				if (damage <= 0) {
 					damage = 0;
 					//Due to toughness or amor...
-					if (rand(player.armorDef + player.tou) < player.armorDef) outputText("You absorb and deflect every " + weaponVerb + " with your " + player.armorName + ".", false);
-					else outputText("You deflect and block every " + weaponVerb + " " + a + short + " throws at you.", false);
+					if (rand(player.armorDef + player.tou) < player.armorDef) outputText("You absorb and deflect every " + weaponVerb + " with your " + player.armorName + ".");
+					else outputText("You deflect and block every " + weaponVerb + " " + a + short + " throws at you.");
 				}
 				//Take Damage
 				//Todo:add decription
-				else outputText("You got hit. ", false);
+				else outputText("You got hit. ");
 				if (damage > 0) {
 					if (lustVuln > 0 && (player.armor.name == "barely-decent bondage straps" || player.armor.name == "nothing")) {
-						outputText("\n" + capitalA + short + " brushes against your exposed skin and jerks back in surprise, coloring slightly from seeing so much of you revealed. ", false);
+						outputText("\n" + capitalA + short + " brushes against your exposed skin and jerks back in surprise, coloring slightly from seeing so much of you revealed. ");
 						lust += 5 * lustVuln;
 					}
 				}
@@ -266,7 +266,7 @@ package classes.Scenes.NPCs
 			} else addStatusValue(StatusEffects.Round, 1, 1);
 			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
 			statScreenRefresh();
-			outputText("\n", false);
+			outputText("\n");
 			combatRoundOver();
 	}
 	override public function handleStruggling(Struggling:Boolean):Boolean

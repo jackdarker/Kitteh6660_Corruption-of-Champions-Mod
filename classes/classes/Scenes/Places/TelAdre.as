@@ -1740,10 +1740,10 @@ public function armorShop(page:int = -1):void {
 }
 private function fenrisForgeKey():void {
 	clearOutput();
-	outputText("You ask Yvonne if its possible to forge a key for Fenris chastity device.\n\n", true);
-	outputText("'<i>Im unable to do this. Not just because I'm specialised in forging armor. But the description you gave me sounds like this is a magical enhanced device and thus it will require a key with the correct magical signature.</i>'\n\n", true);
-	outputText("'<i>I really dont have an idea how could help you with that and I would suggest to not bother with it otherwise, ...well bad things could happen..</i>'\n\n", true);
-	outputText("You are disappointed by her response. Seems like you are in a dead end here.\n\n", true);
+	outputText("You ask Yvonne if its possible to forge a key for Fenris chastity device.\n\n");
+	outputText("'<i>Im unable to do this. Not just because I'm specialised in forging armor. But the description you gave me sounds like this is a magical enhanced device and thus it will require a key with the correct magical signature.</i>'\n\n");
+	outputText("'<i>I really dont have an idea how could help you with that and I would suggest to not bother with it otherwise, ...well bad things could happen..</i>'\n\n");
+	outputText("You are disappointed by her response. Seems like you are in a dead end here.\n\n");
 	Fenris.getInstance().setMainQuestStage(Fenris.MAINQUEST_FORGEKEY1);
 	menu();	
 	addButton(1, "Back", armorShop);
