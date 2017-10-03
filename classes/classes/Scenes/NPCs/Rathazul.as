@@ -109,7 +109,7 @@ public class Rathazul extends NPCAwareContent implements TimeAwareInterface, Enc
 		player.createStatusEffect(StatusEffects.MetRathazul,0,0,0,0);
 	}
 	//Camp offer!
-	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 3 && player.statusEffectv3(StatusEffects.MetRathazul) != 1 && player.cor < (75 + player.corruptionTolerance())) {
+	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 3 && player.statusEffectv3(StatusEffects.MetRathazul) != 1 && player.isPureEnough(75)) {
 		outputText("\"<i>You know, I think I might be able to do this worn-out world a lot more good from your camp than by wandering around this lake.  What do you say?</i>\" asks the rat.\n\n(Move Rathazul into your camp?)");
 		doYesNo(rathazulMoveToCamp, rathazulMoveDecline);
 		//Set rathazul flag that he has offered to move in (1 time offer)
@@ -950,8 +950,8 @@ private function rathazulShopMenu(dyes:Boolean = false, philters:Boolean = false
 
 //Hair dyes
 private function buyDyes():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText(images.showImage("rathazul-vials"));
 	outputText("Rathazul smiles and pulls forth several vials of colored fluids.  Which type of dye would you like?");
 	outputText("\n\n<b>(-50 Gems)</b>");
@@ -998,10 +998,10 @@ private function buyDyeNevermind():void {
 
 //Skin Oils
 private function buyOils(fromPage2:Boolean = false):void {
+	clearOutput();
 	spriteSelect(SpriteDb.s_rathazul);
-	outputText(images.showImage("rathazul-oils"));
 	if (!fromPage2) {
-		clearOutput();
+		outputText(images.showImage("rathazul-oils"));
 		outputText("Rathazul smiles and pulls forth several bottles of skin oil.  Which type of skin oil would you like?");
 		outputText("\n\n<b>(-50 Gems)</b>");
 		player.gems -= 50;
@@ -1029,6 +1029,7 @@ private function buyOils(fromPage2:Boolean = false):void {
 	addButton(14, "Nevermind", buyOilNevermind);
 }
 private function buyOilsPage2():void {
+	clearOutput();
 	if (mixologyXP() < 80) { // Failsafe, should probably never happen (Stadler76)
 		buyOils(true);
 		return;
@@ -1059,8 +1060,8 @@ private function buyOilsPage2():void {
 	addButton(14, "Nevermind", buyOilNevermind);
 }
 private function buyOil(oil:ItemType):void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText(images.showImage("item-oil"));
 	inventory.takeItem(oil, returnToRathazulMenu);
 	statScreenRefresh();
@@ -1068,8 +1069,8 @@ private function buyOil(oil:ItemType):void {
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 private function buyOilNevermind():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText("You change your mind about the oil, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
 	statScreenRefresh();
@@ -1078,8 +1079,8 @@ private function buyOilNevermind():void {
 
 //Body Lotions
 private function buyLotions():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText(images.showImage("rathazul-vials"));
 	outputText("Rathazul smiles and pulls forth several vials of body lotion.  Which type of body lotion would you like?");
 	outputText("\n\n<b>(-50 Gems)</b>");
@@ -1093,8 +1094,8 @@ private function buyLotions():void {
 	addButton(14, "Nevermind", buyLotionNevermind);
 }
 private function buyLotion(lotion:ItemType):void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText(images.showImage("item-lotion"));
 	inventory.takeItem(lotion, returnToRathazulMenu);
 	statScreenRefresh();
@@ -1102,8 +1103,8 @@ private function buyLotion(lotion:ItemType):void {
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 private function buyLotionNevermind():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText("You change your mind about the lotion, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
 	statScreenRefresh();
@@ -1112,8 +1113,8 @@ private function buyLotionNevermind():void {
 
 //Reducto
 private function buyReducto():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	var cost:int = (flags[kFLAGS.AMILY_MET_RATHAZUL] >= 2 ? 50 : 100);
 	if (player.gems >= cost) {
 		outputText("Rathazul hands you the Reducto with a nod before returning to his work.\n\n");
@@ -1132,13 +1133,13 @@ private function buyReducto():void {
 
 //GroPlus
 private function buyGroPlus():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	var cost:int = (flags[kFLAGS.AMILY_MET_RATHAZUL] >= 2 ? 50 : 100);
 	if (player.gems >= cost) {
+		outputText(images.showImage("item-groPlus"));
 		outputText("Rathazul hands you the GroPlus with a nod before returning to his work.\n\n");
 		player.gems -= cost;
-		outputText(images.showImage("item-groPlus"));
 		inventory.takeItem(consumables.GROPLUS, returnToRathazulMenu);
 		statScreenRefresh();
 		addMixologyXP(4);
@@ -1164,8 +1165,8 @@ private function buyPuritySomething(item:ItemType):void {
 // PURIFY
 //------------
 private function purifySomething():void {
-	spriteSelect(SpriteDb.s_rathazul);
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText("Rathazul asks, \"<i>What would you like me to purify?</i>\"");
 	menu();
 	//Item purification offer

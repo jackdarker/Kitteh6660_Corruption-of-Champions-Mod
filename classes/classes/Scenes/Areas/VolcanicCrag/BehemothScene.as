@@ -160,7 +160,7 @@ package classes.Scenes.Areas.VolcanicCrag
 				
 			}
 			outputText("\n\nYou play with your lover and offspring for a while, then head back to camp.");
-			dynStats("lib", -1, "lus", -20, "resisted", false, "noBimbo", true);
+			dynStats("lib", -1, "lus", -20, "scale", false);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		//Cum offer
@@ -386,7 +386,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			outputText("\n\nYou wake up from your nap refreshed and invigorated and give the Behemoth a kiss before you " + player.clothedOrNaked("redress yourself in your [armor], and ") + "make your way back to your camp.");
 			player.orgasm('Vaginal');
 			player.slimeFeed();
-			if (flags[kFLAGS.BEHEMOTH_CHILDREN] < 3 && player.cor < (25 + player.corruptionTolerance())) player.knockUp(PregnancyStore.PREGNANCY_BEHEMOTH, PregnancyStore.INCUBATION_BEHEMOTH, 50 + (flags[kFLAGS.BEHEMOTH_CHILDREN] * 15) + player.cor);
+			if (flags[kFLAGS.BEHEMOTH_CHILDREN] < 3 && player.isPureEnough(25)) player.knockUp(PregnancyStore.PREGNANCY_BEHEMOTH, PregnancyStore.INCUBATION_BEHEMOTH, 50 + (flags[kFLAGS.BEHEMOTH_CHILDREN] * 15) + player.cor);
 			flags[kFLAGS.BEHEMOTH_VAGINAL_CATCH]++;
 			dynStats("str", 0.5, "tou", 0.5);
 			HPChange(50 + (player.maxHP() / 5), false);

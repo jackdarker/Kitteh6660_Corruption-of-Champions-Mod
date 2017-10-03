@@ -778,7 +778,7 @@ package classes.Scenes.Dungeons
 			outputText(".  Of course, the wicked witch only releases you at this point.  \"<i>Do I look like one of the cum-hungry wenches around here?</i>\"");
 			
 			//add lust
-			dynStats("lus=", player.maxLust(), "resisted", false);
+			dynStats("lus=", player.maxLust(), "scale", false);
 			
 			outputText("\n\nAt that, a few nagging worries surge up to the forefront of your lust-addled thoughts.  You were hypnotized!  Worse than that, you can barely remember anything, let alone how you got here.  In addition, though less pressing, she's done something to you that'll make you only father females.  You don't remember much, but you know that's not quite right.  You jump up and nearly fall over your own [feet] in your hurry to get away from this woman - alluring and arousing as she is.  Pressing your back flat against the wall, you begin breathing faster and faster as you wrack your consciousness for an explanation.");
 			
@@ -895,7 +895,7 @@ package classes.Scenes.Dungeons
 				
 				outputText("\n\nSo if you avoid a facial she'll steal some of your semen production, but if you take it, she'll make you MORE virile.  While you're mulling it over, she's still grinding on you, distracting you with flashes of salacious delight.  The clock is ticking, and if you don't pick soon, she might pick for you.");
 				//[Facial] [No Facial]
-				dynStats("lus=", player.maxLust(), "resisted", false);
+				dynStats("lus=", player.maxLust(), "scale", false);
 				addButton(0,"Facial",tooBigCumWitchLossFacial, null, null, null, "Allow the Cum Witch to cum all over your face and increase your potency.");
 				addButton(1,"No Facial",tooBigCumWitchLossNoFacial, null, null, null, "Don't allow the Cum Witch to perform facial. This will reduce your cum production multiplier by 25%.");
 			}
@@ -2373,7 +2373,13 @@ package classes.Scenes.Dungeons
 			
 			outputText("\n\nSuddenly, the Queen jerks up, looking you in the eye with her strange, white-irised gaze.");
 			//(No new PG.  Corrupt version)
-			if ((player.cor - player.corruptionTolerance()) > player.inte || flags[kFLAGS.JOJO_STATUS] >= 5 || player.hasStatusEffect(StatusEffects.Exgartuan) || kGAMECLASS.amilyScene.amilyCorrupt() || flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0 || flags[kFLAGS.SOPHIE_BIMBO] > 0 || flags[kFLAGS.NIAMH_STATUS] > 0) {
+			if (!player.isPureEnough(100 - player.inte100)
+				|| flags[kFLAGS.JOJO_STATUS] >= 5
+				|| player.hasStatusEffect(StatusEffects.Exgartuan)
+				|| kGAMECLASS.amilyScene.amilyCorrupt()
+				|| flags[kFLAGS.SOPHIE_DISABLED_FOREVER] > 0
+				|| flags[kFLAGS.SOPHIE_BIMBO] > 0
+				|| flags[kFLAGS.NIAMH_STATUS] > 0) {
 				outputText("  \"<i>There is some truth to your tale, [name], but I am a Sand Mother.  We are schooled in the art of sussing out the corrupt or unclean.  If we could not detect disguised demons and demonic agents, we would not flourish as we do now, and this great desert would not be on the cusp of resurrection.</i>\"");
 				outputText("\n\nThe Sand Mother steps out of her throne, brandishing a shining scepter as she rises.  Her lips curve into a cruel smile and she challenges, \"<i>Fight me, [name], and fall like every demonic agent before you.  Do not fear, for when you lose, you shall be reborn to serve a just cause.  Your taint may yet be exorcised.</i>\"");
 				outputText("\n\nThere's no way out, it's a fight!");
@@ -2386,7 +2392,7 @@ package classes.Scenes.Dungeons
 				//(Award XP)
 				player.XP += 200;
 				mainView.statsView.showStatUp( 'xp' );
-				dynStats("lust", 0, "resisted", false); //Forces up arrow.
+				dynStats("lust", 0, "scale", false); //Forces up arrow.
 				//xpUp.visible = true;
 				statScreenRefresh();
 				//(Set friendly)
@@ -3909,7 +3915,7 @@ package classes.Scenes.Dungeons
 			}
 			//[Fuck Her](PC must have gender; if cooch, also C+ cups) [Don't]
 			menu();
-			dynStats("lus", 33, "resisted", false);
+			dynStats("lus", 33, "scale", false);
 			if (player.hasCock()) addButton(0,"Dick Fuck",fuckMilkbabeWithPenor, null, null, null, "Fuck the milk slave with your penis.");
 			if (player.hasVagina() && player.biggestTitSize() >= 3) addButton(1,"Lady Fuck",ladyFucks, null, null, null, "Have some vaginal and boob play.");
 			addButton(2,"Don't Fuck",dontFuckMilkBathBabe, null, null, null, "Skip the fucking.");

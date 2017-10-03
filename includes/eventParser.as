@@ -402,29 +402,29 @@ private function goNextWrapped(time:Number, needNext:Boolean):Boolean  {
 		return true;
 	}
 	//Drop beautiful sword if corrupted!
-	if (player.weaponPerk == "holySword" && player.cor >= (35 + player.corruptionTolerance())) {
+	if (player.weaponPerk == "holySword" && !player.isPureEnough(35)) {
 		outputText("<b>\nThe <u>" + player.weaponName + "</u> grows hot in your hand, until you are forced to drop it.  Whatever power inhabits this blade appears to be unhappy with you.  Touching it gingerly, you realize it is no longer hot, but as soon as you go to grab the hilt, it nearly burns you.\n\nYou realize you won't be able to use it right now, but you could probably keep it in your inventory.</b>\n\n");
 		inventory.takeItem(player.setWeapon(WeaponLib.FISTS), playerMenu);
 		return true;
 	}
 	//Drop ugly sword if uncorrupt
-	if (player.weaponPerk == "uglySword" && player.cor < (70 - player.corruptionTolerance())) {
+	if (player.weaponPerk == "uglySword" && !player.isCorruptEnough(70)) {
 		outputText("<b>\nThe <u>" + player.weaponName + "</u> grows hot in your hand, until you are forced to drop it. Whatever power inhabits this blade appears to be disgusted with your purity. Touching it gingerly, you realize it is no longer hot, but as soon as you go to grab the hilt, it nearly burns you.\n\nYou realize you won't be able to use it right now, but you could probably keep it in your inventory.</b>\n\n");
 		inventory.takeItem(player.setWeapon(WeaponLib.FISTS), playerMenu);
 		return true;
 	}
 	//Drop midnight rapier if uncorrupt
-	if (player.weaponPerk == "midnightRapier" && player.cor < (90 - player.corruptionTolerance())) {
+	if (player.weaponPerk == "midnightRapier" && !player.isCorruptEnough(90)) {
 		outputText("<b>\nThe <u>" + player.weaponName + "</u> grows hot in your hand, until you are forced to drop it. Whatever power inhabits this blade appears to be disgusted with your purity. Touching it gingerly, you realize it is no longer hot, but as soon as you go to grab the hilt, it nearly burns you.\n\nYou realize you won't be able to use it right now, but you could probably keep it in your inventory.</b>\n\n");
 		inventory.takeItem(player.setWeapon(WeaponLib.FISTS), playerMenu);
 		return true;
 	}
 	//Drop scarred blade if not corrupted enough!
-	if (player.weapon == weapons.SCARBLD && player.cor < (70 - player.corruptionTolerance()) && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0) {
+	if (player.weapon == weapons.SCARBLD && !player.isCorruptEnough(70)) {
 		kGAMECLASS.sheilaScene.rebellingScarredBlade();
 		return true;
 	}
-	if (flags[kFLAGS.SCARRED_BLADE_STATUS] == 1 && player.cor >= 70) {
+	if (flags[kFLAGS.SCARRED_BLADE_STATUS] == 1 && player.isCorruptEnough(70)) {
 		kGAMECLASS.sheilaScene.findScarredBlade();
 		return true;
 	}

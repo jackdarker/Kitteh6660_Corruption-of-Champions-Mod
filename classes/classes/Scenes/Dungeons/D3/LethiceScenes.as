@@ -774,7 +774,7 @@ package classes.Scenes.Dungeons.D3
 				}
 				outputText("’s fingers, I wonder? Tsk, more punishments to deal out, I suppose. Isn’t that right, " + player.mf("boy","girl") + "?”</i>");
 			}
-			dynStats("lus=", player.maxLust(), "int/", 5, "lib", 100, "sens", 50, "cor", 70, "resisted", false);
+			dynStats("lus=", player.maxLust(), "int/", 5, "lib", 100, "sens", 50, "cor", 70, "scale", false);
 			menu();
 			addButton(0,"Next",woofwoofII);
 			

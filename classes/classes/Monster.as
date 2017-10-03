@@ -1,4 +1,4 @@
-package classes
+﻿package classes
 {
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -920,7 +920,7 @@ package classes
 				player.lust = 0;
 			}
 			game.inCombat = false;
-			game.combat.clearStatuses(false);
+			game.combat.clearStatuses();
 			var temp:Number = rand(10) + 1;
 			if (temp > player.gems) temp = player.gems;
 			outputText("\n\nYou'll probably wake up in eight hours or so, missing " + temp + " gems.");

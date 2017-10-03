@@ -74,7 +74,7 @@ package classes.Scenes.NPCs{
 			}
 			//Ghostgirl madness
 			if (flags[kFLAGS.SHOULDRA_PALADIN_MAIDEN_COUNTDOWN] > 0) {
-				if (player.cockTotal() > 1 || player.faceType != FACE_HUMAN || player.lowerBody != LOWER_BODY_TYPE_HUMAN || player.tailType > TAIL_TYPE_NONE || player.horns > 0 || player.cor > (15 + player.corruptionTolerance()) || player.longestCockLength() > 10 || player.tallness < 65 || player.tallness > 78 || player.hasVagina())
+				if (player.cockTotal() > 1 || player.faceType != FACE_HUMAN || player.lowerBody != LOWER_BODY_TYPE_HUMAN || player.tailType > TAIL_TYPE_NONE || player.horns > 0 || !player.isPureEnough(15) || player.longestCockLength() > 10 || player.tallness < 65 || player.tallness > 78 || player.hasVagina())
 					flags[kFLAGS.SHOULDRA_PALADIN_MAIDEN_COUNTDOWN] = 0;
 				else {
 					flags[kFLAGS.SHOULDRA_PALADIN_MAIDEN_COUNTDOWN]--;
@@ -94,7 +94,7 @@ public function shouldraGreeting():void {
 	clearOutput();
 	if (silly() && flags[kFLAGS.SHOULDRA_PALADIN_MAIDEN_COUNTER] == 0) {
 		//NO MUTANTS ALLOWED
-		if (player.cockTotal() > 1 || player.faceType != FACE_HUMAN || player.lowerBody != LOWER_BODY_TYPE_HUMAN || player.tailType > TAIL_TYPE_NONE || player.horns > 0 || player.cor > (15 + player.corruptionTolerance()) || player.longestCockLength() > 10 || player.tallness < 65 || player.tallness > 78 || player.hasVagina()) {}
+		if (player.cockTotal() > 1 || player.faceType != FACE_HUMAN || player.lowerBody != LOWER_BODY_TYPE_HUMAN || player.tailType > TAIL_TYPE_NONE || player.horns > 0 || !player.isPureEnough(15) || player.longestCockLength() > 10 || player.tallness < 65 || player.tallness > 78 || player.hasVagina()) {}
 		else {
 			superCoolPaladinSexStuffDudeGasmJizzMonkies();
 			return;

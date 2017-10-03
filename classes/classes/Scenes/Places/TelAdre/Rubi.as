@@ -693,9 +693,9 @@ public function rubisFuckingHouseYouPervert():void {
 		else outputText("\n\nRubi nods towards the bottles and box in the corner and gives you a sly wink.  \"<i>Want another massage?</i>\"");
 		addButton(4,"Massage",chocoRubiMassage);
 	}
-	if (player.isNaga() && flags[kFLAGS.RUBI_BIMBO] == 0 && flags[kFLAGS.RUBI_COCK_SIZE] < player.biggestCockLength() && player.hasCock() && flags[kFLAGS.RUBI_SHE] == 0 && player.cor >= (85 - player.corruptionTolerance()) && flags[kFLAGS.RUBI_BREAST_SIZE] <= 2)
+	if (player.isNaga() && flags[kFLAGS.RUBI_BIMBO] == 0 && flags[kFLAGS.RUBI_COCK_SIZE] < player.biggestCockLength() && player.hasCock() && flags[kFLAGS.RUBI_SHE] == 0 && player.isCorruptEnough(85) && flags[kFLAGS.RUBI_BREAST_SIZE] <= 2)
 	{
-		outputText("\n\n<b>You could use your snake-like motions to hypnotize Rubi and turn [rubi em] into a more complacent, eager slut. Doing so is likely irreversible.</b>")
+		outputText("\n\n<b>You could use your snake-like motions to hypnotize Rubi and turn [rubi em] into a more complacent, eager slut. Doing so is likely irreversible.</b>");
 		addButton(5,"Hypno",hypnoBimboficationForRubiSloots);
 	}
 	addButton(14,"Leave",camp.returnToCampUseOneHour);
@@ -2322,7 +2322,7 @@ private function anallyTrainYourBitchBoySlutHowToBeAnalForDCL():void {
 		outputText(" that [rubi ey] should keep that in for a few hours, just to make sure this training takes hold.  Rubi gives you a small smile in response along with a small peck on the cheek before slipping under the sheets for a quick nap.");
 
 		outputText("\n\nYou decide this is the best time to head out as well, and make your way out of the apartment and back to camp.");
-		dynStats("lus", 20+player.lib/5, "resisted", false);
+		dynStats("lus", 20+player.lib/5, "scale", false);
 	}
 	//Repeatable
 	//Must have a cock greater than Rubi's capacity.
@@ -2596,7 +2596,7 @@ private function rubiHotdogging():void {
 	outputText(".");
 
 	outputText("\n\nYou think to yourself.  You could keep teasing [rubi em] like this, without letting [rubi em] cum, as [rubi ey] obviously delights in the feelings.  Or you could be generous and let [rubi em] pop [rubi eir] load right now... Which will it be?");
-	dynStats("lus=", player.maxLust(), "resisted", false);
+	dynStats("lus=", player.maxLust(), "scale", false);
 	menu();
 	//[Tease] [Pop]
 	addButton(0,"Tease Rubi",teaseButtjobs);

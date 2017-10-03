@@ -1355,7 +1355,7 @@ package classes.Scenes.NPCs {
 		flags[kFLAGS.MARBLE_PURIFIED] = 1;
 		player.changeStatusValue(StatusEffects.Marble,4,10);
 		getGame().inCombat = false;
-		player.clearStatuses(false);
+		player.clearStatuses();
 		//Marble's breast size is set to 0 (integer, 0=DD cups, 1=G cups, 2=HH, 3=J)
 		//advance time of day by 4 hours
 		//end event
@@ -1515,7 +1515,7 @@ package classes.Scenes.NPCs {
 			//Restore 30 fatigue
 			player.changeFatigue(-30);
 			//increase lust by 15
-			kGAMECLASS.stats(0,0,0,0,0,0,15,0);
+			dynStats("lus",15);
 			//increase Marble lust by 10
 			flags[kFLAGS.MARBLE_LUST] += 10;
 			flags[kFLAGS.MARBLE_TIME_SINCE_NURSED_IN_HOURS] = 0;

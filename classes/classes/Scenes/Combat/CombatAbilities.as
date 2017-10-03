@@ -11,8 +11,10 @@ package classes.Scenes.Combat
 	import classes.Scenes.Monsters.Mimic;
 	import classes.Scenes.NPCs.*;
 	import classes.Scenes.Places.TelAdre.UmasShop;
+import classes.StatusEffects.Combat.BasiliskSlowDebuff;
+import classes.StatusEffects.Combat.MightBuff;
 
-	public class CombatAbilities extends BaseContent
+public class CombatAbilities extends BaseContent
 	{
 		public function CombatAbilities() {}
 		
@@ -32,7 +34,7 @@ package classes.Scenes.Combat
 		
 		public function getWhiteMagicLustCap():Number {
 			var whiteLustCap:Number = player.maxLust() * 0.75;
-			if (player.findPerk(PerkLib.Enlightened) >= 0 && player.cor < (10 + player.corruptionTolerance())) whiteLustCap += (player.maxLust() * 0.1);
+			if (player.findPerk(PerkLib.Enlightened) >= 0 && player.isPureEnough(10)) whiteLustCap += (player.maxLust() * 0.1);
 			if (player.findPerk(PerkLib.FocusedMind) >= 0) whiteLustCap += (player.maxLust() * 0.1);
 			return whiteLustCap;
 		}
@@ -105,7 +107,7 @@ package classes.Scenes.Combat
 				if (player.hasStatusEffect(StatusEffects.KnowsBlackfire)) addButton(8, "Blackfire", spellBlackfire, null, null, null, "Blackfire is the black magic variant of Whitefire. It is a potent fire based attack that will burn your foe with flickering black and purple flames, ignoring their physical toughness and most armors.\n\nFatigue Cost: " + player.spellCost(40) + "");
 			}
 			// JOJO ABILITIES -- kind makes sense to stuff it in here along side the white magic shit (also because it can't fit into M. Specials :|
-			if (player.findPerk(PerkLib.CleansingPalm) >= 0 && player.cor < (10 + player.corruptionTolerance())) {
+			if (player.findPerk(PerkLib.CleansingPalm) >= 0 && player.isPureEnough(10)) {
 				addButton(3, "C.Palm", spellCleansingPalm, null, null, null, "Unleash the power of your cleansing aura! More effective against corrupted opponents. Doesn't work on the pure.  \n\nFatigue Cost: " + player.spellCost(30) + "", "Cleansing Palm");
 			}
 			addButton(14, "Back", combat.combatMenu, false);
@@ -449,25 +451,9 @@ package classes.Scenes.Combat
 		//and increasing lust by 15.
 		public function spellMight(silent:Boolean = false):void {
 			
-			var doEffect:Function = function():* {
-				player.createStatusEffect(StatusEffects.Might,0,0,0,0);
-				temp = 10 * player.spellMod();
-				if (temp > 100) temp = 100;
-				tempStr = temp;
-				tempTou = temp;
-				//if (player.str + temp > 100) tempStr = 100 - player.str;
-				//if (player.tou + temp > 100) tempTou = 100 - player.tou;
-				player.changeStatusValue(StatusEffects.Might,1,tempStr);
-				player.changeStatusValue(StatusEffects.Might,2,tempTou);
-				mainView.statsView.showStatUp('str');
-				mainView.statsView.showStatUp('tou');
-				player.str += player.statusEffectv1(StatusEffects.Might);
-				player.tou += player.statusEffectv2(StatusEffects.Might);
-				statScreenRefresh();
-			}
-			
+
 			if (silent)	{ // for Battlemage
-				doEffect.call();
+				player.addStatusEffect(new MightBuff());
 				return;
 			}
 			
@@ -479,8 +465,6 @@ package classes.Scenes.Combat
 			}
 			doNext(combat.combatMenu);
 			player.changeFatigue(25,1);
-			var tempStr:Number = 0;
-			var tempTou:Number = 0;
 			if (monster is FrostGiant && player.hasStatusEffect(StatusEffects.GiantBoulder)) {
 				(monster as FrostGiant).giantBoulderHit(2);
 				monster.doAI();
@@ -504,7 +488,7 @@ package classes.Scenes.Combat
 			}
 			else {
 				outputText("The rush of success and power flows through your body.  You feel like you can do anything!");
-				doEffect.call();
+				player.addStatusEffect(new MightBuff());
 			}
 			outputText("\n\n");
 			flags[kFLAGS.SPELLS_CAST]++;
@@ -675,15 +659,10 @@ package classes.Scenes.Combat
 			}
 			if (player.hasStatusEffect(StatusEffects.Might)) {
 				outputText("\nYou feel a bit weaker as your strength-enhancing spell wears off.");
-				player.str -= player.statusEffectv1(StatusEffects.Might);
-				player.tou -= player.statusEffectv2(StatusEffects.Might);
 				player.removeStatusEffect(StatusEffects.Might);
-				showStatDown("str");
-				showStatDown("tou");
-				statScreenRefresh();
 			}
 			//Remove opponent's effects
-				if (player.hasStatusEffect(StatusEffects.ChargeWeapon)) {
+			if (monster.hasStatusEffect(StatusEffects.ChargeWeapon)) {
 				outputText("\nThe glow around " + monster.a + monster.short + "'s " + monster.weaponName + " fades completely.");
 				monster.weaponAttack -= monster.statusEffectv1(StatusEffects.ChargeWeapon);
 				monster.removeStatusEffect(StatusEffects.ChargeWeapon);
@@ -694,17 +673,14 @@ package classes.Scenes.Combat
 				monster.removeStatusEffect(StatusEffects.Fear);
 			}
 			if (monster.hasStatusEffect(StatusEffects.Illusion)) {
-				outputText("\nThe reality around " + monster.a + " " + monster.short + " finally snaps back in place as your illusion spell fades.");
+				outputText("\nThe reality around " + monster.a + " " + monster.short + " finally snaps back in place as " + monster.pronoun3 +" illusion spell fades.");
 				monster.spe += monster.statusEffectv1(StatusEffects.Illusion);
 				monster.removeStatusEffect(StatusEffects.Illusion);
 			}
 
 			if (player.hasStatusEffect(StatusEffects.Might)) {
 				outputText("\nYou feel a bit weaker as your strength-enhancing spell wears off.");
-				monster.str -= monster.statusEffectv1(StatusEffects.Might);
-				monster.tou -= monster.statusEffectv2(StatusEffects.Might);
-				monster.removeStatusEffect(StatusEffects.Might);
-				statScreenRefresh();
+				player.removeStatusEffect(StatusEffects.Might);
 			}
 			if (monster.hasStatusEffect(StatusEffects.Shell)) {
 				outputText("\nThe magical shell around " + monster.a + " " + monster.short + " shatters!");
@@ -1422,13 +1398,14 @@ package classes.Scenes.Combat
 		//Stare
 		public function paralyzingStare():void
 		{
-			var theMonster:String = monster.a + monster.short;
-			var TheMonster:String = monster.capitalA + monster.short;
-			var stareTraining:Number = flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] / 100;
-			var slowEffect:Number = monster.statusEffectv1(StatusEffects.BasiliskSlow);
-			var oldSpeed:Number = monster.spe;
-			var speedDiff:int = 0;
-			var message:String = "";
+			var theMonster:String      = monster.a + monster.short;
+			var TheMonster:String      = monster.capitalA + monster.short;
+			var stareTraining:Number   = flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] / 100;
+			var bse:BasiliskSlowDebuff = monster.createOrFindStatusEffect(StatusEffects.BasiliskSlow) as BasiliskSlowDebuff;
+			var slowEffect:Number      = -bse.buffValue('spe');
+			var oldSpeed:Number        = monster.spe;
+			var speedDiff:int          = 0;
+			var message:String         = "";
 			if (stareTraining > 1) stareTraining = 1;
 
 			output.clear();
@@ -1481,13 +1458,8 @@ package classes.Scenes.Combat
 				        + monster.pronoun3 + " thoughts, making " + monster.pronoun2 + " feel sluggish and unable to coordinate. Something about the"
 				        + " helplessness of it feels so good... " + monster.pronoun1 + " can't banish the feeling that really, " + monster.pronoun1
 				        + " wants to look into your eyes forever, for you to have total control over " + monster.pronoun2 + ". ";
-				if (slowEffect > 0)
-					monster.addStatusValue(StatusEffects.BasiliskSlow, 1, 1);
-				else
-					monster.createStatusEffect(StatusEffects.BasiliskSlow, 1, 0, 0, 0);
 				slowEffect++;
-				if (monster.spe > 1) monster.spe -= 16 + stareTraining * 8 - slowEffect * (4 + stareTraining * 2);
-				if (monster.spe < 1) monster.spe = 1;
+				bse.applyEffect(16 + stareTraining * 8 - slowEffect * (4 + stareTraining * 2));
 				flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] += 4;
 				speedDiff = Math.round(oldSpeed - monster.spe);
 				output.text(message + combat.getDamageText(speedDiff) + "\n\n");
@@ -1623,7 +1595,7 @@ package classes.Scenes.Combat
 				monster.spe -= damage/2;
 				damage = monster.lustVuln * damage;
 				//Clean up down to 1 decimal point
-				damage = Math.round(damage*10)/10;		
+				damage = round(damage,1);
 				monster.teased(damage);
 			}
 			//New lines and moving on!

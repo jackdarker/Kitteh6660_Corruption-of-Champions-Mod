@@ -157,7 +157,7 @@ internal function kihaSpiderEventIntro():void {
 	outputText("Furious, she screams, \"<i>I knew it!  You really ARE one of Lethice's spies, aren't you?  Why else would you keep harassing me?  What do you WANT!?</i>\"\n\n");
 
 	outputText("What the fuck?  ");
-	if (player.cor < (66 + player.corruptionTolerance())) outputText("You try to calm the dragoness down, explaining that you aren't one of Lethice's minions, that what you told her the first time around was true - that you're here to end the demon threat.  Kiha doesn't seem to be buying it, though...\n\n");
+	if (!player.isPureEnough(66)) outputText("You try to calm the dragoness down, explaining that you aren't one of Lethice's minions, that what you told her the first time around was true - that you're here to end the demon threat.  Kiha doesn't seem to be buying it, though...\n\n");
 	else outputText("Irate, you stare her down, and with a dangerous gentleness, remind her that you're here to crush the demons.  Your fist tightens as, not unexpectedly, the erratic woman appears to hear none of it.\n\n");
 
 	outputText("\"<i>Bullshit!  You're working for the demons!</i>\" she howls.  \"<i>First you try and make me go soft, tell me I don't need to fight, and then suddenly you're sneaking into my home.  Well, no more!</i>\"  Her axe swings around to point straight at you.  \"<i>I've killed the Demon Queen's agents before, and if I have to, I'll kill you too, " + player.short + "!</i>\"\n\n");
@@ -336,7 +336,7 @@ internal function kihaFriendlyGreeting(output:Boolean = true):void {
 		warmLoverKihaIntro(output);
 		return;
 	}
-	if (output && flags[kFLAGS.KIHA_TALK_STAGE] == 6 && player.cor <= (50 + player.corruptionTolerance())) {
+	if (output && flags[kFLAGS.KIHA_TALK_STAGE] == 6 && player.isPureEnough(50)) {
 		//Talk to Friendly Kiha - Fourth Time (requires <=30 corruption on account of making the PC act like a bitch) (Z)
 		//(SPECIAL: Play next time the PC encounters Kiha after Talk 3 if he meets reqs, skipping the main menu)
 		outputText("As you wander through the swamp, you eventually come to the familiar territory of your friend, Kiha.  Remembering her hasty departure the last time you talked, a pang of worry takes hold in your chest.  She mentioned taking the fight to the demons.... Surely she didn't, did she? Grimacing at the thought, you pick up the pace and make your way to her little islet.");
@@ -2200,7 +2200,7 @@ private function guardMyCampKiha():void {
 			if (flags[kFLAGS.LETHICE_DEFEATED] > 0) outputText("\n\nYou tell about how you've defeated Lethice and put an end to the demonic threats. Kiha and her young " + (totalKihaChildren() == 1 ? "dragon-morph" : "dragon-morphs") + " look at you, amazed about your victory.");
 			else outputText("\n\nKiha tells about how she plans to get into Lethice's stronghold and defeat Lethice for once and for all.");
 			outputText("\n\nThe " + (totalKihaChildren() == 1 ? "kid" : "kids") + " are happy to hear about the story. \"<i>Thank you for being with me and listening to my story, my Doofus,</i>\" Kiha says before giving you a peck on your cheek.");
-			dynStats("lib", -2, "cor", -2, "lus", -50, "resisted", false, "noBimbo", true);
+			dynStats("lib", -2, "cor", -2, "lus", -50, "scale", false);
 			
 			menu();
 			doNext(camp.returnToCampUseOneHour);

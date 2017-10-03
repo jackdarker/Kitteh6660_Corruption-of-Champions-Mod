@@ -512,7 +512,7 @@ package classes.Scenes.Places.Farm
 				return true; // Hook the corrupt menu here
 			}
 			
-			if (player.cor >= (70 - player.corruptionTolerance()) && corruptFollowers() >= 2 && player.level >= 12)
+			if (player.isCorruptEnough(70) && corruptFollowers() >= 2 && player.level >= 12)
 			{
 				if (flags[kFLAGS.FARM_CORRUPT_PROMPT_DISPLAY] == 0)
 				{	

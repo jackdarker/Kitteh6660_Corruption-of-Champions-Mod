@@ -50,17 +50,16 @@ public function findBazaar():void {
 //[FUCK YES I WILL PUT IT IN YOUR BIZARRE ANUS]
 private function approachBazaarGuard():void {
 	clearOutput();
-	outputText("You step from concealment and walk up to the strange man, calling out in greeting.  He folds his arms across his chest and looks you up and down, peering at you with intense, black eyes.  They aren't solid onyx, but his irises are just as dark as the seemingly bottomless depths of his pupils.  His appraising gaze watches you, unblinking as second after second ticks by.  Just when you start to wonder if he speaks your language, he interrupts you by saying, \"<i>");
-	if (player.cor < (33 - player.corruptionTolerance()) && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0) outputText("Leave at once.  You are not yet ready for the wonders of the Bazaar.");
-	else outputText("Welcome to the Bizarre Bazaar.  Enter, but be mindful of your actions within.");
-	outputText("</i>\"");
-	menu();
-	if (player.cor < (33 - player.corruptionTolerance()) && flags[kFLAGS.MEANINGLESS_CORRUPTION] <= 0) {
+	outputText("You step from concealment and walk up to the strange man, calling out in greeting.  He folds his arms across his chest and looks you up and down, peering at you with intense, black eyes.  They aren't solid onyx, but his irises are just as dark as the seemingly bottomless depths of his pupils.  His appraising gaze watches you, unblinking as second after second ticks by.  Just when you start to wonder if he speaks your language, he interrupts you by saying, ");
+	if (!player.isCorruptEnough(33)) {
+		outputText("\"<i>Leave at once.  You are not yet ready for the wonders of the Bazaar.</i>\"");
+		menu();
 		addButton(0, "FIGHT!",initiateFightGuard);
 	} else {
+		outputText("\"<i>Welcome to the Bizarre Bazaar.  Enter, but be mindful of your actions within.</i>\"");
+		menu();
 		addButton(0, "Enter",enterTheBazaar);
 	}
-	
 	addButton(14, "Leave", camp.returnToCampUseOneHour);
 }
 
@@ -573,7 +572,7 @@ private function gretasGarments():void {
 		if (flags[kFLAGS.OWN_MAIDEN_BIKINI] == 0) outputText(", except maybe a super-skimpy chain bikini that's chased with white and gold highlights");
 	}
 	outputText(".");
-	dynStats("lus", 2, "resisted", false);
+	dynStats("lus", 2, "scale", false);
 	menu();
 	if (flags[kFLAGS.FOUND_SOCKS] == 0) addButton(4,"Low Stock",askGretaAboutInventory);
 	else {
@@ -1065,7 +1064,7 @@ private function assaultYoRapistYo():void {
 		//open options [Leave][Abuse ass(70 or more corruption)]
 		menu();
 		addButton(4,"Leave", assaultWinAndLeave);
-		if (player.cor >= (66 - player.corruptionTolerance()) || flags[kFLAGS.MEANINGLESS_CORRUPTION] > 0) addButton(0,"Abuse Ass",abuseHisAss);
+		if (player.isCorruptEnough(66)) addButton(0,"Abuse Ass",abuseHisAss);
 	}
 }
 

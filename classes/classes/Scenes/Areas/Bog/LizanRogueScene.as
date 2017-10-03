@@ -15,7 +15,7 @@ package classes.Scenes.Areas.Bog
 			clearOutput();
 			outputText(images.showImage("monster-lizanrogue"));
 			var lizan:LizanRogue = new LizanRogue();
-			if (player.cor > (30 + player.corruptionTolerance())) {
+			if (!player.isPureEnough(30)) {
 				outputText("As you walk through the bog you happen upon a lone lizan male covered in " + monster.skinTone + " scales. Upon hearing your approach he jumps back, your sudden appearance must have surprised him. After an initial moment of surprise the lizan tentatively sniffs the air between the two of you. Without warning he jumps back, flashing his claws and releasing a loud hiss. Apparently he smells something he doesn't like. You ready for an attack but he just sits there, making noise and puffing himself up. For all the ferocity he displays he doesn't attack and you realize he's waiting for you to back down. What will you do?");
 				if (flags[kFLAGS.CODEX_ENTRY_LIZANS] <= 0) {
 					flags[kFLAGS.CODEX_ENTRY_LIZANS] = 1;
@@ -90,7 +90,7 @@ package classes.Scenes.Areas.Bog
 			
 			outputText("The lizan raises his hands in defeat and you celebrate with a victory dance. ");
 			menu();
-			if (player.cor > (30 - player.corruptionTolerance())) {
+			if (player.isCorruptEnough(30)) {
 				addDisabledButton(0, "Use Dick", "This scene requires you to have cock and sufficient arousal.");
 				addDisabledButton(1, "Use Pussy", "This scene requires you to have vagina and sufficient arousal.");
 				if (player.lust >= 33 && player.gender > 0) {
@@ -125,7 +125,7 @@ package classes.Scenes.Areas.Bog
 		
 		public function loseToLizan():void {
 			clearOutput();
-			if (player.cor > (30 + player.corruptionTolerance())) {
+			if (!player.isPureEnough(30)) {
 				outputText("Unable to continue fighting, you collapse from " + (player.lust >= player.maxLust() ? "overwhelming desires": "your injuries") + ". The lizan steps over to you, intent on punishing you. ");
 				combat.cleanupAfterCombat();
 			}

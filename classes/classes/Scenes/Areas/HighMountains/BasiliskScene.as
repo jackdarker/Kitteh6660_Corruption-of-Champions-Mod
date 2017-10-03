@@ -102,7 +102,7 @@ package classes.Scenes.Areas.HighMountains
 				addButton(0, "Tongue", tongueBasiliskSmex, null, null, null, "Put that creature's tongue to a good use.");
 				if (player.cockThatFits(monster.analCapacity()) >= 0) {
 					addButton(1, "Ass (Gentle)", defeatBasiliskAndAnal, false, null, null, "Fuck the basilisk's ass gently!");
-					if (player.cor >= (66 - player.corruptionTolerance()) || player.findPerk(PerkLib.Sadist) >= 0)
+					if (player.isCorruptEnough(66) || player.findPerk(PerkLib.Sadist) >= 0)
 						addButton(2, "Ass (Cruel)", defeatBasiliskAndAnal, true, null, null, "Dominate and fuck the basilisk in the ass! He wouldn't like it though.");
 				}
 			}
@@ -267,13 +267,7 @@ package classes.Scenes.Areas.HighMountains
 		
 			outputText("It takes several moments for you to realize it when the basilisk steps away from you. You are free of his spell! Except... you can't move. You are standing there, gazing into nothing, and you can't move. You can feel your arms and legs and the breeze on your skin, but the ability to do anything with them is simply not there; it's as if the nerve connections have been severed, leaving you utterly paralyzed. The most you can manage is a raspy half-moan through your still throat. You can't even follow the basilisk with your eyes; although you can feel it; it gives you cause to moan again.\n\n");
 			//Undo slow to determine if bad end time
-			if (player.hasStatusEffect(StatusEffects.BasiliskSlow)) {
-				player.spe += player.statusEffectv1(StatusEffects.BasiliskSlow);
-				mainView.statsView.showStatUp( 'spe' );
-				// speUp.visible = true;
-				// speDown.visible = false;
-				player.removeStatusEffect(StatusEffects.BasiliskSlow);
-			}
+			player.removeStatusEffect(StatusEffects.BasiliskSlow);
 			dynStats("spe", player.findPerk(PerkLib.BasiliskResistance) < 0 ? 3 : 1, "lus", 399);
 			//Bad end
 			if (player.spe < 5 && player.findPerk(PerkLib.BasiliskResistance) < 0 && !player.canUseStare()) {

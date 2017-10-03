@@ -262,7 +262,7 @@ package classes.Scenes.Dungeons.D3
 			}
 			outputText("The animalistic scent of it seems to get inside you, the musky aroma burning a path of liquid heat to your groin.");
 			player.takeLustDamage(15 + player.lib / 20, true);
-			if (player.findPerk(PerkLib.MinotaurCumAddict) >= 0 || flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] == 2)
+			if (player.findPerk(PerkLib.MinotaurCumAddict) >= 0 || flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] >= 2)
 			{
 				if (rand(2) == 0)
 				{

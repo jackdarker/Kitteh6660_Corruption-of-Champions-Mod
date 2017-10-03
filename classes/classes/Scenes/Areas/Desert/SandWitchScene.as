@@ -133,12 +133,12 @@ package classes.Scenes.Areas.Desert {
 		
 internal function sandwitchRape():void {
 	spriteSelect(SpriteDb.s_sandwich);
-	player.clearStatuses(false);
+	player.clearStatuses();
 	//LUST DEFEAT
 	if (player.lust >= player.maxLust()) {
 		var titsOrgasm:Boolean = false;
 		//BAD END START
-		if (player.biggestTitSize() >= 9 && player.biggestLactation() >= 3 && player.cor >= (25 + player.corruptionTolerance())) {
+		if (player.biggestTitSize() >= 9 && player.biggestLactation() >= 3 && !player.isPureEnough(25)) {
 			clearOutput();
 			outputText("Overwhelmed by the intense pleasure caused by the vibrating sphere inside your body, you fall to your knees.\n\nYou whimper pathetically, desperate to cum, as the Sand Witch steps nearer to you and gently strokes your face. She smiles cruelly and lets her hands drop down to your chest, then tears your top away, letting your huge breasts bounce free. The mysterious woman firmly rubs and kneads them, making you gasp and writhe, until she starts lightly flicking your painfully hard nipples. You edge closer and closer to orgasm, panting like a whore while the witch teases you with her hands and magic.\n\n");
 			outputText("Just before you cum, she leans down to whisper to you, tickling your ear with her warm breath: \"<i>Evals klim ym emoceb llahs uoy.</i>\"\n\nA familiar pressure builds in your chest, but it's far stronger than ever before. You feel your breasts swell rapidly, and milk sprays from your nipples, splattering you and the witch with white droplets. Your eyes roll back and your tongue hangs out as you cum, mind nearly breaking from the world-shattering orgasm that thunders through you.\n\nYou black out.");
@@ -211,7 +211,7 @@ internal function sandwitchRape():void {
 	}
 	//HP DEFEAT
 	else { 
-		if (player.biggestTitSize() >= 9 && player.biggestLactation() >= 3 && player.cor >= (25 + player.corruptionTolerance())) {
+		if (player.biggestTitSize() >= 9 && player.biggestLactation() >= 3 && !player.isPureEnough(25)) {
 			clearOutput();
 			outputText("You stagger and fall to one knee, too overcome by pain to keep fighting.\n\nAs your vision wavers with exhaustion, the witch strides towards you, seeming to glide across the sand. Your consciousness starts to fade, and you see the exotic woman lick her lips and smile cruelly, staring at your generous breasts.\n\nThe last thing you hear before passing out is a mysterious spell, murmured right into your ear in a low, throaty whisper: \"<i>Evals klim ym emoceb llahs uoy.</i>\"\n\nYou dream of walking proudly through the desert, enormous rack jiggling shamelessly with every step, and of tempting nubile young champions to wrap their lips around your nipples and drink. Your sleep becomes fevered as your dreams grow more and more corrupt - you dream of using dark magic to lactate succubus milk, and of your former friends from Ingnam greedily drinking your enhanced milk until their bellies strain to contain it all, then going wide-eyed as pound after pound of breast-flesh suddenly swells upon their chests...");
 			//BAD END.
@@ -267,7 +267,7 @@ private function sandwitchRaped():void {
 	//Malllllleeeee (or has penis)
 	if (player.gender == 1 || player.gender == 3) {
 		//Not so corrupt
-		if (player.cor < (50 + player.corruptionTolerance())) {
+		if (player.isPureEnough(50)) {
 			outputText("You smile at the sand witch, trying to seem enticing. A tiny smile plays across her face even though she supports a worried frown. She reaches up to you, and you allow her to gently pull you down to her. You marvel at her multiple breasts, each perfectly rounded. Each has a nipple approximately two inches long, enough to suck if you wanted to.  ");
 			outputText("Your attention wanders down to the damp sand underneath her legs, and her musky scent hits your nose. Which do you go after?\n\n");			
 			menu();
@@ -955,7 +955,7 @@ public function sammitchBirthsDriders():void {
 	outputText("\n\nYou can guess that without such help the babies she'll give birth to will wither and die in such a hostile climate.");
 	
 	//corr < 60 goes to Help her!, else go to Must I really?
-	if (player.cor < (60 + player.corruptionTolerance())) helpZeWithBirfBabies();
+	if (player.isPureEnough(60)) helpZeWithBirfBabies();
 	else reluctantlyHelpZeWitch();
 }
 
