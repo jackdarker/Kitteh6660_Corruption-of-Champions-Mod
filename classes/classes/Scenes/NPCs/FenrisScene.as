@@ -5,6 +5,7 @@
 package classes.Scenes.NPCs{
 
 	import classes.Items.Weapon;
+	import classes.Scenes.API.Encounter;
 	import classes.Scenes.NPCs.Fenris;
 	import classes.Scenes.NPCs.FenrisMonster;
 	import classes.Scenes.Areas.Lake.FenrisGooFight;
@@ -16,17 +17,28 @@ package classes.Scenes.NPCs{
 	import classes.Items.Useable;
 	import classes.ItemType;
 
-	public class FenrisScene extends NPCAwareContent  {
+	public class FenrisScene extends NPCAwareContent implements Encounter {
+		//override the following encounter-functions when creating new encounters and call encounterTracking on execution	
+	public function encounterChance():Number {
+		return 0;
+	}
+	public function execEncounter():void {
+		encounterTracking("Lake");		
+	}
+	public function encounterName():String {
+		return "Fenris the wolfman";
+	}
+		
+		//public var FenrisNPC:classes.Scenes.NPCs.Fenris;
 
-		public var FenrisNPC:classes.Scenes.NPCs.Fenris;
+	public function FenrisScene()
+	{		}
+		
 
-		public function FenrisScene()
-		{		}
-
-	/**this will switch to the next stage; see Fenris.as for stages & flags
-	 * value defines the quest branch to go on
-	 */
-	public function progressMainQuest( value:uint):void {
+/**this will switch to the next stage; see Fenris.as for stages & flags
+ * value defines the quest branch to go on
+ */
+private function progressMainQuest( value:uint):void {
 		var stage:uint = Fenris.getInstance().getMainQuestStage();
 		switch (stage ) {
 		case Fenris.MAINQUEST_Not_Met: 
@@ -131,7 +143,6 @@ package classes.Scenes.NPCs{
 		}
 		Fenris.getInstance().setMainQuestStage(stage);
 	}
-
 
 public function isEncounterPossible(Place:String):Boolean {
 	var _fenris:Fenris = Fenris.getInstance();
@@ -254,7 +265,7 @@ private function encounterTrackingLake():void {
 	}
 }
 
-public function encounterTrackingDesert():void {	
+private function encounterTrackingDesert():void {	
 	var _fenris:Fenris = Fenris.getInstance();
 	var stage:uint = _fenris.getMainQuestStage();
 	var _rand:Number = rand(100);
@@ -763,7 +774,7 @@ private function fenrisGotCaged(dlgstage:int = -1):void {
 		menu();
 		addButton(1, "Next", fenrisGotCaged, 402, null, null, "Next");
 	} else if (dlgstage == 402) {
-		outputText("[fenris Ey] nervously rubs [fenris es] paws together '<i> Na, Im not sure I would like to try this </i>' obviously in doubt. \n"); 
+		outputText("[fenris Ey] nervously rubs [fenris eir] paws together '<i> Na, Im not sure I would like to try this </i>' obviously in doubt. \n"); 
 		outputText("'<i>If we might shrink it, we could size it up again. <i>'  you try to convince him \n");
 		outputText("'<i>I will try to find someone in Teladre how could help you first. Maybe someone how knows how to lockpick or build a key. In the meantime you should try to track down however did this to you. Just don't get into more trouble.<i>'\n");
 		Fenris.getInstance().increasePlayerRelation(10, 30);
@@ -929,6 +940,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		//startCombat(new fetishZealotKeyFight());	Todo
 		outputText("\nAfter the battle you search for the key. But its nowhere to be found, darn.\n");
 		progressMainQuest(2);
+		camp.returnToCampUseOneHour()
 	}
 }
 private function stealCloth (dlgstage:int = -1):void {

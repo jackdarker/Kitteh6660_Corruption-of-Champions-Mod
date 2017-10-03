@@ -1730,12 +1730,12 @@ public function armorShop(page:int = -1):void {
 		addButton(13, "More", armorShop, 100);
 		addButton(14, "Leave", telAdreMenu);
 	} else {
-		menu();
+
 		if (Fenris.getInstance().getMainQuestStage()==Fenris.MAINQUEST_CAGED) {
 			addButton(10, "Forge Key", fenrisForgeKey);
 		}
 		addButton(13, "Flirt", yvonneFlirt);
-		addButton(14, "Back", armorShop);
+		addButton(14, "Back", armorShops);
 	}
 }
 private function fenrisForgeKey():void {

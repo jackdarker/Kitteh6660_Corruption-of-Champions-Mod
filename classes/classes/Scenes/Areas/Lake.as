@@ -6,9 +6,9 @@ package classes.Scenes.Areas
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
-import classes.Scenes.API.Encounter;
-import classes.Scenes.API.Encounters;
-import classes.Scenes.API.FnHelpers;
+	import classes.Scenes.API.Encounter;
+	import classes.Scenes.API.Encounters;
+	import classes.Scenes.API.FnHelpers;
 	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.Lake.*;
 
@@ -24,6 +24,7 @@ import classes.Scenes.API.FnHelpers;
 		public var kaiju:Kaiju = new Kaiju();
 		public var calluScene:CalluScene = new CalluScene();
 		public var swordInStone:SwordInStone = new SwordInStone();
+		public var fenrisScene:FenrisSceneLake = new FenrisSceneLake()
 		public function Lake()
 		{
 		}
@@ -78,7 +79,8 @@ import classes.Scenes.API.FnHelpers;
 						name  : "bigjunk",
 						call  : curry(game.commonEncounters.bigJunkForestScene, true),
 						chance: game.commonEncounters.bigJunkChance
-					}, Encounters.group("loot", {
+					},fenrisScene, 
+					 Encounters.group("loot", {
 						name: "equinum",
 						call: findEquinum
 					}, {

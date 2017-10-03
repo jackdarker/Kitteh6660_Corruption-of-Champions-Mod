@@ -230,7 +230,7 @@ package classes {
 				player.createPerk(PerkLib.BasiliskResistance, 0, 0, 0, 0);
 				needNext = true;
 			}
-			if (flags[kFLAGS.TIMES_TRANSFORMED] >= 100 && player.findPerk(PerkLib.TransformationResistance) < 0) {
+			if (flags[kFLAGS.TIMES_TRANSFORMED] >= 100 && player.findPerk(PerkLib.TransformationResistance) < 0 && false) {  //jk disabled
 				outputText("\nYou feel a strange tingling sensation. It seems as if you've finally adapted to the transformative properties of the food in Mareth and your body has finally built up enough resistance! You suspect that you can still transform but at somewhat diminished rate. \n\n(<b>Gained Perk: Transformation Resistance - Transformative items now have less chance to transform you. In addition, any Bad Ends related to overdose of certain transformative items are now disabled.</b>)\n");
 				player.createPerk(PerkLib.TransformationResistance, 0, 0, 0, 0);
 				needNext = true;
