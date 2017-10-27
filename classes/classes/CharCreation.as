@@ -1,4 +1,4 @@
-package classes 
+﻿package classes 
 {
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -648,15 +648,15 @@ import fl.controls.ComboBox;
 			clearOutput();
 			outputText("You are a hermaphrodite.  Your upbringing has provided you an average in stats.\n\nWhat type of build do you have?");
 			menu();
-			addButton(0, "Fem. Slender", buildSlenderFemale, null, null, null, "Feminine build. \n\nWill make you a futanari.", "Feminine, Slender");
-			addButton(1, "Fem. Average", buildAverageFemale, null, null, null, "Feminine build. \n\nWill make you a futanari.", "Feminine, Average");
-			addButton(2, "Fem. Curvy", buildCurvyFemale, null, null, null, "Feminine build. \n\nWill make you a futanari.", "Feminine, Curvy");
-			addButton(3, "Fem. Tomboy", buildTomboyishFemale, null, null, null, "Androgynous build. \n\nA bit feminine, but fit and slender.", "Feminine, Tomboyish");
-			//addButton(4, "Androgynous", chooseBodyTypeAndrogynous, null, null, null, "Confusing build. \n\nWill make you as average as possible.", "Androgynous");
-			addButton(5, "Mas. Lean", buildLeanMale, null, null, null, "Masculine build. \n\nWill make you a maleherm.", "Masculine, Lean");
-			addButton(6, "Mas. Average", buildAverageMale, null, null, null, "Masculine build. \n\nWill make you a maleherm.", "Masculine, Average");
-			addButton(7, "Mas. Thick", buildThickMale, null, null, null, "Masculine build. \n\nWill make you a maleherm.", "Masculine, Thick");
-			addButton(8, "Mas. Girly", buildGirlyMale, null, null, null, "Androgynous build. \n\nA bit masculine, but soft and slender.", "Masculine, Girly");
+			addButton(0, "Fem. Slender", buildSlenderFemale).hint("Feminine build. \n\nWill make you a futanari.", "Feminine, Slender");
+			addButton(1, "Fem. Average", buildAverageFemale).hint("Feminine build. \n\nWill make you a futanari.", "Feminine, Average");
+			addButton(2, "Fem. Curvy", buildCurvyFemale).hint("Feminine build. \n\nWill make you a futanari.", "Feminine, Curvy");
+			addButton(3, "Fem. Tomboy", buildTomboyishFemale).hint("Androgynous build. \n\nA bit feminine, but fit and slender.", "Feminine, Tomboyish");
+			//addButton(4, "Androgynous", chooseBodyTypeAndrogynous).hint("Confusing build. \n\nWill make you as average as possible.", "Androgynous");
+			addButton(5, "Mas. Lean", buildLeanMale).hint("Masculine build. \n\nWill make you a maleherm.", "Masculine, Lean");
+			addButton(6, "Mas. Average", buildAverageMale).hint("Masculine build. \n\nWill make you a maleherm.", "Masculine, Average");
+			addButton(7, "Mas. Thick", buildThickMale).hint("Masculine build. \n\nWill make you a maleherm.", "Masculine, Thick");
+			addButton(8, "Mas. Girly", buildGirlyMale).hint("Androgynous build. \n\nA bit masculine, but soft and slender.", "Masculine, Girly");
 		}
 		
 		
@@ -1486,11 +1486,11 @@ import fl.controls.ComboBox;
 			outputText("\n\nAscension Perk Points: " + player.ascensionPerkPoints);
 			outputText("\n\n(When you're done, select Reincarnate.)");
 			menu();
-			addButton(0, "Perk Select", ascensionPerkMenu, null, null, null, "Spend Ascension Perk Points on special perks!", "Perk Selection");
-			addButton(1, "Perm Perks", ascensionPermeryMenu, null, null, null, "Spend Ascension Perk Points to make certain perks permanent.", "Perk Selection");
-			addButton(2, "Respec", respecLevelPerks, null, null, null, "Respec all level-up perks for 5 Ascension Perk Points?");
-			addButton(3, "Rename", renamePrompt, null, null, null, "Change your name at no charge?");
-			addButton(4, "Reincarnate", reincarnatePrompt, null, null, null, "Reincarnate and start an entirely new adventure?");
+			addButton(0, "Perk Select", ascensionPerkMenu).hint("Spend Ascension Perk Points on special perks!", "Perk Selection");
+			addButton(1, "Perm Perks", ascensionPermeryMenu).hint("Spend Ascension Perk Points to make certain perks permanent.", "Perk Selection");
+			addButton(2, "Respec", respecLevelPerks).hint("Respec all level-up perks for 5 Ascension Perk Points?");
+			addButton(3, "Rename", renamePrompt).hint("Change your name at no charge?");
+			addButton(4, "Reincarnate", reincarnatePrompt).hint("Reincarnate and start an entirely new adventure?");
 		}
 		
 		//Perk Selection
@@ -1542,7 +1542,7 @@ import fl.controls.ComboBox;
 			var countBeforeAdding:int = (page - 1) * 12;
 			menu();
 			for (var i:int = 0; i < player.perks.length; i++) {
-				if (isPermable(player.perks[i].ptype)) {
+				if (isPermable(player.perks[i].ptype) && button < 14) {
 					//Decrement count before adding buttons.
 					if (countBeforeAdding > 0) {
 						countBeforeAdding--;
@@ -1560,7 +1560,7 @@ import fl.controls.ComboBox;
 				if (button == 9) button++;
 			}
 			//Next and previous page buttons depending on conditions.
-			if (button > 14) addButton(4, "Next", ascensionPermeryMenu, page + 1);
+			if (button >= 14) addButton(4, "Next", ascensionPermeryMenu, page + 1);
 			if (page > 1) addButton(9, "Previous", ascensionPermeryMenu, page - 1);
 			addButton(14, "Back", ascensionMenu);
 		}

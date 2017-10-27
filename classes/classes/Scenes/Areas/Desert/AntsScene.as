@@ -2724,7 +2724,7 @@ package classes.Scenes.Areas.Desert
 			//Persuade Phylla - Random chance of failing, affected by INT and whether she's already housing eggs in her vagina.
 			//Persuasion failure
 			if (rand(20) + 1 + player.inte / 20 < 10) {
-				outputText("\n\nPhylla ponders for a moment and shakes her head.  \"<i>I'm sorry, [name], I'm not comfortable with that right now.");
+				outputText("\n\nPhylla ponders for a moment and shakes her head.  \"<i>I'm sorry, [name], I'm not comfortable with that right now.</i>");
 				//If player has already impregnated Phylla with drider eggs and fails the check:
 				if (pregnancy.isPregnant) outputText("\n\n\"<i>I just can't hold anything else inside me.  I'm sorry!  Please don't be mad... I mean, I will!  Just a-after... this batch.</i>\"");
 				//Else player has not impregnated:

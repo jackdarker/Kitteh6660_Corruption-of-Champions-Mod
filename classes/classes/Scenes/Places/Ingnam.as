@@ -51,8 +51,7 @@ package classes.Scenes.Places
 			mainView.showMenuButton( MainView.MENU_APPEARANCE );
 			showStats();
 			mainView.setMenuButton( MainView.MENU_NEW_MAIN, "Main Menu", kGAMECLASS.mainMenu.mainMenu );
-			mainView.newGameButton.toolTipText = "Return to main menu.";
-			mainView.newGameButton.toolTipHeader = "Main Menu";
+			mainView.newGameButton.hint("Return to main menu.","Main Menu");
 			if (camp.setLevelButton()) return;
 			hideUpDown();
 			menu();
@@ -391,10 +390,10 @@ package classes.Scenes.Places
 				return;
 			}
 			menu();
-			addButton(0, "Order Drink", orderDrink, null, null, null, "Buy some refreshing beverages.");
-			addButton(1, "Order Food", orderFood, null, null, null, "Buy some food" + (flags[kFLAGS.HUNGER_ENABLED] > 0 && player.hunger < 50 ? " and curb that hunger of yours!": ".") + "");
-			if (flags[kFLAGS.INGNAM_RUMORS] < 3) addButton(2, "Stories", hearRumors, null, null, null, "Hear the story the innkeeper has to offer.");
-			//if (player.findPerk(PerkLib.HistoryWhore) >= 0) addButton(5, "Prostitute", whoreForGems, null, null, null, "Seek someone who's willing to have sex with you for profit.");
+			addButton(0, "Order Drink", orderDrink).hint("Buy some refreshing beverages.");
+			addButton(1, "Order Food", orderFood).hint("Buy some food" + (flags[kFLAGS.HUNGER_ENABLED] > 0 && player.hunger < 50 ? " and curb that hunger of yours!": ".") + "");
+			if (flags[kFLAGS.INGNAM_RUMORS] < 3) addButton(2, "Stories", hearRumors).hint("Hear the story the innkeeper has to offer.");
+			//if (player.findPerk(PerkLib.HistoryWhore) >= 0) addButton(5, "Prostitute", whoreForGems).hint("Seek someone who's willing to have sex with you for profit.");
 			addButton(14, "Leave", menuIngnam);
 		}
 		

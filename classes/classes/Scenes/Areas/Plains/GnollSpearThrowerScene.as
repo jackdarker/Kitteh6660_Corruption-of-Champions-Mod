@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by aimozg on 03.01.14.
  */
 package classes.Scenes.Areas.Plains
@@ -178,8 +178,8 @@ package classes.Scenes.Areas.Plains
 			
 			if (player.lust >= 33 && !player.isGenderless()) {
 				outputText("\n\nUsing the hyena to get off would be easy.  What do you do?");
-				if (player.hasCock()) addButton(0, "Get BJ", hyenaVictoryRapeFellatio, null, null, null, "Make the gnoll suck you off.", "Get Blowjob");
-				if (player.hasVagina()) addButton(1, "Get Licked", victoryRapeHyenaCunnilingus, null, null, null, "Make the gnoll lick your pussy.");
+				if (player.hasCock()) addButton(0, "Get BJ", hyenaVictoryRapeFellatio).hint("Make the gnoll suck you off.", "Get Blowjob");
+				if (player.hasVagina()) addButton(1, "Get Licked", victoryRapeHyenaCunnilingus).hint("Make the gnoll lick your pussy.");
 			}
 			
 			addButton(14, "Leave", combat.cleanupAfterCombat);

@@ -109,7 +109,7 @@ package classes.Scenes.Dungeons.D3
 			{
 				addButton(5, "Redemption", redemption, hpVictory);
 			}
-			addButton(14, "Skip Out", theChoiceDunDunDun, null, null, null, "Screw this! Skip out and make the choice.");
+			addButton(14, "Skip Out", theChoiceDunDunDun).hint("Screw this! Skip out and make the choice.");
 		}
 		
 		private function plowHer():void
@@ -1251,12 +1251,12 @@ package classes.Scenes.Dungeons.D3
 			outputText(images.showImage("event-game"));
 			outputText("What would you like to do?");
 			menu();
-			addButton(0, "Export", exportSaveData, null, null, null, "Export your save for possible use in CoC2.");
+			addButton(0, "Export", exportSaveData).hint("Export your save for possible use in CoC2.");
 			if (flags[kFLAGS.GAME_END] == GAME_END_CONSORT)
 				addButtonDisabled(1, "Continue", "Nuh-uh. Mareth is too fucked up to let you continue and it's all due to the consequences you've made.");
 			else
-				addButton(1, "Continue", postEndingReturn, null, null, null, "Continue the game so you complete anything you've missed.");
-			addButton(4, "Quit", quitToMenu, null, null, null, "Quit and return to the main menu?");
+				addButton(1, "Continue", postEndingReturn).hint("Continue the game so you complete anything you've missed.");
+			addButton(4, "Quit", quitToMenu).hint("Quit and return to the main menu?");
 		}
 		
 		private function postEndingReturn():void {

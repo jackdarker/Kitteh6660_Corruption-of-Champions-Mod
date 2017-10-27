@@ -320,11 +320,6 @@
 		{
 			kGAMECLASS.removeButton(arg);
 		}
-
-		protected function hasButton(arg:*):Boolean
-		{
-			return kGAMECLASS.hasButton(arg);
-		}
 		
 		protected function openURL(url:String):void{
 			return kGAMECLASS.openURL(url);

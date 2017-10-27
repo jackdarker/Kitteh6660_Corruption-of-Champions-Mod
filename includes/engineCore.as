@@ -212,112 +212,6 @@ public function getButtonText(index:int):String {
 	}
 }
 
-public function getButtonToolTipHeader(buttonText:String):String
-{
-	var toolTipHeader:String;
-	
-	if (buttonText.indexOf(" x") != -1)
-	{
-		buttonText = buttonText.split(" x")[0];
-	}
-	
-	//Get items
-	var itype:ItemType = ItemType.lookupItem(buttonText);
-	var temp:String = "";
-	if (itype != null) temp = itype.longName;
-	itype = ItemType.lookupItemByShort(buttonText);
-	if (itype != null) temp = itype.longName;
-	if (temp != "") {
-		temp = Utils.capitalizeFirstLetter(temp);
-		toolTipHeader = temp;
-	}
-	
-	//Set tooltip header to button.
-	if (toolTipHeader == null) {
-		toolTipHeader = buttonText;
-	}
-	
-	return toolTipHeader;
-}
-
-// Returns a string or undefined.
-public function getButtonToolTipText(buttonText:String):String
-{
-	var toolTipText :String;
-
-	buttonText = buttonText || '';
-
-	//Items
-	//if (/^....... x\d+$/.test(buttonText)){
-	//	buttonText = buttonText.substring(0,7);
-	//}
-	
-	// Fuck your regex
-	if (buttonText.indexOf(" x") != -1)
-	{
-		buttonText = buttonText.split(" x")[0];
-	}
-	
-	var itype:ItemType = ItemType.lookupItem(buttonText);
-	if (itype != null) toolTipText = itype.description;
-	itype = ItemType.lookupItemByShort(buttonText);
-	if (itype != null) toolTipText = itype.description;
-
-	//------------
-	// COMBAT 
-	//------------
-	if (buttonText.indexOf("Defend") != -1) { //Not used at the moment.
-		toolTipText = "Selecting defend will reduce the damage you take by 66 percent, but will not affect any lust incurred by your enemy's actions.";
-	}
-	//Urta's specials - MOVED
-	//P. Special attacks - MOVED
-	//M. Special attacks - MOVED
-
-	//------------
-	// MASTURBATION 
-	//------------
-	//Masturbation Toys
-	if (buttonText == "Masturbate") {
-		toolTipText = "Selecting this option will make you attempt to manually masturbate in order to relieve your lust buildup.";
-	}
-	if (buttonText == "Meditate") {
-		toolTipText = "Selecting this option will make you attempt to meditate in order to reduce lust and corruption.";
-	}
-	if (buttonText.indexOf("AN Stim-Belt") != -1) {
-		toolTipText = "This is an all-natural self-stimulation belt.  The methods used to create such a pleasure device are unknown.  It seems to be organic in nature.";
-	}
-	if (buttonText.indexOf("Stim-Belt") != -1) {
-		toolTipText = "This is a self-stimulation belt.  Commonly referred to as stim-belts, these are clockwork devices designed to pleasure the female anatomy.";
-	}
-	if (buttonText.indexOf("AN Onahole") != -1) {
-		toolTipText = "An all-natural onahole, this device looks more like a bulbous creature than a sex-toy.  Nevertheless, the slick orifice it presents looks very inviting.";
-	}
-	if (buttonText.indexOf("D Onahole") != -1) {
-		toolTipText = "This is a deluxe onahole, made of exceptional materials and with the finest craftsmanship in order to bring its user to the height of pleasure.";
-	}
-	if (buttonText.indexOf("Onahole") != -1) {
-		toolTipText = "This is what is called an 'onahole'.  This device is a simple textured sleeve designed to fit around the male anatomy in a pleasurable way.";
-	}
-	if (buttonText.indexOf("Dual Belt") != -1) {
-		toolTipText = "This is a strange masturbation device, meant to work every available avenue of stimulation.";
-	}
-	if (buttonText.indexOf("C. Pole") != -1) {
-		toolTipText = "This 'centaur pole' as it's called appears to be a sex-toy designed for females of the equine persuasion.  Oddly, it's been sculpted to look like a giant imp, with an even bigger horse-cock.";
-	}
-	if (buttonText.indexOf("Fake Mare") != -1) {
-		toolTipText = "This fake mare is made of metal and wood, but the anatomically correct vagina looks as soft and wet as any female centaur's.";
-	}
-	//Books - MOVED
-	//------------
-	// TITLE SCREEN 
-	//------------
-	if (buttonText.indexOf("ASPLODE") != -1) {
-		toolTipText = "MAKE SHIT ASPLODE";
-	}
-	return toolTipText;
-}
-
-
 // Hah, finally a place where a dictionary is actually required!
 import flash.utils.Dictionary;
 private var funcLookups:Dictionary = null;
@@ -477,8 +371,6 @@ public function addButton(pos:int, text:String = "", func1:Function = null, arg1
 	}
 	callback = createCallBackFunction(func1, arg1, arg2, arg3);
 
-	if (toolTipText == "") toolTipText = getButtonToolTipText(text);
-	if (toolTipHeader == "") toolTipHeader = getButtonToolTipHeader(text);
 	btn.show(text,callback, toolTipText, toolTipHeader);
 	output.flush();
 	return btn;
@@ -494,25 +386,12 @@ public function addButtonDisabled(pos:int, text:String = "", toolTipText:String 
 		}
 	}
 
-	if (toolTipText == "") toolTipText = getButtonToolTipText(text);
-	if (toolTipHeader == "") toolTipHeader = getButtonToolTipHeader(text);
-	btn.showDisabled(text,toolTipHeader,toolTipText);
+	btn.showDisabled(text,toolTipText,toolTipHeader);
 	return btn;
 }
 
 public function button(pos:int):CoCButton {
 	return mainView.bottomButtons[pos];
-}
-
-public function setButtonTooltip(index:int, toolTipHeader:String = "", toolTipText:String = ""):void {
-	button(index).hint(toolTipText,toolTipHeader);
-}
-
-public function hasButton(arg:*):Boolean {
-	if ( arg is String )
-		return mainView.hasButton( arg as String );
-	else
-		return false;
 }
 
 /**

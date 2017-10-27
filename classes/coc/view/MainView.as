@@ -369,7 +369,7 @@ public class MainView extends Block {
 			});
 			button.preCallback = (function(i:int):Function{
 				return function(b:CoCButton):void{
-					if (_onBottomButtonClick) _onBottomButtonClick(i);
+					if (_onBottomButtonClick != null) _onBottomButtonClick(i);
 				};
 			})(bi);
 			this.bottomButtons.push(button);
@@ -401,13 +401,7 @@ public class MainView extends Block {
 		var button:CoCButton = this.bottomButtons[index] as CoCButton;
 
 		if (!button) return null;
-		button.labelText     = label;
-		button.callback      = callback;
-		button.toolTipHeader = toolTipViewHeader;
-		button.toolTipText   = toolTipViewText;
-		button.visible       = true;
-		button.enabled       = true;
-		return button;
+		return button.show(label,callback,toolTipViewText,toolTipViewHeader);
 	}
 
 	public function showBottomButtonDisabled(index:int, label:String, toolTipViewText:String = '', toolTipViewHeader:String = ''):CoCButton {

@@ -99,7 +99,7 @@ package classes.Scenes.Areas.HighMountains
 			if (player.lust >= 33) {
 				outputText(" Certain that the creature won't dare try and turn his eyes on you again, you take your time to look the tall reptile over directly for the first time. Perhaps you could use him to satisfy your baser urges. If so, what part of him do you choose?");
 				//[Tongue][Ass]
-				addButton(0, "Tongue", tongueBasiliskSmex, null, null, null, "Put that creature's tongue to a good use.");
+				addButton(0, "Tongue", tongueBasiliskSmex).hint("Put that creature's tongue to a good use.");
 				if (player.cockThatFits(monster.analCapacity()) >= 0) {
 					addButton(1, "Ass (Gentle)", defeatBasiliskAndAnal, false, null, null, "Fuck the basilisk's ass gently!");
 					if (player.isCorruptEnough(66) || player.findPerk(PerkLib.Sadist) >= 0)
@@ -108,10 +108,10 @@ package classes.Scenes.Areas.HighMountains
 			}
 			
 			if (player.canOvipositSpider()) {
-				addButton(3, "Lay Eggs", driderPCEggLaysBasilisk, null, null, null, "Lay your eggs in the basilisk.");
+				addButton(3, "Lay Eggs", driderPCEggLaysBasilisk).hint("Lay your eggs in the basilisk.");
 			}
 			if (player.canOvipositBee() && !player.isGenderless()) {
-				addButton(3, "Lay Eggs", layBeeEggsInABasilisk, null, null, null, "Lay your eggs in the basilisk.");
+				addButton(3, "Lay Eggs", layBeeEggsInABasilisk).hint("Lay your eggs in the basilisk.");
 			}
 			
 			addButton(14, "Leave", combat.cleanupAfterCombat);

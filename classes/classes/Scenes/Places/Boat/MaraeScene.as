@@ -1,4 +1,4 @@
-package classes.Scenes.Places.Boat {
+﻿package classes.Scenes.Places.Boat {
 import classes.*;
 import classes.GlobalFlags.kFLAGS;
 import classes.GlobalFlags.kACHIEVEMENTS;
@@ -688,7 +688,7 @@ public class MaraeScene extends AbstractBoatContent implements TimeAwareInterfac
 		outputText("\n\n(Do you fight Marae or stay with her and abandon your quests? Or you could leave if you want.)");
 		menu();
 		addButton(0, "Fight Her", promptFightMarae, level3MaraeEncounter, null, null, "Fight Marae the corrupted goddess!");
-		addButton(1, "Stay With Her", maraeBadEnd, null, null, null, "Stay with Marae and end your adventures?");
+		addButton(1, "Stay With Her", maraeBadEnd).hint("Stay with Marae and end your adventures?");
 		addButton(4, "Leave", camp.returnToCampUseOneHour);
 	}
 
@@ -738,7 +738,7 @@ public class MaraeScene extends AbstractBoatContent implements TimeAwareInterfac
 		}
 		flags[kFLAGS.PURE_MARAE_ENDGAME] = 1;
 		menu();
-		addButton(0, "Bring it on!", initiateFightMarae, null, null, null, "Challenge Marae to a fight. This is going to be an extremely HARD boss fight! \n\nRecommended level: 30+");
+		addButton(0, "Bring it on!", initiateFightMarae).hint("Challenge Marae to a fight. This is going to be an extremely HARD boss fight! \n\nRecommended level: 30+");
 		addButton(1, "Not yet!", camp.returnToCampUseOneHour);
 	}
 

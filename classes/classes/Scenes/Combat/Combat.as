@@ -245,24 +245,24 @@ public class Combat extends BaseContent
 			var attacks:Function = normalAttack;
 			//Standard menu before modifications.
 			if (!isWieldingRangedWeapon())
-				addButton(0, "Attack", attacks, null, null, null, "Attempt to attack the enemy with your " + player.weaponName + ".  Damage done is determined by your strength and weapon.");
+				addButton(0, "Attack", attacks).hint("Attempt to attack the enemy with your " + player.weaponName + ".  Damage done is determined by your strength and weapon.");
 			else if (player.weaponName.indexOf("staff") != -1)
-				addButton(0, "M.Bolt", attacks, null, null, null, "Attempt to attack the enemy with magic bolt from your " + player.weaponName + ".  Damage done is determined by your intelligence, speed and weapon.", "Magic Bolt");
+				addButton(0, "M.Bolt", attacks).hint("Attempt to attack the enemy with magic bolt from your " + player.weaponName + ".  Damage done is determined by your intelligence, speed and weapon.", "Magic Bolt");
 			else if (flags[kFLAGS.FLINTLOCK_PISTOL_AMMO] <= 0 && player.weaponName == "flintlock pistol")
-				addButton(0, "Reload", attacks, null, null, null, "Your " + player.weaponName + " is out of ammo.  You'll have to reload it before attack.");
+				addButton(0, "Reload", attacks).hint("Your " + player.weaponName + " is out of ammo.  You'll have to reload it before attack.");
 			else
-				addButton(0, "Shoot", attacks, null, null, null, "Fire a round at your opponent with your " + player.weaponName + "!  Damage done is determined by your strength, speed and weapon.");
+				addButton(0, "Shoot", attacks).hint("Fire a round at your opponent with your " + player.weaponName + "!  Damage done is determined by your strength, speed and weapon.");
 				
-			addButton(1, "Tease", combatTeases.teaseAttack, null, null, null, "Attempt to make an enemy more aroused by striking a seductive pose and exposing parts of your body.");
-			if (combatAbilities.canUseMagic()) addButton(2, "Spells", combatAbilities.magicMenu, null, null, null, "Opens your spells menu, where you can cast any spells you have learned.  Beware, casting spells increases your fatigue, and if you become exhausted you will be easier to defeat.");
-			addButton(3, "Items", inventory.inventoryMenu, null, null, null, "The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
-			addButton(4, "Run", runAway, null, null, null, "Choosing to run will let you try to escape from your enemy. However, it will be hard to escape enemies that are faster than you and if you fail, your enemy will get a free attack.");
-			addButton(5, "P. Specials", combatAbilities.physicalSpecials, null, null, null, "Physical special attack menu.", "Physical Specials");
-			addButton(6, "M. Specials", combatAbilities.magicalSpecials, null, null, null, "Mental and supernatural special attack menu.", "Magical Specials");
-			addButton(7, "Wait", wait, null, null, null, "Take no action for this round.  Why would you do this?  This is a terrible idea.");
-			if (monster.hasStatusEffect(StatusEffects.Level)) addButton(7, "Climb", wait, null, null, null, "Climb the sand to move away from the sand trap.");
-			addButton(8, "Fantasize", fantasize, null, null, null, "Fantasize about your opponent in a sexual way.  Its probably a pretty bad idea to do this unless you want to end up getting raped.");
-			if (CoC_Settings.debugBuild && !debug) addButton(9, "Inspect", debugInspect, null, null, null, "Use your debug powers to inspect your enemy.");
+			addButton(1, "Tease", combatTeases.teaseAttack).hint("Attempt to make an enemy more aroused by striking a seductive pose and exposing parts of your body.");
+			if (combatAbilities.canUseMagic()) addButton(2, "Spells", combatAbilities.magicMenu).hint("Opens your spells menu, where you can cast any spells you have learned.  Beware, casting spells increases your fatigue, and if you become exhausted you will be easier to defeat.");
+			addButton(3, "Items", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
+			addButton(4, "Run", runAway).hint("Choosing to run will let you try to escape from your enemy. However, it will be hard to escape enemies that are faster than you and if you fail, your enemy will get a free attack.");
+			addButton(5, "P. Specials", combatAbilities.physicalSpecials).hint("Physical special attack menu.", "Physical Specials");
+			addButton(6, "M. Specials", combatAbilities.magicalSpecials).hint("Mental and supernatural special attack menu.", "Magical Specials");
+			addButton(7, "Wait", wait).hint("Take no action for this round.  Why would you do this?  This is a terrible idea.");
+			if (monster.hasStatusEffect(StatusEffects.Level)) addButton(7, "Climb", wait).hint("Climb the sand to move away from the sand trap.");
+			addButton(8, "Fantasize", fantasize).hint("Fantasize about your opponent in a sexual way.  Its probably a pretty bad idea to do this unless you want to end up getting raped.");
+			if (CoC_Settings.debugBuild && !debug) addButton(9, "Inspect", debugInspect).hint("Use your debug powers to inspect your enemy.");
 			//Modify menus.
 			if (monster.hasStatusEffect(StatusEffects.AttackDisabled)) {
 				if (monster.short == "minotaur lord") {
@@ -284,10 +284,10 @@ public class Combat extends BaseContent
 			{
 				outputText("\n<b>You'll need to close some distance before you can use any physical attacks!</b>");
 				if (isWieldingRangedWeapon()) {
-					if (flags[kFLAGS.FLINTLOCK_PISTOL_AMMO] <= 0 && player.weaponName == "flintlock pistol") addButton(10, "Reload&Approach", approachAfterKnockback, null, null, null, "Reload your flintlock pistol while approaching.", "Reload and Approach");
-					else addButton(10, "Fire&Approach", approachAfterKnockback, null, null, null, "Land a shot at your opponent and approach.", "Fire and Approach");
+					if (flags[kFLAGS.FLINTLOCK_PISTOL_AMMO] <= 0 && player.weaponName == "flintlock pistol") addButton(10, "Reload&Approach", approachAfterKnockback).hint("Reload your flintlock pistol while approaching.", "Reload and Approach");
+					else addButton(10, "Fire&Approach", approachAfterKnockback).hint("Land a shot at your opponent and approach.", "Fire and Approach");
 				}
-				else addButton(0, "Approach", approachAfterKnockback, null, null, null, "Close some distance between you and your opponent.");
+				else addButton(0, "Approach", approachAfterKnockback).hint("Close some distance between you and your opponent.");
 				if (player.hasKeyItem("Bow") >= 0 || player.hasKeyItem("Kelt's Bow") >= 0) addButton(5, "Bow", combatAbilities.fireBow);
 			}
 			//Disabled physical attacks
@@ -331,7 +331,7 @@ public class Combat extends BaseContent
 			}
 			else if (monster.hasStatusEffect(StatusEffects.Constricted)) {
 				menu();
-				addButton(0, "Squeeze", getGame().desert.nagaScene.naggaSqueeze, null, null, null, "Squeeze some HP out of your opponent! \n\nFatigue Cost: " + player.physicalCost(20) + "");
+				addButton(0, "Squeeze", getGame().desert.nagaScene.naggaSqueeze).hint("Squeeze some HP out of your opponent! \n\nFatigue Cost: " + player.physicalCost(20) + "");
 				addButton(1, "Tease", getGame().desert.nagaScene.naggaTease);
 				addButton(4, "Release", getGame().desert.nagaScene.nagaLeggoMyEggo);
 			}

@@ -11,7 +11,7 @@ public class MightBuff extends CombatBuff {
 	}
 
 	override protected function apply(firstTime:Boolean):void {
-		var buff:Number = host.spellMod();
+		var buff:Number = 10 * host.spellMod();
 		if (buff > 100) buff = 100;
 		buffHost('str',buff,'tou',buff,'scale',false,'max',false);
 	}

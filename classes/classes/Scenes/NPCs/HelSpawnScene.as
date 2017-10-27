@@ -1,4 +1,4 @@
-package classes.Scenes.NPCs{
+﻿package classes.Scenes.NPCs{
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -1195,7 +1195,7 @@ private function talkToHelspawn():void {
 		addButton(0,"Stop Fucking",dontFuckAlex);
 		addButton(1,"Her Boyfriend",helSpawnBoyfriend);
 		addButton(2,"Incest",incestWithHelspawn);
-		//if (silly() && flags[kFLAGS.HELSPAWN_PERSONALITY] >= 50) addButton(3, "Both", whyNotBoth, null, null, null, "Why don't we have both?")
+		//if (silly() && flags[kFLAGS.HELSPAWN_PERSONALITY] >= 50) addButton(3, "Both", whyNotBoth).hint("Why don't we have both?")
 	}
 	//Talk 2
 	//{Kiha must be at camp}

@@ -1,4 +1,4 @@
-package classes.Scenes.Places {
+﻿package classes.Scenes.Places {
 	import classes.*;
 	import classes.GlobalFlags.*;
 	import classes.Items.Armor;
@@ -2447,7 +2447,7 @@ private function gymMenu():void {
 	addButton(2, "LiftWeights", weightLifting);
 	//addButton(3, "Go Swimming", goSwimming);
 	if (flags[kFLAGS.LIFETIME_GYM_MEMBER] == 0 && player.gems >= 500)
-		addButton(4, "Life Member", buyGymLifeTimeMembership, null, null, null, "Buy lifetime membership for 500 gems? It could save you gems in the long run.", "Lifetime Membership");
+		addButton(4, "Life Member", buyGymLifeTimeMembership).hint("Buy lifetime membership for 500 gems? It could save you gems in the long run.", "Lifetime Membership");
 	else if (flags[kFLAGS.LIFETIME_GYM_MEMBER] > 0)
 		addButtonDisabled(4, "Life Member", "You already have the lifetime membership. So go ahead and use the facilities.", "Lifetime Membership");
 	else
