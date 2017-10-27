@@ -145,6 +145,7 @@ import classes.StatusEffects.CombatStatusEffect;
 		public static const TensionReleased:StatusEffectType = mk("TensionReleased");
 		public static const TF2:StatusEffectType = mk("TF2");
 		public static const TookBlessedSword:StatusEffectType = mk("Took Blessed Sword");
+		public static const FenrisCombatSupport:StatusEffectType = mk("FenrisCombatSupport");	// v1=  hours cooldown  v2= rounds until combat ready
 		
 		//Old status plots. DEPRECATED, DO NOT USE. Currently cannot be removed without breaking existing saves.
 		public static const DungeonShutDown:StatusEffectType = mk("DungeonShutDown");
@@ -338,6 +339,8 @@ import classes.StatusEffects.CombatStatusEffect;
 		public static const MinotaurKingsTouch:StatusEffectType = mk("Minotaur Kings Touch", CombatStatusEffect);
 		public static const PigbysHands:StatusEffectType = mk("Pigbys Hands", CombatStatusEffect);
 		public static const WhipSilence:StatusEffectType = mk("Whip-Silence", CombatStatusEffect);
+		public static const bound:StatusEffectType = mk("bound",CombatStatusEffect); //generic bound-effect v1: bound bodypart; v2: intensity  ; v3: ; v4:
+		//body-part bitmask: 0= all; 1=hands; 2=legs
 		/**
 		 * Creates status affect
 		 */

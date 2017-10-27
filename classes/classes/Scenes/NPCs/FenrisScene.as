@@ -190,6 +190,7 @@ private function submitOrGetBeatup (dlgstage:int = -1):void {
 		outputText("\nYou just run into Fenris again. \n Do you try to submit or fight ?\n");
 		addButton(1, "Submit", submitOrGetBeatup, 200, null, null, "" );
 		addButton(2, "Fight", submitOrGetBeatup, 300, null, null, "" );
+		addButton(3, "debug", debugScr, 400, null, null, "" );
 	} else if (dlgstage==200) {
 		//Todo improve Relation if you submit freely, pet-training?
 		menu();
