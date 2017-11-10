@@ -115,7 +115,7 @@ package classes.Items.Consumables
 			if (changes < changeLimit && Utils.rand(2) == 0 && player.inte100 < 80) {
 				getGame().dynStats("int", 0.1 * (80 - player.inte100));
 				outputText("\n\nYou spend a few moments analyzing the taste and texture of the honey's residue, feeling awfully smart.");
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 			//Sexual Stuff
 			//No idears

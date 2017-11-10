@@ -58,7 +58,7 @@ package classes.Items.Consumables
 				dynStats("spe", (2 - (player.spe / 10 / 5)));
 				outputText("\n\nYour muscles quiver, feeling ready to strike as fast as a snake!");
 				if (player.spe100 < 40) outputText("  Of course, you're nowhere near as fast as that.");
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 			//Neck restore
 			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);

@@ -325,13 +325,13 @@ package classes.Items.Consumables
 					output.text("rut");
 					
 					player.goIntoRut(false);
-					changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
+					//[removed:1.4.10]//changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
 				}
 				else {
 					output.text("heat");
 					
 					player.goIntoHeat(false);
-					changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
+					//[removed:1.4.10]//changes++; // is this really worth incrementing the changes? It even ignores the changeLimit
 				}
 				output.text("</b>.");
 			}

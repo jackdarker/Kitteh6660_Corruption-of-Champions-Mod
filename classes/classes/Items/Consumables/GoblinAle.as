@@ -63,7 +63,7 @@ package classes.Items.Consumables
 			if (rand(3) === 0 && player.spe100 < 50 && changes < changeLimit) {
 				dynStats("spe", 1 + rand(2));
 				outputText("\n\nYou feel like dancing, and stumble as your legs react more quickly than you'd think.  Is the alcohol slowing you down or are you really faster?  You take a step and nearly faceplant as you go off balance.  It's definitely both.");
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 			//Neck restore
 			if (player.neck.type != NECK_TYPE_NORMAL && changes < changeLimit && rand(4) == 0) mutations.restoreNeck(tfSource);

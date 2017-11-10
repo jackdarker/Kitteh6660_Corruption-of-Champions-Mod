@@ -62,7 +62,7 @@ package classes.Items.Consumables
 					outputText("\n\nYou begin to feel that the size of your muscles is starting to slow you down.");
 					dynStats("spe", -1);
 				}
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 			//Toughness (chance of - sensitivity)
 			if (rand(3) === 0 && changes < changeLimit) {
@@ -96,7 +96,7 @@ package classes.Items.Consumables
 						dynStats("sen", -3);
 					}
 				}
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 			//SEXUAL
 			//Boosts ball size MORE than equinum :D:D:D:D:D:D:
@@ -131,7 +131,7 @@ package classes.Items.Consumables
 			//+hooves
 			if (player.lowerBody !== LOWER_BODY_TYPE_HOOFED) {
 				if (changes < changeLimit && rand(3) === 0) {
-					changes++;
+					//[removed:1.4.10]//changes++;
 					if (player.lowerBody === LOWER_BODY_TYPE_HUMAN) outputText("\n\nYou stagger as your feet change, curling up into painful angry lumps of flesh.  They get tighter and tighter, harder and harder, until at last they solidify into hooves!");
 					else if (player.lowerBody === LOWER_BODY_TYPE_DOG) outputText("\n\nYou stagger as your paws change, curling up into painful angry lumps of flesh.  They get tighter and tighter, harder and harder, until at last they solidify into hooves!");
 					else if (player.lowerBody === LOWER_BODY_TYPE_NAGA) outputText("\n\nYou collapse as your sinuous snake-tail tears in half, shifting into legs.  The pain is immense, particularly in your new feet as they curl inward and transform into hooves!");

@@ -57,14 +57,14 @@ package classes.Items.Consumables
 				if (player.lib < 75) dynStats("spe", 1);
 				//+1 if above 75.
 				dynStats("spe", 1);
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 
 			if (player.tou > player.ngPlus(80) && changes < changeLimit && rand(4) == 0) {
 				outputText("\n\nYou feel yourself become a little more delicate, as though you can’t handle quite so strong hits anymore. Then again,"
 				          +" who needs to withstand a blow when you can just move with the speed of the wind and dodge it?");
 				dynStats("tou", -1);
-				changes++;
+				//[removed:1.4.10]//changes++;
 
 			}
 
@@ -72,7 +72,7 @@ package classes.Items.Consumables
 			if (player.sens > 20 && changes < changeLimit && rand(3) == 0) {
 				outputText("\n\nThe sensation of prickly pins and needles moves over your body, leaving your senses a little dulled in its wake.");
 				dynStats("sen", -1);
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 
 			//Raises libido greatly to 50, then somewhat to 75, then slowly to 100.
@@ -101,7 +101,7 @@ package classes.Items.Consumables
 				if (player.lib < 75) dynStats("lib", 1);
 				//+1 if above 75.
 				dynStats("lib", 1);
-				changes++;
+				//[removed:1.4.10]//changes++;
 			}
 
 			//Sexual changes

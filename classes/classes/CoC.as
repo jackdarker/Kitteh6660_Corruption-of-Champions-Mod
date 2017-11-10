@@ -473,8 +473,8 @@ the text from being too boring.
 			 * Debug, Version, etc
 			 */
 			debug = false; //DEBUG, used all over the place
-			ver = "1.0.2_mod_1.4.9"; //Version NUMBER
-			version = ver + " (<b>Bug Fixfest</b>)"; //Version TEXT
+			ver = "1.0.2_mod_1.4.10"; //Version NUMBER
+			version = ver + " (<b>Bug Fixfest II</b>)"; //Version TEXT
 
 			//Indicates if building for mobile?
 			mobile = false;
