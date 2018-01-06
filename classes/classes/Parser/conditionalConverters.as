@@ -1,14 +1,15 @@
 ﻿		//Calls are now made through kGAMECLASS rather than thisPtr. This allows the compiler to detect if/when a function is inaccessible.
+		import classes.GlobalFlags.kFLAGS;
 		import classes.GlobalFlags.kGAMECLASS;
 		import classes.Items.ArmorLib;
 		import classes.Items.UndergarmentLib;
 
-
-
-		// Possible text arguments in the conditional of a if statement
-		// First, there is an attempt to cast the argument to a Number. If that fails,
-		// a dictionary lookup is performed to see if the argument is in the conditionalOptions[]
-		// object. If that fails, we just fall back to returning 0
+		/**
+		 * Possible text arguments in the conditional of a if statement
+		 * First, there is an attempt to cast the argument to a Number. If that fails,
+		 * a dictionary lookup is performed to see if the argument is in the conditionalOptions[]
+		 * object. If that fails, we just fall back to returning 0
+		 */
 		public var conditionalOptions:Object =
 		{
 				"strength"			: function(thisPtr:*):* {return  kGAMECLASS.player.str;},
@@ -27,7 +28,7 @@
 				"hasarmor"			: function(thisPtr:*):* {return  kGAMECLASS.player.armor != ArmorLib.NOTHING;},
 				"haslowergarment"	: function(thisPtr:*):* {return  kGAMECLASS.player.lowerGarment != UndergarmentLib.NOTHING;},
 				"tallness"			: function(thisPtr:*):* {return  kGAMECLASS.player.tallness;},
-				"hairlength"		: function(thisPtr:*):* {return  kGAMECLASS.player.hairLength;},
+				"hairlength"		: function(thisPtr:*):* {return  kGAMECLASS.player.hair.length;},
 				"femininity"		: function(thisPtr:*):* {return  kGAMECLASS.player.femininity;},
 				"masculinity"		: function(thisPtr:*):* {return  100 - kGAMECLASS.player.femininity;},
 				"cocks"				: function(thisPtr:*):* {return  kGAMECLASS.player.cockTotal();},
@@ -53,6 +54,12 @@
 				"hasbeak"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasBeak();},
 				"hasdragonneck"		: function(thisPtr:*):* {return  kGAMECLASS.player.hasDragonNeck();},
 				"neckpos"			: function(thisPtr:*):* {return  kGAMECLASS.player.neck.pos;},
+				"hasfur"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasFur();},
+				"haswool"			: function(thisPtr:*):* {return  kGAMECLASS.player.hasWool();},
+				"hasfeathers"		: function(thisPtr:*):* {return  kGAMECLASS.player.hasFeathers();},
+				"hasfurryunderbody"	: function(thisPtr:*):* {return  kGAMECLASS.player.hasFurryUnderBody();},
+				"isfurry"			: function(thisPtr:*):* {return  kGAMECLASS.player.isFurry();},
+				"isfluffy"			: function(thisPtr:*):* {return  kGAMECLASS.player.isFluffy();},
 				"ismale"			: function(thisPtr:*):* {return  (kGAMECLASS.player.isMale());},
 				"isfemale"			: function(thisPtr:*):* {return  (kGAMECLASS.player.isFemale());},
 				"isherm"			: function(thisPtr:*):* {return  (kGAMECLASS.player.isHerm());},
@@ -66,7 +73,7 @@
 				"issquirter"		: function(thisPtr:*):* {return  (kGAMECLASS.player.wetness() >= 4);},
 				"vaginalwetness"	: function(thisPtr:*):* {return  kGAMECLASS.player.wetness();},
 				"anallooseness"		: function(thisPtr:*):* {return  kGAMECLASS.player.ass.analLooseness;},
-				"buttrating"		: function(thisPtr:*):* {return  kGAMECLASS.player.buttRating;},
+				"buttrating"		: function(thisPtr:*):* {return  kGAMECLASS.player.butt.rating;},
 				"ispregnant"		: function(thisPtr:*):* {return  (kGAMECLASS.player.pregnancyIncubation > 0);},
 				"isbuttpregnant"	: function(thisPtr:*):* {return  (kGAMECLASS.player.buttPregnancyIncubation > 0);},
 				"hasnipplecunts"	: function(thisPtr:*):* {return  kGAMECLASS.player.hasFuckableNipples();},
@@ -84,5 +91,8 @@
 
 				//---[NPCs]---
 				//Joy
-				"joyhascock"		: function(thisPtr:*):* {return  kGAMECLASS.joyScene.joyHasCock(); }
+				"joyhascock"		: function(thisPtr:*):* {return  kGAMECLASS.joyScene.joyHasCock(); },
+
+				//Tel Adre
+				"bakerytalkedroot"	: function(thisPtr:*):* {return  kGAMECLASS.flags[kFLAGS.MINO_CHEF_TALKED_RED_RIVER_ROOT] > 0; }
 			}

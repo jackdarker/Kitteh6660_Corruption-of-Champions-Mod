@@ -181,7 +181,12 @@ public function encounterTracking(Place:String):void {
 		//Todo add content  encounterTrackingDesert();
 	}
 }
+private function pushDlg(func:Function , stage:int):void {
 	
+}
+private function popDlg():void {
+	
+}	
 private function submitOrGetBeatup (dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
@@ -344,8 +349,8 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
 		menu();
 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
 	} else if (dlgstage == 300) { //
-		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n");
-		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n");
+		outputText("\n\n '<i>Everything alright with you?<i>\n Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i>' \n");
+		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n");
 	
 		progressMainQuest(1);
 		menu();

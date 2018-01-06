@@ -4,7 +4,7 @@ package classes.Scenes.Dungeons
 	import classes.BaseContent;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
-	import classes.Scenes.Dungeons.D3.D3;
+	import classes.Scenes.Dungeons.LethicesKeep.LethicesKeep;
 	import classes.display.SpriteDb;
 	import classes.internals.*;
 	
@@ -76,19 +76,31 @@ package classes.Scenes.Dungeons
 		public static const DUNGEON_ANZU_ROOF:int 				= 52;
 		public static const DUNGEON_ANZU_BASEMENT:int 			= 53;
 		public static const DUNGEON_ANZU_ARMORY:int 			= 54;
+		//Dragon City
+		public static const DUNGEON_DRAGON_CITY_SQUARE:int      = 55;
+		public static const DUNGEON_DRAGON_HOUSING_DISTRICT:int = 56;
+		public static const DUNGEON_DRAGON_BATHS:int            = 57;
+		public static const DUNGEON_DRAGON_ARENA:int            = 58;
+		public static const DUNGEON_DRAGON_LIBRARY:int          = 59;
+		public static const DUNGEON_DRAGON_CITY_HALL_FRONT:int  = 60;
+		public static const DUNGEON_DRAGON_CITY_HALL:int        = 61;
+		public static const DUNGEON_DRAGON_SEWERS_WEST:int      = 62;
+		public static const DUNGEON_DRAGON_SEWERS_EAST:int      = 63;
+		public static const DUNGEON_DRAGON_BREEDING_DEN:int     = 64;
+		
 		
 		public function DungeonCore() {}
 		
 		//Register dungeons
 		public var factory:Factory = new Factory;
 		public var deepcave:DeepCave = new DeepCave;
-		
 		public var desertcave:DesertCave = new DesertCave;
+		public var dragoncity:DragonCity = new DragonCity;
 		public var heltower:HelDungeon = new HelDungeon;
 		public var palace:AnzuPalace = new AnzuPalace;
 		public var cabin:YourCabin = new YourCabin;
 		
-		public var map:DungeonMap = new DungeonMap;
+		public var map:DungeonMap;
 		
 		public function checkRoom():void
 		{
@@ -154,6 +166,18 @@ package classes.Scenes.Dungeons
 			if (kGAMECLASS.dungeonLoc == DUNGEON_ANZU_ROOF) palace.roomRoof();
 			if (kGAMECLASS.dungeonLoc == DUNGEON_ANZU_BASEMENT) palace.roomBasement();
 			if (kGAMECLASS.dungeonLoc == DUNGEON_ANZU_ARMORY) palace.roomArmory();
+			//Dragon City
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_CITY_SQUARE) dragoncity.roomCitySquare();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_HOUSING_DISTRICT) dragoncity.roomHousingDistrict();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_BATHS) dragoncity.roomBaths();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_ARENA) dragoncity.roomArena();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_LIBRARY) dragoncity.roomLibrary();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_CITY_HALL_FRONT) dragoncity.roomCityHallFront();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_CITY_HALL) dragoncity.roomCityHall();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_SEWERS_WEST) dragoncity.roomSewerWest();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_SEWERS_EAST) dragoncity.roomSewerEast();
+			if (kGAMECLASS.dungeonLoc == DUNGEON_DRAGON_BREEDING_DEN) dragoncity.roomSewerBreedingDen();
+			
 		}
 		
 		public function checkFactoryClear():Boolean {
@@ -170,6 +194,9 @@ package classes.Scenes.Dungeons
 		}
 		public function checkLethiceStrongholdClear():Boolean {
 			return (flags[kFLAGS.D3_MIRRORS_SHATTERED] > 0 && flags[kFLAGS.D3_JEAN_CLAUDE_DEFEATED] > 0 && flags[kFLAGS.D3_GARDENER_DEFEATED] > 0 && flags[kFLAGS.D3_CENTAUR_DEFEATED] > 0 && flags[kFLAGS.LETHICE_DEFEATED] > 0);
+		}
+		public function checkDragonCityClear():Boolean {
+			return false; //Will be worked on
 		}
 		
 		public function enterFactory():void {
@@ -298,7 +325,7 @@ package classes.Scenes.Dungeons
 		
 		public function move(roomName:String, timeToPass:Number = 0):void
 		{
-			trace("Entering room", roomName);
+			//trace("Entering room", roomName);
 			cheatTime(timeToPass);
 			clearOutput();
 			

@@ -7,19 +7,23 @@ package classes.BodyParts
 	 */
 	public class UnderBody 
 	{
-		include "../../../includes/appearanceDefs.as";
+		public static const NONE:int       =   0;
+		public static const REPTILE:int    =   1;
+		public static const DRAGON:int     =   2; // Deprecated. Changed to 1 (UnderBody.REPTILE) upon loading a savegame
+		public static const FURRY:int      =   3;
+		public static const NAGA:int       =   4;
+		public static const WOOL:int       =   5; // Deprecated. Changed to 3 (UnderBody.FURRY) upon loading a savegame
+		public static const COCKATRICE:int =   6;
 
-		public var type:Number = UNDER_BODY_TYPE_NONE;
+		public var type:Number = NONE;
 		public var skin:Skin = new Skin();
-
-		public function UnderBody() {}
 
 		public function skinDescription(...args):String { return skin.description.apply(null, args); }
 		public function skinFurScales(...args):String { return skin.skinFurScales.apply(null, args); }
 
 		public function restore(keepTone:Boolean = true):void
 		{
-			type  = UNDER_BODY_TYPE_NONE;
+			type  = NONE;
 			skin.restore(keepTone);
 		}
 

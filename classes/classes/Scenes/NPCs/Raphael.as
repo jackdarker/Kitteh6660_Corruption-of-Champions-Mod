@@ -1,7 +1,9 @@
 package classes.Scenes.NPCs{
 	import classes.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kACHIEVEMENTS;
+	import classes.display.SpriteDb;
 
 	public class Raphael extends NPCAwareContent implements TimeAwareInterface {
 
@@ -104,9 +106,9 @@ override public function RaphaelLikes():Boolean {
 	//({If player has below C cup breasts} 
 	if (player.biggestTitSize() < 3) return false;
 	//({If player has grown less than girly hips}
-	if (player.hipRating < 6) return false;
+	if (player.hips.rating < 6) return false;
 	//({If player has gotten a massive butt} 
-	if (player.buttRating >= 16) return false;
+	if (player.butt.rating >= 16) return false;
 	//({If female player has gotten bigger than 6 feet}
 	if (player.tallness > 72) return false;
 	//({If female player has gotten smaller than 4 feet}
@@ -126,6 +128,7 @@ override public function RaphaelLikes():Boolean {
 //{First encounter}
 private function meetRaphael():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_raphael);
 	outputText("You stir in your sleep, bothered by a noise. It's the familiar creaking of your camp's storage chest, as if you've just opened it up to fill it with freshly found loot. Groaning, you hog your blankets and twist. Nothing to worry about then. You soon drift back into a pleasant dream about all the spoils you've accumulated over the time here. Life is good.\n\n");
 	
 	outputText("Suddenly, you sit up straight and something occurs to you. If you're sleeping, then who's opening the chest?\n\n");
@@ -306,6 +309,7 @@ private function rapeRaphaelII():void {
 //Again at bedtime
 private function RaphaelDress():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_raphael);
 	outputText("A small pebble hits the ground near you, waking you up. When a second one hits, you're sure someone is trying to draw your attention.\n\n");
 
 	outputText("Rubbing your eyes, you pull yourself out of bed, wondering what's going on. Sticking your head through the front wall of your " + camp.homeDesc() + ", you take a curious peek outside, but find no one around.\n\n");
@@ -332,7 +336,7 @@ private function RaphaelDressPtII():void {
 	
 	outputText("All over your body where the gossamer isn't reinforced with jacket or corset, the density of the delicate velvet web varies. Although the silk hugs across your " + player.vaginaDescript(0) + " and through the crack of your ass as a triple layer that guards against prying eyes, the surface of your hips and legs is clearly seen through the transparent motif of flowers swirling across the lace. The cheeks of your " + player.buttDescript() + " feel equally exposed despite the presence of four sweeping rosebranches stitched across them, but at least the jacket trails past your lower back and partly covers your buttocks with its parted tailflaps.");
 	//({If player has tail}
-	if (player.tailType > TAIL_TYPE_NONE) outputText("  Your tail peeks out through the cut.");
+	if (player.tail.type > Tail.NONE) outputText("  Your tail peeks out through the cut.");
 	outputText("  You still can't help but feel that anyone standing behind you is given a generous glimpse of your ornate ass, however. The same goes for your " + player.breastDescript(0) + "; cupped, lifted and presented as they are to the outside world by grasping silk. Their ample curve and tender flesh are clearly visible through the red lace. The only thing saving their modesty is the tactical application of a sea of organic patterns across the lower half, with the curl of two roses covering your " + player.nippleDescript(0) + "s. The ensemble comes with a pair of red stiletto high heels, but you're not sure you're ready for them. Wearing them would only perk up your noticeable posterior even more. That your " + player.breastDescript(0) + " contrast above a slender waist is enough for now. Maybe on special occasions.\n\n");
 	
 	outputText("You blush as the wind breezes by, and with the exception of the upper jacket, feel like you're wearing nothing at all. This sensation is only aggravated when you can't help but slip a finger across your inner thigh and feel it glide up effortlessly across the textile. It's like you've only become more sensitive for wearing it. Much to your amazement, the triple layer across your " + player.vaginaDescript(0) + " doesn't provide quite as much protection as you assumed earlier; at least not so much against roving fingers. You find the fabric across your womanhood has a hidden opening to it. Rubbing through it is enough to part the velvet folds and set your finger upon your own. It's not apparent, but anyone aware of this shameful split would have easy access to your depths without even disrobing you. You feel nude.\n\n");
@@ -362,7 +366,7 @@ private function RaphaelEncounterIIDressFollowup():void {
 	//Clear dress countdown.  Its over and done with.
 	flags[kFLAGS.RAPHAEL_DRESS_TIMER] = -1;
 	clearOutput();
-	
+	spriteSelect(SpriteDb.s_raphael);
 	outputText("You awake to the soft patter of footsteps moving away from you. For a second you think nothing of it, but soon awake to the realization you might have been robbed again. When you sit up and notice a weight off your chest, you realize someone has made off with the priceless ruby pendant Raphael gifted you earlier. They swiped it straight off your neck!\n\n");
 
 	outputText("You rush out of your " + camp.homeDesc() + ", but when you look around and spot something red lying on the small ruined wall on the outskirts of your camp, you realize that the situation isn't as urgent as you had feared. You begin to understand what the wily fox meant to imply with uncertain ownership of the pendant.\n\n");
@@ -395,16 +399,16 @@ private function RaphaelEncounterIIDressFollowup():void {
 		outputText("\"<i>What terrible tragedy! The land has taken its toll on the once so beautiful.</i>\" He looks down on you.\n\n");
 
 		//({If player has no legs, or a centaur body.}
-		if (player.isNaga() || player.lowerBody == LOWER_BODY_TYPE_GOO || player.isTaur() || player.isDrider()) 
+		if (player.isNaga() || player.lowerBody.type == LowerBody.GOO || player.isTaur() || player.isDrider()) 
 			outputText("\"<i>You're missing half your body!</i>\" He refers to your morphed legs.\n\n");
 		//({If player has above E cup breasts} 
 		if (player.biggestTitSize() >= 7) outputText("\"<i>Your female curves... replaced with such... udders!</i>\" He looks at your bosom. \"<i>No woman could be elegant with such monstrosities up front!</i>\"\n\n");
 		//({If player has below C cup breasts} 
 		if (player.biggestTitSize() < 3) outputText("\"<i>Your female curves... gone!</i>\" He looks at your bosom. \"<i>It's hard to tell you apart from a little girl!</i>\"\n\n"); 
 		//({If player has grown less than girly hips}
-		if (player.hipRating < 6) outputText("\"<i>What happened to that fine hourglass shaped figure? Those comely hips?</i>\"\n\n");
+		if (player.hips.rating < 6) outputText("\"<i>What happened to that fine hourglass shaped figure? Those comely hips?</i>\"\n\n");
 		//({If player has gotten a massive butt} 
-		if (player.buttRating >= 13) outputText("\"<i>Oh... my... Marae! " + player.short + ", look at your butt. It is so big! You look one of those cat guy's girlfriends. Who understands those cat guys? You look like a total prostitute. I mean, your butt. It's just so big. I can't believe it's just so round and so out there! Gross!</i>\"  The fox shakes his head and breaks it down. \"<i>I hate big butts! So vulgar.</i>\"\n\n"); 
+		if (player.butt.rating >= 13) outputText("\"<i>Oh... my... Marae! " + player.short + ", look at your butt. It is so big! You look one of those cat guy's girlfriends. Who understands those cat guys? You look like a total prostitute. I mean, your butt. It's just so big. I can't believe it's just so round and so out there! Gross!</i>\"  The fox shakes his head and breaks it down. \"<i>I hate big butts! So vulgar.</i>\"\n\n"); 
 		//({If female player has gotten bigger than 6 feet}
 		if (player.tallness > 72) outputText("Raphael rolls his eyes across your giant body and looks intimidated. \"<i>I can forget about remaining unseen when I take someone of your size somewhere!</i>\"\n\n");
 		//({If female player has gotten smaller than 4 feet}
@@ -1210,6 +1214,7 @@ private function RaphaelThieverySmexPtII():void {
 //[Quicksilver scene]
 private function quiksilverFawkesEndGame():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_raphael);
 	outputText("You wake up to the sound of an ominous cry in the distance, like that of a howling wolf.  It can only mean trouble and you jump out of bed.\n\n");
 
 	outputText("It is an eerily misty morning outside, with banks of fog covering your campsite.  It only makes the second howl more haunting as the danger appears to draw closer to camp.  You stand still and prepare yourself to face this menace, peering into the fog.  When a shadow creeps closer, you prime for combat.  However, its posture suggests it is weary and tired, slumping against a tree. When it struggles forward, it almost comes falling out of the curtaining mist.  It is only then that you notice the redness of its fur and the fineness of its clothes.  It is the fox and russet rogue, Raphael!\n\n");
@@ -1368,6 +1373,7 @@ private function betrayRaphael():void {
 //Intro
 public function orphanageIntro():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_raphael);
 	if (RaphaelLikes()) {
 		if (flags[kFLAGS.TIMES_ORPHANAGED_WITH_RAPHAEL] == 0) {
 			outputText("You spend some time around Tel'Adre looking for the orphanage Raphael mentioned, but you can't seem to find a building that looks like one.  Instead you resort to asking the locals, but their reactions are weird. Upstanding citizens, friendly and polite, turn away from you at the merest notion of it.  Young men get excited but dare not speak of it, women blush and turn away like you've just solicited them and, strangest of all, most children have never even heard of it.");

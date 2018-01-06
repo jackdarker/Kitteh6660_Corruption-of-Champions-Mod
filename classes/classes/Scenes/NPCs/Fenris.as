@@ -127,12 +127,12 @@ package classes.Scenes.NPCs{
 		public function getXP():uint {
 			return _Level / 0x100;
 		}
-		// Todo: how about reset XP ?
+		
 		private function setLevel(value:uint):void { 
-			_Level = (value & 0xFF) +  (_Level & 0xFFFFFF00 ); 
+			_Level = (value & 0xFF) +  (_Level & 0xFFFFFF00 ); // Todo: how about reset XP ?
 		} 
 
-		private var _Corruption:uint =0;  // 2bytes Corruption 100/50000 per bit
+		private var _Corruption:uint =0;  // 2bytes Corruption 100/50000 per bit, max 130
 		public function getCorruption():Number {
 			return (Number(_Corruption & 0xFFFF)) * 0.002;;
 		}

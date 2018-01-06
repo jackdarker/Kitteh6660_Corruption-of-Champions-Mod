@@ -1,35 +1,40 @@
 package classes{
-    import org.flexunit.asserts.*;
+	import classes.BodyParts.LowerBody;
+	import classes.CoC;
+	import classes.Creature;
+	import classes.GlobalFlags.kGAMECLASS;
+	import classes.PerkLib;
+	import classes.helper.StageLocator;
+	import classes.internals.IRandomNumber;
+	import classes.internals.RandomNumber;
+	import classes.lists.Gender;
+	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.*;
 	import org.hamcrest.core.*;
 	import org.hamcrest.number.*;
 	import org.hamcrest.object.*;
 	import org.hamcrest.text.*;
-	import org.hamcrest.collection.*;
 	
-	import classes.helper.StageLocator;
 	
-	import classes.GlobalFlags.kGAMECLASS;
-	import classes.Creature;
-	import classes.CoC;
-	import classes.PerkLib;
      
     public class CreatureTest {
-		include "../../includes/appearanceDefs.as";
-		
 		private const MAX_SUPPORTED_VAGINAS:Number = 2;
 		private const DEFAULT_CLIT_LENGTH:Number = 0.5;
 		private const TEST_CLIT_LENGTH:Number = 3;
 		private const CUNT_CHANGE_VALUE:Number = 5;
-		private const VAGINAL_LOOSENESS_VALUE:Number = VAGINA_LOOSENESS_LOOSE;
+		private const VAGINAL_LOOSENESS_VALUE:Number = VaginaClass.LOOSENESS_LOOSE;
 		private const VAGINAL_CAPCITY_OFFSET:Number = 2;
 		private const VAGINAL_CAPCITY_TEST_DELTA:Number = 2;
 		private const RECOVERY_COUNT:Number = 5;
+		private const ANAL_LOOSENESS:Number = 1;
+		private const ANAL_CAPACITY:Number = 6;
 		
         private var cut:Creature;
 		private var noVagina:Creature;
 		private var oneVagina:Creature;
 		private var maxVagina:Creature;
+		private var alwaysZero:IRandomNumber;
 		
 		private function createVaginas(numberOfVaginas:Number, instance:Creature):void {
 			var i:Number;
@@ -58,7 +63,13 @@ package classes{
 		}
          
         [Before]
-        public function setUp():void {  
+        public function setUp():void {
+			alwaysZero = new AlwaysZeroRNG();
+			
+			cut = new Creature();
+			cut.rng = alwaysZero;
+			cut.ass.analLooseness = ANAL_LOOSENESS;
+			
 			noVagina = new Creature();
 			
 			oneVagina = new Creature();
@@ -104,24 +115,24 @@ package classes{
 		
 		[Test] 
         public function testVaginaTypeWithVagina():void {
-			assertThat(oneVagina.vaginaType(), equalTo(VAGINA_TYPE_HUMAN));
+			assertThat(oneVagina.vaginaType(), equalTo(VaginaClass.HUMAN));
         }
 		
 		[Test] 
         public function testSetVaginaTypeWithNoVagina():void {
-			assertThat(noVagina.vaginaType(VAGINA_TYPE_EQUINE), equalTo(-1));
+			assertThat(noVagina.vaginaType(VaginaClass.EQUINE), equalTo(-1));
         }
 		
 		[Test] 
         public function testSetVaginaTypeWithVagina():void {
-			assertThat(oneVagina.vaginaType(VAGINA_TYPE_EQUINE), equalTo(VAGINA_TYPE_EQUINE));
+			assertThat(oneVagina.vaginaType(VaginaClass.EQUINE), equalTo(VaginaClass.EQUINE));
         }
 		
 		[Test] 
         public function testReadVaginaTypeAfterSet():void {
-			oneVagina.vaginaType(VAGINA_TYPE_EQUINE);
+			oneVagina.vaginaType(VaginaClass.EQUINE);
 			
-			assertThat(oneVagina.vaginaType(), equalTo(VAGINA_TYPE_EQUINE));
+			assertThat(oneVagina.vaginaType(), equalTo(VaginaClass.EQUINE));
         }
 		
 		[Test] 
@@ -151,7 +162,7 @@ package classes{
 		
 		[Test]
 		public function testVaginalCapacityTaurBodyBonus():void {
-			oneVagina.legCount = 4;
+			oneVagina.lowerBody.legCount = 4;
 			assertThat(oneVagina.isTaur(), equalTo(true)); //guard assert
 			
 			assertThat(oneVagina.vaginalCapacity(), closeTo(55, 0.001));
@@ -159,7 +170,7 @@ package classes{
 		
 		[Test]
 		public function testVaginalCapacityNagaBodyBonus():void {
-			oneVagina.lowerBody = LOWER_BODY_TYPE_NAGA;
+			oneVagina.lowerBody.type = LowerBody.NAGA;
 			assertThat(oneVagina.isNaga(), equalTo(true)); //guard assert
 			
 			assertThat(oneVagina.vaginalCapacity(), equalTo(22));
@@ -537,19 +548,19 @@ package classes{
 		
 		[Test]
 		public function noGender():void {
-			assertThat(noVagina.gender, equalTo(GENDER_NONE));
+			assertThat(noVagina.gender, equalTo(Gender.NONE));
 		}
 		
 		[Test]
 		public function genderIsFemale():void {
-			assertThat(oneVagina.gender, equalTo(GENDER_FEMALE));
+			assertThat(oneVagina.gender, equalTo(Gender.FEMALE));
 		}
 		
 		[Test]
 		public function genderIsMale():void {
 			noVagina.createCock(5, 1, CockTypesEnum.HUMAN);
 			
-			assertThat(noVagina.gender, equalTo(GENDER_MALE));
+			assertThat(noVagina.gender, equalTo(Gender.MALE));
 		}
 		
 		[Test]
@@ -557,7 +568,51 @@ package classes{
 			noVagina.createCock(5, 1, CockTypesEnum.HUMAN);
 			noVagina.createVagina();
 			
-			assertThat(noVagina.gender, equalTo(GENDER_HERM));
+			assertThat(noVagina.gender, equalTo(Gender.HERM));
+		}
+		
+		[Test]
+		public function setNewRng():void {
+			var rng:IRandomNumber = new RandomNumber();
+			
+			cut.rng = rng;
+			
+			assertThat(cut.rng, strictlyEqualTo(rng))
+		}
+		
+		
+		[Test(expected="ArgumentError")]
+		public function setNullForRng():void {
+			cut.rng = null;
+		}
+		
+		[Test]
+		public function analStretchWithAreaGreaterThanCapacity(): void {
+			assertThat(cut.buttChangeNoDisplay(ANAL_CAPACITY), equalTo(true));
+		}
+		
+		[Test]
+		public function analStretchWithArea80PercentOfCapacity(): void {
+			assertThat(cut.buttChangeNoDisplay(ANAL_CAPACITY * 0.8), equalTo(true));
+		}
+		
+		[Test]
+		public function analStretchWithArea90PercentOfCapacity(): void {
+			assertThat(cut.buttChangeNoDisplay(ANAL_CAPACITY * 0.9), equalTo(true));
 		}
     }
+}
+
+import classes.internals.IRandomNumber;
+
+class AlwaysZeroRNG implements IRandomNumber {
+	public function random(max:int):int 
+	{
+		return 0;
+	}
+	
+	public function randomCorrected(max:int):int 
+	{
+		return 0;
+	}
 }

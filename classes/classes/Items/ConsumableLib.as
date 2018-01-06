@@ -39,8 +39,9 @@ package classes.Items
 		public const PURPDYE:HairDye = new HairDye("PurpDye", "Purple");
 		public const RAINDYE:HairDye = new HairDye("RainDye", "Rainbow");
 		public const RED_DYE:HairDye = new HairDye("Red Dye", "Red");
-		public const WHITEDY:HairDye = new HairDye("WhiteDy", "White");
+		public const RUSSDYE:HairDye = new HairDye("RussetD", "Russet");
 		public const YELLODY:HairDye = new HairDye("YelloDy", "Yellow");
+		public const WHITEDY:HairDye = new HairDye("WhiteDy", "White");
 		
 		//SKIN OILS & BODY LOTIONS
 		public const DARK_OL:SkinOil = new SkinOil("DarkOil", "Dark");
@@ -194,6 +195,7 @@ package classes.Items
 		public const PRFRUIT:Consumable = new PurpleFruit();
 		public const PROBOVA:SimpleConsumable = mk("ProBova","ProBova", "a bottle containing a misty fluid labeled \"ProBova\"", curry(m.laBova, true, true), "This cloudy potion has been enhanced by the alchemist Lumi to imbue its drinker with cow-like attributes.");
 		public const PURHONY:BeeHoney			= new BeeHoney(true, false);
+		public const RDRROOT:Consumable = new RedRiverRoot();
 		public const REPTLUM:Consumable = new Reptilum();
 		public const RINGFIG:Consumable = new RingtailFig();
 		public const RIZZART:RizzaRoot			= new RizzaRoot();

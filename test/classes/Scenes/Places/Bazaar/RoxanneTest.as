@@ -1,6 +1,8 @@
 package classes.Scenes.Places.Bazaar{
 	import classes.Appearance;
+	import classes.BodyParts.Butt;
 	import classes.helper.FireButtonEvent;
+	import classes.internals.IRandomNumber;
     import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.*;
@@ -17,7 +19,7 @@ package classes.Scenes.Places.Bazaar{
 	import classes.GlobalFlags.kFLAGS;
      
     public class RoxanneTest {
-		private static const EVENT_ITERATIONS:int = 20;
+		private static const EVENT_ITERATIONS:int = 5;
 		
         private var cut:RoxanneForTest;
 		private var player:Player;
@@ -29,10 +31,15 @@ package classes.Scenes.Places.Bazaar{
 		}
          
         [Before]
-        public function setUp():void {  
-			cut = new RoxanneForTest();
+        public function setUp():void {
+			var rng:IRandomNumber = new RngMock();
+			
+			cut = new RoxanneForTest(rng);
+			
 			player = new Player();
+			player.rng = rng;
 			kGAMECLASS.player = player;
+			
 			fireButtons = new FireButtonEvent(kGAMECLASS.mainView, CoC.MAX_BUTTON_INDEX);
 			
 			player.flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] = 10;
@@ -51,7 +58,7 @@ package classes.Scenes.Places.Bazaar{
 			}
 		}
 		
-		[Test(description="This test may show sporadic failures due to the use of rand() in the code under test")] 
+		[Test] 
         public function roxanneStretchLowTime():void {
 			
 			var testFunction:Function = function():void {
@@ -78,7 +85,7 @@ package classes.Scenes.Places.Bazaar{
 			player.flags[kFLAGS.ROXANNE_TIME_WITHOUT_SEX] = 290;
 		}
 		
-		[Test(description="This test may show sporadic failures due to the use of rand() in the code under test")] 
+		[Test] 
         public function roxanneRepeatedStretchingWithHighTime():void {
 			setRoxanneLargeSize();
 			
@@ -105,11 +112,10 @@ package classes.Scenes.Places.Bazaar{
 			assertThat(cut.collectedOutput, hasItem(startsWith("Gosh, Roxanne is so strong...")));
 		}
 		
-		[Ignore(description="Needs injected RNG")]
-		[Test(description="This test may show sporadic failures due to the use of rand() in the code under test")] 
+		[Test] 
         public function roxanneRepeatedStretchingWithBigBooty():void {
 			setRoxanneLargeSize();
-			player.buttRating = Appearance.BUTT_RATING_EXPANSIVE;
+			player.butt.rating = Butt.RATING_EXPANSIVE;
 
 			var testFunction:Function = function():void {
 				cut.roxanneDrinkingContestTest();
@@ -123,11 +129,11 @@ package classes.Scenes.Places.Bazaar{
 			assertThat(cut.collectedOutput, hasItem(startsWith("Gods, your head is swimming!")));
 		}
 		
-		[Ignore(description="Needs injected RNG")]
-		[Test(description="This test may show sporadic failures due to the use of rand() in the code under test")] 
+
+		[Test] 
         public function roxanneCounterResetWithBigBooty():void {
 			setRoxanneLargeSize();
-			player.buttRating = Appearance.BUTT_RATING_EXPANSIVE;
+			player.butt.rating = Butt.RATING_EXPANSIVE;
 
 			var testFunction:Function = function():void {
 				cut.roxanneDrinkingContestTest();
@@ -143,9 +149,15 @@ package classes.Scenes.Places.Bazaar{
 }
 
 import classes.Scenes.Places.Bazaar.Roxanne;
+import classes.internals.IRandomNumber;
 
 class RoxanneForTest extends Roxanne {
-	public var collectedOutput:Vector.<String> = new Vector.<String>(); 
+	public var collectedOutput:Vector.<String> = new Vector.<String>();
+	
+	public function RoxanneForTest(rng:IRandomNumber) 
+	{
+		super(rng);
+	}
 
 	public function roxanneDrinkingContestTest():void {
 		super.roxanneDrinkingContest();
@@ -153,5 +165,19 @@ class RoxanneForTest extends Roxanne {
 	
 	override protected function outputText(output:String):void {
 		collectedOutput.push(output);
+	}
+}
+
+class RngMock implements IRandomNumber {
+	public var randomValue:int = 0;
+	
+	public function random(max:int):int 
+	{
+		return randomValue;
+	}
+	
+	public function randomCorrected(max:int):int 
+	{
+		return randomValue;
 	}
 }

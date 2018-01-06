@@ -6,6 +6,7 @@
 package classes.Scenes.NPCs
 {
 	import classes.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.internals.*;
 
@@ -21,7 +22,7 @@ package classes.Scenes.NPCs
 			//_monster.imageName = "hellhound"; //Todo: add image
 			_monster.long = _fenris.descrwithclothes; // "You are fighting an anthro-wolf";
 			if (_fenris.hasVagina()) {
-					_monster.createVagina(_fenris.getVaginaVirgin(),VAGINA_WETNESS_NORMAL,_fenris.getVaginaSize());
+					_monster.createVagina(_fenris.getVaginaVirgin(),1,_fenris.getVaginaSize());
 					//createStatusEffect(StatusEffects.BonusVCapacity, 85, 0, 0, 0);
 				}
 			/*if (_fenris.getBreastSize() >= 1) {
@@ -38,15 +39,15 @@ package classes.Scenes.NPCs
 				_monster.cumMultiplier = 1;
 		}
 			
-		_monster.ass.analLooseness = ANAL_LOOSENESS_TIGHT;
-		_monster.ass.analWetness = ANAL_WETNESS_DRY;
+		_monster.ass.analLooseness = AssClass.LOOSENESS_TIGHT;
+		_monster.ass.analWetness = AssClass.WETNESS_DRY;
 			//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
 		_monster.tallness = 70;
-		_monster.hipRating = HIP_RATING_SLENDER;
-		_monster.buttRating = BUTT_RATING_TIGHT;
-		_monster.skinTone = "stone gray";
-		_monster.hairColor = "dark gray";
-		_monster.hairLength = 5;
+		_monster.hips.rating = Hips.RATING_SLENDER;
+		_monster.butt.rating = Butt.RATING_TIGHT;
+		_monster.skin.tone = "stone gray";
+		_monster.hair.color = "dark gray";
+		_monster.hair.length = 5;
 
 		recalcBaseStats();
 		recalcWeaponStats();
@@ -54,19 +55,19 @@ package classes.Scenes.NPCs
 		_monster.drop = new ChainedDrop().
 					add(undergarments.C_LOIN,0.05).
 					add(consumables.CANINEP,0.95);
-		_monster.tailType = TAIL_TYPE_DOG;
-		_monster.tailRecharge = 0;
+		_monster.tail.type = Tail.DOG;
 		_monster.checkMonster();		
 		
 	}
 	//adjust the Enemy-Level
 	private function recalcBaseStats():void {
 		var _fenris:Fenris = Fenris.getInstance();
-		level = Math.round( (player.level +  (_fenris.getLevel() -player.level)/4)* 10)/10; //autolevel??
+		//level = Math.round( (player.level +  (_fenris.getLevel() -player.level) / 4) * 10) / 10; //autolevel??
+		level = _fenris.getLevel();
 		initStrTouSpeInte(_fenris.getStrength(), _fenris.getThoughness(), _fenris.getSpeed(), _fenris.getIntelligence());
 		initLibSensCor(_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
 		bonusHP = level*10;
-		lust = Math.min(70,Fenris.getInstance().getLust());
+		lust = Math.min(0,Fenris.getInstance().getLust());
 		lustVuln = 0.01*_fenris.getLibido();		
 		gems = 5 + rand(level*5);	
 			

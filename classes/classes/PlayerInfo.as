@@ -386,6 +386,9 @@ import flash.events.Event;
 			if (player.cockatriceScore() > 0) {
 				raceScores += "<b>Cockatrice Score:</b> " + player.cockatriceScore() + "\n";
 			}
+			if (player.redPandaScore() > 0) {
+				raceScores += "<b>Red-Panda Score:</b> " + player.redPandaScore() + "\n";
+			}
 			
 			if (raceScores != "")
 				outputText("\n<b><u>Racial Scores</u></b>\n" + raceScores);

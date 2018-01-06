@@ -1,4 +1,5 @@
 package classes.Scenes.Places.TelAdre {
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 
 //NECESSARY FLAGS:
@@ -49,6 +50,7 @@ public function interactWithAuntNancy():void {
 		outputText("Aunt Nancy looks up as you walk over to her, and her eyes light up.  Happily, she greets you with a prim little hand atop yours, a bit of evidence of the intimacy you've shared.\n\n");
 
 		outputText("\"<i>Couldn't stay away, could you friend?</i>\" she asks, quietly, a sexy smile on her lovely face.  \"<i>What'll it be? Do you want a drink...</i>\"  The spider-lady leans her white-haired head next to your ear conspiratorially, and whispers, \"<i>Or, do you want me to get off early and give you a little... massage?</i>\"  You shiver at her words.\n\n");
+		menu();
 		//[Choice: Strong, Light, Agree, Decline]
 		if (pc.gems < 5) {
 			addDisabledButton(0, "Strong", "You can't afford it!");
@@ -68,6 +70,7 @@ public function interactWithAuntNancy():void {
 		outputText("\"<i>Welcome to the Wet Bitch.  My name's Aunt Nancy, and I'll be your server this morning.</i>\"  She smiles.  \"<i>Well, what'll it be, friend?</i>\" the bartender asks, her voice rich and velvety rather than cute as she leans on the bar, giving you a good look at her cleavage.  \"<i>Bit early in the day for the strong stuff, I reckon.</i>\"\n\n");
 		//[If MetNancy < 1, MetNancy += 1]
 		if (flags[kFLAGS.NANCY_MET] < 1) flags[kFLAGS.NANCY_MET] = 1;
+		menu();
 		//[Choice: Strong, Light]
 		if (pc.gems < 5) {
 			addDisabledButton(0, "Strong", "You can't afford it!");
@@ -130,7 +133,7 @@ private function lightStuff():void {
 	if (player.inte >= 20) outputText("  You realize that what look like almost-shoulder-length gloves over her hands must actually be shell-like portions of this exoskeleton.");
 	outputText("\n\n");
 
-	outputText("Once she gives you the drink, you take a tentative sip, and find it very sweet and refreshing, without seeming very strong or alcoholic.  It's very good, and you quickly have another.");
+	outputText("Once she gives you the drink, you take a tentative sip, and find it very sweet and refreshing, without seeming very strong or alcoholic.  It's very good, and you quickly have another.  ");
 	
 	//[If FirstTalkNancy = 0]
 	if (flags[kFLAGS.NANCY_TIMES_TALKED] == 0) {
@@ -230,7 +233,7 @@ private function auntNancyPoonPartII():void {
 	outputText("As you unwind at her touch, her many arms are working to strip away your " + player.armorName + ", gently peeling them away with care until you are naked and needy in the spider-lady's web.\n\n");
 
 	outputText("You are soon hanging in utter relaxation, idly wondering whether the ongoing massage Aunt Nancy's many hands are still performing all over your " + player.chestDesc() + ", " + player.buttDescript() + ", back, and neck, or the loving, strange kiss of her lips and long, curling tongue is more responsible.  Ultimately, however, she pulls her white-haired head away from yours, and removes her many hands from your trunk.  Smiling at your sudden unhappy look, Aunt Nancy begins to kiss her way down your body, first along the curve of your neck, sliding her long, moist tongue against your chest as you shiver in pleasure at the sensation and pressing her soft lips against your " + player.nippleDescript(0) + "s and nibbling gently on them to enjoy your moans of delight, before moving her head down your belly");
-	if (player.tailType > TAIL_TYPE_NONE) outputText(" to the top of your tail");
+	if (player.tail.type > Tail.NONE) outputText(" to the top of your tail");
 	outputText(".\n\n");
 	
 	//[If a naga]
@@ -333,7 +336,7 @@ private function auntNancyPoonPartII():void {
 		outputText("With your face turned, you suddenly spot a once-well-made dildo lying on the floor beneath the web.  You see that it has been worn down as smooth as an apple rind and probably much thinner than it was before, and you suddenly wonder just how pent up the widow's sexual desires really are.\n\n");
 
 		outputText("Such thoughts are interrupted when you suddenly feel Aunt Nancy's fingers on the lower half of your body again, caressing your ");
-		if (player.tailType > TAIL_TYPE_NONE) outputText("tail before rising to your ");
+		if (player.tail.type > Tail.NONE) outputText("tail before rising to your ");
 		outputText(player.vaginaDescript(0) + " and " + player.buttDescript() + ".  Aunt Nancy turns your head to face hers, and rises up onto her legs again as her fingers begin to sink deep into your " + player.vaginaDescript(0) + " and your " + player.assholeDescript() + ".  You moan, loudly and long at the sensation, and Aunt Nancy smiles lewdly, her other hands still exploring and squeezing your " + player.chestDesc() + ", rubbing and kneading them softly and occasionally pinching and pulling at your " + player.nippleDescript(0) + "s.\n\n");
 		
 		outputText("Suddenly, you realize that your left hand is now free, courtesy of one of Aunt Nancy's smooth, gentle arms.  She whispers, quietly, \"<i>A little for me too, please.</i>\"  Realizing exactly what she means, you press the " + player.skinFurScales() + " of your hand against her pussy.  Its entrance, two parted shell-plates dripping wet fluid, would almost be scary if you weren't so very relaxed.  Gently, your press your fingers into her body, and hear her moan, loudly, feel her own hands scrabbling inside of your " + player.vaginaDescript(0) + " and " + player.assholeDescript() + ", pawing your chest and " + player.buttDescript() + ", trailing through your " + player.hairDescript() + ".\n\n");

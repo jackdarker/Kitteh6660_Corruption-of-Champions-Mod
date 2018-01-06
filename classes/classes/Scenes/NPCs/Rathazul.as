@@ -1,5 +1,6 @@
 ﻿package classes.Scenes.NPCs {
 	import classes.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.Scenes.API.Encounter;
@@ -490,7 +491,7 @@ private function craftSilkArmor():void {
 	if (!player.hasItem(useables.T_SSILK, 5)) {
 		outputText("The rat shakes his head and hands it back to you.  \"<i>This isn't enough for me to make anything with.  I'll need at least five bundles of this stuff total, so you'll need to find more,</i>\" he explains.\n\n");
 		//(optional spider bonus: 
-		if (player.tailType == TAIL_TYPE_SPIDER_ADBOMEN) {
+		if (player.tail.type == Tail.SPIDER_ABDOMEN) {
 			outputText("You show him your spider-like abdomen in response, offering to produce more webbing for him.  Rathazul chuckles dryly, a sound that reminds you of hot wind rushing through a dead valley.  \"<i>Dear child, this would never do.  Silk this tough can only be produced by a true-born spider.  No matter how you change yourself, you'll always be a human at heart.</i>\"\n\n");
 			outputText("The old rat shakes his head and adds, \"<i>Well, now that I think about it, the venom of a red widow might be able to transform you until you are a spider to the core, but I have absolutely no idea what that would do to you.  If you ever try such a dangerous, reckless idea, let me know.  I want to have my notebooks handy, for SCIENCE!</i>\"\n\n");
 		}
@@ -564,7 +565,6 @@ public function chooseArmorOrRobes(robeType:int):void {
 	outputText(", wondering if the old rodent will actually deliver the wondrous item that he's promised you.");
 	flags[kFLAGS.RATHAZUL_SILK_ARMOR_TYPE] = robeType;
 	flags[kFLAGS.RATHAZUL_SILK_ARMOR_COUNTDOWN] = 24;
-	trace("274: " + flags[kFLAGS.RATHAZUL_SILK_ARMOR_COUNTDOWN]);
 	doNext(camp.returnToCampUseOneHour);
 }
 private function collectSilkArmor():void {
@@ -949,33 +949,52 @@ private function rathazulShopMenu(dyes:Boolean = false, philters:Boolean = false
 }
 
 //Hair dyes
-private function buyDyes():void {
+private function buyDyes(fromPage2:Boolean = false):void {
 	clearOutput();
 	spriteSelect(SpriteDb.s_rathazul);
-	outputText(images.showImage("rathazul-vials"));
-	outputText("Rathazul smiles and pulls forth several vials of colored fluids.  Which type of dye would you like?");
-	outputText("\n\n<b>(-50 Gems)</b>");
-	player.gems -= 50;
-	statScreenRefresh();
+	if (!fromPage2) {
+		outputText(images.showImage("rathazul-vials"));
+		outputText("Rathazul smiles and pulls forth several vials of colored fluids.  Which type of dye would you like?");
+		outputText("\n\n<b>(-50 Gems)</b>");
+		player.gems -= 50;
+		statScreenRefresh();
+	}
 	menu();
 	addButton(0, "Auburn", buyDye, consumables.AUBURND);
 	addButton(1, "Black", buyDye, consumables.BLACK_D);
 	addButton(2, "Blond", buyDye, consumables.BLOND_D);
 	addButton(3, "Brown", buyDye, consumables.BROWN_D);
-	addButton(4, "Red", buyDye, consumables.RED_DYE);
-	addButton(5, "White", buyDye, consumables.WHITEDY);
-	addButton(6, "Gray", buyDye, consumables.GRAYDYE);
+	// Button 4: Next
+	addButton(5, "Red", buyDye, consumables.RED_DYE);
+	addButton(6, "White", buyDye, consumables.WHITEDY);
+	addButton(7, "Gray", buyDye, consumables.GRAYDYE);
 	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 8) {
-		addButton(7, "Blue", buyDye, consumables.BLUEDYE);
-		addButton(8, "Green", buyDye, consumables.GREEN_D);
-		addButton(9, "Orange", buyDye, consumables.ORANGDY);
-		addButton(10, "Yellow", buyDye, consumables.YELLODY);
-		addButton(11, "Purple", buyDye, consumables.PURPDYE);
-		addButton(12, "Pink", buyDye, consumables.PINKDYE);
+		addButton(4, "Next", buyDyesPage2);
+		addButton(8, "Blue", buyDye, consumables.BLUEDYE);
+		// Button 9 left empty in case, we add a third page here
+		addButton(10, "Green", buyDye, consumables.GREEN_D);
+		addButton(11, "Orange", buyDye, consumables.ORANGDY);
+		addButton(12, "Yellow", buyDye, consumables.YELLODY);
+		addButton(13, "Purple", buyDye, consumables.PURPDYE);
 	}
+	addButton(14, "Nevermind", buyDyeNevermind);
+}
+private function buyDyesPage2():void {
+	clearOutput();
+	if (player.statusEffectv2(StatusEffects.MetRathazul) < 8) { // Failsafe, should probably never happen (Stadler76)
+		buyDyes(true);
+		return;
+	}
+	spriteSelect(SpriteDb.s_rathazul);
+	outputText(images.showImage("rathazul-vials"));
+	menu();
+	addButton(0, "Pink", buyDye, consumables.PINKDYE);
+	addButton(1, "Russet", buyDye, consumables.RUSSDYE);
 	if (player.statusEffectv2(StatusEffects.MetRathazul) >= 12) {
-		addButton(13, "Rainbow", buyDye, consumables.RAINDYE);
+		addButton(2, "Rainbow", buyDye, consumables.RAINDYE);
 	}
+	addButton(4, "Previous", buyDyes, true);
+	// Button 9 left empty in case, we add a third page here
 	addButton(14, "Nevermind", buyDyeNevermind);
 }
 private function buyDye(dye:ItemType):void {
