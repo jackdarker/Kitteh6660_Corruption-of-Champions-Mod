@@ -780,7 +780,7 @@ package classes.Scenes.NPCs{
 			if (_oldversion == "2" ) {
 				_oldversion = updateAfterLoadV2(flagData);					
 			}
-			resetFenris(); //
+			//resetFenris(); 
 		}
 		private function updateAfterLoadV2(flagData:Array):String {
 			_Corruption				= uint(flagData[1]);
