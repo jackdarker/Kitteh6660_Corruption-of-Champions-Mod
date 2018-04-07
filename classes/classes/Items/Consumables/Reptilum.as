@@ -30,16 +30,8 @@ package classes.Items.Consumables
 			//if (player.isTaur()) tfSource += "-taur";
 			player.slimeFeed();
 			//init variables
-			changes = 0;
-			changeLimit = 1;
 			var temp2:Number = 0;
-			//Randomly choose affects limit
-			if (rand(2) === 0) changeLimit++;
-			if (rand(2) === 0) changeLimit++;
-			if (rand(3) === 0) changeLimit++;
-			if (rand(4) === 0) changeLimit++;
-			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
-			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+			mutations.initTransformation([2, 2, 3, 4]);
 			//clear screen
 			clearOutput();
 			outputText("You uncork the vial of fluid and drink it down.  The taste is sour, like a dry wine with an aftertaste not entirely dissimilar to alcohol.  Instead of the warmth you'd expect, it leaves your throat feeling cold and a little numb.");

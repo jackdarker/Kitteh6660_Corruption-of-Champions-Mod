@@ -24,12 +24,7 @@ package classes.Items.Consumables
 		override public function useItem():Boolean {
 			var tfSource:String = "impFood";
 			var temp:int = 0;
-			changes = 0;
-			changeLimit = 1;
-			if (rand(2) === 0) changeLimit++;
-			if (rand(2) === 0) changeLimit++;
-			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
-			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+			mutations.initTransformation([2, 2]);
 			clearOutput();
 			if (player.cocks.length > 0) {
 				outputText("The food tastes strange and corrupt - you can't really think of a better word for it, but it's unclean.");

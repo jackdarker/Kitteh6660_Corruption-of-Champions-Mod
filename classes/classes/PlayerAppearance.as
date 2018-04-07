@@ -8,10 +8,10 @@ package classes
 	{
 		public function PlayerAppearance() {}
 
-		protected function footInchOrMetres(...args):String { return measurements.footInchOrMetres.apply(null, args); }
-		protected function numInchesOrCentimetres(inches:Number):String { return measurements.numInchesOrCentimetres(inches); }
-		protected function inchesOrCentimetres(...args):String { return measurements.inchesOrCentimetres.apply(null, args); }
-		protected function shortSuffix(...args):String { return measurements.shortSuffix.apply(null, args); }
+		protected function footInchOrMetres(...args):String { return Measurements.footInchOrMetres.apply(null, args); }
+		protected function numInchesOrCentimetres(inches:Number):String { return Measurements.numInchesOrCentimetres(inches); }
+		protected function inchesOrCentimetres(...args):String { return Measurements.inchesOrCentimetres.apply(null, args); }
+		protected function shortSuffix(...args):String { return Measurements.shortSuffix.apply(null, args); }
 
 		public function appearance():void {
 			if (CoC_Settings.charviewEnabled) mainViewManager.showPlayerDoll(debug);

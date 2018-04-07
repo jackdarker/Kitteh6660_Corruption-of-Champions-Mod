@@ -54,16 +54,9 @@ package classes.Items.Consumables
 			var player:Player = getGame().player;
 			var pure:Boolean = (value == PURE_HONEY_VALUE);
 			var special:Boolean = (value == SPECIAL_HONEY_VALUE);
-			changes = 0;
-			changeLimit = 1;
+			mutations.initTransformation([2, 2, 2]);
 			clearOutput();
 			player.slimeFeed();
-			//Chances of boosting the change limit.
-			if (Utils.rand(2) == 0) changeLimit++;
-			if (Utils.rand(2) == 0) changeLimit++;
-			if (Utils.rand(2) == 0) changeLimit++;
-			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
-			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 			//Drink text
 			if (special) {
 				outputText("You uncork the bottle and pour the incredibly strong smelling concentrated honey down your throat.  Its taste is also mighty intense.  All at once you feel the effects of the substance start to course through your body.");
@@ -116,7 +109,6 @@ package classes.Items.Consumables
 			if (changes < changeLimit && Utils.rand(2) == 0 && player.inte100 < 80) {
 				getGame().dynStats("int", 0.1 * (80 - player.inte100));
 				outputText("\n\nYou spend a few moments analyzing the taste and texture of the honey's residue, feeling awfully smart.");
-				//[removed:1.4.10]//changes++;
 			}
 			//Sexual Stuff
 			//No idears

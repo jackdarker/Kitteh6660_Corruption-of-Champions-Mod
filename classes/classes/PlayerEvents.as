@@ -66,11 +66,11 @@ package classes {
 			//Jewelry effect
 			if (player.jewelryEffectId == JewelryLib.CORRUPTION)
 			{
-				if (player.cor < 80) dynStats("cor", (player.jewelryEffectMagnitude/10));
+				if (player.cor < 80) dynStats("cor", (player.jewelryEffectMagnitude / 100));
 			}
 			if (player.jewelryEffectId == JewelryLib.PURITY)
 			{
-				dynStats("cor", -0.1);
+				dynStats("cor", -(player.jewelryEffectMagnitude / 100));
 			}
 			//Armor
 			if (player.armor == armors.LTHCARM)

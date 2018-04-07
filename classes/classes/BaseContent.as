@@ -43,11 +43,6 @@
 			return kGAMECLASS.credits;
 		}
 
-		protected function get measurements():Measurements
-		{
-			return kGAMECLASS.measurements;
-		}
-
 		protected function get timeQ():Number
 		{
 			return kGAMECLASS.timeQ;

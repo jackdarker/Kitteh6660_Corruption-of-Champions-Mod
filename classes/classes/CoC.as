@@ -206,9 +206,9 @@ package classes
 		public var commonEncounters:CommonEncounters = new CommonEncounters(); // Common dependencies go first
 		
 		public var bog:Bog;
-		public var desert:Desert = new Desert();
-		public var forest:Forest = new Forest();
-		public var deepWoods:DeepWoods = new DeepWoods(forest);
+		public var desert:Desert;
+		public var forest:Forest;
+		public var deepWoods:DeepWoods;
 		public var glacialRift:GlacialRift = new GlacialRift();
 		public var highMountains:HighMountains;
 		public var lake:Lake;
@@ -306,7 +306,6 @@ package classes
 		public var bindings:Bindings = new Bindings();
 		public var output:Output = Output.init();
 		public var credits:Credits = Credits.init();
-		public var measurements:Measurements = Measurements.init();
 		/****
 		   This is used purely for bodges while we get things cleaned up.
 		   Hopefully, anything you stick to this object can be removed eventually.
@@ -447,33 +446,37 @@ package classes
 		 * Create scenes that use the new pregnancy system. This method is public to allow for simple testing.
 		 * @param pregnancyProgress Pregnancy progression to use for scenes, which they use to register themself
 		 */
-		public function createScenes(pregnancyProgress:PregnancyProgression): void {
-			this.dungeons = new DungeonCore(pregnancyProgress);
+		public function createScenes(pregnancyProgression:PregnancyProgression): void {
+			dungeons = new DungeonCore(pregnancyProgression);
 			
-			this.bog = new Bog(pregnancyProgress);
-			this.mountain = new Mountain(pregnancyProgress, output);
-			this.highMountains = new HighMountains(pregnancyProgress, output);
-			this.volcanicCrag = new VolcanicCrag(pregnancyProgress, output);
-			this.swamp = new Swamp(pregnancyProgress, output);
-			this.plains = new Plains(pregnancyProgress, output);
-			this.telAdre = new TelAdre(pregnancyProgress);
+			bog = new Bog(pregnancyProgression, output);
+			mountain = new Mountain(pregnancyProgression, output);
+			highMountains = new HighMountains(pregnancyProgression, output);
+			volcanicCrag = new VolcanicCrag(pregnancyProgression, output);
+			swamp = new Swamp(pregnancyProgression, output);
+			plains = new Plains(pregnancyProgression, output);
+			forest = new Forest(pregnancyProgression, output);
+			deepWoods = new DeepWoods(forest);
+			desert = new Desert(pregnancyProgression, output);
 			
-			this.impScene = new ImpScene(pregnancyProgress, output);
-			this.anemoneScene = new AnemoneScene(pregnancyProgress, output);
-			this.marbleScene = new MarbleScene(pregnancyProgress, output);
-			this.jojoScene = new JojoScene(pregnancyProgress, output);
-			this.amilyScene = new AmilyScene(pregnancyProgress, output);
-			this.izmaScene = new IzmaScene(pregnancyProgress, output);
-			this.lake = new Lake(pregnancyProgress, output);
+			telAdre = new TelAdre(pregnancyProgression);
+			
+			impScene = new ImpScene(pregnancyProgression, output);
+			anemoneScene = new AnemoneScene(pregnancyProgression, output);
+			marbleScene = new MarbleScene(pregnancyProgression, output);
+			jojoScene = new JojoScene(pregnancyProgression, output);
+			amilyScene = new AmilyScene(pregnancyProgression, output);
+			izmaScene = new IzmaScene(pregnancyProgression, output);
+			lake = new Lake(pregnancyProgression, output);
 
 			// not assigned to a variable as it is self-registering, PregnancyProgress will keep a reference to the instance
-			new PlayerCentaurPregnancy(pregnancyProgress, output);
-			new PlayerBunnyPregnancy(pregnancyProgress, output, mutations);
-			new PlayerBenoitPregnancy(pregnancyProgress, output);
-			new PlayerOviElixirPregnancy(pregnancyProgress, output);
+			new PlayerCentaurPregnancy(pregnancyProgression, output);
+			new PlayerBunnyPregnancy(pregnancyProgression, output, mutations);
+			new PlayerBenoitPregnancy(pregnancyProgression, output);
+			new PlayerOviElixirPregnancy(pregnancyProgression, output);
 			
-			this.emberScene = new EmberScene(pregnancyProgress);
-			this.urtaPregs = new UrtaPregs(pregnancyProgress);
+			emberScene = new EmberScene(pregnancyProgression);
+			urtaPregs = new UrtaPregs(pregnancyProgression);
 		}
 		
 		/**

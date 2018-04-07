@@ -8,12 +8,14 @@ package classes.Scenes.Areas {
 	import classes.Scenes.API.FnHelpers;
 	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.Forest.*;
+	import classes.Scenes.PregnancyProgression;
+	import classes.internals.GuiOutput;
 
 	use namespace kGAMECLASS;
 
 	public class Forest extends BaseContent implements IExplorable {
 		public var akbalScene:AkbalScene = new AkbalScene();
-		public var beeGirlScene:BeeGirlScene = new BeeGirlScene();
+		public var beeGirlScene:BeeGirlScene;
 		public var corruptedGlade:CorruptedGlade = new CorruptedGlade();
 		public var essrayle:Essrayle = new Essrayle();
 		public var faerie:Faerie = new Faerie();
@@ -24,7 +26,9 @@ package classes.Scenes.Areas {
 //		public var dullahanScene:DullahanScene = new DullahanScene(); //[INTERMOD:8chan]
 		public var dryadScene:DryadScene = new DryadScene();
 
-		public function Forest() {}
+		public function Forest(pregnancyProgression:PregnancyProgression, output:GuiOutput) {
+			this.beeGirlScene = new BeeGirlScene(pregnancyProgression, output);
+		}
 
 		public function isDiscovered():Boolean { return flags[kFLAGS.TIMES_EXPLORED_FOREST] > 0; }
 		public function discover():void {

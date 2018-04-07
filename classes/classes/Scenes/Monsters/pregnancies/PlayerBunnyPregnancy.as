@@ -4,6 +4,7 @@ package classes.Scenes.Monsters.pregnancies
 	import classes.Items.Mutations;
 	import classes.Player;
 	import classes.PregnancyStore;
+	import classes.Scenes.AnalPregnancy;
 	import classes.Scenes.PregnancyProgression;
 	import classes.Scenes.VaginalPregnancy;
 	import classes.StatusEffects;
@@ -13,7 +14,7 @@ package classes.Scenes.Monsters.pregnancies
 	/**
 	 * Contains pregnancy progression and birth scenes for a Player impregnated by a bunny.
 	 */
-	public class PlayerBunnyPregnancy implements VaginalPregnancy 
+	public class PlayerBunnyPregnancy implements VaginalPregnancy, AnalPregnancy
 	{
 		private var pregnancyProgression:PregnancyProgression;
 		private var output:GuiOutput;
@@ -31,6 +32,7 @@ package classes.Scenes.Monsters.pregnancies
 			this.mutations = mutations;
 			
 			pregnancyProgression.registerVaginalPregnancyScene(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.PREGNANCY_BUNNY, this);
+			pregnancyProgression.registerAnalPregnancyScene(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.PREGNANCY_BUNNY, this);
 		}
 		
 		/**
@@ -49,7 +51,7 @@ package classes.Scenes.Monsters.pregnancies
 			
 			if (player.pregnancyIncubation === 785) {
 				//output.text("\n<b>An unexpected change occurs, no doubt brought on by the bunny's eggs inside you!</b>");
-				mutations.neonPinkEgg(true,player);
+				kGAMECLASS.consumables.NPEPREG.useItem();
 				output.text("\n");
 				displayedUpdate = true;
 			}
@@ -61,7 +63,7 @@ package classes.Scenes.Monsters.pregnancies
 			
 			if (player.pregnancyIncubation === 765) {
 				//output.text("\n<b>An unexpected change occurs, no doubt brought on by the bunny's eggs inside you!</b>");
-				mutations.neonPinkEgg(true,player);
+				kGAMECLASS.consumables.NPEPREG.useItem();
 				output.text("\n");
 				displayedUpdate = true;
 			}
@@ -203,6 +205,60 @@ package classes.Scenes.Monsters.pregnancies
 			
 			player.orgasm('Vaginal');
 			kGAMECLASS.dynStats("lib", 1, "sen", 10, "cor", -2);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function updateAnalPregnancy():Boolean 
+		{
+			//TODO remove this once new Player calls have been removed
+			var player:Player = kGAMECLASS.player;
+			var displayedUpdate:Boolean = false;
+			
+			if (player.buttPregnancyIncubation === 800) {
+				output.text("\nYour gut gurgles strangely.\n");
+				
+				displayedUpdate = true;
+			}
+			
+			if (player.buttPregnancyIncubation === 785) {
+				kGAMECLASS.consumables.NPEPREG.useItem();
+				output.text("\n");
+				
+				displayedUpdate = true;
+			}
+			
+			if (player.buttPregnancyIncubation === 776) {
+				output.text("\nYour gut feels full and bloated.\n");
+				
+				displayedUpdate = true;
+			}
+			
+			if (player.buttPregnancyIncubation === 765) {
+				kGAMECLASS.consumables.NPEPREG.useItem();
+				output.text("\n");
+				
+				displayedUpdate = true;
+			}
+			
+			if (player.buttPregnancyIncubation === 745) {
+				output.text("\n<b>After dealing with the discomfort and bodily changes for the past day or so, you finally get the feeling that the eggs in your ass have dissolved.</b>\n");
+				
+				displayedUpdate = true;
+				
+				player.buttKnockUpForce();
+			}
+			
+			return displayedUpdate;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function analBirth():void 
+		{
+			// there is no bunny anal birth, see PlayerBunnyPregnancy#updateAnalPregnancy()
 		}
 	}
 }

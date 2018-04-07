@@ -13,6 +13,7 @@ package classes.Scenes.Areas {
 	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.Bog.*;
 	import classes.Scenes.PregnancyProgression;
+	import classes.internals.GuiOutput;
 
 	use namespace kGAMECLASS;
 
@@ -25,9 +26,9 @@ package classes.Scenes.Areas {
 		public var parasiteScene:ParasiteScene = new ParasiteScene();
 		public var infestedChameleonGirlScene:InfestedChameleonGirlScene = new InfestedChameleonGirlScene();
 		*/
-		public function Bog(pregnancyProgression:PregnancyProgression) {
+		public function Bog(pregnancyProgression:PregnancyProgression, output: GuiOutput) {
 			this.phoukaScene = new PhoukaScene(pregnancyProgression);
-			this.frogGirlScene = new FrogGirlScene(pregnancyProgression);
+			this.frogGirlScene = new FrogGirlScene(pregnancyProgression, output);
 		}
 		
 		public function isDiscovered():Boolean { return flags[kFLAGS.BOG_EXPLORED] > 0; }

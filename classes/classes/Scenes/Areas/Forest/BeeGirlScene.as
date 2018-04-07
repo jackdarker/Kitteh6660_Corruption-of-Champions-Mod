@@ -8,6 +8,8 @@ package classes.Scenes.Areas.Forest
 	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
+	import classes.Scenes.Monsters.pregnancies.PlayerBeePregnancy;
+	import classes.Scenes.PregnancyProgression;
 	import classes.display.SpriteDb;
 	import classes.internals.*;
 	import classes.VaginaClass;
@@ -24,7 +26,9 @@ package classes.Scenes.Areas.Forest
 		private static const BEE_GIRL_PLAYER_DISGUSTED:int			=          6;
 		private static const BEE_GIRL_PLAYER_DUTY:int				=          7;
 		
-		public function BeeGirlScene() {}
+		public function BeeGirlScene(pregnancyProgression:PregnancyProgression, output:GuiOutput) {
+			new PlayerBeePregnancy(pregnancyProgression, output);
+		}
 		
 		public function setTalked():void { flags[kFLAGS.BEE_GIRL_STATUS] = BEE_GIRL_TALKED; }
 		

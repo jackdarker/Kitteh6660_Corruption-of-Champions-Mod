@@ -26,13 +26,7 @@ package classes.Items.Consumables
 			var tfSource:String = "regularHummus";
 			var temp:int = 0;
 			
-			clearOutput();
-			changes = 0;
-			changeLimit = 1;
-			if (rand(2) === 0) changeLimit++;
-			if (rand(2) === 0) changeLimit++;
-			if (player.findPerk(PerkLib.HistoryAlchemist) >= 0) changeLimit++;
-			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
+			mutations.initTransformation([2, 2]);
 			clearOutput();
 			outputText("You crack open the small clay jar to reveal a lightly colored paste that smells surprisingly delicious. You begin eating it with your fingers, wishing all the while for some crackers...");
 			player.refillHunger(10);
