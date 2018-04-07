@@ -661,7 +661,7 @@ package classes.Scenes.Areas.HighMountains
 			addButton(3, "Eat", kGAMECLASS.highMountains.minervaScene.eatSomethingYouCunt);
 			addButton(4, "Drink", kGAMECLASS.highMountains.minervaScene.getADrinkYouBitch);
 			addButton(5, "Spar", kGAMECLASS.highMountains.minervaScene.fightMinerva);
-			if (kGAMECLASS.highMountains.minervaScene.minervaRomanced() && model.time.hours >= 20) addButton(6, "Sleep With", sleepWithMinerva);
+			if (kGAMECLASS.highMountains.minervaScene.minervaRomanced() && getGame().time.hours >= 20) addButton(6, "Sleep With", sleepWithMinerva);
 			else addDisabledButton(6, "Sleep With", "Available at evenings with high enough affection.");
 			//if (flags[kFLAGS.MINERVA_CHILDREN] > 0) addButton(7, "Children", checkUpOnMinervaChildren);
 			if (kGAMECLASS.highMountains.minervaScene.pregnancy.isPregnant) addButton(7, "Pregnancy", checkPregnancy);
@@ -1623,7 +1623,7 @@ package classes.Scenes.Areas.HighMountains
 			player.refillHunger(100);
 			player.changeFatigue(-100);
 			outputText(" ");
-			HPChange(player.maxHP(), true)
+			player.HPChange(player.maxHP(), true)
 			outputText("\nWith you fed and rested, the golden broodmother helps you to your feet, despite all the sleep you got; your legs are still a bit wobbly. Thankfully Minerva helps you steady yourself. \"< i > My goodness, are you alright? I guess you're not quite recovered are you, are you sure you don't want to rest more? < / i >\" the gentle maternal herm asks you, knowing that you must get back to your important work soon.");
 
 			outputText("\n\nDespite the feeling in your legs you nod your head in affirmation, while it would be nice to rest you have much to do, demons to slay, damsels to save from said demons. Smiling at the strong front you give, Minerva pulls you into a hug. \"<i>That's my strong hero, so brave, so strong. I just know you will save this world and soon there will be some more sirens in the world that will help make things a bit brighter.</i>\" she says with a bright proud grin on her face as she helps you walk, just to make sure you're alright.");
@@ -1632,7 +1632,7 @@ package classes.Scenes.Areas.HighMountains
 			doNext(camp.returnToCampUseOneHour);
 		}
 		private function processSleepTime():void {
-			while (model.time.hours != 6) {
+			while (getGame().time.hours != 6) {
 				kGAMECLASS.timeQ = 1;
 				goNext(timeQ, false);
 			}
@@ -1688,7 +1688,7 @@ package classes.Scenes.Areas.HighMountains
 			clearOutput();
 			kGAMECLASS.highMountains.minervaScene.minervaSprite();
 			kGAMECLASS.highMountains.minervaScene.pregnancy.knockUpForce(); //Clear pregnancy.
-			if (model.time.hours < 6) outputText("You're suddenly disturbed by a sound. When you wake up, you see nothing suspicious except for a note on your bed. You open the note and read it. You realize it's from Minerva and she's telling you to come to her! She's going to give birth! You look up at the sky to see it's still night but you grab and light a lantern. You set foot on the path to the high mountains and climb up until you enter the tower where she resides.");
+			if (getGame().time.hours < 6) outputText("You're suddenly disturbed by a sound. When you wake up, you see nothing suspicious except for a note on your bed. You open the note and read it. You realize it's from Minerva and she's telling you to come to her! She's going to give birth! You look up at the sky to see it's still night but you grab and light a lantern. You set foot on the path to the high mountains and climb up until you enter the tower where she resides.");
 			else outputText("You're wandering your camp until you see a piece of paper with something written on it. You walk over to the note to pick it up and read it. You realize it's from Minerva and she's telling you to come to her! She's going to give birth! You set foot on the path to the high mountains and climb up until you enter the tower where she resides.");
 			outputText("\n\n\"<i>It's time! Don't worry, I'm a natural at childbirth,</i>\" Minerva announces. She straddles over to the birthing spot");
 			if (flags[kFLAGS.MINERVA_TOWER_TREE] > 0) outputText(" under the giant oak tree");
@@ -1699,7 +1699,7 @@ package classes.Scenes.Areas.HighMountains
 			outputText("You lay down next to her and relax, even taking the time to examine the young sirens. They have the same hair color, possess a pair of wings, and are both hermaphrodites. They look so adorable! ");
 			outputText("No wonder they will eventually grow up to be virile and fertile to help expand the sirenic population.");
 			flags[kFLAGS.MINERVA_CHILDREN] += 2;
-			if (model.time.hours < 6) {
+			if (getGame().time.hours < 6) {
 				outputText("\n\n\"<i>You can sleep with me if you like to. After all, it's still night,</i>\" she says. You nod and cuddle next to her.");
 				doNext(sleepWithMinervaPostBirthing);
 			}

@@ -1,6 +1,7 @@
 package {
 	import classes.HelperSuit;
 	import classes.InternalsSuit;
+	import classes.PlayerTest;
 	import classes.ScenesSuit;
 	import classes.ItemsSuit;
 
@@ -10,9 +11,11 @@ package {
 	import classes.CharCreationTest;
 	import classes.MonsterTest;
 	import classes.VaginaClassTest;
+	import classes.CockTest;
 	import classes.SavesTest;
 	import classes.PlayerEventsTest;
 	import classes.PlayerEventsVaginaLoosenessRecoveryTest;
+	import classes.MenusSuit;
 
 [Suite]
 [RunWith("org.flexunit.runners.Suite")]
@@ -27,10 +30,13 @@ package {
 		 public var charCreationTest:CharCreationTest; 
 		 public var monsterTest:MonsterTest;
 		 public var creaturTest:CreatureTest;
+		 public var playerTest:PlayerTest;
 		 public var vaginaClass:VaginaClassTest;
+		 public var cockTest:CockTest;
 		 public var savesTest:SavesTest;
 		 public var playerEventsTest:PlayerEventsTest;
 		 public var playerEventsVaginaLoosenessRecoveryTest:PlayerEventsVaginaLoosenessRecoveryTest;
 		 public var internalsSuit:InternalsSuit;
+		 public var menusSuit:MenusSuit;
 	}
 }

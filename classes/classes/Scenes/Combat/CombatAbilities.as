@@ -11,11 +11,10 @@ package classes.Scenes.Combat
 	import classes.Scenes.Dungeons.LethicesKeep.*;
 	import classes.Scenes.Monsters.Mimic;
 	import classes.Scenes.NPCs.*;
-	import classes.Scenes.Places.TelAdre.UmasShop;
-import classes.StatusEffects.Combat.BasiliskSlowDebuff;
-import classes.StatusEffects.Combat.MightBuff;
+	import classes.StatusEffects.Combat.BasiliskSlowDebuff;
+	import classes.StatusEffects.Combat.MightBuff;
 
-public class CombatAbilities extends BaseContent
+	public class CombatAbilities extends BaseContent
 	{
 		public function CombatAbilities() {}
 		
@@ -118,7 +117,7 @@ public class CombatAbilities extends BaseContent
 		//(15) Charge Weapon – boosts your weapon attack value by 10 * player.spellMod till the end of combat.
 		public function spellChargeWeapon(silent:Boolean = false):void {
 			if (silent) {
-				player.createStatusEffect(StatusEffects.ChargeWeapon,10*player.spellMod(),0,0,0);
+				player.createStatusEffect(StatusEffects.ChargeWeapon, 10 * player.spellMod(), 0, 0, 0);
 				statScreenRefresh();
 				return;
 			}
@@ -141,7 +140,6 @@ public class CombatAbilities extends BaseContent
 			var temp:int = 10 * player.spellMod();
 			if (temp > 100) temp = 100;
 			player.createStatusEffect(StatusEffects.ChargeWeapon, temp, 0, 0, 0);
-			statScreenRefresh();
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.doAI();
@@ -222,7 +220,6 @@ public class CombatAbilities extends BaseContent
 			outputText("\n\n");
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
-			statScreenRefresh();
 			monster.doAI();
 		}
 		
@@ -311,7 +308,6 @@ public class CombatAbilities extends BaseContent
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.HP -= temp;
-			statScreenRefresh();
 			if (monster.HP < 1) doNext(combat.endHpVictory);
 			else monster.doAI();
 		}
@@ -326,8 +322,7 @@ public class CombatAbilities extends BaseContent
 			}
 			doNext(combat.combatMenu);
 		//This is now automatic - newRound arg defaults to true:	menuLoc = 0;
-			player.changeFatigue(15,1);
-			statScreenRefresh();
+			player.changeFatigue(15, 1);
 			if (monster is FrostGiant && player.hasStatusEffect(StatusEffects.GiantBoulder)) {
 				(monster as FrostGiant).giantBoulderHit(2);
 				monster.doAI();
@@ -435,11 +430,10 @@ public class CombatAbilities extends BaseContent
 			else {
 				temp = int((player.level + (player.inte / 1.5) + rand(player.inte)) * player.spellMod());
 				outputText("You flush with success as your wounds begin to knit. ");
-				HPChange(temp, true);
+				player.HPChange(temp, true);
 			}
 			
 			outputText("\n\n");
-			statScreenRefresh();
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			if (player.lust >= player.maxLust()) doNext(combat.endLustLoss);
@@ -566,7 +560,6 @@ public class CombatAbilities extends BaseContent
 				flags[kFLAGS.SPELLS_CAST]++;
 				spellPerkUnlock();
 				monster.HP -= temp;
-				statScreenRefresh();
 			}
 			if (player.lust >= player.maxLust()) doNext(combat.endLustLoss);
 			else if (monster.HP < 1) doNext(combat.endHpVictory);
@@ -641,7 +634,6 @@ public class CombatAbilities extends BaseContent
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.HP -= temp;
-			statScreenRefresh();
 			if (monster.HP < 1) doNext(combat.endHpVictory);
 			else monster.doAI();
 		}
@@ -697,7 +689,7 @@ public class CombatAbilities extends BaseContent
 			clearOutput();
 			outputText("You gather energy in your Talisman and unleash the spell contained within.  A green aura washes over you and your wounds begin to close quickly. By the time the aura fully fades, you feel much better. ");
 			var temp:int = ((player.level * 5) + (player.inte / 1.5) + rand(player.inte)) * player.spellMod() * 1.5;
-			HPChange(temp, true);
+			player.HPChange(temp, true);
 			getGame().arianScene.clearTalisman();
 			monster.doAI();
 		}
@@ -783,7 +775,11 @@ public class CombatAbilities extends BaseContent
 				addButton(button++, "Illusion", kitsuneIllusion).hint("Warp the reality around your opponent, lowering their speed. The more you cast this in a battle, the lesser effective it becomes. \n\nFatigue Cost: " + player.spellCost(25));
 			}
 			if (player.canUseStare()) {
-				addButton(button++, "Stare", paralyzingStare).hint("Focus your gaze at your opponent, lowering their speed. The more you use this in a battle, the lesser effective it becomes. \n\nFatigue Cost: " + player.spellCost(20));
+				if (!monster.hasStatusEffect(StatusEffects.BasiliskCompulsion)) {
+					addButton(button++, "Stare", paralyzingStare).hint("Focus your gaze at your opponent, lowering their speed. The more you use this in a battle, the lesser effective it becomes. \n\nFatigue Cost: " + player.spellCost(20));
+				} else {
+					addDisabledButton(button++, "Stare", "Your opponent is already affected by your compulsion and its speed will slowly decay.");
+				}
 			}
 			if (player.hasKeyItem("Arian's Charged Talisman") >= 0) {
 				if (player.keyItemv1("Arian's Charged Talisman") == 1) addButton(button++, "Dispel", dispellingSpell);
@@ -1247,7 +1243,6 @@ public class CombatAbilities extends BaseContent
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
 			dmg = combat.doDamage(dmg, true, true);
-			statScreenRefresh();
 			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;
@@ -1293,7 +1288,6 @@ public class CombatAbilities extends BaseContent
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
 			dmg = combat.doDamage(dmg, true, true);
-			statScreenRefresh();
 			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;
@@ -1402,13 +1396,12 @@ public class CombatAbilities extends BaseContent
 		{
 			var theMonster:String      = monster.a + monster.short;
 			var TheMonster:String      = monster.capitalA + monster.short;
-			var stareTraining:Number   = flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] / 100;
+			var stareTraining:Number   = Math.min(1, flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] / 100);
+			var magnitude:Number       = 16 + stareTraining * 8;
 			var bse:BasiliskSlowDebuff = monster.createOrFindStatusEffect(StatusEffects.BasiliskSlow) as BasiliskSlowDebuff;
-			var slowEffect:Number      = -bse.buffValue('spe');
 			var oldSpeed:Number        = monster.spe;
 			var speedDiff:int          = 0;
 			var message:String         = "";
-			if (stareTraining > 1) stareTraining = 1;
 
 			output.clear();
 			//Fatigue Cost: 20
@@ -1451,15 +1444,15 @@ public class CombatAbilities extends BaseContent
 			           +"  The sounds bore into " + theMonster + "'s mind, working and buzzing at the edges of " + monster.pronoun3 + " resolve,"
 			           +" suggesting, compelling, then demanding " + monster.pronoun2 + " to look into your eyes.  ");
 
-			if (slowEffect < 3 && (monster.inte + 110 - stareTraining * 30 + slowEffect * 10 - player.inte < rand(100))) {
-			//Reduce speed down to -24 (no training) or -36 (full training).
+			if (!monster.hasStatusEffect(StatusEffects.BasiliskCompulsion) && (monster.inte + 110 - stareTraining * 30 - player.inte < rand(100))) {
+				//Reduce speed down to -16 (no training) or -24 (full training).
 				message = TheMonster + " can't help " + monster.pronoun2 + "self... " + monster.pronoun1 + " glimpses your eyes. " + monster.Pronoun1
 				        + " looks away quickly, but " + monster.pronoun1 + " can picture them in " + monster.pronoun3 + " mind's eye, staring in at "
 				        + monster.pronoun3 + " thoughts, making " + monster.pronoun2 + " feel sluggish and unable to coordinate. Something about the"
 				        + " helplessness of it feels so good... " + monster.pronoun1 + " can't banish the feeling that really, " + monster.pronoun1
 				        + " wants to look into your eyes forever, for you to have total control over " + monster.pronoun2 + ". ";
-				slowEffect++;
-				bse.applyEffect(16 + stareTraining * 8 - slowEffect * (4 + stareTraining * 2));
+				bse.applyEffect(magnitude);
+				monster.createStatusEffect(StatusEffects.BasiliskCompulsion, magnitude * 0.75, 0, 0, 0);
 				flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] += 4;
 				speedDiff = Math.round(oldSpeed - monster.spe);
 				output.text(message + combat.getDamageText(speedDiff) + "\n\n");
@@ -1473,6 +1466,12 @@ public class CombatAbilities extends BaseContent
 		//------------
 		// P. SPECIALS
 		//------------
+		public function addTailSlapButton(button:int):void {
+			addButton(button, "Tail Slap", tailSlapAttack).hint("Set your tail ablaze in red-hot flames to whip your foe with it to hurt and burn them! \n\nFatigue Cost: " + player.physicalCost(30));
+		}
+		public function addTailWhipButton(button:int):void {
+			addButton(button, "Tail Whip", tailWhipAttack).hint("Whip your foe with your tail to enrage them and lower their defense! \n\nFatigue Cost: " + player.physicalCost(15));
+		}
 		public function physicalSpecials():void {
 			if (getGame().urtaQuest.isUrta()) {
 				getGame().urtaQuest.urtaSpecials();
@@ -1540,15 +1539,21 @@ public class CombatAbilities extends BaseContent
 					addButton(button++, "Web", PCWebAttack).hint("Attempt to use your abdomen to spray sticky webs at an enemy and greatly slow them down.  Be aware it takes a while for your webbing to build up.  \n\nWeb Amount: " + Math.floor(player.tail.venom) + "/100");
 					break;
 				case Tail.SALAMANDER:
-					addButton(button++, "Tail Slap", tailSlapAttack).hint("Set your tail ablaze in red-hot flames to whip your foe with it to hurt and burn them! \n\nFatigue Cost: " + player.physicalCost(30));
-					//break;
+					addTailSlapButton(button++);
+					addTailWhipButton(button++);
+					break;
 				case Tail.SHARK:
 				case Tail.LIZARD:
 				case Tail.KANGAROO:
-				case Tail.DRACONIC:
 				case Tail.RACCOON:
-					addButton(button++, "Tail Whip", tailWhipAttack).hint("Whip your foe with your tail to enrage them and lower their defense! \n\nFatigue Cost: " + player.physicalCost(15));
+				case Tail.FERRET:
+					addTailWhipButton(button++);
+					break;
+				case Tail.DRACONIC:
+					addButton(button++, "Tail Slam", tailSlamAttack).hint("Slam your foe with your mighty dragon tail! This attack causes grievous harm and can stun your opponent or let it bleed. \n\nFatigue Cost: " + player.physicalCost(20));
+					break;
 				default:
+					//Nothing here, move along.
 			}
 			if (player.shield != ShieldLib.NOTHING) {
 				addButton(button++, "Shield Bash", shieldBash).hint("Bash your opponent with a shield. Has a chance to stun. Bypasses stun immunity. \n\nThe more you stun your opponent, the harder it is to stun them again. \n\nFatigue Cost: " + player.physicalCost(20));
@@ -2555,6 +2560,59 @@ public class CombatAbilities extends BaseContent
 			monster.doAI();
 		}
 		
+		public function tailSlamAttack():void {
+			clearOutput();
+			if (player.fatigue + player.physicalCost(20) > player.maxFatigue()) {
+				outputText("You are too exhausted to perform a tail slam.");
+				doNext(curry(combat.combatMenu,false));
+				return;
+			}
+			player.changeFatigue(20, 2);
+
+			//miss
+			if ((player.hasStatusEffect(StatusEffects.Blind) && rand(2) === 0) || (monster.spe - player.spe > 0 && int(Math.random() * (((monster.spe - player.spe) / 4) + 80)) > 80)) {
+				outputText("You swing your mighty tail, but your attack finds purchase on naught but the air.\n\n");
+				monster.doAI();
+				return;
+			}
+
+			outputText("With a great sweep, you slam your [if (monster.plural)opponents|opponent] with your powerful tail."
+			          +" [monster.capitalA][monster.short] [if (monster.plural)reel|reels] from the impact, knocked flat on [monster.pronoun3] bum,"
+			          +" battered and bruised.\n");
+
+			var damage:int = 10 + (player.str / 1.1) + rand(player.str / 2);
+			damage *= (monster.damagePercent() / 100);
+			damage = combat.doDamage(damage);
+			outputText("Your assault is nothing short of impressive, dealing <b><font color=\"#800000\">" + damage + "</font></b> damage! ");
+
+			// Stun chance
+			var chance:int = Math.floor(monster.statusEffectv1(StatusEffects.TimesBashed) + 1);
+			if (chance > 10) chance = 10;
+			if (!monster.hasStatusEffect(StatusEffects.Stunned) && !monster.hasPerk(PerkLib.Resolute) && rand(chance) === 0) {
+				outputText("<b>The harsh blow also manages to stun [monster.a][monster.short]!</b> ");
+				monster.createStatusEffect(StatusEffects.Stunned, 1, 0, 0, 0);
+				if (!monster.hasStatusEffect(StatusEffects.TimesBashed))
+					monster.createStatusEffect(StatusEffects.TimesBashed, 1, 0, 0, 0);
+				else
+					monster.addStatusValue(StatusEffects.TimesBashed, 1, 1);
+			}
+
+			//50% Bleed chance
+			if (rand(2) == 0 && monster.armorDef < 10 && !monster.hasStatusEffect(StatusEffects.IzmaBleed)) {
+				if (monster is LivingStatue) {
+					outputText("Despite the rents you've torn in its stony exterior, the statue does not bleed.");
+				} else {
+					monster.createStatusEffect(StatusEffects.IzmaBleed, 3, 0, 0, 0);
+					outputText("\n" + monster.capitalA + monster.short + " [if (monster.plural)bleed|bleeds] profusely from the many bloody punctures your tail spikes leave behind.");
+				}
+			}
+
+			flags[kFLAGS.LAST_ATTACK_TYPE] = 0;
+			combat.checkAchievementDamage(damage);
+			outputText("\n\n");
+			monster.doAI();
+		}
+		
 		public function tailSlapAttack():void {
 			clearOutput();
 			if (player.fatigue + player.physicalCost(30) > player.maxFatigue()) {
@@ -2570,8 +2628,9 @@ public class CombatAbilities extends BaseContent
 			else {
 				if(!monster.plural) outputText(" Twirling like a top, you bat your opponent with your tail.");
 				else outputText(" Twirling like a top, you bat your opponents with your tail.");
-				var damage:Number = int((player.str) - rand(monster.tou) - monster.armorDef);
+				var damage:Number = int(10 + (player.inte / 3 + rand(player.inte / 2)) * 0.6 * player.spellMod());
 				damage = calcInfernoMod(damage);
+				damage += int((player.str) - rand(monster.tou) - monster.armorDef);
 				damage = combat.doDamage(damage);
 				outputText("  Your tail slams against " + monster.a + monster.short + ", dealing <b><font color=\"#800000\">" + damage + "</font></b> damage! ");
 				combat.checkAchievementDamage(damage);

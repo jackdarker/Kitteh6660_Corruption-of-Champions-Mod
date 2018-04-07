@@ -1,12 +1,7 @@
-/**
- * Created by Kitteh6660. Volcanic Crag is a new endgame area with level 25 encounters.
- * Currently a Work in Progress.
- * 
- * This zone was mentioned in Glacial Rift doc.
- */
-
-package classes.Scenes.Areas 
-{
+/* Created by Kitteh6660. Volcanic Crag is a new endgame area with level 25 encounters
+ * Currently a Work in Progress
+ * This zone was mentioned in Glacial Rift doc */
+package classes.Scenes.Areas {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -15,24 +10,22 @@ package classes.Scenes.Areas
 	import classes.Scenes.API.FnHelpers;
 	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.VolcanicCrag.*;
-	
+	import classes.Scenes.PregnancyProgression;
+	import classes.internals.GuiOutput;
+
 	use namespace kGAMECLASS;
-	
-	public class VolcanicCrag extends BaseContent implements IExplorable
-	{
-		public var behemothScene:BehemothScene = new BehemothScene();
+
+	public class VolcanicCrag extends BaseContent implements IExplorable {
+		public var behemothScene:BehemothScene;
 		/* [INTERMOD:8chan]
 		 public var volcanicGolemScene:VolcanicGolemScene           = new VolcanicGolemScene();
 		 public var corruptedSandWitchScene:CorruptedSandWitchScene = new CorruptedSandWitchScene();
 		 */
-		
-		public function VolcanicCrag() 
-		{
+		public function VolcanicCrag(pregnancyProgression:PregnancyProgression, output:GuiOutput) {
+			this.behemothScene = new BehemothScene(pregnancyProgression, output);
 		}
 
-		public function isDiscovered():Boolean {
-			return flags[kFLAGS.DISCOVERED_VOLCANO_CRAG] > 0;
-		}
+		public function isDiscovered():Boolean { return flags[kFLAGS.DISCOVERED_VOLCANO_CRAG] > 0; }
 
 		public function discover():void {
 			flags[kFLAGS.DISCOVERED_VOLCANO_CRAG] = 1;
@@ -70,11 +63,14 @@ package classes.Scenes.Areas
 			call: corruptedSandWitchScene.corrWitchIntro
 			*/
 		}, {
+			name: "obsidianshard",
+			chance: 0.2,
+			call: lootObsidianShard
+		}, {
 			name: "walk",
 			call: walk
 		});
 	}
-
 		public function explore():void {
 			flags[kFLAGS.DISCOVERED_VOLCANO_CRAG]++;
 			doNext(playerMenu);
@@ -88,10 +84,23 @@ package classes.Scenes.Areas
 			inventory.takeItem(consumables.DRAKHRT, camp.returnToCampUseOneHour);
 		}
 
+		private function lootObsidianShard():void {
+			clearOutput();
+			outputText(images.showImage("item-dHeart"));
+			outputText("While you're minding your own business, something shiny dazes you momentarily and you turn your head to spot the shining object. You walk over to it, pick it up and look it over. It's dark purple and smooth-feeling, moving your fingers confirm that. ");
+			if (player.inte <= rand(80)) {
+				outputText("Unfortunately, you cut your fingers over the sharp edge and you quickly jerk your fingers back painfully, looking at the minor bleeding cut that formed on your finger. Ouch! ");
+				player.takeDamage(Math.max(5, player.maxHP() / 50), false);
+			}
+			outputText("You do know that the obsidian shard is very sharp, maybe someone can use it to create deadly weapons?");
+			inventory.takeItem(useables.OBSHARD, camp.returnToCampUseOneHour);
+		}
+		
 		private function walk():void {
 			clearOutput();
-			outputText(images.showImage("area-vulcaniccrag"));
+			outputText(images.showImage("area-volcaniccrag"));
 			outputText("You spend one hour exploring the infernal landscape but you don't manage to find anything interesting.");
+			dynStats("sen", .5);
 			doNext(camp.returnToCampUseOneHour);
 		}
 
@@ -99,7 +108,5 @@ package classes.Scenes.Areas
 			outputText(images.showImage("event-dlc"));
 			getGame().aprilFools.DLCPrompt("Extreme Zones DLC", "Get the Extreme Zones DLC to be able to visit Glacial Rift and Volcanic Crag and discover the realms within!", "$4.99");
 		}
-		
 	}
-
 }

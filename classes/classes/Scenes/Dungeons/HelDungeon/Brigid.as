@@ -63,6 +63,7 @@ package classes.Scenes.Dungeons.HelDungeon
 			this.short = "Brigid the Jailer";
 			this.imageName = "brigid";
 			this.long = "Brigid is a monster of a harpy, standing a foot taller than any other you've seen. She's covered in piercings, and her pink-dyed hair is shaved down to a long mohawk. She's nude, save for the hot poker in her right hand and the shield in her left, which jingles with every step she takes thanks to the cell keys beneath it.";
+			this.race = "Harpy";
 			// this.plural = false;
 			this.createVagina(false, VaginaClass.WETNESS_SLAVERING, VaginaClass.LOOSENESS_LOOSE);
 			if (LowerBody.HARPY > 0) {
@@ -91,7 +92,7 @@ package classes.Scenes.Dungeons.HelDungeon
 			this.level = 19;
 			this.gems = rand(25) +140;
 			this.additionalXP = 50;
-			this.theWingType = Wings.FEATHERED_LARGE;
+			this.wings.type = Wings.FEATHERED_LARGE;
 			this.tail.type = Tail.DEMONIC;
 			this.horns.type = Horns.DEMON;
 			this.horns.value = 2;

@@ -23,7 +23,7 @@ package classes.Scenes.NPCs{
 	import classes.CoC;
 	import classes.BaseContent;
 	import classes.CockTypesEnum;
-	import classes.Items.Consumables.SimpleConsumable;
+	import classes.Items.Consumable;
 	import classes.ItemType;
 	import classes.SaveAwareInterface;
 
@@ -472,7 +472,7 @@ package classes.Scenes.NPCs{
 			return man;
 		}
 		//returns 0 if he eats it
-		public function eatThis(Food:SimpleConsumable, Result:ReturnResult):void {
+		public function eatThis(Food:Consumable, Result:ReturnResult):void {
 			if (Food == kGAMECLASS.consumables.VITAL_T) {
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."
@@ -877,7 +877,7 @@ package classes.Scenes.NPCs{
 		public function timeChange():Boolean
 		{
 			//pregnancy.pregnancyAdvance();
-			trace("\nFenris time change: Time is " + kGAMECLASS.model.time.hours , false);
+			trace("\nFenris time change: Time is " + kGAMECLASS.time.hours , false);
 			var _Return:Boolean = getMainQuestStage() >= MAINQUEST_Greetings;
 			if (_Return) {
 				_Return = false;
@@ -888,7 +888,7 @@ package classes.Scenes.NPCs{
 				if (_lust > 90 ) _lust = 90;
 				setLust(_lust);
 				
-				if (kGAMECLASS.model.time.hours >= 16 && kGAMECLASS.model.time.hours < 17) {
+				if (kGAMECLASS.time.hours >= 16 && kGAMECLASS.time.hours < 17) {
 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
 					if (getLevel()< (kGAMECLASS.player.level+3)) {
 						_rand = Utils.rand(100);

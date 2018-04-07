@@ -106,6 +106,7 @@ package classes.Scenes.NPCs
 			}
 			this.imageName = "gooarmor";
 			this.long = "Before you stands a suit of plated mail armor filled with a bright blue goo, standing perhaps six feet off the ground.  She has a beautiful, feminine face, and her scowl as she stands before you is almost cute.  She has formed a mighty greatsword from her goo, and has assumed the stance of a well-trained warrior.";
+			this.race = "Goo-Girl";
 			// this.plural = false;
 			this.createVagina(false, VaginaClass.WETNESS_SLAVERING, VaginaClass.LOOSENESS_GAPING_WIDE);
 			createBreastRow(Appearance.breastCupInverse("C"));
@@ -115,8 +116,7 @@ package classes.Scenes.NPCs
 			this.hips.rating = Hips.RATING_AMPLE+2;
 			this.butt.rating = Butt.RATING_LARGE;
 			this.skin.tone = "blue";
-			this.theSkinType = Skin.GOO;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.GOO];
+			this.skin.setType(Skin.GOO);
 			this.skin.adj = "goopey";
 			this.hair.color = "black";
 			this.hair.length = 15;

@@ -1,8 +1,9 @@
 package classes.Scenes.Places.Boat 
 {
 	import classes.*;
-	import classes.internals.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.*;
+	import classes.internals.*;
 
 	public class Marae extends Monster
 	{
@@ -133,14 +134,14 @@ package classes.Scenes.Places.Boat
 				this.createVagina(false, VaginaClass.WETNESS_WET, VaginaClass.LOOSENESS_NORMAL);
 				createBreastRow(Appearance.breastCupInverse("DD"));
 			}
+			this.race = "Deity";
 			this.ass.analLooseness = 1;
 			this.ass.analWetness = 1;
 			this.tallness = 10*12;
 			this.hips.rating = 10;
 			this.butt.rating = 8;
 			this.skin.tone = "white";
-			this.theSkinType = 0;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.FUR];
+			this.skin.setType(Skin.PLAIN);
 			this.hair.color = "green";
 			this.hair.length = 36;
 			if (game.flags[kFLAGS.FACTORY_SHUTDOWN] == 2) {

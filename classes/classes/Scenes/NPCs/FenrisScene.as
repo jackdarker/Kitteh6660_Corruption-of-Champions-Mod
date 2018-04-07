@@ -13,7 +13,7 @@ package classes.Scenes.NPCs{
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.internals.*;
 	import classes.StatusEffects;
-	import classes.Items.Consumables.SimpleConsumable;
+	import classes.Items.Consumable;
 	import classes.Items.Useable;
 	import classes.ItemType;
 
@@ -619,7 +619,7 @@ private function buildRandomGiveFoodMenu():void {
 	if (player.hasItem(consumables.SDELITE)) _foods.add(consumables.SDELITE, 1);
 	if (player.hasItem(consumables.PPHILTR)) _foods.add(consumables.PPHILTR, 1);
 
-	var _item:SimpleConsumable;
+	var _item:Consumable;
 	_item = _foods.roll();
 	if (_item != null) addButton(0, _item.shortName, giveFood,_item, 101, null, "");
 	_item = _foods.roll();
@@ -643,7 +643,7 @@ private function buildRandomGiveFoodMenu():void {
 }
 private function buildRandomGiveItemMenu():void {
 	var _Items:TakeoutDrop = new TakeoutDrop(null);
-	if (player.hasItem(weapons.DAGGER)) _Items.add(weapons.DAGGER, 1);
+	if (player.hasItem(weapons.DAGGER0)) _Items.add(weapons.DAGGER0, 1);
 	if (player.hasItem(weapons.PIPE)) _Items.add(weapons.PIPE, 1);
 	if (player.hasItem(undergarments.FURLOIN)) _Items.add(undergarments.FURLOIN, 1);
 	var _Item:Useable = _Items.roll();
@@ -668,7 +668,7 @@ private function createMultiPageMenu(init:Boolean,Name:String,Func1:Function,Arg
 	addButton(bt, Name, Func1, Arg1, Arg2, Arg3);
 	ButtonCnt += 1;
 }*/
-private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
+private function giveFood(Food:Consumable, dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
 	clearOutput();
@@ -829,6 +829,12 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		if (player.hasItem(consumables.PINKEGG, 1)) {
 			addButton(6, "Pink Egg", questCagedDlg, 110, null, null, "shrinking his pene just a little should help");
 		}	
+		if (player.hasItem(consumables.GOB_ALE, 1)) {
+			addButton(7, "Goblin Ale", questCagedDlg, 110, null, null, "shrinking his pene just a little should help");
+		}	
+		if (player.hasItem(consumables.SUCMILK, 1)) {
+			addButton(8, "Succubi Milk", questCagedDlg, 110, null, null, "shrinking his pene just a little should help");
+		}
 		addButton(14, "Back", metAgain, 0, null, null, "");	
 	} else if (dlgstage == 110) {
 		outputText("\n'<i>Here eat this. </i>' you present [fenris em] a pink egg.'<i>Will it help... I mean how does it work?</i>' \n");	
@@ -845,7 +851,7 @@ private function questCagedDlg (dlgstage:int = -1):void {
 		outputText("\nOh no - the contraption starts to shrink, magic working to adapt itself to the reduced size of its content.");	
 		outputText("\nYou look up to meet Fenris gaze. He has now tears in his eyes.'<i>I..I'm sorry ...I didnt expect it to be enchanted with magic and ...I'm sorry'</i> you mutter.")
 		outputText("\nWell that didn't workout as planned.")
-		player.consumeItem(consumables.PINKEGG);
+		// Todo remove correct item player.consumeItem(consumables.PINKEGG);
 		progressMainQuest(1);
 		menu();
 		addButton(14, "Back", metAgain, 0, null, null, "");	

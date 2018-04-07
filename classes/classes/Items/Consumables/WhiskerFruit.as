@@ -7,6 +7,7 @@ package classes.Items.Consumables
 	import classes.Items.Consumable;
 	import classes.Items.ConsumableLib;
 	import classes.PerkLib;
+	import classes.lists.ColorLists;
 	
 	/**
 	 * Feline transformative item.
@@ -294,30 +295,10 @@ package classes.Items.Consumables
 			}
 			//TURN INTO A FURRAH!  OH SHIT
 			if (player.tail.type === Tail.CAT && player.ears.type === Ears.CAT && rand(5) === 0 && changes < changeLimit && player.lowerBody.type === LowerBody.CAT && !player.hasFur()) {
-				var catFurColors:Array = [
-					"brown",
-					"chocolate",
-					"auburn",
-					"caramel",
-					"orange",
-					"sandy brown",
-					"golden",
-					"black",
-					"midnight black",
-					"dark gray",
-					"gray",
-					"light gray",
-					"silver",
-					"white",
-					["orange", "white"],
-					["brown", "white"],
-					["black", "white"],
-					["gray", "white"],
-				];
 				outputText("\n\nYour " + player.skin.desc + " begins to tingle, then itch. ");
 				player.skin.type = Skin.FUR;
 				player.skin.desc = "fur";
-				player.setFurColor(catFurColors, {type: UnderBody.FURRY}, true);
+				player.setFurColor(ColorLists.CAT_FUR, {type: UnderBody.FURRY}, true);
 				outputText("You reach down to scratch your arm absent-mindedly and pull your fingers away to find strands of " + player.skin.furColor + " fur. Wait, fur?  What just happened?! You spend a moment examining yourself and discover that <b>you are now covered in glossy, soft fur.</b>");
 				changes++;
 			}
@@ -338,7 +319,7 @@ package classes.Items.Consumables
 			//FAILSAFE CHANGE
 			if (changes === 0) {
 				outputText("\n\nInhuman vitality spreads through your body, invigorating you!\n");
-				game.HPChange(50, true);
+				player.HPChange(50, true);
 				dynStats("lus", 3);
 			}
 			if (changes < changeLimit) {

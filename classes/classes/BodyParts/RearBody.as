@@ -37,12 +37,12 @@ package classes.BodyParts
 
 		override public function canDye():Boolean
 		{
-			return type == DRACONIC_MANE;
+			return type === DRACONIC_MANE;
 		}
 
 		override public function hasDyeColor(_color:String):Boolean
 		{
-			return color == _color;
+			return color === _color;
 		}
 
 		override public function applyDye(_color:String):void

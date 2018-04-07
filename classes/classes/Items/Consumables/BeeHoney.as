@@ -175,8 +175,7 @@ package classes.Items.Consumables
 					          +" pain fades and you are able to turn your gaze down to your beautiful new arms, covered in shining black chitin from"
 					          +" the upper arm down, and downy yellow fuzz along your upper arm.");
 				}
-				player.arms.type = Arms.BEE;
-				mutations.updateClaws();
+				player.arms.setType(Arms.BEE);
 				changes++;
 			}
 			//-Nipples reduction to 1 per tit.
@@ -303,7 +302,7 @@ package classes.Items.Consumables
 					player.cocks[0].cockThickness += (0.1 * Utils.rand(5) + 0.5) * mult; //0.5 to 1 inches in thickness
 					getGame().dynStats("sen", 5);
 				}
-				else if (player.cocks[0].cockType != CockTypesEnum.BEE && player.race() == "bee-morph") {
+				else if (player.cocks[0].cockType != CockTypesEnum.BEE && player.race == "bee-morph") {
 					outputText("\n\nYour huge member suddenly starts to hurt, especially the tip of the thing.  At the same time, you feel your length start to get incredibly sensitive and the base of your shaft starts to itch.  You tear off your " + player.armorName + " and watch in fascination as your " + player.cockDescript(0) + " starts to change.  The shaft turns black, while becoming hard and smooth to the touch, while the base develops a mane of four inch long yellow bee hair.  As the transformation continues, your member grows even larger than before.  However, it is the tip that keeps your attention the most, as a much finer layer of short yellow hairs grow around it.  Its appearance isn’t the thing that you care about right now, it is the pain that is filling it.\n\n");
 					outputText("It is entirely different from the usual feeling you get when you’re cock grows larger from imbibing transformative substances.  When the changes stop, the tip is shaped like a typical human mushroom cap covered in fine bee hair, but it feels nothing like what you’d expect a human dick to feel like.  Your whole length is incredibly sensitive, and touching it gives you incredible stimulation, but you’re sure that no matter how much you rub it, you aren’t going to cum by yourself.  You want cool honey covering it, you want tight walls surrounding it, you want to fertilize hundreds of eggs with it.  These desires are almost overwhelming, and it takes a lot of will not to just run off in search of the bee girl that gave you that special honey right now.  This isn’t good.\n\n");
 					outputText("<b>You now have a bee cock!</b>");

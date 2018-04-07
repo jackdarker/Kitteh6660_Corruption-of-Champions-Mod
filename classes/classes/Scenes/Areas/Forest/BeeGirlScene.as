@@ -80,7 +80,7 @@ package classes.Scenes.Areas.Forest
 				beeEncounterWithWorms();
 				return;
 			}
-			var isBeeMorph:Boolean = player.race() == "bee-morph";
+			var isBeeMorph:Boolean = player.race == "bee-morph";
 			if (player.hasCock() && (player.cockArea(0) >= 50 || player.cocks[0].cockType == CockTypesEnum.BEE || isBeeMorph)) {
 				outputText(" in the light.\n\n");
 				beeEncounterAsBeeMorphMaleOrGiantCock(isBeeMorph);
@@ -727,7 +727,7 @@ package classes.Scenes.Areas.Forest
 			if (player.cocks[0].cockType == CockTypesEnum.BEE) {
 				outputText("You know the deal by now,");
 			}
-			else if (player.race() == "bee-morph") {
+			else if (player.race == "bee-morph") {
 				outputText("All you have to do izzz take thizzz after it hazzz had an hour to zzzet and you’ll be a real man!");
 			}
 			else {

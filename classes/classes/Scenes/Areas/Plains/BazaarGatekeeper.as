@@ -1,8 +1,9 @@
 package classes.Scenes.Areas.Plains 
 {
 	import classes.*;
-	import classes.internals.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.internals.*;
 	/**
 	 * ...
 	 * @author Kitteh6660
@@ -123,6 +124,7 @@ package classes.Scenes.Areas.Plains
 			this.short = "guard";
 			this.imageName = "bazaarguard";
 			this.long = "This crimson-skinned demon-morph guarding the entrance to Bizarre Bazaar stands ten feet tall. He has red skin and is wearing almost sky-blue turban on his head. He has solid black eyes. He is wearing a simple tunic and loose-fitting pants. He is wielding a pair of scimitars."
+			this.race = "Demon-Morph";
 			this.createCock(8, 1.5, CockTypesEnum.DEMON);
 			createBreastRow(Appearance.breastCupInverse("flat"));
 			this.ass.analLooseness = 1;
@@ -131,8 +133,7 @@ package classes.Scenes.Areas.Plains
 			this.hips.rating = 2;
 			this.butt.rating = 0;
 			this.skin.tone = "crimson";
-			this.theSkinType = 0;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.FUR];
+			this.skin.setType(Skin.PLAIN);
 			this.hair.color = "black";
 			this.hair.length = 8;
 			initStrTouSpeInte(100, 100, 80, 70);
@@ -150,7 +151,7 @@ package classes.Scenes.Areas.Plains
 			this.temperment = TEMPERMENT_RANDOM_GRAPPLES;
 			this.level = 30;
 			this.additionalXP = 300;
-			this.drop = new WeightedDrop().add(weapons.SCIMITR, 1);
+			this.drop = new WeightedDrop().add(weapons.SCIMTR0, 1);
 			this.gems = 250;
 			this.special1 = scimitarSpecial;
 			checkMonster();

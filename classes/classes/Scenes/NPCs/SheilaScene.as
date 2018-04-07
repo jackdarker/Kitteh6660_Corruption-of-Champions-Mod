@@ -88,10 +88,10 @@
 		public function timeChange():Boolean
 		{
 			pregnancy.pregnancyAdvance();
-			if (model.time.hours > 23) {
+			if (getGame().time.hours > 23) {
 				if (flags[kFLAGS.SHEILA_CLOCK] < 0) flags[kFLAGS.SHEILA_CLOCK]++;
 			}
-			//trace("\nShiela time change: Time is " + model.time.hours + ", incubation: " + pregnancy.incubation);
+			//trace("\nShiela time change: Time is " + getGame().time.hours + ", incubation: " + pregnancy.incubation);
 			return false;
 		}
 	
@@ -205,9 +205,9 @@ public function sheilaEncounterRouter():void {
 		//XP1: Reconciliation encounter (sheila xp = 1 and demon sheila = 0):
 		else if (flags[kFLAGS.SHEILA_XP] == 1) sheilaReconcile();
 		//XP2: Familiarizing (Sheila XP = 2; or Sheila XP = 3 AND time =/= 20:00 and demon sheila = 0):
-		else if (flags[kFLAGS.SHEILA_XP] == 2 || (flags[kFLAGS.SHEILA_XP] == 3 && model.time.hours != 20)) sheilaGettingFamiliar();
+		else if (flags[kFLAGS.SHEILA_XP] == 2 || (flags[kFLAGS.SHEILA_XP] == 3 && getGame().time.hours != 20)) sheilaGettingFamiliar();
 		//XP3: Sexy Time (sheila xp = 3 AND time = 20:00 and demon sheila = 0):
-		else if (flags[kFLAGS.SHEILA_XP] == 3 && model.time.hours == 20) sheilaXPThreeSexyTime();
+		else if (flags[kFLAGS.SHEILA_XP] == 3 && getGame().time.hours == 20) sheilaXPThreeSexyTime();
 		//XP4: Fancy meeting you here (sheila xp >= 4 and demon sheila = 0):
 		else if (flags[kFLAGS.SHEILA_XP] == 4) fuckBuddySheilaMeeting();
 		else {
@@ -637,7 +637,7 @@ private function sheilaReallyMadStandGround():void {
 	if (silly()) {
 		monster.HP *= 1.2;
 		player.changeFatigue(-10);
-		HPChange(20,false);
+		player.HPChange(20,false);
 	}
 }
 
@@ -699,7 +699,7 @@ private function sheilaReconcileKay2():void {
 	
 	outputText("\n\n\"<i>You make it sound like it's only the three blokes and yours truly huddled in a cave for warmth,</i>\" she responds, finally.  \"<i>Sorry, I know I've never said otherwise; just a funny thought.  Actually we're part of a little hidden alcove, village-sized, with over fifteen families.  Everyone I've ever met that's like me lives in a similar enclave, led by a political and quasi-religious yobbo");
 	//[(pc is kangaroo)
-	if (player.race() == "kangaroo-morph") outputText(" - except you, I suppose");
+	if (player.race == "kangaroo-morph") outputText(" - except you, I suppose");
 	outputText(".  We trade our goods in prearranged op shops and dead drops but avoid bringing outsiders into our own settlements, even when they're right corkers.</i>\"");
 	
 	outputText("\n\nYou press her on the last point.  \"<i>Well, what you don't know, you can't reveal when the demons take you, right?</i>\" she answers.  \"<i>I dunno if I should tell you this, but... the other reason has to do with our bodies.</i>\"  She looks over at you, searching your face for something inscrutable; you compose a mask of patient, perfect attention as you chew another mouthful of meat.  \"<i>Y'see, we're very empathetic to and conductive of emotions under certain circumstances - namely, during a shag.</i>\"  She looks away again, into the fire; as you peer closer, she actually appears to be blushing.  \"<i>When we, er... orgasm,</i>\" she resumes, still not meeting your eyes, \"<i>we give or take emotion and feeling from our partner depending on whether they have more or less than us.  For example, it means that horny buggers");
@@ -1240,9 +1240,9 @@ private function shielaXPThreeSexyTimePostSexStayII():void {
 	outputText("\n\nYou nod sagely and get up to dress.  Sheila, or Harriet, does the same, shimmying into her panties and shorts quickly and pulling her top on.  Finished, she drags you off to the night's lodgings anxiously, hat in hand and body language more closely resembling a giddy girl's on her first date than a grizzled, solitary hunter's.");
 	//advance time to 6:00, gain 3 hours rest
 	player.changeFatigue(-20);
-	HPChange(player.maxHP()/2,false);
-	if (model.time.hours > 6) model.time.days++;
-	model.time.hours = 6;
+	player.HPChange(player.maxHP()/2,false);
+	if (getGame().time.hours > 6) getGame().time.days++;
+	getGame().time.hours = 6;
 	statScreenRefresh();
 	doNext(playerMenu);
 }
@@ -3442,7 +3442,7 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOut():void {
 	}
 	//pass 4 hours and reduce corruption or something, give 3 hrs rest if naga, increase archery skill and increase fatigue by a lot (50-60+) if angel of death
 	dynStats("cor", -2);
-	if (model.time.hours + 4 < 21) doNext(camp.returnToCampUseFourHours);
+	if (getGame().time.hours + 4 < 21) doNext(camp.returnToCampUseFourHours);
 	else {
 		//(if time after adding 4 hours >= 21:00 or = 0:00, additionally output)
 		outputText("\n\n<b>\"<i>Oh, god dammit.</i>\"</b>");
@@ -3582,8 +3582,8 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE():void 
 		outputText("\n\nYou rub your smarting jaw, glaring back, and tell Sheila that it's her turn to watch.  Well, the adrenaline will keep her up, at least.");
 	}
 	if (!player.isTaur()) outputText("  She grudgingly repositions, allowing you to rest against her.");
-	model.time.days++;
-	model.time.hours = 2;
+	getGame().time.days++;
+	getGame().time.hours = 2;
 	statScreenRefresh();
 	//--Next--
 	menu();
@@ -3593,7 +3593,7 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE():void 
 //advance time to 5:00
 private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE2():void {
 	clearOutput();
-	model.time.hours = 5;
+	getGame().time.hours = 5;
 	statScreenRefresh();
 	outputText("Your sleep is fitful, but not totally useless, and you yawn and stir a few hours later when Sheila wakes you");
 	if (player.isGoo()) outputText("; she's already dressed and appears to have just been outside");
@@ -3678,8 +3678,8 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOutTOCAMP():void {
 	//if no nightwatch, 4 hours sleep and suppress any imp rapes
 	//lparchive.org/Deadly-Premonition
 	camp.sleepRecovery(false);
-	model.time.hours = 7;
-	model.time.days++;
+	getGame().time.hours = 7;
+	getGame().time.days++;
 	doNext(playerMenu);
 }
 
@@ -4061,10 +4061,10 @@ internal function loseToSheila(consensual:Boolean = false):void {
 	if (player.HP < 1 && !consensual) {
 		outputText("Your erstwhile opponent's eyes glimmer with excitement as you collapse from your injuries, and she runs over to you.  The demon strips off your [armor] eagerly, but you can't stay awake for the fun.  Consciousness slips away and you pass out.");
 		//--Next--
-		model.time.hours += 8;
-		if (model.time.hours > 23) {
-			model.time.hours -= 24;
-			model.time.days++;
+		getGame().time.hours += 8;
+		if (getGame().time.hours > 23) {
+			getGame().time.hours -= 24;
+			getGame().time.days++;
 		}
 		menu();
 		addButton(0,"Next",loseToDemonSheila);
@@ -4189,7 +4189,7 @@ private function loseToNormalSheilaAndGetRidden():void {
 		else outputText("You grab her hips and");
 		outputText(" help her impale herself on your tool.");
 		
-		outputText("\n\nThe demon shudders as your [sheath] bumps up against her vulva.  \"<i>Y-yeah, but I never paid attention to growing dongers without balls and that kinda arcane stuff, mate... didn't think I'd end up fucking a strange " + player.race() + " like you until you stuck it in me.  I always wanted to marry a normal bloke like my dad.</i>\"");
+		outputText("\n\nThe demon shudders as your [sheath] bumps up against her vulva.  \"<i>Y-yeah, but I never paid attention to growing dongers without balls and that kinda arcane stuff, mate... didn't think I'd end up fucking a strange " + player.race + " like you until you stuck it in me.  I always wanted to marry a normal bloke like my dad.</i>\"");
 		
 		outputText("\n\n\"<i>Pardon,</i>\" you interrupt irritably, pushing her back up, \"<i>but </i>you're<i> the one who's sticking it in you.  And if you want to fuck your father so badly, go find him and leave me alone.</i>\"");
 		
@@ -5120,7 +5120,7 @@ public function rebellingScarredBlade(wieldAttempt:Boolean = false):void {
 		var dmg:int = 20
 		dmg -= player.armorDef;
 		if (dmg < 1) dmg = 1;
-		HPChange(-dmg, false);
+		player.HPChange(-dmg, false);
 		player.setWeapon(WeaponLib.FISTS);
 		flags[kFLAGS.SCARRED_BLADE_STATUS] = 1;
 	}

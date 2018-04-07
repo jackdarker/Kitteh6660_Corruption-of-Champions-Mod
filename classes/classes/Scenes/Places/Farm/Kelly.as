@@ -53,9 +53,9 @@ Every encounter raises corruption by 5, except the last one that raises corrupti
 		public function timeChange():Boolean
 		{
 			pregnancy.pregnancyAdvance();
-			//trace("\nKelly time change: Time is " + model.time.hours + ", incubation: " + pregnancy.incubation + ", event: " + pregnancy.event);
-			if (model.time.hours > 23) {
-				if (flags[kFLAGS.KELLY_REWARD_COOLDOWN] > 0 && model.time.days % 3 == 0) flags[kFLAGS.KELLY_REWARD_COOLDOWN] = 0;
+			//trace("\nKelly time change: Time is " + getGame().time.hours + ", incubation: " + pregnancy.incubation + ", event: " + pregnancy.event);
+			if (getGame().time.hours > 23) {
+				if (flags[kFLAGS.KELLY_REWARD_COOLDOWN] > 0 && getGame().time.days % 3 == 0) flags[kFLAGS.KELLY_REWARD_COOLDOWN] = 0;
 				if (flags[kFLAGS.KELT_BREAK_LEVEL] >= 4) flags[kFLAGS.KELLY_DISOBEYING_COUNTER]++;
 			}
 			if (pregnancy.isPregnant && pregnancy.incubation == 0) {
@@ -70,7 +70,17 @@ Every encounter raises corruption by 5, except the last one that raises corrupti
 			return false;
 		}
 		//End of Interface Implementation
-		
+
+public function kellySprite(nude:Boolean = false):void {
+	if (!pregnancy.isPregnant)
+		if (flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] == 0) spriteSelect(SpriteDb.s_kelly);
+		else spriteSelect(SpriteDb.s_kelly_brst);
+	else  {
+		if (flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] == 0) spriteSelect(SpriteDb.s_kelly_preg);
+		else spriteSelect(SpriteDb.s_kelly_brst_preg);
+	}
+}
+
 private function hasPinkEgg():Boolean {
 	return (player.hasItem(consumables.PINKEGG) || player.hasItem(consumables.L_PNKEG));
 }
@@ -96,10 +106,23 @@ public function breakingKeltOptions():void {
 	}
 	outputText("Having met Kelt, you know he's liable to subject you to plenty of abuse in exchange for training.  Are you going to endure it, resist, or never resist?");
 	menu();
-	addButton(0,"Endure",farm.keltScene.keltEncounter);
-	addButton(1,"Resist",resistKeltsBSBreakHimIntro);
-	addButton(2,"Never",neverBreakKeltIntoKelly);
-	addButton(4,"FIGHT!",fightToBeatKelt);
+	addButton(0, "Endure", farm.keltScene.keltEncounter).hint("Swallow your pride and endure his disrespect.  Mastering the bow is far more important than some petty remarks.");
+	addButton(1, "Resist Kelt", resistKeltsBSBreakHimIntro).hint("Find a way to turn the tables and make that arrogant asshole your bitch.  You would need lots of succubi milk to pull this off. A pink egg might help, too.");
+	addButton(2, "Never Resist", neverBreakKeltIntoKelly).hint("Just accept that Kelt will never change and move on.  No point in getting upset about things you can't change.");
+	addButton(4, "FIGHT!", fightToBeatKelt);
+	addButton(10, "Appearance", keltAppearance);
+}
+
+//Appearance
+public function keltAppearance():void {
+	clearOutput();
+	credits.authorText = "Stygs";
+	outputText("Kelt is a 8 foot tall centaur with a muscular and well trained body.");
+	outputText("\nHe has a fairly square and chiselled human face with green eyes, surrounded by black and brown hair and a thick chestnut colored beard.");
+	outputText("\nHis ripped chest is covered in body hair and dirt, giving of a very masculin, if not to say dangerous, aura.  From the waist down, he has the body of a horse, complete with a large pair of balls and a arm-sized equine dick.  Capping of his body at the end is a black horse tail.");
+	outputText("\n\nKelt has his bow strung and out, ready to defend the farm and himself if you try any funny business.");
+	menu();
+	addButton(0, "Next", breakingKeltOptions);
 }
 
 public function fightToBeatKelt():void {
@@ -117,7 +140,8 @@ private function resistKeltsBSBreakHimIntro():void {
 		outputText("You are more and more annoyed by Kelt's rudeness and dick-waving.  The centaur may be imposing at first and his archery skills are impressive, but you're sure that behind his false display of virility, there's nothing an experienced champion like you can't deal with.  With your superior strength and speed, you could probably take him by surprise and teach him a good lesson.  Of course, you won't ever be able to learn archery from him after that.");
 		//[if (PC doesn't have items)
 		if (!(player.hasItem(consumables.SUCMILK,15) || (player.hasItem(consumables.SUCMILK,10) && hasPinkEgg()) || (player.hasItem(consumables.P_S_MLK,10) && hasPinkEgg()) || player.hasItem(consumables.P_S_MLK,15))) {
-			outputText(" Unfortunately, you don't have anything that could be useful to tame his arrogant maleness.  You want items that would make his disgracious horsecock and balls shrink.  A nice set of breasts on his human chest would be fine, too.  You know you're going to need A LOT of such items - or very potent ones.");
+			outputText("\n\nUnfortunately, you don't have anything that could be useful to tame his arrogant maleness.  You want items that would make his disgracious horsecock and balls shrink.  A nice set of breasts on his human chest would be fine, too.  You know you're going to need A LOT of such items - or very potent ones.");
+			outputText("\n\n<b>Fifteen succubi milk of any kind or ten succubi milk and a pink egg might do the trick.</b>");
 			menu();
 			addButton(0,"Next",farm.farmExploreEncounter);
 		}
@@ -136,6 +160,7 @@ private function resistKeltsBSBreakHimIntro():void {
 		//[if you don't have the items:
 		if (!(player.hasItem(consumables.SUCMILK,10) || player.hasItem(consumables.P_S_MLK,10) || (player.hasItem(consumables.SUCMILK,5) && hasPinkEgg()) || (player.hasItem(consumables.P_S_MLK,5) && hasPinkEgg()))) {
 			outputText("\n\nYou'd gladly teach him another lesson so he can keep his true gender and learn his place, but you don't have anything to turn him female again.  You should fetch appropriate items to begin the 'lesson'.</i>\"");
+			outputText("\n\n<b>Ten succubi milk of any kind or five succubi milk and a pink egg might do the trick.</b>");
 			//back to farm]
 			menu();
 			addButton(0,"Next",farm.farmExploreEncounter);
@@ -151,6 +176,7 @@ private function resistKeltsBSBreakHimIntro():void {
 		if (!(player.hasItem(consumables.SUCMILK,5) || player.hasItem(consumables.P_S_MLK,5)))
 		{
 			outputText("You must acquire enough Succubi Milk to remove any male remnants off Kelly's body before confronting 'him' again.");
+			outputText("\n\n<b>Five succubi milk of any kind might do the trick.</b>");
 			menu();
 			addButton(0,"Next",farm.farmExploreEncounter);
 			return;
@@ -162,11 +188,11 @@ private function resistKeltsBSBreakHimIntro():void {
 		spriteSelect(SpriteDb.s_kelt);
 	}
 	else if (flags[kFLAGS.KELT_BREAK_LEVEL] == 3) {
-		spriteSelect(null);
+		kellySprite();
 		finalKeltBreaking();
 	}
 	else {
-		spriteSelect(null);
+		kellySprite();
 		approachKelly();
 	}
 }
@@ -337,7 +363,6 @@ private function secondKeltBreaking():void {
 	
 	outputText("\n\nIt's a fight!");
 	startCombat(new Kelt());
-	spriteSelect(SpriteDb.s_kelt);
 }
 
 
@@ -682,18 +707,17 @@ private function kellyAppearance():void {
 			if (farm.farmCorruption.numTattoos("kelly") > 1) outputText("She has the following tattoos emblazoned across her body:\n");
 			else outputText("She has ");
 
-			if (flags[kFLAGS.KELLY_TATTOO_COLLARBONE] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_COLLARBONE] + "\n");
-			if (flags[kFLAGS.KELLY_TATTOO_SHOULDERS] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_SHOULDERS] + "\n");
-			if (flags[kFLAGS.KELLY_TATTOO_LOWERBACK] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_LOWERBACK] + "\n");
-			if (flags[kFLAGS.KELLY_TATTOO_BUTT] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_BUTT] + "\n");
-			outputText("\n");
+			if (flags[kFLAGS.KELLY_TATTOO_COLLARBONE] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_COLLARBONE]);
+			if (flags[kFLAGS.KELLY_TATTOO_SHOULDERS] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_SHOULDERS]);
+			if (flags[kFLAGS.KELLY_TATTOO_LOWERBACK] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_LOWERBACK]);
+			if (flags[kFLAGS.KELLY_TATTOO_BUTT] != 0) outputText(flags[kFLAGS.KELLY_TATTOO_BUTT]);
 		}
 	}
 
 	//Kids flavour text
 	if (flags[kFLAGS.KELLY_KIDS] > 0) {
 		if (flags[kFLAGS.KELLY_KIDS] == 1) {
-			outputText("\nKelly's ");
+			outputText("\n\nKelly's ");
 			if (flags[kFLAGS.KELLY_FIRST_KID_GENDER] == 1) outputText("son");
 			else outputText("daughter");
 			outputText(" is off in a separate field; still very young, you can see ");
@@ -702,13 +726,13 @@ private function kellyAppearance():void {
 		}
 		else if (flags[kFLAGS.KELLY_KIDS] == 2) outputText("\n\nThe " + num2Text(flags[kFLAGS.KELLY_KIDS]) + " children you have had with Kelly are off in a separate field; the sound of their play drifts over the grasslands to your ears.  Kelly evidently prefers to keep her brood away from what you do with her, a remarkably sensible attitude coming from a centauress cumslut.  Maybe motherhood genuinely suits her?");
 		else outputText("\n\nThe " + num2Text(flags[kFLAGS.KELLY_KIDS]) + " children you have had with Kelly are as ever off in a separate field, the distance sounds of their acting out the wars and drama of childhood drifting out over the grasslands to your ears.");
-		outputText("\n");
 	}
 	menu();
 	addButton(0,"Next",approachKelly);
 }
 private function approachKelly():void {
 	clearOutput();
+	kellySprite();
 	//Fix hair color!
 	if (flags[kFLAGS.KELLY_HAIR_COLOR] == 0) flags[kFLAGS.KELLY_HAIR_COLOR] = "chestnut brown";
 	//PUNISH SCENES IF APPROPRIATE
@@ -719,11 +743,12 @@ private function approachKelly():void {
 	}
 	
 	//Descriptions and Flavour Text
-	if (flags[kFLAGS.FARM_CORRUPTION_STARTED] == 0) outputText("You aren't welcome on the farm proper, but you can go visit Kelly's field.");
+	//Pointless, it's already part of the farm desciption
+	//if (flags[kFLAGS.FARM_CORRUPTION_STARTED] == 0) outputText("You aren't welcome on the farm proper, but you can go visit Kelly's field.");
 	
 	//09:00-11:00, 2 or more children:
-	if (model.time.hours >= 9 && model.time.hours <= 11 && flags[kFLAGS.KELLY_KIDS] >= 2) {
-		outputText("\n\nKelly is standing in the shadow of her barn, an expression of blissful contentment on her face as she nurses your ");
+	if (getGame().time.hours >= 9 && getGame().time.hours <= 11 && flags[kFLAGS.KELLY_KIDS] >= 2) {
+		outputText("Kelly is standing in the shadow of her barn, an expression of blissful contentment on her face as she nurses your ");
 		if (flags[kFLAGS.KELLY_KIDS] > 2) outputText("two youngest ");
 		outputText("children with ");
 		if (flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] > 0) outputText("the top row of ");
@@ -731,34 +756,42 @@ private function approachKelly():void {
 		outputText("\n\n\"<i>That's enough, little ones.  Mommy needs her daddy time now.</i>\"  Your two centaur children make grumpy 'awww's as they are pulled away from her oozing nipples, but they freeze when they turn around and see you, their milk slathered mouths open in a kind of awe.  They clop off in a hurry as Kelly rearranges her hair and gets up to greet you, the peace in her emerald eyes slowly burnt away by desire.");
 	}
 	//15:00-16:00, 4 or more children:
-	else if (model.time.hours >= 15 && model.time.hours <= 16 && flags[kFLAGS.KELLY_KIDS] >= 4) {
-		outputText("\n\nYou see Kelly standing in the middle of her field, surrounded by her children.  She has the butts set up and, judging by the way she is talking and gesturing with the bow in her hand, is teaching your brood how to shoot.  Trying to, anyway: her big, bare boobs make things a bit difficult.  You see she's actually gone to the trouble of constructing adorable little mini-bows, which the group of centaur children are all threading mini-arrows on as she points, and with expressions of deep concentration, pulling tight, taking aim, and... there's a cacophony of whistling, and arrows wind up everywhere but the target.  The sound of shouting and crying echoes across the field as Kelly begins to ball out the one who somehow managed to shoot an arrow through her braid.");
+	else if (getGame().time.hours >= 15 && getGame().time.hours <= 16 && flags[kFLAGS.KELLY_KIDS] >= 4) {
+		outputText("You see Kelly standing in the middle of her field, surrounded by her children.  She has the butts set up and, judging by the way she is talking and gesturing with the bow in her hand, is teaching your brood how to shoot.  Trying to, anyway: her big, bare boobs make things a bit difficult.  You see she's actually gone to the trouble of constructing adorable little mini-bows, which the group of centaur children are all threading mini-arrows on as she points, and with expressions of deep concentration, pulling tight, taking aim, and... there's a cacophony of whistling, and arrows wind up everywhere but the target.  The sound of shouting and crying echoes across the field as Kelly begins to ball out the one who somehow managed to shoot an arrow through her braid.");
 		outputText("\n\nYou decide to come back a bit later.  Your kids need all the help they can get.");
 		doNext(camp.returnToCampUseOneHour);
 		return;
 	}
 	//Standard:
 	else {
-		outputText("\n\nAs soon as you enter the big, grassy expanse beyond the barns, your centaur slave canters over, radiating happiness and hunger.");
-		outputText("\n\n\"<i>[Master], you've come to visit! Is it feeding time?</i>\"");
+		outputText("As soon as you enter the big, grassy expanse beyond the barns, your centaur slave canters over, radiating happiness and hunger.  \"<i>[Master], you've come to visit! Is it feeding time?</i>\"");
 	}	
 	menu();
-	addButton(0,"Appearance",kellyAppearance);
-	if (player.lust < 33) outputText("\n<b>You aren't aroused enough to pursue sex with your toy right now.</b>");
-	else addButton(1,"Sex",kellySexMenu);
+	addButton(10,"Appearance",kellyAppearance);
+	if (player.lust >= 33) addButton(0,"Sex",kellySexMenu);
+	else {
+		outputText("\n\n<b>You aren't aroused enough to pursue sex with your toy right now.</b>");
+		addDisabledButton(0, "Sex", "This scene requires you to have sufficient arousal.");
+	}
 	if (flags[kFLAGS.KELLY_CUNT_TYPE] == 0) {
 		if (player.hasItem(consumables.EQUINUM)) {
+			outputText("\n\nYou could give her equinum to gift her with a proper horse-cunt.");
 			addButton(5,"Give Equinum",giveKellyEquinum);
-			outputText("\nYou could give her equinum to gift her with a proper horse-cunt.");
 		}
-		else outputText("\nIf you had equinum, you could give her a proper horse-cunt.");
+		else {
+			outputText("\n\nIf you had equinum, you could give her a proper horse-cunt.");
+			addDisabledButton(5, "Give Equinum", "You need Equinum for this.");
+		}
 	}
 	else if (flags[kFLAGS.KELLY_CUNT_TYPE] == 1) {
 		if (player.hasItem(consumables.SUCMILK)) {
+			outputText("\n\nYou could give her a succubi milk to get rid of that horse-pussy you gave her before.");
 			addButton(5,"Give SucMilk",giveKellySuccubiMilk);
-			outputText("\nYou could give her a succubi milk to get rid of that horse-pussy you gave her before.");
 		}
-		else outputText("\nIf you had succubi milk, you could use that to give her a more human-like vagina.");
+		else{
+			outputText("\n\nIf you had succubi milk, you could use that to give her a more human-like vagina.");
+			addDisabledButton(5, "Give SucMilk", "You need a Succubi Milk for this.");
+		}
 	}
 	if (player.hasItem(consumables.CANINEP)) {
 		outputText("\nYou could give her a canine pepper");
@@ -766,15 +799,18 @@ private function approachKelly():void {
 		outputText(".");
 		addButton(6,"Give CanineP",giveKellyAPepper);
 	}
+	else addDisabledButton(6, "Give CanineP", "You need a Canine Pepper for this.");
 	if (flags[kFLAGS.KELLY_VAGINALLY_FUCKED_COUNT] > 0 && flags[kFLAGS.KELLY_DISOBEYING_COUNTER] >= 3 && player.hasCock()) {
-		outputText("\n<b>It looks like Kelly has taken to pleasuring herself again in your absence.  Do you want to take care of that?</b>");
+		outputText("\n\n<b>It looks like Kelly has taken to pleasuring herself again in your absence.  Do you want to take care of that?</b>");
 		addButton(7,"Punish",punishKelly);
 	}
+	else addDisabledButton(7, "Punish", "You have no reason to punish Kelly right now.");
 	if (flags[kFLAGS.TIMES_PUNISHED_KELLY] > 0 && flags[kFLAGS.KELLY_REWARD_COOLDOWN] == 0 && rand(3) == 0) {
-		outputText("\n<b>Kelly looks in fine spirits today. Perhaps she's done something worth getting a reward?</b>\n");
+		outputText("\n\n<b>Kelly looks in fine spirits today. Perhaps she's done something worth getting a reward?</b>");
 		addButton(8,"Reward",rewardKelly);
 	}
-	
+	else addDisabledButton(8, "Reward", "You have no reason to reward Kelly right now.");
+
 	//Showing up resets Kelly's desire not to fap without you
 	flags[kFLAGS.KELLY_DISOBEYING_COUNTER] = 0;
 
@@ -784,19 +820,23 @@ private function approachKelly():void {
 
 private function kellySexMenu():void {
 	menu();
+	clearOutput();
+	outputText("Kelly is standing before you, her emerald green eyes watching your every move with interest.  \"<i>What you do want to do, [Master]?</i>\"");
 	if (player.hasCock() && player.lust >= 33) {
 		if (player.cockThatFits(300) >= 0 || flags[kFLAGS.KELLY_CUNT_TYPE] == 1) {
 			if (pregnancy.isPregnant) addButton(0,"Preg Fuck",kellyPregSex);
 			else if (!player.isTaur()) addButton(0,"Fuck Cunt",fuckKellysCunt);
 			else addButton(0,"Fuck Cunt",taurOnTaurSexKelly);
 			if (flags[kFLAGS.KELLY_VAGINALLY_FUCKED_COUNT] == 0) addButton(0,"VirginFuck",takeKellysVirginity);
-			if (player.countCocksOfType(CockTypesEnum.TENTACLE) >= 2) addButton(1,"TentaFuck",tentaFuckKelly);
+			if (player.countCocksOfType(CockTypesEnum.TENTACLE) >= 2) addButton(1, "TentaFuck", tentaFuckKelly);
+			else addDisabledButton(1, "TentaFuck", "This scene requires you to have at least 2 tentacle cocks.");
 		}
 		else outputText("\n<b>You're too big to fuck her vagina.</b>");
 		if (flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] == 0 && player.cockThatFits(18,"length") < 0 && !player.isTaur()) {
 			outputText("\n<b>You're too big to fuck her tits.  Maybe if you gave her something to make her grow more...</b>");
 		}
 		else if (!player.isTaur()) addButton(2,"Titfuck",kellyTitJob);
+		else addDisabledButton(2, "Titfuck", "This scene is not available for taurs.");
 		addButton(3,"Blowjob",kellyBJsAhoy);
 		addButton(4,"Talk And HJ",talkNHandToKelly);
 	}
@@ -1200,11 +1240,11 @@ private function rideKellyForPunishment():void {
 		
 		outputText("\n\n\"<i>For most it's... taboo, [Master],</i>\" she answers lowly.  She makes a shuddering sigh as you fix stirrups to her and begin to fit her head with the leather straps of a harness.  \"<i>Something you would only allow a close friend or lover to do.  Even then, never with... with gear.  That is the invention of biped races for their animals, and to wear it is... is...</i>\"");
 		
-		outputText("\n\n\"<i>Like you are owned,</i>\" you suggest.  The harness is giving you some trouble as it was never intended to be fitted upon a human head, but you find with some readjustment it suits your purpose; you let go of it gently, it holds, and you lead the reins back across her back.  Carefully, you lift the last three objects you intend to use today up to her eyes.  \"<i>Like you are a lesser creature.  Like you are there to be used.</i>\" She doesn't reply but you can feel the thump of her heartbeat as you fit the blinkers to each side of her pretty face. \"<i>Tell me... what is the centaur equivalent for bitch?</i>\" Kelly mumbles something.  You face her head on and fix the last object to the straps near her face, before gently stroking her soft, smooth cheek until she looks you in the eye.");
+		outputText("\n\n\"<i>Like you are owned,</i>\" you suggest.  The harness is giving you some trouble as it was never intended to be fitted upon a human head, but you find with some readjustment it suits your purpose; you let go of it gently, it holds, and you lead the reins back across her back.  Carefully, you lift the last three objects you intend to use today up to her eyes.  \"<i>Like you are a lesser creature.  Like you are there to be used.</i>\"  She doesn't reply but you can feel the thump of her heartbeat as you fit the blinkers to each side of her pretty face.  \"<i>Tell me... what is the centaur equivalent for bitch?</i>\" Kelly mumbles something.  You face her head on and fix the last object to the straps near her face, before gently stroking her soft, smooth cheek until she looks you in the eye.");
 		
 		outputText("\n\n\"<i>Ass,</i>\" she says, this time just loud enough for you to hear.  You smile crookedly.");
 		
-		outputText("\n\n\"<i>How very appropriate.  Open wide.</i>\" Tremblingly she does so, and you place the bit between her teeth.  It says a lot about Mareth, you think as you walk to her side, that it is shaped rather like a ball gag, holes and all.  You aren't quite finished; with some long, leather straps you take her arms and bind them tightly behind her back.");
+		outputText("\n\n\"<i>How very appropriate.  Open wide.</i>\"  Tremblingly she does so, and you place the bit between her teeth.  It says a lot about Mareth, you think as you walk to her side, that it is shaped rather like a ball gag, holes and all.  You aren't quite finished; with some long, leather straps you take her arms and bind them tightly behind her back.");
 	
 		//[PC rider:]
 		if (player.tallness < 78 && !player.isTaur()) 
@@ -1273,7 +1313,7 @@ private function rideKellyForPunishment():void {
 			
 			outputText("\n\n\"<i>Don't worry about her,</i>\" you call up casually. \"<i>She's just learning a lesson.</i>\" You have no idea how this works as a valid explanation, but already knowing your face and having seen all manner of centaur entering and leaving all day long, the cat and hare let her pass after a cursory magical examination.  The crystal glows, but not enough to straight-up deny Kelly entrance.");
 			
-			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race() + " riding a practically naked, bound and gagged centauress draws a slight hush and open mouths.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
+			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race + " riding a practically naked, bound and gagged centauress draws a slight hush and open mouths.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
 			
 			outputText("\n\n\"<i>Did you come here before I owned you, ass?</i>\" you wonder aloud.  \"<i>You know, before I gave you those big bouncing tits everyone is staring at, or that nice succulent hole I replaced your dick with.   I bet you did- you knew exactly where I wanted you to go.  Perhaps you even found some of your \"<i>wives</i>\" here, back in the day.  Probably strode these cobbles like you owned them.  I bet you were kicked out for being that much of an asshole, or for raping the wrong person.  Awww, don't be upset!</i>\" You kindly reach around her blinkers and wipe her tears away.  \"<i>You're a different person now, and you're learning to be better, bit by bit.  Isn't that right?</i>\" Kelly manages a choked \"<i>uh huh</i>\" and you grin.");
 			
@@ -1292,7 +1332,7 @@ private function rideKellyForPunishment():void {
 			
 			outputText("\n\n\"<i>Don't worry about her,</i>\" you call up casually.  \"<i>She's just learning a lesson.</i>\"  You have no idea how this works as a valid explanation, but already knowing you and having seen all manner of centaur entering and leaving all day long, the cat and hare morph turn away.");
 			
-			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race() + " leading a practically naked bound and gagged centauress draws a slight hush and open mouths.  The centaurs you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation is soaking into Kelly when she makes a sobbing, muffled moan.");
+			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race + " leading a practically naked bound and gagged centauress draws a slight hush and open mouths.  The centaurs you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation is soaking into Kelly when she makes a sobbing, muffled moan.");
 			
 			outputText("\n\n\"<i>Did you come here before I owned you, ass?</i>\" you wonder aloud.  \"<i>You know, before I gave you those big bouncing tits everyone is staring at, or that nice succulent hole I replaced your dick with.  I bet you did - you knew exactly where I wanted you to go.  Perhaps you even found some of your \"<i>wives</i>\" here, back in the day.  Probably strode these cobbles like you owned them.  I bet you were kicked out for being that much of an asshole, or for raping the wrong person.  Awww, don't be upset!</i>\"  You kindly reach around her blinkers and wipe her tears away.  \"<i>You're a different person now, and you're learning to be better, bit by bit.  Isn't that right?</i>\"  Kelly manages a choked \"<i>uh huh</i>\" and you grin.");
 			
@@ -1330,7 +1370,7 @@ private function rideKellyForPunishment():void {
 			
 			outputText("\n\nThanks to Mareth's warped geography it doesn't take you long to arrive at the gates of Tel'Adre.  The guards on duty look at you, then look away.  Evidently word is getting around.");
 			
-			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race() + " riding a practically naked bound and gagged centauress draws a slight hush and open mouths, even among the ones who have already seen this display.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
+			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race + " riding a practically naked bound and gagged centauress draws a slight hush and open mouths, even among the ones who have already seen this display.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
 			
 			outputText("\n\n\"<i>Awww, don't be upset!</i>\"  You kindly reach around her blinkers and wipe her tears away.  \"<i>Everyone might be able to see you're an owned little cocksleeve, you might see faces from back when you had things like dignity and respect, but this is how you'll learn to be better, bit by bit.  Isn't that right?</i>\" Kelly manages a choked \"<i>uh huh</i>\" and you grin.");
 			
@@ -1349,7 +1389,7 @@ private function rideKellyForPunishment():void {
 			outputText("\n\nWithout another word you grab hold of the reigns and jerk them.  \"<i>You know where you're going,</i>\" you breathe into her ear.  Kelly whimpers, and then sets off behind you at a trot.");
 			outputText("\n\nThanks to Mareth's warped geography it doesn't take you long to arrive at the gates of Tel'Adre.  The guards on duty look at you, then look away.  Evidently word is getting around.");
 			
-			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race() + " leading a practically naked bound and gagged centauress around like a show horse draws a slight hush and open mouths, even among the ones who have already seen this display.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
+			outputText("\n\nUpon the close streets though everyone stares; even for as liberal a place as Tel'Adre the sight of a " + player.race + " leading a practically naked bound and gagged centauress around like a show horse draws a slight hush and open mouths, even among the ones who have already seen this display.  The centaur you canter past in particular look absolutely gobsmacked; by turns unbelieving, disgusted, or shocked into laughter.  Nobody attempts to stop you though and you affect to be completely unaware of the attention; you after all are a champion upon an important errand.  But you know the attention and pure humiliation are soaking into Kelly when she makes a sobbing, muffled moan.");
 			
 			outputText("\n\n\"<i>Awww, don't be upset!</i>\" You kindly reach around her blinkers and wipe her tears away.  \"<i>Everyone might be able to see you're an owned little cocksleeve, you might see faces from back when you had things like dignity and respect, but this is how you'll learn to be better, bit by bit.  Isn't that right?</i>\" Kelly manages a choked \"<i>uh huh</i>\" and you grin.");
 			
@@ -1476,6 +1516,8 @@ private function giveKellyAPepper():void {
 		//[Kelta 15% more likely to conceive for 2 days]
 		flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] = 1;
 		flags[kFLAGS.KELLY_HEAT_TIME] = 48;
+		//Refresh sprite
+		kellySprite();
 	}
 	//Repeat:
 	else {
@@ -1594,7 +1636,7 @@ private function kellyPregSex():void {
 //Giving birth
 public function kellyPopsOutARunt():void {
 	outputText("\n<b><u>As you visit the barn where your centaur slave usually resides, you see something unusual...</u></b>");
-	outputText("\nKelly is laying on a haystack, her face red and slick with sweat but radiating tired happiness.  Curled into one of her milk-engorged breasts, hanging and suckling voraciously, is a tiny little creature that looks exactly like her mother.");
+	outputText("\n\nKelly is laying on a haystack, her face red and slick with sweat but radiating tired happiness.  Curled into one of her milk-engorged breasts, hanging and suckling voraciously, is a tiny little creature that looks exactly like her mother.");
 	
 	outputText("\n\n\"<i>[name]! You're here! Say hi to your new kid!</i>\"");
 	
@@ -1611,7 +1653,8 @@ public function kellyPopsOutARunt():void {
 	
 	outputText("\n\nSatisfied to see your offspring will grow strong and healthy for you, you pat Kelly's head, tell her she's a good breeding slut and walk away; the motherly centaur sighs at the compliment.  \"<i>Thank you, [name]!  You were right, this really is my place, being used and breeding beautiful sluts for you.  I hope you will treat them as well as you treated me!</i>\"");
 	//[if corr > 80]
-	if (player.cor > 80) outputText("\n\nYou grin as vivid pictures of how you'll be treating your soon-to-be-grown kids draw themselves in your mind. Right now they're still a little young, but someday...\n");
+	if (player.cor > 80) outputText("\n\nYou grin as vivid pictures of how you'll be treating your soon-to-be-grown kids draw themselves in your mind. Right now they're still a little young, but someday...");
+	outputText("\n");
 	if (flags[kFLAGS.KELLY_KIDS] == 0) flags[kFLAGS.KELLY_FIRST_KID_GENDER] = gender;
 	flags[kFLAGS.KELLY_KIDS]++;
 	if (gender == 1) flags[kFLAGS.KELLY_KIDS_MALE]++;
@@ -1890,7 +1933,7 @@ private function giveKellyAppleSauce():void {
 	}
 	//Repeat:
 	else {
-		outputText("\n\nYou go to the barn and grab your trusty metal bowl.  Kelly knows what this means: she clasps her hands eagerly, her horse half clopping backwards and forwards impatiently as she watches you walk casually towards the forest.");
+		outputText("You go to the barn and grab your trusty metal bowl.  Kelly knows what this means: she clasps her hands eagerly, her horse half clopping backwards and forwards impatiently as she watches you walk casually towards the forest.");
 		outputText("\n\nThe small grove of apple trees has changed significantly from when you first found it.  Somebody has begun cutting the encroaching wild trees right back and pruned the rosaceae themselves so they aren't tangling into each other anymore- they look considerably happier.");
 		if (flags[kFLAGS.KELLY_KIDS] > 1) outputText("  Somebody has even cleared an oblong patch of earth alongside the trees- a piece of card stuck into it is scrawled with a childish hand which declares it to be “CAROTS”.  You marvel at it all.  Who would have imagined your lust for horse pussy would have turned a pointless asshole into a loving mother who gardens with her children?  Really, you deserve a medal for your efforts.");
 		

@@ -87,6 +87,7 @@ package classes.Scenes.NPCs
 			this.short = "Marble";
 			this.imageName = "marble";
 			this.long = "Before you stands a female humanoid with numerous cow features, such as medium-sized cow horns, cow ears, and a cow tail.  She is very well endowed, with wide hips and a wide ass.  She stands over 6 feet tall.  She is using a large two handed hammer with practiced ease, making it clear she is much stronger than she may appear to be.";
+			this.race = "Cow-Girl";
 			// this.plural = false;
 			this.createVagina(false, VaginaClass.WETNESS_NORMAL, VaginaClass.LOOSENESS_NORMAL);
 			createBreastRow(Appearance.breastCupInverse("F"));
@@ -109,7 +110,7 @@ package classes.Scenes.NPCs
 			this.temperment = TEMPERMENT_RANDOM_GRAPPLES;
 			this.level = 7;
 			this.gems = rand(5) + 25;
-			this.drop = new WeightedDrop(weapons.L_HAMMR, 1);
+			this.drop = new WeightedDrop(weapons.L_HAMR0, 1);
 			this.tail.type = Tail.COW;
 			this.special1 = marbleSpecialAttackOne;
 			this.special2 = marbleSpecialAttackTwo;

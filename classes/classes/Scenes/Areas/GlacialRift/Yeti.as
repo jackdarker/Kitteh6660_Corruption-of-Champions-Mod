@@ -110,6 +110,7 @@ package classes.Scenes.Areas.GlacialRift
 			this.short = "yeti";
 			this.imageName = "yeti";
 			this.long = "You are fighting an ice yeti, a savage of the north built to endure and hunt in the unforgiving cold. Every inch of its body is covered in a thick white pelt, though you can still make out the definition of bulging muscles from underneath. Its face is beastial, with narrow slitted eyes, and a pressed in feline nose all over a large maw of sharp, jagged teeth. It’s a menacing sight to behold. It standing about eight feet tall, with long tree trunk wide limbs ending in claws sharp enough to dig into thick ice. There’s no question about gender; it’s obviously a male. A large, thick sheath  protects his manhood from the freezing weather, and below are a pair of baseball sized testicles, held tight against his warm body by a heavy, furred ballsack.";
+			this.race = "Yeti";
 			// this.plural = false;
 			this.createCock(12, 1.5, CockTypesEnum.HUMAN);
 			this.balls = 2;
@@ -122,8 +123,7 @@ package classes.Scenes.Areas.GlacialRift
 			this.hips.rating = Hips.RATING_BOYISH;
 			this.butt.rating = Butt.RATING_TIGHT;
 			this.skin.tone = "light";
-			this.theSkinType = Skin.FUR;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.FUR];
+			this.skin.setType(Skin.FUR);
 			this.hair.color = "white";
 			this.hair.length = 8;
 			initStrTouSpeInte(95, 80, 60, 50);

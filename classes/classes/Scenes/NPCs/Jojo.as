@@ -65,6 +65,7 @@ if (lust >= maxLust()) {
 			this.short = "Jojo";
 			this.imageName = "jojo";
 			this.long = "Jojo is an anthropomorphic mouse with immaculate white fur.  Though he stands only four feet tall, he is covered in lean muscle and moves with incredible speed.  He wears loose white clothes wrapped in prayer beads and tattered prayer papers.";
+			this.race = "Mouse-Morph";
 			// this.plural = false;
 			this.createCock(7.5,1.8);
 			this.balls = 2;
@@ -78,7 +79,7 @@ if (lust >= maxLust()) {
 			this.hips.rating = Hips.RATING_SLENDER;
 			this.butt.rating = Butt.RATING_TIGHT;
 			this.skin.tone = "white";
-			this.theSkinType = Skin.FUR;
+			this.skin.type = Skin.FUR;
 			this.skin.desc = "fur";
 			this.hair.color = "white";
 			this.hair.length = 2;

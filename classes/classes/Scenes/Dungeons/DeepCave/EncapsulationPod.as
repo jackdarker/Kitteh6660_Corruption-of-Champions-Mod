@@ -207,6 +207,7 @@ package classes.Scenes.Dungeons.DeepCave
 			this.short = "pod";
 			this.imageName = "pod";
 			this.long = "";
+			this.race = "Abomination";
 			// this.plural = false;
 			initGenderless();
 			createBreastRow(0,0);
@@ -214,7 +215,7 @@ package classes.Scenes.Dungeons.DeepCave
 			this.hips.rating = Hips.RATING_SLENDER;
 			this.butt.rating = Butt.RATING_BUTTLESS;
 			this.skin.tone = "purple";
-			this.theSkinType = Skin.PLAIN;
+			this.skin.type = Skin.PLAIN;
 			this.skin.desc = "covering";
 			this.hair.color = "black";
 			this.hair.length = 0;

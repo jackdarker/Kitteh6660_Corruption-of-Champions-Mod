@@ -2,6 +2,7 @@ package classes.Scenes.NPCs {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
+	import classes.display.SpriteDb;
 
 	public class MilkWaifu extends NPCAwareContent{
 
@@ -24,6 +25,7 @@ override public function milkSlave():Boolean {
 //Arriving at Camp
 public function arriveWithLacticWaifuAtCamp():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_milkgirl);
 	outputText("It's slow going, having to support your milky friend all the way back to camp, but after a few hours, you manage to make it home.  By the time you arrive, you see that the Sand Mother has kept her word, and a small part of the camp's perimeter has been cleared away, your belongings moved aside to make room for a large pool, its radius easily ten feet, buried in the hard-packed dirt of the wasteland.  A metallic brim surrounds the pool, just wide enough to sit or lie on with your [legs] dangling into the milky waters that will soon be filling it.");
 	
 	outputText("\n\nSeeing the pool, the milk girl gasps with glee, stumbling over to it before collapsing onto all fours, chest resting on her massive tits and ass up in the air, bare for all to see.  \"<i>Bath Slut milk time?</i>\" she asks, her bright brown eyes looking up at yours pleadingly.");
@@ -33,7 +35,7 @@ public function arriveWithLacticWaifuAtCamp():void {
 	//[Name Field.  If left empty, defaults to "Bath Slut"]
 	menu();
 	addButton(0, "Next", nameZeMilkBath);
-	mainView.nameBox.text = "";
+	mainView.promptCharacterName();
 }
 
 
@@ -99,6 +101,7 @@ private function nameZeMilkBath():void
 
 public function ratducto():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_rathazul);
 	outputText("Looking up, you see the old rat alchemist Rathazul approaching, nose buried in an ancient-looking tome.  \"<i>Good news, [name]!</i>\" he calls, just before tripping over the prone milkmaid, going sprawling across the ground.");
 	
 	outputText("\n\n\"<i>Gah!  Help, I can't get up!</i>\" he shouts, flailing around until you rush over and pull him to his feet.");
@@ -125,6 +128,7 @@ public function ratducto():void {
 //Milky's Menu (Accessed from the FOLLOWERS tab)
 public function milkyMenu():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_milkgirl);
 	if (flags[kFLAGS.FOLLOWER_AT_FARM_BATH_GIRL] == 0)
 	{
 		outputText("You wander over to " + flags[kFLAGS.MILK_NAME] + "'s pool, and find the dusky girl sitting at its rim, ");
@@ -433,7 +437,7 @@ private function communalBath():void {
 	outputText("\n\nThe lot of you carry on like this for nearly an hour, enjoying what little relaxation you're able to get in these dark times.  Eventually, though, you know you must return to your duties.  You and your companions one by one pull yourselves out of the pool, stopping to help " + flags[kFLAGS.MILK_NAME] + " and her bloated breasts; towels are passed around between joking and flirting hands, a few are even cracked over bare skin, making girls scream and yelp.  The camp is soon a mess of laughing and playing, with you in the center of it, teasing your lovers between shameless gropes and playful caresses.");
 	player.refillHunger(50);
 	player.changeFatigue(-40);
-	HPChange(player.maxHP()*.33,false);
+	player.HPChange(player.maxHP()*.33,false);
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -486,7 +490,7 @@ private function dontFuckTheMilkWaifu():void {
 	outputText("You allow the girl to continue for a long, long while until your entire body feels deeply refreshed, her milk having soaked thoroughly into your body and making you feel fresh and revitalized.  You start to thank the milk girl for the pleasurable company, but when you open your mouth, she slips into your arms and presses her lips to yours.  Chuckling to yourself, you hold the girl as tight against yourself as her udders will allow, turning her to the side to let her nuzzle her cheek into your [chest], kissing the top of her head before the two of you climb from the pool.  You have to help her out, her massive extra weight nearly dragging her back in except for your quick reflexes.  You gather your [armor] and ruffle the milk slave's hair before grabbing a towel and wandering back to the heart of camp.");
 	//[+Lust, +HP, -Fatigue]
 	dynStats("lus", 10+player.sens/10, "scale", false);
-	HPChange(player.maxHP()*.33,false);
+	player.HPChange(player.maxHP()*.33,false);
 	player.changeFatigue(-20);
 	doNext(camp.returnToCampUseOneHour);
 }
@@ -510,7 +514,7 @@ private function fuckTheMilkWaifu():void {
 	outputText("\n\nYour entire body feels deeply refreshed, her milk having soaked thoroughly into your body and making you feel fresh and revitalized, and every muscle seems to have relaxed thanks to your blissful coitus.  You start to thank " + flags[kFLAGS.MILK_NAME] + " for the pleasurable company, but when you open your mouth, she presses her lips to yours for a long, tongue-filled kiss.  Chuckling to yourself, you hold the girl as tight as her udders will allow, turning her to the side to let her nuzzle her cheek into your [chest], kissing the top of her head before the two of you climb from the pool.  You have to help her out, her massive extra weight nearly dragging her back in except for your quick reflexes.  You gather your [armor] and ruffle the milk slave's hair before grabbing a towel and wandering back to the heart of camp.");
 	//[+Lust, +HP, -Fatigue]
 	player.orgasm('Dick');
-	HPChange(player.maxHP()*.33,false);
+	player.HPChange(player.maxHP()*.33,false);
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -532,7 +536,7 @@ private function beARugMunchingMilkDyke():void {
 	outputText("\n\nYour entire body feels deeply refreshed, her milk having soaked into your body and making you feel fresh and revitalized, and every muscle seems to have relaxed thanks to your blissful coitus.  You start to thank the milk girl for the pleasurable company, but when you open your mouth, she presses her lips to yours for a long, tongue-filled kiss.  Chuckling to yourself, you hold the girl as tight as her udders will allow, turning her to the side to let her nuzzle her cheek into your [chest], kissing the top of her head before the two of you climb from the pool.  You have to help her out, her massive extra weight nearly dragging her back in except for your quick reflexes.  You gather your [armor] and ruffle the milk slave's hair before grabbing a towel and wandering back to the heart of camp.");
 	//[+Lust, +HP, -Fatigue]
 	player.orgasm('Tits');
-	HPChange(player.maxHP()*.33,false);
+	player.HPChange(player.maxHP()*.33,false);
 	doNext(camp.returnToCampUseOneHour);
 }
 	

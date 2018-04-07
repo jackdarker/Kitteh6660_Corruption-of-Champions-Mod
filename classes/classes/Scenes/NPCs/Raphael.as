@@ -33,7 +33,7 @@ package classes.Scenes.NPCs{
 		}
 	
 		public function timeChangeLarge():Boolean {
-			if (checkedRussetRogue++ == 0 && model.time.hours == 6 && flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] >= 0 && player.hasKeyItem("Camp - Chest") >= 0 && player.gems >= 5 && player.statusEffectv1(StatusEffects.TelAdre) >= 1 && (flags[kFLAGS.IN_PRISON] == 0 && flags[kFLAGS.IN_INGNAM] == 0)) {
+			if (checkedRussetRogue++ == 0 && getGame().time.hours == 6 && flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] >= 0 && player.hasKeyItem("Camp - Chest") >= 0 && player.gems >= 5 && player.statusEffectv1(StatusEffects.TelAdre) >= 1 && (flags[kFLAGS.IN_PRISON] == 0 && flags[kFLAGS.IN_INGNAM] == 0)) {
 				/*trace("RAPHAEL FINAL COUNTDOWN: " + flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER]);
 				trace("RAPHAEL MET: " + flags[kFLAGS.RAPHAEL_MET]);
 				trace("RAPHAEL DRESS TIMER: " + flags[kFLAGS.RAPHAEL_DRESS_TIMER]);
@@ -61,7 +61,7 @@ package classes.Scenes.NPCs{
 						}
 					}
 					else { //If the PC does not currently meet his criteria
-						if (flags[kFLAGS.RAPHAEL_MET] == 0 && rand(10) == 0 && model.time.days >= 15) {
+						if (flags[kFLAGS.RAPHAEL_MET] == 0 && rand(10) == 0 && getGame().time.days >= 15) {
 							outputText("<b>\nSomething unusual happens that morning...</b>\n");
 							doNext(meetRaphael);
 							return true;
@@ -1411,7 +1411,7 @@ public function orphanageIntro():void {
 			addButton(0,"Next",raphaelIntroPageTwo);
 			flags[kFLAGS.TIMES_ORPHANAGED_WITH_RAPHAEL]++
 		}
-		else if (model.time.hours >= 19 && model.time.hours <= 21) {
+		else if (getGame().time.hours >= 19 && getGame().time.hours <= 21) {
 			//Repeat Approaches
 			//Repeat encounter: When the Orphanage is selected between 19:00 and 21:00
 			outputText("You walk into the alley to the side of the orphanage and look up expectantly, brushing by shady looking teens who enjoy patting you down, but leaving you and your possessions alone otherwise.  They seem to make a game out of it.  The little staging room is lit and you begin to search for the one rope out of many that will hoist you up there by pulling it.  You stay clear of the other ones, not quite sure what they'd do, but half expecting them to fire a crossbow bolt or drop an anvil on your head.  Anxious, you grab the right one and hold on tight as it pulls you up into the air and swings you towards the correct window.");

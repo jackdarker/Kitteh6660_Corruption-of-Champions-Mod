@@ -104,6 +104,7 @@ package classes.Scenes.Dungeons.DeepCave
 			this.short = "Vala";
 			this.imageName = "vala";
 			this.long = "While the fey girl is whip-thin, her breasts are disproportionately huge. They'd be at least a DD-cup on a normal human, but for her height and body type, they're practically as large as her head. They jiggle at her slow, uneven breathing, tiny drops of milk bubbling at her nipples with every heartbeat.  She seems fixated on mating with you, and won't take no for an answer.";
+			this.race = "Faerie";
 			// this.plural = false;
 			this.createVagina(false, VaginaClass.WETNESS_SLICK, VaginaClass.LOOSENESS_GAPING_WIDE);
 			this.createStatusEffect(StatusEffects.BonusVCapacity, 25, 0, 0, 0);
@@ -122,14 +123,11 @@ package classes.Scenes.Dungeons.DeepCave
 			this.weaponName = "fists";
 			this.weaponVerb="caresses";
 			this.armorName = "skin";
-			var lustVuln:Number = .5;
-			if (game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] > 0) lustVuln += .25;
-			if (game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] > 2) lustVuln += .5;
-			var lust:Number = 30 + game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] * 10;
-			if (lust > 80) lust = 80;
+			this.lustVuln = .5;
+			if (game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] > 0) this.lustVuln += .25;
+			if (game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] > 2) this.lustVuln += .5;
+			this.lust = Math.min(80, 30 + game.flags[kFLAGS.TIMES_PC_DEFEATED_VALA] * 10);
 			this.bonusHP = 350;
-			this.lust = lust;
-			this.lustVuln = lustVuln;
 			this.temperment = TEMPERMENT_RANDOM_GRAPPLES;
 			this.level = 11;
 			this.gems = 1;
@@ -139,11 +137,9 @@ package classes.Scenes.Dungeons.DeepCave
 			this.special1 = special1;
 			this.special2 = special2;
 			this.special3 = special3;
-			var wingDesc:String = "shimmering wings";
 			if (flags[kFLAGS.TIMES_PC_DEFEATED_VALA] == 0) this.drop = new WeightedDrop(consumables.NUMBROX);
 			else this.drop = NO_DROP;
-			this.theWingType = Wings.BEE_LIKE_LARGE;
-			this.wingDesc = wingDesc;
+			this.wings.type = Wings.FAERIE_LARGE;
 			checkMonster();
 		}
 		

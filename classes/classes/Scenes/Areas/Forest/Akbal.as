@@ -145,7 +145,6 @@ import classes.internals.WeightedDrop;
 					return;
 				}
 				outputText("You are burned badly by the flames! ("+player.takeDamage(40) +")");
-				;
 			}
 			game.combat.combatRoundOver();
 		}
@@ -169,6 +168,7 @@ import classes.internals.WeightedDrop;
 			this.short = "Akbal";
 			this.imageName = "akbal";
 			this.long = "Akbal, 'God of the Terrestrial Fire', circles around you. His sleek yet muscular body is covered in tan fur, with dark spots that seem to dance around as you look upon them.  His mouth holds two ivory incisors that glint in the sparse sunlight as his lips tremble to the sound of an unending growl.  Each paw conceals lethal claws capable of shredding men and demons to ribbons.  His large and sickeningly alluring bright green eyes promise unbearable agony as you look upon them.";
+			this.race = "Demon";
 			// this.plural = false;
 			this.createCock(15,2.5,CockTypesEnum.DOG);
 			this.balls = 2;
@@ -185,8 +185,7 @@ import classes.internals.WeightedDrop;
 			this.hips.rating = Hips.RATING_SLENDER;
 			this.butt.rating = Butt.RATING_TIGHT;
 			this.skin.tone = "spotted";
-			this.theSkinType = Skin.FUR;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.FUR];
+			this.skin.setType(Skin.FUR);
 			this.hair.color = "black";
 			this.hair.length = 5;
 			initStrTouSpeInte(55, 53, 50, 75);

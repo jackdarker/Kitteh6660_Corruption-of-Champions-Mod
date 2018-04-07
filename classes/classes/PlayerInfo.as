@@ -1,15 +1,12 @@
 package classes 
 {
-import classes.GlobalFlags.kGAMECLASS;
-
-import flash.events.Event;
-	import fl.controls.ComboBox;;
-	import fl.data.DataProvider;
 	import classes.*;
-	import classes.Scenes.NPCs.IsabellaScene;
 	import classes.GlobalFlags.*;
-	import classes.display.SpriteDb;
+	import classes.GlobalFlags.kGAMECLASS;
+	import classes.Scenes.NPCs.IsabellaScene;
 	import classes.internals.*;
+	import com.bit101.components.ComboBox;
+	import flash.events.Event;
 	
 	/**
 	 * The new home of Stats and Perks
@@ -555,7 +552,7 @@ import flash.events.Event;
 				interpersonStats += "<b>Lynnette's Approval:</b> " + getGame().mountain.salon.lynnetteApproval() + "\n";
 			
 			if (player.statusEffectv1(StatusEffects.Marble) > 0)
-				interpersonStats += "<b>Marble's Affection:</b>" + player.statusEffectv1(StatusEffects.Marble) + "%\n";
+				interpersonStats += "<b>Marble's Affection:</b> " + player.statusEffectv1(StatusEffects.Marble) + "%\n";
 				
 			if (flags[kFLAGS.OWCAS_ATTITUDE] > 0)
 				interpersonStats += "<b>Owca's Attitude:</b> " + flags[kFLAGS.OWCAS_ATTITUDE] + "\n";
@@ -924,41 +921,46 @@ import flash.events.Event;
 			else
 				doNext(playerMenu);
 		}
-		
+		public var boxPerks:ComboBox;
 		//Perk menu
 		private function perkBuyMenu():void {
 			clearOutput();
-			var perkList:Array = buildPerkList();
-			mainView.aCb.dataProvider = new DataProvider(perkList);
-			if (perkList.length == 0) {
+			var preList:Array = [];
+			preList = buildPerkList();
+			if (preList.length == 0) {
+				outputText(images.showImage("event-cross"));
 				outputText("<b>You do not qualify for any perks at present.  </b>In case you qualify for any in the future, you will keep your " + num2Text(player.perkPoints) + " perk point");
 				if (player.perkPoints > 1) outputText("s");
 				outputText(".");
 				doNext(playerMenu);
 				return;
 			}
+			outputText(images.showImage("event-arrow-up"));
 			outputText("Please select a perk from the drop-down list, then click 'Okay'.  You can press 'Skip' to save your perk point for later.\n\n\n");
-			mainView.aCb.x = 210;
-			mainView.aCb.y = 112;
-			
-			if (mainView.aCb.parent == null) {
-				mainView.addChild(mainView.aCb);
-			}
-			mainView.aCb.visible = true;
+			boxPerks = new ComboBox();
+			boxPerks.width = 200; 
+			boxPerks.scaleY = 1.1;
+			boxPerks.defaultLabel = "Select a perk";
+			boxPerks.x = 210;
+			boxPerks.y = 112;
+			boxPerks.items = preList;
+			mainView.addChild(boxPerks);
+			boxPerks.visible = true;
 			menu();
+			boxPerks.addEventListener(Event.SELECT, changeHandler);
 			addButton(1, "Skip", perkSkip);
 		}
 		private function perkSelect(selected:PerkClass):void {
 			mainView.stage.focus = null;
-			if (mainView.aCb.parent != null) {
-				mainView.removeChild(mainView.aCb);
+			if (boxPerks.parent != null) {
+				mainView.removeChild(boxPerks);
 				applyPerk(selected);
 			}
 		}
 		private function perkSkip():void {
 			mainView.stage.focus = null;
-			if (mainView.aCb.parent != null) {
-				mainView.removeChild(mainView.aCb);
+			if (boxPerks != null) {
+				mainView.removeChild(boxPerks);
 				playerMenu();
 			}
 		}
@@ -967,7 +969,7 @@ import flash.events.Event;
 			//Store perk name for later addition
 			clearOutput();
 			var selected:PerkClass = ComboBox(event.target).selectedItem.perk;
-			mainView.aCb.move(210, 85);
+			boxPerks.move(210, 85);
 			outputText("You have selected the following perk:\n\n\n");
 			outputText("<b>" + selected.perkName + ":</b> " + selected.perkLongDesc);
 			var unlocks:Array = kGAMECLASS.perkTree.listUnlocks(selected.ptype);
@@ -1002,7 +1004,7 @@ import flash.events.Event;
 			if (perk.ptype == PerkLib.StrongBack2) player.itemSlot5.unlocked = true;
 			if (perk.ptype == PerkLib.StrongBack) player.itemSlot4.unlocked = true;
 			if (perk.ptype == PerkLib.Tank2) {
-				HPChange(player.tou, false);
+				player.HPChange(player.tou, false);
 				statScreenRefresh();
 			}
 			doNext(playerMenu);

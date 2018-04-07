@@ -93,7 +93,7 @@ package classes.Items.Consumables
 					player.skin.type = Skin.PLAIN;
 				}
 				player.underBody.restore();
-				mutations.updateClaws(player.claws.type);
+				player.arms.updateClaws(player.arms.claws.type);
 				changes++;
 			}
 			//Legs
@@ -106,7 +106,7 @@ package classes.Items.Consumables
 			//Effect Script 8: 100% chance of healing
 			if (changes === 0) {
 				outputText("You feel strangely refreshed, as if you just gobbled down a bottle of sunshine.  A smile graces your lips as vitality fills you.  ");
-				game.HPChange(player.level * 5 + 10, true);
+				player.HPChange(player.level * 5 + 10, true);
 				//[removed:1.4.10]//changes++;
 			}
 			//Incorporeality Perk Text:  You seem to have inherited some of the spiritual powers of the residents of the afterlife!  While you wouldn't consider doing it for long due to its instability, you can temporarily become incorporeal for the sake of taking over enemies and giving them a taste of ghostly libido.

@@ -19,6 +19,7 @@ package classes
 	import classes.BodyParts.Skin;
 	import classes.BodyParts.Tail;
 	import classes.BodyParts.Tongue;
+	import classes.BodyParts.Udder;
 	import classes.BodyParts.UnderBody;
 	import classes.BodyParts.Wings;
 	import classes.GlobalFlags.kFLAGS;
@@ -30,7 +31,7 @@ package classes
 	import classes.StatusEffects.Combat.CombatStrBuff;
 	import classes.StatusEffects.Combat.CombatTouBuff;
 	import classes.VaginaClass;
-	import classes.internals.IRandomNumber;
+	import classes.internals.RandomNumberGenerator;
 	import classes.internals.LoggerFactory;
 	import classes.internals.Utils;
 	import classes.internals.profiling.Begin;
@@ -38,6 +39,7 @@ package classes
 	import classes.lists.BodyPartLists;
 	import classes.lists.BreastCup;
 	import classes.lists.Gender;
+	import classes.lists.PerkLists;
 	import flash.errors.IllegalOperationError;
 	import mx.logging.ILogger;
 
@@ -59,19 +61,20 @@ package classes
 		//"a" refers to how the article "a" should appear in text. 
 		private var _short:String = "You";
 		private var _a:String = "a ";
+		private var _race:String = "";
 		
 		/**
 		 * Normally creatures do not need a unique RNG,
 		 * so to avoid unnecessary memory usage they use the default instance.
 		 */
-		private var _rng:IRandomNumber = Utils.DEFAULT_RNG;
+		private var _rng:RandomNumberGenerator = Utils.DEFAULT_RNG;
 		
 		/**
 		 * Set the RNG this class uses. Intended for testing.
 		 * @param	rng to use for random numbers
 		 * @return the RNG that was set
 		 */
-		public function set rng(rng:IRandomNumber):void {
+		public function set rng(rng:RandomNumberGenerator):void {
 			if (rng === null) {
 				throw new ArgumentError("RNG cannot be null");
 			}
@@ -83,7 +86,7 @@ package classes
 		 * Get the RNG this class uses. Intended for testing.
 		 * @return the RNG used
 		 */
-		public function get rng():IRandomNumber {
+		public function get rng():RandomNumberGenerator {
 			return this._rng;
 		}
 		
@@ -182,12 +185,10 @@ package classes
 		public var lib:Number = 0;
 		public var sens:Number = 0;
 		public var cor:Number = 0;
-		public var fatigue:Number = 0;
-		
 		//Combat Stats
-		public var HP:Number = 0;
-		public var lust:Number = 0;		
-		
+		private var _HP:Number = 0;
+		private var _lust:Number = 0;		
+		private var _fatigue:Number = 0;
 		//Level Stats
 		public var XP:Number = 0;
 		public var level:Number = 0;
@@ -204,6 +205,8 @@ package classes
 		public function get hp100():Number { return 100*HP/maxHP(); }
 		public function get lust100():Number { return 100*lust/maxLust(); }
 
+		public function HPRatio():Number { return HP / maxHP(); }
+		
 		/**
 		 * @return keys: str, tou, spe, inte
 		 */
@@ -367,15 +370,16 @@ package classes
 			}
 			return Gender.NONE;
 		}
+		public function get race():String { return this._race; }
+		public function set race(value:String):void { this._race = value; }
 		private var _tallness:Number = 0;
 		public function get tallness():Number { return _tallness; }
 		public function set tallness(value:Number):void { _tallness = value; }
 
 		public var antennae:Antennae = new Antennae();
-		public var arms:Arms = new Arms();
+		public var arms:Arms; // Set in the constructor ...
 		public var beard:Beard = new Beard();
 		public var butt:Butt = new Butt();
-		public var claws:Claws = new Claws();
 		public var ears:Ears = new Ears();
 		public var eyes:Eyes = new Eyes();
 		public var face:Face = new Face();
@@ -391,8 +395,7 @@ package classes
 		public var tongue:Tongue = new Tongue();
 		public var underBody:UnderBody = new UnderBody();
 		public var wings:Wings = new Wings();
-
-		public var wingDesc:String = "non-existant";
+		public var udder:Udder = new Udder();
 
 		//Piercings
 		//TODO: Pull this out into it's own class and enum.
@@ -606,6 +609,7 @@ package classes
 			breastRows = new Vector.<BreastRowClass>();
 			_perks = [];
 			statusEffects = [];
+			arms = new Arms(this);
 			//keyItems = new Array();
 		}
 
@@ -1098,15 +1102,13 @@ package classes
 				case 'inte':
 					return (createOrFindStatusEffect(StatusEffects.GenericCombatInteBuff)
 							as CombatInteBuff).applyEffect(buff);
+				default:
+					CoC_Settings.error("/!\\ ERROR: addCombatBuff('"+stat+"', "+buff+")");
+					return 0;
 			}
-			CoC_Settings.error("/!\\ ERROR: addCombatBuff('"+stat+"', "+buff+")");
-			return 0;
 		}
-		/*
 		
-		[    ? ? ?    ]
-		
-		*/
+		/* [    ? ? ?    ] */
 		public function biggestTitSize():Number
 		{
 			if (breastRows.length == 0)
@@ -1696,7 +1698,6 @@ package classes
 			}else if (lowerBody.type == LowerBody.NAGA){
 				bonus += 20;
 			}
-
 			if (hasPerk(PerkLib.WetPussy))
 				bonus += 20;
 			if (hasPerk(PerkLib.HistorySlut))
@@ -2253,7 +2254,7 @@ package classes
 			//web also makes false!
 			if (hasStatusEffect(StatusEffects.Web))
 				return false;
-			return BodyPartLists.canFlyWings.indexOf(wings.type) !== -1;
+			return BodyPartLists.CAN_FLY_WINGS.indexOf(wings.type) !== -1;
 		}
 
 		public function canUseStare():Boolean
@@ -2276,10 +2277,8 @@ package classes
 
 		public function isBimbo():Boolean
 		{
-			if (hasPerk(PerkLib.BimboBody)) return true;
-			if (hasPerk(PerkLib.BimboBrains)) return true;
-			if (hasPerk(PerkLib.FutaForm)) return true;
-			if (hasPerk(PerkLib.FutaFaculties)) return true;
+			for each (var perk:PerkType in PerkLists.BIMBO)
+				if (hasPerk(perk)) return true;
 
 			return false;
 		}
@@ -2469,7 +2468,11 @@ package classes
 			return true;
 		}
 		
-		//Remove cocks
+		/**
+		 * Remove cocks from the creature. 
+		 * @param	arraySpot position of the cock in the array
+		 * @param	totalRemoved the number of cocks to remove, 0 means no cocks removed
+		 */
 		public function removeCock(arraySpot:int, totalRemoved:int):void
 		{
 			//Various Errors preventing action
@@ -2574,6 +2577,37 @@ package classes
 					breastRows.splice(arraySpot, totalRemoved);
 					//trace("Attempted to remove " + totalRemoved + " breastRows.");
 				}
+			}
+		}
+		
+		/**
+		 * Removes all gender releated parts: cocks, vaginas, breasts and balls.
+		 */
+		public function clearGender(): void {
+			LOGGER.info("Clearing gender...");
+			
+			LOGGER.debug("Removing balls");
+			balls = 0;
+			
+			while (hasCock()) {
+				LOGGER.debug("Removing cock {0}", cocks[0]);
+				removeCock(0, 1);
+			}
+			
+			while (hasVagina()) {
+				LOGGER.debug("Removing vagina {0}", vaginas[0]);
+				removeVagina(0, 1);
+			}
+			
+			// hasBreasts can currently not be used, as creatures must have at least one breast row
+			while (breastRows.length > 1) {
+				LOGGER.debug("Removing breast {0}", breastRows[0]);
+				removeBreastRow(0, 1);
+			}
+			
+			if (hasBreasts()) {
+				LOGGER.debug("Setting breast row {0}, size to flat (size 0)", breastRows[0]);
+				breastRows[0].breastRating = 0;
 			}
 		}
 		
@@ -2733,12 +2767,10 @@ package classes
 		{
 			return skin.hasFur();
 		}
-
 		public function hasWool():Boolean
 		{
 			return skin.hasWool();
 		}
-
 		public function isFurry():Boolean
 		{
 			return skin.isFurry();
@@ -2889,14 +2921,14 @@ package classes
 		// <mod name="Predator arms" author="Stadler76">
 		public function clawsDescript():String
 		{
-			var toneText:String = claws.tone == "" ? " " : (", " + claws.tone + " ");
+			var toneText:String = arms.claws.tone == "" ? " " : (", " + arms.claws.tone + " ");
 
-			switch (claws.type) {
+			switch (arms.claws.type) {
 				case Claws.NORMAL: return "fingernails";
 				case Claws.LIZARD: return "short curved" + toneText + "claws";
 				case Claws.DRAGON: return "powerful, thick curved" + toneText + "claws";
 				case Claws.IMP:    return "long" + toneText + "claws";
-				// Since mander and cockatrice arms are hardcoded and the others are NYI, we're done here for now
+				default: // Since mander and cockatrice arms are hardcoded and the others are NYI, we're done here for now
 			}
 			return "fingernails";
 		}
@@ -3097,6 +3129,11 @@ package classes
 			if (eggs() >= 10 && hasPerk(PerkLib.BeeOvipositor) && tail.type == Tail.BEE_ABDOMEN)
 				return true;
 			return false;
+		}
+
+		public function hasOvipositor():Boolean
+		{
+			return hasPerk(PerkLib.SpiderOvipositor) || hasPerk(PerkLib.BeeOvipositor);
 		}
 
 		public function canOviposit():Boolean
@@ -3427,11 +3464,14 @@ package classes
 				case CockTypesEnum.LIZARD:
 				case CockTypesEnum.PIG:
 				case CockTypesEnum.TENTACLE:
+				case CockTypesEnum.RED_PANDA:
+				case CockTypesEnum.FERRET:
 					if (countCocksOfType(cocks[0].cockType) == cocks.length) return Appearance.cockNoun(cocks[0].cockType) + "s";
 					break;
 				case CockTypesEnum.DOG:
 				case CockTypesEnum.FOX:
 					if (dogCocks() == cocks.length) return Appearance.cockNoun(CockTypesEnum.DOG) + "s";
+					break;
 				default:
 			}
 			return Appearance.cockNoun(CockTypesEnum.HUMAN) + "s";
@@ -3450,6 +3490,8 @@ package classes
 					case CockTypesEnum.KANGAROO:
 					case CockTypesEnum.AVIAN:
 					case CockTypesEnum.ECHIDNA:
+					case CockTypesEnum.RED_PANDA:
+					case CockTypesEnum.FERRET:
 						return true; //If there's even one cock of any of these types then return true
 					default:
 				}
@@ -3604,7 +3646,12 @@ package classes
 
 			return description;
 		}
-		
+
+		public function handsDescript(plural:Boolean = true):String
+		{
+			return Appearance.handsDescript(this, plural);
+		}
+
 		public function assholeDescript():String
 		{
 			return Appearance.assholeDescript(this);
@@ -3672,7 +3719,7 @@ package classes
 
 		public function hasLongTongue():Boolean
 		{
-			return BodyPartLists.longTongues.indexOf(tongue.type) !== -1;
+			return BodyPartLists.LONG_TONGUES.indexOf(tongue.type) !== -1;
 		}
 
 		private function breastSize(val:Number):String
@@ -3706,8 +3753,8 @@ package classes
 			}
 			//Modify armor rating based on weapons.
 			if (applyModifiers) {
-				if (game.player.weapon == game.weapons.JRAPIER || game.player.weapon == game.weapons.SPEAR || game.player.weaponName.indexOf("staff") != -1 && game.player.hasPerk(PerkLib.StaffChanneling)) armorMod = 0;
-				if (game.player.weapon == game.weapons.KATANA) armorMod -= 5;
+				if (game.player.weapon == game.weapons.JRAPIER || game.player.weapon == game.weapons.SPEAR_0 || game.player.weaponName.indexOf("staff") != -1 && game.player.hasPerk(PerkLib.StaffChanneling)) armorMod = 0;
+				if (game.player.weapon == game.weapons.KATANA0) armorMod -= 5;
 				if (game.player.hasPerk(PerkLib.LungingAttacks)) armorMod /= 2;
 				if (armorMod < 0) armorMod = 0;
 			}
@@ -3859,24 +3906,38 @@ package classes
 			return getEvasionReason(useMonster, attackSpeed) != null;
 		}
 		
-		public function maxFatigue():Number
-		{
-			var max:Number = 100;
-			if (findPerk(PerkLib.ImprovedEndurance) >= 0) max += 20;
-			if (findPerk(PerkLib.AscensionEndurance) >= 0) max += perkv1(PerkLib.AscensionEndurance) * 5;
-			if (max > 999) max = 999;
-			return max;
-		}
 		public function getMaxStats(stats:String):int {
 			return 100;
 		}
 
+		public function get HP():Number { return this._HP; }
+		public function set HP(value:Number):void { this._HP = value; }
+		
+		public function get lust():Number { return this._lust; }
+		public function set lust(value:Number):void { this._lust = value; }
+		
+		public function get fatigue():Number { return this._fatigue; }
+		public function set fatigue(value:Number):void { this._fatigue = value; }
+		
+		//Minimum Libido, Sensitivty, Lust
+		public function minLib():Number {
+			return 1;
+		}
+		public function minSens():Number {
+			return 10;
+		}
+		public function minLust():Number {
+			return 0;
+		}
+		
+		//Max HP, Lust, Fatigue
 		public function maxHP():Number
 		{
 			var max:Number = 0;
 			max += int(tou * 2 + 50);
 			if (findPerk(PerkLib.Tank) >= 0) max += 50;
 			if (findPerk(PerkLib.Tank2) >= 0) max += Math.round(tou);
+			if (findPerk(PerkLib.Tank3) >= 0) max += level * 5;
 			if (findPerk(PerkLib.ChiReflowDefense) >= 0) max += UmasShop.NEEDLEWORK_DEFENSE_EXTRA_HP;
 			if (flags[kFLAGS.GRIMDARK_MODE] >= 1)
 				max += level * 5;
@@ -3885,18 +3946,25 @@ package classes
 			if (jewelryEffectId == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude;
 			max *= 1 + (countCockSocks("green") * 0.02);
 			max = Math.round(max);
+			if (max < 50) max = 50;
 			if (max > 9999) max = 9999;
 			return max;
 		}
-
-		public function minLib():Number {
-			return 1;
-		}
-		public function minSens():Number {
-			return 10;
-		}
-		public function minLust():Number {
-			return 100;
+		
+		/**
+		 * Restore the HP of the creature.
+		 * @param amount the amount to heal. If omitted, heal to max HP. Value must not be negative.
+		 */
+		public function restoreHP(amount:Number = Number.MAX_VALUE): void {
+			if (amount < 0) {
+				throw new RangeError("Value must not be negative");
+			}
+			
+			HP += amount;
+			
+			if (HP > maxHP()) {
+				HP = maxHP();
+			}
 		}
 
 		public function maxLust():Number
@@ -3904,12 +3972,25 @@ package classes
 			var max:Number = 100;
 			if (this == game.player && game.player.demonScore() >= 4) max += 20;
 			if (findPerk(PerkLib.ImprovedSelfControl) >= 0) max += 20;
+			if (findPerk(PerkLib.ImprovedSelfControl2) >= 0) max += 10;
+			if (findPerk(PerkLib.ImprovedSelfControl3) >= 0) max += 10;
 			if (findPerk(PerkLib.BroBody) >= 0 || findPerk(PerkLib.BimboBody) >= 0 || findPerk(PerkLib.FutaForm) >= 0) max += 20;
 			if (findPerk(PerkLib.OmnibusGift) >= 0) max += 15;
 			if (findPerk(PerkLib.AscensionDesires) >= 0) max += perkv1(PerkLib.AscensionDesires) * 5;
 			if (max > 999) max = 999;
 			return max;
 		}
+		public function maxFatigue():Number
+		{
+			var max:Number = 100;
+			if (findPerk(PerkLib.ImprovedEndurance) >= 0) max += 20;
+			if (findPerk(PerkLib.ImprovedEndurance2) >= 0) max += 10;
+			if (findPerk(PerkLib.ImprovedEndurance3) >= 0) max += 10;
+			if (findPerk(PerkLib.AscensionEndurance) >= 0) max += perkv1(PerkLib.AscensionEndurance) * 5;
+			if (max > 999) max = 999;
+			return max;
+		}
+		
 		public function takeDamage(damage:Number, display:Boolean = false):Number {
 			HP = boundFloat(0,HP-Math.round(damage),HP);
 			return (damage > 0 && damage < 1) ? 1 : damage;
@@ -3919,6 +4000,24 @@ package classes
 			lust = boundFloat(minLust(),lust+Math.round(lustDmg),maxLust());
 			return (lustDmg > 0 && lustDmg < 1) ? 1 : lustDmg;
 		}
+		
+		public function generateTooltip():String {
+			var retv:String = "<b>Corruption:</b>" +  cor + "\n<b>Armor:</b>" + armorDef +"\n";
+			if (hasStatusEffect(StatusEffects.IzmaBleed)) retv += "<b>Bleeding:</b> Target is bleeding and takes damage each turn.\n";
+			if (hasStatusEffect(StatusEffects.Stunned)) retv += "<b>Stunned</b> Target is stunned, and may not act for " + (statusEffectv1(StatusEffects.Stunned)+1) + " turns.\n";
+			//if (hasPerk(PerkLib.Invincible)) retv += "<b>INVINCIBLE:</b> Target is invincible, and will take no damage from any attack.\n";
+			//if (hasPerk(PerkLib.BleedImmune)) retv += "<b>Bleed Immune:</b> Target is immune to bleeding effects.\n";
+			if (hasStatusEffect(StatusEffects.Blind))  retv += "<b>Blinded:</b> Target is blinded and will miss much more often.\n";
+			if (hasStatusEffect(StatusEffects.Fear))  retv += "<b>Frightened </b> Target is frozen by fear, and cannot attack.\n";
+			if (hasStatusEffect(StatusEffects.NagaVenom))  retv += "<b>Poisoned(Naga):</b> Target is continuously losing speed and strength.\n";
+			if (hasStatusEffect(StatusEffects.Whispered))  retv += "<b>Whispered:</b> Target is addled by dark whisperings, and cannot attack.\n";
+			if (hasStatusEffect(StatusEffects.OnFire))  retv += "<b>Burning:</b> Target is burning, and takes damage every turn for " + statusEffectv1(StatusEffects.OnFire) +" turns.\n";
+			if (hasStatusEffect(StatusEffects.Shell))  retv += "<b>Shell:</b> Target is protected by a magical shell for " + statusEffectv1(StatusEffects.Shell) +" turns, and will absorb some magical attacks.\n";
+			//if (hasStatusEffect(StatusEffects.GuardAB))  retv += "<b>Guarded:</b> Target is guarded, and cannot be attacked directly.\n";
+			//if(hasPerk(PerkLib.PoisonImmune)) retv += "<b>Poison Immune:</b> Target is immune to poison effects.\n";
+			return retv;
+		}
+		
 		/**
 		 *Get the remaining fatigue of the Creature.
 		 *@return maximum amount of fatigue that still can be used

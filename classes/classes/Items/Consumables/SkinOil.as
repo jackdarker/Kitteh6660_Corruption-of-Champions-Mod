@@ -33,10 +33,10 @@ package classes.Items.Consumables
 			clearOutput();
 			outputText("The skin on your underBody is different from the rest. Where do you want to apply the " + _color + " skin oil?");
 
-			game.menu();
-			game.addButton(0, "Body", oilSkin);
-			game.addButton(1, "Underbody", oilUnderBodySkin);
-			game.addButton(4, "Nevermind", oilCancel);
+			kGAMECLASS.output.menu();
+			kGAMECLASS.output.addButton(0, "Body", oilSkin);
+			kGAMECLASS.output.addButton(1, "Underbody", oilUnderBodySkin);
+			kGAMECLASS.output.addButton(4, "Nevermind", oilCancel);
 			return true;
 		}
 
@@ -48,7 +48,7 @@ package classes.Items.Consumables
 			else {
 				if (!game.player.hasGooSkin()) {
 					game.player.skin.tone = _color;
-					mutations.updateClaws(game.player.claws.type);
+					game.player.arms.updateClaws(game.player.arms.claws.type);
 				}
 				switch (game.player.skin.type) {
 					case Skin.PLAIN: //Plain

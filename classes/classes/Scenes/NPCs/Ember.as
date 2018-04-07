@@ -155,6 +155,7 @@ package classes.Scenes.NPCs
 			this.short = "Ember";
 			this.imageName = "ember";
 			this.long = "You are currently 'battling' Ember, the dragon, in a playfight.  At least, that was the intention.  The way " + emberMF("he", "she") + " lashes " + emberMF("his", "her") + " tail along the ground, with claws spread and teeth bared ferociously, makes you wonder.";
+			this.race = "Dragon";
 			// this.plural = false;
 			this.pronoun1 = game.emberScene.emberMF("he", "she");
 			this.pronoun2 = game.emberScene.emberMF("him", "her");
@@ -184,7 +185,7 @@ package classes.Scenes.NPCs
 			this.hair.length = 15;
 			this.horns.type = Horns.DRACONIC_X4_12_INCH_LONG;
 			this.horns.value = 4;
-			this.theWingType = Wings.DRACONIC_LARGE;
+			this.wings.type = Wings.DRACONIC_LARGE;
 			this.tail.type = Tail.DRACONIC;
 			initStrTouSpeInte(75 + Math.floor(game.emberScene.emberSparIntensity() / 3), 75 + Math.floor(game.emberScene.emberSparIntensity() / 3), 75 + Math.floor(game.emberScene.emberSparIntensity() / 3), 75 + Math.floor(game.emberScene.emberSparIntensity() / 3));
 			initLibSensCor(50, 35, game.flags[kFLAGS.EMBER_COR]);

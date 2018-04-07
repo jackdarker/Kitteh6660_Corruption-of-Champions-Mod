@@ -25,13 +25,15 @@ package classes.Items.Consumables
 		}
 		
 		private function liquidDesc():String {
+			var phrase:String = "";
 			switch(_adj) {
-				case "smooth": return randomChoice(["smooth liquid", "thick cream"]);
-				case "rough":  return randomChoice(["abrasive goop", "rough textured goop"]);
-				case "sexy":   return randomChoice(["smooth liquid", "attractive cream", "beautiful cream"]);
-				case "clear":  return randomChoice(["smooth liquid", "thick cream"]);
+				case "smooth": phrase = randomChoice(["smooth liquid", "thick cream"]); break;
+				case "rough":  phrase = randomChoice(["abrasive goop", "rough textured goop"]); break;
+				case "sexy":   phrase = randomChoice(["smooth liquid", "attractive cream", "beautiful cream"]); break;
+				case "clear":  phrase = randomChoice(["smooth liquid", "thick cream"]); break;
+				default:       phrase = "cream"; //Failsafe
 			}
-			return "cream"; //Failsafe
+			return phrase; 
 		}
 		
 		override public function useItem():Boolean {
@@ -43,17 +45,17 @@ package classes.Items.Consumables
 			clearOutput();
 			outputText("The skin on your underBody is different from the rest. Where do you want to apply the " + _adj + " body lotion?");
 
-			game.menu();
-			game.addButton(0, "Body", lotionSkin);
-			game.addButton(1, "Underbody", lotionUnderBodySkin);
-			game.addButton(4, "Nevermind", lotionCancel);
+			kGAMECLASS.output.menu();
+			kGAMECLASS.output.addButton(0, "Body", lotionSkin);
+			kGAMECLASS.output.addButton(1, "Underbody", lotionUnderBodySkin);
+			kGAMECLASS.output.addButton(4, "Nevermind", lotionCancel);
 			return true;
 		}
 
 		public function lotionSkin():void {
 			if (game.player.skin.adj == _adj) {
 				outputText("You " + game.player.clothedOrNaked("take a second to disrobe before uncorking the flask of lotion and rubbing", "uncork the flask of lotion and rub") + " the " + liquidDesc() + " across your body. Once you’ve finished you feel reinvigorated. ");
-				game.HPChange(10, true);
+				player.HPChange(10, true);
 			}
 			else {
 				if ([Skin.GOO, Skin.DRAGON_SCALES].indexOf(game.player.skin.type) == -1) { //If skin is goo or dragon scales, don't change.
@@ -136,7 +138,7 @@ package classes.Items.Consumables
 		public function lotionUnderBodySkin():void {
 			if (game.player.underBody.skin.adj == _adj) {
 				outputText("You " + game.player.clothedOrNaked("take a second to disrobe before uncorking the flask of lotion and rubbing", "uncork the flask of lotion and rub") + " the " + liquidDesc() + " across your underbody. Once you’ve finished you feel reinvigorated. ");
-				game.HPChange(10, true);
+				player.HPChange(10, true);
 			}
 			else {
 				if (game.player.underBody.skin.type != Skin.GOO) { //If skin is goo, don't change.

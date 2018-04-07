@@ -20,6 +20,8 @@ package classes.BodyParts
 		public static const DRACONIC_LARGE:int  =  11;
 		public static const GIANT_DRAGONFLY:int =  12;
 		public static const IMP_LARGE:int       =  13;
+		public static const FAERIE_SMALL:int    =  14; // currently for monsters only
+		public static const FAERIE_LARGE:int    =  15; // currently for monsters only
 
 		public var type:Number  = NONE;
 		public var color:String = "no";
@@ -44,12 +46,12 @@ package classes.BodyParts
 
 		override public function canDye():Boolean
 		{
-			return [HARPY, FEATHERED_LARGE].indexOf(type) != -1;
+			return [HARPY, FEATHERED_LARGE].indexOf(type) !== -1;
 		}
 
 		override public function hasDyeColor(_color:String):Boolean
 		{
-			return color == _color;
+			return color === _color;
 		}
 
 		override public function applyDye(_color:String):void

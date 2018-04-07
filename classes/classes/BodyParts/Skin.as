@@ -1,5 +1,7 @@
 package classes.BodyParts 
 {
+	import classes.Appearance;
+
 	/**
 	 * Container class for the players skin
 	 * @since December 27, 2016
@@ -16,6 +18,7 @@ package classes.BodyParts
 		public static const FISH_SCALES:int   =   6; // NYI, for future use
 		public static const WOOL:int          =   7;
 		public static const FEATHERED:int     =   8;
+		public static const BARK:int          =   9;
 
 		public var type:Number = PLAIN;
 		public var tone:String = "albino";
@@ -23,11 +26,17 @@ package classes.BodyParts
 		public var adj:String = "";
 		public var furColor:String = "no";
 
+		public function setType(value:Number):void
+		{
+			desc = Appearance.DEFAULT_SKIN_DESCS[value];
+			type = value;
+		}
+
 		public function skinFurScales():String
 		{
 			var skinzilla:String = "";
 			//Adjectives first!
-			if (adj != "")
+			if (adj !== "")
 				skinzilla += adj + ", ";
 
 			//Fur handled a little differently since it uses haircolor
@@ -41,7 +50,7 @@ package classes.BodyParts
 			var skinzilla:String = "";
 
 			//Adjectives first!
-			if (!noAdj && adj != "" && !noTone && tone != "rough gray")
+			if (!noAdj && adj !== "" && !noTone && tone !== "rough gray")
 				skinzilla += adj + ", ";
 			if (!noTone)
 				skinzilla += tone + " ";
@@ -54,27 +63,27 @@ package classes.BodyParts
 
 		public function hasFur():Boolean
 		{
-			return type == FUR;
+			return type === FUR;
 		}
 
 		public function hasWool():Boolean
 		{
-			return type == WOOL;
+			return type === WOOL;
 		}
 
 		public function hasFeathers():Boolean
 		{
-			return  type == FEATHERED;
+			return  type === FEATHERED;
 		}
 
 		public function isFurry():Boolean
 		{
-			return [FUR, WOOL].indexOf(type) != -1;
+			return [FUR, WOOL].indexOf(type) !== -1;
 		}
 
 		public function isFluffy():Boolean
 		{
-			return [FUR, WOOL, FEATHERED].indexOf(type) != -1;
+			return [FUR, WOOL, FEATHERED].indexOf(type) !== -1;
 		}
 
 		public function restore(keepTone:Boolean = true):void

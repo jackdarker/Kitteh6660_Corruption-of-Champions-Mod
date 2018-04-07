@@ -88,7 +88,12 @@ package classes
 
 		public function hasNonCockatriceAntennae():Boolean
 		{
-			return [Antennae.NONE, Antennae.COCKATRICE].indexOf(antennae.type) == -1
+			return [Antennae.NONE, Antennae.COCKATRICE].indexOf(antennae.type) === -1;
+		}
+
+		public function hasInsectAntennae():Boolean
+		{
+			return antennae.type === Antennae.BEE;
 		}
 
 		public function hasDragonWings(large:Boolean = false):Boolean

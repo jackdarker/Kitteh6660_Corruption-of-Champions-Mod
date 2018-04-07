@@ -40,7 +40,11 @@ package classes
 	import classes.Scenes.Dungeons.HelDungeon.*;
 	import classes.Scenes.Explore.*;
 	import classes.Scenes.Monsters.*;
+	import classes.Scenes.Monsters.pregnancies.PlayerBunnyPregnancy;
+	import classes.Scenes.Monsters.pregnancies.PlayerCentaurPregnancy;
 	import classes.Scenes.NPCs.*;
+	import classes.Scenes.NPCs.pregnancies.PlayerBenoitPregnancy;
+	import classes.Scenes.NPCs.pregnancies.PlayerOviElixirPregnancy;
 	import classes.Scenes.Places.*;
 	import classes.Scenes.Places.TelAdre.*;
 	import classes.Scenes.Quests.*;
@@ -56,10 +60,8 @@ package classes
 	import classes.display.SpriteDb;
 	import classes.internals.*;
 	import classes.internals.Utils;
-	import coc.model.GameModel;
-	import coc.model.TimeModel;
+	import classes.Time;
 	import coc.view.MainView;
-	import fl.data.DataProvider;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -112,7 +114,7 @@ package classes
 	
 	[SWF(width = "1000", height = "800", backgroundColor = "0x000000", pageTitle = "Corruption of Champions")]
 	
-	public class CoC extends MovieClip
+	public class CoC extends MovieClip implements GuiInput
 	{
 		{
 			/*
@@ -125,7 +127,6 @@ package classes
 		}
 		
 		// Include the functions. ALL THE FUNCTIONS
-		include "../../includes/input.as";
 		include "../../includes/debug.as";
 		include "../../includes/eventParser.as";
 		include "../../includes/engineCore.as";
@@ -193,27 +194,28 @@ package classes
 		public var achievementList:Achievements = new Achievements();
 		public var camp:Camp = new Camp(campInitialize);
 		public var dreams:Dreams = new Dreams();
-		public var dungeons:DungeonCore = new DungeonCore();
+		public var dungeons:DungeonCore;
+		public var equipmentUpgrade:ItemUpgrade = new ItemUpgrade();
 		public var followerInteractions:FollowerInteractions = new FollowerInteractions();
 		public var inventory:Inventory = new Inventory(saves);
 		public var masturbation:Masturbation = new Masturbation();
-		public var pregnancyProgress:PregnancyProgression = new PregnancyProgression();
+		public var pregnancyProgress:PregnancyProgression;
 		public var bimboProgress:BimboProgression = new BimboProgression();
 		
 		// Scenes/Areas/
 		public var commonEncounters:CommonEncounters = new CommonEncounters(); // Common dependencies go first
 		
-		public var bog:Bog = new Bog();
+		public var bog:Bog;
 		public var desert:Desert = new Desert();
 		public var forest:Forest = new Forest();
 		public var deepWoods:DeepWoods = new DeepWoods(forest);
 		public var glacialRift:GlacialRift = new GlacialRift();
-		public var highMountains:HighMountains = new HighMountains();
-		public var lake:Lake = new Lake();
-		public var mountain:Mountain = new Mountain();
-		public var plains:Plains = new Plains();
-		public var swamp:Swamp = new Swamp();
-		public var volcanicCrag:VolcanicCrag = new VolcanicCrag();
+		public var highMountains:HighMountains;
+		public var lake:Lake;
+		public var mountain:Mountain;
+		public var plains:Plains;
+		public var swamp:Swamp;
+		public var volcanicCrag:VolcanicCrag;
 		
 		public var exploration:Exploration = new Exploration(); //Goes last in order to get it working.
 		// Scenes/Combat/
@@ -231,16 +233,16 @@ package classes
 		public var goblinWarriorScene:GoblinWarriorScene = new GoblinWarriorScene();
 		public var goblinShamanScene:GoblinShamanScene = new GoblinShamanScene();
 		public var goblinElderScene:PriscillaScene = new PriscillaScene();
-		public var impScene:ImpScene = new ImpScene();
+		public var impScene:ImpScene;
 		public var mimicScene:MimicScene = new MimicScene();
 		public var succubusScene:SuccubusScene = new SuccubusScene();
 		// Scenes/NPC/
-		public var amilyScene:AmilyScene = new AmilyScene();
-		public var anemoneScene:AnemoneScene = new AnemoneScene();
+		public var amilyScene:AmilyScene;
+		public var anemoneScene:AnemoneScene;
 		public var arianScene:ArianScene = new ArianScene();
 		public var ceraphScene:CeraphScene = new CeraphScene();
 		public var ceraphFollowerScene:CeraphFollowerScene = new CeraphFollowerScene();
-		public var emberScene:EmberScene = new EmberScene();
+		public var emberScene:EmberScene;
 		public var exgartuan:Exgartuan = new Exgartuan();
 		public var helFollower:HelFollower = new HelFollower();
 		public var helScene:HelScene = new HelScene();
@@ -248,13 +250,13 @@ package classes
 		public var holliScene:HolliScene = new HolliScene();
 		public var isabellaScene:IsabellaScene = new IsabellaScene();
 		public var isabellaFollowerScene:IsabellaFollowerScene = new IsabellaFollowerScene();
-		public var izmaScene:IzmaScene = new IzmaScene();
-		public var jojoScene:JojoScene = new JojoScene();
+		public var izmaScene:IzmaScene;
+		public var jojoScene:JojoScene;
 		public var joyScene:JoyScene = new JoyScene();
 		public var kihaFollower:KihaFollower = new KihaFollower();
 		public var kihaScene:KihaScene = new KihaScene();
 		public var latexGirl:LatexGirl = new LatexGirl();
-		public var marbleScene:MarbleScene = new MarbleScene();
+		public var marbleScene:MarbleScene;
 		public var marblePurification:MarblePurification = new MarblePurification();
 		public var milkWaifu:MilkWaifu = new MilkWaifu();
 		public var raphael:Raphael = new Raphael();
@@ -265,9 +267,9 @@ package classes
 		public var sophieBimbo:SophieBimbo = new SophieBimbo();
 		public var sophieFollowerScene:SophieFollowerScene = new SophieFollowerScene();
 		public var sophieScene:SophieScene = new SophieScene();
-		public var urta:Urta = new Urta();
+		public var urta:UrtaScene = new UrtaScene();
 		public var urtaHeatRut:UrtaHeatRut = new UrtaHeatRut();
-		public var urtaPregs:UrtaPregs = new UrtaPregs();
+		public var urtaPregs:UrtaPregs;
 		public var valeria:Valeria = new Valeria();
 		public var vapula:Vapula = new Vapula();
 		public var fenrisScene:FenrisScene = new FenrisScene();
@@ -277,7 +279,7 @@ package classes
 		public var boat:Boat = new Boat();
 		public var farm:Farm = new Farm();
 		public var owca:Owca = new Owca();
-		public var telAdre:TelAdre = new TelAdre();
+		public var telAdre:TelAdre;
 		public var ingnam:Ingnam = new Ingnam();
 		public var prison:Prison = new Prison();
 		public var townRuins:TownRuins = new TownRuins();
@@ -303,6 +305,7 @@ package classes
 		
 		public var bindings:Bindings = new Bindings();
 		public var output:Output = Output.init();
+		public var credits:Credits = Credits.init();
 		public var measurements:Measurements = Measurements.init();
 		/****
 		   This is used purely for bodges while we get things cleaned up.
@@ -313,8 +316,6 @@ package classes
 		 ****/
 		
 		public var mainView:MainView;
-		
-		public var model:GameModel;
 		
 		public var parser:Parser;
 		
@@ -339,7 +340,7 @@ package classes
 		{
 			return _gameState;
 		}
-		public var time:TimeModel;
+		public var time:Time;
 		
 		public var temp:int;
 		public var args:Array;
@@ -349,7 +350,32 @@ package classes
 		
 		public var kFLAGS_REF:*;
 		public var kACHIEVEMENTS_REF:*;
-		
+
+		public function clearOutput():void
+		{
+			output.clear(true);
+		}
+
+		public function rawOutputText(text:String):void
+		{
+			output.raw(text);
+		}
+
+		public function outputText(text:String):void
+		{
+			output.text(text);
+		}
+
+		public function displayHeader(string:String):void
+		{
+			output.text(output.formatHeader(string));
+		}
+
+		public function formatHeader(string:String):String
+		{
+			return output.formatHeader(string);
+		}
+
 		public function get inCombat():Boolean
 		{
 			return _gameState == 1;
@@ -416,6 +442,39 @@ package classes
 			// let the logging begin!
 			Log.addTarget(traceTarget);
 		}
+
+		/**
+		 * Create scenes that use the new pregnancy system. This method is public to allow for simple testing.
+		 * @param pregnancyProgress Pregnancy progression to use for scenes, which they use to register themself
+		 */
+		public function createScenes(pregnancyProgress:PregnancyProgression): void {
+			this.dungeons = new DungeonCore(pregnancyProgress);
+			
+			this.bog = new Bog(pregnancyProgress);
+			this.mountain = new Mountain(pregnancyProgress, output);
+			this.highMountains = new HighMountains(pregnancyProgress, output);
+			this.volcanicCrag = new VolcanicCrag(pregnancyProgress, output);
+			this.swamp = new Swamp(pregnancyProgress, output);
+			this.plains = new Plains(pregnancyProgress, output);
+			this.telAdre = new TelAdre(pregnancyProgress);
+			
+			this.impScene = new ImpScene(pregnancyProgress, output);
+			this.anemoneScene = new AnemoneScene(pregnancyProgress, output);
+			this.marbleScene = new MarbleScene(pregnancyProgress, output);
+			this.jojoScene = new JojoScene(pregnancyProgress, output);
+			this.amilyScene = new AmilyScene(pregnancyProgress, output);
+			this.izmaScene = new IzmaScene(pregnancyProgress, output);
+			this.lake = new Lake(pregnancyProgress, output);
+
+			// not assigned to a variable as it is self-registering, PregnancyProgress will keep a reference to the instance
+			new PlayerCentaurPregnancy(pregnancyProgress, output);
+			new PlayerBunnyPregnancy(pregnancyProgress, output, mutations);
+			new PlayerBenoitPregnancy(pregnancyProgress, output);
+			new PlayerOviElixirPregnancy(pregnancyProgress, output);
+			
+			this.emberScene = new EmberScene(pregnancyProgress);
+			this.urtaPregs = new UrtaPregs(pregnancyProgress);
+		}
 		
 		/**
 		 * Create the main game instance.
@@ -439,6 +498,9 @@ package classes
 			// Cheatmode.
 			kGAMECLASS = this;
 			
+			this.pregnancyProgress = new PregnancyProgression();
+			createScenes(pregnancyProgress);
+			
 			useables = new UseableLib();
 			
 			this.kFLAGS_REF = kFLAGS;
@@ -448,7 +510,6 @@ package classes
 			
 			this.parser = new Parser(this, CoC_Settings);
 			
-			this.model = new GameModel();
 			try
 			{
 				this.mainView = new MainView( /*this.model*/);
@@ -460,7 +521,7 @@ package classes
 				throw Error(e.getStackTrace());
 			}
 			this.mainView.name = "mainView";
-			this.mainView.addEventListener("addedToStage", Utils.curry(_postInit, stageToUse));
+			this.mainView.addEventListener(Event.ADDED_TO_STAGE, Utils.curry(_postInit, stageToUse));
 			stageToUse.addChild(this.mainView);
 		}
 		
@@ -475,7 +536,7 @@ package classes
 			this.mainView.onStatsClick = playerInfo.displayStats;
 			this.mainView.onBottomButtonClick = function(i:int):void
 			{
-				output.record("<br>[" + button(i).labelText + "]<br>");
+				output.record("<br>[" + output.button(i).labelText + "]<br>");
 			};
 			
 			// Set up all the messy global stuff:
@@ -483,8 +544,7 @@ package classes
 			// ******************************************************************************************
 			
 			var mainView:MainView = this.mainView;
-			var model:GameModel = this.model;
-			
+
 			/**
 			 * Global Variables used across the whole game. I hope to whittle it down slowly.
 			 */
@@ -494,12 +554,11 @@ package classes
 			 * Debug, Version, etc
 			 */
 			debug = false; //DEBUG, used all over the place
-			ver = "1.0.2_mod_1.4.11"; //Version NUMBER
-			version = ver + " (<b>Refactorfest</b>)"; //Version TEXT
+			ver = "1.0.2_mod_1.4.13b"; //Version NUMBER
+			version = ver + " (<b>Weapon Upgrading!</b>)"; //Version TEXT
 			
 			//Indicates if building for mobile?
 			mobile = false;
-			model.mobile = mobile;
 			
 			this.images = new ImageManager(stageToUse.stage, mainView);
 			this.inputManager = new InputManager(stageToUse.stage, mainView, false);
@@ -515,7 +574,6 @@ package classes
 			
 			//The Player object, used everywhere
 			player = new Player();
-			model.player = player;
 			player2 = new Player();
 			playerEvent = new PlayerEvents();
 			
@@ -555,18 +613,19 @@ package classes
 			//{ region DisplayVariables
 			
 			//Holds the date and time display in the bottom left
-			time = new TimeModel();
-			model.time = time;
+			time = new Time();
 			
 			//The string holds all the "story" text, mainly used in engineCore
 			//}endregion
 			
 			// These are toggled between by the [home] key.
+			mainView.textBGTranslucent.visible = true;
 			mainView.textBGWhite.visible = false;
 			mainView.textBGTan.visible = false;
 			
 			// *************************************************************************************
 			//Workaround.
+			mainViewManager.registerShiftKeys();
 			exploration.configureRooms();
 			lethicesKeep.configureRooms();
 			dungeons.map = new DungeonMap();
@@ -579,7 +638,6 @@ package classes
 			
 			//Used for stat tracking to keep up/down arrows correct.
 			oldStats = {};
-			model.oldStats = oldStats;
 			oldStats.oldStr = 0;
 			oldStats.oldTou = 0;
 			oldStats.oldSpe = 0;
@@ -596,8 +654,8 @@ package classes
 			
 			// ******************************************************************************************
 			
-			mainView.aCb.dataProvider = new DataProvider([{label: "TEMP", perk: new PerkClass(PerkLib.Acclimation)}]);
-			mainView.aCb.addEventListener(Event.CHANGE, playerInfo.changeHandler);
+			mainView.aCb.items = [{label: "TEMP", perk: new PerkClass(PerkLib.Acclimation)}];
+			mainView.aCb.addEventListener(Event.SELECT, playerInfo.changeHandler);
 			
 			//Register the classes we need to be able to serialize and reconstitute so
 			// they'll get reconstituted into the correct class when deserialized
@@ -624,7 +682,17 @@ package classes
 		
 		public function run():void
 		{
+			//Set up stage
+			stage.focus = kGAMECLASS.mainView.mainText;
+			mainView.eventTestInput.x = -10207.5;
+			mainView.eventTestInput.y = -1055.1;
+			mainViewManager.startUpButtons();
+			saves.loadPermObject();
+			mainViewManager.setTheme();
+			mainView.setTextBackground(flags[kFLAGS.TEXT_BACKGROUND_STYLE]);
+			//Now enter the main menu.
 			mainMenu.mainMenu();
+			
 			this.stop();
 			
 			if (_updateHack)
@@ -661,7 +729,7 @@ package classes
 		{
 			// Inlined call from lib/src/coc/view/MainView.as
 			// TODO: When flags goes away, if it goes away, replace this with the appropriate settings thing.
-			if (choice <= 0 || choice == null || flags[kFLAGS.SHOW_SPRITES_FLAG] == 1)
+			if (choice <= 0 || choice == null || flags[kFLAGS.SHOW_SPRITES_FLAG] == 0)
 			{
 				mainViewManager.hideSprite();
 			}
@@ -676,6 +744,16 @@ package classes
 					mainViewManager.hideSprite();
 				}
 			}
+		}
+		
+		// TODO remove once that GuiInput interface has been sorted
+		public function addButton(pos:int, text:String = "", func1:Function = null, arg1:* = -9000, arg2:* = -9000, arg3:* = -9000, toolTipText:String = "", toolTipHeader:String = ""):CoCButton {
+			return output.addButton(pos, text, func1, arg1, arg2, arg3, toolTipText, toolTipHeader);
+		}
+		
+		// TODO remove once that GuiInput interface has been sorted
+		public function menu(): void {
+			output.menu();
 		}
 	}
 }

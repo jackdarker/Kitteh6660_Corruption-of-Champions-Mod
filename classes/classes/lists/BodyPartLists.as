@@ -12,13 +12,13 @@ package classes.lists
 		/**
 		 * Echidna 1 ft long (i'd consider it barely qualifying), demonic 2 ft long, draconic 4 ft long
 		 */
-		public static const longTongues:Array = [
+		public static const LONG_TONGUES:Array = [
 			Tongue.DEMONIC,
 			Tongue.DRACONIC,
 			Tongue.ECHIDNA,
 		];
 
-		public static const canFlyWings:Array = [
+		public static const CAN_FLY_WINGS:Array = [
 			Wings.BEE_LIKE_LARGE,
 			Wings.BAT_LIKE_LARGE,
 			Wings.FEATHERED_LARGE,
@@ -28,7 +28,7 @@ package classes.lists
 			Wings.HARPY,
 		];
 
-		public static const muzzles:Array = [
+		public static const MUZZLES:Array = [
 			Face.HORSE,
 			Face.DOG,
 			Face.CAT,
@@ -43,7 +43,7 @@ package classes.lists
 			Face.RED_PANDA,
 		];
 
-		public static const longTails:Array = [
+		public static const LONG_TAILS:Array = [
 			Tail.DOG,
 			Tail.DEMONIC,
 			Tail.COW,

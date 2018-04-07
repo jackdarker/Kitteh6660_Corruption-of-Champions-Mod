@@ -87,7 +87,7 @@ private function checkBakeryMenu():void {
 		addButton(6, "Trail Mix", buyTrailMix).hint(consumables.TRAILMX.description);
 	}
 	//Hummus available once a week
-	if (model.time.days % 7 == 0) {
+	if (getGame().time.days % 7 == 0) {
 		outputText("Hummus - 100 gems (Weekly special only!).\n");
 		addButton(7, "Hummus", buyHummus).hint(consumables.HUMMUS_.description);
 	}

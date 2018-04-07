@@ -7,6 +7,7 @@ package classes.Items.Consumables
 	import classes.Items.ConsumableLib;
 	import classes.PerkLib;
 	import classes.StatusEffects;
+	import classes.lists.ColorLists;
 	
 	/**
 	 * Goblin transformative item.
@@ -164,13 +165,13 @@ package classes.Items.Consumables
 				changes++;
 			}
 			//skinTone
-			if (player.skin.tone !== "green" && player.skin.tone !== "grayish-blue" && player.skin.tone !== "dark green" && player.skin.tone !== "pale yellow" && changes < changeLimit && rand(2) === 0) {
+			if (ColorLists.GOBLIN_SKIN.indexOf(player.skin.tone) === -1 && changes < changeLimit && rand(2) === 0) {
 				if (rand(10) !== 0) player.skin.tone = "dark green";
 				else {
 					if (rand(2) === 0) player.skin.tone = "pale yellow";
 					else player.skin.tone = "grayish-blue";
 				}
-				mutations.updateClaws(player.claws.type);
+				player.arms.updateClaws(player.arms.claws.type);
 				changes++;
 				outputText("\n\nWhoah, that was weird.  You just hallucinated that your ");
 				if (player.hasFur()) outputText("skin");
@@ -197,9 +198,7 @@ package classes.Items.Consumables
 
 			//Nipples Turn Back:
 			if (player.hasStatusEffect(StatusEffects.BlackNipples) && changes < changeLimit && rand(3) === 0) {
-				outputText("\n\nSomething invisible brushes against your " + player.nippleDescript(0) + ", making you twitch.  Undoing your clothes, you take a look at your chest and find that your nipples have turned back to their natural flesh colour.");
-				changes++;
-				player.removeStatusEffect(StatusEffects.BlackNipples);
+				mutations.removeBlackNipples(tfSource);
 			}
 			//Debugcunt
 			if (changes < changeLimit && rand(3) === 0 && player.vaginaType() === 5 && player.hasVagina()) {

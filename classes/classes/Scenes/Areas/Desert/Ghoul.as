@@ -485,7 +485,8 @@ package classes.Scenes.Areas.Desert {
 			this.short = "";
 			this.imageName = "ghoul";
 			this.long = "";
-				
+			this.race = "";
+	
 			if (rand(2) == 0) {
 				this.createCock(rand(4) + 5, rand(2) + 1, CockTypesEnum.DISPLACER);
 				this.balls = 2;
@@ -509,7 +510,7 @@ package classes.Scenes.Areas.Desert {
 			this.arms.type = rand(5) + 1;
 
 			this.skin.tone = skinColour[0];
-			this.theSkinType = rand(5);
+			this.skin.setType(rand(5));
 			this.hair.length = rand(25);
 			if (this.hair.length > 0) {
 				this.hair.color = hairColours[0];
@@ -550,7 +551,7 @@ package classes.Scenes.Areas.Desert {
 			} else {
 				this.horns.type = Horns.NONE;
 			}
-			this.theWingType = rand(13);
+			this.wings.type = rand(13);
 			this.antennae.type = rand(2);
 			if (this.antennae.type == 2) {
 				this.antennae.type = Antennae.BEE;
@@ -578,6 +579,13 @@ package classes.Scenes.Areas.Desert {
 				return revealedDesc
 			} else {
 				return "The hyena appears to be a regular spotted hyena, with pale brown fur covered in dark brown spots. Its forequarters are strong and muscular while its hindquarters are notably underdeveloped in comparison. It has a flat snout ending in a black nose, and curved, erect ears tipped in black. Its eyes watch you closely in case you try any sudden movements. There seem to be no other hyenas in sight, and you can't stop thinking about how odd it is that there's even a hyena in a desert.";
+			}
+		}
+		override public function get race():String {
+			if (game.combat.ghoulReveal) {
+				return "Ghoul";
+			} else {
+				return "Hyena?";
 			}
 		}
 	}

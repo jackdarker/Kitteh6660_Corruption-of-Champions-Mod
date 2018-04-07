@@ -451,17 +451,17 @@ private function isabellasAccentCoaching():void {
 		accentChange = 12 + rand(10);
 	}
 	if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 100 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 100) 
-		outputText("<b>\n\nIsabella proudly says, \"<i>I think I've learned everything you have to teach, " + player.short + ".</i>\"  You smile at the progress she's made and applaud.  There's little else you can teach for her.</b>");
+		outputText("\n\n<b>Isabella proudly says, \"<i>I think I've learned everything you have to teach, " + player.short + ".</i>\"  You smile at the progress she's made and applaud.  There's little else you can teach for her.</b>");
 	else if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 90 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 90)
-		outputText("<b>  Isabella can often speak without her accent when she tries to, though she doesn't seem to be doing so in everyday conversation yet.  She's so close though!</b>");
+		outputText("\n\n<b>Isabella can often speak without her accent when she tries to, though she doesn't seem to be doing so in everyday conversation yet.  She's so close though!</b>");
 	else if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 75 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 75) 
-		outputText("<b>  Isabella will sometimes manage to say a sentence or two without a single mistake during the lessons.  It's good progress!</b>");
+		outputText("\n\n<b>Isabella will sometimes manage to say a sentence or two without a single mistake during the lessons.  It's good progress!</b>");
 	else if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 50 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 50) 
-		outputText("<b>  Isabella has gained enough control over her language to speak properly... if she talks about half as fast as normal.</b>");
+		outputText("\n\n<b>Isabella has gained enough control over her language to speak properly... if she talks about half as fast as normal.</b>");
 	else if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 25 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 25)
-		outputText("<b>  Isabella is getting better during your lessons.  Generally she can pick out most of her mistakes if she pauses to think over what she just said.</b>");	
+		outputText("\n\n<b>Isabella is getting better during your lessons.  Generally she can pick out most of her mistakes if she pauses to think over what she just said.</b>");	
 	else if (flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] < 10 && flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] + accentChange >= 10) 
-		outputText("<b>  Isabella has made enough progress that if she thinks about it, she will sometimes catch her mistakes on her own.</b>");
+		outputText("\n\n<b>Isabella has made enough progress that if she thinks about it, she will sometimes catch her mistakes on her own.</b>");
 		
 	//Bump up accent level appropriately.
 	flags[kFLAGS.ISABELLA_ACCENT_TRAINING_PERCENT] += accentChange;
@@ -1020,10 +1020,10 @@ private function getMilk():void {
 }
 //TDM's Angry Murble
 public function angryMurble():void {
+	spriteSelect(SpriteDb.s_isabella);
 	clearOutput();
-	outputText("You come to Isabella's part of the camp with Marble in tow, supposing now is as good a time as ever to introduce the two.  Marble greats Isabella warmly but immediately starts bombarding her with questions about her origin.  From her persistence, it seems she is interested in meeting another cow-girl.  Though a little overwhelmed, Isabella recovers quickly, explaining her origins and the impurity of her cow-girl nature.  Marble is visibly disappointed.\n\n");
-	
-	outputText("\"<i>The topic of conversation gradually shifts to the reason why Marble has come to the camp.  Marble seems to be happy to meet your friend, and is eager to spend some more time with her in the future.  Isabella, on the other hand, seems a little off-put regarding Marble's actions.  Only time will tell how the two take to each other.");
+	outputText("You come to Isabella's part of the camp with Marble in tow, supposing now is as good a time as ever to introduce the two.  Marble greats Isabella warmly but immediately starts bombarding her with questions about her origin.  From her persistence, it seems she is interested in meeting another cow-girl.  Though a little overwhelmed, Isabella recovers quickly, explaining her origins and the impurity of her cow-girl nature.  Marble is visibly disappointed.");
+	outputText("\n\nThe topic of conversation gradually shifts to the reason why Marble has come to the camp.  Marble seems to be happy to meet your friend, and is eager to spend some more time with her in the future.  Isabella, on the other hand, seems a little off-put regarding Marble's actions.  Only time will tell how the two take to each other.");
 	flags[kFLAGS.ISABELLA_MURBLE_BLEH] = 2;
 	doNext(playerMenu);
 }
@@ -1218,7 +1218,7 @@ private function getIzzyBurped():void {
 			changed = true;
 		}
 		//[if female/herm and player race not cow-girl]
-		if (changed && player.hasVagina() && player.race() != "cow-girl") {
+		if (changed && player.hasVagina() && player.race != "cow-girl") {
 			outputText("  \"<i>Goodness, look at you!</i>\" Isabella exclaims, waving away the remnant wisps of the gassy mist.  \"<i>Surely, you're giving me a run for ");
 			if (isabellaAccent()) outputText("mein money now, ja?");
 			else outputText("my money now, darling!");
@@ -1236,7 +1236,7 @@ private function getIzzyBurped():void {
 			outputText("</i>\"\n\n");
 		}
 		//[if male and player race not cowboy]
-		else if (changed && player.hasCock() && player.race() != "cow-morph") {
+		else if (changed && player.hasCock() && player.race != "cow-morph") {
 			outputText("  \"<i>");
 			if (isabellaAccent()) outputText("Nein nein nein nein, zis von't do at all!");
 			else outputText("No, no! This is awful!");
@@ -1627,7 +1627,7 @@ private function isabellaTalkMenu():void {
 		outputText("\n\n<b><u>DEBUG:</u></b>");
 		if (isabellaScene.isabellaOffspringData.length > 0) {
 			for (var i:int = 0; i < isabellaScene.isabellaOffspringData.length; i += 2) {
-				outputText("\nType: " + isabellaScene.isabellaOffspringData[i] + "; Age: " + (model.time.days - isabellaScene.isabellaOffspringData[i+1]) + " day" + (model.time.days - isabellaScene.isabellaOffspringData[i+1] == 1 ? "" : "s"));
+				outputText("\nType: " + isabellaScene.isabellaOffspringData[i] + "; Age: " + (getGame().time.days - isabellaScene.isabellaOffspringData[i+1]) + " day" + (getGame().time.days - isabellaScene.isabellaOffspringData[i+1] == 1 ? "" : "s"));
 			}
 		}
 	}
@@ -1763,7 +1763,7 @@ public function isabellaGivesBirth():void {
 	//Increment children count
 	var offspringType:int = babyGender;
 	if (flags[kFLAGS.ISABELLA_COWMOTHER] >= 1 && babyGender >= 2) offspringType += 2;
-	isabellaScene.isabellaOffspringData.push(offspringType, model.time.days);
+	isabellaScene.isabellaOffspringData.push(offspringType, getGame().time.days);
 	flags[kFLAGS.ISABELLA_PREGNANCY_BOOSTED] = 0;
 	isabellaScene.pregnancy.knockUpForce(); //CLEAR!
 }

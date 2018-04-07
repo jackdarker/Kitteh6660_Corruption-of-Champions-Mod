@@ -1,8 +1,5 @@
-/**
- * Created by aimozg on 06.01.14.
- */
-package classes.Scenes.Areas
-{
+/* Created by aimozg on 06.01.14 */
+package classes.Scenes.Areas {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
@@ -11,27 +8,26 @@ package classes.Scenes.Areas
 	import classes.Scenes.API.FnHelpers;
 	import classes.Scenes.API.IExplorable;
 	import classes.Scenes.Areas.Lake.*;
+	import classes.Scenes.PregnancyProgression;
+	import classes.internals.GuiOutput;
 
 	use namespace kGAMECLASS;
 
-	public class Lake extends BaseContent implements IExplorable
-	{
-		
+	public class Lake extends BaseContent implements IExplorable {
+
 		public var fetishCultistScene:FetishCultistScene = new FetishCultistScene();
 		public var fetishZealotScene:FetishZealotScene = new FetishZealotScene();
-		public var gooGirlScene:GooGirlScene = new GooGirlScene();
+		public var gooGirlScene:GooGirlScene;
 		public var greenSlimeScene:GreenSlimeScene = new GreenSlimeScene();
 		public var kaiju:Kaiju = new Kaiju();
 		public var calluScene:CalluScene = new CalluScene();
 		public var swordInStone:SwordInStone = new SwordInStone();
 		public var fenrisScene:FenrisSceneLake = new FenrisSceneLake()
-		public function Lake()
-		{
-		}
-		public function isDiscovered():Boolean {
-			return flags[kFLAGS.TIMES_EXPLORED_LAKE] > 0;
+		public function Lake(pregnancyProgression:PregnancyProgression, output:GuiOutput) {
+			this.gooGirlScene = new GooGirlScene(pregnancyProgression, output);
 		}
 
+		public function isDiscovered():Boolean { return flags[kFLAGS.TIMES_EXPLORED_LAKE] > 0; }
 		public function discover():void {
 			flags[kFLAGS.TIMES_EXPLORED_LAKE] = 1;
 			outputText(images.showImage("area-lake"));
@@ -41,11 +37,9 @@ package classes.Scenes.Areas
 
 		private var _exploreEncounter:Encounter = null;
 		public function get exploreEncounter():Encounter {
-			const game:CoC     = getGame();
+			const game:CoC = getGame();
 			const fn:FnHelpers = Encounters.fn;
-			//==============================
-			//EVENTS GO HERE!
-			//==============================
+			//=================EVENTS GO HERE!=================
 			if (_exploreEncounter == null) _exploreEncounter = Encounters.group(
 					game.commonEncounters,
 					fetishCultistScene,
@@ -56,12 +50,12 @@ package classes.Scenes.Areas
 						call: game.commonEncounters.goblinEncounter,
 						when: fn.ifNGplusMin(1)
 					}, {
-						name  : "egg",
-						call  : eggChooserMenu,
-						when  : fn.ifPregnantWith(PregnancyStore.PREGNANCY_OVIELIXIR_EGGS),
+						name: "egg",
+						call: eggChooserMenu,
+						when: fn.ifPregnantWith(PregnancyStore.PREGNANCY_OVIELIXIR_EGGS),
 						chance: 2.5
 					}, {
-						call  : calluScene,
+						call: calluScene,
 						chance: 0.2
 					}, game.latexGirl.lakeDiscovery,
 					game.izmaScene,
@@ -79,8 +73,8 @@ package classes.Scenes.Areas
 						name  : "bigjunk",
 						call  : curry(game.commonEncounters.bigJunkForestScene, true),
 						chance: game.commonEncounters.bigJunkChance
-					},fenrisScene, 
-					 Encounters.group("loot", {
+					}, fenrisScene, 
+					Encounters.group("loot", {
 						name: "equinum",
 						call: findEquinum
 					}, {
@@ -96,7 +90,6 @@ package classes.Scenes.Areas
 					});
 			return _exploreEncounter;
 		}
-
 		//Explore Lake
 		public function explore():void {
 			//Increment exploration count
@@ -105,8 +98,8 @@ package classes.Scenes.Areas
 		}
 
 		public function farmEncounterAvailable():Boolean {
-			return !player.hasStatusEffect(StatusEffects.MetWhitney)
-				   || player.statusEffectv1(StatusEffects.MetWhitney) <= 1;
+			return !player.hasStatusEffect(StatusEffects.MetWhitney) ||
+					player.statusEffectv1 (StatusEffects.MetWhitney) <= 1;
 		}
 
 		public function lakeWalk():void {
@@ -118,26 +111,27 @@ package classes.Scenes.Areas
 					outputText("  You bet you could cover the same distance even faster next time.\n");
 					dynStats("spe", .75);
 				}
-			} else {
+			}
+			else {
 				clearOutput();
 				outputText(images.showImage("area-lake"));
 				outputText("Your stroll around the lake increasingly bores you, leaving your mind to wander.  ");
 				if (player.cor >= 60 || player.lust100 >= 90 || player.lib >= 75) {
 					outputText("Your imaginings increasingly seem to turn into daydreams of raunchy perverted sex, flooding your groin with warmth.");
 					dynStats("lus", (player.cor / 10 + player.lib / 10));
-				} else if (player.cor > 30 || player.lust100 > 60 || player.lib > 40) {
+				}
+				else if (player.cor > 30 || player.lust100 > 60 || player.lib > 40) {
 					outputText("Your imaginings increasingly seem to turn to thoughts of sex.");
 					dynStats("lus", (5 + player.lib / 10));
-				} else {
-					dynStats("int", 1);
 				}
+				else dynStats("int", 1);
 			}
 			doNext(camp.returnToCampUseOneHour);
 		}
 
 		public function eggChooserMenu():void {
 			clearOutput();
-			outputText(images.showImage("lake-lights"));
+			outputText(images.showImage("event-lake-lights"));
 			outputText("While wandering along the lakeshore, you spy beautiful colored lights swirling under the surface.  You lean over cautiously, and leap back as they flash free of the lake's liquid without making a splash.  The colored lights spin in a circle, surrounding you.  You wonder how you are to fight light, but they stop moving and hover in place around you.  There are numerous colors: Blue, Pink, White, Black, Purple, and Brown.  They appear to be waiting for something; perhaps you could touch one of them?");
 			menu();
 			addButton(0, "Blue", eggChoose, 2);
@@ -146,7 +140,7 @@ package classes.Scenes.Areas
 			addButton(3, "Black", eggChoose, 5);
 			addButton(4, "Purple", eggChoose, 1);
 			addButton(5, "Brown", eggChoose, 0);
-			addButton(14, "Escape", eggChooseEscape);
+			addButton(14,"Escape", eggChooseEscape);
 		}
 
 		public function findWFruit():void {
@@ -155,16 +149,16 @@ package classes.Scenes.Areas
 			outputText("You find an odd, fruit-bearing tree growing near the lake shore.  One of the fruits has fallen on the ground in front of you.  You pick it up.\n");
 			inventory.takeItem(consumables.W_FRUIT, camp.returnToCampUseOneHour);
 		}
-
 		public function findEquinum():void {
 			clearOutput();
 			outputText(images.showImage("item-equinum"));
 			outputText("You find a long and oddly flared vial half-buried in the sand.  Written across the middle band of the vial is a single word: 'Equinum'.\n");
 			inventory.takeItem(consumables.EQUINUM, camp.returnToCampUseOneHour);
 		}
-		
+
 		private function eggChoose(eggType:int):void {
 			clearOutput();
+			outputText(images.showImage("event-lake-lights-adoption"));
 			outputText("You reach out and touch the ");
 			switch (eggType) {
 				case  0: outputText("brown"); break;
@@ -178,13 +172,12 @@ package classes.Scenes.Areas
 			player.statusEffectByType(StatusEffects.Eggs).value1 = eggType; //Value 1 is the egg type. If pregnant with OviElixir then StatusEffects.Eggs must exist
 			doNext(camp.returnToCampUseOneHour);
 		}
-		
+
 		private function eggChooseEscape():void {
 			clearOutput();
+			outputText(images.showImage("area-lake"));
 			outputText("You throw yourself into a roll and take off, leaving the ring of lights hovering in the distance behind you.");
 			doNext(camp.returnToCampUseOneHour);
 		}
-		
-
 	}
 }

@@ -121,7 +121,7 @@ package classes.Scenes.Places.Bazaar
 		private function addFoodToGo(item:ItemType, price:int):void {
 			var button:int = 0;
 			for (var i:int = 0; i < 14; i++) {
-				if (buttonIsVisible(i)) button++;
+				if (output.buttonIsVisible(i)) button++;
 			}
 			outputText("\n" + capitalizeFirstLetter(item.longName) + " - " + price + " gems");
 			addButton(button, item.shortName, orderFoodToGo, item, price);
@@ -142,7 +142,7 @@ package classes.Scenes.Places.Bazaar
 		private function addFoodPlate(foodName:String, gems:int, tooltip:String, foodEatDesc:String):void {
 			var button:int = 0;
 			for (var i:int = 0; i < 14; i++) {
-				if (buttonIsVisible(i)) button++;
+				if (output.buttonIsVisible(i)) button++;
 			}
 			var header:String = "";
 			switch(foodName) {
@@ -1288,7 +1288,7 @@ package classes.Scenes.Places.Bazaar
 			var patronCount:int = 0;
 			clearOutput();
 			menu();
-			if (model.time.hours >= 19) {
+			if (getGame().time.hours >= 19) {
 				outputText("There is a large group of loud satyrs taking up a table, throwing back mugs of beer and belching loudly, obviously too absorbed in their drinking to pay attention to anyone else.\n\n");
 				addButton(0, "Satyrs", satyrGangIntro);
 				patronCount++;
@@ -1644,7 +1644,7 @@ package classes.Scenes.Places.Bazaar
 				player.skin.type = Skin.PLAIN;
 				player.skin.desc = "skin";
 				player.underBody.restore();
-				mutations.updateClaws(player.claws.type);
+				player.arms.updateClaws(player.arms.claws.type);
 				changes++;
 			}
 			//Arms change to regular
@@ -1658,8 +1658,7 @@ package classes.Scenes.Places.Bazaar
 						break;
 					default:
 				}
-				player.arms.type = Arms.HUMAN;
-				mutations.updateClaws();
+				player.arms.restore();
 				changes++;
 			}
 			//Change legs to normal
@@ -1688,6 +1687,8 @@ package classes.Scenes.Places.Bazaar
 					case Hair.ANEMONE:
 						outputText("\n\nYou feel something strange going in on your head. You reach your hands up to feel your tentacle-hair, only to find out that the tentacles have vanished and replaced with normal hair. <b>Your hair is normal again!</b>");
 						break;
+					default:
+						//This shouldn't happen, moving along...
 				}
 				changes++;
 				player.hair.type = Hair.NORMAL;

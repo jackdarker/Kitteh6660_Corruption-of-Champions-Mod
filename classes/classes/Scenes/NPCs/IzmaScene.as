@@ -3,6 +3,8 @@
 	import classes.GlobalFlags.kFLAGS;
 	import classes.GlobalFlags.kGAMECLASS;
 	import classes.Scenes.API.Encounter;
+	import classes.Scenes.NPCs.pregnancies.PlayerIzmaPregnancy;
+	import classes.Scenes.PregnancyProgression;
 	import classes.display.SpriteDb;
 	import classes.internals.*;
 
@@ -23,12 +25,14 @@ public class IzmaScene extends NPCAwareContent implements TimeAwareInterface, En
 		public var pregnancy:PregnancyStore;
 		public var izmaelScene:IzmaelScene = new IzmaelScene();
 		
-		public function IzmaScene()
+		public function IzmaScene(pregnancyProgression:PregnancyProgression, output:GuiOutput)
 		{
 			pregnancy = new PregnancyStore(kFLAGS.IZMA_PREGNANCY_TYPE, kFLAGS.IZMA_INCUBATION, 0, 0);
 			pregnancy.addPregnancyEventSet(PregnancyStore.PREGNANCY_PLAYER, 250, 200, 150, 100, 50);
 												//Event: 0 (= not pregnant),  1,   2,   3,   4,  5,  6 (< 50)
 			CoC.timeAwareClassAdd(this);
+			
+			new PlayerIzmaPregnancy(pregnancyProgression, output);
 		}
 		
 		private var checkedIzmaLatexy:int; //Make sure we test each of these events just once in timeChangeLarge
@@ -40,7 +44,7 @@ public class IzmaScene extends NPCAwareContent implements TimeAwareInterface, En
 			checkedIzmaLatexy = 0;
 			checkedIzmaSophie = 0;
 			pregnancy.pregnancyAdvance();
-			//trace("\nIzma time change: Time is " + model.time.hours + ", incubation: " + pregnancy.incubation + ", event: " + pregnancy.event);
+			//trace("\nIzma time change: Time is " + getGame().time.hours + ", incubation: " + pregnancy.incubation + ", event: " + pregnancy.event);
 			if (flags[kFLAGS.IZMA_TIME_TILL_NEW_BOOK_AVAILABLE] > 0) flags[kFLAGS.IZMA_TIME_TILL_NEW_BOOK_AVAILABLE]--; //BOOKURYUUUU COUNTAH For IZMA
 			if (izmaFollower() && flags[kFLAGS.IZMA_NO_COCK] == 0 && flags[kFLAGS.TIMES_IZMA_DOMMED_LATEXY] > 0 && latexGirl.latexGooFollower() && flags[kFLAGS.IZMA_X_LATEXY_DISABLED] == 0) {
 				flags[kFLAGS.GOO_FLUID_AMOUNT] = 100;
@@ -48,7 +52,7 @@ public class IzmaScene extends NPCAwareContent implements TimeAwareInterface, En
 			if (izmaFollower() && flags[kFLAGS.IZMA_NO_COCK] == 0 && flags[kFLAGS.IZMA_FEEDING_VALERIA] == 1 && flags[kFLAGS.VALARIA_AT_CAMP] > 0) {
 				flags[kFLAGS.VALERIA_FLUIDS] = 100;
 			}
-			if (model.time.hours > 23 && flags[kFLAGS.IZMA_TIGERSHARK_TOOTH_COUNTDOWN] > 0) flags[kFLAGS.IZMA_TIGERSHARK_TOOTH_COUNTDOWN] = 0;
+			if (getGame().time.hours > 23 && flags[kFLAGS.IZMA_TIGERSHARK_TOOTH_COUNTDOWN] > 0) flags[kFLAGS.IZMA_TIGERSHARK_TOOTH_COUNTDOWN] = 0;
 			return false;
 		}
 	
@@ -839,7 +843,7 @@ private function finalIzmaSubmission():void {
 
 	outputText("The two of you stay unmoving for a few moments.  She gets to her feet first, throwing a tigershark tooth at you.  \"<i>Here's your reward, slut... though, a bitch you should be happy enough with my seed alone.</i>\"  You get to your knees and follow her as she walks away to redress.  \"<i>You can go now, you know,</i>\" Izma says bluntly, making you gasp slightly in response.  You explain that you don't want to leave the beautiful tigershark, feeling so safe with such a mighty specimen watching over you.  You beg and plead with her to let you stay, saying that you'll do anything to remain by her side.  Izma blinks a few times in surprise before smiling softly and cupping the side of your face.  \"<i>Anything, hm? Well... I suppose I could be your alpha, if you like.</i>\"  You nod vigorously at the idea; no matter what that means, if it'll keep Izma with you, you're for it.  \"<i>You do make for a pretty good fuck after all,</i>\" she continues.");
 	//[(if PC isn't shark/tigershark)
-	if (player.race() != "shark-morph") outputText("  \"<i>But we'll have to make some changes to your body, of course...</i>\"");
+	if (player.race != "shark-morph") outputText("  \"<i>But we'll have to make some changes to your body, of course...</i>\"");
 	outputText("\n\n");
 	player.slimeFeed();
 	player.orgasm('VaginalAnal');
@@ -2713,7 +2717,7 @@ public function izmaKidsPlaytime():void {
 	choices[choices.length] = 5;
 	//Select correct scene!
 	var choice:Number = choices[rand(choices.length)];
-	if (model.time.hours < 10 && flags[kFLAGS.ANEMONE_KID] > 0 && rand(2) == 0) {
+	if (getGame().time.hours < 10 && flags[kFLAGS.ANEMONE_KID] > 0 && rand(2) == 0) {
 		anemoneScene.kidAWatchesSharks();
 		return;
 	}

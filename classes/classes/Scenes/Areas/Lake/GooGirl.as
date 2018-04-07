@@ -153,6 +153,7 @@ package classes.Scenes.Areas.Lake
 			this.short = "goo-girl";
 			this.imageName = "googirl";
 			this.long = "The goo-girl has a curious expression on her youthful, shimmering face. Her body is slender and globs of slime regularly drip from her limbs, splattering into the goo puddle pooling beneath her hips. A small, heart-shaped nucleus pulses in her chest with a red glow." + (playerHasBigBoobs ? ("  She has apparently made herself a bit more like you, as her chest appears to be a perfect copy of your " + player.chestDesc() + ".") : "");
+			this.race = "Goo-Girl";
 			// this.long = false;
 			this.createVagina(false, VaginaClass.WETNESS_SLAVERING, VaginaClass.LOOSENESS_NORMAL);
 			this.createStatusEffect(StatusEffects.BonusVCapacity, 9001, 0, 0, 0);
@@ -166,8 +167,7 @@ package classes.Scenes.Areas.Lake
 			this.lowerBody.type = LowerBody.GOO;
 			var tone:String = randomChoice("blue", "purple", "crystal");
 			this.skin.tone = tone;
-			this.theSkinType = Skin.GOO;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.GOO];
+			this.skin.setType(Skin.GOO);
 			this.skin.adj = "goopey";
 			this.hair.color = tone;
 			this.hair.length = 12 + rand(10);

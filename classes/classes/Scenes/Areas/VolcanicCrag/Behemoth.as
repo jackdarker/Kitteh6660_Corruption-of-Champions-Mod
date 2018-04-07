@@ -52,6 +52,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			this.short = "Behemoth";
 			this.imageName = "behemoth";
 			this.long = "Before you stands a hulking behemoth, about nine feet tall, with a feline face and long forward-pointing horns that leave him looking even larger. The hair on his head is black, though it quickly transitions into a blond mane that follows along his back and to his tail, and the rest of his muscular body is covered with purple fur. Dark spines protrude from his back, and though he carries no weaponry and wears only an elegant red loincloth, his fierce claws leave him plenty intimidating.";
+			this.race = "Behemoth";
 			// this.plural = false;
 			this.createCock(18, 2.5, CockTypesEnum.HUMAN);
 			this.balls = 2;
@@ -64,7 +65,7 @@ package classes.Scenes.Areas.VolcanicCrag
 			this.hips.rating = Hips.RATING_BOYISH;
 			this.butt.rating = Butt.RATING_TIGHT;
 			this.skin.tone = "purple";
-			this.theSkinType = Skin.FUR;
+			this.skin.setType(Skin.FUR);
 			this.hair.color = "black";
 			this.hair.length = 8;
 			this.ears.type = Ears.ELFIN;

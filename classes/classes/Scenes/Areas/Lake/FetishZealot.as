@@ -1,8 +1,8 @@
 package classes.Scenes.Areas.Lake
 {
 	import classes.*;
-	import classes.BodyParts.Butt;
-	import classes.BodyParts.Hips;
+	import classes.BodyParts.*;
+	import classes.GlobalFlags.*;
 	import classes.internals.*;
 
 	public class FetishZealot extends Monster
@@ -59,8 +59,9 @@ package classes.Scenes.Areas.Lake
 						this.armorName = STUDENTS_CLOTHES;
 						changed = true;
 					}
-
 					break;
+				default:
+					//Move along.
 			}
 			//Talk abouts it mang!
 			if (changed) outputText("The fetish zealot's clothing shifts and twists, until he is wearing " + armorName + ".\n\n");
@@ -149,6 +150,7 @@ package classes.Scenes.Areas.Lake
 			this.short = "fetish zealot";
 			this.imageName = "fetishzealot";
 			this.long = "The zealot is clad in a bizarre set of religious robes.  They are similar to what you've seen on other religious leaders from home, but none that included the large slit at the front that lets his above average sized human dick stick out the front.";
+			this.race = "Human?";
 			// this.plural = false;
 			this.createCock(7,1.5);
 			createBreastRow(0);
@@ -175,7 +177,7 @@ package classes.Scenes.Areas.Lake
 			this.gems = 5+rand(10);
 			this.drop = new WeightedDrop().add(armors.C_CLOTH,1)
 					.add(consumables.L_DRAFT,4)
-					.add(weapons.L_DAGGR,1)
+					.add(weapons.L_DAGR0,1)
 					.add(null,4);
 			this.special1 = zealotSpecial1;
 			this.special2 = zealotSpecial2;

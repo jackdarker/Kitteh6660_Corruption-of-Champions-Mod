@@ -1,10 +1,9 @@
 package classes.Scenes.Areas.Lake
 {
 	import classes.*;
-	import classes.BodyParts.Butt;
-	import classes.BodyParts.Hips;
-	import classes.internals.*;
+	import classes.BodyParts.*;
 	import classes.GlobalFlags.*;
+	import classes.internals.*;
 
 	public class FetishCultist extends Monster
 	{
@@ -61,6 +60,8 @@ package classes.Scenes.Areas.Lake
 						changed = true;
 					}
 					break;
+				default:
+					//Move along.
 			}
 			//Talk abouts it mang!
 			if (changed) outputText("The fetish cultist's clothing shifts and twists, taking on the appearance of a " + armorName + ".\n\n");
@@ -129,21 +130,21 @@ package classes.Scenes.Areas.Lake
 				return;
 			}
 			
-			game.menu();
+			kGAMECLASS.output.menu();
 			
-			game.addButtonDisabled(0, "Sex", "This scene requires you to have genitals and sufficient arousal.");
-			game.addButtonDisabled(1, "B. Feed", "This scene requires you to have enough milk.");
+			kGAMECLASS.output.addButtonDisabled(0, "Sex", "This scene requires you to have genitals and sufficient arousal.");
+			kGAMECLASS.output.addButtonDisabled(1, "B. Feed", "This scene requires you to have enough milk.");
 			
 			if (player.lust >= 33 && !player.isGenderless()) {
 				outputText("  You realize she'd make a perfect receptacle for your lusts.  Do you have your way with her?");
-				game.addButton(0, "Sex", game.lake.fetishCultistScene.playerRapesCultist);
+				kGAMECLASS.output.addButton(0, "Sex", game.lake.fetishCultistScene.playerRapesCultist);
 			}
 			
 			if (player.hasStatusEffect(StatusEffects.Feeder) || player.lactationQ() >= 500) {
-				game.addButton(1, "B. Feed", game.lake.fetishCultistScene.fetishCultistHasAMilkFetish);
+				kGAMECLASS.output.addButton(1, "B. Feed", game.lake.fetishCultistScene.fetishCultistHasAMilkFetish);
 			}
 		
-			game.addButton(14, "Leave", game.combat.cleanupAfterCombat);
+			kGAMECLASS.output.addButton(14, "Leave", game.combat.cleanupAfterCombat);
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -170,6 +171,7 @@ package classes.Scenes.Areas.Lake
 			this.short = "fetish cultist";
 			this.imageName = "fetishcultist";
 			this.long = "The woman across from you has her eyes closed, her hands joined, and seems to be chanting under her breath. She is wearing a religious outfit that closely hugs her curvacious shape, with a skirt so short that you can clearly see her pussy's lips.\n\nShe has clearly lost her grasp on sanity, and filled the void with pure perversion.";
+			this.race = "Human?";
 			// this.plural = false;
 			this.createVagina(false, VaginaClass.LOOSENESS_GAPING, VaginaClass.WETNESS_WET);
 			createBreastRow(Appearance.breastCupInverse("DD"));
@@ -191,7 +193,7 @@ package classes.Scenes.Areas.Lake
 			this.level = 2;
 			this.gems = 5+rand(10);
 			this.drop = new WeightedDrop().add(consumables.LABOVA_,1)
-					.add(weapons.RIDINGC,1)
+					.add(weapons.RIDING0,1)
 					.add(consumables.OVIELIX,2)
 					.add(consumables.L_DRAFT,6);
 			this.special1 = cultistRaisePlayerLust;

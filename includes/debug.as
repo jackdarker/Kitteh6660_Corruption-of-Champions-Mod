@@ -33,10 +33,10 @@ public function debugPane():void {
 
 	outputText(images.showImage("monster-ceraph"));
 
-	menu();
-	addButton(0, "Test Input", eventTester);
-	addButton(1, "Parser Tests", doThatTestingThang);
-	addButton(4, "Back", mainMenu.mainMenu);
+	output.menu();
+	output.addButton(0, "Test Input", eventTester);
+	output.addButton(1, "Parser Tests", doThatTestingThang);
+	output.addButton(4, "Back", gameSettings.exitSettings);
 }
 
 public function doThatTestingThang():void
@@ -101,6 +101,8 @@ public function doThatTestingThang():void
 * \[cockhead\] - [cockhead]
 * \[vagorass\] - [vagorass]
 * \[hairorfur\] - [hairorfur]
+* \[hand\] - [hand]
+* \[hands\] - [hands]
 * \[pg\] - [pg] (This is a shortcut to two newlines. This should be two lines below the \[pg\])
 
 
@@ -301,8 +303,8 @@ convert "
 	]]>);
 
 
-	menu();
-	addButton(4, "Back", debugPane)
+	output.menu();
+	output.addButton(4, "Back", debugPane)
 
 }
 
@@ -324,9 +326,9 @@ public function eventTester():void {
 ]]>;
 
 	;
-	menu();
-	addButton(0, "Proceed", eventTesterGo);
-	addButton(4, "Back", eventTesterExit);
+	output.menu();
+	output.addButton(0, "Proceed", eventTesterGo);
+	output.addButton(4, "Back", eventTesterExit);
 }
 
 public function eventTesterGo():void {
@@ -336,11 +338,11 @@ public function eventTesterGo():void {
 
 	trace("Temp = ", temp);
 
-	menu();
+	output.menu();
 	clearOutput();
 	outputText(temp);
 
-	addButton(14, "Back", eventTester);
+	output.addButton(14, "Back", eventTester);
 	output.flush();
 }
 

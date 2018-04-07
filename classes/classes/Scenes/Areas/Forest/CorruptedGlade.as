@@ -1,10 +1,12 @@
 package classes.Scenes.Areas.Forest {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.GlobalFlags.kGAMECLASS;
 	import classes.Scenes.API.Encounter;
 	import classes.display.SpriteDb;
 	import classes.internals.*;
-
+	import classes.Scenes.Areas.Forest.DryadScene;
+    
 public class CorruptedGlade extends BaseContent implements TimeAwareInterface,Encounter {
 
 
@@ -18,11 +20,18 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface,En
 	}
 
 	public function execEncounter():void {
-			if (rand(4) == 0) {
-				trappedSatyr();
-			} else {
-				intro();
+
+			switch (rand(4)){
+				case 0: //satyr
+					trappedSatyr();
+					break;
+				case 1: //dryad
+					(new DryadScene()).encounterdryad();
+					break;
+				default:// continue
+					intro();
 			}
+			
 		}
 		
 		public function CorruptedGlade() {
@@ -33,7 +42,7 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface,En
 			if (flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] > 1 && flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] < 100) { //Extinct if you destroyed 100 Corrupted Glades.
 				if (flags[kFLAGS.AMILY_DESTROYING_CORRUPTED_GLADES] > 0 && rand(6) == 0) flags[kFLAGS.CORRUPTED_GLADES_DESTROYED]++;
 				if (flags[kFLAGS.KIHA_DESTROYING_CORRUPTED_GLADES] > 0 && rand(4) == 0) flags[kFLAGS.CORRUPTED_GLADES_DESTROYED]++;
-				if (model.time.days % (3 + Math.floor(flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] / 15)) == 0 && model.time.hours > 23) flags[kFLAGS.CORRUPTED_GLADES_DESTROYED]--; //Decrement by 1 every 3 days.
+				if (getGame().time.days % (3 + Math.floor(flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] / 15)) == 0 && getGame().time.hours > 23) flags[kFLAGS.CORRUPTED_GLADES_DESTROYED]--; //Decrement by 1 every 3 days.
 			}
 			if (flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] >= 100) { //Extinct state
 				if (flags[kFLAGS.AMILY_DESTROYING_CORRUPTED_GLADES] > 0) flags[kFLAGS.AMILY_DESTROYING_CORRUPTED_GLADES] = 0;
@@ -88,7 +97,8 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface,En
 				addButton(1, "Vines", tentacleFun).hint("These vines look like cocks at their tips. Play with the vines.");
 				addButton(2, "Trees", treeBoobFun).hint("The knots on the trees look a lot like breasts. Play with the trees and lick some sap.");
 				addButton(3, "Destroy Them", destroyTheCorruptedGladesChoice).hint("Attempt to destroy the perverted glade.");
-				addButton(4, "Leave", camp.returnToCampUseOneHour);
+				addButton(4, "Explore More", (new DryadScene()).encounterdryad).hint("Look around a bit more see if there is something you missed.");
+				addButton(5, "Leave", camp.returnToCampUseOneHour);
 			}
 			//Wallow in decadence reaction - UNFINISHED
 		}
@@ -324,7 +334,7 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface,En
 			if (player.hasStatusEffect(StatusEffects.KnowsWhitefire) || player.hasStatusEffect(StatusEffects.KnowsBlackfire)) {
 				addButton(button++, "Fire", destroyTheCorruptedGlades, 2);
 			}
-			if (player.hasKeyItem("Carpenter's Toolbox") >= 0 || player.weapon == weapons.L__AXE) {
+			if (player.hasKeyItem("Carpenter's Toolbox") >= 0 || player.weapon == weapons.L__AXE0) {
 				addButton(button++, "Axe", destroyTheCorruptedGlades, 3);
 			}
 			if (player.weaponVerb == "stab" || player.weaponVerb == "slash" || player.weaponVerb == "cleave" || player.weaponVerb == "keen cut") {

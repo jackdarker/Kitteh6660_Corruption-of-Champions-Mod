@@ -28,7 +28,7 @@ package classes.Scenes.Places
 				getGame().saves.saveGame(player.slotName);
 			}
 			//Banished to Mareth.
-			if (model.time.days >= 0 && flags[kFLAGS.INGNAM_PROLOGUE_COMPLETE] <= 0 && flags[kFLAGS.GRIMDARK_MODE] < 1) {
+			if (getGame().time.days >= 0 && flags[kFLAGS.INGNAM_PROLOGUE_COMPLETE] <= 0 && flags[kFLAGS.GRIMDARK_MODE] < 1) {
 				getBanishedToMareth();
 				return;
 			}
@@ -42,7 +42,7 @@ package classes.Scenes.Places
 				outputText("Ingnam is a rich and prosperous village despite its small size. There is already a well-established array of shops with a constant hum of tradesmen and merchants. The temple sits within view of the patrons sitting at tables at the tavern which serves as a hub for people near and far to drink and dance. On the road leading out of the plaza that sits before the temple is a trail that meanders its way to a large farm in the distance.");
 				outputText("\n\nLooming ominously in the distance is a mountain known by the locals as Mount Ilgast. Surrounding Ingnam is a vast expanse of wilderness.");
 			}
-			if (model.time.hours >= 21 || model.time.hours < 6) outputText("\n\nIt's dark outside. Stars dot the night sky and a moon casts the moonlight over the landscape, providing little light. Shops are closed at this time.");
+			if (getGame().time.hours >= 21 || getGame().time.hours < 6) outputText("\n\nIt's dark outside. Stars dot the night sky and a moon casts the moonlight over the landscape, providing little light. Shops are closed at this time.");
 			mainView.showMenuButton( MainView.MENU_NEW_MAIN );
 			mainView.showMenuButton( MainView.MENU_DATA );
 			mainView.showMenuButton( MainView.MENU_STATS );
@@ -70,24 +70,12 @@ package classes.Scenes.Places
 					removeButton(0);
 					removeButton(4);
 				}
-				addButton(8, "Masturbate", kGAMECLASS.masturbation.masturbateMenu);
-				if (
-						(
-								player.hasPerk(PerkLib.HistoryReligious) && player.isPureEnough(66)
-								||
-								player.findPerk(PerkLib.Enlightened) >= 0 && player.isPureEnough(10)
-						) && (
-								!player.hasStatusEffect(StatusEffects.Exgartuan)
-								||
-								player.statusEffectv2(StatusEffects.Exgartuan) != 0
-						)
-						|| flags[kFLAGS.SFW_MODE] >= 1
-				) addButton(8, "Meditate", kGAMECLASS.masturbation.masturbateMenu);
+				getGame().masturbation.setMasturbateButton();
 			}
 			//Show wait/rest/sleep depending on conditions.
 			addButton(9, "Wait", kGAMECLASS.camp.doWait);
 			if (player.fatigue > 40 || player.HP / player.maxHP() <= .9) addButton(9, "Rest", getGame().camp.rest);
-			if (model.time.hours >= 21 || model.time.hours < 6) {
+			if (getGame().time.hours >= 21 || getGame().time.hours < 6) {
 				removeButton(0);
 				removeButton(1);
 				removeButton(2);
@@ -110,21 +98,21 @@ package classes.Scenes.Places
 					hasWeapon = true;
 					player.setWeapon(WeaponLib.FISTS);
 				}
-				while (player.hasItem(weapons.DAGGER, 1)) {
+				while (player.hasItem(weapons.DAGGER0, 1)) {
 					hasWeapon = true;
-					player.destroyItems(weapons.DAGGER, 1);
+					player.destroyItems(weapons.DAGGER0, 1);
 				}
 				while (player.hasItem(weapons.PIPE, 1)) {
 					hasWeapon = true;
 					player.destroyItems(weapons.PIPE, 1);
 				}
-				while (player.hasItem(weapons.SPEAR, 1)) {
+				while (player.hasItem(weapons.SPEAR_0, 1)) {
 					hasWeapon = true;
-					player.destroyItems(weapons.SPEAR, 1);
+					player.destroyItems(weapons.SPEAR_0, 1);
 				}
-				while (player.hasItem(weapons.KATANA, 1)) {
+				while (player.hasItem(weapons.KATANA0, 1)) {
 					hasWeapon = true;
-					player.destroyItems(weapons.KATANA, 1);
+					player.destroyItems(weapons.KATANA0, 1);
 				}
 				if (hasWeapon) outputText("\n\n<b>Unfortunately, you were instructed to leave your weapon behind.</b>");
 			}
@@ -194,18 +182,18 @@ package classes.Scenes.Places
 			outputText("\n\n<b><u>Blacksmith's pricings</u></b>");
 			menu();
 			if (player.findPerk(PerkLib.HistoryFighter) >= 0) { //20% discount for History: Fighter
-				addShopItem(weapons.DAGGER, 32, 1);
+				addShopItem(weapons.DAGGER0, 32, 1);
 				addShopItem(weapons.PIPE, 40, 1);
-				addShopItem(weapons.SPEAR, 140, 1);
-				addShopItem(weapons.KATANA, 200, 1);
-				addShopItem(weapons.MACE, 80, 1);
+				addShopItem(weapons.SPEAR_0, 140, 1);
+				addShopItem(weapons.KATANA0, 200, 1);
+				addShopItem(weapons.MACE__0, 80, 1);
 			}
 			else {
-				addShopItem(weapons.DAGGER, 40, 1);
+				addShopItem(weapons.DAGGER0, 40, 1);
 				addShopItem(weapons.PIPE, 50, 1);
-				addShopItem(weapons.SPEAR, 175, 1);
-				addShopItem(weapons.KATANA, 250, 1);
-				addShopItem(weapons.MACE, 100, 1);
+				addShopItem(weapons.SPEAR_0, 175, 1);
+				addShopItem(weapons.KATANA0, 250, 1);
+				addShopItem(weapons.MACE__0, 100, 1);
 			}
 			if (player.findPerk(PerkLib.HistorySmith) >= 0) { //20% discount for History: Smith perk
 				addShopItem(armors.LEATHRA, 40, 2);
@@ -357,7 +345,7 @@ package classes.Scenes.Places
 			outputText("\n" + capitalizeFirstLetter(item.longName) + " - " + price + " gems");
 			var button:int = 0;
 			for (var i:int = 0; i < 14; i++) {
-				if (buttonIsVisible(i)) button++;
+				if (output.buttonIsVisible(i)) button++;
 			}
 			addButton(button, item.shortName, transactionItemConfirmation, item, price, shop);
 		}
@@ -401,7 +389,7 @@ package classes.Scenes.Places
 			outputText("The innkeeper looks at you and says, \"<i>Welcome back! I've missed you! How did your adventures go?</i>\"");
 			outputText("\n\nYou tell the innkeeper about your adventures and how you've met various denizens in Mareth.\n\n");
 			if (flags[kFLAGS.TIMES_TRANSFORMED] <= 0) outputText("The innkeeper looks at you in awe and says, \"<i>Wow, you haven't changed at all! How did you manage to stay in that strange realm for years and still be normal?</i>\""); 
-			else if (player.race() == "human") {
+			else if (player.race == "human") {
 				outputText("The innkeeper looks at you and says, \"<i>I can see that you have changed a bit.</i>\" ");
 			}
 			else {
@@ -514,7 +502,7 @@ package classes.Scenes.Places
 			outputText("\"<i>I'd like a glass of milk please,</i>\" you say. You hand over the two gems to the innkeeper and he pours you a glass of milk.");
 			outputText("\n\nYou drink the cup of milk. You feel calm and refreshed. ");
 			player.changeFatigue(-15);
-			HPChange(player.maxHP() / 4, false);
+			player.HPChange(player.maxHP() / 4, false);
 			player.refillHunger(10);
 			cheatTime(1/12);
 			doNext(menuTavern);
@@ -530,7 +518,7 @@ package classes.Scenes.Places
 			outputText("\"<i>I'd like a glass of root beer please,</i>\" you say. You hand over the three gems to the innkeeper and he pours you a glass of root beer.");
 			outputText("\n\nYou drink the cup of root beer. Refreshing! ");
 			player.changeFatigue(-15);
-			HPChange(player.maxHP() / 4, false);
+			player.HPChange(player.maxHP() / 4, false);
 			player.refillHunger(10);
 			cheatTime(1/12);
 			doNext(menuTavern);
@@ -562,7 +550,7 @@ package classes.Scenes.Places
 			player.gems -= 5;
 			outputText("You tell the innkeeper that you would like a sandwich and toss five gems at him. \"<i>Certainly, " + player.mf("sir", "madam") + ",</i>\" he says as he quickly grabs a plate and assembles a sandwich. Hey, it's your favorite type!");
 			outputText("\n\nYou eat the sandwich. Delicious!");
-			HPChange(player.maxHP() / 3, false);
+			player.HPChange(player.maxHP() / 3, false);
 			player.refillHunger(25);
 			cheatTime(1/12);
 			doNext(menuTavern);
@@ -578,7 +566,7 @@ package classes.Scenes.Places
 			player.gems -= 3;
 			outputText("You tell the innkeeper that you would like a bowl of soup and toss three gems at him. \"<i>Certainly, " + player.mf("sir", "madam") + ",</i>\" he says as he grabs a bowl and fills it with steaming soup. Hey, it's your favorite type!");
 			outputText("\n\nYou take one spoonful at a time, blowing to make sure the soup isn't too hot. You eventually finish the soup. Delicious!");
-			HPChange(player.maxHP() / 3, false);
+			player.HPChange(player.maxHP() / 3, false);
 			player.refillHunger(20);
 			cheatTime(1/12);
 			doNext(menuTavern);

@@ -4,6 +4,8 @@ package classes.Items
 	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.internals.LoggerFactory;
+	import classes.internals.WeightedChoice;
+	import classes.lists.ColorLists;
 	import mx.logging.ILogger;
 	
 	/**
@@ -18,7 +20,38 @@ package classes.Items
 		public var changes:int = 0;
 		public var changeLimit:int = 1;
 
+		private var _lizardSkinToneChoices:WeightedChoice = null;
+		public function get lizardSkinToneChoices():WeightedChoice
+		{
+			if (_lizardSkinToneChoices === null) {
+				_lizardSkinToneChoices = new WeightedChoice()
+					// -> 10% * 1/2 =  5%
+					.add(["purple", "deep pink"],     5) 
+					.add(["silver", "light gray"],    5)
+					// -> 90% * 1/5 = 18%
+					.add(["red",    "orange"],       18)
+					.add(["green",  "yellow green"], 18)
+					.add(["white",  "light gray"],   18)
+					.add(["blue",   "ocean blue"],   18)
+					.add(["black",  "dark gray"],    18);
+			}
+
+			return _lizardSkinToneChoices;
+		}
+
 		public function MutationsHelper() {}
+
+		/**
+		 * Wrapper around rand(x) === 0 with a min and max value scaling with the changes value
+		 * @param   min  The minimum roll
+		 * @param   max  The maximum roll
+		 * @return  true, on success of the 'roll', false otherwise
+		 * @author  Stadler76
+		 */
+		public function tfChance(min:int, max:int):Boolean
+		{
+			return rand(Math.min(min + changes, max)) === 0;
+		}
 
 		public function restoreArms(tfSource:String):int
 		{
@@ -28,7 +61,7 @@ package classes.Items
 
 			if (tfSource == "gooGasmic") {
 				// skin just turned gooey. Now lets fix unusual arms.
-				var hasClaws:Boolean = player.claws.type != Claws.NORMAL;
+				var hasClaws:Boolean = player.arms.claws.type != Claws.NORMAL;
 
 				message = "\n\n";
 				if (player.arms.type == Arms.HARPY) {
@@ -41,8 +74,7 @@ package classes.Items
 				if (hasClaws) message += " Well, who cares, gooey claws aren't very useful in combat to begin with.";
 				if (hasClaws || player.arms.type == Arms.HARPY) output.text(message + "  <b>You have normal human arms again.</b>");
 
-				updateClaws();
-				player.arms.type = Arms.HUMAN;
+				player.arms.restore();
 				return 1;
 			}
 
@@ -70,17 +102,17 @@ package classes.Items
 					case Arms.PREDATOR:
 						switch (player.skin.type) {
 							case Skin.GOO:
-								if (player.claws.type != Claws.NORMAL)
+								if (player.arms.claws.type != Claws.NORMAL)
 									message += "\n\nYour gooey claws melt into your fingers."
 									          +" Well, who cares, gooey claws aren't very useful in combat to begin with.";
 								break;
-
 							case Skin.PLAIN:
 							case Skin.FUR:
 							case Skin.LIZARD_SCALES:
 								message += "\n\nYou feel a sudden tingle in your [claws] and then you realize,"
 								          +" that they have become normal human fingernails again.";
 								break;
+							default: //Move along
 						}
 						break;
 
@@ -88,8 +120,7 @@ package classes.Items
 						message += "\n\nYour unusual arms change more and more until they are normal human arms, leaving [skinfurscales] behind.";
 				}
 				output.text(message + "  <b>You have normal human arms again.</b>");
-				updateClaws();
-				player.arms.type = Arms.HUMAN;
+				player.arms.restore();
 				changes++;
 				return 1;
 			}
@@ -323,74 +354,28 @@ package classes.Items
 			return true;
 		}
 
+		public function removeBlackNipples(tfSource:String):Boolean
+		{
+			LOGGER.debug("called removeBlackNipples(\"{0}\")", tfSource);
+
+			if (!player.hasStatusEffect(StatusEffects.BlackNipples))
+				return false;
+
+			outputText("\n\nSomething invisible brushes against your [nipple], making you twitch.  Undoing your clothes, you take a look at your"
+			          +" chest and find that your nipples have turned back to their natural flesh colour.");
+			player.removeStatusEffect(StatusEffects.BlackNipples);
+			changes++;
+			return true;
+		}
+
 		public function newLizardSkinTone():Array
 		{
-			if (rand(10) == 0) {
-				//rare skinTone
-				return rand(2) == 0 ? ["purple", "deep pink"] : ["silver", "light gray"];
-			}
-
-			//non rare skinTone
-			switch (rand(5)) {
-				case 0: return ["red", "orange"];
-				case 1: return ["green", "yellow green"];
-				case 2: return ["white", "light gray"];
-				case 3: return ["blue", "ocean blue"];
-				case 4: return ["black", "dark gray"];
-			}
-
-			return ["invalid", "invalid"]; // Will never happen. Suppresses 'Error: Function does not return a value.'
+			return lizardSkinToneChoices.choose();
 		}
 
 		public function newCockatriceColors():Array
 		{
-			var cockatriceColors:Array = [
-				["blue",   "turquoise", "blue"],
-				["orange", "red",       "orange"],
-				["green",  "yellow",    "green"],
-				["purple", "pink",      "purple"],
-				["black",  "white",     "black"],
-				["blonde", "brown",     "blonde"],
-				["white",  "grey",      "white"],
-			];
-			return randomChoice(cockatriceColors);
-		}
-
-		public function updateClaws(clawType:int = Claws.NORMAL):String
-		{
-			var clawTone:String = "";
-			var oldClawTone:String = player.claws.tone;
-
-			switch (clawType) {
-				case Claws.DRAGON:       clawTone = "steel-gray";   break;
-				case Claws.SALAMANDER:   clawTone = "fiery-red";    break;
-				case Claws.LIZARD:
-					// See http://www.bergenbattingcenter.com/lizard-skins-bat-grip/ for all those NYI! lizard skin colors
-					// I'm still not that happy with these claw tones. Any suggestion would be nice.
-					switch (player.skin.tone) {
-						case "red":          clawTone = "reddish";      break;
-						case "green":        clawTone = "greenish";     break;
-						case "white":        clawTone = "light-gray";   break;
-						case "blue":         clawTone = "bluish";       break;
-						case "black":        clawTone = "dark-gray";    break;
-						case "purple":       clawTone = "purplish";     break;
-						case "silver":       clawTone = "silvery";      break;
-						case "pink":         clawTone = "pink";         break; // NYI! Maybe only with a new Skin Oil?
-						case "orange":       clawTone = "orangey";      break; // NYI!
-						case "yellow":       clawTone = "yellowish";    break; // NYI!
-						case "desert-camo":  clawTone = "pale-yellow";  break; // NYI!
-						case "gray-camo":    clawTone = "gray";         break; // NYI!
-						default:             clawTone = "gray";         break;
-					}
-					break;
-				default:
-					clawTone = "";
-			}
-
-			player.claws.type = clawType;
-			player.claws.tone = clawTone;
-
-			return oldClawTone;
+			return randomChoice(ColorLists.COCKATRICE);
 		}
 
 		public function lizardHairChange(tfSource:String):int

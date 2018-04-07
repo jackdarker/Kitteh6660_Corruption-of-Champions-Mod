@@ -95,7 +95,7 @@ package classes.Parser
 			if (argLower in singleArgConverters)
 			{
 				//if (logErrors) trace("WARNING: Found corresponding anonymous function");
-				argResult = singleArgConverters[argLower](this._ownerClass);
+				argResult = singleArgConverters[argLower]();
 
 				if (lookupParserDebug) LOGGER.warn("WARNING: Called, return = ", argResult);
 
@@ -190,7 +190,7 @@ package classes.Parser
 				aspectLower = Number(aspectLower);
 
 				if (lookupParserDebug) LOGGER.warn("WARNING: Found corresponding anonymous function");
-				argResult = twoWordNumericTagsLookup[subjectLower](this._ownerClass, aspectLower);
+				argResult = twoWordNumericTagsLookup[subjectLower](aspectLower);
 				if (capitalize)
 					argResult = capitalizeFirstWord(argResult);
 				if (lookupParserDebug) LOGGER.warn("WARNING: Called two word numeric lookup, return = ", argResult);
@@ -204,7 +204,7 @@ package classes.Parser
 				{
 
 					if (lookupParserDebug) LOGGER.warn("WARNING: Found corresponding anonymous function");
-					argResult = twoWordTagsLookup[subjectLower][aspectLower](this._ownerClass);
+					argResult = twoWordTagsLookup[subjectLower][aspectLower]();
 					if (capitalize)
 						argResult = capitalizeFirstWord(argResult);
 					if (lookupParserDebug) LOGGER.warn("WARNING: Called two word lookup, return = ", argResult);
@@ -330,7 +330,7 @@ package classes.Parser
 			if (argLower in conditionalOptions)
 			{
 				if (printConditionalEvalDebug) LOGGER.warn("WARNING: Found corresponding anonymous function");
-				argResult = conditionalOptions[argLower](this._ownerClass);
+				argResult = conditionalOptions[argLower]();
 				if (printConditionalEvalDebug) LOGGER.warn("WARNING: Called, return = ", argResult);
 				return argResult;
 			}

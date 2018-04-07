@@ -18,6 +18,7 @@ package classes.BodyParts
 		public static const IMP:int        =   8;
 		public static const COCKATRICE:int =   9;
 		public static const RED_PANDA:int  =  10;
+		public static const FERRET:int     =  11;
 
 		public var type:Number = NORMAL;
 		public var tone:String = "";

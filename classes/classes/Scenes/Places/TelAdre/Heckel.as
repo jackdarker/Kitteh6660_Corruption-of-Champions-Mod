@@ -1,6 +1,7 @@
 package classes.Scenes.Places.TelAdre {
 	import classes.*;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.display.SpriteDb;
 
 	public class Heckel extends TelAdreAbstractContent {
 public function Heckel(){
@@ -30,6 +31,7 @@ public function heckelAppearance():void {
 //Greeting scene:
 public function greetHeckel():void {
 	clearOutput();
+	spriteSelect(SpriteDb.s_heckel);
 	if (flags[kFLAGS.MET_HECKEL] == 0) {
 		outputText("As you approach the edge of the track, the hyena comes around the bend towards you.  Her fur is a light brown mottled with spots of dark brown and black, with a thicker and longer black mane passing for hair.  You get a good view of her B-cup breasts bouncing inside her shirt, black workout bra straps sticking out on her shoulders.  She has simple black shorts on that hug her firm ass, and you can't help but admire her toned legs as they move beneath her.  As she stops running and turns toward you, you see something else entirely bouncing around in her groin.  Her body reminds you of a coiled spring, too much power and tension in too small a frame.\n\n");
 	
@@ -40,7 +42,7 @@ public function greetHeckel():void {
 	}
 	//Brooke + Heckel 3some
 	// Affection = 70, after first-time sex, talk to Heckel between 13:00 and 15:00, must not be a first-time encounter with Heckel, requires a gender
-	else if (telAdre.brooke.brookeAffection() >= 70 && flags[kFLAGS.BROOKE_MEDIUM_SCENE] > 0 && flags[kFLAGS.MET_HECKEL] > 0 && model.time.hours >= 13 && model.time.hours <= 15 && (player.hasVagina() || player.cockThatFits(telAdre.brooke.brookeCapacity()) >= 0)) {
+	else if (telAdre.brooke.brookeAffection() >= 70 && flags[kFLAGS.BROOKE_MEDIUM_SCENE] > 0 && flags[kFLAGS.MET_HECKEL] > 0 && getGame().time.hours >= 13 && getGame().time.hours <= 15 && (player.hasVagina() || player.cockThatFits(telAdre.brooke.brookeCapacity()) >= 0)) {
 		telAdre.brooke.specialHeckelAndBrookeEncounter();
 		return;
 	}
@@ -75,6 +77,7 @@ private function heckelTraining():void {
 		return;
 	}
 	if (flags[kFLAGS.TIMES_FUCKED_HECKEL_BLOWJOB] + flags[kFLAGS.TIMES_FUCKED_HECKEL_ANAL] == 0) {
+		spriteSelect(SpriteDb.s_heckel_nude);
 		outputText("You tell Heckel that you're looking for a training partner, and she makes no attempt to hide her gaze as she looks you up and down.  When she's finished, her unsettling grin returns.  \"<i>Excellent!  Let me just get cleaned up and we'll start with some stretches.</i>\"\n\n");
 		
 		if (flags[kFLAGS.LIFETIME_GYM_MEMBER] == 0) {
@@ -109,6 +112,7 @@ private function heckelTraining():void {
 			player.gems -= 10;
 			statScreenRefresh();
 		}
+		spriteSelect(SpriteDb.s_heckel_nude);
 		outputText("You know the drill as you follow Heckel into the locker room. You watch her undress before she walks into the shower room, admiring the way her toned ass moves in counterpoint to her tail. She shoots you a fang-filled grin as she disappears around the corner, and you use the opportunity to shed your own clothes.\n\n");
 
 		outputText("By the time she comes back into the locker room, you're completely naked. She doesn't bother to cover herself as she towels her fur off, making the coarse hair stand on end in more than a few places. She tosses the towel aside as she passes you, her black cock already bobbing between her legs. She sits down on one of the simple wooden benches and pats the spot next to her, beckoning you over.\n\n");

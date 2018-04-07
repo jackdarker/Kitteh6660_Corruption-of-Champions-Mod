@@ -120,7 +120,7 @@ package classes.Scenes.Areas.Bog
 				switch (transformChance){
 					case 0: phoukaTransformToBunny(); break;
 					case 1: phoukaTransformToGoat(); break;
-					case 2: phoukaTransformToHorse();
+					case 2: phoukaTransformToHorse(); break;
 					default:
 				}
 				if (PhoukaScene.phoukaForm == PhoukaScene.PHOUKA_FORM_FAERIE)
@@ -270,6 +270,7 @@ package classes.Scenes.Areas.Bog
 			this.short = phoukaName;
 			this.imageName = "phouka";
 			this.long = "The " + this.short + " is flying around near you, waiting for an opening.  He has the general appearance of a faerie, though he is slightly larger and his skin and wings are coal black.  A large cock stands erect between his legs.  His cat-like green eyes, filled with lust, follow your every motion.";
+			this.race = "Faerie?";
 
 			this.createCock(1, 0.5, CockTypesEnum.HUMAN);
 			this.balls = 2;
@@ -315,8 +316,8 @@ package classes.Scenes.Areas.Bog
 				.add(consumables.P_WHSKY, 35)
 				.add(null, 20);
 
-			this.theWingType = Wings.GIANT_DRAGONFLY; //Maybe later, if the PC can get them, make a Faerie wing type.
-			this.wingDesc = "small black faerie wings";
+			this.wings.type = Wings.FAERIE_SMALL;
+			this.wings.color = "black";
 			checkMonster();
 		}
 

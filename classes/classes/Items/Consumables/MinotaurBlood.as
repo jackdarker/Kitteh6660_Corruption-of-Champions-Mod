@@ -428,7 +428,7 @@ package classes.Items.Consumables
 					outputText("Your balls feel as if they've grown heavier with the weight of more sperm.\n");
 					player.hoursSinceCum += 200;
 				}
-				game.HPChange(50, true);
+				player.HPChange(50, true);
 				dynStats("lus", 50);
 			}
 			player.refillHunger(25);

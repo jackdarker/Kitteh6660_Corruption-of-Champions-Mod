@@ -86,10 +86,10 @@ public function loadSaveDisplay(saveFile:Object, slotName:String):String
 			saveFile.data.notes = "No notes available.";
 		}
 		holding = slotName;
-		holding += ":  <b>";
+		holding += ": <b>";
 		holding += saveFile.data.short;
 		holding += "</b> - <i>" + saveFile.data.notes + "</i>\r";
-		holding += "Days - " + saveFile.data.days + " | Gender - ";
+		holding += "    Days - " + saveFile.data.days + " | Gender - ";
 		if (saveFile.data.gender == 0)
 			holding += "U";
 		if (saveFile.data.gender == 1)
@@ -132,7 +132,7 @@ public function loadSaveDisplay(saveFile:Object, slotName:String):String
 	}*/
 	else
 	{
-		return slotName + ":  <b>EMPTY</b>\r     \r";
+		return slotName + ": <b>EMPTY</b>\r   \r";
 	}
 }
 
@@ -168,7 +168,7 @@ public function loadScreenAIR():void
 		return;		
 	}
 	clearOutput();
-	outputText("<b><u>Slot: Sex,  Game Days Played</u></b>\r");
+	outputText("<b><u>Slot: Sex, Game Days Played</u></b>\r");
 	
 	var i:uint = 0;
 	for (var fileCount:uint = 0; fileCount < fileList.length; fileCount++)
@@ -243,7 +243,7 @@ public function loadScreen():void
 	var slots:Array = new Array(saveFileNames.length);
 		
 	clearOutput();
-	outputText("<b><u>Slot: Sex,  Game Days Played</u></b>\r");
+	outputText("<b><u>Slot: Sex, Game Days Played</u></b>\r");
 	
 	for (var i:int = 0; i < saveFileNames.length; i += 1)
 	{
@@ -304,7 +304,7 @@ public function saveScreen():void
 	clearOutput();
 	if (player.slotName != "VOID")
 		outputText("<b>Last saved or loaded from: " + player.slotName + "</b>\r\r");
-	outputText("<b><u>Slot: Sex,  Game Days Played</u></b>\r");
+	outputText("<b><u>Slot: Sex, Game Days Played</u></b>\r");
 	
 	var saveFuncs:Array = [];
 	
@@ -320,7 +320,7 @@ public function saveScreen():void
 			{
 				clearOutput();
 				//trace("Saving game with name", saveFileNames[i], "at index", i);
-				saveGame(saveFileNames[i]);
+				saveGame(saveFileNames[i], true);
 			}
 		})(i);
 		
@@ -342,6 +342,7 @@ public function saveScreen():void
 
 public function saveLoad():void
 {
+	getGame().mainMenu.hideMainMenu();
 	mainView.eventTestInput.x = -10207.5;
 	mainView.eventTestInput.y = -1055.1;
 	//Hide the name box in case of backing up from save
@@ -353,14 +354,19 @@ public function saveLoad():void
 	
 	clearOutput();
 	outputText("<b>Where are my saves located?</b>\n");
-	outputText("<i>In Windows Vista/7 (IE/FireFox/Other): <pre>Users/{username}/Appdata/Roaming/Macromedia/Flash Player/#Shared Objects/{GIBBERISH}/</pre>\n\n");
+	outputText("In Windows Vista/7 (IE/FireFox/Other): <pre>Users/{username}/Appdata/Roaming/Macromedia/Flash Player/#Shared Objects/{GIBBERISH}/</pre>\n\n");
 	outputText("In Windows Vista/7 (Chrome): <pre>Users/{username}/AppData/Local/Google/Chrome/User Data/Default/Pepper Data/Shockwave Flash/WritableRoot/#SharedObjects/{GIBBERISH}/</pre>\n\n");
-	outputText("Inside that folder it will saved in a folder corresponding to where it was played from.  If you saved the CoC.swf to your HDD, then it will be in a folder called localhost.  If you played from my website, it will be in fenoxo.com.  The save files will be labelled CoC_1.sol, CoC_2.sol, CoC_3.sol, etc.</i>\n\n");
-	outputText("<b>Why do my saves disappear all the time?</b>\n<i>There are numerous things that will wipe out flash local shared files.  If your browser or player is set to delete flash cookies or data, that will do it.  CCleaner will also remove them.  CoC or its updates will never remove your savegames - if they disappear something else is wiping them out.</i>\n\n");
-	outputText("<b>When I play from my HDD I have one set of saves, and when I play off your site I have a different set of saves.  Why?</b>\n<i>Flash stores saved data relative to where it was accessed from.  Playing from your HDD will store things in a different location than fenoxo.com or FurAffinity.</i>\n");
-	outputText("<i>If you want to be absolutely sure you don't lose a character, copy the .sol file for that slot out and back it up! <b>For more information, google flash shared objects.</b></i>\n\n");
+	outputText("Inside that folder it will saved in a folder corresponding to where it was played from. If you saved the CoC.swf to your HDD, then it will be in a folder called localhost. If you played from my website, it will be in fenoxo.com. The save files will be labelled CoC_1.sol, CoC_2.sol, CoC_3.sol, etc.\n\n");
+	
+	outputText("<b>Why do my saves disappear all the time?</b>\n");
+	outputText("There are numerous things that will wipe out flash local shared files. If your browser or player is set to delete flash cookies or data, that will do it. CCleaner will also remove them. CoC or its updates will never remove your savegames - if they disappear something else is wiping them out.\n\n");
+	
+	outputText("<b>When I play from my HDD I have one set of saves, and when I play off your site I have a different set of saves. Why?</b>\n");
+	outputText("Flash stores saved data relative to where it was accessed from. Playing from your HDD will store things in a different location than fenoxo.com or FurAffinity.\n");
+	outputText("If you want to be absolutely sure you don't lose a character, copy the .sol file for that slot out and back it up! <b>For more information, google flash shared objects.</b>\n\n");
+	
 	outputText("<b>Why does the Save File and Load File option not work?</b>\n");
-	outputText("<i>Save File and Load File are limited by the security settings imposed upon CoC by Flash. These options will only work if you have downloaded the game from the website, and are running it from your HDD. Additionally, they can only correctly save files to and load files from the directory where you have the game saved.</i>");
+	outputText("Save File and Load File are limited by the security settings imposed upon CoC by Flash. These options will only work if you have downloaded the game from the website, and are running it from your HDD. Additionally, they can only correctly save files to and load files from the directory where you have the game saved.");
 	//This is to clear the 'game over' block from stopping simpleChoices from working.  Loading games supercede's game over.
 	if (mainView.getButtonText( 0 ) == "Game Over")
 	{
@@ -427,7 +433,7 @@ private function autosaveToggle():void {
 public function deleteScreen():void
 {
 	clearOutput();
-	outputText("Slot,  Race,  Sex,  Game Days Played\n");
+	outputText("Slot, Race, Sex, Game Days Played\n");
 	
 
 	var delFuncs:Array = [];
@@ -542,7 +548,7 @@ public function loadGame(slot:String):void
 	{
 		//trace("Got " + numProps + " file properties -- failed!");
 		clearOutput();
-		outputText("<b>Aborting load.  The current save file is missing a number of expected properties.</b>\n\n");
+		outputText("<b>Aborting load. The current save file is missing a number of expected properties.</b>\n\n");
 		
 		var backup:SharedObject = SharedObject.getLocal(slot + "_backup", "/");
 		
@@ -623,11 +629,13 @@ public function savePermObject(isFile:Boolean):void {
 		
 		saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE] = flags[kFLAGS.USE_OLD_INTERFACE];
 		saveFile.data.flags[kFLAGS.USE_OLD_FONT] = flags[kFLAGS.USE_OLD_FONT];
+		saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE] = flags[kFLAGS.TEXT_BACKGROUND_STYLE];
+		saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE] = flags[kFLAGS.CUSTOM_FONT_SIZE];
 		if ((flags[kFLAGS.GRIMDARK_MODE] == 0 && flags[kFLAGS.GRIMDARK_BACKGROUND_UNLOCKED] == 0) || (flags[kFLAGS.GRIMDARK_MODE] == 1 && flags[kFLAGS.GRIMDARK_BACKGROUND_UNLOCKED] == 1)) saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] = flags[kFLAGS.BACKGROUND_STYLE];
-		saveFile.data.flags[kFLAGS.IMAGEPACK_OFF] = flags[kFLAGS.IMAGEPACK_OFF];
-		saveFile.data.flags[kFLAGS.SPRITE_STYLE] = flags[kFLAGS.SPRITE_STYLE];
+		saveFile.data.flags[kFLAGS.IMAGEPACK_ENABLED] = flags[kFLAGS.IMAGEPACK_ENABLED];
 		saveFile.data.flags[kFLAGS.SFW_MODE] = flags[kFLAGS.SFW_MODE];
-		saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] = flags[kFLAGS.WATERSPORTS_ENABLED];
+		saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS] = flags[kFLAGS.ANIMATE_STATS_BARS];
+		saveFile.data.flags[kFLAGS.ENEMY_STATS_BARS_ENABLED] = flags[kFLAGS.ENEMY_STATS_BARS_ENABLED];
 		saveFile.data.flags[kFLAGS.USE_12_HOURS] = flags[kFLAGS.USE_12_HOURS];
 		saveFile.data.flags[kFLAGS.AUTO_LEVEL] = flags[kFLAGS.AUTO_LEVEL];
 		saveFile.data.flags[kFLAGS.USE_METRICS] = flags[kFLAGS.USE_METRICS];
@@ -669,19 +677,32 @@ public function loadPermObject():void {
 			if (saveFile.data.flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM] != undefined) flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM] = saveFile.data.flags[kFLAGS.NEW_GAME_PLUS_BONUS_UNLOCKED_HERM];
 			if (saveFile.data.flags[kFLAGS.GRIMDARK_BACKGROUND_UNLOCKED] != undefined) flags[kFLAGS.GRIMDARK_BACKGROUND_UNLOCKED] = saveFile.data.flags[kFLAGS.GRIMDARK_BACKGROUND_UNLOCKED];
 			
-			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
+			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) 
+				flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
+			else
+				flags[kFLAGS.SHOW_SPRITES_FLAG] = 2;
 			if (saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] != undefined) flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
 			if (saveFile.data.flags[kFLAGS.PRISON_ENABLED] != undefined) flags[kFLAGS.PRISON_ENABLED] = saveFile.data.flags[kFLAGS.PRISON_ENABLED];
+			if (saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] != undefined) flags[kFLAGS.WATERSPORTS_ENABLED] = saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED];
 			
 			if (saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE] != undefined) flags[kFLAGS.USE_OLD_INTERFACE] = saveFile.data.flags[kFLAGS.USE_OLD_INTERFACE];
 			if (saveFile.data.flags[kFLAGS.USE_OLD_FONT] != undefined) flags[kFLAGS.USE_OLD_FONT] = saveFile.data.flags[kFLAGS.USE_OLD_FONT];
-			if (saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] != undefined) {
-				flags[kFLAGS.BACKGROUND_STYLE] = saveFile.data.flags[kFLAGS.BACKGROUND_STYLE];
-			}
-			if (saveFile.data.flags[kFLAGS.IMAGEPACK_OFF] != undefined) flags[kFLAGS.IMAGEPACK_OFF] = saveFile.data.flags[kFLAGS.IMAGEPACK_OFF];
-			if (saveFile.data.flags[kFLAGS.SPRITE_STYLE] != undefined) flags[kFLAGS.SPRITE_STYLE] = saveFile.data.flags[kFLAGS.SPRITE_STYLE];
+			if (saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE] != undefined) flags[kFLAGS.TEXT_BACKGROUND_STYLE] = saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE];
+			if (saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE] != undefined) flags[kFLAGS.CUSTOM_FONT_SIZE] = saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE];
+			if (saveFile.data.flags[kFLAGS.BACKGROUND_STYLE] != undefined) flags[kFLAGS.BACKGROUND_STYLE] = saveFile.data.flags[kFLAGS.BACKGROUND_STYLE];
+			if (saveFile.data.flags[kFLAGS.IMAGEPACK_ENABLED] != undefined) 
+				flags[kFLAGS.IMAGEPACK_ENABLED] = saveFile.data.flags[kFLAGS.IMAGEPACK_ENABLED];
+			else
+				flags[kFLAGS.IMAGEPACK_ENABLED] = 1;
 			if (saveFile.data.flags[kFLAGS.SFW_MODE] != undefined) flags[kFLAGS.SFW_MODE] = saveFile.data.flags[kFLAGS.SFW_MODE];
-			if (saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED] != undefined) flags[kFLAGS.WATERSPORTS_ENABLED] = saveFile.data.flags[kFLAGS.WATERSPORTS_ENABLED];
+			if (saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS] != undefined)
+				flags[kFLAGS.ANIMATE_STATS_BARS] = saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS];
+			else
+				flags[kFLAGS.ANIMATE_STATS_BARS] = 1; //Default to ON.
+			if (saveFile.data.flags[kFLAGS.ENEMY_STATS_BARS_ENABLED] != undefined)
+				flags[kFLAGS.ENEMY_STATS_BARS_ENABLED] = saveFile.data.flags[kFLAGS.ENEMY_STATS_BARS_ENABLED];
+			else
+				flags[kFLAGS.ENEMY_STATS_BARS_ENABLED] = 1; //Default to ON.
 			if (saveFile.data.flags[kFLAGS.USE_12_HOURS] != undefined) flags[kFLAGS.USE_12_HOURS] = saveFile.data.flags[kFLAGS.USE_12_HOURS];
 			if (saveFile.data.flags[kFLAGS.AUTO_LEVEL] != undefined) flags[kFLAGS.AUTO_LEVEL] = saveFile.data.flags[kFLAGS.AUTO_LEVEL];
 			if (saveFile.data.flags[kFLAGS.USE_METRICS] != undefined) flags[kFLAGS.USE_METRICS] = saveFile.data.flags[kFLAGS.USE_METRICS];
@@ -734,7 +755,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 	var backupAborted:Boolean = false;
 	
 	CoC.saveAllAwareClasses(getGame()); //Informs each saveAwareClass that it must save its values in the flags array
-	var counter:Number = player.cocks.length;
+
 	//Initialize the save file
 	var saveFile:*;
 	var backup:SharedObject;
@@ -893,8 +914,8 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.neck = player.neck.toObject();
 		saveFile.data.rearBody = player.rearBody.toObject();
 		// <mod name="Predator arms" author="Stadler76">
-		saveFile.data.clawTone = player.claws.tone;
-		saveFile.data.clawType = player.claws.type;
+		saveFile.data.clawTone = player.arms.claws.tone;
+		saveFile.data.clawType = player.arms.claws.type;
 		// </mod>
 		saveFile.data.wingType = player.wings.type;
 		saveFile.data.wingColor = player.wings.color;
@@ -905,7 +926,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.tailRecharge = player.tail.recharge;
 		saveFile.data.hipRating = player.hips.rating;
 		saveFile.data.buttRating = player.butt.rating;
-		
+		saveFile.data.udder = player.udder.toObject();
 		//Sexual Stuff
 		saveFile.data.balls = player.balls;
 		saveFile.data.cumMultiplier = player.cumMultiplier;
@@ -926,7 +947,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		 }*/
 
 		
-		saveFile.data.cocks = [];
+		
 		saveFile.data.breastRows = [];
 		saveFile.data.perks = [];
 		saveFile.data.statusAffects = [];
@@ -934,24 +955,8 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.keyItems = [];
 		saveFile.data.itemStorage = [];
 		saveFile.data.gearStorage = [];
-		//Set array
-		for (i = 0; i < player.cocks.length; i++)
-		{
-			saveFile.data.cocks.push([]);
-		}
-		//Populate Array
-		for (i = 0; i < player.cocks.length; i++)
-		{
-			saveFile.data.cocks[i].cockThickness = player.cocks[i].cockThickness;
-			saveFile.data.cocks[i].cockLength = player.cocks[i].cockLength;
-			saveFile.data.cocks[i].cockType = player.cocks[i].cockType.Index;
-			saveFile.data.cocks[i].knotMultiplier = player.cocks[i].knotMultiplier;
-			saveFile.data.cocks[i].pierced = player.cocks[i].pierced;
-			saveFile.data.cocks[i].pShortDesc = player.cocks[i].pShortDesc;
-			saveFile.data.cocks[i].pLongDesc = player.cocks[i].pLongDesc;
-			saveFile.data.cocks[i].sock = player.cocks[i].sock;
-		}
 		
+		saveFile.data.cocks = SerializationUtils.serializeVector(player.cocks as Vector.<*>);
 		saveFile.data.vaginas = SerializationUtils.serializeVector(player.vaginas as Vector.<*>);
 		
 		//NIPPLES
@@ -1035,6 +1040,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 			saveFile.data.itemStorage[i].id = (itemStorageGet()[i].itype == null) ? null : itemStorageGet()[i].itype.id;
 			saveFile.data.itemStorage[i].quantity = itemStorageGet()[i].quantity;
 			saveFile.data.itemStorage[i].unlocked = itemStorageGet()[i].unlocked;
+			saveFile.data.itemStorage[i].damage = itemStorageGet()[i].damage;
 		}
 		//Set gear slot array
 		for (i = 0; i < gearStorageGet().length; i++)
@@ -1049,6 +1055,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 			saveFile.data.gearStorage[i].id = (gearStorageGet()[i].isEmpty()) ? null : gearStorageGet()[i].itype.id;
 			saveFile.data.gearStorage[i].quantity = gearStorageGet()[i].quantity;
 			saveFile.data.gearStorage[i].unlocked = gearStorageGet()[i].unlocked;
+			saveFile.data.gearStorage[i].damage = gearStorageGet()[i].damage;
 		}
 		saveFile.data.ass.push([]);
 		saveFile.data.ass.analWetness = player.ass.analWetness;
@@ -1058,9 +1065,9 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.gameState = gameStateGet(); // Saving game state?
 		
 		//Time and Items
-		saveFile.data.minutes = model.time.minutes;
-		saveFile.data.hours = model.time.hours;
-		saveFile.data.days = model.time.days;
+		saveFile.data.minutes = getGame().time.minutes;
+		saveFile.data.hours = getGame().time.hours;
+		saveFile.data.days = getGame().time.days;
 		saveFile.data.autoSave = player.autoSave;
 		
 		// Save non-flag plot variables.
@@ -1069,55 +1076,66 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 			saveFile.data.isabellaOffspringData.push(kGAMECLASS.isabellaScene.isabellaOffspringData[i]);
 		}
 		
-		//ITEMZ. Item1s
+		//ITEMZ.
+		//TODO: DRY this.
 		saveFile.data.itemSlot1 = [];
 		saveFile.data.itemSlot1.quantity = player.itemSlot1.quantity;
 		saveFile.data.itemSlot1.id = player.itemSlot1.itype.id;
+		saveFile.data.itemSlot1.damage = player.itemSlot1.damage;
 		saveFile.data.itemSlot1.unlocked = true; 
 		
 		saveFile.data.itemSlot2 = [];
 		saveFile.data.itemSlot2.quantity = player.itemSlot2.quantity;
 		saveFile.data.itemSlot2.id = player.itemSlot2.itype.id;
+		saveFile.data.itemSlot2.damage = player.itemSlot2.damage;
 		saveFile.data.itemSlot2.unlocked = true;
 		
 		saveFile.data.itemSlot3 = [];
 		saveFile.data.itemSlot3.quantity = player.itemSlot3.quantity;
 		saveFile.data.itemSlot3.id = player.itemSlot3.itype.id;
+		saveFile.data.itemSlot3.damage = player.itemSlot3.damage;
 		saveFile.data.itemSlot3.unlocked = true;
 		
 		saveFile.data.itemSlot4 = [];
 		saveFile.data.itemSlot4.quantity = player.itemSlot4.quantity;
 		saveFile.data.itemSlot4.id = player.itemSlot4.itype.id;
+		saveFile.data.itemSlot4.damage = player.itemSlot4.damage;
 		saveFile.data.itemSlot4.unlocked = player.itemSlot4.unlocked;
 		
 		saveFile.data.itemSlot5 = [];
 		saveFile.data.itemSlot5.quantity = player.itemSlot5.quantity;
 		saveFile.data.itemSlot5.id = player.itemSlot5.itype.id;
+		saveFile.data.itemSlot5.damage = player.itemSlot5.damage;
 		saveFile.data.itemSlot5.unlocked = player.itemSlot5.unlocked;
 		
 		saveFile.data.itemSlot6 = [];
 		saveFile.data.itemSlot6.quantity = player.itemSlot6.quantity;
 		saveFile.data.itemSlot6.id = player.itemSlot6.itype.id;
+		saveFile.data.itemSlot6.damage = player.itemSlot6.damage;
 		saveFile.data.itemSlot6.unlocked = player.itemSlot6.unlocked;
 		
 		saveFile.data.itemSlot7 = [];
 		saveFile.data.itemSlot7.quantity = player.itemSlot7.quantity;
 		saveFile.data.itemSlot7.id = player.itemSlot7.itype.id;
+		saveFile.data.itemSlot7.damage = player.itemSlot7.damage;
 		saveFile.data.itemSlot7.unlocked = player.itemSlot7.unlocked;
 		
 		saveFile.data.itemSlot8 = [];
 		saveFile.data.itemSlot8.quantity = player.itemSlot8.quantity;
 		saveFile.data.itemSlot8.id = player.itemSlot8.itype.id;
+		saveFile.data.itemSlot8.damage = player.itemSlot8.damage;
 		saveFile.data.itemSlot8.unlocked = player.itemSlot8.unlocked;
 		
 		saveFile.data.itemSlot9 = [];
 		saveFile.data.itemSlot9.quantity = player.itemSlot9.quantity;
 		saveFile.data.itemSlot9.id = player.itemSlot9.itype.id;
+		saveFile.data.itemSlot9.damage = player.itemSlot9.damage;
 		saveFile.data.itemSlot9.unlocked = player.itemSlot9.unlocked;
 		
 		saveFile.data.itemSlot10 = [];
 		saveFile.data.itemSlot10.quantity = player.itemSlot10.quantity;
 		saveFile.data.itemSlot10.id = player.itemSlot10.itype.id;
+		saveFile.data.itemSlot10.damage = player.itemSlot10.damage;
 		saveFile.data.itemSlot10.unlocked = player.itemSlot10.unlocked;
 
 		
@@ -1195,7 +1213,8 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		if (numProps < versionProperties[ver])
 		{
 			clearOutput();
-			outputText("<b>Aborting save.  Your current save file is broken, and needs to be bug-reported.</b>\n\nWithin the save folder for CoC, there should be a pair of files named \"" + slot + ".sol\" and \"" + slot + "_backup.sol\"\n\n<b>We need BOTH of those files, and a quick report of what you've done in the game between when you last saved, and this message.</b>\n\n");
+			outputText("<b>Aborting save. Your current save file is broken, and needs to be bug-reported.</b>\n\nWithin the save folder for CoC, there should be a pair of files named \"" + slot + ".sol\" and \"" + slot + "_backup.sol\"\n\n<b>We need BOTH of those files, and a quick report of what you've done in the game between when you last saved, and this message.</b>\n\n");
+			outputText("<b>Aborting save. Your current save file is broken, and needs to be bug-reported.</b>\n\nWithin the save folder for CoC, there should be a pair of files named \"" + slot + ".sol\" and \"" + slot + "_backup.sol\"\n\n<b>We need BOTH of those files, and a quick report of what you've done in the game between when you last saved, and this message.</b>\n\n");
 			outputText("When you've sent us the files, you can copy the _backup file over your old save to continue from your last save.\n\n");
 			outputText("Alternatively, you can just hit the restore button to overwrite the broken save with the backup... but we'd really like the saves first!");
 			//trace("Backup Save Aborted! Broken save detected!");
@@ -1357,6 +1376,16 @@ public function onDataLoaded(evt:Event):void
 	//playerMenu();
 }
 
+private function hasViridianCockSock(player:Player):Boolean {
+	for each (var cock:Cock in player.cocks) {
+		if (cock.sock === "viridian") {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 {
 	var game:CoC = getGame();
@@ -1369,7 +1398,6 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 	//Autosave stuff
 	player.slotName = slot;
 
-	var counter:Number = player.cocks.length;
 	//trace("Loading save!")
 	//Initialize the save file
 	//var saveFile:Object = loader.data.readObject();
@@ -1379,8 +1407,7 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 
 		//KILL ALL COCKS;
 		player = new Player();
-		flags = new DefaultDict();
-		model.player = player;		
+		flags = new DefaultDict();	
 		
 		//trace("Type of saveFile.data = ", getClass(saveFile.data));
 		
@@ -1774,8 +1801,8 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		if (isObject(saveFile.data.rearBody))
 			player.rearBody.setAllProps(saveFile.data.rearBody);
 		// <mod name="Predator arms" author="Stadler76">
-		player.claws.tone = (saveFile.data.clawTone == undefined) ? ""               : saveFile.data.clawTone;
-		player.claws.type = (saveFile.data.clawType == undefined) ? Claws.NORMAL : saveFile.data.clawType;
+		player.arms.claws.tone = (saveFile.data.clawTone == undefined) ? ""               : saveFile.data.clawTone;
+		player.arms.claws.type = (saveFile.data.clawType == undefined) ? Claws.NORMAL : saveFile.data.clawType;
 		// </mod>
 
 		player.wings.type = saveFile.data.wingType;
@@ -1847,7 +1874,10 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		switch (player.underBody.type) {
 			case UnderBody.DRAGON: player.underBody.type = UnderBody.REPTILE; break;
 			case UnderBody.WOOL:   player.underBody.type = UnderBody.FURRY;   break;
+			default: //Move along.
 		}
+        if (isObject(saveFile.data.udder))
+			player.udder.setAllProps(saveFile.data.udder);
 
 		//Sexual Stuff
 		player.balls = saveFile.data.balls;
@@ -1860,50 +1890,9 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		player.knockUpForce(saveFile.data.pregnancyType, saveFile.data.pregnancyIncubation);
 		player.buttKnockUpForce(saveFile.data.buttPregnancyType, saveFile.data.buttPregnancyIncubation);
 		
-		var hasViridianCockSock:Boolean = false;
+		player.cocks = new Vector.<Cock>();
+		SerializationUtils.deserializeVector(player.cocks as Vector.<*>, saveFile.data.cocks, Cock);
 
-		//ARRAYS HERE!
-		//Set Cock array
-		for (i = 0; i < saveFile.data.cocks.length; i++)
-		{
-			player.createCock();
-		}
-		//Populate Cock Array
-		for (i = 0; i < saveFile.data.cocks.length; i++)
-		{
-			player.cocks[i].cockThickness = saveFile.data.cocks[i].cockThickness;
-			player.cocks[i].cockLength = saveFile.data.cocks[i].cockLength;
-			player.cocks[i].cockType = CockTypesEnum.ParseConstantByIndex(saveFile.data.cocks[i].cockType);
-			player.cocks[i].knotMultiplier = saveFile.data.cocks[i].knotMultiplier;
-			if (saveFile.data.cocks[i].sock == undefined)
-				player.cocks[i].sock = "";
-			else
-			{
-				player.cocks[i].sock = saveFile.data.cocks[i].sock;
-				if (player.cocks[i].sock == "viridian") hasViridianCockSock = true;
-			}
-			if (saveFile.data.cocks[i].pierced == undefined)
-			{
-				player.cocks[i].pierced = 0;
-				player.cocks[i].pShortDesc = "";
-				player.cocks[i].pLongDesc = "";
-			}
-			else
-			{
-				player.cocks[i].pierced = saveFile.data.cocks[i].pierced;
-				player.cocks[i].pShortDesc = saveFile.data.cocks[i].pShortDesc;
-				player.cocks[i].pLongDesc = saveFile.data.cocks[i].pLongDesc;
-				
-				if (player.cocks[i].pShortDesc == "null" || player.cocks[i].pLongDesc == "null")
-				{
-					player.cocks[i].pierced = 0;
-					player.cocks[i].pShortDesc = "";
-					player.cocks[i].pLongDesc = "";
-				}
-			}
-				//trace("LoadOne Cock i(" + i + ")");
-		}
-		
 		player.vaginas = new Vector.<VaginaClass>();
 		SerializationUtils.deserializeVector(player.vaginas as Vector.<*>, saveFile.data.vaginas, VaginaClass);
 		
@@ -2022,7 +2011,7 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		}
 		
 		// Fixup missing Lusty Regeneration perk, if the player has an equipped viridian cock sock and does NOT have the Lusty Regeneration perk
-		if (hasViridianCockSock == true && hasLustyRegenPerk == false)
+		if (hasViridianCockSock(kGAMECLASS.player) === true && hasLustyRegenPerk === false)
 		{
 			player.createPerk(PerkLib.LustyRegeneration, 0, 0, 0, 0);
 		}
@@ -2129,8 +2118,10 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 					else if (savedIS.shortName.indexOf("Sp Honey") != -1)
 						savedIS.id = "SpHoney";
 				}
-				if (savedIS.quantity>0)
+				if (savedIS.quantity>0) {
 					storage.setItemAndQty(ItemType.lookupItem(savedIS.id || savedIS.shortName), savedIS.quantity);
+					storage.damage = savedIS.damage != undefined ? savedIS.damage : 0;
+				}
 				else
 					storage.emptySlot();
 				storage.unlocked = savedIS.unlocked;
@@ -2158,12 +2149,14 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
                         || saveFile.data.gearStorage[i].quantity == undefined
 						|| saveFile.data.gearStorage[i].quantity == 0)
 					storage.emptySlot();
-				else
-					storage.setItemAndQty(ItemType.lookupItem(saveFile.data.gearStorage[i].id || saveFile.data.gearStorage[i].shortName),saveFile.data.gearStorage[i].quantity);
+				else {
+					storage.setItemAndQty(ItemType.lookupItem(saveFile.data.gearStorage[i].id || saveFile.data.gearStorage[i].shortName), saveFile.data.gearStorage[i].quantity);
+					storage.damage = saveFile.data.gearStorage[i].damage != undefined ? saveFile.data.gearStorage[i].damage : 0;
+				}
 				storage.unlocked = saveFile.data.gearStorage[i].unlocked;
 			}
 		}
-		//player.cocks = saveFile.data.cocks;
+		
 		player.ass.analLooseness = saveFile.data.ass.analLooseness;
 		player.ass.analWetness = saveFile.data.ass.analWetness;
 		player.ass.fullness = saveFile.data.ass.fullness;
@@ -2172,9 +2165,9 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		
 		//Days
 		//Time and Items
-		model.time.minutes = saveFile.data.minutes;
-		model.time.hours = saveFile.data.hours;
-		model.time.days = saveFile.data.days;
+		getGame().time.minutes = saveFile.data.minutes;
+		getGame().time.hours = saveFile.data.hours;
+		getGame().time.days = saveFile.data.days;
 		if (saveFile.data.autoSave == undefined)
 			player.autoSave = false;
 		else
@@ -2245,44 +2238,54 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		player.itemSlot1.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot1.id || saveFile.data.itemSlot1.shortName),
 				saveFile.data.itemSlot1.quantity);
+		player.itemSlot1.damage = saveFile.data.itemSlot1.damage != undefined ? saveFile.data.itemSlot1.damage : 0;
 		player.itemSlot2.unlocked = true;
 		player.itemSlot2.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot2.id || saveFile.data.itemSlot2.shortName),
 				saveFile.data.itemSlot2.quantity);
+		player.itemSlot2.damage = saveFile.data.itemSlot2.damage != undefined ? saveFile.data.itemSlot2.damage : 0;
 		player.itemSlot3.unlocked = true;
 		player.itemSlot3.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot3.id || saveFile.data.itemSlot3.shortName),
 				saveFile.data.itemSlot3.quantity);
+		player.itemSlot3.damage = saveFile.data.itemSlot3.damage != undefined ? saveFile.data.itemSlot3.damage : 0;
 		player.itemSlot4.unlocked = saveFile.data.itemSlot4.unlocked;
 		player.itemSlot4.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot4.id || saveFile.data.itemSlot4.shortName),
 				saveFile.data.itemSlot4.quantity);
+		player.itemSlot4.damage = saveFile.data.itemSlot4.damage != undefined ? saveFile.data.itemSlot4.damage : 0;
 		player.itemSlot5.unlocked = saveFile.data.itemSlot5.unlocked;
 		player.itemSlot5.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot5.id || saveFile.data.itemSlot5.shortName),
 				saveFile.data.itemSlot5.quantity);
+		player.itemSlot5.damage = saveFile.data.itemSlot5.damage != undefined ? saveFile.data.itemSlot5.damage : 0;
 		//Extra slots from the mod.
 		if (saveFile.data.itemSlot6 != undefined && saveFile.data.itemSlot7 != undefined && saveFile.data.itemSlot8 != undefined && saveFile.data.itemSlot9 != undefined && saveFile.data.itemSlot10 != undefined) {
 		player.itemSlot6.unlocked = saveFile.data.itemSlot6.unlocked;
 		player.itemSlot6.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot6.id || saveFile.data.itemSlot6.shortName),
 				saveFile.data.itemSlot6.quantity);
+		player.itemSlot6.damage = saveFile.data.itemSlot6.damage != undefined ? saveFile.data.itemSlot6.damage : 0;
 		player.itemSlot7.unlocked = saveFile.data.itemSlot7.unlocked;
 		player.itemSlot7.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot7.id || saveFile.data.itemSlot7.shortName),
 				saveFile.data.itemSlot7.quantity);
+		player.itemSlot7.damage = saveFile.data.itemSlot7.damage != undefined ? saveFile.data.itemSlot7.damage : 0;
 		player.itemSlot8.unlocked = saveFile.data.itemSlot8.unlocked;
 		player.itemSlot8.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot8.id || saveFile.data.itemSlot8.shortName),
 				saveFile.data.itemSlot8.quantity);
+		player.itemSlot8.damage = saveFile.data.itemSlot8.damage != undefined ? saveFile.data.itemSlot8.damage : 0;
 		player.itemSlot9.unlocked = saveFile.data.itemSlot9.unlocked;
 		player.itemSlot9.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot9.id || saveFile.data.itemSlot9.shortName),
 				saveFile.data.itemSlot9.quantity);
+		player.itemSlot9.damage = saveFile.data.itemSlot9.damage != undefined ? saveFile.data.itemSlot9.damage : 0;
 		player.itemSlot10.unlocked = saveFile.data.itemSlot10.unlocked;
 		player.itemSlot10.setItemAndQty(ItemType.lookupItem(
 				saveFile.data.itemSlot10.id || saveFile.data.itemSlot10.shortName),
 				saveFile.data.itemSlot10.quantity);
+		player.itemSlot10.damage = saveFile.data.itemSlot10.damage != undefined ? saveFile.data.itemSlot10.damage : 0;
 		}
 		
 		CoC.loadAllAwareClasses(getGame()); //Informs each saveAwareClass that it must load its values from the flags array
@@ -2326,9 +2329,9 @@ public function unFuckSave():void
 		player.removeStatusEffect(StatusEffects.Tentagrappled);
 	}
 
-	if (isNaN(model.time.minutes)) model.time.minutes = 0;
-	if (isNaN(model.time.hours)) model.time.hours = 0;
-	if (isNaN(model.time.days)) model.time.days = 0;
+	if (isNaN(getGame().time.minutes)) getGame().time.minutes = 0;
+	if (isNaN(getGame().time.hours)) getGame().time.hours = 0;
+	if (isNaN(getGame().time.days)) getGame().time.days = 0;
 
 	if (player.gems < 0) player.gems = 0; //Force fix gems
 	
@@ -2519,9 +2522,9 @@ public function unFuckSave():void
 		else if (flags[kFLAGS.EDRYN_PREGNANCY_INCUBATION] > 0 && flags[kFLAGS.EDRYN_PREGNANCY_TYPE] == 0) flags[kFLAGS.EDRYN_PREGNANCY_TYPE] = PregnancyStore.PREGNANCY_PLAYER;
 	}
 	if (flags[kFLAGS.BEHEMOTH_CHILDREN] > 0) {
-		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 1 && flags[kFLAGS.BEHEMOTH_CHILD_1_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_1_BIRTH_DAY] = model.time.days;
-		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 2 && flags[kFLAGS.BEHEMOTH_CHILD_2_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_2_BIRTH_DAY] = model.time.days;
-		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 3 && flags[kFLAGS.BEHEMOTH_CHILD_3_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_3_BIRTH_DAY] = model.time.days;
+		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 1 && flags[kFLAGS.BEHEMOTH_CHILD_1_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_1_BIRTH_DAY] = getGame().time.days;
+		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 2 && flags[kFLAGS.BEHEMOTH_CHILD_2_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_2_BIRTH_DAY] = getGame().time.days;
+		if (flags[kFLAGS.BEHEMOTH_CHILDREN] >= 3 && flags[kFLAGS.BEHEMOTH_CHILD_3_BIRTH_DAY] <= 0) flags[kFLAGS.BEHEMOTH_CHILD_3_BIRTH_DAY] = getGame().time.days;
 	}
 	if (flags[kFLAGS.LETHICE_DEFEATED] > 0 && flags[kFLAGS.D3_JEAN_CLAUDE_DEFEATED] == 0) flags[kFLAGS.D3_JEAN_CLAUDE_DEFEATED] = 1; 
 	if (gearStorageGet().length < 45) {
@@ -2533,21 +2536,15 @@ public function unFuckSave():void
 		flags[kFLAGS.D3_MIRRORS_SHATTERED] = 1;
 	}
 	//Rigidly enforce rank caps
-	if (player.perkv1(PerkLib.AscensionDesires) > getGame().charCreation.MAX_DESIRES_LEVEL) player.setPerkValue(PerkLib.AscensionDesires, 1, getGame().charCreation.MAX_DESIRES_LEVEL);
-	if (player.perkv1(PerkLib.AscensionEndurance) > getGame().charCreation.MAX_ENDURANCE_LEVEL) player.setPerkValue(PerkLib.AscensionEndurance, 1, getGame().charCreation.MAX_ENDURANCE_LEVEL);
-	if (player.perkv1(PerkLib.AscensionFertility) > getGame().charCreation.MAX_FERTILITY_LEVEL) player.setPerkValue(PerkLib.AscensionFertility, 1, getGame().charCreation.MAX_FERTILITY_LEVEL);
-	if (player.perkv1(PerkLib.AscensionMoralShifter) > getGame().charCreation.MAX_MORALSHIFTER_LEVEL) player.setPerkValue(PerkLib.AscensionMoralShifter, 1, getGame().charCreation.MAX_MORALSHIFTER_LEVEL);
-	if (player.perkv1(PerkLib.AscensionMysticality) > getGame().charCreation.MAX_MYSTICALITY_LEVEL) player.setPerkValue(PerkLib.AscensionMysticality, 1, getGame().charCreation.MAX_MYSTICALITY_LEVEL);
-	if (player.perkv1(PerkLib.AscensionTolerance) > getGame().charCreation.MAX_TOLERANCE_LEVEL) player.setPerkValue(PerkLib.AscensionTolerance, 1, getGame().charCreation.MAX_TOLERANCE_LEVEL);
-	if (player.perkv1(PerkLib.AscensionVirility) > getGame().charCreation.MAX_VIRILITY_LEVEL) player.setPerkValue(PerkLib.AscensionVirility, 1, getGame().charCreation.MAX_VIRILITY_LEVEL);
-	if (player.perkv1(PerkLib.AscensionWisdom) > getGame().charCreation.MAX_WISDOM_LEVEL) player.setPerkValue(PerkLib.AscensionWisdom, 1, getGame().charCreation.MAX_WISDOM_LEVEL);
-	//Rigidly enforce cock size caps
-	if (player.hasCock()) {
-		for (var i:int = 0; i < player.cocks.length; i++) {
-			if (player.cocks[i].cockLength > 9999.9) player.cocks[i].cockLength = 9999.9;
-			if (player.cocks[i].cockThickness > 999.9) player.cocks[i].cockThickness = 999.9;
-		}
-	}
+	if (player.perkv1(PerkLib.AscensionDesires) > CharCreation.MAX_DESIRES_LEVEL) player.setPerkValue(PerkLib.AscensionDesires, 1, CharCreation.MAX_DESIRES_LEVEL);
+	if (player.perkv1(PerkLib.AscensionEndurance) > CharCreation.MAX_ENDURANCE_LEVEL) player.setPerkValue(PerkLib.AscensionEndurance, 1, CharCreation.MAX_ENDURANCE_LEVEL);
+	if (player.perkv1(PerkLib.AscensionFertility) > CharCreation.MAX_FERTILITY_LEVEL) player.setPerkValue(PerkLib.AscensionFertility, 1, CharCreation.MAX_FERTILITY_LEVEL);
+	if (player.perkv1(PerkLib.AscensionMoralShifter) > CharCreation.MAX_MORALSHIFTER_LEVEL) player.setPerkValue(PerkLib.AscensionMoralShifter, 1, CharCreation.MAX_MORALSHIFTER_LEVEL);
+	if (player.perkv1(PerkLib.AscensionMysticality) > CharCreation.MAX_MYSTICALITY_LEVEL) player.setPerkValue(PerkLib.AscensionMysticality, 1, CharCreation.MAX_MYSTICALITY_LEVEL);
+	if (player.perkv1(PerkLib.AscensionTolerance) > CharCreation.MAX_TOLERANCE_LEVEL) player.setPerkValue(PerkLib.AscensionTolerance, 1, CharCreation.MAX_TOLERANCE_LEVEL);
+	if (player.perkv1(PerkLib.AscensionVirility) > CharCreation.MAX_VIRILITY_LEVEL) player.setPerkValue(PerkLib.AscensionVirility, 1, CharCreation.MAX_VIRILITY_LEVEL);
+	if (player.perkv1(PerkLib.AscensionWisdom) > CharCreation.MAX_WISDOM_LEVEL) player.setPerkValue(PerkLib.AscensionWisdom, 1, CharCreation.MAX_WISDOM_LEVEL);
+
 	//If converting from vanilla, set Grimdark flag to 0.
 	if (flags[kFLAGS.MOD_SAVE_VERSION] == 0 || flags[kFLAGS.GRIMDARK_MODE] == 3) flags[kFLAGS.GRIMDARK_MODE] = 0;
 	//Set to Grimdark if doing kaizo unless locked

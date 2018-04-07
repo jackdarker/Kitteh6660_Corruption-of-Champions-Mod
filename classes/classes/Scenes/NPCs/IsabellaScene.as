@@ -68,7 +68,7 @@ package classes.Scenes.NPCs{
 					return true;
 				}
 			}
-			if (model.time.hours > 23) {
+			if (getGame().time.hours > 23) {
 				if (flags[kFLAGS.FOUND_ISABELLA_AT_FARM_TODAY] == 1) flags[kFLAGS.FOUND_ISABELLA_AT_FARM_TODAY] = 0;
 				if (kGAMECLASS.isabellaFollowerScene.isabellaFollower() && flags[kFLAGS.ISABELLA_MILKED_YET] >= 0 && flags[kFLAGS.FOLLOWER_AT_FARM_ISABELLA] == 0) {
 					flags[kFLAGS.ISABELLA_MILKED_YET]++;
@@ -78,7 +78,7 @@ package classes.Scenes.NPCs{
 		}
 	
 		public function timeChangeLarge():Boolean {
-			if (checkedIsabella++ == 0 && model.time.hours == 6 && isabellaFollowerScene.isabellaFollower() && flags[kFLAGS.FOLLOWER_AT_FARM_ISABELLA] == 0 && flags[kFLAGS.ISABELLA_BLOWJOBS_DISABLED] == 0 && player.hasCock() && (model.time.days % 2 == 0 || player.findPerk(PerkLib.MarblesMilk) < 0) && player.shortestCockLength() <= 9 && !prison.inPrison) {
+			if (checkedIsabella++ == 0 && getGame().time.hours == 6 && isabellaFollowerScene.isabellaFollower() && flags[kFLAGS.FOLLOWER_AT_FARM_ISABELLA] == 0 && flags[kFLAGS.ISABELLA_BLOWJOBS_DISABLED] == 0 && player.hasCock() && (getGame().time.days % 2 == 0 || player.findPerk(PerkLib.MarblesMilk) < 0) && player.shortestCockLength() <= 9 && !prison.inPrison) {
 				spriteSelect(SpriteDb.s_isabella);
 				isabellaFollowerScene.isabellaMorningWakeupCall();
 				return true;
@@ -443,8 +443,8 @@ public function nomOnMommaIzzysTits():void {
 			}
 			else {
 				outputText("She sleep-fucked you again!  You sigh and wipe your hand off on your " + player.leg() + ", bemused by the cow-girl who seems too shy to sleep with someone who's awake.  Still, you feel completely sated in every way.  It's going to be a good ");
-			   if (model.time.hours < 12) outputText("day");
-				else if (model.time.hours < 4) outputText("afternoon");
+			   if (getGame().time.hours < 12) outputText("day");
+				else if (getGame().time.hours < 4) outputText("afternoon");
 				else outputText("evening");
 				outputText(".");
 			}
@@ -563,12 +563,12 @@ public function izzyGivesSmallWangsFreeOral():void {
 		if (isabellaAccent()) {
 			outputText("She sighs and looks up at the sky, uttering a completely contented 'moo'.  Your own exhalation of pleasure is a bit more muted, but truly, you feel utterly satiated.  Isabella looks over and gleefully says, \"<i>You aren't a pervert!  Oh Izabella is so happy for you!  It's so much fun having someone who knows how to handle my tongue, particularly when they have such a succulent... compact little package for me to suck!</i>\"\n\n");
 	
-			outputText("The feisty redhead happily helps you back into your " + player.armorName + " and gives you an unceremonious smack on the " + player.buttDescript() + " before saying her goodbyes, \"<i>Come back soon, " + player.short + "!  You are quite ze " + player.mf("man","woman") + ", even if your tasty penis is tiny.  Oh don't look like zat, it makes such tasty salt-milk!  I'll lick it up any time.  Now go, I'm sure you have much to do!</i>\"\n\n");
+			outputText("The feisty redhead happily helps you back into your " + player.armorName + " and gives you an unceremonious smack on the " + player.buttDescript() + " before saying her goodbyes, \"<i>Come back soon, " + player.short + "!  You are quite ze " + player.mf("man","woman") + ", even if your tasty penis is tiny.  Oh don't look like zat, it makes such tasty salt-milk!  I'll lick it up any time.  Now go, I'm sure you have much to do!</i>\"");
 		}
 		else {
 			outputText("She sighs and looks up at the sky, uttering a completely contented 'moo'.  Your own exhalation of pleasure is a bit more muted, but truly, you feel utterly satiated.  Isabella looks over and gleefully says, \"<i>You aren't a pervert!  Oh I'm so happy for you!  It's so much fun having someone who knows how to handle my tongue, particularly when they have such a succulent... compact little package for me to suck!</i>\"\n\n");
 	
-			outputText("The feisty redhead happily helps you back into your " + player.armorName + " and gives you an unceremonious smack on the " + player.buttDescript() + " before saying her goodbyes, \"<i>Come back soon, " + player.short + "!  You are quite the " + player.mf("man","woman") + ", even if your tasty penis is tiny.  Oh don't look like that, it makes such tasty salt-milk!  I'll lick it up any time.  Now go, I'm sure you have much to do!</i>\"\n\n");
+			outputText("The feisty redhead happily helps you back into your " + player.armorName + " and gives you an unceremonious smack on the " + player.buttDescript() + " before saying her goodbyes, \"<i>Come back soon, " + player.short + "!  You are quite the " + player.mf("man","woman") + ", even if your tasty penis is tiny.  Oh don't look like that, it makes such tasty salt-milk!  I'll lick it up any time.  Now go, I'm sure you have much to do!</i>\"");
 		}
 	}
 	//(High sensitivity fail!) 
@@ -601,12 +601,12 @@ public function izzyGivesSmallWangsFreeOral():void {
 		if (isabellaAccent()) {
 			outputText("You sigh nervelessly as the cow-girl waggles her tongue at you teasingly, making your " + player.cockDescript(x) + " jump from the memory of pleasure.  The redhead moans, \"<i>Oooh I knew it!  You are a pervert!  I just vanted to do a little licking and you got me all vet with your salty... mmm... cream.</i>\"  She pauses to lick her lips again before giving a gentle moo of contentment.  At least she doesn't seem mad at you!\n\n");
 		
-			outputText("The tanned woman looks down at you with disappointment and says, \"<i>You should get going, my tiny-cocked, pervert friend.  Perhaps you vill have some sex and learn how not to submit at ze first hint of pleasure?</i>\"  You go red with indignation, but she fondles your half-limp " + player.cockDescript(x) + " the entire time, a knowing smile spread across her lips.  Isabella helps you get dressed and gives you a firm smack on the " + player.buttDescript() + " as she says goodbye, \"<i>Don't change too much " + player.mf("boy","maid") + "!  I just hope ven you come back you've learned how not to cum ven I touch your buttons!</i>\"\n\n");
+			outputText("The tanned woman looks down at you with disappointment and says, \"<i>You should get going, my tiny-cocked, pervert friend.  Perhaps you vill have some sex and learn how not to submit at ze first hint of pleasure?</i>\"  You go red with indignation, but she fondles your half-limp " + player.cockDescript(x) + " the entire time, a knowing smile spread across her lips.  Isabella helps you get dressed and gives you a firm smack on the " + player.buttDescript() + " as she says goodbye, \"<i>Don't change too much " + player.mf("boy","maid") + "!  I just hope ven you come back you've learned how not to cum ven I touch your buttons!</i>\"");
 		}
 		else {
 			outputText("You sigh nervelessly as the cow-girl waggles her tongue at you teasingly, making your " + player.cockDescript(x) + " jump from the memory of pleasure.  The redhead moans, \"<i>Oooh I knew it!  You are a pervert!  I just wanted to do a little licking and you got me all wet with your salty... mmm... cream.</i>\"  She pauses to lick her lips again before giving a gentle moo of contentment.  At least she doesn't seem mad at you!\n\n");
 		
-			outputText("The tanned woman looks down at you with disappointment and says, \"<i>You should get going, my tiny-cocked, pervert friend.  Perhaps you will have some sex and learn how not to submit at the first hint of pleasure?</i>\"  You go red with indignation, but she fondles your half-limp " + player.cockDescript(x) + " the entire time, a knowing smile spread across her lips.  Isabella helps you get dressed and gives you a firm smack on the " + player.buttDescript() + " as she says goodbye, \"<i>Don't change too much " + player.mf("boy","maid") + "!  I just hope when you come back you've learned how not to cum when I touch your buttons!</i>\"\n\n");
+			outputText("The tanned woman looks down at you with disappointment and says, \"<i>You should get going, my tiny-cocked, pervert friend.  Perhaps you will have some sex and learn how not to submit at the first hint of pleasure?</i>\"  You go red with indignation, but she fondles your half-limp " + player.cockDescript(x) + " the entire time, a knowing smile spread across her lips.  Isabella helps you get dressed and gives you a firm smack on the " + player.buttDescript() + " as she says goodbye, \"<i>Don't change too much " + player.mf("boy","maid") + "!  I just hope when you come back you've learned how not to cum when I touch your buttons!</i>\"");
 		}
 	}
 	if (!isabellaFollower()) isabellaFollowerScene.isabellaAffection(2);

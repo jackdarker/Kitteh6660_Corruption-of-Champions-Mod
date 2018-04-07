@@ -147,6 +147,7 @@ package classes.Scenes.Areas.GlacialRift
 			this.short = "valkyrie";
 			this.imageName = "valkyrie";
 			this.long = "She is a tall, pale-skinned woman with long golden locks spilling out from beneath her bronze helm.  She would look almost human, if not for the massive, powerful wings sprouting from her back, stretching perhaps a dozen feet across.  She is wearing a heavy bronze cuirass which curves perfectly around her perky C-cups, and is wielding a spear and shield as her weapons.  She has assumed the stance of a well-trained and experienced combatant, leaving few openings for you to exploit.";
+			this.race = "Valkyrie";
 			// this.plural = false;
 			this.createVagina(false, 1, 1);
 			createBreastRow(Appearance.breastCupInverse("C"));
@@ -156,8 +157,7 @@ package classes.Scenes.Areas.GlacialRift
 			this.hips.rating = Hips.RATING_SLENDER;
 			this.butt.rating = Butt.RATING_TIGHT;
 			this.skin.tone = "light";
-			this.theSkinType = Skin.PLAIN;
-			//this.skin.desc = Appearance.Appearance.DEFAULT_SKIN_DESCS[Skin.FUR];
+			this.skin.setType(Skin.PLAIN);
 			this.hair.color = "white";
 			this.hair.length = 12;
 			initStrTouSpeInte(85, 70, 80, 60);
@@ -174,12 +174,11 @@ package classes.Scenes.Areas.GlacialRift
 			this.level = 18;
 			this.gems = 30;
 			this.drop = new WeightedDrop()
-					.add(weapons.SPEAR, 1)
-					.add(shields.GREATSH, 2)
-					.add(consumables.W__BOOK, 4)					
+					.add(weapons.SPEAR_0, 1)
+					.add(shields.GRTSHL0, 2)
+					.add(consumables.W__BOOK, 4)
 					.add(null, 18);
-			this.theWingType = Wings.HARPY
-			this.wingDesc = "fluffy feathery"
+			this.wings.type = Wings.FEATHERED_LARGE;
 			this.special1 = spearAttack;
 			this.special2 = shieldBash;
 			this.special3 = aerialRave;

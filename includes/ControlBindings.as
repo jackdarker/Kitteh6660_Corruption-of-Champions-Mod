@@ -76,7 +76,7 @@ inputManager.AddBindableControl(
 	function():void {
 		if (mainView.getButtonText(1) == "No" && mainView.buttonIsVisible(1))
 		{
-			executeButtonClick(1);
+			mainView.clickButton(1);
 		}
 	});
 	
@@ -86,7 +86,7 @@ inputManager.AddBindableControl(
 	function():void {
 		if (mainView.getButtonText(0) == "Yes" && mainView.buttonIsVisible(0))
 		{
-			executeButtonClick(0);
+			mainView.clickButton(0);
 		}
 	});
 	
@@ -111,17 +111,17 @@ inputManager.AddBindableControl(
 			//	mainView.buttonIsVisible( 9 ) ? "(visible)" : "(hidden)",
 			//	mainView.getButtonText( 9 ) );
 			mainView.toolTipView.hide();
-			executeButtonClick(9);
+			mainView.clickButton(9);
 			return;
 		}
 		// Button 14
-		if (kGAMECLASS.buttonIsVisible(14) && kGAMECLASS.buttonTextIsOneOf(14, [ "Nevermind", "Abandon", "Next", "Return", "Back", "Leave", "Resume" ]))
+		if (kGAMECLASS.output.buttonIsVisible(14) && kGAMECLASS.output.buttonTextIsOneOf(14, [ "Nevermind", "Abandon", "Next", "Return", "Back", "Leave", "Resume" ]))
 		{
 			//trace( "keyboard(): processing space bar for button 9",
 			//	mainView.buttonIsVisible( 9 ) ? "(visible)" : "(hidden)",
 			//	mainView.getButtonText( 9 ) );
 			mainView.toolTipView.hide();
-			executeButtonClick(14);
+			mainView.clickButton(14);
 			return;
 		}		
 		// Button 0
@@ -131,7 +131,7 @@ inputManager.AddBindableControl(
 			//	mainView.buttonIsVisible( 0 ) ? "(visible)" : "(hidden)",
 			//	mainView.getButtonText( 0 ) );
 			mainView.toolTipView.hide();
-			executeButtonClick(0);
+			mainView.clickButton(0);
 			return;
 		}
 		
@@ -142,7 +142,7 @@ inputManager.AddBindableControl(
 			//	mainView.buttonIsVisible( 4 ) ? "(visible)" : "(hidden)",
 			//	mainView.getButtonText( 4 ) );
 			mainView.toolTipView.hide();
-			executeButtonClick(4);
+			mainView.clickButton(4);
 			return;
 		}
 		
@@ -153,7 +153,7 @@ inputManager.AddBindableControl(
 			//	mainView.buttonIsVisible( 5 ) ? "(visible)" : "(hidden)",
 			//	mainView.getButtonText( 5 ) );
 			mainView.toolTipView.hide();
-			executeButtonClick(5);
+			mainView.clickButton(5);
 			return;
 		}
 	});
@@ -185,7 +185,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(0))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(0);
+			mainView.clickButton(0);
 		}
 	});
 
@@ -196,7 +196,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(1))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(1);
+			mainView.clickButton(1);
 		}
 	});
 	
@@ -207,7 +207,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(2))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(2);
+			mainView.clickButton(2);
 		}
 	});
 	
@@ -218,7 +218,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(3))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(3);
+			mainView.clickButton(3);
 		}
 	});
 	
@@ -229,7 +229,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(4))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(4);
+			mainView.clickButton(4);
 		}
 	});
 	
@@ -240,7 +240,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(5))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(5);
+			mainView.clickButton(5);
 		}
 	});
 	
@@ -251,7 +251,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(6))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(6);
+			mainView.clickButton(6);
 		}
 	});
 	
@@ -262,7 +262,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(7))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(7);
+			mainView.clickButton(7);
 		}
 	});
 	
@@ -273,7 +273,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(8))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(8);
+			mainView.clickButton(8);
 		}
 	});
 	
@@ -284,7 +284,7 @@ inputManager.AddBindableControl(
 		if (mainView.buttonIsVisible(9))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(9);
+			mainView.clickButton(9);
 		}
 	});
 	
@@ -293,50 +293,50 @@ inputManager.AddBindableControl(
 	"Button 11",
 	"Activate button 11",
 	function():void {
-		if (kGAMECLASS.buttonIsVisible(10))
+		if (kGAMECLASS.output.buttonIsVisible(10))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(10);
+			mainView.clickButton(10);
 		}
 	});
 inputManager.AddBindableControl(
 	"Button 12",
 	"Activate button 12",
 	function():void {
-		if (kGAMECLASS.buttonIsVisible(11))
+		if (kGAMECLASS.output.buttonIsVisible(11))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(11);
+			mainView.clickButton(11);
 		}
 	});
 inputManager.AddBindableControl(
 	"Button 13",
 	"Activate button 13",
 	function():void {
-		if (kGAMECLASS.buttonIsVisible(12))
+		if (kGAMECLASS.output.buttonIsVisible(12))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(12);
+			mainView.clickButton(12);
 		}
 	});
 inputManager.AddBindableControl(
 	"Button 14",
 	"Activate button 14",
 	function():void {
-		if (kGAMECLASS.buttonIsVisible(13))
+		if (kGAMECLASS.output.buttonIsVisible(13))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(13);
+			mainView.clickButton(13);
 		}
 	});
 inputManager.AddBindableControl(
 	"Button 15",
 	"Activate button 15",
 	function():void {
-		if (kGAMECLASS.buttonIsVisible(14))
+		if (kGAMECLASS.output.buttonIsVisible(14))
 		{
 			mainView.toolTipView.hide();
-			executeButtonClick(14);
+			mainView.clickButton(14);
 		}
 	});
 inputManager.AddBindableControl(

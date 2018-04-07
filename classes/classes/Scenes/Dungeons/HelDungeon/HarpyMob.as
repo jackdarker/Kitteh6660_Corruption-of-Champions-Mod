@@ -81,6 +81,7 @@ package classes.Scenes.Dungeons.HelDungeon
 			this.short = "harpy horde";
 			this.imageName = "harpymob";
 			this.long = "You are surrounded by a wing of particularly large and muscular harpies, perhaps a dozen of them in total.  All of them are clad in simple brown shifts that give them good camouflage in the mountains, and are using their talon-like claws as weapons against you. While not a great threat to a champion of your ability individually, a whole brood of them together is... something else entirely.";
+			this.race = "Harpies";
 			this.plural = true;
 			this.pronoun1 = "they";
 			this.pronoun2 = "them";
@@ -94,7 +95,7 @@ package classes.Scenes.Dungeons.HelDungeon
 			this.butt.rating = Butt.RATING_LARGE;
 			this.lowerBody.type = LowerBody.HARPY;
 			this.skin.tone = "red";
-			this.theSkinType = Skin.PLAIN;
+			this.skin.type = Skin.PLAIN;
 			this.skin.desc = "feathers";
 			this.hair.color = "black";
 			this.hair.length = 15;

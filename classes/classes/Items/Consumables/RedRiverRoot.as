@@ -43,6 +43,7 @@ package classes.Items.Consumables
 			if (player.findPerk(PerkLib.TransformationResistance) >= 0) changeLimit--;
 
 			clearOutput();
+			credits.authorText = "Coalsack";
 			outputText("Having bought that odd-looking root on the bakery, you give it a try, only to face the mildly spicy taste"
 			          +" of the transformative. Still, it has a rich flavour and texture, but soon that becomes secondary,"
 			          +" as you realize that the foreign rhizome is changing your body!");
@@ -302,13 +303,13 @@ package classes.Items.Consumables
 
 			// Hair
 			// store current states first
-			var hasPandaHairColor:Boolean = ColorLists.redPandaHairColors.indexOf(player.hair.color) !== -1;
+			var hasPandaHairColor:Boolean = ColorLists.RED_PANDA_HAIR.indexOf(player.hair.color) !== -1;
 			var hasNormalHair:Boolean = player.hair.type === Hair.NORMAL;
 			var oldHairType:Number = player.hair.type;
 			if ((!hasNormalHair || player.hair.length === 0 || !hasPandaHairColor) && changes < changeLimit && rand(3) === 0) {
 				player.hair.type = Hair.NORMAL;
 				if (!hasPandaHairColor)
-					player.hair.color = randomChoice(ColorLists.redPandaHairColors);
+					player.hair.color = randomChoice(ColorLists.RED_PANDA_HAIR);
 
 				if (player.hair.length === 0) { // player is bald
 					player.hair.length = 1;
@@ -385,8 +386,7 @@ package classes.Items.Consumables
 				          +" Your hands gain pink, padded paws where your palms were once, and your nails become short claws,"
 				          +" not sharp enough to tear flesh, but nimble enough to make climbing and exploring much easier."
 				          +" <b>Your arms have become like those of  a red-panda!</b>");
-				player.arms.type = Arms.RED_PANDA;
-				mutations.updateClaws(Claws.RED_PANDA);
+				player.arms.setType(Arms.RED_PANDA, Claws.RED_PANDA);
 			}
 
 			// Legs
@@ -557,7 +557,7 @@ package classes.Items.Consumables
 				} else {
 					outputText("\n\nDespite how spicy it was, the root was nevertheless nutritious, as you can confirm by feeling how your body feels"
 					          +" now much more invigorated.\n");
-					game.HPChange(250, true);
+					player.HPChange(250, true);
 					dynStats("lus", 3);
 				}
 			}

@@ -16,7 +16,7 @@ package classes.Scenes.NPCs
 		//Implementation of TimeAwareInterface
 		public function timeChange():Boolean
 		{
-			if (model.time.hours > 23) {
+			if (getGame().time.hours > 23) {
 				if (vapulaSlave() && flags[kFLAGS.FOLLOWER_AT_FARM_VAPULA] == 0) {
 					if (flags[kFLAGS.VAPULA_HAREM_FUCK] == 0) flags[kFLAGS.VAPULA_DAYS_SINCE_FED]++;
 					else flags[kFLAGS.VAPULA_DAYS_SINCE_FED] = 0;
@@ -33,11 +33,11 @@ package classes.Scenes.NPCs
 	
 		public function timeChangeLarge():Boolean {
 			if (prison.inPrison || flags[kFLAGS.IN_INGNAM] > 0) return false;
-			if (flags[kFLAGS.VAPULA_FOLLOWER] >= 2.5 && model.time.hours == 6 && flags[kFLAGS.FOLLOWER_AT_FARM_VAPULA] == 0) {
+			if (flags[kFLAGS.VAPULA_FOLLOWER] >= 2.5 && getGame().time.hours == 6 && flags[kFLAGS.FOLLOWER_AT_FARM_VAPULA] == 0) {
 				femaleVapulaRecruitmentPartII();
 				return true;
 			}
-			if (model.time.hours == 2 && vapulaSlave() && flags[kFLAGS.FOLLOWER_AT_FARM_VAPULA] == 0 && flags[kFLAGS.VAPULA_DAYS_SINCE_FED] >= 5 && (player.hasCock() || (player.hasKeyItem("Demonic Strap-On") >= 0 && player.hasVagina()))) {
+			if (getGame().time.hours == 2 && vapulaSlave() && flags[kFLAGS.FOLLOWER_AT_FARM_VAPULA] == 0 && flags[kFLAGS.VAPULA_DAYS_SINCE_FED] >= 5 && (player.hasCock() || (player.hasKeyItem("Demonic Strap-On") >= 0 && player.hasVagina()))) {
 				vapulaForceFeeds();
 				return true;
 			}

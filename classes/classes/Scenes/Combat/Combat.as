@@ -1,25 +1,25 @@
 ﻿//Combat 2.0
 package classes.Scenes.Combat 
 {
-import classes.*;
-import classes.BodyParts.*;
-import classes.GlobalFlags.*;
-import classes.Items.*;
-import classes.Scenes.Areas.Desert.*;
-import classes.Scenes.Areas.Forest.*;
-import classes.Scenes.Areas.GlacialRift.*;
-import classes.Scenes.Areas.HighMountains.*;
-import classes.Scenes.Areas.Mountain.*;
-import classes.Scenes.Dungeons.HelDungeon.*;
-import classes.Scenes.Dungeons.LethicesKeep.*;
-import classes.Scenes.Monsters.*;
-import classes.Scenes.NPCs.*;
-import classes.Scenes.Places.TelAdre.UmasShop;
-import classes.display.SpriteDb;
+	import classes.*;
+	import classes.BodyParts.*;
+	import classes.GlobalFlags.*;
+	import classes.Items.*;
+	import classes.Scenes.Areas.Desert.*;
+	import classes.Scenes.Areas.Forest.*;
+	import classes.Scenes.Areas.GlacialRift.*;
+	import classes.Scenes.Areas.HighMountains.*;
+	import classes.Scenes.Areas.Mountain.*;
+	import classes.Scenes.Dungeons.HelDungeon.*;
+	import classes.Scenes.Dungeons.LethicesKeep.*;
+	import classes.Scenes.Monsters.*;
+	import classes.Scenes.NPCs.*;
+	import classes.Scenes.Places.TelAdre.UmasShop;
+	import classes.display.SpriteDb;
 
-import coc.view.MainView;
+	import coc.view.MainView;
 
-public class Combat extends BaseContent
+	public class Combat extends BaseContent
 	{
 		public function Combat() {}
 		
@@ -45,15 +45,19 @@ public class Combat extends BaseContent
 		
 		//Victory & Loss
 		public function endHpVictory():void { 
+			mainView.endCombatView();
 			monster.defeated_(true);
 		}
 		public function endLustVictory():void {
+			mainView.endCombatView();
 			monster.defeated_(false);
 		}
 		public function endHpLoss():void {
+			mainView.endCombatView();
 			monster.won_(true,false);
 		}
 		public function endLustLoss():void {
+			mainView.endCombatView();
 			if (player.hasStatusEffect(StatusEffects.Infested) && flags[kFLAGS.CAME_WORMS_AFTER_COMBAT] == 0) {
 				flags[kFLAGS.CAME_WORMS_AFTER_COMBAT] = 1;
 				getGame().mountain.wormsScene.infestOrgasm();
@@ -66,6 +70,7 @@ public class Combat extends BaseContent
 		//Combat is over. Clear shit out and go to main. Also given different name to avoid conflicts with BaseContent.
 		public function cleanupAfterCombat(nextFunc:Function = null):void {
 			combatAbilities.fireMagicLastTurn = -100;
+			mainView.endCombatView();
 			if (nextFunc == null) nextFunc = camp.returnToCampUseOneHour;
 			if (prison.inPrison && prison.prisonCombatWinEvent != null) nextFunc = prison.prisonCombatWinEvent;
 			if (inCombat) {
@@ -88,7 +93,6 @@ public class Combat extends BaseContent
 						outputText("\n\nYou have to lean on Isabella's shoulder while the two of your hike back to camp.  She clearly won.");
 						inCombat = false;
 						player.HP = 1;
-						statScreenRefresh();
 						doNext(nextFunc);
 						return;
 					}
@@ -96,13 +100,11 @@ public class Combat extends BaseContent
 					if (monster.hasStatusEffect(StatusEffects.PeachLootLoss)) {
 						inCombat = false;
 						player.HP = 1;
-						statScreenRefresh();
 						return;
 					}
 					if (monster.short == "Ember") {
 						inCombat = false;
 						player.HP = 1;
-						statScreenRefresh();
 						doNext(nextFunc);
 						return;
 					}
@@ -240,7 +242,6 @@ public class Combat extends BaseContent
 			hideUpDown();
 			if (newRound) combatStatusesUpdate(); //Update Combat Statuses
 			display();
-			statScreenRefresh();
 		//This is now automatic - newRound arg defaults to true:	menuLoc = 0;
 			if (combatRoundOver()) return;
 			menu();
@@ -264,7 +265,8 @@ public class Combat extends BaseContent
 			addButton(7, "Wait", wait).hint("Take no action for this round.  Why would you do this?  This is a terrible idea.");
 			if (monster.hasStatusEffect(StatusEffects.Level)) addButton(7, "Climb", wait).hint("Climb the sand to move away from the sand trap.");
 			addButton(8, "Fantasize", fantasize).hint("Fantasize about your opponent in a sexual way.  Its probably a pretty bad idea to do this unless you want to end up getting raped.");
-			if (CoC_Settings.debugBuild && !debug) addButton(9, "Inspect", debugInspect).hint("Use your debug powers to inspect your enemy.");
+			//addButton(9, "Defend", defend).hint("Selecting defend will reduce the damage you take by 66 percent, but will not affect any lust incurred by your enemy's actions.");
+			if (CoC_Settings.debugBuild && !debug) addButton(14, "Inspect", debugInspect).hint("Use your debug powers to inspect your enemy.");
 			//Modify menus.
 			if (monster.hasStatusEffect(StatusEffects.AttackDisabled)) {
 				if (monster.short == "minotaur lord") {
@@ -379,7 +381,6 @@ public class Combat extends BaseContent
 					else outputText(monster.capitalA + monster.short + " <b>mutilates</b> you with powerful fists and " + monster.weaponVerb + "s! ");
 					takeDamage(temp, true);
 				}
-				statScreenRefresh();
 				outputText("\n");
 			}
 			combatRoundOver();
@@ -654,7 +655,7 @@ public class Combat extends BaseContent
 			if (lustDmg >= 20) outputText("The fantasy is so vivid and pleasurable you wish it was happening now.  You wonder if " + monster.a + monster.short + " can tell what you were thinking.\n\n");
 			else outputText("\n");
 			player.takeLustDamage(lustDmg, true, false);
-			if (player.lust >= player.maxLust()) {
+			if (player.lust >= player.maxLust()) { //Bypasses Indefatigable perk.
 				if (monster.short == "pod") {
 					outputText("<b>You nearly orgasm, but the terror of the situation reasserts itself, muting your body's need for release.  If you don't escape soon, you have no doubt you'll be too fucked up to ever try again!</b>");
 					player.lust = 99;
@@ -747,7 +748,7 @@ public class Combat extends BaseContent
 				//basilisk counter attack (block attack, significant speed loss): 
 				else if (player.inte / 5 + rand(20) < 25) {
 					outputText("Holding the basilisk in your peripheral vision, you charge forward to strike it.  Before the moment of impact, the reptile shifts its posture, dodging and flowing backward skillfully with your movements, trying to make eye contact with you. You find yourself staring directly into the basilisk's face!  Quickly you snap your eyes shut and recoil backwards, swinging madly at the lizard to force it back, but the damage has been done; you can see the terrible grey eyes behind your closed lids, and you feel a great weight settle on your bones as it becomes harder to move.");
-					Basilisk.speedReduce(player,20);
+					StareMonster.speedReduce(player,20);
 					player.removeStatusEffect(StatusEffects.FirstAttack);
 					combatRoundOver();
 					flags[kFLAGS.BASILISK_RESISTANCE_TRACKER] += 2;
@@ -770,7 +771,7 @@ public class Combat extends BaseContent
 					temp = int(player.str/5 - rand(5));
 					if (temp == 0) temp = 1;
 					outputText("You strike at the amalgamation, crushing countless worms into goo, dealing <b><font color=\"" + mainViewManager.colorHpMinus() + "\">" + temp + "</font></b> damage.\n\n");
-					monster.HP -= temp;
+					doDamage(temp, true, false);
 					if (monster.HP <= 0) {
 						doNext(endHpVictory);
 						return;
@@ -790,7 +791,11 @@ public class Combat extends BaseContent
 			
 			var damage:Number = 0;
 			//Determine if dodged!
-			if ((player.hasStatusEffect(StatusEffects.Blind) && rand(2) == 0) || (monster.spe - player.spe > 0 && int(Math.random() * (((monster.spe-player.spe) / 4) + 80)) > 80)) {
+			var dodgeChanceFactor:Number = 80;
+			//Handle War Dance dodge chance loss for enemys
+			if (player.weapon === WeaponLib.FISTS && player.hasPerk(PerkLib.WarDance))
+				dodgeChanceFactor /= 0.8; // -20% less chance for monsters to dodge you
+			if ((player.hasStatusEffect(StatusEffects.Blind) && rand(2) == 0) || (monster.spe - player.spe > 0 && int(Math.random() * (((monster.spe-player.spe) / 4) + 80)) > dodgeChanceFactor)) {
 				//Akbal dodges special education
 				if (monster.short == "Akbal") outputText("Akbal moves like lightning, weaving in and out of your furious strikes with the speed and grace befitting his jaguar body.\n");
 				else if (monster.short == "plain girl") outputText("You wait patiently for your opponent to drop her guard. She ducks in and throws a right cross, which you roll away from before smacking your " + player.weaponName + " against her side. Astonishingly, the attack appears to phase right through her, not affecting her in the slightest. You glance down to your " + player.weaponName + " as if betrayed.\n");
@@ -854,6 +859,9 @@ public class Combat extends BaseContent
 			if (damage < 10) damage = 10;
 			//Bonus sand trap damage!
 			if (monster.hasStatusEffect(StatusEffects.Level)) damage = Math.round(damage * 1.75);
+			// Handle War Dance extra damage
+			if (player.weapon === WeaponLib.FISTS && player.hasPerk(PerkLib.WarDance))
+				damage *= 1.15;
 			//Determine if critical hit!
 			var crit:Boolean = combatCritical();
 			if (crit)
@@ -953,13 +961,18 @@ public class Combat extends BaseContent
 				if (monster.armorDef - 10 > 0) monster.armorDef -= 10;
 				else monster.armorDef = 0;
 			}
-			//Damage cane.
-			if (player.weapon == weapons.HNTCANE) {
-				flags[kFLAGS.ERLKING_CANE_ATTACK_COUNTER]++;
-				//Break cane
-				if (flags[kFLAGS.ERLKING_CANE_ATTACK_COUNTER] >= 10 && rand(20) == 0) {
-					outputText("\n<b>The cane you're wielding finally snaps! It looks like you won't be able to use it anymore.</b>");
-					player.setWeapon(WeaponLib.FISTS);
+			//Damage weapon.
+			if (player.weapon.isDegradable()) {
+				flags[kFLAGS.WEAPON_DURABILITY_DAMAGE]++;
+				if (flags[kFLAGS.WEAPON_DURABILITY_DAMAGE] >= player.weapon.durability) {
+					//Text for weapon breaking
+					if (player.weapon.isObsidian()) 
+						outputText("\n<b>After sustained use, the obsidian that used to enhance your weapon has finally crumbled, leaving you with the masterwork weapon.</b>");
+					else if (player.weapon == weapons.HNTCANE) 
+						outputText("\n<b>The cane you're wielding finally snaps! It looks like you won't be able to use it anymore.</b>");
+					//Set weapon accordingly	
+					if (player.weapon.degradesInto != null)	player.setWeapon(player.weapon.degradesInto as Weapon);
+					else player.setWeapon(WeaponLib.FISTS);
 				}
 			}
 			if (damage > 0) {
@@ -1038,13 +1051,11 @@ public class Combat extends BaseContent
 				if (player.lust100 <= 30)
 				{
 					outputText("\n\nJean-Claude doesn’t even budge when you wade into him with your [weapon].");
-
 					outputText("\n\n“<i>Why are you attacking me, slave?</i>” he says. The basilisk rex sounds genuinely confused. His eyes pulse with hot, yellow light, reaching into you as he opens his arms, staring around as if begging the crowd for an explanation. “<i>You seem lost, unable to understand, lashing out at those who take care of you. Don’t you know who you are? Where you are?</i>” That compulsion in his eyes, that never-ending heat, it’s... it’s changing things. You need to finish this as fast as you can.");
 				}
 				else if (player.lust100 <= 50)
 				{
 					outputText("\n\nAgain your [weapon] thumps into Jean-Claude. Again it feels wrong. Again it sends an aching chime through you, that you are doing something that revolts your nature.");
-
 					outputText("\n\n“<i>Why are you fighting your master, slave?</i>” he says. He is bigger than he was before. Or maybe you are smaller. “<i>You are confused. Put your weapon down- you are no warrior, you only hurt yourself when you flail around with it. You have forgotten what you were trained to be. Put it down, and let me help you.</i>” He’s right. It does hurt. Your body murmurs that it would feel so much better to open up and bask in the golden eyes fully, let it move you and penetrate you as it may. You grit your teeth and grip your [weapon] harder, but you can’t stop the warmth the hypnotic compulsion is building within you.");
 				}
 				else if (player.lust100 <= 80)
@@ -1076,6 +1087,7 @@ public class Combat extends BaseContent
 				if (monster.HP <= 0) doNext(endHpVictory);
 				else doNext(endLustVictory);
 			}
+			
 		}
 		
 		public function combatMiss():Boolean {
@@ -1104,7 +1116,7 @@ public class Combat extends BaseContent
 			if (player.findPerk(PerkLib.ShieldMastery) >= 0 && player.tou >= 50) blockChance += (player.tou - 50) / 5;
 			if (blockChance < 10) blockChance = 10;
 			//Fatigue limit
-			var fatigueLimit:int = player.maxFatigue() - player.physicalCost(10);;
+			var fatigueLimit:int = player.maxFatigue() - player.physicalCost(10);
 			if (blockChance >= (rand(100) + 1) && player.fatigue <= fatigueLimit && player.shieldName != "nothing") {
 				if (doFatigue) player.changeFatigue(10, 2);
 				return true;
@@ -1199,7 +1211,7 @@ public class Combat extends BaseContent
 					if (rand(2) == 0) {
 						//50% breakage!
 						if (rand(2) == 0) {
-							itype = weapons.L__AXE;
+							itype = weapons.L__AXE0;
 							if (player.tallness < 78 && player.str < 90) {
 								outputText("\nYou find a large axe on the minotaur, but it is too big for a person of your stature to comfortably carry.  ");
 								if (rand(2) == 0) itype = null;
@@ -1462,7 +1474,7 @@ public class Combat extends BaseContent
 			}
 			//Basilisk compulsion
 			if (player.hasStatusEffect(StatusEffects.BasiliskCompulsion)) {
-				Basilisk.speedReduce(player,15);
+				StareMonster.speedReduce(player,15);
 				//Continuing effect text: 
 				outputText("<b>You still feel the spell of those grey eyes, making your movements slow and difficult, the remembered words tempting you to look into its eyes again. You need to finish this fight as fast as your heavy limbs will allow.</b>\n\n");
 				flags[kFLAGS.BASILISK_RESISTANCE_TRACKER]++;
@@ -1477,7 +1489,7 @@ public class Combat extends BaseContent
 					var bleed:Number = (2 + rand(4))/100;
 					bleed *= player.HP;
 					bleed = takeDamage(bleed);
-					outputText("<b>You gasp and wince in pain, feeling fresh blood pump from your wounds. (<font color=\"" + mainViewManager.colorHpMinus() + "\">" + temp + "</font>)</b>\n\n");
+					outputText("<b>You gasp and wince in pain, feeling fresh blood pump from your wounds. " + getDamageText(bleed) + "</b>\n\n");
 				}
 			}
 			if (player.hasStatusEffect(StatusEffects.AcidSlap)) {
@@ -1714,7 +1726,7 @@ public class Combat extends BaseContent
 				if (player.armor == armors.GOOARMR) healingPercent += (getGame().valeria.valeriaFluidsEnabled() ? (flags[kFLAGS.VALERIA_FLUIDS] < 50 ? flags[kFLAGS.VALERIA_FLUIDS] / 25 : 2) : 2);
 				if (player.jewelry.effectId == JewelryLib.MODIFIER_REGENERATION) healingBonus += player.jewelry.effectMagnitude;
 				if (healingPercent > 5) healingPercent = 5;
-				HPChange(Math.round(player.maxHP() * healingPercent / 100) + healingBonus, false);
+				player.HPChange(Math.round(player.maxHP() * healingPercent / 100) + healingBonus, false);
 			}
 			else {
 				//Regeneration
@@ -1728,7 +1740,7 @@ public class Combat extends BaseContent
 				if (player.armorName == "goo armor") healingPercent += (getGame().valeria.valeriaFluidsEnabled() ? (flags[kFLAGS.VALERIA_FLUIDS] < 50 ? flags[kFLAGS.VALERIA_FLUIDS] / 16 : 3) : 3);
 				if (player.findPerk(PerkLib.LustyRegeneration) >= 0) healingPercent += 2;
 				if (healingPercent > 10) healingPercent = 10;
-				HPChange(Math.round(player.maxHP() * healingPercent / 100), false);
+				player.HPChange(Math.round(player.maxHP() * healingPercent / 100), false);
 			}
 		}
 		
@@ -1744,7 +1756,6 @@ public class Combat extends BaseContent
 			//Flag the game as being "in combat"
 			inCombat = true;
 			monster = monster_;
-			
 			//Set image once, at the beginning of combat
 			if (monster.imageName != "")
 			{
@@ -1798,6 +1809,7 @@ public class Combat extends BaseContent
 		}
 		
 		public function display():void {
+			mainView.updateCombatView();
 			if (!monster.checkCalled){
 				outputText("<B>/!\\BUG! Monster.checkMonster() is not called! Calling it now...</B>\n");
 				monster.checkMonster();
@@ -1812,7 +1824,6 @@ public class Combat extends BaseContent
 			//hpDisplay = "(<b>" + String(int(math * 1000) / 10) + "% HP</b>)";
 			hpDisplay   = Math.floor(monster.HP) + " / " + monster.maxHP() + " (" + floor(math*100,1) + "%)";
 			lustDisplay = Math.floor(monster.lust) + " / " + monster.maxLust();
-			;
 			//imageText set in beginCombat()
 			outputText(imageText);
 			
@@ -1849,10 +1860,12 @@ public class Combat extends BaseContent
 					else outputText("You see " + monster.pronoun1 + " is unsteady and close to death.  ");
 				}
 				showMonsterLust();
-				outputText("\n\n<b><u>" + capitalizeFirstLetter(monster.short) + "'s Stats</u></b>\n")
-				outputText("Level: " + monster.level + "\n");
-				outputText("HP: " + hpDisplay + "\n");
-				outputText("Lust: " + lustDisplay + "\n");
+				if (flags[kFLAGS.ENEMY_STATS_BARS_ENABLED] <= 0) {
+					outputText("\n\n<b><u>" + capitalizeFirstLetter(monster.short) + "'s Stats</u></b>\n")
+					outputText("Level: " + monster.level + "\n");
+					outputText("HP: " + hpDisplay + "\n");
+					outputText("Lust: " + lustDisplay + "\n");
+				}
 			}
 			if (debug){
 				outputText("\n----------------------------\n");
@@ -2011,7 +2024,6 @@ public class Combat extends BaseContent
 		//VICTORY OR DEATH?
 		public function combatRoundOver():Boolean { //Called after the monster's action. Given a different name to avoid conflicing with BaseContent.
 			combatRound++;
-			statScreenRefresh();
 			flags[kFLAGS.ENEMY_CRITICAL] = 0;
 			if (!inCombat) return false;
 			if (monster.HP < 1) {
@@ -2028,7 +2040,7 @@ public class Combat extends BaseContent
 					return true;
 				}
 			}
-			if (monster.short == "basilisk" && player.spe <= 1) {
+			if (monster is StareMonster && player.spe <= 1) {
 				doNext(endHpLoss);
 				return true;
 			}
@@ -2036,7 +2048,7 @@ public class Combat extends BaseContent
 				doNext(endHpLoss);
 				return true;
 			}
-			if (player.lust >= player.maxLust()) {
+			if (player.lust >= player.maxLust() && !player.hasPerk(PerkLib.Indefatigable)) {
 				doNext(endLustLoss);
 				return true;
 			}

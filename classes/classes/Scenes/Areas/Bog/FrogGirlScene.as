@@ -2,11 +2,17 @@ package classes.Scenes.Areas.Bog {
 	import classes.*;
 	import classes.BodyParts.*;
 	import classes.GlobalFlags.kFLAGS;
+	import classes.Scenes.VaginalPregnancy;
+	import classes.Scenes.PregnancyProgression;
 
-	public class FrogGirlScene extends BaseContent {
-
-	public function FrogGirlScene()
+	public class FrogGirlScene extends BaseContent implements VaginalPregnancy{
+		//TODO remove after PregnancyProgression cleanup
+		private var pregnancyProgression:PregnancyProgression; 
+		
+	public function FrogGirlScene(pregnancyProgression:PregnancyProgression)
 	{
+		this.pregnancyProgression = pregnancyProgression;
+		pregnancyProgression.registerVaginalPregnancyScene(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.PREGNANCY_FROG_GIRL, this);
 	}
 
 //const TIMES_ENCOUNTERED_FROG:int = 1017;
@@ -251,8 +257,37 @@ private function superBonusFrogEggsInYerCooch():void {
 	doNext(camp.returnToCampUseOneHour);
 }
 
+public function updateVaginalPregnancy():Boolean 
+{
+	var displayedUpdate:Boolean = false;
+	
+	if (player.pregnancyIncubation === 8) {
+		//Egg Maturing
+		if (player.hasVagina()) {
+			outputText("\nYour gut churns, and with a squelching noise, a torrent of transparent slime gushes from your [vagina].  You immediately fall to your knees, landing wetly amidst the slime.  The world around briefly flashes with unbelievable colors, and you hear someone giggling.\n\nAfter a moment, you realize that it’s you.");
+			//pussy:
+			if (player.hasVagina()) outputText("  Against your [vagina], the slime feels warm and cold at the same time, coaxing delightful tremors from your [clit].");
+			//[balls:
+			else if (player.balls > 0) outputText("  Slathered in hallucinogenic frog slime, your balls tingle, sending warm pulses of pleasure all the way up into your brain.");
+			//genderless: 
+			else outputText("  Your [vagina] begins twitching, aching for something to push through it over and over again.");
+			outputText("  Seated in your own slime, you moan softly, unable to keep your hands off yourself.");
+			dynStats("lus=", player.maxLust(), "scale", false);
+			displayedUpdate = true;
+		}
+		else {
+			outputText("\nYour gut churns, but after a moment it settles. Your belly does seem a bit bigger and more gravid afterward, like you're filling up with fluid without any possible vent. You suddenly wonder if losing your pussy was such a great idea.");
+			displayedUpdate = true;
+		}
+	}
+
+	return displayedUpdate;
+}
+
 //Vaginal Egg birth
-public function layFrogEggs():void {
+public function vaginalBirth():void {
+	this.pregnancyProgression.detectVaginalBirth(PregnancyStore.PREGNANCY_FROG_GIRL);
+	
 	//Picture is here
 	outputText(images.showImage("birth-froggirl-vag"));
 	if (player.vaginas.length == 0) {
