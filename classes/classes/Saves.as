@@ -90,14 +90,14 @@ public function loadSaveDisplay(saveFile:Object, slotName:String):String
 		holding += saveFile.data.short;
 		holding += "</b> - <i>" + saveFile.data.notes + "</i>\r";
 		holding += "    Days - " + saveFile.data.days + " | Gender - ";
-		if (saveFile.data.gender == 0)
-			holding += "U";
-		if (saveFile.data.gender == 1)
-			holding += "M";
-		if (saveFile.data.gender == 2)
-			holding += "F";
-		if (saveFile.data.gender == 3)
+		if (saveFile.data.cocks.length > 0 && saveFile.data.vaginas.length > 0)
 			holding += "H";
+		else if (saveFile.data.cocks.length > 0)
+			holding += "M";
+		else if (saveFile.data.vaginas.length > 0)
+			holding += "F";
+		else
+			holding += "U";
 		if (saveFile.data.flags != undefined) {
 			holding += " | Difficulty - ";
 			if (saveFile.data.flags[kFLAGS.GAME_DIFFICULTY] != undefined) { //Handles undefined
@@ -738,6 +738,11 @@ public function loadPermObject():void {
 			LOGGER.debug("PermObj internal versionID updated:{0}", getGame().permObjVersionID);
 		}
 	}
+	else { //Defaults certain settings for first-time startup.
+		flags[kFLAGS.IMAGEPACK_ENABLED] = 1;
+		flags[kFLAGS.SHOW_SPRITES_FLAG] = 2;
+		flags[kFLAGS.ANIMATE_STATS_BARS] = 1;
+	}
 }
 
 /*
@@ -919,6 +924,7 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		// </mod>
 		saveFile.data.wingType = player.wings.type;
 		saveFile.data.wingColor = player.wings.color;
+		saveFile.data.wingColor2 = player.wings.color2;
 		saveFile.data.lowerBody = player.lowerBody.type;
 		saveFile.data.legCount = player.lowerBody.legCount;
 		saveFile.data.tailType = player.tail.type;
@@ -1810,13 +1816,18 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 
 		player.wings.type = saveFile.data.wingType;
 		player.wings.color = saveFile.data.wingColor || "no";
+		player.wings.color2 = saveFile.data.wingColor2 || "no";
 		player.lowerBody.type = saveFile.data.lowerBody;
 		player.tail.type = saveFile.data.tailType;
 		player.tail.venom = saveFile.data.tailVenum;
 		player.tail.recharge = saveFile.data.tailRecharge;
 		player.hips.rating = saveFile.data.hipRating;
 		player.butt.rating = saveFile.data.buttRating;
-		
+
+		if (player.hasDragonWings() && (["", "no"].indexOf(player.wings.color) !== -1 || ["", "no"].indexOf(player.wings.color2) !== -1)) {
+			player.wings.color = player.skin.tone;
+			player.wings.color2 = player.skin.tone;
+		}
 
 		if (player.wings.type == 8) {
 			player.wings.restore();

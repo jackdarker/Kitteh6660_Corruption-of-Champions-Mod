@@ -25,6 +25,7 @@ package classes.Scenes.Areas {
 		public var erlkingScene:ErlKingScene = new ErlKingScene();
 //		public var dullahanScene:DullahanScene = new DullahanScene(); //[INTERMOD:8chan]
 		public var dryadScene:DryadScene = new DryadScene();
+		public var aikoScene:AikoScene = new AikoScene();
 
 		public function Forest(pregnancyProgression:PregnancyProgression, output:GuiOutput) {
 			this.beeGirlScene = new BeeGirlScene(pregnancyProgression, output);

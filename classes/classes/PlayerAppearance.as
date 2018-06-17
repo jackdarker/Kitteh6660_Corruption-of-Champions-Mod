@@ -553,9 +553,13 @@ package classes
 			if (player.wings.type == Wings.FEATHERED_LARGE) 
 				outputText("  A pair of large, feathery wings sprout from your back.  Though you usually keep the " + player.wings.color + "-colored wings folded close, they can unfurl to allow you to soar as gracefully as a harpy.");
 			if (player.wings.type == Wings.DRACONIC_SMALL) 
-				outputText("  Small, vestigial wings sprout from your shoulders.  They might look like bat's wings, but the membranes are covered in fine, delicate scales.");
+				outputText("  Small, vestigial wings sprout from your shoulders. They might look like bat wings,"
+				          +" but the membranes are covered in fine, delicate [wingColor] scales supported by [wingColor2] bones.");
 			else if (player.wings.type == Wings.DRACONIC_LARGE) 
-				outputText("  Magnificent wings sprout from your shoulders.  When unfurled they stretch further than your arm span, and a single beat of them is all you need to set out toward the sky.  They look a bit like bat's wings, but the membranes are covered in fine, delicate scales and a wicked talon juts from the end of each bone.");
+				outputText("  Magnificent wings sprout from your shoulders. When unfurled they stretch further than your arm span,"
+				          +" and a single beat of them is all you need to set out toward the sky. They look a bit like bat wings,"
+				          +" but the membranes are covered in fine, delicate [wingColor] scales supported by [wingColor2] bones."
+				          +" A wicked talon juts from the end of each bone.");
 			else if (player.wings.type == Wings.GIANT_DRAGONFLY) 
 				outputText("  Giant dragonfly wings hang from your shoulders.  At a whim, you could twist them into a whirring rhythm fast enough to lift you off the ground and allow you to fly.");
 
@@ -626,6 +630,18 @@ package classes
 					          +" [if (hasFurryUnderBody)[underBody.furColor]|brown-black] fur from elbows to paws."
 					          +" The latter have cute, pink paw pads and short claws.");
 					break;
+
+				case Arms.DOG:
+					outputText("  Soft, [hairOrFurColor] fluff covers your arms. Your paw-like hands have cute, pink paw pads and short claws."
+					          +" They should assist you walking on all [if (isTaur)sixs|fours]"
+					          +" just like the hellhounds you saw lurking in the mountains.");
+					break;
+
+				case Arms.CAT:
+				case Arms.FOX:
+					outputText("  Soft, [hairOrFurColor] fluff covers your arms. Your paw-like hands have cute, pink paw pads and [claws].");
+					break;
+
 				default:
 					//Nothing here, move along!
 			}

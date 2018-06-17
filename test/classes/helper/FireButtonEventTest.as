@@ -1,6 +1,7 @@
 package classes.helper
 {
 	import org.flexunit.asserts.*;
+	import org.flexunit.Assert;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.*;
 	import org.hamcrest.number.*;
@@ -57,11 +58,16 @@ package classes.helper
 		
 		[Test]
 		public function buttonEventTriggered():void {
-			kGAMECLASS.addButton(TEST_BUTTON_INDEX, TEST_BUTTON_TEXT, setFlagEvent);
+			try {
+				kGAMECLASS.addButton(TEST_BUTTON_INDEX, TEST_BUTTON_TEXT, setFlagEvent);
+				
+				cut.fireButtonClick(TEST_BUTTON_INDEX);
+				
+				assertThat(eventTriggeredFlag, equalTo(true));
 			
-			cut.fireButtonClick(TEST_BUTTON_INDEX);
-			
-			assertThat(eventTriggeredFlag, equalTo(true));
+			} catch (error:Error) {
+				Assert.fail(error.getStackTrace());
+			}
 		}
 		
 		[Test]

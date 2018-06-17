@@ -1905,7 +1905,7 @@ package classes {
 						case Claws.SALAMANDER:
 						case Claws.CAT:
 						case Claws.DOG:
-						case Claws.RAPTOR:
+						case Claws.FOX:
 						case Claws.IMP:
 						case Claws.RED_PANDA:
 						default:
