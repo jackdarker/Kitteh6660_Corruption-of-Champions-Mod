@@ -253,6 +253,10 @@ import classes.StatusEffects.CombatStatusEffect;
 		public static const Vala:StatusEffectType = mk("vala");
 		public static const Vapula:StatusEffectType = mk("Vapula");
 		public static const WhipReady:StatusEffectType = mk("Whip Ready");
+		public static const AikoLustPrank:StatusEffectType = mk("Aiko sex prank");
+		public static const AikoHyper:StatusEffectType = mk("Aiko hyper attacks");
+		public static const AikoArcaneArcher:StatusEffectType = mk("Aiko archer attacks");
+		public static const YamataCanon:StatusEffectType = mk("Yamata Foxfire Canon");
 
 		//Plantgirl
 		public static const happy:StatusEffectType = mk("happy");
@@ -339,6 +343,8 @@ import classes.StatusEffects.CombatStatusEffect;
 		public static const MinotaurKingsTouch:StatusEffectType = mk("Minotaur Kings Touch", CombatStatusEffect);
 		public static const PigbysHands:StatusEffectType = mk("Pigbys Hands", CombatStatusEffect);
 		public static const WhipSilence:StatusEffectType = mk("Whip-Silence", CombatStatusEffect);
+		public static const AikoLightningArrow:StatusEffectType = mk("Aiko archer attacks", CombatStatusEffect);
+		public static const YamataEntwine:StatusEffectType = mk("Yamata Entwine", CombatStatusEffect);
 		public static const bound:StatusEffectType = mk("bound",CombatStatusEffect); //generic bound-effect v1: bound bodypart; v2: intensity  ; v3: ; v4:
 		//body-part bitmask: 0= all; 1=hands; 2=legs
 		/**
