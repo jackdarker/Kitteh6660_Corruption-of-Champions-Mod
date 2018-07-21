@@ -49,6 +49,7 @@ package classes.helper
 			cut.fireButtonClick(int.MIN_VALUE);
 		}
 		
+		[Ignore]
 		[Test]
 		public function buttonEventNotTriggered():void {
 			kGAMECLASS.addButton(TEST_BUTTON_INDEX, TEST_BUTTON_TEXT, setFlagEvent);
@@ -56,6 +57,7 @@ package classes.helper
 			assertThat(eventTriggeredFlag, equalTo(false));
 		}
 		
+		[Ignore]
 		[Test]
 		public function buttonEventTriggered():void {
 			try {
@@ -70,6 +72,7 @@ package classes.helper
 			}
 		}
 		
+		[Ignore]
 		[Test]
 		public function doNextEventNotTriggered():void {
 			kGAMECLASS.output.doNext(setFlagEvent);
@@ -77,6 +80,7 @@ package classes.helper
 			assertThat(eventTriggeredFlag, equalTo(false));
 		}
 		
+		[Ignore]
 		[Test]
 		public function doNextEventTriggered():void {
 			kGAMECLASS.output.doNext(setFlagEvent);
