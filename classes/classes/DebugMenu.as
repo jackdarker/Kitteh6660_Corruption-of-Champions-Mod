@@ -718,7 +718,23 @@ package classes
 			addButton(12,"HairLength",changeHairLength);
 			addButton(14, "Back", bodyPartEditorRoot);
 		}
-
+		
+		private static const COLOR_CONSTANTS:Array = [
+			"albino", "aqua", "ashen", "auburn", "black", "blond", "blonde", "blue", "bronzed", "brown", "caramel",
+			"cerulean", "chocolate", "crimson", "crystal", "dark", "dusky", "ebony", "emerald", "fair",
+			"golden", "gray", "green", "indigo", "light", "mahogany", "metallic", "midnight", "olive", "orange",
+			"peach", "pink", "purple", "red", "russet", "sable", "sanguine", "silky", "silver",
+			"tan", "tawny", "turquoise", "white", "yellow",
+			"aphotic blue-black", "ashen grayish-blue", "creamy-white", "crimson platinum",
+			"dark blue", "dark gray", "dark green", "deep blue", "deep red",
+			"ghostly pale", "glacial white", "golden blonde", "grayish-blue", "iridescent gray",
+			"leaf green", "light blonde", "light blue", "light gray", "light green", "light grey", "light purple", "lime green",
+			"mediterranean-toned", "metallic golden", "metallic silver", "midnight black", "milky white",
+			"pale white", "pale yellow", "platinum blonde", "platinum crimson", "platinum-blonde", "purplish-black",
+			"quartz white", "reddish-orange", "rough gray",
+			"sandy blonde", "sandy brown", "sandy-blonde", "shiny black", "silver blonde", "silver-white", "snow white",
+			"yellowish-green", "black and yellow", "white and black"
+		];
 		private static const SKIN_BASE_TYPES:Array = [
 			/* [INTERMOD: xianxia]
 			[Skin.PLAIN,"(0) PLAIN"],
@@ -749,11 +765,6 @@ package classes
 			[Skin.MOSS,"(11) MOSS"]
 		];
 		*/
-		private static const SKIN_TONE_CONSTANTS:Array = [
-			"pale", "light", "dark", "green", "gray",
-			"blue", "black", "white", "dirty red", "blueish yellow",
-			"ghostly pale", "bubblegum pink",
-		];
 		private static const SKIN_ADJ_CONSTANTS:Array = [
 			"(none)", "tough", "smooth", "rough", "sexy",
 			"freckled", "glistering", "shiny", "slimy","goopey",
@@ -790,11 +801,6 @@ package classes
 			[Hair.BASILISK_PLUME, "(7) BASILISK_PLUME"],
 			[Hair.WOOL, "(8) WOOL"],
 		];
-		private static const HAIR_COLOR_CONSTANTS:Array = [
-			"blond", "brown", "black", "red", "white",
-			"silver blonde","sandy-blonde", "platinum blonde", "midnight black", "golden blonde",
-			"rainbow", "seven-colored",
-		];
 		private static const HAIR_LENGTH_CONSTANTS:Array = [
 			0,0.5,1,2,4,
 			8,12,24,32,40,
@@ -806,19 +812,6 @@ package classes
 					"hairorfur", "skin", "skin.noadj", "skinfurscales", "skintone",
 					"underbody.skinfurscales", "underbody.skintone", "face"
 			)+".\n");
-
-			/* [INTERMOD: xianxia]
-			outputText(generateTagDemos(
-							"skin", "skin base", "skin coat", "skin full",
-							"skin noadj", "skin base.noadj", "skin coat.noadj", "skin full.noadj",
-							"skin notone", "skin base.notone", "skin coat.notone", "skin full.notone",
-							"skin type", "skin base.type", "skin coat.type", "skin full.type",
-							"skin color", "skin base.color", "skin coat.color",
-							"skin isare", "skin base.isare", "skin coat.isare",
-							"skin vs","skin base.vs", "skin coat.vs",
-							"skinfurscales", "skintone") + ".\n");
-			outputText(generateTagDemos("face","face deco","face full","player.facePart.isDecorated")+".\n");
-			*/
 		}
 		private function changeLayerType(editBase:Boolean,page:int=0,setIdx:int=-1):void {
 			/* [INTERMOD: xianxia]
@@ -835,13 +828,13 @@ package classes
 			if (setIdx>=0) (editBase?player.skin.base:player.skin.coat).color = SKIN_TONE_CONSTANTS[setIdx];
 			*/
 			if (setIdx>=0) {
-				if (editBase) player.skin.tone = SKIN_TONE_CONSTANTS[setIdx];
-				else player.skin.furColor = SKIN_TONE_CONSTANTS[setIdx];
+				if (editBase) player.skin.tone = COLOR_CONSTANTS[setIdx];
+				else player.skin.furColor = COLOR_CONSTANTS[setIdx];
 			}
 			menu();
 			dumpPlayerData();
 			tagDemosSkin();
-			showChangeOptions(bodyPartEditorSkin, page, SKIN_TONE_CONSTANTS, curry(changeLayerColor,editBase));
+			showChangeOptions(bodyPartEditorSkin, page, COLOR_CONSTANTS, curry(changeLayerColor,editBase));
 		}
 		private function changeLayerAdj(editBase:Boolean,page:int=0,setIdx:int=-1):void {
 			/* [INTERMOD: xianxia]
@@ -883,10 +876,10 @@ package classes
 			showChangeOptions(bodyPartEditorSkin, page, HAIR_TYPE_CONSTANTS, changeHairType);
 		}
 		private function changeHairColor(page:int=0,setIdx:int=-1):void {
-			if (setIdx>=0) player.hair.color = HAIR_COLOR_CONSTANTS[setIdx];
+			if (setIdx>=0) player.hair.color = COLOR_CONSTANTS[setIdx];
 			menu();
 			dumpPlayerData();
-			showChangeOptions(bodyPartEditorSkin, page, HAIR_COLOR_CONSTANTS, changeHairColor);
+			showChangeOptions(bodyPartEditorSkin, page, COLOR_CONSTANTS, changeHairColor);
 		}
 		private function changeHairLength(page:int=0,setIdx:int=-1):void {
 			if (setIdx>=0) player.hair.length = HAIR_LENGTH_CONSTANTS[setIdx];
@@ -1363,10 +1356,10 @@ package classes
 			showChangeOptions(bodyPartEditorTorso, page, CLAW_TYPE_CONSTANTS, changeClawType);
 		}
 		private function changeClawTone(page:int=0,setIdx:int=-1):void {
-			if (setIdx>=0) player.arms.claws.tone = SKIN_TONE_CONSTANTS[setIdx];
+			if (setIdx>=0) player.arms.claws.tone = COLOR_CONSTANTS[setIdx];
 			menu();
 			dumpPlayerData();
-			showChangeOptions(bodyPartEditorTorso, page, SKIN_TONE_CONSTANTS, changeClawTone);
+			showChangeOptions(bodyPartEditorTorso, page, COLOR_CONSTANTS, changeClawTone);
 		}
 		private function changeTailType(page:int=0,setIdx:int=-1):void {
 			if (setIdx>=0) player.tail.type = setIdx;

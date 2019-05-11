@@ -1,4 +1,5 @@
 package classes {
+	import classes.Scenes.InventoryTest;
 	import classes.Scenes.NPCsSuite;
 	import classes.Scenes.PlacesSuite;
 	import classes.Scenes.AreasSuite;
@@ -16,5 +17,6 @@ package classes {
 		 public var pregnancyProgressionTest:PregnancyProgressionTest
 		 public var pregnancyProgressionVagBirthTest:PregnancyProgressionVagBirthTest
 		 public var pregnancyProgressionAnalBirthTest:PregnancyProgressionAnalBirthTest;
+		 public var inventoryTest:InventoryTest;
 	}
 }

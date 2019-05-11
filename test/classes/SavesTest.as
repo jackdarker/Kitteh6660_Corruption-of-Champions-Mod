@@ -10,6 +10,7 @@ package classes{
 	import org.hamcrest.text.*;
 	
 	import flash.display.Stage;
+	import mx.utils.UIDUtil;
 	
 	import classes.CoC;
 	import classes.Scenes.Inventory;
@@ -20,7 +21,7 @@ package classes{
 	
 	public class SavesTest {
 		private static const TEST_VERSION:String = "test";
-		private static const TEST_SAVE_GAME:String = "test";
+		private static const TEST_SAVE_GAME_PREFIX:String = "savesTest-";
 		
 		private static const CLIT_LENGTH:Number = 5;
 		private static const VAGINA_RECOVERY_PROGRESS:int = 6;
@@ -54,6 +55,8 @@ package classes{
 		private static var consumables:ConsumableLib;
 		
 		private var saveFile:*;
+		private var serializedSave:* = [];
+		private var TEST_SAVE_GAME:String;
 		
 		[BeforeClass]
 		public static function setUpClass():void {
@@ -63,6 +66,8 @@ package classes{
 		
 		[Before]
 		public function setUp():void {
+			TEST_SAVE_GAME = TEST_SAVE_GAME_PREFIX + UIDUtil.createUID();
+			
 			player = new Player();
 			player.short = TEST_PLAYER_SHORT;
 			player.a = TEST_PLAYER_A;
@@ -71,6 +76,7 @@ package classes{
 			createPlayerBreasts();
 			createPlayerAss();
 			setPlayerStats();
+			createDummySerializedObject();
 			
 			kGAMECLASS.player = player;
 			kGAMECLASS.ver = TEST_VERSION;
@@ -85,11 +91,25 @@ package classes{
 			player.itemSlot(2).setItemAndQty(consumables.EQUINUM, 8);
 			player.itemSlot(2).damage = 9;
 			
+			initInventory();
+			
 			saveGame();
 
 			kGAMECLASS.flags[kFLAGS.JOJO_STATUS] = 5;
 			saveFile = [];
 			saveFile.data = [];
+			
+			kGAMECLASS.inventory.clearStorage();
+		}
+		
+		[After]
+		public function tearDown():void
+		{
+			kGAMECLASS.flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] = TEST_SAVE_GAME;
+			cut.purgeTheMutant();
+			
+			kGAMECLASS.flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] = TEST_SAVE_GAME + "_backup";
+			cut.purgeTheMutant();
 		}
 		
 		private function saveGame():void {
@@ -147,6 +167,40 @@ package classes{
 			saveFile.data.serializationVersion = undefined;
 			saveFile.data.npcs = [];
 			saveFile.data.npcs.jojo = [];
+		}
+		
+		private function createDummySerializedObject():void
+		{
+			serializedSave["serializationVersion"] = 1;
+			serializedSave.itemStorage = [];
+			
+			var slot1:ItemSlot = new ItemSlot();
+			slot1.setItemAndQty(consumables.CANINEP, 2);
+			
+			var slot2:ItemSlot = new ItemSlot();
+			slot2.setItemAndQty(consumables.EQUINUM, 3);
+			
+			
+			serializedSave.itemStorage.push(slot1);
+			serializedSave.itemStorage.push(slot2);
+		}
+		
+		private function initInventory():void
+		{
+			//TODO remove this once the saves serialization has been completed
+			var items:Array = kGAMECLASS.inventory.itemStorageDirectGet();
+			
+			kGAMECLASS.inventory.createStorage();
+			kGAMECLASS.inventory.createStorage();
+			kGAMECLASS.inventory.createStorage();
+			kGAMECLASS.inventory.createStorage();
+			kGAMECLASS.inventory.createStorage();
+			
+			// this is completely safe, trust me!  /s
+			(items[0] as ItemSlot).setItemAndQty(consumables.PURPDYE, 3);
+			(items[1] as ItemSlot).setItemAndQty(consumables.PURHONY, 5);
+			(items[2] as ItemSlot).setItemAndQty(ItemType.NOTHING, 0);
+			(items[2] as ItemSlot).unlocked = false;
 		}
 		
 		[Test]
@@ -568,6 +622,55 @@ package classes{
 			assertThat(kGAMECLASS.player.itemSlot1.itype, equalTo(consumables.CANINEP));
 			assertThat(kGAMECLASS.player.itemSlot2.itype, equalTo(ItemType.NOTHING));
 			assertThat(kGAMECLASS.player.itemSlot3.itype, equalTo(consumables.EQUINUM));
+		}
+		
+		[Test]
+		public function upgradeCreatesInventory():void
+		{	
+			cut.upgradeSerializationVersion(serializedSave, 1);
+			
+			assertThat(serializedSave, hasProperty("inventory"));
+		}
+		
+		[Test]
+		public function upgradeCreatesItemStorageInInventory():void
+		{	
+			cut.upgradeSerializationVersion(serializedSave, 1);
+			
+			assertThat(serializedSave.inventory, hasProperty("itemStorage"));
+		}
+		
+		[Test]
+		public function upgradeCopiesItemStorageData():void
+		{	
+			cut.upgradeSerializationVersion(serializedSave, 1);
+			
+			assertThat(serializedSave.inventory.itemStorage[0].itype.id, equalTo(consumables.CANINEP.id));
+			assertThat(serializedSave.inventory.itemStorage[1].itype.id, equalTo(consumables.EQUINUM.id));
+		}
+		
+		[Test]
+		public function upgradeDeletesItemStorageFromSaveRoot():void
+		{	
+			cut.upgradeSerializationVersion(serializedSave, 1);
+			
+			assertThat(serializedSave, not(hasProperty("itemStorage")));
+		}
+		
+		[Test]
+		public function inventoryMustBeValid():void
+		{
+			assertThat(kGAMECLASS.inventory, notNullValue());
+		}
+		
+		[Test(description="This is to test that the inventory is correctly serialized")]
+		public function itemStorageLoaded():void
+		{
+			//TODO remove this once the saves serialization has been completed
+			cut.loadGame(TEST_SAVE_GAME);
+			
+			assertThat("Item storage did not contain purple dye", kGAMECLASS.inventory.hasItemInStorage(consumables.PURPDYE), equalTo(true));
+			assertThat("Item storage did not contain pure honey", kGAMECLASS.inventory.hasItemInStorage(consumables.PURHONY), equalTo(true));
 		}
 	}
 }

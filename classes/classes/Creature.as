@@ -42,11 +42,14 @@ package classes
 	import classes.lists.BreastCup;
 	import classes.lists.Gender;
 	import classes.lists.PerkLists;
-	import flash.errors.IllegalOperationError;
+
+import coc.view.charview.IColorNameProvider;
+
+import flash.errors.IllegalOperationError;
 	import mx.logging.ILogger;
 
 
-	public class Creature extends Utils implements Serializable
+	public class Creature extends Utils implements Serializable, IColorNameProvider
 	{
 		private static const LOGGER:ILogger = LoggerFactory.getLogger(Creature);
 
@@ -4387,6 +4390,35 @@ package classes
 		public function currentSerializationVerison():int 
 		{
 			return SERIALIZATION_VERSION;
+		}
+		
+		
+		public function getKeyColor(layerName:String, keyColorName:String):String {
+			switch (layerName) {
+				case "neck":
+					return neck.color;
+				case "wings":
+					return wings.color;
+			}
+			switch (keyColorName) {
+				case "hair":
+				case "hair2":
+					return hair.color;
+				case "fur":
+				case "fur2":
+					return skin.hasFur() ? skin.furColor : hair.color;
+				case "scales":
+				case "scales2":
+				case "chitin":
+				case "chitin2":
+				case "skin":
+				case "skin2":
+					return skin.tone;
+				case "iris":
+					return "brown";
+				default:
+					return "";
+			}
 		}
 	}
 }

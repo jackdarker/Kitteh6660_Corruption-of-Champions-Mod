@@ -1,14 +1,16 @@
 /**
  * Coded by aimozg on 10.07.2017.
  */
-package coc.view {
+package coc.view.composite {
+import coc.view.*;
+
 import flash.display.BitmapData;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 public class CompositeImage {
-	private var list:/*coc.view.CompositeLayer*/Array;
+	private var list:/*CompositeLayer*/Array;
 	private var visibility:Object;
 	private var bmp:BitmapData;
 	public function get width():int {
@@ -57,11 +59,11 @@ public class CompositeImage {
 			visibility[layer.name] = false;
 		}
 	}
-	public function draw(keyColors:Object):BitmapData {
+	public function draw(keyColorProvider:IKeyColorProvider):BitmapData {
 		bmp.fillRect(bmp.rect, 0);
 		for each (var layer:CompositeLayer in list) {
 			if (visibility[layer.name]) {
-				layer.setKeyColors(keyColors);
+				layer.setKeyColors(keyColorProvider.allKeyColorsFor(layer.name));
 				var sx:int = 0,sy:int = 0;
 				var sw:int = layer.width;
 				var sh:int = layer.height;

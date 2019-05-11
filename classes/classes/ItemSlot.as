@@ -7,7 +7,7 @@ package classes
 	 */
 	public class ItemSlot extends Object implements Serializable
 	{
-		private static const SERIALIZATION_VERSION:int = 1;
+		private static const SERIALIZATION_VERSION:int = 2;
 		
 		private static const LEGACY_SHORTNAME_GROPLUS:String = "Gro+";
 		private static const LEGACY_SHORTNAME_SPECIAL_HONEY:String = "Sp Honey";
@@ -141,6 +141,9 @@ package classes
 			switch (serializedDataVersion) {
 				case 0:
 					convertLegacyShortNameToId(relativeRootObject);
+				
+				case 1:
+					setZeroQuantitySlotToEmpty(relativeRootObject);
 					
 				default:
 					/*
@@ -162,6 +165,13 @@ package classes
 				relativeRootObject.id = "SpHoney";
 			} else {
 				relativeRootObject.id = ItemType.lookupItemByShort(relativeRootObject.shortName).id;
+			}
+		}
+		
+		private function setZeroQuantitySlotToEmpty(relativeRootObject:*):void
+		{
+			if (relativeRootObject.quantity === 0) {
+				relativeRootObject.id = "NOTHING!";
 			}
 		}
 		

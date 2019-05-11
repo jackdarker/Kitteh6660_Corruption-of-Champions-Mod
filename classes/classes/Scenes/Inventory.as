@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Created by aimozg on 12.01.14.
  */
 package classes.Scenes
@@ -28,7 +28,8 @@ package classes.Scenes
 
 	use namespace kGAMECLASS;
 
-	public class Inventory extends BaseContent {
+	public class Inventory extends BaseContent implements Serializable {
+		private static const SERIALIZATION_VERSION:int = 1;
 		private static const LOGGER:ILogger = LoggerFactory.getLogger(Inventory);
 		
 		private static const inventorySlotName:Array = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
@@ -36,18 +37,36 @@ package classes.Scenes
 		//TODO refactor storage into own type?
 		public static const STORAGE_JEWELRY_BOX:String = "Equipment Storage - Jewelry Box";
 		
+		/**
+		 * Stores items that are not gear, using chests?
+		 */
 		private var itemStorage:Array;
+		/**
+		 * Stores various gear, such as armor, weapons, shields, etc. Used with different types of racks.
+		 */
 		private var gearStorage:Array;
+		/**
+		 * Stores items when in prison?
+		 */
 		private var prisonStorage:Array;
-		private var callNext:Function;		//These are used so that we know what has to happen once the player finishes with an item
-		private var callOnAbandon:Function;	//They simplify dealing with items that have a sub menu. Set in inventoryMenu and in takeItem
-		private var currentItemSlot:ItemSlot;	//The slot previously occupied by the current item - only needed for stashes and items with a sub menu.
+		/**
+		 * These are used so that we know what has to happen once the player finishes with an item
+		 */
+		private var callNext:Function;
+		/**
+		 * They simplify dealing with items that have a sub menu. Set in inventoryMenu and in takeItem
+		 */
+		private var callOnAbandon:Function;
+		/**
+		 * The slot previously occupied by the current item - only needed for stashes and items with a sub menu.
+		 */
+		private var currentItemSlot:ItemSlot;
 		
 		public function Inventory(saveSystem:Saves) {
 			itemStorage = [];
 			gearStorage = [];
 			prisonStorage = [];
-			saveSystem.linkToInventory(itemStorageDirectGet, gearStorageDirectGet);
+			saveSystem.linkToInventory(gearStorageDirectGet);
 		}
 		
 		public function showStash():Boolean {
@@ -891,6 +910,76 @@ package classes.Scenes
 				tt += "\nDurability: " + (slot.itype.durability - slot.damage) + "/" + slot.itype.durability;
 			}
 			return tt;
+		}
+		
+		public function serialize(relativeRootObject:*):void 
+		{
+			relativeRootObject.itemStorage = [];
+			serializeItemStorage(relativeRootObject.itemStorage);
+		}
+		
+		private function serializeItemStorage(saveFileItemStorage:*):void
+		{
+			LOGGER.debug("Serializing {0} slots in itemStorage...", itemStorage.length);
+			for (var i:int = 0; i < itemStorage.length; i++)
+			{
+				if (itemStorage[i].itype == null) {
+					saveFileItemStorage.push(null);
+				} else {
+					saveFileItemStorage.push([]);
+					SerializationUtils.serialize(saveFileItemStorage[i], itemStorage[i]);
+				}
+			}
+		}
+		
+		public function deserialize(relativeRootObject:*):void 
+		{
+			deserializeItemStorage(relativeRootObject.itemStorage);
+		}
+		
+		private function deserializeItemStorage(saveFileItemStorage:*):void
+		{
+			LOGGER.debug("Deserializing {0} slots from itemStorage...", saveFileItemStorage.length);
+			for (var i:int = 0; i < saveFileItemStorage.length; i++)
+			{
+				createStorage();
+				var storage:ItemSlot = this.itemStorage[i];
+				var savedIS:* = saveFileItemStorage[i];
+				
+				if (savedIS.quantity>0) {
+					SerializationUtils.deserialize(savedIS, storage);
+				} else {
+					storage.emptySlot();
+				}
+			}
+		}
+		
+		public function upgradeSerializationVersion(relativeRootObject:*, serializedDataVersion:int):void 
+		{
+			switch (serializedDataVersion) {
+				case 0:
+					upgradeLegacyItemStorage(relativeRootObject);
+				
+				default:
+					/*
+					 * The default block is left empty intentionally,
+					 * this switch case operates by using fall through behavior.
+					 */
+			}
+		}
+		
+		private function upgradeLegacyItemStorage(relativeRootObject:*):void
+		{
+			LOGGER.info("Upgrading legacy item storage");
+			
+			if (relativeRootObject.itemStorage === undefined) {
+				relativeRootObject.itemStorage  = [];
+			}
+		}
+		
+		public function currentSerializationVerison():int 
+		{
+			return SERIALIZATION_VERSION;
 		}
 	}
 }

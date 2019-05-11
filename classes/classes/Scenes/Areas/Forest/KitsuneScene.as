@@ -2360,11 +2360,24 @@ package classes.Scenes.Areas.Forest
 			}
 		}
 
+		private function meditatePerkChecks():Boolean
+		{
+			if (player.hasPerk(PerkLib.EnlightenedNinetails) && player.perkv4(PerkLib.EnlightenedNinetails) <= 0) {
+				return false;
+			}
+
+			if (player.hasPerk(PerkLib.CorruptedNinetails) && player.perkv4(PerkLib.CorruptedNinetails) <= 0) {
+				return false;
+			}
+
+			return true;
+		}
+
 		//[Meditate]
 		private function meditateLikeAKitsuneEhQuestionMark():void
 		{
 			clearOutput();
-			if (player.hasItem(consumables.FOXJEWL) && player.tail.type == Tail.FOX && player.tail.venom < 9 && player.tail.venom + 1 <= player.level && player.tail.venom + 1 <= player.inte / 10 && player.ears.type == Ears.FOX && (player.findPerk(PerkLib.CorruptedNinetails) < 0 || player.perkv4(PerkLib.CorruptedNinetails) > 0) && player.findPerk(PerkLib.EnlightenedNinetails) < 0) {
+			if (player.hasItem(consumables.FOXJEWL) && player.tail.type == Tail.FOX && player.tail.venom < 9 && player.tail.venom + 1 <= player.level && player.tail.venom + 1 <= player.inte / 10 && player.ears.type == Ears.FOX && meditatePerkChecks()) {
 				//20% chance if PC has fox ears, 1 or more fox tails, carries a Fox Jewel, and meets level & INT requirements for the next tail:
 				outputText("You sit down carefully on a small mat in front of the shrine and clear your mind.  Closing your eyes, you meditate on the things you've learned in your journey thus far, and resolve to continue fighting against the forces of corruption that permeate the land.\n\n");
 
@@ -2380,7 +2393,7 @@ package classes.Scenes.Areas.Forest
 					//Increment tail by 1, consume Fox Jewel, -2 COR, -20 LUST, +2 INT, Advance 1 hr and return to camp.
 					//Apply Nine-Tails perk if applicable.
 					player.tail.venom = 9;
-					player.createPerk(PerkLib.EnlightenedNinetails, 0, 0, 0, 0);
+					player.createPerkIfNotHasPerk(PerkLib.EnlightenedNinetails);
 					
 					// Nine tail kitsunes have their fur/hair color golden, silver or pure white
 					if (!InCollection(player.hair.color, ColorLists.ELDER_KITSUNE)) // wrong hair color

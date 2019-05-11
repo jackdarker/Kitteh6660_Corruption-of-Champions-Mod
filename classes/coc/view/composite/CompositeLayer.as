@@ -1,7 +1,7 @@
 /**
  * Coded by aimozg on 11.07.2017.
  */
-package coc.view {
+package coc.view.composite {
 import flash.display.BitmapData;
 
 internal class CompositeLayer {

@@ -31,15 +31,13 @@ package classes
 
 public class Saves extends BaseContent implements Serializable {
 	private static const LOGGER:ILogger = LoggerFactory.getLogger(Saves);
-
-	private static const SERIALIZATION_VERSION:int = 1;
+	private static const SERIALIZATION_VERSION:int = 2;
 	private static const SAVE_FILE_CURRENT_INTEGER_FORMAT_VERSION:int		= 816;
 		//Didn't want to include something like this, but an integer is safer than depending on the text version number from the CoC class.
 		//Also, this way the save file version doesn't need updating unless an important structural change happens in the save file.
 
 	private var gameStateGet:Function;
 	private var gameStateSet:Function;
-	private var itemStorageGet:Function;
 	private var gearStorageGet:Function;
 	private var permObjectFileName:String = "CoC_Main";
 
@@ -48,8 +46,7 @@ public class Saves extends BaseContent implements Serializable {
 		gameStateSet = gameStateDirectSet;
 	}
 
-	public function linkToInventory(itemStorageDirectGet:Function, gearStorageDirectGet:Function):void {
-		itemStorageGet = itemStorageDirectGet;
+	public function linkToInventory(gearStorageDirectGet:Function):void {
 		gearStorageGet = gearStorageDirectGet;
 	}
 
@@ -949,7 +946,6 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 		saveFile.data.perks = [];
 		saveFile.data.statusAffects = [];
 		saveFile.data.keyItems = [];
-		saveFile.data.itemStorage = [];
 		saveFile.data.gearStorage = [];
 
 		//Set Perk Array
@@ -1003,21 +999,10 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 			saveFile.data.keyItems[i].value3 = player.keyItems[i].value3;
 			saveFile.data.keyItems[i].value4 = player.keyItems[i].value4;
 		}
-		//Set storage slot array
-		for (i = 0; i < itemStorageGet().length; i++)
-		{
-			saveFile.data.itemStorage.push([]);
-		}
-
-		//Populate storage slot array
-		for (i = 0; i < itemStorageGet().length; i++)
-		{
-			//saveFile.data.itemStorage[i].shortName = itemStorage[i].itype.id;// For backward compatibility
-			saveFile.data.itemStorage[i].id = (itemStorageGet()[i].itype == null) ? null : itemStorageGet()[i].itype.id;
-			saveFile.data.itemStorage[i].quantity = itemStorageGet()[i].quantity;
-			saveFile.data.itemStorage[i].unlocked = itemStorageGet()[i].unlocked;
-			saveFile.data.itemStorage[i].damage = itemStorageGet()[i].damage;
-		}
+		
+		saveFile.data.inventory = [];
+		SerializationUtils.serialize(saveFile.data.inventory, inventory);
+		
 		//Set gear slot array
 		for (i = 0; i < gearStorageGet().length; i++)
 		{
@@ -1959,36 +1944,11 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 					//trace("KeyItem " + player.keyItems[i].keyName + " loaded.");
 			}
 		}
-		//Set storage slot array
-		if (saveFile.data.itemStorage == undefined)
-		{
-			//trace("OLD SAVES DO NOT CONTAIN ITEM STORAGE ARRAY");
-		}
-		else
-		{
-			//Populate storage slot array
-			for (i = 0; i < saveFile.data.itemStorage.length; i++)
-			{
-				//trace("Populating a storage slot save with data");
-				inventory.createStorage();
-				var storage:ItemSlot = itemStorageGet()[i];
-				var savedIS:* = saveFile.data.itemStorage[i];
-				if (savedIS.shortName)
-				{
-					if (savedIS.shortName.indexOf("Gro+") != -1)
-						savedIS.id = "GroPlus";
-					else if (savedIS.shortName.indexOf("Sp Honey") != -1)
-						savedIS.id = "SpHoney";
-				}
-				if (savedIS.quantity>0) {
-					storage.setItemAndQty(ItemType.lookupItem(savedIS.id || savedIS.shortName), savedIS.quantity);
-					storage.damage = savedIS.damage != undefined ? savedIS.damage : 0;
-				}
-				else
-					storage.emptySlot();
-				storage.unlocked = savedIS.unlocked;
-			}
-		}
+
+		SerializationUtils.deserialize(saveFile.data.inventory, inventory);
+
+		var storage:ItemSlot;
+		
 		//Set gear slot array
 		if (saveFile.data.gearStorage == undefined)
 		{
@@ -2482,6 +2442,8 @@ public function upgradeSerializationVersion(relativeRootObject:*, serializedData
 	switch(serializedDataVersion) {
 		case 0:
 			upgradeUnversionedSave(relativeRootObject);
+		case 1:
+			moveItemStorageToInventory(relativeRootObject);
 		default:
 		/*
 		 * The default block is left empty intentionally,
@@ -2505,6 +2467,30 @@ private function upgradeUnversionedSave(relativeRootObject:*): void
 
 	if (npcs.jojo === undefined) {
 		npcs.jojo = [];
+	}
+}
+
+/**
+ * Move the item storage to inventory object, as the serialization versions will collide
+ * (Saves and Inventory write version to saveFile.data).
+ * 
+ * @param	relativeRootObject the root savefile data storage (saveFile.data)
+ */
+private function moveItemStorageToInventory(relativeRootObject:*):void
+{
+	LOGGER.info("Upgrading item storage to use inventory instead of the save game root...");
+	
+	if (relativeRootObject.inventory === undefined) {
+		LOGGER.debug("No inventory in save game, creating...");
+		
+		relativeRootObject.inventory = [];
+	}
+	
+	if (relativeRootObject.itemStorage !== undefined) {
+		LOGGER.debug("Found item storage in save root, moving to inventory...");
+		
+		relativeRootObject.inventory.itemStorage = relativeRootObject.itemStorage;
+		delete relativeRootObject["itemStorage"];
 	}
 }
 
