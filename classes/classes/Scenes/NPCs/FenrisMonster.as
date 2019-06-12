@@ -39,8 +39,8 @@ package classes.Scenes.NPCs
 				_monster.cumMultiplier = 1;
 		}
 			
-		_monster.ass.analLooseness = AssClass.LOOSENESS_TIGHT;
-		_monster.ass.analWetness = AssClass.WETNESS_DRY;
+		_monster.ass.analLooseness = Ass.LOOSENESS_TIGHT;
+		_monster.ass.analWetness = Ass.WETNESS_DRY;
 			//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
 		_monster.tallness = 70;
 		_monster.hips.rating = Hips.RATING_SLENDER;

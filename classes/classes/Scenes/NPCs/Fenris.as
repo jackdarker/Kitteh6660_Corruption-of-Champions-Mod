@@ -5,7 +5,7 @@
 
 package classes.Scenes.NPCs{
 
-	import classes.BreastRowClass;
+	import classes.BreastRow;
 	import classes.BreastStore;
 	import classes.Items.Useable;
 	import classes.Items.Weapon;
