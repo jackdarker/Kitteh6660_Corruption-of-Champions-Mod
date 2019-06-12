@@ -543,6 +543,7 @@ package classes
 					interpersonStats += "<b>Kiha's Affection:</b> " + 100 + "%\n";
 				else
 					interpersonStats += "<b>Kiha's Affection:</b> " + Math.round(flags[kFLAGS.KIHA_AFFECTION]) + "%\n";
+				interpersonStats += "<b>Kiha Spar Intensity:</b>" + getGame().kihaScene.kihaSparIntensity() + "\n";
 			}
 			//Lottie stuff
 			if (flags[kFLAGS.LOTTIE_ENCOUNTER_COUNTER] > 0)

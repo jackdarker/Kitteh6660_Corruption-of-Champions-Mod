@@ -140,6 +140,7 @@ public function encounterMinerva():void {
 //1-1 First Encounter.
 private function firstMinervaEncounter():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	outputText("Returning to the mountains, you begin to climb; the usual search for loot and, perhaps, some harpies driving your upward efforts.  Perhaps you'll run into");
 	//If Sophie Bimbo=0:
 	if (flags[kFLAGS.SOPHIE_BIMBO] == 0 && flags[kFLAGS.SOPHIE_DISABLED_FOREVER] == 0 && !kGAMECLASS.sophieFollowerScene.sophieFollower()) outputText(" that matronly harpy, Sophie");
@@ -164,6 +165,7 @@ private function ignoreMinervasPath():void {
 //[Take Path]
 private function takeMinervasPath():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("Knowing that a new path could lead to great things, you can't help but wonder where this one could lead.");
 	outputText("\n\nYour curiosity gets the better of you, and you head down this new path.  Winding along the dangerous mountainside, you come upon what looks like a ruined tower built into the mountain.  It was probably erected as some kind of outpost by some long-forgotten people.  Panting from your long trek, you decide to use the tower as shelter and recover your strength.  Cautiously, you approach the ruins and peek inside.");
@@ -235,6 +237,7 @@ private function takeMinervasPath():void {
 //[Follow]
 private function followMinerva():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("Deciding that you want to know more about Minerva, you follow her into the tower.  \"<i>So, now that you're inside, would you like to talk?  Or perhaps to partake in some of the peaches that grow on my trees?</i>\" she asks, looking at you with interest.");
 	//[Talk] [Drink] [Eat] [Leave]
@@ -247,6 +250,7 @@ private function followMinerva():void {
 //[Leave](for first encounter options)
 private function leaveMinervasFirstEncounter():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("You decide that you don't want to risk going into Minerva's lair as, for all you know, it could be a trap.  Therefore, you turn around and skedaddle back down the mountain.  As you leave, Minerva turns and watches you for a bit, a sad look on her face before she turns back and heads inside her home, alone.");
 	// PC returns to camp.
@@ -256,6 +260,7 @@ private function leaveMinervasFirstEncounter():void {
 //1-2 Repeat Encounter 1.  Use any time.
 public function repeatEncounterMinerva():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	flags[kFLAGS.MET_MINERVA]++;
 	outputText("You make your way up the mountain, looking for the oasis tower that you know has to be around here somewhere in the thick mist.  With a bit of searching, you locate the right path and head for the oasis, finally reaching it.  Panting from your long trek, you enter the tower through its crumbling doorway, wondering if Minerva will be home.");
@@ -276,6 +281,7 @@ public function repeatEncounterMinerva():void {
 //1-3 Repeat Encounter 2.  Use if 3rd+ time visiting Minerva.
 private function minervaThirdPlusEncounter():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("You make your way back up the mountain, passing the usual harpy nests as you go, looking for the oasis tower that you know has to be around here somewhere in the thick mountain mists.  After a tedious amount of time spent searching, you finally locate the path and start your journey toward the oasis.  The promise of a respite from your climb, along with food and company, compels you to continue until you finally reach the oasis tower.  Thankfully, you don't have to search long before you promptly catch sight of the crumbling tower.  Panting from your long trek, you enter the tower through a rusted, creaky door.");
 	if (flags[kFLAGS.MET_MINERVA] == 4) outputText("\n\n<b>(You have visited the tower enough times to be able to remember where to go. Unlocked Oasis Tower in Places menu!)</b>"); //Unlock Minerva's tower from Places menu.
@@ -293,6 +299,7 @@ private function minervaThirdPlusEncounter():void {
 //1-1 Cute Encounter. Minerva has taken a special liking to the pc by talking to her 5 times.
 private function minervaAfterFiveTalksRomancing():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	flags[kFLAGS.MET_MINERVA]++;
 	outputText("You make your way back up the mountain, passing the usual harpy nests as you go, looking for the oasis tower that you know has to be around here somewhere.  With a bit of searching, you locate the right path and head for the tower.  The promise of a respite from your climb, along with food and company, impels you to continue until you reach the oasis tower.  Thankfully, you don't have to search for long, promptly catching sight of the crumbling tower.  Taking in the sights, you look around, assessing the state of the oasis.  The usual fruit trees remain, and the clean pond is still here, but you don't see Minerva anywhere.");
@@ -319,6 +326,7 @@ private function minervaAfterFiveTalksRomancing():void {
 //[Flight]
 private function goForASkyRideWithMinervaHeartBaring():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText(images.showImage("minerva-fly"));
 	outputText("You grin with excitement and");
@@ -346,6 +354,7 @@ private function goForASkyRideWithMinervaHeartBaring():void {
 //Opening her heart
 private function minervaOpensHerHeartAndDisplaysHerVentricals():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("Holding you gently in her arms as she looks deeply into your eyes, the siren stammers, \"<i>H-hey... I've been meaning to talk to you about something.  I've been thinking about you... and me...  You're the first real person to come here.  I mean, the harpies come around to get me to breed them, but that's all they're really interested in.  But you... you keep coming back, and it's not always sex with you.  You talk to me and spend time with me... you're actually interested.  I've been alone for a long time with no one but a couple of birdbrained harpies to talk to.  Until you came around, that is- you changed all that.</i>\"");
 	outputText("\n\nYou look at the blue-skinned harpy-shark.  She looks to be blushing, though her cheeks are flared purple instead of red or pink. Minerva even appears flustered, like she doesn't quite know what to say.  It's clear she isn't used to this sort of thing, and it's making her ordinarily sharp features look softer... and it's actually kind of cute.  \"<i>Hey, are you listening?  I'm trying to have a moment with you here! This is... really important to me,</i>\"  she declares with an exaggeratedly irritated pout before softening again.");
@@ -360,6 +369,7 @@ private function minervaOpensHerHeartAndDisplaysHerVentricals():void {
 //Kiss
 private function yeahSureMinervaILikeYouAndShit():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("You already know your answer.  Smiling, you lean in and kiss the siren's glossy black lips, an act which prolongs the blush on her face, though it doesn't take long for Minerva to recover.  She pushes you off of her and tackles you into the pool.  Sitting on top of you, the redhead smirks down at you before grabbing onto your shoulder and forcing you into a welcome kiss, her long, demonic tongue quickly snaking into your mouth to deepen the passionate smooch.");
 	outputText("\n\nYou can't help but return her grasp when Minerva starts to kiss you again.  Your hands slowly move over her smooth, wet skin, and touch every part of her you can reach, feeling her curves, her firm, gently toned muscles, down her thin waspish waist that flows out into her generous hips, and her ample, squeezable ass.  As soon as you reach her butt, your hands squeeze her, eliciting a gasp from your new lover and making her break the kiss.  \"<i>Why, you... not satisfied with a kiss, are you?</i>\" your siren asks with a toothy grin.");
@@ -377,6 +387,7 @@ private function yeahSureMinervaILikeYouAndShit():void {
 //[Reject]
 private function rejectMinervasLove():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText(images.showImage("impoverlord-loss-female"));
 	outputText("You stare at Minerva awkwardly as she waits for your response, her electric blue eyes looking at you with hope.  ");
@@ -396,6 +407,7 @@ private function rejectMinervasLove():void {
 //[Land]
 private function dontFlyWithWithMeYouCrazyBitch():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("You look down at the ground with a little uncertainty; you're already so high up.  Looking back at the grinning siren, you rapidly shake your head.  You very much don't want to be flying, especially not with such a gut clenching fall beneath you.  Minerva's grin lessens somewhat, clearly a bit disappointed that you don't want to go flying with her.  She nods despite her disappointment, and glides back down to the tower ground, setting you down on the soft moss that surrounds the pure hot spring.");
 	
@@ -414,6 +426,8 @@ public function fightMinerva():void {
 
 public function genericMenu(display:Boolean = false):void {
 	menu();
+	credits.authorText = "Kinathis";
+
 	if (display) outputText("\"<i>So what will it be then?</i>\"");
 	if (flags[kFLAGS.MINERVA_PURIFICATION_PROGRESS] >= 10) {
 		minervaPurification.pureMinervaMenu();
@@ -437,6 +451,7 @@ public function genericMenu(display:Boolean = false):void {
 //1-2 Repeatable Cute, Romantic Encounter. Only if PC accepted Minerva's feelings. Add to normal encounters.
 private function repeatableMinervaRomanceScene():void {
 	clearOutput();
+	credits.authorText = "Kinathis";
 	minervaSprite();
 	outputText("You make your way back up the mountain, passing the usual harpy nests as you go.  Climbing through the clouds, you reach a height that has only become easier thanks to the repeated effort.  You make your way back up the mountain, passing the usual harpy nests as you go, looking for the oasis tower that you know has to be around here somewhere in the thick mountain mists. The promise of a respite from your climb, along with food and company, compels you to continue until you finally reach the oasis tower.  Without pausing to catch your breath you head for the tower, the desire to see your siren lover beating out the nagging fatigue you feel from the tough climb.  Your legs are pumping hard as you hoof it down the path, soon enough happening upon the shape of the ruined tower that encloses Minerva's oasis.");
 	
@@ -487,6 +502,8 @@ private function minervaTalkSelect(bath:Boolean = true):void {
 	if (bath && minervaRomanced()) choices[choices.length] = bathTimeTalkWithMinerva;
 	
 	choices[rand(choices.length)]();
+	credits.authorText = "Kinathis";
+
 }
 
 //Talking scenes
@@ -1371,7 +1388,7 @@ private function pcGetsEatenOutByMinerva():void {
 private function chooseVagOrAss():void {
 	if (player.hasVagina()) {
 		clearOutput();
-		outputText("\"<i>So, which of your hole would you like me to fuck?</i>\" the siren asks.")
+		outputText("\"<i>So, which of your holes would you like me to fuck?</i>\" The siren asks.");
 		menu();
 		addButton(0, "Vagina", minervaLapSex);
 		addButton(1, "Ass", getButtFuckedYouSlut);

@@ -2382,8 +2382,8 @@ public static const TOTAL_HP_VICTORIES:int                                      
 public static const TENTACLE_BEASTS_KILLED:int                                      = 2374;
 public static const WORMS_MASS_KILLED:int                                           = 2375;
 public static const ACHIEVEMENT_PROGRESS_DAMAGE_SPONGE:int                          = 2376;
-public static const UNKNOWN_FLAG_NUMBER_02377:int                                   = 2377;
-public static const UNKNOWN_FLAG_NUMBER_02378:int                                   = 2378;
+public static const DEMON_SOLDIERS_ENCOUNTERED:int                                  = 2377;
+public static const DEMON_SOLDIERS_KILLED:int                                       = 2378;
 public static const UNKNOWN_FLAG_NUMBER_02379:int                                   = 2379;
 public static const UNKNOWN_FLAG_NUMBER_02380:int                                   = 2380;
 public static const UNKNOWN_FLAG_NUMBER_02381:int                                   = 2381;

@@ -1,5 +1,6 @@
 package classes{
 	import classes.Items.ConsumableLib;
+	import classes.internals.SaveGameUtils;
 	import classes.internals.SerializationUtils;
 	import classes.lists.BreastCup;
 	import org.flexunit.asserts.*;
@@ -10,7 +11,6 @@ package classes{
 	import org.hamcrest.text.*;
 	
 	import flash.display.Stage;
-	import mx.utils.UIDUtil;
 	
 	import classes.CoC;
 	import classes.Scenes.Inventory;
@@ -21,7 +21,7 @@ package classes{
 	
 	public class SavesTest {
 		private static const TEST_VERSION:String = "test";
-		private static const TEST_SAVE_GAME_PREFIX:String = "savesTest-";
+		private static const TEST_SAVE_GAME:String = "test";
 		
 		private static const CLIT_LENGTH:Number = 5;
 		private static const VAGINA_RECOVERY_PROGRESS:int = 6;
@@ -56,7 +56,6 @@ package classes{
 		
 		private var saveFile:*;
 		private var serializedSave:* = [];
-		private var TEST_SAVE_GAME:String;
 		
 		[BeforeClass]
 		public static function setUpClass():void {
@@ -66,8 +65,6 @@ package classes{
 		
 		[Before]
 		public function setUp():void {
-			TEST_SAVE_GAME = TEST_SAVE_GAME_PREFIX + UIDUtil.createUID();
-			
 			player = new Player();
 			player.short = TEST_PLAYER_SHORT;
 			player.a = TEST_PLAYER_A;
@@ -105,11 +102,8 @@ package classes{
 		[After]
 		public function tearDown():void
 		{
-			kGAMECLASS.flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] = TEST_SAVE_GAME;
-			cut.purgeTheMutant();
-			
-			kGAMECLASS.flags[kFLAGS.TEMP_STORAGE_SAVE_DELETION] = TEST_SAVE_GAME + "_backup";
-			cut.purgeTheMutant();
+			SaveGameUtils.deleteSaveGame(TEST_SAVE_GAME);
+			SaveGameUtils.deleteSaveGame(TEST_SAVE_GAME + "_backup");
 		}
 		
 		private function saveGame():void {

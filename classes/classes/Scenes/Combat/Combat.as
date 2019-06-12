@@ -1,4 +1,4 @@
-﻿//Combat 2.0
+//Combat 2.0
 package classes.Scenes.Combat 
 {
 	import classes.*;
@@ -2441,4 +2441,3 @@ package classes.Scenes.Combat
 	}
 
 }
-

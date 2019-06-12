@@ -227,6 +227,7 @@ package classes
 		public var lumi:Lumi = new Lumi();
 		public var giacomoShop:Giacomo = new Giacomo();
 		// Scenes/Monsters/
+		public var demonSoldierScene:DemonSoldierScene = new DemonSoldierScene();
 		public var goblinScene:GoblinScene = new GoblinScene();
 		public var goblinSpecialScene:GoblinSpecialScene = new GoblinSpecialScene();
 		public var goblinElderScene:PriscillaScene = new PriscillaScene();

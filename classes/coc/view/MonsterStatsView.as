@@ -66,7 +66,8 @@ public class MonsterStatsView extends Block {
 			}
 		});
 		const LABEL_FORMAT:Object = {
-			font:'Palatino Linotype',
+			font:'Times New Roman, _serif',
+			align:'center',
 			bold:true,
 			size:22
 		};
@@ -80,10 +81,20 @@ public class MonsterStatsView extends Block {
 			stretch: true
 		}, {ignore: true});
 		nameText      = addTextField({
-			defaultTextFormat: LABEL_FORMAT
+			width: MainView.MONSTER_W,
+			height: 30,
+			defaultTextFormat: {
+				font : 'Times New Roman, _serif',
+				size : 24,
+				align: 'center',
+				bold : true,
+				underline: true
+			}
 		});
 		coreStatsText = addTextField({
-			text: 'General info:',
+			text: '◄ General Info ►',
+			width: MainView.MONSTER_W - 8,
+			height: 30,
 			defaultTextFormat: LABEL_FORMAT
 		},{before:1});
 		addElement(levelBar = new StatBar({
@@ -100,7 +111,9 @@ public class MonsterStatsView extends Block {
 		}));
 
 		combatStatsText = addTextField({
-			text: 'Combat stats',
+			text: '◄ Combat Stats ►',
+			width: MainView.MONSTER_W - 8,
+			height: 30,
 			defaultTextFormat: LABEL_FORMAT
 		},{before:1});
 		addElement(hpBar = new StatBar({
@@ -210,7 +223,7 @@ public class MonsterStatsView extends Block {
 	
 	public function refreshStats(game:CoC):void {
 		var monster:Monster            = game.monster;
-		nameText.htmlText     = "<b>Name: " + Utils.capitalizeFirstLetter(monster.short) + "</b>";
+		nameText.htmlText     = "<b>" + Utils.capitalizeFirstLetter(monster.short) + "</b>";
 		levelBar.value        = monster.level;
 		raceBar.valueText     = monster.race;
 		genderBar.valueText   = monster.plural ? "Multiple" : monster.genderText("Male", "Female", "Herm", "???");
