@@ -167,6 +167,7 @@ internal function tentacleVictoryRape():void {
 			outputText("\n\nSensing your needs, the tamed beast extends a tendril from the main tentacle that easily pushes past your cervical opening and breeches the deepest parts of your womb. The feeler penetrates past your uterus and lodges itself as deeply as possible. The beast begins rapidly vibrating and undulating its member, stimulating the deepest parts of your sex.\n\n");
 			outputText("You quickly reach a cunt-cramping orgasm, which forces the creature to unload a torrent of hot, musky fluids inside you. You feel bloated and stuffed as the beast reflexively sprays the entire contents of its seminal sacs... or whatever it stores its cum in... inside you. With a quick squeeze, you start expelling the tentacle, which prompts the creature to withdraw its tendril and leave your body. You walk away well satisfied while the abomination is too exhausted to move.");
 		}
+		playerImpregnation();
 	}
 	player.orgasm();
 	cleanupAfterCombat();
@@ -365,6 +366,7 @@ internal function tentacleLossRape():void {
 		// has vagina:
 		if(player.hasVagina()) {
 			outputText("Your " + vaginaDescript(0) + " ripples about the coiled intruder as you climax; fem-cum drips down the tentacle and fills the area with your musky scent.  You rear up as a surge of euphoria races through you, managing to overpower the tentacles holding your forelegs down for the briefest of moments.  But even with your forelegs free, the tentacle in your " + vaginaDescript(0) + " remains, rippling with waves of seed that spray inside you in massive, hot globules.  The sticky substance flooding your love canal pushes you over the edge and you orgasm again, spraying more as you cry out in pleasure.\n\n");
+			playerImpregnation();
 		}
 		// has cock, normal cum amount, anus < gaping: 
 		if(player.hasCock() && player.cumQ() < 1500 && player.ass.analLooseness < 4) {
@@ -533,7 +535,44 @@ internal function tentacleLossRape():void {
 	//Call page 2!
 	doNext(tentacleRapeContinuation);
 }
+private function playerImpregnation():void {
+		player.knockUp(PregnancyStore.PREGNANCY_TENTACLEBEAST, PregnancyStore.INCUBATION_TENTACLEBEAST, 100, 1);
+}
+public function pregUpdate():Boolean {
+//TODO
+if(player.pregnancyIncubation == 336) {
+	outputText("\n You feel something moving in your belly.\n");
+	return true;
+}
+if(player.pregnancyIncubation == 24 || player.pregnancyIncubation == 60) {
+	outputText("\n You feel some familiar mmovement in your cooter. The beast in you is stirring again, unfolding its slimy appendages and pushing them against the walls of its breeding chamber. Squeezing yor thighs together you try to hold back whatever squirms through your birthchannel.");
+	return true;
+}
 
+return false;
+}
+public function birth():void {
+	spriteSelect(100);
+	//TODO
+	outputText("\nYour eyes widen as a gout of oil suddenly gushes from your ass.  Before panic can set in, an incredible light-headedness overtakes you.  Dreamily, you discard your [armor] and squat.  More oil oozes out of you, and in your hazy euphoria, you scoop some of it up and rub it dreamily into your " + nippleDescript(0) + "s.  Part of you is disgusted at yourself, questioning what you are doing, but that is one voice in a million-strong chorus crooning you into total relaxation... the oil clings to your skin and seems to radiate warmth and softness.  Something round stretches your rectum wide, but in your state the sensation is practically orgasmic.");
+	//Female: 
+	if(player.gender == 2) {
+		outputText("  You roll your eyes to the sky and moan, your " + vaginaDescript(0) + " moistening as you push out the egg.");
+		//[(no fukken horses from here)]
+		if(!player.isTaur()) outputText("  Your oily hands push softly into your cleft, fingering your needy " + clitDescript() + " as you feel the pressure in your bowels intensify again.");
+	}
+	//Herm: 
+	else if(player.gender == 3) {
+		outputText("  You roll your eyes to the sky and moan, [eachCock] growing hard and your [vagina] moistening as you push out the egg.");
+		//[(no horses)]
+		if(!player.isTaur()) outputText("  Your oily hands descend upon your genitals and you begin to slowly pump your shaft and finger your needy " + clitDescript() + " as you feel the pressure in your bowels intensify again.");
+	}
+	outputText("\nDarn. Another of those horrible abominations now roam this land. ");
+	outputText("\n");
+	player.orgasm();
+	player.createVagina();
+	dynStats("lib", 1, "sen", 4);
+}
 private function tentacleRapeContinuation():void {
 	player.orgasm();
 	dynStats("tou", 1, "int", -.5, "lib", 2, "sen", 1, "cor", .5);

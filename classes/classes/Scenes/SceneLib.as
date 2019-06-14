@@ -230,6 +230,8 @@ public class SceneLib {
     public static var aikoScene:AikoScene = new AikoScene();
 	
 	public static var glacialYuShop:YuWinterGearShop = new YuWinterGearShop();
+	
+	public static var feralDragonScene:FeralDragonScene = new FeralDragonScene();
 
     public function SceneLib() {
     }

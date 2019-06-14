@@ -924,6 +924,7 @@ public class PlayerInfo extends BaseContent {
             player.XP -= player.requiredXP();
 			player.level++;
 			player.perkPoints++;
+			player.perkPoints++;
 			if (player.level <= 6) player.perkPoints++;
 			//if (player.level % 2 == 0) player.ascensionPerkPoints++;
 			//przerobić aby z asc perk co ?6/3/1? lvl dostawać another perk point?

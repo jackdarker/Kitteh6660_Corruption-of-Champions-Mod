@@ -63,6 +63,9 @@ public class Pregnancy extends NPCAwareContent {
             if (player.pregnancyType == PregnancyStore.PREGNANCY_URTA) {
                 displayedUpdate = urtaPregs.urtaPregooUpdates();
             }
+			if (player.pregnancyType == PregnancyStore.PREGNANCY_TENTACLEBEAST) {
+                displayedUpdate = SceneLib.forest.tentacleBeastScene.pregUpdate();
+            }
             //Cotton Pregnancy! - 350 days long
             if (player.pregnancyType == PregnancyStore.PREGNANCY_COTTON) {
                 if(player.pregnancyIncubation == 320) {
@@ -1517,9 +1520,14 @@ public class Pregnancy extends NPCAwareContent {
             urtaPregs.PCGivesBirf();
             player.knockUpForce(); //Clear Pregnancy
         }
-        if (player.pregnancyType == PregnancyStore.PREGNANCY_SAND_WITCH && player.pregnancyIncubation == 1) {
+		if (player.pregnancyType == PregnancyStore.PREGNANCY_SAND_WITCH && player.pregnancyIncubation == 1) {
             displayedUpdate = true;
             SceneLib.dungeons.desertcave.birthAWitch();
+            player.knockUpForce(); //Clear Pregnancy
+        }
+        if (player.pregnancyType == PregnancyStore.PREGNANCY_TENTACLEBEAST && player.pregnancyIncubation == 1) {
+            displayedUpdate = true;
+            SceneLib.forest.tentacleBeastScene.birth();
             player.knockUpForce(); //Clear Pregnancy
         }
         if (player.pregnancyType == PregnancyStore.PREGNANCY_IZMA && player.pregnancyIncubation == 1) {

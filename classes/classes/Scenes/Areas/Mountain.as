@@ -193,7 +193,17 @@ public class Mountain extends BaseContent
 						name:"hike",
 						chance:0.2,
 						call:hike
-					})
+					},{
+						name:"feralDragon",
+						when: function ():Boolean {
+							return SceneLib.highMountains.isDiscovered()
+								   && (player.level >= 15)
+						},
+						chance:0.5,
+						call:SceneLib.feralDragonScene.dragonEncounter,
+						mods:[SceneLib.exploration.furriteMod]
+					}
+					)
 			;
 		}
 		//Explore Mountain

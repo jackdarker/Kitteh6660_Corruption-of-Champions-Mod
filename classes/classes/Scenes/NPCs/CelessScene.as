@@ -260,7 +260,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 			else {
 				var item:ItemType = improvableItems[i][selectfrom];
 				var from:ItemType = improvableItems[i][0];
-				selectMenu.add(item.id, curry(improveItem, item, from)).disableIf(!player.hasItem(from));
+				selectMenu.add(item.id, curry(improveItem, item, from),"requires "+from.longName).disableIf(!player.hasItem(from));
 			}
 		}
 		submenu(selectMenu, campInteraction);
