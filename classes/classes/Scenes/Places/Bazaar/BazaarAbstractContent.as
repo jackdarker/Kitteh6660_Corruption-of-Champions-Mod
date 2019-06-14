@@ -12,8 +12,7 @@ public class BazaarAbstractContent extends BaseContent
 		protected function get bazaar():Bazaar {
 			return SceneLib.bazaar;
 		}
-		public function BazaarAbstractContent()
-		{
-		}
+		
+		public function BazaarAbstractContent() {}
 	}
 }
