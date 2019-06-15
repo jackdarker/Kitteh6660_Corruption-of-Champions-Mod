@@ -315,6 +315,7 @@ import classes.BodyParts.Wings;
 		[Arms.BOAR, StatusEffects.UnlockedBoarArms],
 		[Arms.CAT, StatusEffects.UnlockedCatArms],
 		[Arms.DISPLACER, StatusEffects.UnlockedDisplacerArms],
+		//[Arms.DOG, StatusEffects.UnlockedDogArms],    //TODO no .DOG?
 		[Arms.DRAGON, StatusEffects.UnlockedDraconicArms],
 		[Arms.DEVIL, StatusEffects.UnlockedDevilArms],
 		[Arms.ELF, StatusEffects.UnlockedElfArms],
@@ -341,7 +342,7 @@ import classes.BodyParts.Wings;
 		[Arms.SHARK, StatusEffects.UnlockedSharkArms],
 		[Arms.SPHINX, StatusEffects.UnlockedSphinxArms],
 		[Arms.SPIDER, StatusEffects.UnlockedSpiderArms],
-		[Arms.WOLF, null],
+		[Arms.WOLF, null],	
 		[Arms.YETI, null],
 	]);
 
@@ -355,7 +356,7 @@ import classes.BodyParts.Wings;
 		[Ears.CAT, StatusEffects.UnlockedCatEars],
 		[Ears.COW, StatusEffects.UnlockedCowEars],
 		[Ears.DEER, null],
-		[Ears.DOG, null],
+		[Ears.DOG, StatusEffects.UnlockedDogEars],
 		[Ears.DRAGON, StatusEffects.UnlockedDraconicEars],
 		[Ears.ECHIDNA, null],
 		[Ears.ELFIN, StatusEffects.UnlockedElfinEars],
@@ -428,7 +429,7 @@ import classes.BodyParts.Wings;
 		[Face.CHESHIRE_SMILE,StatusEffects.UnlockedCheshireSmile],
 		[Face.COW_MINOTAUR, StatusEffects.UnlockedCowMinotaurFace],
 		[Face.DEER, null],
-		[Face.DOG, null],
+		[Face.DOG, StatusEffects.UnlockedDogFace],
 		[Face.DRAGON, StatusEffects.UnlockedDraconicFace],
 		[Face.DRAGON_FANGS, StatusEffects.UnlockedDraconicFangs],
 		[Face.DEVIL_FANGS, StatusEffects.UnlockedDevilFangs],
@@ -533,7 +534,7 @@ import classes.BodyParts.Wings;
 		[LowerBody.DEERTAUR, null],
 		[LowerBody.DEMONIC_CLAWS, StatusEffects.UnlockedDemonClawedLegs],
 		[LowerBody.DEMONIC_HIGH_HEELS, StatusEffects.UnlockedDemonHighHeels],
-		[LowerBody.DOG, null],
+		[LowerBody.DOG, StatusEffects.UnlockedDogLegs],
 		[LowerBody.DRAGON, StatusEffects.UnlockedDraconicLegs],
 		[LowerBody.DRIDER, StatusEffects.UnlockedDriderLegs],
 		[LowerBody.ECHIDNA, null],
@@ -596,12 +597,12 @@ import classes.BodyParts.Wings;
 	private const METAMORPH_TONGUES:Object = createMapFromPairs([
 		[Tongue.CAT, [StatusEffects.UnlockedCatTongue, "Cat Tongue"]],
 		[Tongue.DEMONIC, [StatusEffects.UnlockedDemonTonuge, "Demonic Tongue"]],
+		[Tongue.DOG, [StatusEffects.UnlockedDogTongue, "Dog Tongue"]],
 		[Tongue.DRACONIC, [StatusEffects.UnlockedDraconicTongue, "Draconic Tongue"]],
 		[Tongue.ECHIDNA, [null, "Echidna Tongue"]],
 		[Tongue.HUMAN, [StatusEffects.UnlockedHumanTongue, "Human Tongue"]],
 		[Tongue.ELF, [StatusEffects.UnlockedElfTongue, "Elf Tongue"]],
 		[Tongue.SNAKE, [StatusEffects.UnlockedSnakeTongue, "Snake Tongue"]],
-		[Tongue.DOG, [null, "Dog Tongue"]],
 	]);
 
 	/**
@@ -629,7 +630,7 @@ import classes.BodyParts.Wings;
 		[Tail.COW, StatusEffects.UnlockedCowTail],
 		[Tail.DEER, null],
 		[Tail.DEMONIC, StatusEffects.UnlockedDemonTail],
-		[Tail.DOG, null],
+		[Tail.DOG, StatusEffects.UnlockedDogTail],
 		[Tail.DRACONIC, StatusEffects.UnlockedDraconicTail],
 		[Tail.ECHIDNA, null],
 		[Tail.FERRET, null],

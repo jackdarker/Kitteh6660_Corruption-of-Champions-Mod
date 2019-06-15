@@ -583,6 +583,12 @@ import classes.StatusEffects.VampireThirstEffect;
 		public static const UnlockedManticoreEyes:StatusEffectType		 = mk("Unlocked Manticore Eyes");
 		public static const UnlockedSphinxWings:StatusEffectType		 = mk("Unlocked Sphinx Wings");
 		public static const UnlockedSphinxArms:StatusEffectType			 = mk("Unlocked Sphinx Arms");//206 (for line 585)
+		public static const UnlockedDogFace:StatusEffectType 			 = mk("Unlocked Dog Face");
+		public static const UnlockedDogArms:StatusEffectType 		     = mk("Unlocked Dog Arms");
+		public static const UnlockedDogTail:StatusEffectType             = mk("Unlocked Dog Tail");
+		public static const UnlockedDogLegs:StatusEffectType             = mk("Unlocked Dog Legs");
+		public static const UnlockedDogEars:StatusEffectType             = mk("Unlocked Dog Ears");
+		public static const UnlockedDogTongue:StatusEffectType           = mk("Unlocked Dog Tongue");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo/Siren ");

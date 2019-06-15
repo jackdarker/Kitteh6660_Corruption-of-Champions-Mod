@@ -36,7 +36,7 @@ public function accessMetamorphMenu():void {
 	outputText("Using some of soulforce to re-gain any body parts that your body remembered in it genetic memory.\n");
 	outputText("<i>Bonus to max soulforce: " + 50 * (1 + player.perkv1(PerkLib.Metamorph)) + "</i>\n\n");
 	outputText("<b>Race added to Metamorph:\n");
-	outputText("Alicorn, Bat, Bee, Bicorn, Boar, Cat, Cheshire Cat, Cow, Couatl, Demon, Devil, Displacer Beast, Dragon, Elf, Fox, Gorgon, Harpy, Hellcat, Horse, Human, Kitsune, Lizard, Manticore, Mantis, Minotaur, Naga, Nekomata, Nightmare, Oni, Orc, Orca, Phoenix, Pig, Raiju, Red Panda, Salamander, Shark, Sphinx, Spider (+Drider), Unicorn, Vampire</b>");
+	outputText("Alicorn, Bat, Bee, Bicorn, Boar, Cat, Cheshire Cat, Cow, Couatl, Demon, Devil, Displacer Beast, Dog, Dragon, Elf, Fox, Gorgon, Harpy, Hellcat, Horse, Human, Kitsune, Lizard, Manticore, Mantis, Minotaur, Naga, Nekomata, Nightmare, Oni, Orc, Orca, Phoenix, Pig, Raiju, Red Panda, Salamander, Shark, Sphinx, Spider (+Drider), Unicorn, Vampire</b>");
 	menu();
 	addButton(10, "Page 1", accessPage1MetamorphMenu).hint("Hair, Face, Tongue, Eyes, Ears, Horns");
 	addButton(11, "Page 2", accessPage2MetamorphMenu).hint("Arms, Wings, Legs");
@@ -63,6 +63,21 @@ private function accessPage1MetamorphMenu():void {
 	addButton(12, "Horns(2)", accessPage2HornsMenu);
 	addButton(14, "Back", accessMetamorphMenu);
 }
+//use this to bind the button to a metamorph; metamorpFunc has just to apply the transform to the player and print a text
+private function createButton(pageMenuFunc:Function, button:int, Unlock:StatusEffectType, alreadyMutated:Boolean, cost:int, label:String, metamorphFunc:Function)
+{
+	if (!player.hasStatusEffect(Unlock)) addButtonDisabled(button, "???", "You not yet unlocked this metamorphosis!");
+	else if (alreadyMutated) addButtonDisabled(button, label, "You already have this transformation.");
+	else if (player.soulforce < cost) addButtonDisabled(button, label, "You already have this transformation.");
+	else addButton(button, label, curry(doMethamorph, metamorphFunc, cost, pageMenuFunc));
+}
+private function doMethamorph(metamorphFunc:Function, cost:int ,pageMenuFunc:Function) {
+	clearOutput();
+	player.soulforce -= cost;
+	metamorphFunc();
+	doNext(pageMenuFunc);
+}
+
 private function accessHairMenu():void {
 	menu();
 	if (player.hasStatusEffect(StatusEffects.UnlockedHumanHair) && player.hairType != Hair.NORMAL && player.soulforce >= 500) addButton(0, "Human", metamorphHumanHair);
@@ -121,6 +136,9 @@ private function accessPage1FaceMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardFace) && player.faceType == Face.LIZARD) addButtonDisabled(7, "Lizard", "You already have lizard face.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardFace) && player.faceType != Face.LIZARD && player.soulforce < 100) addButtonDisabled(7, "Lizard", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(7, "???", "You not yet unlocked this metamorphosis!");
+
+	createButton(accessPage1FaceMenu, 8, StatusEffects.UnlockedDogFace, (player.faceType == Face.DOG), 100, "Dog", metamorphDogArms);
+	
 	if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType != Face.SPIDER_FANGS && player.soulforce >= 100) addButton(10, "Spider", metamorphSpiderFangs);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType == Face.SPIDER_FANGS) addButtonDisabled(10, "Spider", "You already have spider fangs.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType != Face.SPIDER_FANGS && player.soulforce < 100) addButtonDisabled(10, "Spider", "You not have enough Soulforce for this metamorphosis.");
@@ -137,6 +155,10 @@ private function accessPage1FaceMenu():void {
 }
 private function accessPage2FaceMenu():void {
 	menu();
+	if (player.hasStatusEffect(StatusEffects.UnlockedDogFace) && player.faceType != Face.DOG && player.soulforce >= 100) addButton(5, "DOG", metamorphDogFace);
+	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType == Face.PIG) addButtonDisabled(5, "Pig", "You already have pig face.");
+	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce < 100) addButtonDisabled(5, "Pig", "You not have enough Soulforce for this metamorphosis.");
+	else addButtonDisabled(5, "???", "You not yet unlocked this metamorphosis!");
 	if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce >= 100) addButton(5, "Pig", metamorphPigFace);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType == Face.PIG) addButtonDisabled(5, "Pig", "You already have pig face.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce < 100) addButtonDisabled(5, "Pig", "You not have enough Soulforce for this metamorphosis.");
@@ -225,6 +247,8 @@ private function accessTongueMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedDraconicTongue) && player.tongue.type == Tongue.DRACONIC) addButtonDisabled(3, "Dragon", "You already have dragon tongue.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedDraconicTongue) && player.tongue.type != Tongue.DRACONIC && player.soulforce < 100) addButtonDisabled(3, "Dragon", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(3, "???", "You not yet unlocked this metamorphosis!");
+	createButton(accessTongueMenu, 4, StatusEffects.UnlockedDogTongue, (player.tongue.type == Tongue.DOG), 100, "Dog", metamorphDogTongue);
+	
 	if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type != Tongue.CAT && player.soulforce >= 100) addButton(5, "Cat", metamorphCatTongue);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type == Tongue.CAT) addButtonDisabled(5, "Cat", "You already have cat tongue.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type != Tongue.CAT && player.soulforce < 100) addButtonDisabled(5, "Cat", "You not have enough Soulforce for this metamorphosis.");
@@ -333,6 +357,7 @@ private function accessPage1EarsMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardEars) && player.ears.type == Ears.LIZARD) addButtonDisabled(6, "Lizard", "You already have lizard ears.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardEars) && player.ears.type != Ears.LIZARD && player.soulforce < 100) addButtonDisabled(6, "Lizard", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
+	createButton(accessPage1EarsMenu, 7, StatusEffects.UnlockedDogEars, (player.ears.type == Ears.DOG), 100, "Dog", metamorphDogEars);
 	if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type != Ears.FOX && player.soulforce >= 100) addButton(9, "Fox", metamorphEarsFox);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type == Ears.FOX) addButtonDisabled(9, "Fox", "You already have fox ears.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type != Ears.FOX && player.soulforce < 100) addButtonDisabled(9, "Fox", "You not have enough Soulforce for this metamorphosis.");
@@ -489,6 +514,7 @@ private function accessPage1ArmsMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedPhoenixArms) && player.arms.type == Arms.PHOENIX) addButtonDisabled(6, "Phoenix", "You already have phoenix arms.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedPhoenixArms) && player.arms.type != Arms.PHOENIX && player.soulforce < 100) addButtonDisabled(6, "Phoenix", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
+	//Todo Arms.Dog? createButton(accessPage1ArmsMenu, 7, StatusEffects.UnlockedDogArms, player.arms.type == Arms.DOG, 100, "Dog", metamorphDogArms);
 	if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type != Arms.SHARK && player.soulforce >= 100) addButton(8, "Shark", metamorphSharkArms);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type == Arms.SHARK) addButtonDisabled(8, "Shark", "You already have shark arms.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type != Arms.SHARK && player.soulforce < 100) addButtonDisabled(8, "Shark", "You not have enough Soulforce for this metamorphosis.");
@@ -696,6 +722,7 @@ private function accessPage1LegsMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedBeeLegs) && player.lowerBody == LowerBody.BEE) addButtonDisabled(6, "Bee", "You already have bee lower body.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedBeeLegs) && player.lowerBody != LowerBody.BEE && player.soulforce < 100) addButtonDisabled(6, "Bee", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
+	createButton(accessPage1LegsMenu, 7, StatusEffects.UnlockedDogLegs, player.lowerBody == LowerBody.DOG, 100, "Dog", metamorphDogLegs);
 	if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody != LowerBody.CAT && player.soulforce >= 100) addButton(8, "Cat", metamorphCatLegs);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody == LowerBody.CAT) addButtonDisabled(8, "Cat", "You already have cat lower body.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody != LowerBody.CAT && player.soulforce < 100) addButtonDisabled(8, "Cat", "You not have enough Soulforce for this metamorphosis.");
@@ -962,6 +989,7 @@ private function accessPage1TailMenu():void {
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardTail) && player.tailType == Tail.LIZARD) addButtonDisabled(10, "Lizard", "You already have lizard tail.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardTail) && player.tailType != Tail.LIZARD && player.soulforce < 100) addButtonDisabled(10, "Lizard", "You not have enough Soulforce for this metamorphosis.");
 	else addButtonDisabled(10, "???", "You not yet unlocked this metamorphosis!");
+	createButton(accessPage1TailMenu, 11, StatusEffects.UnlockedDogTail, player.tail.type == Tail.DOG, 100, "Dog", metamorphDogTail);
 	if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType != Tail.HARPY && player.soulforce >= 100) addButton(12, "Harpy", metamorphHarpyTail);
 	else if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType == Tail.HARPY) addButtonDisabled(12, "Harpy", "You already have harpy tail.");
 	else if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType != Tail.HARPY && player.soulforce < 100) addButtonDisabled(12, "Harpy", "You not have enough Soulforce for this metamorphosis.");
@@ -1800,6 +1828,33 @@ private function metamorphHumanLegs():void {
 	restoreHumanLegs();
 	doNext(accessPage1LegsMenu);
 }
+private function metamorphDogLegs():void {
+	outputText("\n\n<b>You now have dog feet.</b>");
+	player.lowerBody = LowerBody.DOG;
+	//TODO force this? player.legCount = 2;
+}
+private function metamorphDogFace():void {
+	outputText("\n\nYou cry out in pain as the bones in your face begin to break and rearrange. You rub your face furiously in an attempt to ease the pain, but to no avail. As the sensations pass, you examine your face in a nearby puddle. <b>You nearly gasp in shock at the sight of your new dog face!</b>");
+	player.faceType = Face.DOG;
+}
+private function metamorphDogTongue():void {
+	outputText("\n\n<b>You now have dog tongue.</b>");
+	player.tongue.type = Tongue.DOG;
+}
+private function metamorphDogArms():void {
+	//outputText("\n\n<b>You now have dog arms.</b>");
+	//player.arms.type = Arms.DOG;  TODO
+}
+private function metamorphDogTail():void {
+	if (player.tailType == Tail.NONE) outputText("\n\nYou feel a tug at the base of your spine as it lengthens ever so slightly. Looking over your shoulder, <b>you find that you have sprouted a dog tail.</b>");
+	else outputText("\n\nYou feel a pinching sensation in your [tail] as it begins to warp in change. When the sensation dissipates, <b>you are left with a dog tail.</b>");
+	player.tail.type = Tail.DOG;
+}
+private function metamorphDogEars():void {
+	outputText("\n\nYou feel a pressure on your ears as they begin to reshape. Once the changes finish, you flick them about experimentally, <b>and you’re left with pointed, floppy dog ears.</b>");
+	player.ears.type = Ears.DOG;
+}
+
 private function metamorphBoarArms():void {
 	clearOutput();
 	player.soulforce -= 100;
