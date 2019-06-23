@@ -712,6 +712,7 @@ private function getOralRapedByMinotaur():void {
 	player.orgasm();
 	dynStats("sen", 1);
 	minoCumAddiction(10);
+	player.slimeFeed(this.monster, true);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
     if (CoC.instance.inCombat) cleanupAfterCombat();
     else doNext(camp.returnToCampUseFourHours);
@@ -719,7 +720,6 @@ private function getOralRapedByMinotaur():void {
 
 private function minoGetsTitFucked():void {
 	spriteSelect(44);
-	player.slimeFeed();
 	if(player.isNaga()) {
 		AddictNagaOnMinotaur();
 		return;
@@ -749,6 +749,7 @@ private function minoGetsTitFucked():void {
 	outputText("You wake up an hour later, unsure how you made it back to your camp, light-headed and euphoric with the lingering after-affects.  You also find a bottle on the ground next to you, filled to the brim with the fluid.  You don't remember filling it up, but you're already itching to pop it open and guzzle it down.  You manage to resist the urge.  Besides, you're still feeling GREAT from your last 'sample'.");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
 	minoCumAddiction(10);
+	player.slimeFeed(this.monster, true);
 	monster.short = "tit-fucked Minotaur";
 	player.orgasm();
 	dynStats("sen", .5, "cor", .7);

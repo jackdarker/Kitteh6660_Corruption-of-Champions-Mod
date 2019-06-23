@@ -260,7 +260,8 @@ public class HeXinDao extends BaseContent
     private function confirmBuy(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,descString:String,onBuyString:String="\n"):void{
         clearOutput();
         outputText(descString);
-        doYesNo(curry(debitItem,returnFunc,shopKeep,priceRate,itype,onBuyString),returnFunc);
+        doYesNo(curry(debitItem, curry(confirmBuy, returnFunc, shopKeep, priceRate, itype,descString ,onBuyString), 
+			shopKeep,priceRate,itype,onBuyString),returnFunc);
     }
 
     public function mogahenmerchant():void {

@@ -5,7 +5,7 @@ import classes.BodyParts.Tail;
 import classes.GlobalFlags.*;
 import classes.Scenes.NPCs.IsabellaScene;
 import classes.Scenes.SceneLib;
-import classes.StatusEffects.VampireThirstEffect;
+import classes.StatusEffects.*;
 
 import coc.view.MainView;
 
@@ -296,7 +296,10 @@ public class PlayerInfo extends BaseContent {
 			if (vthirst.currentBoost > 0) statEffects += "(+" + vthirst.currentBoost + " to str / spe / int / lib)";
 			statEffects += "\n";
 		}
-
+		var cthirst:CumThirstEffect = player.statusEffectByType(StatusEffects.CumThirst) as CumThirstEffect;
+		if (cthirst != null) {
+			statEffects += cthirst.getStatusText()+"\n";
+		}
 		if (player.statusEffectv1(StatusEffects.Bammed1) > 0) {
 			if (player.statusEffectv1(StatusEffects.Bammed1) == 3) statEffects += "Bammed <b>(Disables melee attacks pernamently)</b>\n";
 			else statEffects += "Bammed - " + player.statusEffectv3(StatusEffects.Bammed1) + " hours remaining. (Disables melee attacks)\n";

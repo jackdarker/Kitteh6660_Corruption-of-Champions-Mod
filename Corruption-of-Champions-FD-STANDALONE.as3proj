@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="..\..\Desktop\CoC_Xianxia_0.8m3.swf" />
+    <movie path="CoC_Xianxia_0.8m3.swf" />
     <movie fps="24" />
     <movie width="1000" />
     <movie height="800" />
@@ -21,11 +21,9 @@
   <!-- Build options -->
   <build>
     <option accessible="False" />
-    <option advancedTelemetry="False" />
     <option allowSourcePathOverlap="False" />
     <option benchmark="True" />
     <option es="False" />
-    <option inline="False" />
     <option locale="" />
     <option loadConfig="" />
     <option optimize="True" />
@@ -88,7 +86,6 @@
   <options>
     <option showHiddenPaths="True" />
     <option testMovie="Default" />
-    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />

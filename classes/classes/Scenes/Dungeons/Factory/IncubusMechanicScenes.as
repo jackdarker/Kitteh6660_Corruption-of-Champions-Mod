@@ -1,4 +1,4 @@
-package classes.Scenes.Dungeons.D3 
+package classes.Scenes.Dungeons.Factory 
 {
 import classes.BaseContent;
 import classes.CockTypesEnum;

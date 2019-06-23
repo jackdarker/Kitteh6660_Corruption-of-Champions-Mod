@@ -80,7 +80,7 @@ package classes.Scenes.Dungeons
 		//Register dungeons
 		public var factory:Factory = new Factory;
 		public var deepcave:DeepCave = new DeepCave;
-		
+		//public var beeHive:BeeHive = new BeeHive;
 		public var desertcave:DesertCave = new DesertCave;
 		public var heltower:HelDungeon = new HelDungeon;
 		public var palace:AnzuPalace = new AnzuPalace;

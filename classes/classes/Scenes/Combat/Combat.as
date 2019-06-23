@@ -4122,6 +4122,10 @@ private function combatStatusesUpdate():void {
 		outputText("You feel something shift inside you, making you feel warm.  Finding the desire to fight this... hunk gets harder and harder.\n\n");
 		dynStats("lus", (player.statusEffectv1(StatusEffects.DemonSeed) + int(player.sens / 30) + int(player.lib / 30) + int(player.cor / 30)));
 	}
+	if(player.hasCumThirst && monster.cockTotal() > 0 && monster.balls > 0 && monster.lust100>50) {
+		dynStats("lus", (rand(player.lib/5) + 3 + rand(5)));
+		outputText("Your mouth waters at the sight of the "+monster.short+" "+monster.ballsDescriptLight+".\n\n");
+	}
 	if(player.inHeat && player.vaginas.length > 0 && monster.cockTotal() > 0) {
 		dynStats("lus", (rand(player.lib/5) + 3 + rand(5)));
 		outputText("Your " + vaginaDescript(0) + " clenches with an instinctual desire to be touched and filled.  ");

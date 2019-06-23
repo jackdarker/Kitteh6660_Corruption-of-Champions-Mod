@@ -28,6 +28,8 @@ import classes.internals.*;
 	 * - centaure male doggystyle buttrape
 	 * - dragon slit docking for males
 	 * 
+	 * idea: if you force yourself on him, he might be enraged when meeting you again
+	 * 
 	 * @author jk
 	 */
 	public class FeralDragon extends Monster

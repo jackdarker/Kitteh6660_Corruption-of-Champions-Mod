@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 	<Images>
 		<ImageList>
+			<ImageSet id="Aiko-intro">
+				<ImageFile>./img/Aiko-intro</ImageFile>
+				<ImageFile>./img/Aiko-intro_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="aiko-intro">
+				<ImageFile>./img/aiko-intro</ImageFile>
+				<ImageFile>./img/aiko-intro_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="akbal-deepwoods-bigbuttanaled">
 				<ImageFile>./img/akbal-deepwoods-bigbuttanaled</ImageFile>
 				<ImageFile>./img/akbal-deepwoods-bigbuttanaled_1</ImageFile>
@@ -233,6 +241,122 @@
 				<ImageFile>./img/ants-desert-male-firstencounter</ImageFile>
 				<ImageFile>./img/ants-desert-male-firstencounter_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="anzu-bathtime-begin">
+				<ImageFile>./img/anzu-bathtime-begin</ImageFile>
+				<ImageFile>./img/anzu-bathtime-begin_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bathtime-mid">
+				<ImageFile>./img/anzu-bathtime-mid</ImageFile>
+				<ImageFile>./img/anzu-bathtime-mid_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bathtime-relax">
+				<ImageFile>./img/anzu-bathtime-relax</ImageFile>
+				<ImageFile>./img/anzu-bathtime-relax_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bathtime-sex">
+				<ImageFile>./img/anzu-bathtime-sex</ImageFile>
+				<ImageFile>./img/anzu-bathtime-sex_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bed-begin">
+				<ImageFile>./img/anzu-bed-begin</ImageFile>
+				<ImageFile>./img/anzu-bed-begin_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bed-blowjob">
+				<ImageFile>./img/anzu-bed-blowjob</ImageFile>
+				<ImageFile>./img/anzu-bed-blowjob_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bed-end">
+				<ImageFile>./img/anzu-bed-end</ImageFile>
+				<ImageFile>./img/anzu-bed-end_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-bed-mid">
+				<ImageFile>./img/anzu-bed-mid</ImageFile>
+				<ImageFile>./img/anzu-bed-mid_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-dining-breakfast">
+				<ImageFile>./img/anzu-dining-breakfast</ImageFile>
+				<ImageFile>./img/anzu-dining-breakfast_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-dining-dinner">
+				<ImageFile>./img/anzu-dining-dinner</ImageFile>
+				<ImageFile>./img/anzu-dining-dinner_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-dining-lunch">
+				<ImageFile>./img/anzu-dining-lunch</ImageFile>
+				<ImageFile>./img/anzu-dining-lunch_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-prep-breakfast">
+				<ImageFile>./img/anzu-prep-breakfast</ImageFile>
+				<ImageFile>./img/anzu-prep-breakfast_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-prep-dinner">
+				<ImageFile>./img/anzu-prep-dinner</ImageFile>
+				<ImageFile>./img/anzu-prep-dinner_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-prep-lunch">
+				<ImageFile>./img/anzu-prep-lunch</ImageFile>
+				<ImageFile>./img/anzu-prep-lunch_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-racing-intro">
+				<ImageFile>./img/anzu-racing-intro</ImageFile>
+				<ImageFile>./img/anzu-racing-intro_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-racing-scene">
+				<ImageFile>./img/anzu-racing-scene</ImageFile>
+				<ImageFile>./img/anzu-racing-scene_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-anal-catch">
+				<ImageFile>./img/anzu-sex-anal-catch</ImageFile>
+				<ImageFile>./img/anzu-sex-anal-catch_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-analpitch">
+				<ImageFile>./img/anzu-sex-analpitch</ImageFile>
+				<ImageFile>./img/anzu-sex-analpitch_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-feeding">
+				<ImageFile>./img/anzu-sex-feeding</ImageFile>
+				<ImageFile>./img/anzu-sex-feeding_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-give-blowjob">
+				<ImageFile>./img/anzu-sex-give-blowjob</ImageFile>
+				<ImageFile>./img/anzu-sex-give-blowjob_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-receive-blowjob">
+				<ImageFile>./img/anzu-sex-receive-blowjob</ImageFile>
+				<ImageFile>./img/anzu-sex-receive-blowjob_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-stripping">
+				<ImageFile>./img/anzu-sex-stripping</ImageFile>
+				<ImageFile>./img/anzu-sex-stripping_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-sex-vaginal-catch">
+				<ImageFile>./img/anzu-sex-vaginal-catch</ImageFile>
+				<ImageFile>./img/anzu-sex-vaginal-catch_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-talk-marae-lethice">
+				<ImageFile>./img/anzu-talk-marae-lethice</ImageFile>
+				<ImageFile>./img/anzu-talk-marae-lethice_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-talk-palace">
+				<ImageFile>./img/anzu-talk-palace</ImageFile>
+				<ImageFile>./img/anzu-talk-palace_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-talk-past">
+				<ImageFile>./img/anzu-talk-past</ImageFile>
+				<ImageFile>./img/anzu-talk-past_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-talk-powers">
+				<ImageFile>./img/anzu-talk-powers</ImageFile>
+				<ImageFile>./img/anzu-talk-powers_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="anzu-talk-rift">
+				<ImageFile>./img/anzu-talk-rift</ImageFile>
+				<ImageFile>./img/anzu-talk-rift_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="area-plain">
+				<ImageFile>./img/area-plain</ImageFile>
+				<ImageFile>./img/area-plain_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="arian-fap">
 				<ImageFile>./img/arian-fap</ImageFile>
 				<ImageFile>./img/arian-fap_1</ImageFile>
@@ -425,10 +549,6 @@
 				<ImageFile>./img/camping</ImageFile>
 				<ImageFile>./img/camping_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="coc-logo">
-				<ImageFile>./img/coc-logo</ImageFile>
-				<ImageFile>./img/coc-logo_1</ImageFile>
-			</ImageSet>
 			<ImageSet id="communal-bath">
 				<ImageFile>./img/communal-bath</ImageFile>
 				<ImageFile>./img/communal-bath_1</ImageFile>
@@ -500,6 +620,10 @@
 			<ImageSet id="dungeon-entrance-factory">
 				<ImageFile>./img/dungeon-entrance-factory</ImageFile>
 				<ImageFile>./img/dungeon-entrance-factory_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="dungeon-entrance-palace">
+				<ImageFile>./img/dungeon-entrance-palace</ImageFile>
+				<ImageFile>./img/dungeon-entrance-palace_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="dungeon-entrance-phoenixtower">
 				<ImageFile>./img/dungeon-entrance-phoenixtower</ImageFile>
@@ -889,6 +1013,14 @@
 				<ImageFile>./img/impoverlord-loss-male</ImageFile>
 				<ImageFile>./img/impoverlord-loss-male_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="item-kFruit">
+				<ImageFile>./img/item-kFruit</ImageFile>
+				<ImageFile>./img/item-kFruit_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="item-oElixir">
+				<ImageFile>./img/item-oElixir</ImageFile>
+				<ImageFile>./img/item-oElixir_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="jojo-appearance">
 				<ImageFile>./img/jojo-appearance</ImageFile>
 				<ImageFile>./img/jojo-appearance_1</ImageFile>
@@ -1073,9 +1205,9 @@
 				<ImageFile>./img/kiha-vagfuck</ImageFile>
 				<ImageFile>./img/kiha-vagfuck_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="lethice-intro">
-				<ImageFile>./img/lethice-intro</ImageFile>
-				<ImageFile>./img/lethice-intro_1</ImageFile>
+			<ImageSet id="konstantin-craft-worldtreeweapon">
+				<ImageFile>./img/konstantin-craft-worldtreeweapon</ImageFile>
+				<ImageFile>./img/konstantin-craft-worldtreeweapon_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="location-bazaar">
 				<ImageFile>./img/location-bazaar</ImageFile>
@@ -1377,9 +1509,25 @@
 				<ImageFile>./img/minerva-talk-tree-pure</ImageFile>
 				<ImageFile>./img/minerva-talk-tree-pure_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-Neisa">
+				<ImageFile>./img/monster-Neisa</ImageFile>
+				<ImageFile>./img/monster-Neisa_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-aiko">
+				<ImageFile>./img/monster-aiko</ImageFile>
+				<ImageFile>./img/monster-aiko_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-akbal">
 				<ImageFile>./img/monster-akbal</ImageFile>
 				<ImageFile>./img/monster-akbal_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-alraune">
+				<ImageFile>./img/monster-alraune</ImageFile>
+				<ImageFile>./img/monster-alraune_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-amarok">
+				<ImageFile>./img/monster-amarok</ImageFile>
+				<ImageFile>./img/monster-amarok_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-amily">
 				<ImageFile>./img/monster-amily</ImageFile>
@@ -1388,6 +1536,14 @@
 			<ImageSet id="monster-anemone">
 				<ImageFile>./img/monster-anemone</ImageFile>
 				<ImageFile>./img/monster-anemone_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-asuka">
+				<ImageFile>./img/monster-asuka</ImageFile>
+				<ImageFile>./img/monster-asuka_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-aurora">
+				<ImageFile>./img/monster-aurora</ImageFile>
+				<ImageFile>./img/monster-aurora_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-basilisk">
 				<ImageFile>./img/monster-basilisk</ImageFile>
@@ -1429,6 +1585,10 @@
 				<ImageFile>./img/monster-demonmob</ImageFile>
 				<ImageFile>./img/monster-demonmob_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-diana">
+				<ImageFile>./img/monster-diana</ImageFile>
+				<ImageFile>./img/monster-diana_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-doppleganger">
 				<ImageFile>./img/monster-doppleganger</ImageFile>
 				<ImageFile>./img/monster-doppleganger_1</ImageFile>
@@ -1436,6 +1596,10 @@
 			<ImageSet id="monster-ember">
 				<ImageFile>./img/monster-ember</ImageFile>
 				<ImageFile>./img/monster-ember_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-evangeline">
+				<ImageFile>./img/monster-evangeline</ImageFile>
+				<ImageFile>./img/monster-evangeline_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-farmers">
 				<ImageFile>./img/monster-farmers</ImageFile>
@@ -1445,6 +1609,10 @@
 				<ImageFile>./img/monster-femalespidermorph</ImageFile>
 				<ImageFile>./img/monster-femalespidermorph_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-feraldragon">
+				<ImageFile>./img/monster-feraldragon</ImageFile>
+				<ImageFile>./img/monster-feraldragon_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-fetishcultist">
 				<ImageFile>./img/monster-fetishcultist</ImageFile>
 				<ImageFile>./img/monster-fetishcultist_1</ImageFile>
@@ -1452,6 +1620,10 @@
 			<ImageSet id="monster-fetishzealot">
 				<ImageFile>./img/monster-fetishzealot</ImageFile>
 				<ImageFile>./img/monster-fetishzealot_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-ghoul">
+				<ImageFile>./img/monster-ghoul</ImageFile>
+				<ImageFile>./img/monster-ghoul_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-gnoll">
 				<ImageFile>./img/monster-gnoll</ImageFile>
@@ -1493,6 +1665,10 @@
 				<ImageFile>./img/monster-googirl</ImageFile>
 				<ImageFile>./img/monster-googirl_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-gorgon">
+				<ImageFile>./img/monster-gorgon</ImageFile>
+				<ImageFile>./img/monster-gorgon_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-greenslime">
 				<ImageFile>./img/monster-greenslime</ImageFile>
 				<ImageFile>./img/monster-greenslime_1</ImageFile>
@@ -1513,6 +1689,10 @@
 				<ImageFile>./img/monster-hel</ImageFile>
 				<ImageFile>./img/monster-hel_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-hellcat">
+				<ImageFile>./img/monster-hellcat</ImageFile>
+				<ImageFile>./img/monster-hellcat_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-hellhound">
 				<ImageFile>./img/monster-hellhound</ImageFile>
 				<ImageFile>./img/monster-hellhound_1</ImageFile>
@@ -1528,6 +1708,10 @@
 			<ImageSet id="monster-hollispawn">
 				<ImageFile>./img/monster-hollispawn</ImageFile>
 				<ImageFile>./img/monster-hollispawn_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-ignis">
+				<ImageFile>./img/monster-ignis</ImageFile>
+				<ImageFile>./img/monster-ignis_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-imageName">
 				<ImageFile>./img/monster-imageName</ImageFile>
@@ -1553,6 +1737,10 @@
 				<ImageFile>./img/monster-impwarlord</ImageFile>
 				<ImageFile>./img/monster-impwarlord_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-incubus">
+				<ImageFile>./img/monster-incubus</ImageFile>
+				<ImageFile>./img/monster-incubus_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-incubusmechanic">
 				<ImageFile>./img/monster-incubusmechanic</ImageFile>
 				<ImageFile>./img/monster-incubusmechanic_1</ImageFile>
@@ -1565,6 +1753,10 @@
 				<ImageFile>./img/monster-isabella</ImageFile>
 				<ImageFile>./img/monster-isabella_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-ivorysuccubus">
+				<ImageFile>./img/monster-ivorysuccubus</ImageFile>
+				<ImageFile>./img/monster-ivorysuccubus_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-izma">
 				<ImageFile>./img/monster-izma</ImageFile>
 				<ImageFile>./img/monster-izma_1</ImageFile>
@@ -1572,6 +1764,10 @@
 			<ImageSet id="monster-izumi">
 				<ImageFile>./img/monster-izumi</ImageFile>
 				<ImageFile>./img/monster-izumi_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-jabberwocky">
+				<ImageFile>./img/monster-jabberwocky</ImageFile>
+				<ImageFile>./img/monster-jabberwocky_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-jeanclaude">
 				<ImageFile>./img/monster-jeanclaude</ImageFile>
@@ -1589,17 +1785,25 @@
 				<ImageFile>./img/monster-kiha</ImageFile>
 				<ImageFile>./img/monster-kiha_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-kindra">
+				<ImageFile>./img/monster-kindra</ImageFile>
+				<ImageFile>./img/monster-kindra_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-kitsune">
 				<ImageFile>./img/monster-kitsune</ImageFile>
 				<ImageFile>./img/monster-kitsune_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="monster-lethice">
-				<ImageFile>./img/monster-lethice</ImageFile>
-				<ImageFile>./img/monster-lethice_1</ImageFile>
+			<ImageSet id="monster-kraken">
+				<ImageFile>./img/monster-kraken</ImageFile>
+				<ImageFile>./img/monster-kraken_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="monster-lethice-phase2">
-				<ImageFile>./img/monster-lethice-phase2</ImageFile>
-				<ImageFile>./img/monster-lethice-phase2_1</ImageFile>
+			<ImageSet id="monster-krakken">
+				<ImageFile>./img/monster-krakken</ImageFile>
+				<ImageFile>./img/monster-krakken_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-largedemonmob">
+				<ImageFile>./img/monster-largedemonmob</ImageFile>
+				<ImageFile>./img/monster-largedemonmob_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-livingstatue">
 				<ImageFile>./img/monster-livingstatue</ImageFile>
@@ -1608,6 +1812,10 @@
 			<ImageSet id="monster-lizanrogue">
 				<ImageFile>./img/monster-lizanrogue</ImageFile>
 				<ImageFile>./img/monster-lizanrogue_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-luna">
+				<ImageFile>./img/monster-luna</ImageFile>
+				<ImageFile>./img/monster-luna_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-malespidermorph">
 				<ImageFile>./img/monster-malespidermorph</ImageFile>
@@ -1624,6 +1832,10 @@
 			<ImageSet id="monster-milkysuccubus">
 				<ImageFile>./img/monster-milkysuccubus</ImageFile>
 				<ImageFile>./img/monster-milkysuccubus_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-mimic">
+				<ImageFile>./img/monster-mimic</ImageFile>
+				<ImageFile>./img/monster-mimic_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-minerva">
 				<ImageFile>./img/monster-minerva</ImageFile>
@@ -1653,6 +1865,14 @@
 				<ImageFile>./img/monster-naga</ImageFile>
 				<ImageFile>./img/monster-naga_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-nightmare">
+				<ImageFile>./img/monster-nightmare</ImageFile>
+				<ImageFile>./img/monster-nightmare_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-omnibus">
+				<ImageFile>./img/monster-omnibus</ImageFile>
+				<ImageFile>./img/monster-omnibus_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-omnibusoverseer">
 				<ImageFile>./img/monster-omnibusoverseer</ImageFile>
 				<ImageFile>./img/monster-omnibusoverseer_1</ImageFile>
@@ -1668,6 +1888,18 @@
 			<ImageSet id="monster-pod">
 				<ImageFile>./img/monster-pod</ImageFile>
 				<ImageFile>./img/monster-pod_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-rangiku">
+				<ImageFile>./img/monster-rangiku</ImageFile>
+				<ImageFile>./img/monster-rangiku_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-ryubidragon">
+				<ImageFile>./img/monster-ryubidragon</ImageFile>
+				<ImageFile>./img/monster-ryubidragon_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-ryubihuman">
+				<ImageFile>./img/monster-ryubihuman</ImageFile>
+				<ImageFile>./img/monster-ryubihuman_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-sandmother">
 				<ImageFile>./img/monster-sandmother</ImageFile>
@@ -1697,6 +1929,10 @@
 				<ImageFile>./img/monster-scruffy</ImageFile>
 				<ImageFile>./img/monster-scruffy_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-scylla">
+				<ImageFile>./img/monster-scylla</ImageFile>
+				<ImageFile>./img/monster-scylla_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-secretarialsuccubus">
 				<ImageFile>./img/monster-secretarialsuccubus</ImageFile>
 				<ImageFile>./img/monster-secretarialsuccubus_1</ImageFile>
@@ -1725,9 +1961,17 @@
 				<ImageFile>./img/monster-spidermorphmob</ImageFile>
 				<ImageFile>./img/monster-spidermorphmob_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-succubus">
+				<ImageFile>./img/monster-succubus</ImageFile>
+				<ImageFile>./img/monster-succubus_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-succubusgardener">
 				<ImageFile>./img/monster-succubusgardener</ImageFile>
 				<ImageFile>./img/monster-succubusgardener_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-syth">
+				<ImageFile>./img/monster-syth</ImageFile>
+				<ImageFile>./img/monster-syth_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-tamani">
 				<ImageFile>./img/monster-tamani</ImageFile>
@@ -1749,6 +1993,10 @@
 				<ImageFile>./img/monster-troll</ImageFile>
 				<ImageFile>./img/monster-troll_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-unicornmare">
+				<ImageFile>./img/monster-unicornmare</ImageFile>
+				<ImageFile>./img/monster-unicornmare_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-vala">
 				<ImageFile>./img/monster-vala</ImageFile>
 				<ImageFile>./img/monster-vala_1</ImageFile>
@@ -1757,9 +2005,17 @@
 				<ImageFile>./img/monster-valkyrie</ImageFile>
 				<ImageFile>./img/monster-valkyrie_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="monster-whitemare">
+				<ImageFile>./img/monster-whitemare</ImageFile>
+				<ImageFile>./img/monster-whitemare_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="monster-worms">
 				<ImageFile>./img/monster-worms</ImageFile>
 				<ImageFile>./img/monster-worms_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="monster-yamata">
+				<ImageFile>./img/monster-yamata</ImageFile>
+				<ImageFile>./img/monster-yamata_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="monster-yeti">
 				<ImageFile>./img/monster-yeti</ImageFile>
@@ -1785,6 +2041,10 @@
 				<ImageFile>./img/rathazul-buy-dye</ImageFile>
 				<ImageFile>./img/rathazul-buy-dye_1</ImageFile>
 			</ImageSet>
+			<ImageSet id="rathazul-buy-groplus">
+				<ImageFile>./img/rathazul-buy-groplus</ImageFile>
+				<ImageFile>./img/rathazul-buy-groplus_1</ImageFile>
+			</ImageSet>
 			<ImageSet id="rathazul-buy-lotion">
 				<ImageFile>./img/rathazul-buy-lotion</ImageFile>
 				<ImageFile>./img/rathazul-buy-lotion_1</ImageFile>
@@ -1801,22 +2061,6 @@
 				<ImageFile>./img/rathazul-camp</ImageFile>
 				<ImageFile>./img/rathazul-camp_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="rathazul-craft-barkarmor-corrupt">
-				<ImageFile>./img/rathazul-craft-barkarmor-corrupt</ImageFile>
-				<ImageFile>./img/rathazul-craft-barkarmor-corrupt_1</ImageFile>
-			</ImageSet>
-			<ImageSet id="rathazul-craft-barkarmor-pure">
-				<ImageFile>./img/rathazul-craft-barkarmor-pure</ImageFile>
-				<ImageFile>./img/rathazul-craft-barkarmor-pure_1</ImageFile>
-			</ImageSet>
-			<ImageSet id="rathazul-craft-chitinarmor">
-				<ImageFile>./img/rathazul-craft-chitinarmor</ImageFile>
-				<ImageFile>./img/rathazul-craft-chitinarmor_1</ImageFile>
-			</ImageSet>
-			<ImageSet id="rathazul-craft-dragonscalearmor">
-				<ImageFile>./img/rathazul-craft-dragonscalearmor</ImageFile>
-				<ImageFile>./img/rathazul-craft-dragonscalearmor_1</ImageFile>
-			</ImageSet>
 			<ImageSet id="rathazul-craft-dragonscalebra">
 				<ImageFile>./img/rathazul-craft-dragonscalebra</ImageFile>
 				<ImageFile>./img/rathazul-craft-dragonscalebra_1</ImageFile>
@@ -1825,17 +2069,57 @@
 				<ImageFile>./img/rathazul-craft-dragonscaleloincloth</ImageFile>
 				<ImageFile>./img/rathazul-craft-dragonscaleloincloth_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="rathazul-craft-dragonscalerobes">
-				<ImageFile>./img/rathazul-craft-dragonscalerobes</ImageFile>
-				<ImageFile>./img/rathazul-craft-dragonscalerobes_1</ImageFile>
-			</ImageSet>
 			<ImageSet id="rathazul-craft-dragonscalethong">
 				<ImageFile>./img/rathazul-craft-dragonscalethong</ImageFile>
 				<ImageFile>./img/rathazul-craft-dragonscalethong_1</ImageFile>
 			</ImageSet>
-			<ImageSet id="rathazul-craft-gelarmor">
-				<ImageFile>./img/rathazul-craft-gelarmor</ImageFile>
-				<ImageFile>./img/rathazul-craft-gelarmor_1</ImageFile>
+			<ImageSet id="rathazul-craft-dragonscalevest">
+				<ImageFile>./img/rathazul-craft-dragonscalevest</ImageFile>
+				<ImageFile>./img/rathazul-craft-dragonscalevest_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavearmor">
+				<ImageFile>./img/rathazul-craft-ebonweavearmor</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavearmor_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavecorset">
+				<ImageFile>./img/rathazul-craft-ebonweavecorset</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavecorset_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweaveheavyarmor">
+				<ImageFile>./img/rathazul-craft-ebonweaveheavyarmor</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweaveheavyarmor_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavehereticsgarb">
+				<ImageFile>./img/rathazul-craft-ebonweavehereticsgarb</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavehereticsgarb_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweaveindecentrobes">
+				<ImageFile>./img/rathazul-craft-ebonweaveindecentrobes</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweaveindecentrobes_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavejock">
+				<ImageFile>./img/rathazul-craft-ebonweavejock</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavejock_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweaverobes">
+				<ImageFile>./img/rathazul-craft-ebonweaverobes</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweaverobes_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweaverunejock">
+				<ImageFile>./img/rathazul-craft-ebonweaverunejock</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweaverunejock_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweaverunethong">
+				<ImageFile>./img/rathazul-craft-ebonweaverunethong</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweaverunethong_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavethong">
+				<ImageFile>./img/rathazul-craft-ebonweavethong</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavethong_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-ebonweavevest">
+				<ImageFile>./img/rathazul-craft-ebonweavevest</ImageFile>
+				<ImageFile>./img/rathazul-craft-ebonweavevest_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="rathazul-craft-silkarmor">
 				<ImageFile>./img/rathazul-craft-silkarmor</ImageFile>
@@ -1844,6 +2128,10 @@
 			<ImageSet id="rathazul-craft-silkbra">
 				<ImageFile>./img/rathazul-craft-silkbra</ImageFile>
 				<ImageFile>./img/rathazul-craft-silkbra_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-silkindecentrobes">
+				<ImageFile>./img/rathazul-craft-silkindecentrobes</ImageFile>
+				<ImageFile>./img/rathazul-craft-silkindecentrobes_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="rathazul-craft-silkloincloth">
 				<ImageFile>./img/rathazul-craft-silkloincloth</ImageFile>
@@ -1856,6 +2144,10 @@
 			<ImageSet id="rathazul-craft-silkrobes">
 				<ImageFile>./img/rathazul-craft-silkrobes</ImageFile>
 				<ImageFile>./img/rathazul-craft-silkrobes_1</ImageFile>
+			</ImageSet>
+			<ImageSet id="rathazul-craft-silkshirt">
+				<ImageFile>./img/rathazul-craft-silkshirt</ImageFile>
+				<ImageFile>./img/rathazul-craft-silkshirt_1</ImageFile>
 			</ImageSet>
 			<ImageSet id="rathazul-lake">
 				<ImageFile>./img/rathazul-lake</ImageFile>

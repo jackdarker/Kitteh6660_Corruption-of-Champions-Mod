@@ -342,7 +342,7 @@ import classes.BodyParts.Wings;
 		[Arms.SHARK, StatusEffects.UnlockedSharkArms],
 		[Arms.SPHINX, StatusEffects.UnlockedSphinxArms],
 		[Arms.SPIDER, StatusEffects.UnlockedSpiderArms],
-		[Arms.WOLF, null],	
+		[Arms.WOLF, StatusEffects.UnlockedWolfArms],	
 		[Arms.YETI, null],
 	]);
 
@@ -380,7 +380,7 @@ import classes.BodyParts.Wings;
 		[Ears.SNAKE, StatusEffects.UnlockedSnakeEars],
 		[Ears.VAMPIRE, StatusEffects.UnlockedVampireEars],
 		[Ears.WEASEL, StatusEffects.UnlockedRaijuEars],
-		[Ears.WOLF, null],
+		[Ears.WOLF, StatusEffects.UnlockedWolfEars],
 		[Ears.YETI, null],
 	]);
 
@@ -459,8 +459,8 @@ import classes.BodyParts.Wings;
 		[Face.SNAKE_FANGS, StatusEffects.UnlockedSnakeFangs],
 		[Face.SPIDER_FANGS, StatusEffects.UnlockedSpiderFangs],
 		[Face.VAMPIRE, StatusEffects.UnlockedVampireFace],
-		[Face.WOLF, null],
-		[Face.WOLF_FANGS, null],
+		[Face.WOLF, StatusEffects.UnlockedWolfFace],
+		[Face.WOLF_FANGS, StatusEffects.UnlockedWolfFangs],
 		[Face.YETI_FANGS, null],
 	]);
 
@@ -566,7 +566,7 @@ import classes.BodyParts.Wings;
 		[LowerBody.SALAMANDER, StatusEffects.UnlockedSalamanderLegs],
 		[LowerBody.SCYLLA, null],
 		[LowerBody.SHARK, StatusEffects.UnlockedSharkLegs],
-		[LowerBody.WOLF, null],
+		[LowerBody.WOLF, StatusEffects.UnlockedWolfLegs],
 		[LowerBody.YETI, null],
 		[LowerBody.YGG_ROOT_CLAWS, null],
 	]);
@@ -586,7 +586,7 @@ import classes.BodyParts.Wings;
 		[RearBody.ORCA_BLOWHOLE, StatusEffects.UnlockedOrcaBlowhole],
 		[RearBody.RAIJU_MANE, StatusEffects.UnlockedRaijuMane],
 		[RearBody.SHARK_FIN, StatusEffects.UnlockedSharkFin],
-		[RearBody.WOLF_COLLAR, null],
+		[RearBody.WOLF_COLLAR, StatusEffects.UnlockedWolfCollar],
 	]);
 
 	public function setTongueType(tongueType:int):Boolean {
@@ -661,7 +661,7 @@ import classes.BodyParts.Wings;
 		[Tail.SCORPION, StatusEffects.UnlockedScorpionTail],
 		[Tail.SHARK, StatusEffects.UnlockedSharkTail],
 		[Tail.SPIDER_ADBOMEN, StatusEffects.UnlockedSpiderTail],
-		[Tail.WOLF, null],
+		[Tail.WOLF, StatusEffects.UnlockedWolfTail],
 		[Tail.YGGDRASIL, null],
 	]);
 	private const METAMORPH_FOX_TAILS:Object = createMapFromPairs([

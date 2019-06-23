@@ -59,6 +59,7 @@ use namespace CoC;
 		public var hexindao:HeXinDao = new HeXinDao();
 		public var dungeon1:Factory = new Factory();
 		public var dungeon2:DeepCave = new DeepCave();
+		public var beeHive:BeeHive = new BeeHive();
 		public var dungeonS:DesertCave = new DesertCave();
 		public var dungeonH:HelDungeon = new HelDungeon();
 		public var dungeonHC:HiddenCave = new HiddenCave();
@@ -2688,6 +2689,7 @@ private function placesToPage1():void {
 
 private function dungeons():void {
 	menu();
+	addButton(4, "BeeHive", beeHive.enterDungeon_);
 	//Turn on dungeon 1
 	if (flags[kFLAGS.FACTORY_FOUND] > 0) addButton(0, "Factory", dungeon1.enterDungeon).hint("Visit the demonic factory in the mountains." + (flags[kFLAGS.FACTORY_SHUTDOWN] > 0 ? "\n\nYou've managed to shut down the factory." : "The factory is still running. Marae wants you to shut down the factory!") + (SceneLib.dungeons.checkFactoryClear() ? "\n\nCLEARED!" : ""));
 	//Turn on dungeon 2

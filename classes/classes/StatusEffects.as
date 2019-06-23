@@ -3,6 +3,7 @@ package classes
 import classes.StatusEffects.Combat.*;
 import classes.StatusEffects.CombatStatusEffect;
 import classes.StatusEffects.VampireThirstEffect;
+import classes.StatusEffects.CumThirstEffect;
 
 /**
 	 * IMPORTANT NOTE:
@@ -240,6 +241,7 @@ import classes.StatusEffects.VampireThirstEffect;
 		public static const TF2:StatusEffectType                            = mk("TF2");
 		public static const TookBlessedSword:StatusEffectType               = mk("Took Blessed Sword");
 		public static const VampireThirst:StatusEffectType                  = VampireThirstEffect.TYPE;
+		public static const CumThirst:StatusEffectType                  	= CumThirstEffect.TYPE;
 		
 		//Old status plots. DEPRECATED, DO NOT USE. Currently cannot be removed without breaking existing saves.
 		public static const DungeonShutDown:StatusEffectType         = mk("DungeonShutDown");
@@ -589,6 +591,14 @@ import classes.StatusEffects.VampireThirstEffect;
 		public static const UnlockedDogLegs:StatusEffectType             = mk("Unlocked Dog Legs");
 		public static const UnlockedDogEars:StatusEffectType             = mk("Unlocked Dog Ears");
 		public static const UnlockedDogTongue:StatusEffectType           = mk("Unlocked Dog Tongue");
+		public static const UnlockedWolfFace:StatusEffectType 			 = mk("Unlocked Wolf Face");
+		public static const UnlockedWolfCollar:StatusEffectType 		 = mk("Unlocked Wolf Collar");
+		public static const UnlockedWolfFangs:StatusEffectType           = mk("Unlocked Wolf Fangs");
+		public static const UnlockedWolfArms:StatusEffectType 		     = mk("Unlocked Wolf Arms");
+		public static const UnlockedWolfTail:StatusEffectType             = mk("Unlocked Wolf Tail");
+		public static const UnlockedWolfLegs:StatusEffectType             = mk("Unlocked Wolf Legs");
+		public static const UnlockedWolfEars:StatusEffectType             = mk("Unlocked Wolf Ears");
+		public static const UnlockedWolfTongue:StatusEffectType           = mk("Unlocked Wolf Tongue");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo/Siren ");

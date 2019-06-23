@@ -20,6 +20,7 @@ import classes.Scenes.NPCs.DivaScene;
 import classes.Scenes.SceneLib;
 import classes.Scenes.Camp.UniqueCampScenes;
 import classes.StatusEffects.VampireThirstEffect;
+import classes.StatusEffects.*;
 
 public class PlayerEvents extends BaseContent implements TimeAwareInterface {
 		//Handles all timeChange events for the player. Needed because player is not unique.
@@ -791,6 +792,10 @@ if (CoC.instance.model.time.hours > 23) { //Once per day
 					}
 					if (player.hunger < 20) player.hunger = 20; 
 				}
+			}
+			var cumthirst:CumThirstEffect = player.statusEffectByType(StatusEffects.CumThirst) as CumThirstEffect;
+			if (cumthirst != null) {
+				cumthirst.hourlyHunger();
 			}
 			return needNext;
 		}

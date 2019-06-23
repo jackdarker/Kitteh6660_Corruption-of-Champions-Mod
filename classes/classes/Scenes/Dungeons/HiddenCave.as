@@ -43,7 +43,6 @@ public class HiddenCave extends DungeonAbstractContent
 		
 		public function enterDungeon():void {
 			inDungeon = true;
-			dungeonLoc = 39;
 			playerMenu();
 		}
 		public function exitDungeon():void {

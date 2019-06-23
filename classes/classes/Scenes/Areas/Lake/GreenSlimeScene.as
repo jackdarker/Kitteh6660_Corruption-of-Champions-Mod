@@ -534,7 +534,6 @@ private function oozeButtRapesYou():void
 
 private function oozeRapesYouOrally():void
 {
-	player.slimeFeed();
 	outputText("You collapse under the beating from the slime's soft but heavy fists, dazed and disoriented.  The creature surges forward, covering you and forcing you to the ground as it rests on your gut, putting just enough of its apparently enormous weight onto you to keep you pinned.  It leans forward, its massive upper body easily shadowing you, and ");
 	//Low corrupppppption blush!
 	if(player.cor < 20) outputText("you blush as ");
@@ -590,6 +589,7 @@ private function oozeRapesYouOrally():void
 		if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(35);
 		player.refillHunger(35);
 	}
+	player.slimeFeed(this.monster, true);
 	dynStats("lib", 2, "sen", 2, "lus", 10);
 }
 

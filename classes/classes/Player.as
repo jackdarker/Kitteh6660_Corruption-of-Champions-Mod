@@ -38,7 +38,7 @@ import classes.Scenes.Areas.Forest.KitsuneScene;
 import classes.Scenes.Places.TelAdre.UmasShop;
 import classes.Scenes.Pregnancy;
 import classes.Scenes.SceneLib;
-import classes.StatusEffects.VampireThirstEffect;
+import classes.StatusEffects.*;
 import classes.internals.Utils;
 import classes.lists.BreastCup;
 
@@ -6447,7 +6447,7 @@ use namespace CoC;
 			if (ass.analLooseness == 1) outputText("<b>You have lost your anal virginity.</b>");
 		}
 
-		public function slimeFeed():void{
+		public function slimeFeed(partner:Creature=null,oral:Boolean=false):void{
 			if (hasStatusEffect(StatusEffects.SlimeCraving)) {
 				//Reset craving value
 				changeStatusValue(StatusEffects.SlimeCraving,1,0);
@@ -6462,6 +6462,10 @@ use namespace CoC;
 			}
 			refillHunger(30);
 			if (isGargoyle() && hasPerk(PerkLib.GargoyleCorrupted)) refillGargoyleHunger(30);
+			if(oral && partner!=null) {
+				var cThirst:CumThirstEffect= createOrFindStatusEffect(StatusEffects.CumThirst) as CumThirstEffect;
+				cThirst.drink(partner);
+			}
 		}
 
 		public function minoCumAddiction(raw:Number = 10):void {
@@ -8290,10 +8294,19 @@ use namespace CoC;
 			}
 			var vthirst:VampireThirstEffect = statusEffectByType(StatusEffects.VampireThirst) as VampireThirstEffect;
 			if (vthirst != null) {
-				maxStr += vthirst.currentBoost;
-				maxSpe += vthirst.currentBoost;
-				maxInt += vthirst.currentBoost;
-				maxLib += vthirst.currentBoost;
+				var currentBoost:Number = vthirst.currentBoost;
+				maxStr += currentBoost;
+				maxSpe += currentBoost;
+				maxInt += currentBoost;
+				maxLib += currentBoost;
+			}
+			var cumthirst:CumThirstEffect = statusEffectByType(StatusEffects.CumThirst) as CumThirstEffect;
+			if (cumthirst != null) {
+				var cBoost:Number = cumthirst.currentBoost;
+				maxStr += cBoost;
+				maxSpe += cBoost;
+				maxInt += cBoost;
+				maxLib += cBoost;
 			}
 			if (hasStatusEffect(StatusEffects.UnderwaterCombatBoost)) {
 				maxStr += statusEffectv1(StatusEffects.UnderwaterCombatBoost);

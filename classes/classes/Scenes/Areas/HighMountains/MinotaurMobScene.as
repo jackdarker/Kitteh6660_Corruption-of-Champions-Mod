@@ -393,7 +393,7 @@ private function nonAddictMinotaurGangBang():void {
 	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 75);
 	player.orgasm();
 	dynStats("spe", -.5, "int", -.5, "lib", .5, "sen", -.5, "cor", 1);
-	player.slimeFeed();
+	player.slimeFeed(this.monster, true);
 	player.minoCumAddiction(20);
     if (CoC.instance.inCombat) cleanupAfterCombat();
     else {

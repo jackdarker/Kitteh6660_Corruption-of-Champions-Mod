@@ -2,6 +2,7 @@
  * Coded by aimozg on 28.10.2017.
  */
 package classes.StatusEffects {
+import classes.Creature;
 import classes.StatusEffectClass;
 import classes.StatusEffectType;
 import classes.PerkLib;
@@ -11,8 +12,8 @@ public class VampireThirstEffect extends StatusEffectClass {
 	public function VampireThirstEffect() {
 		super(TYPE);
 	}
-	
-	public function drink(amount:Number=1):void {
+
+	public function drink(amount:Number = 1):void {
         modSatiety(amount);
     }
 	public function maxThirst():Number {

@@ -1101,7 +1101,7 @@ private function nonFightIzmaSmexPAINUS():void {
 	
 	outputText("\"<i>Thanks for that...</i>\" Izma whispers, stumbling onto her feet and retrieving her clothing.  \"<i>Feel free to come back for some more... or maybe we could do something a little more intense, if you want.</i>\" A bashful smile spreads across her face.  It's a little hard to tell with her skin color, but you can almost see a blush.  You smile at Izma and nod, before gathering your own gear and setting off for camp, your tongue constantly darting around your mouth in search of any remainders of Izma's seed.\n\n");
 	//(lust -100, gain 1 t-shark toof, Izmacounter+1)
-	player.slimeFeed();
+	player.slimeFeed(this.monster,true);
 	flags[kFLAGS.IZMA_ENCOUNTER_COUNTER]++;
 	player.orgasm();
 	inventory.takeItem(consumables.TSTOOTH, camp.returnToCampUseOneHour);
@@ -1144,7 +1144,7 @@ private function nonFightIzmaSmexCUNTPUSSYSNATCHQUIM():void {
 	outputText("Izma gives a muffled groan of pleasure, her cum blasting down your throat and filling your cheeks as you pull your mouth up.  It's not too long after that when you cry out in orgasm, your girlcum spattering onto the tigershark's face");
 	if(player.hasCock()) outputText(" and " + sMultiCockDesc() + " shooting a weak load across her chest");
 	outputText(".  You roll off her and try to catch your breath, swallowing residual cum.  The taste is incredible, you have to admit... it's hard to define just what it is that makes it so good.  Something in the water Izma swims in?\n\n");
-	player.slimeFeed();
+	player.slimeFeed(this.monster,true);
 	outputText("You don't get long to contemplate it, sitting up alongside Izma.  \"<i>Phew... now, you are something else.  We're going to do this again some time,</i>\" Izma says, licking her lips and handing you the promised payment.  You smile, more than excited to take her up on the offer.  You stand up then and get dressed, departing for camp feeling very satisfied.\n\n");
 	//(lust minus 100, gain 1 t-shark tooth, Izmacounter +1)
 	flags[kFLAGS.IZMA_ENCOUNTER_COUNTER]++;

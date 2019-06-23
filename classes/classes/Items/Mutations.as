@@ -19,6 +19,7 @@ import classes.GlobalFlags.kACHIEVEMENTS;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.Consumables.EmberTF;
 import classes.Scenes.Areas.Forest.KitsuneScene;
+import classes.Scenes.Areas.Mountain.Minotaur;
 import classes.Scenes.SceneLib;
 
 public final class Mutations extends MutationsHelper
@@ -548,8 +549,8 @@ public final class Mutations extends MutationsHelper
 
 		public function minotaurCum(purified:Boolean, player:Player):void
 		{
-			player.slimeFeed();
 			clearOutput();
+			
 			//Minotaur cum addiction
 			if (!purified) player.minoCumAddiction(7);
 			else player.minoCumAddiction(-2);
@@ -611,6 +612,7 @@ public final class Mutations extends MutationsHelper
 					player.removePerk(PerkLib.MinotaurCumAddict);
 				}
 			}
+			player.slimeFeed(new Minotaur(),true);
 			player.refillHunger(25);
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(25);
 		}

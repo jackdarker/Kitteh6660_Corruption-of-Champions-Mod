@@ -2007,7 +2007,7 @@ public class KitsuneScene extends BaseContent
 			//Advance time 1hr and return to camp. +Sensitivity, +Libido
 			player.orgasm();
 			dynStats("lib", 1, "sen", 1);
-			player.slimeFeed();
+			player.slimeFeed(this.monster,false);
 			cleanupAfterCombat();
 		}
 

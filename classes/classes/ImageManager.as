@@ -146,7 +146,7 @@ import flash.display.Loader;
 					{
 						// Programmatic extension concatenation! Woot.
 						var newPath:String = prefix+num+"."+_imgListXML.ExtensionList.ExtensionType[k];
-						trace("Trying to load sequential image at URL =", newPath, "Previous base URL = ", imPath);
+						//trace("Trying to load sequential image at URL =", newPath, "Previous base URL = ", imPath);
 						_allImagePaths[newPath] = imId;
 						loadImageAtPath(newPath);
 

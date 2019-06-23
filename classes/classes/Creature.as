@@ -29,6 +29,7 @@ import classes.StatusEffects.Combat.CombatSpeBuff;
 import classes.StatusEffects.Combat.CombatStrBuff;
 import classes.StatusEffects.Combat.CombatTouBuff;
 import classes.StatusEffects.Combat.CombatWisBuff;
+import classes.StatusEffects.*;
 import classes.internals.Utils;
 import classes.lists.BreastCup;
 import classes.lists.Gender;
@@ -3043,7 +3044,10 @@ public class Creature extends Utils
 			}
 			return stretched;
 		}
-
+		public function get hasCumThirst():Boolean {
+			var cthirst:classes.StatusEffects.CumThirstEffect = statusEffectByType(StatusEffects.CumThirst) as CumThirstEffect;
+			return (cthirst != null && cthirst.CumAddicted);
+		}
 		public function get inHeat():Boolean {
 			return hasStatusEffect(StatusEffects.Heat);
 		}

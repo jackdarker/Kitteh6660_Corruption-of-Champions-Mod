@@ -309,7 +309,6 @@ private function gloryholeIncubus():void {
 }
 
 private function gloryholeMinotaur(): void {
-	player.slimeFeed();
 	clearOutput();
 	outputText("Your eyes are drawn to the huge minotaur cock, and you instinctively kneel down in front of it.\n\n");
 	outputText("It's the largest available member in the room by a considerable margin, and from your position on your knees, it looks even more massive; it's over two feet long, and has three rings of prepuce spaced around its length. You can just barely span your entire hand around its thickness. You open your mouth wide and lean forward, taking the thick, spongy head into your mouth. The taste is incredibly strong, and its musk is as thick as the minotaur's dick itself. You moan in pleasure, and start bobbing your head back and forth, taking more and more of the dick into your mouth. You stroke the rest of the cock in time with your sucking. You can hear muffled grunting and snorting coming from the other side of the wall, obvious sounds of approval from your partner.\n\n");
@@ -320,6 +319,7 @@ private function gloryholeMinotaur(): void {
 	outputText("Your head spins from the minotaur's musk, and you idly mop up and swallow the cum on your [face]. A goblin aide comes in with a bowl, and gently scrapes the cum off your tits with a smooth, flat rock. Once you're cleaned up and you're dressed, the aide leads you back to Lynnette.\n\n");
 	dynStats("lus", 33, "cor", 1);
 	player.refillHunger(30);
+	player.slimeFeed(new Minotaur(),true);
 	player.minoCumAddiction(10);
 	doNext(hairDressingMainMenu);
 }
