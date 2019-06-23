@@ -95,7 +95,9 @@ import classes.ItemType;
 			rooms.AddElement("B4",new DngRoom("B4", ""));
 			rooms.AddElement("A4", new DngRoom("A4", ""));
 			DngDirection.createDirection(DngDirection.DirS, rooms.GetElement("B4" ), rooms.GetElement("StairsDown"));
-			DngDirection.createDirection(DngDirection.DirS, rooms.GetElement("B4" ), rooms.GetElement("StairsDown"));
+			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("C3" ), rooms.GetElement("StairsDown"));
+			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("C2" ), rooms.GetElement("C3"));
+			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("C1" ), rooms.GetElement("C2"));
 			room = (rooms.GetElement("B4") as DngRoom);
 
 			stairDown = room = (rooms.GetElement("StairsDown") as DngRoom);
@@ -108,15 +110,17 @@ import classes.ItemType;
 			setFloors(_floors);
 		}
 		
-		private function encounterBee(Me:DngDirection):void {
+		private function encounterBee(Me:DngDirection):Boolean {
 			outputText("\nThere is a beegirl.");
 			startCombat(new BeeGirl());
 			doNext(playerMenu);
+			return true;
 		}
-		private function encounterBee2(Me:DngRoom):void {
+		private function encounterBee2(Me:DngRoom):Boolean {
 			outputText("\nThere is another beegirl.");
 			startCombat(new BeeGirl());
 			doNext(playerMenu);
+			return true;
 		}
 		private function hasItem(Me:DngDirection):Boolean {
 			if (!player.hasItem(ItemType.lookupItem("BeeHony"), 1))
@@ -127,12 +131,16 @@ import classes.ItemType;
 			return true;
 		}
 		//player falls down to 1.floor when entering the room
-		private function trapDoor(Me:DngDirection):void {
+		private function trapDoor(Me:DngDirection):Boolean {
 			outputText("\nYou crash down through the floor and find yourself back on the lowest level of the beehive.\n")
 			var floor1:DngFloor = this.allFloors()[0] as DngFloor;
 			var Room:DngRoom = floor1.getRoom(Me.roomB.name);
-			if (Room != null) this.teleport( floor1, Room);	//Todo and if not found??
-			//geht nicht doNext(curry(this.teleport, floor1, Room));	
+			if (Room != null) {
+				doNext(curry(this.teleport, floor1, Room)); //this.teleport( floor1, Room);	//Todo and if not found??
+				return true;
+			}
+			return false; 	
+			
 		}
 	}
 

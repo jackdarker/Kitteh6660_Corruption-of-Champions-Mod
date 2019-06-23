@@ -23,22 +23,22 @@ package classes.Scenes.Dungeons
 		//returns the opposite direction f.e up-down
 		public static function inverseDirection(DirEnum:int):int {
 			switch(DirEnum) {
-				case 0: 
-					return 1;
+				case DirN: 
+					return DirS;
 					break;
-				case 1: 
-					return 0;
+				case DirS: 
+					return DirN;
 					break;
-				case 2: 
-					return 3;
-				case 3: 
-					return 2;
+				case DirE: 
+					return DirW;
+				case DirW: 
+					return DirE;
 					break;
-				case 4: 
-					return 5;
+				case StairDown: 
+					return StairUp;
 					break;
-				case 5: 
-					return 4;
+				case StairUp: 
+					return StairDown;
 					break;
 				default: 
 					break;
@@ -49,22 +49,22 @@ package classes.Scenes.Dungeons
 		public static function DirEnumToString(DirEnum:int):String {
 			var backLabel:String = "";
 			switch(DirEnum) {
-				case 0: 
+				case DirN: 
 					backLabel = "N";
 					break;
-				case 1: 
+				case DirS: 
 					backLabel = "S";
 					break;
-				case 2: 
+				case DirE: 
 					backLabel = "E";
 					break;
-				case 3: 
+				case DirW: 
 					backLabel = "W";
 					break;
-				case 4: 
+				case StairUp: 
 					backLabel = "Stair up";
 					break;
-				case 5: 
+				case StairDown: 
 					backLabel = "Stair down";
 					break;
 				default: 
@@ -73,17 +73,16 @@ package classes.Scenes.Dungeons
 			return backLabel;
 		}
 		//Enum for possible directions
-		public static const DirW:int = 3;
-		public static const DirE:int = 2;
-		public static const DirN:int = 0;
-		public static const DirS:int = 1;
-		public static const StairUp:int = 4;	
+		public static const DirW:int = 4;
+		public static const DirE:int = 3;
+		public static const DirN:int = 1;
+		public static const DirS:int = 2;
+		public static const StairUp:int = 6;	
 		public static const StairDown:int = 5;
 				
 		// default functions for callbacks
 		public static function FALSE(Me:DngDirection):Boolean { return false; };
 		public static function TRUE(Me:DngDirection):Boolean { return true; };
-		public static function NOP(Me:DngDirection):Boolean { return true; };
 		
 		public function DngDirection(DirEnum:int,Name:String,Description:String) 
 		{	
@@ -95,18 +94,21 @@ package classes.Scenes.Dungeons
 		/*public function onEnterAtoB():void { 
 			onEnterAtoBFct();
 		}*/
-		public function onEnter():void { 
-			onEnterFct(this);
+		public function onEnter():Boolean { 
+			if (onEnterFct == null) return false;
+			return onEnterFct(this);
 		}
 		//gets called when player  exits into this direction
 		/*public function onExitBtoA():void { 
 			onExitBtoAFct();
 		};*/
-		public function onExit():void { 
-			onExitFct(this);
+		public function onExit():Boolean { 
+			if (onExitFct == null) return false;
+			return onExitFct(this);
 		};
 		//function to check if player can use this direction; you should also set tooltip for display
 		public function canExit():Boolean { 
+			if (canExitFct == null) return true;
 			return canExitFct(this); 
 		}
 		/*public function canExitBtoA():Boolean { 
@@ -114,9 +116,9 @@ package classes.Scenes.Dungeons
 		}*/
 		
 		//public var onEnterAtoBFct:Function = NOP;
-		public var onExitFct:Function = NOP;
-		public var canExitFct:Function = TRUE;
-		public var onEnterFct:Function = NOP;
+		public var onExitFct:Function = null;
+		public var canExitFct:Function = null;
+		public var onEnterFct:Function = null;
 		//public var onExitBtoAFct:Function = NOP;
 		//public var canExitBtoAFct:Function = NOP;
 		private var Direction:int;

@@ -5,6 +5,9 @@ package classes.Scenes.Dungeons
 	 * @author jk
 	 */
 	//a floor of the dungeon
+	//a floor consist of several rooms that are arranged in a xy-coordinate system
+	//every room is connected up to 4 surrounding rooms, + stairs to lower/higher floor; 
+	//
 	public class DngFloor {
 		private var rooms:/*DngRoom*/Array = [];	//list of rooms
 		public function addRoom(room:DngRoom):void { 

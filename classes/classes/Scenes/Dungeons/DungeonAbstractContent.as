@@ -33,8 +33,10 @@ import classes.Scenes.SceneLib;
 		public function allFloors():Array {
 			return floors;
 		}
+		private var Mapper:DngMapper; 
 		//enters the dungeon; also does some checks to verify that dungeon was properly setup
 		public function enterDungeon_():void {
+			Mapper = new DngMapper();
 			actualRoom = null;
 			var Entry:DngRoom = null;
 			var Exit:DngRoom = null;
@@ -56,13 +58,13 @@ import classes.Scenes.SceneLib;
 			dungeonLoc = -1; // not oldschool dungeon
 			inDungeon = false;
 			inRoomedDungeon = true;
-			inRoomedDungeonResume = resumeRoom;
+			
 			moveToRoom(Entry);
 			playerMenu();
 			
 		}
 		
-		public function teleport(Floor:DngFloor, Room:DngRoom) {
+		public function teleport(Floor:DngFloor, Room:DngRoom):void {
 			actualRoom = null;
 			moveToRoom(Room);
 		}
@@ -73,6 +75,7 @@ import classes.Scenes.SceneLib;
 		
 		private function moveToRoom(newRoom:DngRoom):void {
 			clearOutput();
+			cheatTime(1 / 12);
 			statScreenRefresh();
 			//DungeonCore.setTopButtons();
 			spriteSelect(-1);
@@ -81,9 +84,12 @@ import classes.Scenes.SceneLib;
 			actualRoom = newRoom;
 			if (_actualRoom != null) {
 				newRoom.moveHere(_actualRoom); //this will trigger onExit/onEnter
+			} else {
+				inRoomedDungeonResume = resumeRoom;
+				inRoomedDungeonResume();
 			}
 
-			if(!CoC.instance.inCombat) resumeRoom(); //resume after combat done
+			//if(!CoC.instance.inCombat) resumeRoom(); //resume after combat done
 		}
 		private function resumeRoom():void {
 			clearOutput();
@@ -96,8 +102,8 @@ import classes.Scenes.SceneLib;
 			
 			/*		Menu Layout
 			 * 		[ Op1 ]	[ Op2 ]	[ Op3 ]	[ Op4 ]	[More ]
-			 * 		[ Up  ]	[  N  ]	[Down ]	[Mast ]	[ Map ]
-			 * 		[  W  ]	[  S  ]	[  E  ]	[ Inv ]	[     ]
+			 * 		[ Up  ]	[  N  ]	[Down ]	[Mast ]	[     ]
+			 * 		[  W  ]	[  S  ]	[  E  ]	[ Inv ]	[ Map ]
 			 *  
 			 */
 			var bt:int;
@@ -121,7 +127,7 @@ import classes.Scenes.SceneLib;
 			});
             if (player.lust >= 30) addButton(8, "Masturbate", SceneLib.masturbation.masturbateGo);
             addButton(13, "Inventory", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
-			//addButton(14, "Map", map.displayMap).hint("View the map of this dungeon.");
+			addButton(14, "Map", displayMap).hint("View the map of this dungeon.");
 			if(actualRoom.isDungeonExit) {
 				for (var i:int = 5; i < 15; i++ ) {	//find an empty navigation button for leave
 					bt = i;
@@ -129,6 +135,11 @@ import classes.Scenes.SceneLib;
 				}
 				addButton(bt, "Leave", exitDungeon_, false);
 			}
+		}
+		private function displayMap():void {
+			Mapper.createMap(this.floors[0]); //Todo
+			rawOutputText( this.name + "\n"+ Mapper.printMap());
+			doNext(resumeRoom);
 		}
 		public function exitDungeon_(byDefeat:Boolean):void {
 			clearOutput();
