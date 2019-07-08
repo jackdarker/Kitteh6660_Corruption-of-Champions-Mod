@@ -306,7 +306,7 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
 			if (player.hasStatusEffect(StatusEffects.SoulArena) || monster.hasPerk(PerkLib.NoGemsLost)) gemsLost = 0;
 			//Keep gems from going below zero.
 			if (gemsLost > player.gems) gemsLost = player.gems;
-			var timePasses:int = monster.handleCombatLossText(inDungeon, gemsLost); //Allows monsters to customize the loss text and the amount of time lost
+			var timePasses:int = monster.handleCombatLossText(inDungeon || inRoomedDungeon, gemsLost); //Allows monsters to customize the loss text and the amount of time lost
 			if (player.hasStatusEffect(StatusEffects.SoulArena)) timePasses = 1;
 			player.gems -= gemsLost;
 			inCombat = false;
@@ -326,15 +326,20 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
 			//Bonus lewts
 			if (flags[kFLAGS.BONUS_ITEM_AFTER_COMBAT_ID] != "") {
 				outputText("  Somehow you came away from the encounter with " + ItemType.lookupItem(flags[kFLAGS.BONUS_ITEM_AFTER_COMBAT_ID]).longName + ".\n\n");
-				inventory.takeItem(ItemType.lookupItem(flags[kFLAGS.BONUS_ITEM_AFTER_COMBAT_ID]), createCallBackFunction(camp.returnToCamp, timePasses));
+				inventory.takeItem(ItemType.lookupItem(flags[kFLAGS.BONUS_ITEM_AFTER_COMBAT_ID]), createDefeatCB(timePasses));
 			}
-			else doNext(createCallBackFunction(camp.returnToCamp, timePasses));
+			else doNext(createDefeatCB(timePasses));
 		}
 	}
 	//Not actually in combat
 	else doNext(nextFunc);
 }
-
+protected function createDefeatCB(timePasses:int):Function {
+	if (inRoomedDungeon) {
+		return createCallBackFunction(inRoomedDungeonDefeat,true); 
+	}
+	return createCallBackFunction(camp.returnToCamp, timePasses);
+}
 public function checkAchievementDamage(damage:Number):void
 {
 	flags[kFLAGS.ACHIEVEMENT_PROGRESS_TOTAL_DAMAGE] += damage;

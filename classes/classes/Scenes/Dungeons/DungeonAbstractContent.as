@@ -17,6 +17,7 @@ import classes.Scenes.SceneLib;
         public static var inRoomedDungeon:Boolean = false;
 
         public static var inRoomedDungeonResume:Function = null;
+		public static var inRoomedDungeonDefeat:Function = null;
 
         protected function get dungeons():DungeonEngine {
 			return SceneLib.dungeons;
@@ -58,6 +59,7 @@ import classes.Scenes.SceneLib;
 			dungeonLoc = -1; // not oldschool dungeon
 			inDungeon = false;
 			inRoomedDungeon = true;
+			inRoomedDungeonDefeat = exitDungeon_;
 			
 			moveToRoom(Entry);
 			playerMenu();
@@ -98,7 +100,7 @@ import classes.Scenes.SceneLib;
 			spriteSelect(-1);
 			menu();
 			actualRoom.updateRoom();
-			outputText(actualRoom.description);
+			outputText(actualRoom.getDescription());
 			
 			/*		Menu Layout
 			 * 		[ Op1 ]	[ Op2 ]	[ Op3 ]	[ Op4 ]	[More ]
@@ -137,19 +139,22 @@ import classes.Scenes.SceneLib;
 			}
 		}
 		private function displayMap():void {
-			Mapper.createMap(this.floors[0]); //Todo
-			rawOutputText( this.name + "\n"+ Mapper.printMap());
+		//gets called when you get defeated
+			clearOutput();
+			Mapper.createMap(actualRoom.floor);
+			rawOutputText( this.name +" "+ Mapper.printMap(actualRoom));
 			doNext(resumeRoom);
 		}
 		public function exitDungeon_(byDefeat:Boolean):void {
 			clearOutput();
+			inDungeon = inRoomedDungeon = false;
 			if (byDefeat) {
 				outputText("After your defeat, you somehow turned up back in your camp.");
+				doNext(camp.returnToCampUseEightHours);
 			}else {
 				outputText("You leave the " + this.name + "and walk back towards camp.");
+				doNext(camp.returnToCampUseOneHour);
 			}
-			inDungeon = inRoomedDungeon = false;
-			doNext(camp.returnToCampUseOneHour);
 		}
 	}
 

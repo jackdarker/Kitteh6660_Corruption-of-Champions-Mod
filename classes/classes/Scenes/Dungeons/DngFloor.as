@@ -15,6 +15,14 @@ package classes.Scenes.Dungeons
 		};
 		public function setRooms(Rooms:Array):void { 
 			rooms = Rooms;
+			var found:DngRoom = null;
+			for each (var element:* in rooms ) {
+				if (element == null) continue;
+				found = (element as DngRoom);
+				if (found != null ) {
+					found.floor = this;
+				}
+			}
 		};
 		public function allRooms():Array {
 			return rooms;

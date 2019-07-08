@@ -39,16 +39,16 @@ import classes.ItemType;
 		 *  |    |    |    |
 		 *  E    C2   C3   S
 		 * */
-			rooms.AddElement("Entrance", new DngRoom("Entrance", "Entrance"));
-			rooms.AddElement("B1", new DngRoom("B1", "B1"));
-			rooms.AddElement("A1",new DngRoom("A1", "A1"));
-			rooms.AddElement("B2",new DngRoom("B2", "B2"));
-			rooms.AddElement("A2",new DngRoom("A2", "A2"));
-			rooms.AddElement("B3",new DngRoom("B3", ""));
-			rooms.AddElement("A3",new DngRoom("A3", ""));
-			rooms.AddElement("B4",new DngRoom("B4", ""));
-			rooms.AddElement("A4",new DngRoom("A4", ""));
-			rooms.AddElement("Stairs",new DngRoom("Stairs", ""));
+			rooms.AddElement("Entrance", new DngRoom("Entrance", "",false));
+			rooms.AddElement("B1", new DngRoom("B1", "",false));
+			rooms.AddElement("A1",new DngRoom("A1", "",true));	//hidden
+			rooms.AddElement("B2",new DngRoom("B2", "",false));
+			rooms.AddElement("A2",new DngRoom("A2", "",false));
+			rooms.AddElement("B3",new DngRoom("B3", "",false));
+			rooms.AddElement("A3",new DngRoom("A3", "",false));
+			rooms.AddElement("B4",new DngRoom("B4", "",false));
+			rooms.AddElement("A4",new DngRoom("A4", "",false));
+			rooms.AddElement("Stairs",new DngRoom("Stairs", "",false));
 			DngDirection.createDirection(DngDirection.DirN, rooms.GetElement("Entrance") , rooms.GetElement("B1"));
 			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("B1" ), rooms.GetElement("B2"));
 			DngDirection.createDirection(DngDirection.DirN, rooms.GetElement("B2" ), rooms.GetElement("A2"));
@@ -62,8 +62,12 @@ import classes.ItemType;
 			room = (rooms.GetElement("B2") as DngRoom);
 			room.onEnterFct = encounterBee2;
 			room.getDirection(DngDirection.DirW).onEnterFct = encounterBee;
-			room = (rooms.GetElement("B2") as DngRoom);
-			room.getDirection(DngDirection.DirN).canExitFct = hasItem;
+			room = (rooms.GetElement("A4") as DngRoom);
+			room.onEnterFct = encounterBee2;
+			room = (rooms.GetElement("A3") as DngRoom);
+			room.onEnterFct = encounterBee2;
+			room = (rooms.GetElement("B4") as DngRoom);
+			room.getDirection(DngDirection.DirS).canExitFct = hasItem;
 			stairUp = (rooms.GetElement("Stairs") as DngRoom);
 			
 			firstFloor.setRooms(rooms.GetValuesAsArray());
@@ -82,18 +86,18 @@ import classes.ItemType;
 		 *  |    |    |    |
 		 *  C1 - C2 - C3 - S
 		 * */
-			rooms.AddElement("C1", new DngRoom("C1", ""));
-			rooms.AddElement("B1", new DngRoom("B1", ""));
-			rooms.AddElement("A1", new DngRoom("A1", ""));
-			rooms.AddElement("C2", new DngRoom("C2", ""));
-			rooms.AddElement("B2",new DngRoom("B2", ""));
-			rooms.AddElement("A2", new DngRoom("A2", ""));
-			rooms.AddElement("C3", new DngRoom("C1", ""));
-			rooms.AddElement("B3",new DngRoom("B3", ""));
-			rooms.AddElement("A3", new DngRoom("A3", ""));
-			rooms.AddElement("StairsDown",new DngRoom("StairsDown", ""));
-			rooms.AddElement("B4",new DngRoom("B4", ""));
-			rooms.AddElement("A4", new DngRoom("A4", ""));
+			rooms.AddElement("C1", new DngRoom("C1", "",false));
+			rooms.AddElement("B1", new DngRoom("B1", "",false));
+			rooms.AddElement("A1", new DngRoom("A1", "",false));
+			rooms.AddElement("C2", new DngRoom("C2", "",false));
+			rooms.AddElement("B2",new DngRoom("B2", "",false));
+			rooms.AddElement("A2", new DngRoom("A2", "",false));
+			rooms.AddElement("C3", new DngRoom("C1", "",false));
+			rooms.AddElement("B3",new DngRoom("B3", "",false));
+			rooms.AddElement("A3", new DngRoom("A3", "",false));
+			rooms.AddElement("StairsDown",new DngRoom("StairsDown", "",false));
+			rooms.AddElement("B4",new DngRoom("B4", "",false));
+			rooms.AddElement("A4", new DngRoom("A4", "",false));
 			DngDirection.createDirection(DngDirection.DirS, rooms.GetElement("B4" ), rooms.GetElement("StairsDown"));
 			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("C3" ), rooms.GetElement("StairsDown"));
 			DngDirection.createDirection(DngDirection.DirE, rooms.GetElement("C2" ), rooms.GetElement("C3"));

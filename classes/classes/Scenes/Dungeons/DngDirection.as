@@ -128,6 +128,10 @@ package classes.Scenes.Dungeons
 		public var name:String = "";	//label of the button
 		public var tooltip:String = "";	//tooltip of the button
 		public var description:String = ""; 
+		//the direction is hidden if one of the connected rooms is hidden
+		public function hidden():Boolean {
+			return roomA.isHidden() || roomB.isHidden();
+		}
 	}
 
 

@@ -152,6 +152,16 @@ import coc.xxc.StoryContext;
 			DungeonAbstractContent.inRoomedDungeon = v;
 		}
 		
+		protected function get inRoomedDungeonDefeat():Function
+		{
+			return DungeonAbstractContent.inRoomedDungeonDefeat;
+		}
+		protected function set inRoomedDungeonDefeat(v:Function):void
+		{
+			DungeonAbstractContent.inRoomedDungeonDefeat = v;
+		}
+
+		
 		protected function get inRoomedDungeonResume():Function
 		{
 			return DungeonAbstractContent.inRoomedDungeonResume;
