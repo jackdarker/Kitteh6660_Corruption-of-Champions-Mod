@@ -4,6 +4,7 @@
 package classes.Scenes
 {
 import classes.*;
+import classes.BodyParts.Face;
 import classes.GlobalFlags.kFLAGS;
 import classes.CoC;
 import classes.Items.Armor;
@@ -184,14 +185,17 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 					if (model.time.hours >= 6) addButton(5, "Garden", Gardening.manageuyourgarden).hint("Visit your plant offspring");
 				}
 				if (player.hasKeyItem("Gryphon Statuette") >= 0) {
-					addButton(6, "Gryphon", CoC.instance.mutations.skybornSeed, 1);
+					addButton(6, "Gryphon", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 1, player),miscitemsMenu));
 				}
 				if (player.hasKeyItem("Peacock Statuette") >= 0) {
-					addButton(6, "Peacock", CoC.instance.mutations.skybornSeed, 2);
+					addButton(6, "Peacock", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 2, player),miscitemsMenu));
 				}
 				addButton(14, "Back", inventoryMenu);
 		}
-		
+		private function execAndDoNext(A:Function, B:Function):void {
+			A();
+			doNext(B);
+		}
 		public function BagOfCosmosMenu():void {
 			hideMenus();
 			spriteSelect(-1);
@@ -378,6 +382,7 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 			if (temp >= 0) {
 				player.itemSlots[temp].setItemAndQty(itype, 1);
 				outputText("You place " + itype.longName + " in your " + inventorySlotName[temp] + " pouch.");
+				if (player.emptySlot() < 0) outputText("\n<b>Your Inventory is full !</b>");
 				itemGoNext();
 				return;
 			}

@@ -5,13 +5,14 @@
 
 package classes.Scenes.NPCs{
 
+	import classes.Bindings;
 	import classes.BreastRowClass;
 	import classes.BreastStore;
+	import classes.EventParser;
 	import classes.Items.Useable;
 	import classes.Items.Weapon;
 	import classes.Items.WeaponLib;
 	import classes.PregnancyStore;
-	import classes.GlobalFlags.kGAMECLASS;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.TimeAwareInterface;
 	import classes.Monster;
@@ -28,7 +29,7 @@ package classes.Scenes.NPCs{
 	import classes.SaveAwareInterface;
 
 	//dont extends Monster because we need to change stats and features
-	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
+	public class Fenris extends NPCAwareContent implements SaveAwareInterface, TimeAwareInterface 
 	{
 		
 		//those are the main quest stages
@@ -473,12 +474,12 @@ package classes.Scenes.NPCs{
 		}
 		//returns 0 if he eats it
 		public function eatThis(Food:SimpleConsumable, Result:ReturnResult):void {
-			if (Food == kGAMECLASS.consumables.VITAL_T) {
+			if (Food == CoC.instance.consumables.VITAL_T) {
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."
 				//Todo: refresh HP?
 				setPlayerRelation(getPlayerRelation() + 3);
-			}else if (Food == kGAMECLASS.consumables.CANINEP) { 
+			}else if (Food == CoC.instance.consumables.CANINEP) { 
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] takes some bites from the fruit ";
 				if (getBodyStrength() < 70) {
@@ -493,7 +494,7 @@ package classes.Scenes.NPCs{
 				} else {
 				}
 				
-			}else if (Food == kGAMECLASS.consumables.SDELITE) { 
+			}else if (Food == CoC.instance.consumables.SDELITE) { 
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips on it.";
 				if (getBodyStrength() < 70 && getCockSize()> 0) {
@@ -507,7 +508,7 @@ package classes.Scenes.NPCs{
 					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone.\n"
 				} else {
 				}
-			}else if ( Food == kGAMECLASS.consumables.PPHILTR) { 	
+			}else if ( Food == CoC.instance.consumables.PPHILTR) { 	
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips off it.\n";
 				if (getCorruption() > 8) {
@@ -615,9 +616,9 @@ package classes.Scenes.NPCs{
 		/* translates between USEABLE and Fenris-Items
 		 * */
 		public function equipItemFromUseable(item:Useable , give:Boolean , Result:ReturnResult):void {
-			if (item == kGAMECLASS.weapons.PIPE) {
+			if (item == CoC.instance.weapons.PIPE) {
 				equipItem(ITEMSLOT_WEAPON, WEAPON_PIPE, true, Result);
-			} else if (item == kGAMECLASS.undergarments.FURLOIN) {
+			} else if (item == CoC.instance.undergarments.FURLOIN) {
 				equipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, Result);
 			} else {
 				Result.Code = 1;
@@ -714,7 +715,7 @@ package classes.Scenes.NPCs{
 				new Fenris();
 			} 
 			//workaround to initialise as soon as kGAMECLASS is valid
-			if (kGAMECLASS != null && !_instance._initDone) {
+			if (CoC.instance!= null && !_instance._initDone) {
 				_instance.initFenris(false);
 			}
 			return _instance;
@@ -724,10 +725,10 @@ package classes.Scenes.NPCs{
 				throw new Error("Singleton... use getInstance()");
 			} 
 			_instance = this;
-			CoC.saveAwareClassAdd(this);
-			CoC.timeAwareClassAdd(this);
+			classes.Saves.saveAwareClassAdd(this);
+			EventParser.timeAwareClassAdd(this);
 			_BreastStore = new BreastStore(kFLAGS.FENRIS_BREAST);
-			CoC.saveAwareClassAdd(_BreastStore);
+			classes.Saves.saveAwareClassAdd(_BreastStore);
 		}
 		
 		/* for debug-Reset
@@ -876,7 +877,7 @@ package classes.Scenes.NPCs{
 		public function timeChange():Boolean
 		{
 			//pregnancy.pregnancyAdvance();
-			trace("\nFenris time change: Time is " + kGAMECLASS.model.time.hours , false);
+			trace("\nFenris time change: Time is " + CoC.instance.model.time.hours , false);
 			var _Return:Boolean = getMainQuestStage() >= MAINQUEST_Greetings;
 			if (_Return) {
 				_Return = false;
@@ -887,9 +888,9 @@ package classes.Scenes.NPCs{
 				if (_lust > 90 ) _lust = 90;
 				setLust(_lust);
 				
-				if (kGAMECLASS.model.time.hours >= 16 && kGAMECLASS.model.time.hours < 17) {
+				if (CoC.instance.model.time.hours >= 16 && CoC.instance.model.time.hours < 17) {
 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
-					if (getLevel()< (kGAMECLASS.player.level+3)) {
+					if (getLevel()< (CoC.instance.player.level+3)) {
 						_rand = Utils.rand(100);
 						_XPChance = _XPChance+40;
 						if (testMainQuestFlag(MAINFLAG_SEARCH_DEEPWOOD)) _XPChance = _XPChance+10;
@@ -899,16 +900,16 @@ package classes.Scenes.NPCs{
 						if (_rand < _XPChance ) {
 							if (addXP(10*getLevel())) {
 								_Return = true;
-								kGAMECLASS.outputText("You hear rumors that Fenris leveld up.\n");
+								outputText("You hear rumors that Fenris leveld up.\n");
 							}
 						}
 					}
 				}
-				if (kGAMECLASS.player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) { //? should be moved to player?
-					if (kGAMECLASS.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
-						kGAMECLASS.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
-					}
-				}
+				//TODO if (CoC.instance.player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) { //? should be moved to player?
+					//if (CoC.instance.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
+						//CoC.instance.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
+					//}
+				//}
 				setTempFlag(TEMPFLAG_SEXED_COOLDOWN, false); //unlock SexEd-dialog once per day
 			}
 			return _Return;

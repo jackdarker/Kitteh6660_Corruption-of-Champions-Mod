@@ -177,7 +177,8 @@ public class FetishZealot extends Monster
 			this.gems = 10+rand(15);
 			this.drop = new WeightedDrop().add(armors.C_CLOTH,1)
 					.add(consumables.L_DRAFT,4)
-					.add(weapons.L_DAGGR,1)
+					.add(weapons.L_DAGGR, 1)
+					.add(necklaces.SLVECLR,1)
 					.add(null,4);
 			this.special1 = zealotSpecial1;
 			this.special2 = zealotSpecial2;

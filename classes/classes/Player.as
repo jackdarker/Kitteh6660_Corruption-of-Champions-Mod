@@ -8574,7 +8574,9 @@ use namespace CoC;
 			return itemSlots[idx];
 		}
 
-		// 0..5 or -1 if no
+		/**
+		 * 0.. or -1 if no
+		 */
 		public function emptySlot():Number {
 		    for (var i:int = 0; i<itemSlots.length;i++){
 				if (itemSlot(i).isEmpty() && itemSlot(i).unlocked) return i;

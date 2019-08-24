@@ -240,6 +240,13 @@ use namespace CoC;
 							return (flags[kFLAGS.KONSTANTIN_FOLLOWER] < 2);
 						},
 						chance: 0.8
+					}, {
+						name  : "fenris",
+						call  : SceneLib.fenrisScene,
+						when  : function():Boolean {
+							return (player.level>4);
+						},
+						chance: 0.8
 					});
 					/*
 					{

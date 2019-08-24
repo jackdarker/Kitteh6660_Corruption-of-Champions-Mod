@@ -233,6 +233,8 @@ public class SceneLib {
 	
 	public static var feralDragonScene:FeralDragonScene = new FeralDragonScene();
 
+	public static var fenrisScene:FenrisScene= new FenrisScene();
+	
     public function SceneLib() {
     }
 }

@@ -7,7 +7,7 @@ package classes.Scenes.Areas.Lake
 	import classes.*;
 	import classes.Scenes.NPCs.Fenris;
 	import classes.GlobalFlags.kFLAGS;
-	import classes.GlobalFlags.kGAMECLASS;
+	import classes.Scenes.SceneLib;
 	
 	public class FenrisGooFight extends GooGirl
 	{
@@ -27,9 +27,8 @@ package classes.Scenes.Areas.Lake
 		{
 			outputText("The girl reaches into her torso, pulls a large clump of goo out, and chucks it at you like a child throwing mud. The slime splatters on your chest and creeps under your " + player.armorName + ", tickling your skin like fingers dancing across your body. ", false);
 			var damage:Number = 1;
-			player.takeDamage(damage, true);
-			game.dynStats("lus", 5 + rand(3) + player.sens / 10);
-			combatRoundOver();
+			player.takePhysDamage(damage, true);
+			player.dynStats("lus", 5 + rand(3) + player.sens / 10);
 		}
 
 		override public function defeated(hpVictory:Boolean):void
@@ -42,7 +41,7 @@ package classes.Scenes.Areas.Lake
 		{
 			if (pcCameWorms) {
 				outputText("\n\nThe goo-girl seems confused but doesn't mind.");
-				doNext(game.combat.endLustLoss);
+				doNext(SceneLib.combat.endLustLoss);
 			} else {
 				looseToGoo(hpVictory);
 			}
@@ -65,9 +64,9 @@ package classes.Scenes.Areas.Lake
 			outputText("Todo: get raped\n", false);
 			player.slimeFeed();
 			player.orgasm();
-			game.dynStats("sen", 4);
+			player.dynStats("sen", 4);
 			player.slimeFeed();
-			game.combat.cleanupAfterCombat();		
+			SceneLib.combat.cleanupAfterCombatImpl();		
 		}
 		private function defeatGoo(hpVictory:Boolean):void
 		{
@@ -78,12 +77,11 @@ package classes.Scenes.Areas.Lake
 			Fenris.getInstance().addXP(10);
 			
 			outputText("\n\n<b>What do you do to her, and if anything, which of your body parts do you use?</b>", false);
-			game.menu();
-			game.addButton(1, "You Rape", _rapeFunc, null, null, null, "");
-			game.addButton(2, "Fenris rape", _rapeFunc, null, null, null, "");
-			game.addButton(3, "Threesome", _rapeFunc, null, null, null, "");
-			game.addButton(14, "Leave", game.combat.cleanupAfterCombat, null, null, null, "");
-
+			EngineCore.simpleChoices( "You Rape", _rapeFunc,
+			"Fenris rape", _rapeFunc,
+			"Threesome", _rapeFunc,
+			"",null,
+			"Leave", SceneLib.combat.cleanupAfterCombatImpl);
 		}
 		private function rapeFunc():void
 		{
@@ -91,7 +89,7 @@ package classes.Scenes.Areas.Lake
 			outputText("Todo: Fenris and you have your way with her.", false);
 			player.orgasm();
 			player.slimeFeed();
-			game.combat.cleanupAfterCombat();
+			doNext(SceneLib.combat.cleanupAfterCombatImpl);
 		}
 		public function FenrisGooFight() 
 		{

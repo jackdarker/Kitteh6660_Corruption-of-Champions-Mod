@@ -1979,8 +1979,8 @@ public static const UNKNOWN_FLAG_NUMBER_01970:int                               
 public static const UNKNOWN_FLAG_NUMBER_01971:int                                   = 1971;
 public static const UNKNOWN_FLAG_NUMBER_01972:int                                   = 1972;
 public static const UNKNOWN_FLAG_NUMBER_01973:int                                   = 1973;
-public static const UNKNOWN_FLAG_NUMBER_01974:int                                   = 1974;
-public static const UNKNOWN_FLAG_NUMBER_01975:int                                   = 1975;
+public static const FENRIS_FLAG:int                                   				= 1974;	//placeholderflag to store info of fenris
+public static const FENRIS_BREAST:int                                   			= 1975;	//placeholderflag for breaststore of fenris
 public static const UNKNOWN_FLAG_NUMBER_01976:int                                   = 1976;
 public static const UNKNOWN_FLAG_NUMBER_01977:int                                   = 1977;
 public static const UNKNOWN_FLAG_NUMBER_01978:int                                   = 1978;
@@ -3007,4 +3007,3 @@ public static const HYPER_HAPPY:int                                             
 public static const UNKNOWN_FLAG_NUMBER_02999:int                                   = 2999; // ------------------------- Jojo Debug Flag?
 	}    
 }
-

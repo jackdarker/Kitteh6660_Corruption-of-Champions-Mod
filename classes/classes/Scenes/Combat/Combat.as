@@ -307,6 +307,7 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
 			//Keep gems from going below zero.
 			if (gemsLost > player.gems) gemsLost = player.gems;
 			var timePasses:int = monster.handleCombatLossText(inDungeon || inRoomedDungeon, gemsLost); //Allows monsters to customize the loss text and the amount of time lost
+			if (timePasses == 8 && player.necklace.id == necklaces.SLVECLR.id) timePasses = 4;
 			if (player.hasStatusEffect(StatusEffects.SoulArena)) timePasses = 1;
 			player.gems -= gemsLost;
 			inCombat = false;

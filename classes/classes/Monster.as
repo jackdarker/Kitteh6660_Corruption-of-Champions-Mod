@@ -2286,7 +2286,13 @@ import flash.utils.getQualifiedClassName;
 			if(temp > player.gems) temp = player.gems;
 			outputText("\n\nYou'll probably wake up in eight hours or so, missing " + temp + " gems.");
 			player.gems -= temp;
-			EngineCore.doNext(SceneLib.camp.returnToCampUseEightHours);
+			if (player.necklace.id == necklaces.SLVECLR.id) {
+				EngineCore.doNext(SceneLib.camp.returnToCampUseFourHours);
+			}else {
+				EngineCore.doNext(SceneLib.camp.returnToCampUseEightHours);
+			
+			}
+			
 		}
 
 		/**

@@ -127,11 +127,12 @@ package classes.Scenes.Dungeons
 			var map:Array;
 			var roomInfo:DngMapperInfo;
 			var i:int;
+			var j:int ;
 			//create 2d-array to store textual representation of room and connection between them
 			map = new Array(2*(maxX - minX)+1); 
 			for (i = 0; i < map.length; i++) {  
 				var submap:Array = new Array(2*(maxY - minY)+1); 
-				for (var j:int = 0; j < submap.length; j++) {   
+				for (j = 0; j < submap.length; j++) {   
 					submap[j] = "   ";   
 				}
 				map[i] = submap;
@@ -173,7 +174,7 @@ package classes.Scenes.Dungeons
 			}
 			//print
 			_line = (/*Dungeon.name +*/ " " + floor.name +"\n");
-			for (var j:int = 0; j < (2 * (maxY - minY) + 1); j++) {   
+			for (j= 0; j < (2 * (maxY - minY) + 1); j++) {   
 				for (i = 0; i < (2*(maxX - minX)+1); i++) { 
 					_line += map[i][j]+"\t";   //need to use tabs for proper formating
 				}

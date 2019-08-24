@@ -819,8 +819,8 @@ public class EngineCore {
      */
     public static function doYesNo(eventYes:Function, eventNo:Function):void {
         menu();
-        addButton(0, "Yes", eventYes);
-        addButton(1, "No", eventNo);
+        addButton(6, "Yes", eventYes);	//jk: moved the buttons because I accidently pressing YES instead of NEXT all the time
+        addButton(7, "No", eventNo);	//f.e. when picking up items with full inventory
     }
 
     /**

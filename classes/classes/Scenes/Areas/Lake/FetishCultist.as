@@ -188,7 +188,8 @@ public class FetishCultist extends Monster
 			this.gems = 5+rand(10);
 			this.drop = new WeightedDrop().add(consumables.LABOVA_,1)
 					.add(weapons.RIDINGC,1)
-					.add(consumables.OVIELIX,2)
+					.add(consumables.OVIELIX, 2)
+					.add(necklaces.SLVECLR,1)
 					.add(consumables.L_DRAFT,6);
 			this.special1 = cultistRaisePlayerLust;
 			this.special2 = cultistLustTransfer;

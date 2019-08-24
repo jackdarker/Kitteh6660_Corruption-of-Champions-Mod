@@ -6,6 +6,13 @@
 package classes.Scenes.NPCs
 {
 	import classes.*;
+	import classes.Scenes.SceneLib;
+	import classes.VaginaClass;
+	import classes.AssClass;
+	import classes.BodyParts.Butt;
+	import classes.BodyParts.Hips;
+	import classes.BodyParts.LowerBody;
+	import classes.BodyParts.Tail;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.internals.*;
 
@@ -21,7 +28,7 @@ package classes.Scenes.NPCs
 			//_monster.imageName = "hellhound"; //Todo: add image
 			_monster.long = _fenris.descrwithclothes; // "You are fighting an anthro-wolf";
 			if (_fenris.hasVagina()) {
-					_monster.createVagina(_fenris.getVaginaVirgin(),VAGINA_WETNESS_NORMAL,_fenris.getVaginaSize());
+					_monster.createVagina(_fenris.getVaginaVirgin(),classes.VaginaClass.WETNESS_NORMAL,_fenris.getVaginaSize());
 					//createStatusEffect(StatusEffects.BonusVCapacity, 85, 0, 0, 0);
 				}
 			/*if (_fenris.getBreastSize() >= 1) {
@@ -38,13 +45,16 @@ package classes.Scenes.NPCs
 				_monster.cumMultiplier = 1;
 		}
 			
-		_monster.ass.analLooseness = ANAL_LOOSENESS_TIGHT;
-		_monster.ass.analWetness = ANAL_WETNESS_DRY;
-			//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
-		_monster.tallness = 70;
-		_monster.hipRating = HIP_RATING_SLENDER;
-		_monster.buttRating = BUTT_RATING_TIGHT;
-		_monster.skinTone = "stone gray";
+		this.createBreastRow();
+		this.createBreastRow();
+		this.createBreastRow();
+		this.ass.analLooseness = AssClass.LOOSENESS_NORMAL;
+		this.ass.analWetness = AssClass.WETNESS_NORMAL;
+		this.tallness = 70;
+		this.hips.type = Hips.RATING_AVERAGE;
+		this.butt.type = Butt.RATING_AVERAGE + 1;
+		this.lowerBody = LowerBody.DOG;
+		this.skin.growFur({color:"black"});
 		_monster.hairColor = "dark gray";
 		_monster.hairLength = 5;
 
@@ -54,7 +64,7 @@ package classes.Scenes.NPCs
 		_monster.drop = new ChainedDrop().
 					add(undergarments.C_LOIN,0.05).
 					add(consumables.CANINEP,0.95);
-		_monster.tailType = TAIL_TYPE_DOG;
+		this.tailType = Tail.DOG;
 		_monster.tailRecharge = 0;
 		_monster.checkMonster();		
 		
@@ -64,7 +74,7 @@ package classes.Scenes.NPCs
 		var _fenris:Fenris = Fenris.getInstance();
 		level = Math.round( (player.level +  (_fenris.getLevel() -player.level)/4)* 10)/10; //autolevel??
 		initStrTouSpeInte(_fenris.getStrength(), _fenris.getThoughness(), _fenris.getSpeed(), _fenris.getIntelligence());
-		initLibSensCor(_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
+		initWisLibSensCor(10/*TODO*/,_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
 		bonusHP = level*10;
 		lust = Math.min(70,Fenris.getInstance().getLust());
 		lustVuln = 0.01*_fenris.getLibido();		
@@ -110,7 +120,7 @@ package classes.Scenes.NPCs
 	{
 		HowlCooldown = 5;
 		outputText("Annoyed by your attempts to defeat him, he raises his wolfen head and calls a terrifiying howl.\n", false);
-		addHP(eMaxHP()*0.33);
+		addHP(this.maxHP()*0.33);
 		fatigue += 10;
 	}
 	//
@@ -141,11 +151,12 @@ package classes.Scenes.NPCs
 		
 		if (PentacleState >= 3 && PentacleState <=5 ) {
 			outputText("You are molested by the pentacles.\n", false);
-			game.dynStats("lus", 5 + player.sens / 10); // Lust++
+			player.dynStats("lus", 5 + player.sens / 10); // Lust++
 		}
 		//just grabbed the player
 		if (PentacleState == 2) {
-			if (player.hasStatusEffect(StatusEffects.bound)) {
+			if(false) {
+			//TODO if (player.hasStatusEffect(StatusEffects.bound)) {
 				outputText("The pentacles increase their effort to entwine you.\n", false);
 				if (_pentacles >= 6) {
 					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n", false);
@@ -157,7 +168,7 @@ package classes.Scenes.NPCs
 					outputText("Both of them slip around your waist and upper body.\n", false);
 					PentacleState = PentacleState+1;
 				}
-				game.dynStats("lus", 5 + player.sens / 10);
+				player.dynStats("lus", 5 + player.sens / 10);
 			} else {
 				PentacleState = 1;
 			}
@@ -165,7 +176,8 @@ package classes.Scenes.NPCs
 		}
 		//try to grab player
 		if (PentacleState == 1) {
-			if (player.hasStatusEffect(StatusEffects.bound)) {
+			if(false) {
+			//TODO if (player.hasStatusEffect(StatusEffects.bound)) {
 				//Success Todo
 				if (false) {
 					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
@@ -173,7 +185,7 @@ package classes.Scenes.NPCs
 				//Fail
 				else {
 					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n", false);
-					game.dynStats("lus", (8+player.sens/20));
+					player.dynStats("lus", (8+player.sens/20));
 					player.createStatusEffect(StatusEffects.bound, 0, 0, 0, 0);
 					PentacleState = 2;
 				}
@@ -203,7 +215,7 @@ package classes.Scenes.NPCs
 			var _oldweaponVerb:String = this.weaponVerb;
 			var _oldweaponAttack:Number = this.weaponAttack;
 			//return to combat menu when finished
-			doNext(game.playerMenu);
+			//TODO? doNext(game.playerMenu);
 			if (select == 0) {
 				this.weaponName = "claws";
 				this.weaponVerb = "claw";
@@ -267,42 +279,42 @@ package classes.Scenes.NPCs
 			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
 			statScreenRefresh();
 			outputText("\n", false);
-			combatRoundOver();
+			//TODO ?combatRoundOver();
 	}
-	override public function handleStruggling(Struggling:Boolean):Boolean
-	{
-		var _Result:Boolean  = Struggling;
-		clearOutput();
+	//TODO override public function handleStruggling(Struggling:Boolean):Boolean
+	//{
+		//var _Result:Boolean  = Struggling;
+		//clearOutput();
 		//Todo better description
 		//Struggle:
-		if (Struggling) {
-			outputText("You struggle against thight bindings of the tentacles.");
+		//if (Struggling) {
+			//outputText("You struggle against thight bindings of the tentacles.");
 			//Success
-			if (rand(20) + player.str / 20  >= 12) {
-				outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
-				player.removeStatusEffect(StatusEffects.bound);
-				PentacleState = 100; //Start cooldown
-				doAI();
-			} else {//Failure  ++LUST
-				outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
-				game.dynStats("lus", 5 + player.sens / 10);
-				combatRoundOver();
-			}
-		} else {
-			clearOutput();
-			outputText("You just wait to see where this leads too.");
-			outputText("\n\nThe bindings intensifys.");		
-			game.dynStats("lus", 5 + player.sens / 10);
-			combatRoundOver();		
-		}
-
-		return _Result;
-	}
+			//if (rand(20) + player.str / 20  >= 12) {
+				//outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
+				//player.removeStatusEffect(StatusEffects.bound);
+				//PentacleState = 100; //Start cooldown
+				//doAI();
+			//} else {//Failure  ++LUST
+				//outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
+				//game.dynStats("lus", 5 + player.sens / 10);
+				//combatRoundOver();
+			//}
+		//} else {
+			//clearOutput();
+			//outputText("You just wait to see where this leads too.");
+			//outputText("\n\nThe bindings intensifys.");		
+			//game.dynStats("lus", 5 + player.sens / 10);
+			//combatRoundOver();		
+		//}
+//
+		//return _Result;
+	//}
 	override public function defeated(hpVictory:Boolean):void
 	{
 		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
 		else {}
-		game.fenrisScene.winAgainstFenris();
+		SceneLib.fenrisScene.winAgainstFenris();
 		
 	}
 
@@ -310,6 +322,6 @@ package classes.Scenes.NPCs
 	{
 		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
 		else {}
-		game.fenrisScene.loseToFenris();
+		SceneLib.fenrisScene.loseToFenris();
 	}
 }}
