@@ -8,6 +8,7 @@ package classes.Scenes.Dungeons
 import classes.EventParser;
 import classes.internals.LookupTable;
 import classes.Scenes.Areas.Forest.BeeGirl;
+import classes.Scenes.Areas.Forest.TentacleBeast;
 import classes.ItemType;
 
 	public class BeeHive extends DungeonAbstractContent
@@ -59,9 +60,12 @@ import classes.ItemType;
 			DngDirection.createDirection(DngDirection.DirS, rooms.GetElement("B4" ), rooms.GetElement("Stairs"));
 			room = (rooms.GetElement("Entrance") as DngRoom);
 			room.isDungeonEntry = room.isDungeonExit = true;
+			room = (rooms.GetElement("B1") as DngRoom);
+			room.onEnterFct = encounterTentacle;
 			room = (rooms.GetElement("B2") as DngRoom);
 			room.onEnterFct = encounterBee2;
-			room.getDirection(DngDirection.DirW).onEnterFct = encounterBee;
+			room.getDirection(DngDirection.DirW)
+			room.onEnterFct = encounterBee2;
 			room = (rooms.GetElement("A4") as DngRoom);
 			room.onEnterFct = encounterBee2;
 			room = (rooms.GetElement("A3") as DngRoom);
@@ -114,9 +118,9 @@ import classes.ItemType;
 			setFloors(_floors);
 		}
 		
-		private function encounterBee(Me:DngDirection):Boolean {
-			outputText("\nThere is a beegirl.");
-			startCombat(new BeeGirl());
+		private function encounterTentacle(Me:DngRoom):Boolean {
+			outputText("\nThere is a Tentaclebeast.");
+			startCombat(new TentacleBeast());
 			doNext(playerMenu);
 			return true;
 		}

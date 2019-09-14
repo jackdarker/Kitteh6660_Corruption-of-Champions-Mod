@@ -107,7 +107,12 @@ public class TentacleBeast extends Monster
 
 		public function TentacleBeast()
 		{
-			trace("TentacleBeast Constructor!");
+			//trace("TentacleBeast Constructor!");
+			setupMonster();
+			checkMonster();
+		}
+
+		protected function setupMonster():void {
 			this.a = "the ";
 			this.short = "tentacle beast";
 			this.imageName = "tentaclebeast";
@@ -154,9 +159,7 @@ public class TentacleBeast extends Monster
 			this.special2 = tentacleEntwine;
 			this.special3 = tentaclePhysicalAttack;
 			this.tailType = Tail.DEMONIC;
-			checkMonster();
 		}
-
 	}
 
 }

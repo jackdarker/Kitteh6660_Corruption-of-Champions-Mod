@@ -1429,14 +1429,14 @@ import classes.lists.Gender;
 				}
 			}
 			if (player.hasPerk(PerkLib.TransformationImmunity)) changeLimit = 0;
-			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].length < 12) {
+			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].cockLength < 12) { 
 				outputText("\n\nHeat funnels into your cock as the alcohol flushes through you. Reaching down to inspect it, you find it has grown longer.");
-				player.cocks[player.smallestCockIndex()].length++;
+				player.cocks[player.smallestCockIndex()].cockLength+=1; //fixme
 				changes++;
 			}
-			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].girth < 4) {
+			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].cockThickness < 4) {  //fixme
 				outputText("\n\nYou cock feels warm. When you reach down to inspect it your suspicions are confirmed. it's gotten thicker.");
-				player.cocks[player.smallestCockIndex()].girth += 0.5;
+				player.cocks[player.smallestCockIndex()].cockThickness+=0.5;
 				changes++;
 			}
 			if (rand(3) == 0 && changes < changeLimit && player.balls > 0) {

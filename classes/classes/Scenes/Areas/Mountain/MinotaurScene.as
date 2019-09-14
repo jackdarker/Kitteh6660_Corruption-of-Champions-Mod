@@ -124,6 +124,9 @@ private function postfightoptions():void {
 			addButton(11, "Vine in Butt", alrauneVineInButtScene);
 			addButton(12, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
 		}
+		if (player.hasKeyItem("All-Natural Onahole")) {
+			addButton(13, "Use Onahole", onaholeMino);
+		}
 	}
 	addButton(13, "Other", otherpostfightoptions);
 	addButton(14, "Leave", cleanupAfterCombat);
@@ -134,7 +137,24 @@ private function otherpostfightoptions():void {
 	menu();
 	addButton(0, "Kill", killMinotaur);
 	if (player.tailType == Tail.MANTICORE_PUSSYTAIL) addButton(13, "Tail Rape", uniquuuesexscene.manticoreTailRapeScene);
+	if (player.hasKeyItem("All-Natural Onahole")) {
+			addButton(4, "Use Onahole", onaholeMino);
+		}
 	addButton(14, "Back", postfightoptions);
+}
+private function onaholeMino():void {
+	clearOutput();
+	//TODO better description
+	outputText("You straddle the hips of the big bully and slip the Onahole over his hardening beast-meat. The cupious amounts of pre he is spilling all around makes it easy to slip the stretchy toy down his length. A bunch of thorough strokes later he is at full-mast and you have diffiulties to keep in charge.\n");
+	if (rand(100) < 80) { //IDEA usage proficiency
+		outputText("Some more strokes later he bellows out loudly and the rubbery toy expands beeing filled with his bull-seed. You make haste to fill the sticky stuff into a bottle.\n")
+		inventory.takeItem(consumables.MINOCUM, cleanupAfterCombat);
+	} else {
+		outputText("Unfortunatly the sextoy proofs to weak for this size of endowment. It rips appart rendering it uselas. What a waste.\n")
+		player.removeKeyItem("All-Natural Onahole");
+		cleanupAfterCombat();
+	}
+	
 }
 private function killMinotaur():void {
 	clearOutput();
@@ -143,7 +163,6 @@ private function killMinotaur():void {
 	if (player.cor < 25) dynStats("cor", -0.5);
 	inventory.takeItem(useables.MINOHOR, cleanupAfterCombat);
 }
-
 //Tentacle scenes require multi dicks at minimum
 //(dicks > 1 && tentacledicks > 0)
 private function rapeMinotaurTentacles():void {

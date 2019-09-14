@@ -42,7 +42,7 @@ import classes.internals.*;
 			this.imageName = "feraldragon";	//Todo male-female-herm
 			this.long = "It's obvious that this beast is a 4-legged reptile with large leathery wings and a long pointed tail. There is a spark of intelligence in its glooming eyes but there are also sharp teeths and curved claws that mark this mystical beeing as predator.\n";
 			// this.plural = false;
-			this.level = Math.max(20, 15 + rand(this.player.level / 2));	//scales with player
+			this.level = Math.max(20, this.player.level + this.player.level*(rand(100)-50)/200);	//scales with player +-25%
 
 			this.createCock(rand(2) + 11, rand(1)+2.5, CockTypesEnum.DRAGON);
 			this.balls = 0;	//internal
