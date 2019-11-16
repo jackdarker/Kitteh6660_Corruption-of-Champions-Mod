@@ -90,6 +90,9 @@ use namespace CoC;
 			_forestEncounter = Encounters.group("forest", {
 						//General Golems, Goblin and Imp Encounters
 						name: "common",
+						chance: function ():Number {
+							return (player.findPerk(PerkLib.PiercedFurrite) >= 0)? 0.5 : 1;
+						},
 						call: SceneLib.exploration.genericGolGobImpEncounters
 					}, {
 						//Helia monogamy fucks

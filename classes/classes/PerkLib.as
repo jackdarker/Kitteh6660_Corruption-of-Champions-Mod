@@ -2334,6 +2334,9 @@ public class PerkLib
 		public static const Survivalist2:PerkType = mk("Survivalist 2", "Survivalist 2",
 				"Slows hunger rate by further 20%.",
 				"You choose the 'Survivalist 2' perk.  With this perk, your hunger rate is reduced by another 20%.");
+		public static const EnergyHunger:PerkType = mk("EnergyHunger", "EnergyHunger",
+				"Increases your fatigue regeneration by 20%, but your hunger rate by 50%.",
+				"You choose the 'EnergyHunger' perk.  With this perk, your fatigue regeneration by 20% and hunger rate by 50%.");		//todo regeneration
 		public static const StaffChanneling:PerkType = mk("Staff Channeling", "Staff Channeling",
 				"Basic attack with wizard's staff is replaced with ranged magic bolt.",
 				"You choose the 'Staff Channeling' perk. Basic attack with wizard's staff is replaced with ranged magic bolt.");
@@ -5116,6 +5119,8 @@ public class PerkLib
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.internalChimeraScore() >= 4;
                     }, "Four racial perks");
+			EnergyHunger.requireLevel(2)
+                    .requireHungerEnabled();
             Survivalist2.requireLevel(12)
                     .requireHungerEnabled()
                     .requirePerk(Survivalist);
