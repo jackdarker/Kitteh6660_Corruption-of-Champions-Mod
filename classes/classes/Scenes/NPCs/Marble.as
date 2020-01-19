@@ -39,7 +39,7 @@ public class Marble extends Monster
 				outputText("You are struck by a two-handed overhead swing from the enraged cow-girl.  ");
 				damage = player.takePhysDamage(damage, true);
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		private function marbleSpecialAttackTwo():void {
 			//Special2: Wide sweep; very high hit chance, does low damage.
@@ -63,7 +63,7 @@ public class Marble extends Monster
 			}
 			outputText("Marble easily hits you with a wide, difficult to avoid swing.  ");
 			if(damage > 0) player.takePhysDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 
 		override public function defeated(hpVictory:Boolean):void

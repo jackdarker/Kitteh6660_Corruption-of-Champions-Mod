@@ -45,11 +45,32 @@ public class BaseCombatContent extends BaseContent {
 	protected function doDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
 		return combat.doDamage(damage, apply, display);
 	}
+	protected function doMagicDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doMagicDamage(damage, apply, display);
+	}
+	protected function doFireDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doFireDamage(damage, apply, display);
+	}
+	protected function doIceDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doIceDamage(damage, apply, display);
+	}
+	protected function doLightingDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doLightingDamage(damage, apply, display);
+	}
+	protected function doDarknessDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doDarknessDamage(damage, apply, display);
+	}
+	protected function doPoisonDamage(damage:Number, apply:Boolean = true, display:Boolean = false):Number {
+		return combat.doPoisonDamage(damage, apply, display);
+	}
 	protected function combatMiss():Boolean {
 		return combat.combatMiss();
 	}
 	protected function combatParry():Boolean {
 		return combat.combatParry();
+	}
+	protected function combatParry2():Number {
+		return combat.combatParry2();
 	}
 	protected function combatPhysicalCritical():Number {
 		return combat.combatPhysicalCritical();
@@ -59,6 +80,9 @@ public class BaseCombatContent extends BaseContent {
 	}
 	protected function combatBlock(doFatigue:Boolean = false):Boolean {
 		return combat.combatBlock(doFatigue);
+	}
+	protected function combatBlock2():Number {
+		return combat.combatBlock2();
 	}
 	protected function unarmedAttack():Number {
 		return combat.unarmedAttack();
@@ -135,6 +159,9 @@ public class BaseCombatContent extends BaseContent {
 	protected function scalingBonusIntelligence():Number {
 		return combat.scalingBonusIntelligence();
 	}
+	protected function scalingBonusIntelligenceCompanion():Number {
+		return combat.scalingBonusIntelligenceCompanion();
+	}
 	protected function scalingBonusWisdom():Number {
 		return combat.scalingBonusWisdom();
 	}
@@ -167,6 +194,15 @@ public class BaseCombatContent extends BaseContent {
 	}
 	protected function spellModWhite():Number {
 		return combat.magic.spellModWhiteImpl();
+	}
+	protected function spellBlackCooldown():Number {
+		return combat.magic.spellBlackCooldownImpl();
+	}
+	protected function spellGreyCooldown():Number {
+		return combat.magic.spellGreyCooldownImpl();
+	}
+	protected function spellWhiteCooldown():Number {
+		return combat.magic.spellWhiteCooldownImpl();
 	}
 	protected function healMod():Number {
 		return combat.magic.healModImpl();

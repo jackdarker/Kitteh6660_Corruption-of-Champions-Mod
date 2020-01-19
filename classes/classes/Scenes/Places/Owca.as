@@ -1,5 +1,6 @@
 ﻿package classes.Scenes.Places{
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Antennae;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.WeaponLib;
@@ -193,7 +194,7 @@ private function intoTheDemonPit(sacrifice:Boolean = true):void {
 		var passed:int = 21 - model.time.hours;
 		outputText("<b>" + Num2Text(passed) + " " + (passed > 1 ? "hours pass" : "hour passes") + "...</b>\n");
 		model.time.hours = 21;
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	outputText("You are awakened by a sudden cackling, and open your eyes; you are almost entirely surrounded by darkness, and the dim light provided by the menacing red moon only makes the landscape bleaker.");
 	outputText("\n\nYou look around, puzzled.  Nothing seems to break the ever-present, nightly silence.  Then, as if to tease you, the cackling is heard again, this time behind you.  You turn around and eventually spot its origin: a crowd of silhouettes, all rushing in your direction, tittering and giggling like a bunch of naughty kids about to play a dirty trick.  As they get closer and closer to the pit, their colorful bodies and alien features are given a shining outline by the bloody moon; it seems that they are all full demons, sporting horns, claws, tails and wings.  Most of them are naked, shamelessly displaying gigantic erections or cavernous pussies as well as watermelon-sized, milk-dribbling tits.  Some of them are wearing leather straps that barely cover their taboo parts, as if to mock all notions of human prudishness.  You even spot an imp wearing a weird greenish vine like a belt; you stare at him for a few seconds, knowing something is out of place, then realize the belt is actually the imp's very flexible tentacle dick.");
@@ -686,7 +687,7 @@ private function owcaBuySetup(item:ItemType):void {
 private function buyOwcaShit(bleh:ItemType,price:Number = 0):void {
 	clearOutput();
 	player.gems -= price;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("The bartender hands you a bottle and grabs your gems before attending other clients, leaving you to your own business.\n\n");
 	inventory.takeItem(bleh, owcaTavern);
 }
@@ -895,7 +896,7 @@ private function torchUpVillagersAndLeave():void {
 	outputText("You don't think you're going to see these villagers again, and you don't really want to.");
 	//Corruption +15 (plus extra for rape), ~ 1000 gems, fatigue set to 100
 	fatigue(100);
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	cleanupAfterCombat();
 }
 //End of quest

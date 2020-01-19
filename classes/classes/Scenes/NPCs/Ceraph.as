@@ -86,7 +86,7 @@ public class Ceraph extends Monster
 		{
 			clearOutput();
 			outputText("You wriggle in the tight binding, trying your best to escape.  ");
-			if (player.statusEffectv1(StatusEffects.Bound) - 1 <= 0) {
+			if ((player.statusEffectv1(StatusEffects.Bound) - 1 <= 0) || player.hasPerk(PerkLib.FluidBody)) {
 				outputText("With a mighty twist and stretch, the whip gives and uncurls from you all at once.  You've regained your freedom");
 				if (flags[kFLAGS.PC_FETISH] >= 2) {
 					outputText(", though you miss the tight leathery embrace");
@@ -146,7 +146,7 @@ public class Ceraph extends Monster
 			var damage:Number = 0;
 			outputText("The demoness weaves her whip in the air until you can practically hear it slithering like a snake, cutting the air as it weaves back and forth, still magically alight with flames.  In a blink she lashes out twice in quick succession!\n");
 			//First hit!
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if (hasStatusEffect(StatusEffects.Blind) && rand(10) != 9) {
 				outputText(capitalA + short + " completely misses you with a blind attack!");
@@ -279,7 +279,7 @@ public class Ceraph extends Monster
 		{
 			if(pcCameWorms){
 				outputText("\n\nYour foe doesn't seem disgusted enough to leave...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.ceraphScene.loseFUCKME();
 			}

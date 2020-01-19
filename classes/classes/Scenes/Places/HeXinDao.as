@@ -8,6 +8,7 @@
 package classes.Scenes.Places {
 
 import classes.*;
+import classes.EngineCore;
 import classes.GlobalFlags.kFLAGS;
 import classes.CoC;
 import classes.GlobalFlags.kACHIEVEMENTS;
@@ -19,6 +20,7 @@ import classes.Scenes.Dungeons.RiverDungeon;
 import classes.Scenes.NPCs.NeisaFollower;
 import classes.Scenes.Places.HeXinDao.*;
 import classes.Scenes.Monsters.*;
+import classes.Scenes.NPCs.Asuka;
 import classes.Scenes.NPCs.Jeniffer;
 import classes.Scenes.NPCs.ChiChiFollower;
 import classes.Scenes.NPCs.Jinx;
@@ -35,6 +37,7 @@ public class HeXinDao extends BaseContent
     public var chichiScene:ChiChiFollower = new ChiChiFollower();
 	public var journeytotheeast:JourneyToTheEast = new JourneyToTheEast();
     public var riverdungeon:RiverDungeon = new RiverDungeon();
+	public var eraendirorsbulg:EraendirAndOrsbulg = new EraendirAndOrsbulg();
 
     public function HeXinDao()
     {
@@ -54,7 +57,7 @@ public class HeXinDao extends BaseContent
 	}
 	public function riverislandVillageStuff1():void {
 		outputText("\n\nYou aren’t here today for a festival. Maybe you will attend tomorrow.\n\n");
-		doNext(riverislandVillageStuff);
+		EngineCore.doNext(riverislandVillageStuff);
 	}
 	public function riverislandVillageStuffLunar():void {
 		clearOutput();
@@ -83,15 +86,15 @@ public class HeXinDao extends BaseContent
 		outputText("Wow! You were lucky! There was " + Gems + " gems inside! This sure is good fortune for the coming year.");
 		player.createStatusEffect(StatusEffects.CanGetLunarGift,0,0,0,0);
 		player.gems += Gems;
-		statScreenRefresh();
-		doNext(riverislandVillageStuffLunar);
+		EngineCore.statScreenRefresh();
+		EngineCore.doNext(riverislandVillageStuffLunar);
 	}
 	public function riverislandVillageStuffLunarFood():void {
 		clearOutput();
 		outputText("The local restaurant seems to be offering some speciality food and the best of it all; is it's free! Some " + flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] + "-morphs are handling it all over for extra thematics. You proceed to grab a plate of these strange ravioli the people calls jiǎozi taking this rice dessert they call niángāo right after. The meal is comforting and you would believe everything in mareth was going fine right now if not for the reddish stormy sky in the far distance which contrast with these festivities.");
 		player.refillHunger(50);
 		cheatTime2(30);
-		doNext(riverislandVillageStuffLunar);
+		EngineCore.doNext(riverislandVillageStuffLunar);
 	}
 	public function riverislandVillageStuffLunarClothing():void {
 		clearOutput();
@@ -130,7 +133,7 @@ public class HeXinDao extends BaseContent
 	public function riverislandVillageStuffLunarFireworks():void {
 		clearOutput();
 		outputText("There are some extravagantly beautiful fireworks exploding in the sky above town. Red rockets are regularly shot up there exploding in bright flashes. You chuckle inside pondering what would happen if some harpy accidentally was to use this aerial space at the time… would it become roasted chicken? Speaking of chickens while you were thinking about harpies a few imps indeed drop dead from the sky, guess some demons indeed got a little too close to the explosion and got caught in the blast.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 	public function riverislandVillageStuffLunarChiChi():void {
 		clearOutput();
@@ -156,7 +159,7 @@ public class HeXinDao extends BaseContent
 			outputText("\n\n\"<i>Oh it's you? Did you came to train? I’m sorry, but today I’m on a break. It's the Lunar festival and this event only happens once a year. How about we share a cup of sake and watch the fireworks? You could use a break too, ya know?</i>\"");
 			outputText("\n\nYou both share sake and food and jokes all night while watching the fireworks. It's only when it gets very late that you bid her farewell and head back to camp.");
 		}
-		doNext(camp.returnToCampUseSixHours);
+		EngineCore.doNext(camp.returnToCampUseSixHours);
 	}
 
     public function riverislandVillageStuff():void {
@@ -173,7 +176,7 @@ public class HeXinDao extends BaseContent
         menu();
         addButton(0, "Merchant", golemmerchant);
         addButton(1, "TFspec/Exch", mogahenmerchant);
-        addButton(2, "SoulEquip", soulequipmentmerchant);
+        addButton(2, "SoulEquip", serenamerchant);
         addButton(3, "SoulArrow", ermaswiftarrowmerchant);
 		if (flags[kFLAGS.NEISA_FOLLOWER] == 0) addButton(4, "Dungeon", entranceToRiverDungeon);
 		else {
@@ -184,6 +187,9 @@ public class HeXinDao extends BaseContent
         addButton(6, "JourTTEast", journeytotheeast.enteringInn);
         addButton(7, "Arena", soularena);
         addButton(8, "Restaurant", restaurantShiraOfTheEast);
+		addButton(10, "Eraendir", eraendirorsbulg.EraendirMainMenu);
+		addButton(11, "Orsbulg", eraendirorsbulg.OrsbulgMainMenu);
+		//12 - golemancer lub firearms dealer
         if (flags[kFLAGS.CHI_CHI_AFFECTION] >= 20 && flags[kFLAGS.CHI_CHI_FOLLOWER] < 2) addButton(13, "Chi Chi", chichiScene.MeetingChiChiInHeXinDao);
         addButton(14, "Leave", camp.returnToCampUseOneHour);
     }
@@ -197,70 +203,158 @@ public class HeXinDao extends BaseContent
             outputText("<b>New codex entry unlocked: Golems!</b>\n\n")
         }
         menu();
-        var buyItem:Function = curry(confirmBuy,golemmerchant,"Golem",1);
-        var introText:String = "\"While you reach toward the one of the pills on the display golem says, \\\"<i>";
+        var buyItem1:Function = curry(confirmBuy1,golemmerchant,"Golem",1);
+        var buyItem2:Function = curry(confirmBuy2,golemmerchant,"Golem",0.2);
+        var introText:String = "\"While you reach toward the one of the items on the display golem says, \\\"<i>";
         var costText:String = " Interested?  It is <b>";
-        var endText:String = " gems</b></i>.\"";
-        function sayLine(itype:ItemType,desc:String):String{
-            return introText+desc+costText+itype.value+endText;
+        var endText1:String = " gems</b></i>.\"";
+        var endText2:String = " spirit stones</b></i>.\"";
+        function sayLine1(itype:ItemType,desc:String):String{
+            return introText+desc+costText+itype.value+endText1;
         }
-        addButton(0, "LGSFRecovPill", buyItem,consumables.LG_SFRP,
-                sayLine(consumables.LG_SFRP,"It's quite useful item for all soul cultivators, this little pill can help you restore some of used up soulforce.")).hint("Low-grade Soulforce Recovery Pill.");
-        addButton(1, "Bag of Cosmos", buyItem,consumables.BAGOCOS,
-                sayLine(consumables.BAGOCOS,"It's quintessential item for all soul cultivators, this little bag can hold much more things inside that it own size.")).hint("Bag of Cosmos.");
-        if (player.findPerk(PerkLib.JobSoulCultivator) >= 0) {
-            addButton(2, "Triple Thrust", buyItem,consumables.TRITMAN,
-                    sayLine(consumables.TRITMAN,"It's manual for Triple Thrust, this simple technique allows to unleash three thrusts that will became stronger and stronger as you train your body and soul."),
-                    "\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems even name of the manual mentioning thrusting seems like it could have been influenced by this realm nature...or it's just a coincidence.  "
-            ).hint("Triple Thrust Manual.");
-            addButton(3, "Draco Sweep", buyItem,consumables.DRASMAN,
-                    sayLine(consumables.DRASMAN,"It's manual for Draco Sweep, this simple technique allows to unleash attack that would strike in wide arc before you.  Perfect when you fight group of enemies and it also becoming more powerful as long you would train your body and soul."),
-                    "\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to use when figthing group of enemies.  Although you not meet often so far more than singular enemy at once you're sure that deeper in this forsaken realm you will face groups or maybe even hordes of demons at once and would need something to deal with them.  "
-            ).hint("Draco Sweep Manual.");
-            addButton(4, "Many Birds", buyItem,consumables.MABIMAN,
-                    sayLine(consumables.MABIMAN,"It's manual for Many Birds, this simple technique allows to project a figment of your soulforce as a crystal traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
-                    "\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems name of the manual is odd but it makes you remember something...but what and from where you not certain.  "
-            ).hint("Many Birds Manual.");
+        function sayLine2(itype:ItemType,desc:String):String{
+            return introText+desc+costText+(itype.value*0.2)+endText2;
         }
-        if (player.findPerk(PerkLib.SoulWarrior) >= 0) {
-            addButton(5, "MGSFRecovPill", buyItem,consumables.MG_SFRP,
-                    sayLine(consumables.MG_SFRP,"It's quite useful item for all cultivators at Soul Personage or above stage, this small pill can help you restore some of used up soulforce and it would be much more than the low-grade one.")).hint("Mid-grade Soulforce Recovery Pill.");
-            addButton(6, "Comet", buyItem,consumables.COMETMA,
-                    sayLine(consumables.COMETMA,"It's manual for Comet, this technique allows to project a shard of soulforce, which will come crashing down upon your opponent as a crystalline comet.  Perfect when you fight group of enemies and it also becoming more powerful as long you would train your body and soul."),
-                    "\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to use when figthing group of enemies.  Although you not meet often so far more than singular enemy at once you're sure that deeper in this forsaken realm you will face groups or maybe even hordes of demons at once and would need something to deal with them.  "
-            ).hint("Comet Manual.");
-            addButton(7, "V P Trans", buyItem,consumables.VPTRMAN,
-                    sayLine(consumables.VPTRMAN,"It's manual for Violet Pupil Transformation, this advanced technique allows to channel soulforce into regenerative power that would fill whole body allowing recovering even from a brink of a death.  It only flaw is that it constantly drain cultivator soulforce so you could end in a tight situation without enough soulforce to use other skills."),
-                    "\n\nSeems like it's similar to healing spell soul skill and on top of that the one which isn't one time used one time healed but with enough soulforce could be kept active for very long period of time.  It should give you another edge during your crusade against demons.  Additionaly ability to healing from brink of death could prove to be usefull in future fights.  "
-            ).hint("Violet Pupil Transformation Manual.");
-        }
-        if (player.findPerk(PerkLib.SoulOverlord) >= 0) {
-            addButton(10, "HGSFRecovPill", buyItem,consumables.HG_SFRP,
-                    sayLine(consumables.HG_SFRP,"It's quite useful item for all cultivators at Soul Personage or above stage, this small pill can help you restore some of used up soulforce and it would be much more than the low-grade one.")).hint("High-grade Soulforce Recovery Pill.");
-        }
-        addButton(13, "IncenOfInsig", buyItem,consumables.INCOINS,
-                sayLine(consumables.INCOINS,"These incenses are quite special. They will grant you visions if only for a moment while meditating. This should help you find the wisdom and insight you need.")).hint("Incense of Insight.");
+		addButton(1, "1st Stall", TierI).hint("Check out first of stalls with a common items and for cultivators that just started.");
+        if (player.findPerk(PerkLib.SoulApprentice) >= 0) addButton(2, "2nd Stall", TierII).hint("Check out second of stalls with a items for Soul Apprentice, Soul Personage and Soul Warrior stage cultivators.");
+		else addButtonDisabled(2, "2nd Stall", "Need to be at least Soul Apprentice to check those items.");
+        if (player.findPerk(PerkLib.SoulSprite) >= 0) addButton(3, "3rd Stall", TierIII).hint("Check out second of stalls with a items for Soul Sprite, Soul Scholar and Soul Elder stage cultivators.");
+		else addButtonDisabled(3, "3rd Stall", "Need to be at least Soul Sprite to check those items.");
+		function TierI():void {
+			menu();
+            addButton(0, "LGSFRecovPill", buyItem1,consumables.LG_SFRP,
+					sayLine1(consumables.LG_SFRP,"It's quite useful item for all soul cultivators, this little pill can help you restore some of used up soulforce.")).hint("Low-grade Soulforce Recovery Pill.");
+			addButton(1, "Bag of Cosmos", buyItem1,consumables.BAGOCOS,
+					sayLine1(consumables.BAGOCOS,"It's quintessential item for all soul cultivators, this little bag can hold much more things inside that it own size.")).hint("Bag of Cosmos.");
+			addButton(2, "E.P.Bottle", buyItem1,useables.E_P_BOT,
+					sayLine1(useables.E_P_BOT,"These bottels can be used to store in organized way pills. Due to realm nature when opened, pills must be used in short period of time or they would loose all benefital effects. Some cultivators theorize it's realm reaction on big concentration of pills in small space for longer time.")).hint("Empty Pills Bottle.");
+			addButton(3, "IncenOfInsig", buyItem1,consumables.INCOINS,
+					sayLine1(consumables.INCOINS,"These incenses are quite special. They will grant you visions if only for a moment while meditating. This should help you find the wisdom and insight you need.")).hint("Incense of Insight.");
+			if (player.findPerk(PerkLib.JobSoulCultivator) >= 0) {
+				addButton(5, "Triple Thrust", buyItem2,consumables.TRITMAN,
+						sayLine2(consumables.TRITMAN,"It's manual for Triple Thrust, this very simple technique allows to unleash three thrusts that will became stronger and stronger as you train your body and soul."),
+						"\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems even name of the manual mentioning thrusting seems like it could have been influenced by this realm nature...or it's just a coincidence.  "
+				).hint("Triple Thrust Manual.");
+				addButton(6, "Draco Sweep", buyItem2,consumables.DRASMAN,
+						sayLine2(consumables.DRASMAN,"It's manual for Draco Sweep, this simple technique allows to unleash attack that would strike in wide arc before you.  Perfect when you fight group of enemies and it also becoming more powerful as long you would train your body and soul."),
+						"\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to use when figthing group of enemies.  Although you not meet often so far more than singular enemy at once you're sure that deeper in this forsaken realm you will face groups or maybe even hordes of demons at once and would need something to deal with them.  "
+				).hint("Draco Sweep Manual.");
+				addButton(7, "Many Birds", buyItem2,consumables.MABIMAN,
+						sayLine2(consumables.MABIMAN,"It's manual for Many Birds, this simple technique allows to project a figment of your soulforce as a crystal traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
+						"\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems name of the manual is odd but it makes you remember something...but what and from where you not certain.  "
+				).hint("Many Birds Manual.");
+				addButton(8, "Hail of Blades", buyItem2,consumables.HOB1MAN,
+						sayLine2(consumables.HOB1MAN,"It's manual for Hail of Blades, this simple technique allows to form few etheral weapons traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
+						"\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems name of the manual is odd but it makes you remember something...but what and from where you not certain.  "
+				).hint("Hail of Blades Manual.");
+				if (flags[kFLAGS.HUNGER_ENABLED] > 0) addButton(13, "Fasting Pill", buyItem2,consumables.FATPILL,
+						sayLine1(consumables.FATPILL,"It's quite useful item for soul cultivators, this little pill can help you not feel hunger for a few days.")).hint("Fasting Pill.");
+			}
+			addButton(14, "Back", golemmerchant);
+            EngineCore.statScreenRefresh();
+		}
+		function TierII():void {
+			menu();
+			addButton(0, "Flames of Love (B)", buyItem2,consumables.FOLBMAN,
+					sayLine2(consumables.FOLBMAN,"It's manual for Flames of Love (Basic Rank), this simple technique allows to convert excess lust into flames."),
+					"\n\nSeems it's some sort of art to deal with needless lust by changing it into other....more deadly form.  But what does basic rank mean?  Is there some higher rank for this soulskill?  "
+			).hint("Flames of Love (Basic Rank) Manual.");
+			addButton(1, "Icicles of Love (B)", buyItem2,consumables.IOLBMAN,
+					sayLine2(consumables.IOLBMAN,"It's manual for Icicles of Love (Basic Rank), this simple technique allows to covert excess lust into icicles."),
+					"\n\nSeems it's some sort of art to deal with needless lust by changing it into other....more deadly form.  But what does basic rank mean?  Is there some higher rank for this soulskill?  "
+			).hint("Icicles of Love (Basic Rank) Manual.");
+			if (player.findPerk(PerkLib.SoulPersonage) >= 0) {
+				addButton(4, "Sextuple Thrust", buyItem2,consumables.SEXTMAN,
+						sayLine2(consumables.SEXTMAN,"It's manual for Sextuple Thrust, this simple technique allows to unleash six thrusts that will became stronger and stronger as you train your body and soul."),
+						"\n\nWherever you gonna go deeper into all that 'soulforce' stuff or not at least you now got something to train.  Although seems even name of the manual mentioning thrusting seems like it could have been influenced by this realm nature...or it's just a coincidence.  "
+				).hint("Sextuple Thrust Manual.");
+				addButton(5, "Grandiose Hail of Blades", buyItem2,consumables.HOB2MAN,
+						sayLine2(consumables.HOB2MAN,"It's manual for Grandiose Hail of Blades, this technique allows to form many etheral weapons traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
+						"\n\nWherever you gonna go deeper into all that 'soulforce' stuff or not at least you now got something to begin.  Although seems name of the manual is odd but it makes you remember something...but what and from where you not certain.  "
+				).hint("Grandiose Hail of Blades Manual.");
+			}
+			if (player.findPerk(PerkLib.SoulWarrior) >= 0) {
+				addButton(7, "MGSFRecovPill", buyItem2,consumables.MG_SFRP,
+						sayLine2(consumables.MG_SFRP,"It's quite useful item for all cultivators at Soul Warrior or above stage, this small pill can help you restore some of used up soulforce and it would be much more than the low-grade one.")).hint("Mid-grade Soulforce Recovery Pill.");
+				addButton(8, "Comet", buyItem2,consumables.COMETMA,
+						sayLine2(consumables.COMETMA,"It's manual for Comet, this technique allows to project a shard of soulforce, which will come crashing down upon your opponent as a crystalline comet.  Perfect when you fight group of enemies and it also becoming more powerful as long you would train your body and soul."),
+						"\n\nWherever you gonna try to go deeper into all that 'soulforce' stuff or not at least you now got something to use when figthing group of enemies.  Although you not meet often so far more than singular enemy at once you're sure that deeper in this forsaken realm you will face groups or maybe even hordes of demons at once and would need something to deal with them.  "
+				).hint("Comet Manual.");
+				addButton(9, "V P Trans", buyItem2,consumables.VPTRMAN,
+						sayLine2(consumables.VPTRMAN,"It's manual for Violet Pupil Transformation, this advanced technique allows to channel soulforce into regenerative power that would fill whole body allowing recovering even from a brink of a death.  It only flaw is that it constantly drain cultivator soulforce so you could end in a tight situation without enough soulforce to use other skills."),
+						"\n\nSeems like it's similar to healing spell soul skill and on top of that the one which isn't one time used one time healed but with enough soulforce could be kept active for very long period of time.  It should give you another edge during your crusade against demons.  Additionaly ability to healing from brink of death could prove to be usefull in future fights.  "
+				).hint("Violet Pupil Transformation Manual.");
+			}
+            addButton(14, "Back", golemmerchant);
+            EngineCore.statScreenRefresh();
+		}
+		function TierIII():void {
+			menu();
+			addButton(0, "Nonuple Thrust", buyItem2,consumables.NONTMAN,
+					sayLine2(consumables.NONTMAN,"It's manual for Nonuple Thrust, this technique allows to unleash nine thrusts that will became stronger and stronger as you train your body and soul."),
+					"\n\nSince you going deeper into all that 'soulforce' stuff you now got something to train.  Although seems even name of the manual mentioning thrusting seems like it could have been influenced by this realm nature...or it's just a coincidence.  "
+			).hint("Nonuple Thrust Manual.");
+			addButton(1, "GHoMB", buyItem2,consumables.HOB3MAN,
+					sayLine2(consumables.HOB3MAN,"It's manual for Grandiose Hail of Moon Blades, this technique allows to form huge amount of etheral weapons traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
+					"\n\nSince you going deeper into all that 'soulforce' stuff you now got something to train.  Although seems name of the manual is odd but it makes you remember something...but what and from where you not certain.  "
+			).hint("Grandiose Hail of Moon Blades Manual.");
+			/*addButton(2, "Yin Yang Blast", buyItem2,consumables.YYB_MAN,
+					sayLine2(consumables.YYB_MAN,"It's manual for Yin Yang Blast, this technique allows to make team attack using Yin Palm and Yang Fist to ."),
+					"\n\nSince you going deeper into all that 'soulforce' stuff you now got something to train with someone that would goes into fights alongside you.  Maybe there is some more of those 'combined' soulskills somewhere?  "
+			).hint("Yin Yang Blast Manual.");*/
+			addButton(14, "Back", golemmerchant);
+            EngineCore.statScreenRefresh();
+		}/*
+		if (player.findPerk(PerkLib.SoulExalt) >= 0) { lub soul overlord - each soul stage above starting allow to extend channeling time by 1 round
+			addButton(1, "GHoMB", buyItem2,consumables.HOB4MAN,
+					sayLine2(consumables.HOB4MAN,"It's manual for Grandiose Hail of Moon Blades, this technique allows to form massive amount of etheral weapons traveling at extreme speeds that will became stronger and stronger as you train your body and soul."),
+					"\n\nYou already went so deep into becoming cultivator so why not?  'Few' more weapons formed will not hurt at this point, right?  "
+			).hint("Grandiose Heavenly Hail of Yin-Yang Blades: Endless Tide Manual.");
+		}*/
+		if (player.findPerk(PerkLib.SoulOverlord) >= 0) {
+			addButton(10, "HGSFRecovPill", buyItem2,consumables.HG_SFRP,
+					sayLine2(consumables.HG_SFRP,"It's quite useful item for all cultivators at Soul Overlord or above stage, this small pill can help you restore some of used up soulforce and it would be much more than the mid-grade one.")).hint("High-grade Soulforce Recovery Pill.");
+		}
         addButton(14, "Back", riverislandVillageStuff);
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
     }
-    private function debitItem(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,onBuy:String):void{
+    private function debitItem1(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,onBuy:String):void{
         var value:int = itype.value * priceRate;
         if (player.gems < value) {
             clearOutput();
             outputText("\n\n"+shopKeep+" shakes his head, indicating you need " + String(value - player.gems) + " more gems to purchase this item.");
-            doNext(returnFunc);
+            EngineCore.doNext(returnFunc);
         }
         else {
             player.gems -= value;
             outputText(onBuy);
             inventory.takeItem(itype, returnFunc);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
     }
-    private function confirmBuy(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,descString:String,onBuyString:String="\n"):void{
+    private function debitItem2(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,onBuy:String):void{
+        if (flags[kFLAGS.SPIRIT_STONES] < itype.value / 5) {
+            clearOutput();
+            outputText("\n\n"+shopKeep+" shakes his head, indicating you need " + String(itype.value / 5 - flags[kFLAGS.SPIRIT_STONES]) + " more spirit stones to purchase this item.");
+            EngineCore.doNext(returnFunc);
+        }
+        else {
+            flags[kFLAGS.SPIRIT_STONES] -= itype.value / 5;
+            outputText(onBuy);
+            inventory.takeItem(itype, returnFunc);
+            EngineCore.statScreenRefresh();
+        }
+    }
+    private function confirmBuy1(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,descString:String,onBuyString:String="\n"):void{
         clearOutput();
         outputText(descString);
-        doYesNo(curry(debitItem, curry(confirmBuy, returnFunc, shopKeep, priceRate, itype,descString ,onBuyString), 
+        doYesNo(curry(debitItem1, curry(confirmBuy1, returnFunc, shopKeep, priceRate, itype,descString ,onBuyString), 
+			shopKeep,priceRate,itype,onBuyString),returnFunc);
+    }
+    private function confirmBuy2(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,descString:String,onBuyString:String="\n"):void{
+        clearOutput();
+        outputText(descString);
+        doYesNo(curry(debitItem2, curry(confirmBuy1, returnFunc, shopKeep, priceRate, itype,descString ,onBuyString), 
 			shopKeep,priceRate,itype,onBuyString),returnFunc);
     }
 
@@ -269,7 +363,7 @@ public class HeXinDao extends BaseContent
         outputText("You enter a shop that got sign over the entrance titled 'Transformative Items and Exchanges'.  Inside you see few stalls with many types of the items put on the display.  Most of them you have already seen somewhere but few seems to been quite rare ones as you not seen many of them so far or at least never seen in such large amounts gathered in one place.");
         outputText("\n\nWhen you're looking over the stalls human owner almost silently approched you but compared to other shop you have seen in this islands Moga Hen by clearing his throat attracts your attention to himself.  After you turned toward him, smiling at you like a cat at the mouse, he first breaks the silence.");
         outputText("\n\n\"<i>Welcome to my humble shop dear and precious customer. What need bring you here today? To repair some damage by using casual picked item or some specific change to attain? Or maybe you need to exchange some gems or spirit stones? I could even give you a fair price on special items that are useless for non-cultivators.</i>\" Each word sounds almost like it was repeated endless times.\n\n");
-        var buyItem:Function = curry(confirmBuy,mogahenmerchant,"Moga",3);
+        var buyItem:Function = curry(confirmBuy1,mogahenmerchant,"Moga",3);
         var introText:String = "While you point toward the one of the items on the display merchant says, \"<i>It's item to embrace the ";
         var costText:String = " in you.  Interested?  It is merely <b>";
         var endText:String = " gems</b></i>.\"";
@@ -289,43 +383,44 @@ public class HeXinDao extends BaseContent
         addButton(11, "Sell", sellItemsForSpiritStones).hint("Sell items for spirit stones.");
         addButton(12, "Exchange", exchangeGemsToSpiritStonesorReverse).hint("Exchange gems to spirit stones or spirit stones to gems.");
         addButton(14, "Back", riverislandVillageStuff);
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         //buyItem,consumables.,sayLine(consumables.,""),onBuyString
         function Tier1():void {
             menu();
             addButton(0, "B.Gossr", buyItem,consumables.B_GOSSR,sayLine(consumables.B_GOSSR,"drider"),onBuyString).hint("Buy a bundle of black, gossamer webbing.");
-            addButton(1, "BeeHony", buyItem,consumables.BEEHONY,sayLine(consumables.BEEHONY,"bee"),onBuyString).hint("Buy a small vial filled with giant-bee honey.");
-            addButton(2, "BladeGrass", buyItem,consumables.BLADEGR,sayLine(consumables.BLADEGR,"mantis"),onBuyString).hint("Buy a blade shaped grass.");
-            addButton(3, "CanineP", buyItem,consumables.CANINEP,sayLine(consumables.CANINEP,"dog"),onBuyString).hint("Buy a Canine pepper.");
-            addButton(4, "FaeEar", buyItem,consumables.ELFEARS,sayLine(consumables.ELFEARS,"elf"),onBuyString).hint("Buy a Fae ear shaped plant.");
-            addButton(5, "Equinum", buyItem,consumables.EQUINUM,sayLine(consumables.EQUINUM,"horse"),onBuyString).hint("Buy a vial of Equinum.");
-            addButton(6, "Fox Berry", buyItem,consumables.FOXBERY,sayLine(consumables.FOXBERY,"fox"),onBuyString).hint("Buy a fox berry.");
-            addButton(7, "FerretFrt", buyItem,consumables.FRRTFRT,sayLine(consumables.FRRTFRT,"ferret"),onBuyString).hint("Buy a ferret fruit.");
-            addButton(8, "GoldenRind", buyItem,consumables.GLDRIND,sayLine(consumables.GLDRIND,"deer"),onBuyString).hint("Buy a golden rind.");
-            addButton(9, "GoldenSeed", buyItem,consumables.GLDSEED,sayLine(consumables.GLDSEED,"harpy"),onBuyString).hint("Buy a golden seed.");
-            addButton(10, "Gob.Ale", buyItem,consumables.GOB_ALE,sayLine(consumables.GOB_ALE,"goblin"),onBuyString).hint("Buy a flagon of potent goblin ale.");
-            addButton(11, "IncubiD", buyItem,consumables.INCUBID,sayLine(consumables.INCUBID,"incubus"),onBuyString).hint("Buy a flask of Incubi draft.");
-            addButton(12, "KangaFruit", buyItem,consumables.KANGAFT,sayLine(consumables.KANGAFT,"kangaroo"),onBuyString).hint("Buy a piece of kanga fruit.");
-            addButton(13, "La Bova", buyItem,consumables.LABOVA_,sayLine(consumables.LABOVA_,"cow"),onBuyString).hint("Buy a bottle containing a misty fluid labeled \"LaBova\".");
+            addButton(1, "BayrLeaf", buyItem,consumables.BAYRLEA,sayLine(consumables.BAYRLEA,"bear"),onBuyString).hint("Buy a Bayr leaf.");
+            addButton(2, "BeeHony", buyItem,consumables.BEEHONY,sayLine(consumables.BEEHONY,"bee"),onBuyString).hint("Buy a small vial filled with giant-bee honey.");
+            addButton(3, "BladeGrass", buyItem,consumables.BLADEGR,sayLine(consumables.BLADEGR,"mantis"),onBuyString).hint("Buy a blade shaped grass.");
+            addButton(4, "CanineP", buyItem,consumables.CANINEP,sayLine(consumables.CANINEP,"dog"),onBuyString).hint("Buy a Canine pepper.");
+            addButton(5, "FaeEar", buyItem,consumables.ELFEARS,sayLine(consumables.ELFEARS,"elf"),onBuyString).hint("Buy a Fae ear shaped plant.");
+            addButton(6, "Equinum", buyItem,consumables.EQUINUM,sayLine(consumables.EQUINUM,"horse"),onBuyString).hint("Buy a vial of Equinum.");
+            addButton(7, "Fox Berry", buyItem,consumables.FOXBERY,sayLine(consumables.FOXBERY,"fox"),onBuyString).hint("Buy a fox berry.");
+            addButton(8, "FerretFrt", buyItem,consumables.FRRTFRT,sayLine(consumables.FRRTFRT,"ferret"),onBuyString).hint("Buy a ferret fruit.");
+            addButton(9, "GoldenRind", buyItem,consumables.GLDRIND,sayLine(consumables.GLDRIND,"deer"),onBuyString).hint("Buy a golden rind.");
+            addButton(10, "GoldenSeed", buyItem,consumables.GLDSEED,sayLine(consumables.GLDSEED,"harpy"),onBuyString).hint("Buy a golden seed.");
+            addButton(11, "Gob.Ale", buyItem,consumables.GOB_ALE,sayLine(consumables.GOB_ALE,"goblin"),onBuyString).hint("Buy a flagon of potent goblin ale.");
+            addButton(12, "IncubiD", buyItem,consumables.INCUBID,sayLine(consumables.INCUBID,"incubus"),onBuyString).hint("Buy a flask of Incubi draft.");
+            addButton(13, "KangaFruit", buyItem,consumables.KANGAFT,sayLine(consumables.KANGAFT,"kangaroo"),onBuyString).hint("Buy a piece of kanga fruit.");
             addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
         function Tier2():void {
             menu();
-            addButton(0, "MouseCo", buyItem,consumables.MOUSECO,sayLine(consumables.MOUSECO,"mouse"),onBuyString).hint("Buy a handful of mouse cocoa.");
-            addButton(1, "MinoBlo", buyItem,consumables.MINOBLO,sayLine(consumables.MINOBLO,"bull"),onBuyString).hint("Buy a vial of Minotaur blood.");
-            addButton(2, "OrcMead", buyItem,consumables.ORCMEAD,sayLine(consumables.ORCMEAD,"orc"),onBuyString).hint("Buy a flagon of potent orc mead.");
-            addButton(3, "PigTruffle", buyItem,consumables.PIGTRUF,sayLine(consumables.PIGTRUF,"pig"),onBuyString).hint("Buy a pigtail truffle.");
-            addButton(4, "Reptilum", buyItem,consumables.REPTLUM,sayLine(consumables.REPTLUM,"lizan"),onBuyString).hint("Buy a vial of Reptilum.");
-            addButton(5, "RingFig", buyItem,consumables.RINGFIG,sayLine(consumables.RINGFIG,"raccoon"),onBuyString).hint("Buy a ringtail fig.");
-            addButton(6, "S.Gossr", buyItem,consumables.S_GOSSR,sayLine(consumables.S_GOSSR,"spider"),onBuyString).hint("Buy a bundle of pink, gossamer webbing.");
-            addButton(7, "SalamFW", buyItem,consumables.SALAMFW,sayLine(consumables.SALAMFW,"salamander"),onBuyString).hint("Buy a hip flask of Salamander Firewater.");
-            addButton(8, "Scorpinum", buyItem,consumables.SCORICO,sayLine(consumables.SCORICO,"scorpion"),onBuyString).hint("Buy a vial of Scorpinum.");
-            addButton(9, "Shark.T", buyItem,consumables.SHARK_T,sayLine(consumables.SHARK_T,"shark"),onBuyString).hint("Buy a sharp shark tooth.");
-            addButton(10, "SnakeOil", buyItem,consumables.SNAKOIL,sayLine(consumables.SNAKOIL,"snake"),onBuyString).hint("Buy a vial of snake oil.");
-            addButton(11, "SucMilk", buyItem,consumables.SUCMILK,sayLine(consumables.SUCMILK,"sucubus"),onBuyString).hint("Buy a bottle of Succubi milk.");
+            addButton(0, "La Bova", buyItem,consumables.LABOVA_,sayLine(consumables.LABOVA_,"cow"),onBuyString).hint("Buy a bottle containing a misty fluid labeled \"LaBova\".");
+            addButton(1, "MouseCo", buyItem,consumables.MOUSECO,sayLine(consumables.MOUSECO,"mouse"),onBuyString).hint("Buy a handful of mouse cocoa.");
+            addButton(2, "MinoBlo", buyItem,consumables.MINOBLO,sayLine(consumables.MINOBLO,"bull"),onBuyString).hint("Buy a vial of Minotaur blood.");
+            addButton(3, "OrcMead", buyItem,consumables.ORCMEAD,sayLine(consumables.ORCMEAD,"orc"),onBuyString).hint("Buy a flagon of potent orc mead.");
+            addButton(4, "PigTruffle", buyItem,consumables.PIGTRUF,sayLine(consumables.PIGTRUF,"pig"),onBuyString).hint("Buy a pigtail truffle.");
+            addButton(5, "Reptilum", buyItem,consumables.REPTLUM,sayLine(consumables.REPTLUM,"lizan"),onBuyString).hint("Buy a vial of Reptilum.");
+            addButton(6, "RingFig", buyItem,consumables.RINGFIG,sayLine(consumables.RINGFIG,"raccoon"),onBuyString).hint("Buy a ringtail fig.");
+            addButton(7, "S.Gossr", buyItem,consumables.S_GOSSR,sayLine(consumables.S_GOSSR,"spider"),onBuyString).hint("Buy a bundle of pink, gossamer webbing.");
+            addButton(8, "SalamFW", buyItem,consumables.SALAMFW,sayLine(consumables.SALAMFW,"salamander"),onBuyString).hint("Buy a hip flask of Salamander Firewater.");
+            addButton(9, "Scorpinum", buyItem,consumables.SCORICO,sayLine(consumables.SCORICO,"scorpion"),onBuyString).hint("Buy a vial of Scorpinum.");
+            addButton(10, "Shark.T", buyItem,consumables.SHARK_T,sayLine(consumables.SHARK_T,"shark"),onBuyString).hint("Buy a sharp shark tooth.");
+            addButton(11, "SnakeOil", buyItem,consumables.SNAKOIL,sayLine(consumables.SNAKOIL,"snake"),onBuyString).hint("Buy a vial of snake oil.");
+            addButton(12, "SucMilk", buyItem,consumables.SUCMILK,sayLine(consumables.SUCMILK,"sucubus"),onBuyString).hint("Buy a bottle of Succubi milk.");
             addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
 		function Tier3():void {
 			menu();
@@ -334,7 +429,7 @@ public class HeXinDao extends BaseContent
             addButton(2, "WetCloth", buyItem,consumables.WETCLTH,sayLine(consumables.WETCLTH,"goo"),onBuyString).hint("Buy a wet cloth dripping with slippery slime.");
             addButton(3, "YetiCum", buyItem,consumables.YETICUM,sayLine(consumables.YETICUM,"yeti"),onBuyString).hint("Buy a bottle of Yeti Cum.");
 			addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
 		}
         function Tier4():void {
             menu();
@@ -349,7 +444,7 @@ public class HeXinDao extends BaseContent
             addButton(8, "SkySeed", buyItem,consumables.SKYSEED,sayLine(consumables.SKYSEED,"avian"),onBuyString).hint("Buy a skyborn seed.");
             //addButton(9, "B.Gossr", BGossr).hint("Buy .");
             addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
         function Tier5():void {
             menu();
@@ -358,7 +453,7 @@ public class HeXinDao extends BaseContent
             addButton(2, "DrakeHeart", buyItem,consumables.DRAKHRT,sayLine(consumables.DRAKHRT,"dragon"),onBuyString).hint("Buy a drake's heart's flower.");
             addButton(4, "Hummus", buyItem,consumables.HUMMUS_,sayLine(consumables.HUMMUS_,"humanity"),onBuyString).hint("Buy a blob of cheesy-looking hummus.");
             addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
         function Tier6():void {
             menu();
@@ -369,7 +464,7 @@ public class HeXinDao extends BaseContent
             addButton(4, "Icicle", buyItem,consumables.ICICLE_,sayLine(consumables.ICICLE_,"ice shard"),onBuyString).hint("Buy an icicle.");
             addButton(5, "S.Delight", buyItem,consumables.SDELITE,sayLine(consumables.SDELITE,"Succubi's Delight"),onBuyString).hint("Buy a bottle of 'Succubi's Delight'.");
             addButton(14, "Back", mogahenmerchant);
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
         }
     }
 
@@ -412,8 +507,8 @@ public class HeXinDao extends BaseContent
             player.gems += 5*value;
             flags[kFLAGS.SPIRIT_STONES]-=value;
         }
-        statScreenRefresh();
-        doNext(exchangeGemsToSpiritStonesorReverse);
+        EngineCore.statScreenRefresh();
+        EngineCore.doNext(exchangeGemsToSpiritStonesorReverse);
 
     }
 
@@ -431,7 +526,7 @@ public class HeXinDao extends BaseContent
         outputText("\"<i>A single golem core. Still in good shape so that will be single spirit stone,</i>\" he states after examing core. Moment later after he went to put away core Moga gave you a single stone.");
         player.destroyItems(useables.GOLCORE, 1);
         flags[kFLAGS.SPIRIT_STONES]++;
-        doNext(sellItemsForSpiritStones);
+        EngineCore.doNext(sellItemsForSpiritStones);
     }
 
     public function sellFiveGolemCores():void {
@@ -439,14 +534,13 @@ public class HeXinDao extends BaseContent
         outputText("\"<i>Golem cores. Let me check...yes the all seems to be in decent shape,</i>\" after examination he walks away to return shortly. \"<i>Here your five stones for them.</i>\"");
         player.destroyItems(useables.GOLCORE, 5);
         flags[kFLAGS.SPIRIT_STONES] += 5;
-        doNext(sellItemsForSpiritStones);
+        EngineCore.doNext(sellItemsForSpiritStones);
     }
 
-    public function soulequipmentmerchant():void {
-        clearOutput();//później zamienić soulequipment na imie sprzedawczyni ^^ female siren npc
+    public function serenamerchant():void {
+        clearOutput();//Serena - female siren npc
         outputText("After entering the shop with a sign saying 'Equipment' over the doors you see a few shelves filled with various weapons, shields, armors and even more rare items like rings or necklaces. Behind the desk that looks like a central point of the shop you see a woman that seems to have mixed races traits. A shark face and a tail that sometimes show up on either side of the desk which is contrasting to its feather covered arms that are not looking at all like shark ones and more similar to bird wings.");
-        outputText("\n\n\"<i>Greeting dear customer.  Look around and if something catch your eyes let me know,</i>\" she say all that almost on one breath after noticing your near.");
-        outputText("\n\n<b>Spirit Stones: </b>" + flags[kFLAGS.SPIRIT_STONES] + "\n");
+        outputText("\n\n\"<i>Greeting dear customer. I'm Serena and this is my humble shop. Look around and if something catch your eyes let me know,</i>\" she say all that almost on one breath after noticing your near.");
         menu();
         addButton(1, "Shelf 1", soulequipmentshelf1);
         addButton(2, "Shelf 2", soulequipmentshelf2);
@@ -462,7 +556,7 @@ public class HeXinDao extends BaseContent
         addButton(10, necklaces.SMNECK.shortName, weaponBuy, necklaces.SMNECK);
         addButton(11, jewelries.SOULRNG.shortName, weaponBuy, jewelries.SOULRNG);
         addButton(14, "Back", riverislandVillageStuff);
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
     }
     public function soulequipmentshelf1():void {
         menu();
@@ -477,25 +571,25 @@ public class HeXinDao extends BaseContent
 		//addButton(9, Changdao
         addButton(10, weapons.FLYWHIS.shortName, weaponBuy, weapons.FLYWHIS);
         addButton(11, shields.MABRACE.shortName, weaponBuy, shields.MABRACE);
-        addButton(14, "Back", soulequipmentmerchant);
+        addButton(14, "Back", serenamerchant);
     }
     public function soulequipmentshelf2():void {
         menu();
         addButton(0, weapons.KATANA.shortName, weaponBuy, weapons.KATANA);
         addButton(1, weapons.NODACHI.shortName, weaponBuy, weapons.NODACHI);
-        addButton(2, weapons.OTETSU.shortName, weaponBuy, weapons.OTETSU);
-        addButton(3, weapons.RCLAYMO.shortName, weaponBuy, weapons.RCLAYMO);
-        addButton(4, weapons.SCLAYMO.shortName, weaponBuy, weapons.SCLAYMO);
-        addButton(5, weapons.RIBBON.shortName, weaponBuy, weapons.RIBBON);
-        addButton(6, weapons.S_GAUNT.shortName, weaponBuy, weapons.S_GAUNT);
-        addButton(7, weapons.CLAWS.shortName, weaponBuy, weapons.CLAWS);
-        addButton(8, weapons.TCLAYMO.shortName, weaponBuy, weapons.TCLAYMO);
-        addButton(9, weapons.ACLAYMO.shortName, weaponBuy, weapons.ACLAYMO);
-        addButton(10, weapons.WHIP.shortName, weaponBuy, weapons.WHIP);
-        addButton(11, weapons.PWHIP.shortName, weaponBuy, weapons.PWHIP);
-        addButton(12, weapons.ZWNDER.shortName, weaponBuy, weapons.ZWNDER);
-        addButton(13, weapons.PRURUMI.shortName, weaponBuy, weapons.PRURUMI);
-        addButton(14, "Back", soulequipmentmerchant);
+        addButton(2, weapons.RCLAYMO.shortName, weaponBuy, weapons.RCLAYMO);
+        addButton(3, weapons.SCLAYMO.shortName, weaponBuy, weapons.SCLAYMO);
+        addButton(4, weapons.RIBBON.shortName, weaponBuy, weapons.RIBBON);
+        addButton(5, weapons.S_GAUNT.shortName, weaponBuy, weapons.S_GAUNT);
+        addButton(6, weapons.CLAWS.shortName, weaponBuy, weapons.CLAWS);
+        addButton(7, weapons.TCLAYMO.shortName, weaponBuy, weapons.TCLAYMO);
+        addButton(8, weapons.ACLAYMO.shortName, weaponBuy, weapons.ACLAYMO);
+        addButton(9, weapons.WHIP.shortName, weaponBuy, weapons.WHIP);
+        addButton(10, weapons.PWHIP.shortName, weaponBuy, weapons.PWHIP);
+        addButton(11, weapons.ZWNDER.shortName, weaponBuy, weapons.ZWNDER);
+        addButton(12, weapons.PRURUMI.shortName, weaponBuy, weapons.PRURUMI);
+        addButton(13, weapons.CHAKRAM.shortName, weaponBuy, weapons.CHAKRAM);
+        addButton(14, "Back", serenamerchant);
     }
     public function soulequipmentshelf3():void {
         menu();
@@ -503,9 +597,15 @@ public class HeXinDao extends BaseContent
         //addButton(2, weapons.MACE.shortName, weaponBuy, weapons.MACE);//basic light armor made of soulmetal
         //addButton(0, weapons.MACE.shortName, weaponBuy, weapons.MACE);//basic heavy armor made of soulmetal
         //addButton(1, weapons.MACE.shortName, weaponBuy, weapons.MACE);//basic armor made of soulmetal that works with unhindered perk xD czyli coś ala bikini lub ogólnie tylko underwear z fragmentami zbroi lewitującymi wokół postaci i tylko w wypadku ataku wroga przesuwające sie aby przyjąć atak
-        addButton(10, consumables.W_STICK.shortName, weaponBuy, consumables.W_STICK);
-        addButton(11, consumables.BANGB_M.shortName, weaponBuy, consumables.BANGB_M);
-        addButton(14, "Back", soulequipmentmerchant);
+        if (player.level >= 6) addButton(5, consumables.BANGBM1.shortName, weaponBuy, consumables.BANGBM1);
+		else addButtonDisabled(5, "???", "Req. lvl 6+");
+        if (player.level >= 24) addButton(6, consumables.BANGBM2.shortName, weaponBuy, consumables.BANGBM2);
+        else addButtonDisabled(6, "???", "Req. lvl 24+");
+        if (player.level >= 42) addButton(7, consumables.BANGBM3.shortName, weaponBuy, consumables.BANGBM3);
+        else addButtonDisabled(7, "???", "Req. lvl 42+");
+        addButton(10, consumables.BANGB_M.shortName, weaponBuy, consumables.BANGB_M);
+        addButton(11, consumables.W_STICK.shortName, weaponBuy, consumables.W_STICK);
+        addButton(14, "Back", serenamerchant);
     }
 
     private function weaponBuy(itype:ItemType):void {
@@ -515,17 +615,17 @@ public class HeXinDao extends BaseContent
         if(flags[kFLAGS.SPIRIT_STONES] < itype.value / 10) {
             outputText("\n\nYou count out your spirit stones and realize it's beyond your price range.");
             //Goto shop main menu
-            doNext(soulequipmentmerchant);
+            EngineCore.doNext(serenamerchant);
             return;
         }
         else outputText("\n\nDo you buy it?\n\n");
         //Go to debit/update function or back to shop window
-        doYesNo(curry(debitWeapon,itype), soulequipmentmerchant);
+        doYesNo(curry(debitWeapon,itype), serenamerchant);
     }
     private function debitWeapon(itype:ItemType):void {
         flags[kFLAGS.SPIRIT_STONES] -= itype.value / 10;
-        statScreenRefresh();
-        inventory.takeItem(itype, soulequipmentmerchant);
+        EngineCore.statScreenRefresh();
+        inventory.takeItem(itype, serenamerchant);
     }
 	
 	public function entranceToRiverDungeon():void {
@@ -538,13 +638,13 @@ public class HeXinDao extends BaseContent
 			outputText("It seems those peoples won’t let you go in the cave without a teammate.\n\n");
 			flags[kFLAGS.NEISA_FOLLOWER] = 1;
 			outputText("You decide to play by the rules and go find another hero to team with. The problem is where to even look for?\n\n");
-			doNext(riverislandVillageStuff);
+			EngineCore.doNext(riverislandVillageStuff);
 		}
 		else {
 			outputText("Seeing as you come in pair the guards let you in thought with a final warning.\n\n");
 			outputText("\"<i>Try not to die down there a lot of people went in and never came back.</i>\"\n\n");
 			outputText("You will keep that in mind.\n\n");
-			doNext(riverdungeon.enterDungeon);
+			EngineCore.doNext(riverdungeon.enterDungeon);
 		}
 	}
 
@@ -561,15 +661,12 @@ public class HeXinDao extends BaseContent
         addButton(5, weaponsrange.LCROSBW.shortName, weaponrangeBuy, weaponsrange.LCROSBW);
         addButton(6, weaponsrange.HUXBOW_.shortName, weaponrangeBuy, weaponsrange.HUXBOW_);
         addButton(7, weaponsrange.HEXBOW_.shortName, weaponrangeBuy, weaponsrange.HEXBOW_);
-        addButton(10, weaponsrange.FLINTLK.shortName, weaponrangeBuy, weaponsrange.FLINTLK);
-        addButton(11, weaponsrange.BLUNDER.shortName, weaponrangeBuy, weaponsrange.BLUNDER);
-        addButton(12, weaponsrange.IVIARG_.shortName, weaponrangeBuy, weaponsrange.IVIARG_);
-		//addButton(4, weapons.MACE.shortName, weaponBuy, weapons.MACE);
+        //addButton(4, weapons.MACE.shortName, weaponBuy, weapons.MACE);
         //addButton(8, weapons.MACE.shortName, weaponBuy, weapons.MACE);//awl - wymagać bedzie możliwość lewitacji czy coś od PC aby to używać
         //addButton(9, weapons.MACE.shortName, weaponBuy, weapons.MACE);//bow made for soul cultivator xD
         addButton(13, "Training", ermaswiftarrowmerchantarcherytraining).hint("Archery training.");
         addButton(14, "Back", riverislandVillageStuff);
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
     }
 
     private function weaponrangeBuy(itype:ItemType):void {
@@ -579,7 +676,7 @@ public class HeXinDao extends BaseContent
         if(player.gems < itype.value) {
             outputText("\n\nYou count out your gems and realize it's beyond your price range.");
             //Goto shop main menu
-            doNext(ermaswiftarrowmerchant);
+            EngineCore.doNext(ermaswiftarrowmerchant);
             return;
         }
         else outputText("\n\nDo you buy it?\n\n");
@@ -588,7 +685,7 @@ public class HeXinDao extends BaseContent
     }
     private function debitWeaponRange(itype:ItemType):void {
         player.gems -= itype.value;
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         inventory.takeItem(itype, ermaswiftarrowmerchant);
     }
 	
@@ -606,17 +703,17 @@ public class HeXinDao extends BaseContent
 	}
 	public function ermaswiftarrowmerchantarcherytrainingNo():void {
 		outputText("\n\nYou were just asking you didn’t really plan on training right now though you might later on.");
-		doNext(ermaswiftarrowmerchant);
+		EngineCore.doNext(ermaswiftarrowmerchant);
 	}
 	public function ermaswiftarrowmerchantarcherytrainingYes():void {
 		if (player.statusEffectv1(StatusEffects.Kelt) > 99) {
 			outputText("\"<i>Need more training? Yea sure its 100 gems as usual paid up front.</i>\"");
-			doNext(ermaswiftarrowmerchant);
+			EngineCore.doNext(ermaswiftarrowmerchant);
 		}
 		else {
 			if (player.gems < 100) {
 				outputText("\n\nSadly you lack the gems for training right now.");
-				doNext(ermaswiftarrowmerchant);
+				EngineCore.doNext(ermaswiftarrowmerchant);
 			}
 			else {
 				player.gems -= 100;
@@ -624,7 +721,7 @@ public class HeXinDao extends BaseContent
 				if (!player.hasStatusEffect(StatusEffects.Kelt)) player.createStatusEffect(StatusEffects.Kelt, 10, 0, 0, 0);
 				else player.addStatusValue(StatusEffects.Kelt, 1, 10);
 				if (player.statusEffectv1(StatusEffects.Kelt) >= 100) player.changeStatusValue(StatusEffects.Kelt,1,100);
-				doNext(camp.returnToCampUseSixHours);
+				EngineCore.doNext(camp.returnToCampUseSixHours);
 			}
 		}
 	}
@@ -644,7 +741,7 @@ public function soularena():void {
 		addButton(2, "Challenge", soularenaChallenge).hint("Go to the section of soul arena for challenges. (Who knows what reward you may get after winning any of the challenges there...)");
 		if (flags[kFLAGS.IGNIS_ARENA_SEER] >= 1) addButton(10, "Ignis", ignisarenaseer.mainIgnisMenu);
 		addButton(14, "Back", riverislandVillageStuff);
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 }
 
@@ -694,9 +791,10 @@ public function soularena():void {
         //addButton(5, "Golemancer", arenaSelection,Jeniffer);
         //addButton(6, "AyotechManiac", arenaSelection,Jinx);
         //addButton(7, "MachoSalamander", arenaSelection,Syth);
-        //addButton(8, "MissSalamander", arenaSelection,Rangiku);
-        //addButton(9, "LvL 24 Gargoyle", arenaSelection,GargoyleBasic);
+        //addButton(8, "MissSalamander", arenaSelection,Asuka);
+        addButton(9, "LvL 24 Gargoyle", arenaSelection,GargoyleBasic);
         //if (flags[kFLAGS.CHI_CHI_AFFECTION] < 15) addButton(10, "Chi Chi", chichiScene.EnterOfTheChiChi);
+        //addButton(10, "MissOni", arenaSelection,Rangiku);
         addButton(11, "LvL 33 Golems", arenaSelection,GolemsBasic);
         addButton(12, "LvL 42 Golems", arenaSelection,GolemsImproved);
         addButton(13, "LvL 51 Golems", arenaSelection,GolemsAdvanced);
@@ -831,11 +929,11 @@ public function soularena():void {
     private function restaurant(selected:Boolean):void {
         if(!selected){
             outputText(" You aren’t hungry at the time maybe you will eat later.");
-            doNext(riverislandVillageStuff);
+            EngineCore.doNext(riverislandVillageStuff);
             return;
         } else if (flags[kFLAGS.SPIRIT_STONES] < 1){
             outputText(" You would like to eat but you don’t have enough spirit stones to afford the food.");
-            doNext(riverislandVillageStuff);
+            EngineCore.doNext(riverislandVillageStuff);
             return;
         }
         clearOutput();
@@ -922,8 +1020,8 @@ public function soularena():void {
         dynStats("tou", tempToughness);
         flags[kFLAGS.SPIRIT_STONES]--;
 		player.refillHunger(100);
-        statScreenRefresh();
-        doNext(camp.returnToCampUseOneHour);
+        EngineCore.statScreenRefresh();
+        EngineCore.doNext(camp.returnToCampUseOneHour);
     }
 }
 }

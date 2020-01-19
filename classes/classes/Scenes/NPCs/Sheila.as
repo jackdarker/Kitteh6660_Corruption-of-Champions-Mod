@@ -1,6 +1,7 @@
 package classes.Scenes.NPCs
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.BodyParts.LowerBody;
@@ -117,9 +118,7 @@ public class Sheila extends Monster
 				if(!hasStatusEffect(StatusEffects.TwuWuv)) {
 					createStatusEffect(StatusEffects.TwuWuv,0,0,0,0);
 					var counter:int = 40+rand(5);
-					showStatDown( 'inte' );
-					// inteDown.visible = true;
-					// inteUp.visible = false;
+					EngineCore.showUpDown();//showStatDown( 'inte' );
 					while(counter > 0) {
 						if(player.inte >= 2) {
 							player.inte--;
@@ -157,7 +156,7 @@ public class Sheila extends Monster
 			//Hit:
 			if(!player.getEvasionRoll()) {
 				outputText("It lands on target, and you're forced to close your eyes lest it get in them!");
-				player.createStatusEffect(StatusEffects.Blind,1,0,0,0);
+				if (!player.hasPerk(PerkLib.BlindImmunity)) player.createStatusEffect(StatusEffects.Blind,1,0,0,0);
 				player.createStatusEffect(StatusEffects.SheilaOil,0,0,0,0);
 			}
 			else {

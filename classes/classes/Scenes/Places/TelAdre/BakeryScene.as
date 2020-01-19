@@ -271,7 +271,7 @@ private function buyCocoa():void {
 	}
 	outputText("You pay ten gems for some cocoa.  ");
 	player.gems -= 10;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.MOUSECO, ingredientsMenu);
 }
 
@@ -286,7 +286,7 @@ private function buyFerretFruit():void {
 	}
 	outputText("You pay twenty gems for a single ferret fruit.  ");
 	player.gems -= 20;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.FRRTFRT, ingredientsMenu);
 }
 
@@ -300,7 +300,7 @@ private function buyFig():void {
 	}
 	outputText("You pay five gems for a fig.  ");
 	player.gems -= 5;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.RINGFIG, ingredientsMenu);
 }
 
@@ -314,7 +314,7 @@ private function buyRoot():void {
 	}
 	outputText("You pay fourteen gems for the root.  ");
 	player.gems -= 14;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	if (flags[kFLAGS.SHIFT_KEY_DOWN] == 1) {
 		consumables.RDRROOT.useItem();
 		doNext(ingredientsMenu);
@@ -368,7 +368,7 @@ public function nomnomnom(name:String,price:Number):void {
 		return;
 	}
 	player.gems -= flags[kFLAGS.TEMP_STORAGE_PASTRY_PRICE];
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	if(flags[kFLAGS.TEMP_STORAGE_PASTRY_NAME] == "eclair") {
 		outputText("You hand over 10 gems and ask for the 'special eclair'.  The centaur working the counter smirks ");
 		if(player.tallness <= 52) outputText("down ");
@@ -458,7 +458,7 @@ public function buySlutCake():void {
 	}
 	outputText("The minotaur chef emerges from the backroom bearing a box that contains your cupcake.  It's too big to scarf down immediately.\n\n");
 	player.gems -= 500;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.CCUPCAK, bakeryuuuuuu);
 }
 
@@ -472,7 +472,7 @@ private function buyFoxBerry():void {
 	}
 	outputText("You pay five gems for a fox berry.  ");
 	player.gems -= 5;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.FOXBERY, ingredientsMenu);
 }
 
@@ -485,7 +485,7 @@ private function buyHardBiscuits():void {
 	}
 	outputText("You pay five gems for a pack of hard biscuits.  ");
 	player.gems -= 5;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.H_BISCU, checkBakeryMenu);
 }
 
@@ -498,7 +498,7 @@ private function buyTrailMix():void {
 	}
 	outputText("You pay twenty gems for a pack of trail mix.  ");
 	player.gems -= 20;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.TRAILMX, checkBakeryMenu);
 }
 
@@ -511,7 +511,7 @@ private function buyHummus():void {
 	}
 	outputText("You pay twenty gems for a pack of hummus.  ");
 	player.gems -= 100;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	inventory.takeItem(consumables.HUMMUS_, checkBakeryMenu);
 }
 

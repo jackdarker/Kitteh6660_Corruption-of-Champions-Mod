@@ -44,7 +44,7 @@ public class SpiderMorphMob extends Monster
 						lust += 10 * lustVuln;
 					}
 				}
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 			}
 			kihaSPOIDAHAI();
 		}
@@ -88,7 +88,7 @@ public class SpiderMorphMob extends Monster
 		{
 			if (pcCameWorms){
 				outputText("\n\nThe spiders smile to one at another as they watch your display, then close in...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.kihaFollower.loseToSpiderMob();
 			}

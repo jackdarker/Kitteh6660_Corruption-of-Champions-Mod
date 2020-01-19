@@ -72,7 +72,7 @@ public class Harpy extends Monster
 		{
 			if (pcCameWorms) {
 				outputText("\n\nYour foe doesn't seem disgusted enough to leave...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.highMountains.harpyScene.harpyLossU();
 			}

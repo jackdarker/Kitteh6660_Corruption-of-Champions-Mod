@@ -125,6 +125,8 @@ public class MainMenu extends BaseContent {
 			outputText("\n\n<b>It's Valentine's!</b>");
 		if (isHalloween())
 			outputText("\n\n<b>It's Halloween!</b>");
+		if (SceneLib.alvinaFollower.isAlvinaBirthday())
+			outputText("\n\n<b>It's our lady and saviour Alvina Shadowmantle Birthday Month!</b>");
 		if (SceneLib.helFollower.isHeliaBirthday())
 			outputText("\n\n<b>It's Helia's Birthday Month!</b>");
 
@@ -147,7 +149,6 @@ public class MainMenu extends BaseContent {
 		outputText("<b>Game Mod Angels:</b>\n");
 		outputText("<ul>");
 		outputText("<li> Aimong</li>\n");
-		outputText("<li> Oxdeception</li>\n");
 		outputText("<li> Liadri</li>");
 		outputText("<li> Zavos/Zevos</li>");
 		outputText("<li> Xana</li>\n");
@@ -184,6 +185,13 @@ public class MainMenu extends BaseContent {
 		outputText("</ul>");
 		outputText("<b>Supplementary Events:</b>");
 		outputText("<ul>");
+		outputText("<li> Liadri (Etna, Manticore Venom (TF item), Black Ink - female scylla TF item, female scylla exclusive masturbation scene, texts and name for Mantis TF - Blade Grass, Kindra (writing part and some of ideas for few secenes), Archery Overhaul (main designer for it), various TF's: Yeti, Orca, Raiju, Manticore, Hinezumi, Alraune, Werewolf, Winter Wolf, Fenrir, Gargoyle, Cheshire Cat, Hellcat, Jabberwock, Cave Wyrm, Devil, Bicorn, Nightmare, Elf; Ceani the Orca girl, Electra the Raiju, Chi Chi the fire mouse, Luna the werewolf maid, Patchouli, Celess, Electra, Winter Wolf enemy, Sabbat event, Pinchou merchant and all items in her shop, Adventure Guild, ");
+		outputText("underwater sharkgirls sex scenes, Kaiba the tanuki merchant, Den of Desire dungeon, most of writing for 1st floor of River Dungeon, Erma archery training, Gaunlet 1 and 2, Jiangshi TF, part of Michiko)</li>");
+		outputText("<li> Zevos (Spider-silk shirt, Dragonscale vest, Eldritch Ribbon, Ascensus, Depravation, Puritas items, Ebonbloom crafting material and all items made from it, Ignis)</li>");
+		outputText("<li> Coalsack (Anzu the Avian Deity, Arian App desc, option to change his/her scales color)</li>");
+		outputText("<li> Lord Snakebite (part of Ghost TF rework)</li>");
+		outputText("<li> T0uchMe (part of Ghost TF rework)</li>");
+		outputText("<li> Apex (part of Michiko)</li>");
 		outputText("<li> Dxasmodeus (Tentacles, Worms, Giacomo)</li>");
 		outputText("<li> Kirbster (Christmas Bunny Trap)</li>");
 		outputText("<li> nRage (Kami the Christmas Roo)</li>");
@@ -273,9 +281,6 @@ public class MainMenu extends BaseContent {
 		outputText("<li> Gats, Shamblesworth, Symphonie, and Fenoxo (Corrupted Drider)</li>");
 		outputText("<li> Bagpuss (Female Thanksgiving Event, Harpy Scissoring, Drider Bondage Fuck)</li>");
 		outputText("<li> Frogapus (The Wild Hunt)</li>");
-		outputText("<li> Liadri (Etna, Manticore Venom (TF item), Black Ink - female scylla TF item, female scylla exclusive masturbation scene, texts and name for Mantis TF - Blade Grass, Kindra (writing part and some of ideas for few secenes), Archery Overhaul (main designer for it), various TF's: Yeti, Orca, Raiju, manticore; Ceani the Orca girl, Electra the Raiju, Chi Chi the fire mouse, Gargoyle TF, Adventure Guild)</li>");
-		outputText("<li> Zevos (Spider-silk shirt, Dragonscale vest, Eldritch Ribbon, Ascensus, Depravation, Puritas items, Ebonbloom crafting material and all items made from it, Ignis)</li>");
-		outputText("<li> Coalsack (Anzu the Avian Deity, Arian App desc, option to change his/her scales color)</li>");
 		outputText("<li> Fenoxo (Everything Else)</li>");
 		outputText("</ul>");
 		outputText("<b>Oviposition Update Credits - Names in Order Appearance in Oviposition Document</b>");
@@ -295,7 +300,7 @@ public class MainMenu extends BaseContent {
 		outputText("<li> Eliria (Bee Laying Eggs in Bunny-Girls)</li>");
 		outputText("<li> Gardeford (Helia x Bimbo Sophie Threesomes)</li>");
 		outputText("</ul>");
-		doNext(mainMenu);
+		EngineCore.doNext(mainMenu);
 	}
 
 //------------
@@ -315,7 +320,7 @@ public class MainMenu extends BaseContent {
 		else {
 			outputText("<b>No Image-Pack Found!</b>\n");
 		}
-		doNext(mainMenu);
+		EngineCore.doNext(mainMenu);
 	}
 
 //------------
@@ -329,7 +334,7 @@ public class MainMenu extends BaseContent {
 		outputText("<b>Combat:</b>\nCombat is won by raising an opponent's lust to maximum lust (usualy a little bit over 100) or taking their HP to 0.  You lose if your enemy does the same to you.  Loss isn't game over, but some losses will make it harder in the future by lowering your stats.  Beware.  Don't be afraid to spam the <b>Run</b> option when you're in over your head.\n\n");
 		outputText("<b>Controls:</b>\nThe game features numerous hot-keys to make playing quicker and easier.\nP key - Perks Menu\nD key - Data Menu\nA key - Appearance Screen\n1 Through 5 - The top row of 'choice' buttons.\n6 Through 0 - The bottom row of 'choice' buttons.\nQ through T - Alternative bottom 'choice' hotkeys.\nSpace Bar - Next/Back/Leave\nHome Key - Toggle text field background.\nS key - Stats Screen\n(Save Hotkeys - May not work in all players)\nF1-F5 - Quicksave to slot 1 through 5.  Only works when Data is visible.\nF6-F0 - Quick Load from slots 1-5.\n\n");
 		outputText("<b>Save often using the Data Menu</b> - you never know when your journey will come to an end!");
-		doNext(mainMenu);
+		EngineCore.doNext(mainMenu);
 	}
 
 

@@ -122,7 +122,7 @@ public function treeMenu(output:Boolean = true):void {
 			}
 		}
 		// [Fuck]		[Ride]		[Tentacle]	[Drink]		[HolliFruit]
-		// [MaraFruit]	[Guard		[]			[]			[Farm]
+		// [MaraFruit]	[Guard]		[]			[]			[Farm]
 		// []			[]			[]			[]			[Leave]
 		menu();
 		if(player.hasCock() && player.lust >= 33) {
@@ -504,6 +504,7 @@ private function rideTheWalrusP3():void {
 	player.orgasm();
 	dynStats("lib", 1, "sen", -5);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	if(flags[kFLAGS.FUCK_FLOWER_GROWTH_COUNTER] < 1000) flags[kFLAGS.FUCK_FLOWER_GROWTH_COUNTER] += 5;
     flags[kFLAGS.TIMES_RIDDEN_FLOWER]++;
     flags[kFLAGS.HOLLI_FUCKED_TODAY] = 1;
@@ -767,6 +768,7 @@ private function level4RideHollisTentacruels():void {
 	else outputText("you'll be walking bowlegged for a week!");
 	//empty lust, boost corruption, slimefeed(), +1 cor, -3 sens, +.5 libido
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("lib", .5, "sen", 2, "cor", 1);
 	fertilizeHolli(false);
@@ -1141,7 +1143,7 @@ internal function defeatHolli():void {
 				model.time.hours = 0;
 			}
 		}
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	//Win with Jojo -Z
 	else {
@@ -1156,7 +1158,7 @@ internal function defeatHolli():void {
 				model.time.hours = 0;
 			}
 		}
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 		//[(if no Vapula)]
 		if(!vapulaSlave()) {
 			outputText("\n\nThe monk nods to you.  With the demon gone, you could probably invite him to remain in camp - after all, you are quite a good team.  Do you offer to let Jojo stay?");

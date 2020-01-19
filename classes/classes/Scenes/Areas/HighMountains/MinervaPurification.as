@@ -629,7 +629,7 @@ public class MinervaPurification extends BaseContent
 					outputText("\n\nSoon the young herms gather around you, each presenting something to you. Some present to you food they caught themselves, some seem to have drawn a picture for you, one even holds up a particularly polished looking gem for you. Chuckling you rub each of them on their head and tell them what wonderful gifts they made and brought to you. Your eyes catch the sight of Minerva smiling brightly at you; it's clear she is very pleased and happy to see you with all your daughters.");
 					outputText("\n\nWanting a little time to be with Minerva you send your daughters off with a little pat on the rump and tell them to go and play in the spring, the young herms cheering and running off to play. you stretch and put your daughters presents into your bag before approaching Minerva and sliding your arms around her, your hands playfully grabbing her wide ample rear, your touch pulling a grin and a playful gentle slap from your siren lover. \"<i>Darling, the young ones are so near by... But, if you wanted some alone time, we could send them to play a little deeper in the tower so we could have some privacy...</i>\" She purrs.");
 					player.gems++;
-					statScreenRefresh();
+					EngineCore.statScreenRefresh();
 					break;
 				default:
 					outputText("<b>This text should not happen. Please let Ormael/Aimozg/Oxdeception know so he can fix it.</b>");

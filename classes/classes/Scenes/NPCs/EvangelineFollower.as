@@ -6,8 +6,24 @@ package classes.Scenes.NPCs
 	 */
 	
 	import classes.*;
+	import classes.BodyParts.Arms;
+	import classes.BodyParts.Eyes;
+	import classes.BodyParts.Face;
+	import classes.BodyParts.Horns;
+	import classes.BodyParts.LowerBody;
+	import classes.BodyParts.Tail;
 	import classes.GlobalFlags.kFLAGS;
 	import classes.Scenes.Monsters.Imp;
+	import classes.Items.Armor;
+	import classes.Items.ArmorLib;
+	import classes.Items.Shield;
+	import classes.Items.ShieldLib;
+	import classes.Items.Undergarment;
+	import classes.Items.UndergarmentLib;
+	import classes.Items.Weapon;
+	import classes.Items.WeaponLib;
+	import classes.Items.WeaponRange;
+	import classes.Items.WeaponRangeLib;
 	
 	public class EvangelineFollower extends NPCAwareContent
 	{	
@@ -128,7 +144,12 @@ public function meetEvangeline():void {
 	addButton(4, "Alchemy", evangelineAlchemyMenu).hint("Ask Evangeline to make some transformation item.");
 	if (flags[kFLAGS.EVANGELINE_AFFECTION] >= 5 && flags[kFLAGS.EVANGELINE_LVL_UP] >= 1) addButton(5, "Give Gems", LvLUp).hint("Give Evangeline some gems to cover her expenses on getting stronger.");
 	if (flags[kFLAGS.EVANGELINE_LVL_UP] >= 7) addButton(9, "Experiments", Experiments).hint("Check on what experiments Evangeline can work on.");//menu do eksperymentow alchemicznych jak tworzenie eksperymentalnych TF lub innych specialnych tworow evangeline typu specjalny bimbo liq lub tonik/coskolwiek nazwane wzmacniajace postacie do sparingu w obozie
-	if (player.hasKeyItem("Soul Gem Research") >= 0 && flags[kFLAGS.GARGOYLE_QUEST] >= 3) {
+	if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] == 2) addButton(12, "Jiangshi", curingJiangshi);
+	if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] == 3) {
+		if (player.hasItem(consumables.VITAL_T, 5) && player.hasItem(consumables.PPHILTR, 5)) addButton(12, "Jiangshi", curingJiangshi);
+		else addButtonDisabled(12, "Jiangshi", "Req. five vitality tinctures and five purity philters to fix your 'issue'.");
+	}
+	if (player.hasKeyItem("Soul Gem Research") >= 0) {
 		if (player.statusEffectv1(StatusEffects.SoulGemCrafting) == 0)  addButton(13, "Soul Gem", recivingCraftedSoulGem).hint("Pick up crafted Soul Gem.");
 		if (!player.hasStatusEffect(StatusEffects.SoulGemCrafting)) addButton(13, "Soul Gem", craftingSoulGem).hint("Ask Evangeline for crafting Soul Gem.");
 	}
@@ -181,7 +202,7 @@ private function TalkYourEyes():void {
 	evangelineAffection(1);
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 0) flags[kFLAGS.EVANGELINE_TALKS]++;
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 
 private function TalkDemons():void {
@@ -194,7 +215,7 @@ private function TalkDemons():void {
 	evangelineAffection(1);
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 1) flags[kFLAGS.EVANGELINE_TALKS]++;
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 
 private function TalkPastLife1():void {
@@ -211,7 +232,7 @@ private function TalkPastLife1():void {
 	evangelineAffection(1);
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 2) flags[kFLAGS.EVANGELINE_TALKS]++;
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 /*
 private function TalkPastLife2():void {
@@ -220,7 +241,7 @@ private function TalkPastLife2():void {
 	evangelineAffection(1);zajmie miejsce PastTalk1 w menu
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 0) flags[kFLAGS.EVANGELINE_TALKS]++;
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 
 private function TalkPastLife3():void {
@@ -229,7 +250,7 @@ private function TalkPastLife3():void {
 	evangelineAffection(1);zajmie miejsce PastTalk2 w menu
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 0) flags[kFLAGS.EVANGELINE_TALKS]++;//ustalić na jakiej wartości flagi bedzie sie pokazywać
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 
 private function TalkYourEyes():void {
@@ -238,7 +259,7 @@ private function TalkYourEyes():void {
 	evangelineAffection(1);
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 3) flags[kFLAGS.EVANGELINE_TALKS]++;//ustalić na jakiej wartości flagi bedzie sie pokazywać
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 
 private function TalkYourEyes():void {
@@ -247,7 +268,7 @@ private function TalkYourEyes():void {
 	evangelineAffection(1);
 	if (flags[kFLAGS.EVANGELINE_TALKS] == 4) flags[kFLAGS.EVANGELINE_TALKS]++;
 	doNext(evangelineTalkMenu);
-	cheatTime(1/4);
+	cheatTime2(15);
 }
 */
 private function evangelineSexMenu():void {
@@ -306,9 +327,9 @@ private function evangelineAlchemyMenu():void {
 	//addButton(5, "", ).hint(".");kitsune/salamander TF//Hybryd race TF
 	addButton(6, "Nocello Liq", MakingNocelloLiqueur).hint("Ask her to brew a special potion that could aid in becoming a phoenix. \n\nCost: 10 Gems \nNeeds 1 Golden Seed and 1 Salamander Firewater.");//Hybryd race TF
 	//addButton(7, "", ).hint(".");siren TF//Hybryd race TF
-	//addButton(8, "", ).hint(".");manticore TF//Hybryd race TF
+	addButton(8, "Storm Seed", MakingStormSeed).hint("Ask her to brew a special potion that could aid in becoming a thunderbird. \n\nCost: 10 Gems \nNeeds 1 Magically-enhanced Golden Seed and 1 Voltage topaz.");//Hybryd race TF
 	addButton(9, "Enigmanium", MakingEnigmaniumPotion).hint("Ask her to brew a special potion that could aid in becoming a sphinx. \n\nCost: 30 Gems \nNeeds 1 Centarium, 1 Golden Seed and 1 Whisker Fruit.");
-	addButton(10, "Alicornum", MakingAlicornumPotion).hint("Ask her to brew a special potion that could aid in becoming a unicorn. \n\nCost: 50 Gems \nNeeds 1 Unicornum and 4 Mid-grade Soulforce Recovery Pills.");//2nd stage Soul evolution race TF
+	addButton(10, "Alicornum", MakingAlicornumPotion).hint("Ask her to brew a special potion that could aid in becoming a unicorn. \n\nCost: 50 Gems \nNeeds 1 Unicornum and 20 Low-grade Soulforce Recovery Pills/2 bottles of Low-grade Soulforce Recovery Pills.");//2nd stage Soul evolution race TF
 	addButton(11, "Scylla Ink", MakingScyllaInkPotion).hint("Ask her to brew a special potion based on Black Ink.");
 	//addButton(12, "Abyssal Ink", ).hint("Ask her to brew a special potion based on Black Abbysal Ink.");
 	addButton(13, "InferWine", MakingInfernalWinePotion).hint("Ask her to brew a special potion that could aid in becoming a infernal goat/devil. \n\nCost: 480 Gems \nNeeds 1 Satyr Wine, 1 Succubi milk and 1 Incubi draft.");
@@ -445,6 +466,28 @@ private function MakingNocelloLiqueur():void {
 	cheatTime(1/6);
 }
 
+private function MakingStormSeed():void {
+	clearOutput();
+	if (player.gems < 10) {
+		outputText("\"<i>I'm sorry but you don't have the gems for this potion,</i>\" Evangeline says.");
+		doNext(evangelineAlchemyMenu);
+		return;
+	}
+	else if (!(player.hasItem(consumables.MAGSEED, 1) && player.hasItem(consumables.VOLTTOP, 1))) {
+		outputText("\"<i>I'm sorry but you don't have the materials I need. I need Magically-enhanced Golden Seed and Voltage topaz,</i>\" Evangeline says.");
+		doNext(evangelineAlchemyMenu);
+		return;
+	}
+	player.destroyItems(consumables.MAGSEED, 1);
+	player.destroyItems(consumables.VOLTTOP, 1);
+	player.gems -= 10;
+	statScreenRefresh();
+	outputText("You hand over one Magically-enhanced Golden Seed, one Voltage topaz and ten gems to Evangeline, which she gingerly takes them and proceeds to make potion for you.");
+	outputText("\n\nAfter a while, she hands you a magical seed that radiate a faint aura of static as if struck by lightning.  ");
+	inventory.takeItem(consumables.SRMSEED, evangelineAlchemyMenu);
+	cheatTime(1/6);
+}
+
 private function MakingEnigmaniumPotion():void {
 	clearOutput();
 	if (player.gems < 30) {
@@ -475,16 +518,24 @@ private function MakingAlicornumPotion():void {
 		doNext(evangelineAlchemyMenu);
 		return;
 	}
-	else if (!(player.hasItem(consumables.UNICORN, 1) && player.hasItem(consumables.MG_SFRP, 4))) {
+	else if (!(player.hasItem(consumables.UNICORN, 1) && (player.hasItem(consumables.LG_SFRP, 20) || (player.hasItem(consumables.LGSFRPB, 2))))) {
 		outputText("\"<i>I'm sorry but you don't have the materials I need. I need vial of Unicornum and four Mid-grade Soulforce Recovery Pills,</i>\" Evangeline says.");
 		doNext(evangelineAlchemyMenu);
 		return;
 	}
 	player.destroyItems(consumables.UNICORN, 1);
-	player.destroyItems(consumables.MG_SFRP, 4);
 	player.gems -= 50;
 	statScreenRefresh();
-	outputText("You hand over one vial of Unicornum, four Mid-grade Soulforce Recovery Pills and fifty gems to Evangeline, which she gingerly takes them and proceeds to make potion for you.");
+	outputText("You hand over one vial of Unicornum, ");
+	if (player.hasItem(consumables.LGSFRPB, 2)) {
+		outputText("two bottles of");
+		player.destroyItems(consumables.LGSFRPB, 2);
+	}
+	else {
+		outputText("twenty");
+		player.destroyItems(consumables.LG_SFRP, 20);
+	}
+	outputText(" Low-grade Soulforce Recovery Pills and fifty gems to Evangeline, which she gingerly takes them and proceeds to make potion for you.");
 	outputText("\n\nAfter a while, she hands you a vial labeled \"Alicornum\".  ");
 	inventory.takeItem(consumables.ALICORN, evangelineAlchemyMenu);
 	cheatTime(1/6);
@@ -704,6 +755,62 @@ private function JustDoIt():void {
 	doNext(camp.returnToCampUseOneHour);
 }
 
+private function curingJiangshi():void {
+	clearOutput();
+	if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] == 3) {
+		player.destroyItems(consumables.VITAL_T, 5);
+		player.destroyItems(consumables.PPHILTR, 5);
+		outputText("Evangeline nods as you bring her the ingredients, getting to work. As soon as the potion is finished she pours it over your cursed talisman, causing it to smoke and crumble. The first thing you do as the nasty thing peels off is head back to He’Xin’Dao and look for your gear. Thankfully it doesn't take you long to find it in a chest not to far from the table on which the crazy cat messed you up. Gosh, it feels good to be alive, like REALLY alive.\n\n");
+		if (player.weapon == WeaponLib.FISTS || flags[kFLAGS.AETHER_DEXTER_TWIN_AT_CAMP] == 2) {
+			player.setWeapon(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_WEAPON_ID]) as Weapon);
+		}
+		if (player.weaponRange == WeaponRangeLib.NOTHING) {
+			player.setWeaponRange(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_WEAPON_R_ID]) as WeaponRange);
+		}
+		if (player.shield == ShieldLib.NOTHING || flags[kFLAGS.AETHER_SINISTER_TWIN_AT_CAMP] == 2) {
+			player.setShield(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_SHIELD_ID]) as Shield);
+		}
+		if (player.armor == armors.TRADITC) {
+			player.setArmor(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_ARMOR_ID]) as Armor);
+		}
+		if (player.lowerGarment == UndergarmentLib.NOTHING) {
+			player.setUndergarment(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_UNDERWEAR_BOTTOM_ID]) as Undergarment, UndergarmentLib.TYPE_LOWERWEAR);
+		}
+		if (player.upperGarment == UndergarmentLib.NOTHING) {
+			player.setUndergarment(ItemType.lookupItem(flags[kFLAGS.PLAYER_DISARMED_UNDERWEAR_UPPER_ID]) as Undergarment, UndergarmentLib.TYPE_UPPERWEAR);
+		}
+		flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] = 0;
+		player.skinTone = "light";
+		player.faceType = Face.HUMAN;
+		player.eyes.type = Eyes.HUMAN;
+		player.horns.type = Horns.NONE;
+		player.horns.count = 0;
+		player.arms.type = Arms.HUMAN;
+		player.lowerBody = LowerBody.HUMAN;
+		player.removePerk(PerkLib.HaltedVitals);
+		player.removePerk(PerkLib.SuperStrength);
+		player.removePerk(PerkLib.PoisonNails);
+		player.removePerk(PerkLib.Rigidity);
+		player.removePerk(PerkLib.LifeLeech);
+		player.removePerk(PerkLib.Undeath);
+		player.removePerk(PerkLib.EnergyDependent);
+		player.removeStatusEffect(StatusEffects.EnergyDependent);
+		outputText("Done with this place you head back to camp.\n\n");
+		outputText("<b>(Lost Perks: Halted vitals, Super strength, Poison nails, Rigidity, Life leech, Undeath, Energy dependent)</b>\n\n");
+		flags[kFLAGS.CURSE_OF_THE_JIANGSHI]++;
+		doNext(camp.returnToCampUseTwoHours);
+	}
+	else {
+		outputText("Evangeline barely turns to look at you before jumping in surprise.\n\n");
+		outputText("\"<i>Oh god just what happened to you [name]! There is a clear obvious issue with your vitality.</i>\"\n\n");
+		outputText("You explain your situation to her somewhat.\n\n");
+		outputText("\"<i>Look, I will need five vitality tinctures and five purity philters to fix this up, how you get the two is up you you.</i>\"\n\n");
+		flags[kFLAGS.CURSE_OF_THE_JIANGSHI]++;
+		doNext(camp.campFollowers);
+		cheatTime2(15);
+	}
+}
+
 private function craftingSoulGem():void {
 	clearOutput();
 	outputText("\"<i>Wait, you want me to craft a soul gem!? What do you even intend to do with it? These things are used to capture and hold souls!</i>\"\n\n");
@@ -714,7 +821,7 @@ private function craftingSoulGem():void {
 		player.gems -= 2000;
 		statScreenRefresh();
 		outputText("\"<i>I hope you know what you're doing. Hand me the recipe and materials, and I will get to work.</i>\"");
-		player.createStatusEffect(StatusEffects.SoulGemCrafting,120,0,0,0);
+		player.createStatusEffect(StatusEffects.SoulGemCrafting,24,0,0,0);
 		doNext(camp.returnToCampUseOneHour);
 	}
 	else {

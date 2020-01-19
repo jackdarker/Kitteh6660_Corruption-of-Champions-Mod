@@ -1,6 +1,7 @@
 package classes.Scenes.NPCs 
 {
 import classes.BaseContent;
+import classes.EngineCore;
 import classes.CoC;
 import classes.CoC;
 
@@ -87,7 +88,7 @@ import coc.xxc.BoundStory;
 		public function scene(ref:String,locals:*=null,next:Function=null):void{
 			clearOutput();
 			display(ref,locals);
-			doNext(next!=null?next:camp.returnToCampUseOneHour);
+			EngineCore.doNext(next!=null?next:camp.returnToCampUseOneHour);
 		}
     }
 }

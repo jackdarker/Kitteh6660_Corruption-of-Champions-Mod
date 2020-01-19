@@ -9,6 +9,7 @@ import classes.GlobalFlags.kFLAGS;
 import classes.Items.Armors.LustyMaidensArmor;
 import classes.Items.Weapon;
 import classes.Scenes.Areas.Ocean.SeaAnemone;
+import classes.Scenes.UniqueSexScenes;
 
 public class AnemoneScene extends BaseContent implements TimeAwareInterface
 	{
@@ -54,6 +55,8 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 		//  KID_SITTER:int = 757; //0 = no sitter, 1 = possible, 2 = doing dat shit
 		//  HAD_KID_A_DREAM:int = 758;
 
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
+		
 		public function AnemoneScene()
 		{
 			EventParser.timeAwareClassAdd(this);
@@ -95,7 +98,8 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 
 		private function anemonePreg():void
 		{
-			player.knockUp(PregnancyStore.PREGNANCY_ANEMONE, PregnancyStore.INCUBATION_ANEMONE, 101);
+			if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+            else player.knockUp(PregnancyStore.PREGNANCY_ANEMONE, PregnancyStore.INCUBATION_ANEMONE, 101);
 		}
 
 		public function kidAXP(diff:Number = 0):Number
@@ -178,9 +182,11 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				if (player.cockTotal() > 0) cockRape = rapeAnemoneWithDick;
 				if (player.hasVagina()) vaginaRape = rapeAnemoneWithPussy;
 				var bikiniTits:Function =null;
+				var temp3:Function =null;
 				if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armor is LustyMaidensArmor) bikiniTits = (player.armor as LustyMaidensArmor).lustyMaidenPaizuri;
+				if (player.pcCanUseUniqueSexScene()) temp3 = uniquuuesexscene.pcUniqueSexScenesChoiceMenu;
 				choices("Your Ass", victoryButtholeRape, "Your Cock", cockRape, "Your Vagina", vaginaRape, "Her Butt", anal, "Lay Egg", eggs,
-					"", null, "", null, "", null, "B.Titfuck", bikiniTits, "Leave", cleanupAfterCombat);
+					"", null, "", null, "B.Titfuck", bikiniTits, "U. Sex Scenes", temp3, "Leave", cleanupAfterCombat);
 			}
 			else cleanupAfterCombat();
 		}
@@ -227,6 +233,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			else if (player.hasVagina()) outputText("another ");
 			outputText(" giggle from the blue girl.  Standing up, you gather your gear and blow her a kiss before you leave.  She darkens in color, her camouflage reflex causing her to 'blush' in discomfort at this display of affection.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			//(pass 1 hour, reduce lust to min)
 			player.orgasm();
 			cleanupAfterCombat();
@@ -410,6 +417,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			//(reduce lust to min, pregnancy check)
 			//(pass 1 hour, reset lust to min or min+10 if big or greater skeet)
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			player.orgasm();
 			cleanupAfterCombat();
 		}
@@ -625,6 +633,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				outputText("The anemone releases your hand and transfers hers to your other hip just as the last of your willpower evaporates; you begin bucking your hips up and down her twitching blue shaft, painting the walls of your pussy with her venom like a mad virtuoso.  As the spasms in your " + vaginaDescript(0) + " ebb and flow with each new orgasm, the anemone's cool affectation changes to a mask of faltering determination, matching her attempt to hold out as long as possible while your demented pussy does its best to wring her dry.  From the looks on your faces it's unclear now who was intending to ravish whom!  Eventually the poor girl can take no more of it and her pulsing dick, swollen almost an inch more than when it went in with frenzied tentacles whipping this way and that, twitches and unleashes the first jet of her semen.  Her ejaculate is actually colder than your venom-teased cunt by a significant amount, creating a sharply-felt contrast as she shoots several more strings against the walls of your " + vaginaDescript(0) + " and the mouth of your womb.  The dichotomy couples with the satisfaction of finally getting what your pussy wanted to trigger the biggest orgasm yet and the gobsmacked anemone's jaw practically falls off her face as your " + vaginaDescript(0) + " squeezes faster than ever on her sensitive dick right after her own climax.\n\n");
 				outputText("After several minutes of this final orgasm you fall backwards into the shallow water with a splash and pass out with a look of bliss, floating on a surface made choppy by your hectic ride.  The poor anemone takes a while longer to collect herself, then slowly pulls her limp dick out of your " + vaginaDescript(0) + " and tugs you up the beach past the tideline so you won't roll facedown in the water while you're unconscious.  She bends down and kisses you, tracing your " + nippleDescript(0) + "; too spent to hold up her hair, it drapes over your prone form as she leans and releases a last shot of her drug to ensure that your dreams will be of her.");
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+				if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 				anemonePreg();
 				//(reduce lust to min, add 10 lust, pregnancy check)
 				player.orgasm();
@@ -706,7 +715,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				simpleChoices("Your ass", victoryButtholeRape, "Your Cock", cockRape, "Your Vagina", vaginaRape, "", null, "Leave", camp.returnToCampUseOneHour);
 				return;
 			}
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 //anal
@@ -1127,7 +1136,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			outputText("\n\nUpon reaching your destination, you dump the contents of the anemone's erstwhile apartment into the babbling brook, then point down-current toward the lake and set your jaw.  Glancing at your stony demeanor, the blue girl steps into the water, moistens her gills, and then begins the long trek to her ancestral home.");
 			//(set Kidswag to -1)
 			flags[kFLAGS.ANEMONE_KID] = -1;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 
 //[no, bonsai anemone is awesome and fuck the haters]
@@ -1146,7 +1155,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			outputText("\n\n(<b>Kid A can be found in your \"Stash\"!</b>)");
 			//set Kidswag flag to 1
 			flags[kFLAGS.ANEMONE_KID] = 1;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 
 
@@ -1290,7 +1299,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			//(set Kidweapon to item name, remove from inventory)
 			flags[kFLAGS.ANEMONE_WEAPON_ID] = player.itemSlots[slot].itype.id;
 			player.itemSlots[slot].removeOneItem();
-			doNext(approachAnemoneBarrel);
+			EngineCore.doNext(approachAnemoneBarrel);
 		}
 
 //[Take Weapon]
@@ -1329,7 +1338,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 					flags[kFLAGS.ANEMONE_WATCH] = 1;
 				}
 			}
-			doNext(approachAnemoneBarrel);
+			EngineCore.doNext(approachAnemoneBarrel);
 		}
 
 //[Tutor](only appears if Kid A is armed and present)
@@ -1339,7 +1348,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			//(if lust > 99, output)
 			if (player.lust >= player.maxLust()) {
 				outputText("You're way too horny to focus on any sort of weapon instruction right now, and the anemone can see it in your expression as your gaze wanders over her body; she blushes a deep blue and shrinks into her barrel with a shy glance.");
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 				return;
 			}
 			outputText("The anemone obediently climbs out of her barrel, ");
@@ -1557,7 +1566,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				outputText("\nYour bleary eyes open to a familiar-looking upside-down blue face.  It takes a minute before your brain can reconstruct the events preceding your lapse in consciousness; as soon as your expression gives a hint of understanding, Kid A sheepishly greets you.");
 				outputText("\n\n\"<i>Um... hi.</i>\"");
 				//(lose 8 hours, restore HP amount consonant with 8hrs rest)
-				doNext(camp.returnToCampUseEightHours);
+				EngineCore.doNext(camp.returnToCampUseEightHours);
 				player.createStatusEffect(StatusEffects.PostAnemoneBeatdown, 0, 0, 0, 0);
 				return;
 			}
@@ -1574,14 +1583,14 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 
 					outputText("\n\nAppearing to reach a decision, she reaches out and pats you apologetically on the head, then stands up and heads back to her barrel.");
 					//no effect on lust, pass 1 hour
-					doNext(camp.returnToCampUseOneHour);
+					EngineCore.doNext(camp.returnToCampUseOneHour);
 				}
 			}
 			//else if no HP or lust outcome triggered: pass 1 hour, gain 40 xp, increment fatigue by 10
 			else {
 				if (player.level < 10) player.XP += 30;
 				fatigue(10);
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 
@@ -1622,7 +1631,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				player.orgasm();
 				dynStats("lus", 30);
 				if (flags[kFLAGS.ANEMONE_KID] < 3) flags[kFLAGS.ANEMONE_KID] = 3;
-				doNext(camp.returnToCampUseTwoHours);
+				EngineCore.doNext(camp.returnToCampUseTwoHours);
 				return true;
 			}
 			//sex revisited, for when KidXP >= 40 and confidence is mounting
@@ -1705,7 +1714,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				//lose 100 lust, pass 2 hr, if Kidswag = 1, set Kidswag = 2
 				player.orgasm();
 				if (flags[kFLAGS.ANEMONE_KID] == 1) flags[kFLAGS.ANEMONE_KID] = 2;
-				doNext(camp.returnToCampUseTwoHours);
+				EngineCore.doNext(camp.returnToCampUseTwoHours);
 				return true;
 			}
 			//femsex
@@ -1734,7 +1743,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				player.slimeFeed();
 				player.orgasm();
 				if (flags[kFLAGS.ANEMONE_KID] == 1) flags[kFLAGS.ANEMONE_KID] = 2;
-				doNext(camp.returnToCampUseEightHours);
+				EngineCore.doNext(camp.returnToCampUseEightHours);
 				return true;
 			}
 			return false;
@@ -1763,7 +1772,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			outputText("\n\nThe two girls continue to greet each other in this fashion as their attention shifts away from you, and you wonder exactly what kind of pernicious meme you've inflicted on the anemone community.");
 			//set Kidswag to -1, pass 1 hour
 			flags[kFLAGS.ANEMONE_KID] = -1;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 //dreams: possible once KidXP >= 40; function as visible notice of sex-readiness
@@ -1806,7 +1815,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 				outputText("  Sighing, you turn over and attempt to return to sleep despite the pervading smell of semen.");
 			}
 			dynStats("lus", 50 + player.sens / 2, "scale", false);
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 
 //Kid-and-kid interaction scenes:
@@ -1873,7 +1882,7 @@ public class AnemoneScene extends BaseContent implements TimeAwareInterface
 			}
 			//(else)
 			else outputText("\n\nThe anemone doesn't hesitate, but bursts into the middle of the shark-girls like a bomb, shrieking and making huge splashes, scattering them in multiple directions.  She quickly scoops up both skins' worth of water and then runs, giggling giddily with the shark-girls dogging her heels until she's halfway back to camp.");
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 

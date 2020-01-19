@@ -14,7 +14,7 @@ package classes.Scenes.Camp
 		{	//flags[kFLAGS.ALRAUNE_GROWING] == 15 - 2 weeks old children
 		}	//flags[kFLAGS.ALRAUNE_GROWING] == 22 - 3 weeks old children
 
-public function manageuyourgarden():void
+public function manageyourgarden():void
 {
 	clearOutput();
 	outputText("Your daughters are busy bickering about whose the most beautiful flower of them all.\n\n");
@@ -30,7 +30,7 @@ public function wateryourgarden():void
 	outputText("You water your sprouts, making sure they don’t lack anything. This includes spending a little time ensuring no weeds get so much as half a chance to encroach on your private garden.\n\n");
 	flags[kFLAGS.ALRAUNE_DAILY_WATERING] = 1;
 	if (flags[kFLAGS.ALRAUNE_GROWING] < 22) flags[kFLAGS.ALRAUNE_GROWING]++;
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 public function playwithyourplantdaughters():void
@@ -39,7 +39,7 @@ public function playwithyourplantdaughters():void
 	outputText("You decide to set some time aside to play with your sprouts. You tell them as much while you pull water toys you bought in Tel'Adre out of your pack. The happiness on their little faces warms your heart.\n\n");
 	outputText("\"<i>Wow, really mom? You are the best!</i>\"\n\n");
 	outputText("Your daughters all cheer up as they pick up the toys and rush to the rivers to fill them up. Soon you’re all splashing each other. The experience is refreshing and soothing. You never thought you would appreciate having children this much. Perhaps parenting comes included in the whole “being a child of a fertility goddess” deal, you ponder, before being splashed in the face by one of your daughters, breaking you out of your reverie, and dragging you back into the game.\n\n");
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 public function playsRathazulAndSoulgemScene():void
@@ -51,7 +51,7 @@ public function playsRathazulAndSoulgemScene():void
 	outputText("Losing her humanity likely didn't do any good to her already fragile sanity. None can say  what you will find.</i>\"\n\n");
 	outputText("You thank Rathazul for telling you this as this might just be the information you need.");
 	flags[kFLAGS.DEN_OF_DESIRE_QUEST] = 1;
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 public function droppingToZeroSatietyAsGargoyle():void
@@ -59,7 +59,7 @@ public function droppingToZeroSatietyAsGargoyle():void
 	clearOutput();
 	if (player.hasPerk(PerkLib.GargoylePure)) {
 		outputText("Unable to sustain your movement longer you are forced into an emergency rest. And only wake up a few hours later after absorbing enough energy to regain movement.\n\n");
-		doNext(camp.returnToCampUseEightHours);
+		EngineCore.doNext(camp.returnToCampUseEightHours);
 	}
 	else {
 		outputText("Unable to sustain your movement longer you are unable to maintain control, you need sex NOW!\n\n");
@@ -107,8 +107,16 @@ public function droppingToZeroSatietyAsGargoyle():void
 			outputText("You pick yourself back up, jerking yourself slowly as cum dribbles from your " + cockDescript(x) + " onto the collapsed body of the goblin.  It'll be awhile before she comes back to consciousness, but you're certain she'll have a better appreciation for sex when she does.");
 		}
 		player.refillGargoyleHunger(30);
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
+}
+
+public function badendManticoreOuroboros():void {
+	clearOutput();
+	outputText("You eye your penis then your tail pussy then back at your penis. The smell of precum dripping from your maleness.. it drives you insane with desire.");
+	outputText("\n\nWithout thinking any further you curl your tail between your legs and plug it to your own twitching cock. The pleasure is instantaneous as you instinctively sting yourself and start cuming nonstop into your tail. Your legs twitches and spasms making you fall to the ground on short notice. Your brain begins to melt as your thoughts shrinks to cuming and feeding, your own fluids fueling you with the endless supply of stamina needed to never stop cuming.");
+	outputText("\n\nGuess this is what you get for messing around with designs known only to mother nature. Even if you tried to stop now you wouldn't be able to as you tail instinctively tries to milk your dick to a last drop that will never come. Unable to form coherent thought anymore you become a creature of pure basest instinct. Month and year will pass before ultimately you die out of old age having long lost the ability to process rational thought.");
+	EventParser.gameOver();
 }
 
 	}

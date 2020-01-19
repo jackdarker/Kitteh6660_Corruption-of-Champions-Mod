@@ -91,7 +91,7 @@ public class EngineCore {
             }
         }
         CoC.instance.player.dynStats("lust", 0, "scale", false); //Workaround to showing the arrow.
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         return CoC.instance.player.HP - before;
     }
 
@@ -149,7 +149,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         return CoC.instance.player.soulforce - before;
     }
 
@@ -188,7 +188,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         return CoC.instance.player.mana - before;
     }
 
@@ -227,7 +227,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         return CoC.instance.player.wrath - before;
     }
 
@@ -834,7 +834,8 @@ public class EngineCore {
             return;
         }
         //trace("DoNext have item:", eventNo);
-        //choices("Next", event, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0);
+		if (_needsStatScreenUpdate) statScreenRefresh();
+		if (_needsUpDownUpdate) showUpDown();
         menu();
         addButton(0, "Next", event);
     }
@@ -842,7 +843,17 @@ public class EngineCore {
     public static function invertGo():void {
         CoC.instance.mainView.invert();
     }
-
+	private static var _needsStatScreenUpdate:Boolean;
+	/**
+	 * Used to update the display of statistics
+	 * @param	immediate	:	if false the update will be delayed until next turn is started (to improve performance)
+	 */
+	public static function needsStatScreenRefresh(immediate:Boolean):void {	//Todo do UI update only after turn complete
+		if (immediate)
+			statScreenRefresh()
+		else
+			_needsStatScreenUpdate = true;
+	}
     /**
      * Used to update the display of statistics
      */
@@ -856,6 +867,7 @@ public class EngineCore {
         } else {
             CoC.instance.mainView.monsterStatsView.hide();
         }
+		_needsStatScreenUpdate = false;
         Utils.End("engineCore", "statScreenRefresh");
     }
 
@@ -975,6 +987,14 @@ public class EngineCore {
         doNext(EventParser.playerMenu);
     }
 
+	private static var _needsUpDownUpdate:Boolean;
+	public static function needsUpDownRefresh(immediate:Boolean):void { 
+		if (immediate) 
+			showUpDown();
+		else
+			_needsUpDownUpdate = true;
+	}
+    
     public static function showUpDown():void { //Moved from StatsView.
         Utils.Begin("engineCore", "showUpDown");
 
@@ -985,9 +1005,6 @@ public class EngineCore {
         var statName:String,
                 oldStatName:String,
                 allStats:Array;
-
-//	CoC.instance.mainView.statsView.upDownsContainer.visible = true;
-
         allStats = ["str", "tou", "spe", "inte", "wis", "lib", "sens", "cor", "HP", "lust", "wrath", "fatigue", "mana", "soulforce", "hunger"];
 
         for each(statName in allStats) {
@@ -1000,6 +1017,7 @@ public class EngineCore {
                 CoC.instance.mainView.statsView.showStatDown(statName);
             }
         }
+		_needsUpDownUpdate = false;
         Utils.End("engineCore", "showUpDown");
     }
 

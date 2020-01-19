@@ -63,7 +63,7 @@ use namespace CoC;
 			}
 			outputText("\n\n\"<i>There haven't been many humans in Mareth, especially since the demons took over, so it’s likely that you are the first to make it here in a long time. If you seek salvation, I’m afraid the temple will not provide any, as the gods and their powers have long since left their altars. As for who I am, my name is Sapphire. I am the last guardian of this sacred ground, and the last line of defense against the fiends that desecrate this land.</i>\"");
 			outputText("\n\nHer name seems to be somewhat appropriate, her eyes glowing with a faint, azure hue. As you ponder these details, the gargoyle turns her back to you, taking flight towards one of the pillars in the room.\n\n\"<i>You are welcome to visit this place as often as you see fit. However, I will be watching you.</i>\"\n\n<b>You can now visit the Temple of the Divines!</b>");
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function repeatvisitintro():void {
@@ -113,7 +113,7 @@ use namespace CoC;
 			}
 			else {
 				outputText("You attempt a prayer to a god of Mareth. Sadly, if this place ever housed the god’s divine power, its ruined state no longer can contain it. It seems you will get no benefit from praying here until you repair the altars, with the god simply unable to contact you while the building is in this sinful state.\n\n");
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		private function anyOfAltairsRepaired():Boolean {
@@ -177,7 +177,7 @@ use namespace CoC;
 			purifyingPower += 10;
 			if (player.statusEffectv3(StatusEffects.TempleOfTheDivineTracker) == 2) purifyingPower += 5;
 			dynStats("cor", -purifyingPower);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		public function PlayerPrayAtTempleTaothAltair():void {
 			clearOutput();
@@ -197,8 +197,8 @@ use namespace CoC;
 			player.spe += player.statusEffectv2(StatusEffects.BlessingOfDivineTaoth);
 			if (player.HP < player.maxHP()) player.HP = player.maxHP();
 			dynStats("cor", -10);
-			statScreenRefresh();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.statScreenRefresh();
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		public function PlayerPrayAtTempleFenrirAltair():void {
 			clearOutput();
@@ -226,8 +226,8 @@ use namespace CoC;
 			player.tou += player.statusEffectv3(StatusEffects.BlessingOfDivineFenrir);
 			if (player.HP < player.maxHP()) player.HP = player.maxHP();
 			dynStats("cor", -10);
-			statScreenRefresh();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.statScreenRefresh();
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		public function PlayerPrayAtTempleFeraAltair():void {
 			clearOutput();
@@ -239,7 +239,7 @@ use namespace CoC;
 			player.createStatusEffect(StatusEffects.BlessingOfDivineFera, 169, 0, 0, 0);
 			if (player.HP < player.maxHP()) player.HP = player.maxHP();
 			dynStats("cor", 10);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		public function PlayerPrayAtTemple__Altair():void {
 			clearOutput();
@@ -249,7 +249,7 @@ use namespace CoC;
 			loosingFenrirBlessing();
 			loosingFeraBlessing();
 			outputText("<b>You gained the Blessing of Divine Agency - __ for 7 days</b>");
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function TempleAltairsRebuildMenu():void {
@@ -278,7 +278,7 @@ use namespace CoC;
 				clearOutput();
 				outputText("You take your time to look the place over. After a few moments, you conclude that, while restoring it back to its former glory isn't impossible, it will be a long and arduous task. To make it back into the temple it was in its glory days, you estimate that you will need to repair the altars, all of the stone statues including the one depicting Marae, and the benches which should then make the temple fully functional again as a place of worship.");
 				flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS]++;
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		public function rebuildGodsAltairs():void {
@@ -308,28 +308,28 @@ use namespace CoC;
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 50;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_MARAE] = 1;
 			if (flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS] < 3) flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS]++;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		public function rebuildTaothAltair():void {
 			clearOutput();
 			outputText("You work for 8 hours, sculpting stone and repairing the altar of Taoth. By the time you're done you can feel divine power amass around it anew.");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 50;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_TAOTH] = 1;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		public function rebuildFenrirAltair():void {
 			clearOutput();
 			outputText("You work for 8 hours, sculpting stone and repairing the altar of Fenrir. By the time you're done you can feel a cold chilling aura amass around it. Was that really such a good idea?");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 50;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_FENRIR] = 1;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		public function rebuildFeraAltair():void {
 			clearOutput();
 			outputText("You work for the entire day sculpting stone and repairing the altar of Fera. By the time you're done you can feel divine power albeit tainted amass around it anew.");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 100;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_FERA] = 1;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}/*
 		public function rebuild__Altair():void {
 			clearOutput();
@@ -344,14 +344,14 @@ use namespace CoC;
 			else outputText("You work for the entire day sculpting stone and repairing the statue of Marae. By the time you're done you can feel divine power radiate from it empowering the entire temple.");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 150;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS]++;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		public function repairGargoylesOnTheWalls():void {
 			clearOutput();
 			outputText("You work for the entire day sculpting stone. By the time you're done a set of well carved statue decorate the walls again.");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 500;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS]++;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		public function makeNewPrayerBenches():void {
 			clearOutput();
@@ -361,7 +361,7 @@ use namespace CoC;
 			flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 50;
 			flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 10;
 			flags[kFLAGS.TEMPLE_OF_THE_DIVINE_PROGRESS]++;
-			doNext(camp.returnToCampUseEightHours);
+			EngineCore.doNext(camp.returnToCampUseEightHours);
 		}
 		
 		public function currentStateOfTemple():void {
@@ -1055,7 +1055,10 @@ use namespace CoC;
 			outputText("Should the sacrifice still be alive, it’s physical body will likely die as its soul is sucked into your creation. There is no turning back once it's done, so make sure the subject is ready physically and psychologically to welcome the change. Stand facing the statue but on the opposite side of the central altar and recite the following arcane word in order to proceed to the transfer.\n\n");
 			outputText("Shira Khrim Almisry Ohm Ak Tar Marae Kann Tharr Shul Elysro An Siryr Ahn Ekatyr Evenar Sethe Omaris.\n\n");
 			outputText("You think you could use this information to perhaps turn yourself into a living weapon in order to defeat the demons with relative ease. The question you should ask yourself however is... is this really what you want?");
-			if (flags[kFLAGS.GARGOYLE_QUEST] == 1) flags[kFLAGS.GARGOYLE_QUEST]++;
+			if (flags[kFLAGS.GARGOYLE_QUEST] == 1) {
+				if (player.hasKeyItem("Soul Gem Research") >= 0) flags[kFLAGS.GARGOYLE_QUEST] = 3;
+				flags[kFLAGS.GARGOYLE_QUEST]++;
+			}
 			doNext(templeBasement);
 		}
 		
@@ -1725,6 +1728,18 @@ use namespace CoC;
 				player.removePerk(PerkLib.CatlikeNimblenessEvolved);
 				player.perkPoints += 1;
 			}
+			if (player.hasPerk(PerkLib.CaveWyrmLungs)) {
+				player.removePerk(PerkLib.HinezumiBurningBlood);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.CaveWyrmLungsEvolved)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.CaveWyrmLungsFinalForm)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodFinalForm);
+				player.perkPoints += 1;
+			}
 			if (player.hasPerk(PerkLib.DraconicLungs)) {
 				player.removePerk(PerkLib.DraconicLungs);
 				player.perkPoints += 1;
@@ -1749,12 +1764,48 @@ use namespace CoC;
 				player.removePerk(PerkLib.ElvishPeripheralNervSysFinalForm);
 				player.perkPoints += 1;
 			}
+			if (player.hasPerk(PerkLib.FrozenHeart)) {
+				player.removePerk(PerkLib.FrozenHeart);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.FrozenHeartEvolved)) {
+				player.removePerk(PerkLib.FrozenHeartEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.FrozenHeartFinalForm)) {
+				player.removePerk(PerkLib.FrozenHeartFinalForm);
+				player.perkPoints += 1;
+			}
 			if (player.hasPerk(PerkLib.GorgonsEyes)) {
 				player.removePerk(PerkLib.GorgonsEyes);
 				player.perkPoints += 1;
 			}
 			if (player.hasPerk(PerkLib.GorgonsEyesEvolved)) {
 				player.removePerk(PerkLib.GorgonsEyesEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HellcatParathyroidGlands)) {
+				player.removePerk(PerkLib.HinezumiBurningBlood);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HellcatParathyroidGlandsEvolved)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HellcatParathyroidGlandsFinalForm)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodFinalForm);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HinezumiBurningBlood)) {
+				player.removePerk(PerkLib.HinezumiBurningBlood);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HinezumiBurningBloodEvolved)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.HinezumiBurningBloodFinalForm)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodFinalForm);
 				player.perkPoints += 1;
 			}
 			if (player.hasPerk(PerkLib.HollowFangs)) {
@@ -1827,6 +1878,30 @@ use namespace CoC;
 			}
 			if (player.hasPerk(PerkLib.MinotaurTesticlesFinalForm)) {
 				player.removePerk(PerkLib.MinotaurTesticlesFinalForm);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NaturalPunchingBag)) {
+				player.removePerk(PerkLib.NaturalPunchingBag);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NaturalPunchingBagEvolved)) {
+				player.removePerk(PerkLib.NaturalPunchingBagEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) {
+				player.removePerk(PerkLib.NaturalPunchingBagFinalForm);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NekomataThyroidGland)) {
+				player.removePerk(PerkLib.HinezumiBurningBlood);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NekomataThyroidGlandEvolved)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodEvolved);
+				player.perkPoints += 1;
+			}
+			if (player.hasPerk(PerkLib.NekomataThyroidGlandFinalForm)) {
+				player.removePerk(PerkLib.HinezumiBurningBloodFinalForm);
 				player.perkPoints += 1;
 			}
 			if (player.hasPerk(PerkLib.ObsidianHeart)) {

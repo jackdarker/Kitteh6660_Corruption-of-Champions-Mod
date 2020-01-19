@@ -1,4 +1,6 @@
 package classes.Scenes.Places.TelAdre {
+	
+	import classes.EngineCore;
 import classes.BodyParts.Piercing;
 import classes.GlobalFlags.kFLAGS;
 import classes.PerkLib;
@@ -268,7 +270,7 @@ public class YaraPiercingStudio extends TelAdreAbstractContent {
         if (mat == 13) {
             player.gems -= 1000;
         }
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         //set up material description
         switch (mat) {
             case MAT_AMETHYST:
@@ -570,7 +572,7 @@ public class YaraPiercingStudio extends TelAdreAbstractContent {
             applyPiercing(loc);
             dynStats("tou", -5);
             player.gems -= 100;
-            statScreenRefresh();
+            EngineCore.statScreenRefresh();
             doNext(piercingStudio);
         }
     }

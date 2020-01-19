@@ -94,7 +94,7 @@ private function salonPaymentMenu():void {
 			{
 				player.gems -= 60;
 				outputText("You happily give Lynnette 60 gems and pick up the bottle full of glistening, heavenly cum.  ");
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 				inventory.takeItem(consumables.MINOCUM, camp.returnToCampUseOneHour);
 			}
 		}
@@ -304,7 +304,7 @@ private function gloryholeIncubus():void {
 		
 	}
 	player.refillHunger(35);
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(hairDressingMainMenu);
 }
 
@@ -585,7 +585,8 @@ private function minotaurCumBukkakeInSalon():void {
 	outputText(".\n\n");
 	//ADD PREG CHECK
 	//Preggers chance!
-	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 70);
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 70);
 
 	outputText("Giggling, you stagger over to the next cock in line and turn around, possessed with the idea of taking its spooge in the most direct way possible – anally.   You pull your butt-cheeks apart and lean back, surprising one of the horny beasts with the warmth of your " + assholeDescript() + " as you slowly relax, spreading over his flare.  He actually squirts ropes of something inside of you, but you've been around minotaurs enough to know that it can't be cum, at least not yet.  The slippery gouts of preseed make it nice and easy to rock back and spear yourself on the first few inches, ");
 	if(player.analCapacity() < 80) {
@@ -606,6 +607,7 @@ private function minotaurCumBukkakeInSalon():void {
 	player.orgasm();
 	dynStats("lib", 2, "sen", 2, "cor", 2);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	doNext(minotaurSalonFollowUp);
 }
 private function minotaurSalonFollowUp():void {

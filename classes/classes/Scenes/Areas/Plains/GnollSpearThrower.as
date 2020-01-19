@@ -1,6 +1,7 @@
 package classes.Scenes.Areas.Plains
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.Scenes.SceneLib;
@@ -15,7 +16,7 @@ import classes.internals.*;
 		private function hyenaPhysicalAttack():void {
 			var damage:Number = 0;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if(hasStatusEffect(StatusEffects.Blind) && rand(3) < 2) {
 				outputText(capitalA + short + " completely misses you with a blind attack!\n");
@@ -98,7 +99,7 @@ import classes.internals.*;
 			}
 			outputText(" ");
 			if(damage > 0) damage = player.takePhysDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 		
@@ -218,7 +219,7 @@ import classes.internals.*;
 		{
 			var damage:Number = 0;
 //return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 //Blind dodge change
 			if (hasStatusEffect(StatusEffects.Blind) && rand(3) < 2) {
 				outputText(capitalA + short + " completely misses you with a blind attack!\n");
@@ -297,7 +298,7 @@ import classes.internals.*;
 			}
 			outputText(" ");
 			if (damage > 0) damage = player.takePhysDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 
@@ -321,7 +322,7 @@ import classes.internals.*;
 				SceneLib.urtaQuest.loseToGnollPrincessAndGetGangBanged();
 			} else if (pcCameWorms){
 				outputText("\n\nYour foe doesn't seem put off enough to leave...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.plains.gnollSpearThrowerScene.hyenaSpearLossAnal();
 			}

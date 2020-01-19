@@ -1,4 +1,6 @@
 ﻿package classes.Scenes.Places.TelAdre {
+	
+	import classes.EngineCore;
 import classes.BodyParts.Tongue;
 import classes.GlobalFlags.kFLAGS;
 
@@ -190,7 +192,7 @@ private function sureBakeryWithLoppe():void {
 		if(player.cor > 40) outputText("  A small voice inside wonders if she'd eat so extravagantly were she footing her own bill.");
 		//remove 30 gems
 		player.gems -= 30;
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	else {
 		outputText("\n\nAs mostly specialty items not on the usual menu, the price for her items is a bit high.  You look at Loppe and admit you don't have the money on you to pay for the both of you.  The dancer smiles at you.  \"<i>Don't worry about it, [name]; I asked you out, so it's my treat.  Go ahead and order whatever you want.</i>\"  You thank Loppe and tell the waitress, a fetching young cat-woman, what you'd like; Loppe takes thirty gems from her pocket and hands them over.");

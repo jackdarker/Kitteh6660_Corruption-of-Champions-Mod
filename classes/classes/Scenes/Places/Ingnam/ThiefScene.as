@@ -33,7 +33,7 @@ package classes.Scenes.Places.Ingnam
 				flags[kFLAGS.THIEF_GEMS] += 5;
 				player.gems -= 5;
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		

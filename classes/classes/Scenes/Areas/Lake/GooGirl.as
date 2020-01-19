@@ -22,7 +22,7 @@ public class GooGirl extends Monster
 		{
 			var damage:Number = 0;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			if (findPerk(PerkLib.Acid) >= 0) outputText("Her body quivering from your flames, the goo-girl ");
 			else outputText("The slime holds its hands up and they morph into a replica of your [weapon].  Happily, she swings at you");
 			//Determine if dodged!
@@ -81,7 +81,7 @@ public class GooGirl extends Monster
 				}
 			}
 			if (damage > 0) player.takePhysDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 
@@ -127,7 +127,7 @@ public class GooGirl extends Monster
 		{
 			if (pcCameWorms) {
 				outputText("\n\nThe goo-girl seems confused but doesn't mind.");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.lake.gooGirlScene.getBeatByGooGirl();
 			}
@@ -185,11 +185,6 @@ public class GooGirl extends Monster
 			this.drop = new ChainedDrop().add(weapons.PIPE,1/10)
 					.add(consumables.WETCLTH,1/2)
 					.elseDrop(useables.GREENGL);
-/* These are actually green slime functions and were never called in GooGirl due to override of performCombatAction
-			this.special1 = 5040;
-			this.special2 = 5039;
-			this.special3 = 5039;
-*/
 			this.createPerk(PerkLib.FireVulnerability, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyGooType, 0, 0, 0, 0);
 			checkMonster();

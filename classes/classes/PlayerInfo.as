@@ -150,6 +150,30 @@ public class PlayerInfo extends BaseContent {
 			else
 				miscStats += "<b>Stone:</b> " + flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] + "/300" + "\n";
 		}
+		if (player.hasStatusEffect(StatusEffects.LumiWorkshop)) {
+			miscStats += "<b>Metal Pieces:</b> " + flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] + "/200" + "\n";
+		}
+
+		miscStats += "<b>Basic Jobs:</b> " + player.currentBasicJobs() + " / 9\n";
+		miscStats += "<b>Advanced Jobs:</b> " + player.currentAdvancedJobs() + " / " + player.maxAdvancedJobs() + "\n";
+		//miscStats += "<b>Hidden Jobs:</b> " + player.currentHiddenJobs() + " / " + player.maxHiddenJobs() + "\n";
+		miscStats += "<b>Prestige Jobs:</b> " + player.currentPrestigeJobs() + " / " + player.maxPrestigeJobs() + "\n";
+		
+		if (player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter1)) {
+			miscStats += "<b>Imps Hunt Quests completed:</b> " + player.statusEffectv1(StatusEffects.AdventureGuildQuestsCounter1) + "\n";
+			miscStats += "<b>Demons Hunt Quests completed:</b> " + player.statusEffectv2(StatusEffects.AdventureGuildQuestsCounter1) + "\n";
+			miscStats += "<b>Minotaurs Hunt Quests completed:</b> " + player.statusEffectv3(StatusEffects.AdventureGuildQuestsCounter1) + "\n";
+		}
+		if (player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter2)) {
+			miscStats += "<b>Feral Tentacle Beasts Hunt Quests completed:</b> " + player.statusEffectv1(StatusEffects.AdventureGuildQuestsCounter2) + "\n";
+			miscStats += "<b>Feral Imps Hunt Quests completed:</b> " + player.statusEffectv2(StatusEffects.AdventureGuildQuestsCounter2) + "\n";
+			//miscStats += "<b>Imps Hunt Quests completed:</b> " + player.statusEffectv3(StatusEffects.AdventureGuildQuestsCounter2) + "\n";
+		}
+		if (player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter4)) {
+			miscStats += "<b>Black Chitin Gathering Quests completed:</b> " + player.statusEffectv1(StatusEffects.AdventureGuildQuestsCounter4) + "\n";
+			miscStats += "<b>Green Gel Gathering Quests completed:</b> " + player.statusEffectv2(StatusEffects.AdventureGuildQuestsCounter4) + "\n";
+			//miscStats += "<b>Imps Hunt Quests completed:</b> " + player.statusEffectv3(StatusEffects.AdventureGuildQuestsCounter1) + "\n";
+		}
 
 		if (flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] > 0) {
 			if (flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] < 100)
@@ -184,6 +208,12 @@ public class PlayerInfo extends BaseContent {
 			else miscStats += "<b>Day of the Moon Cycle:</b> " + flags[kFLAGS.LUNA_MOON_CYCLE];
 			miscStats += "\n";
 		}
+	
+		miscStats += "<b>Exp needed to lvl up:</b> ";
+		if (player.level < CoC.instance.levelCap) miscStats += "" + player.requiredXP() + "\n";
+		else miscStats += "N/A (You already at max lvl)\n";
+		miscStats += "<b>Ascension points (curently possesed):</b> " + player.ascensionPerkPoints + "\n";
+		miscStats += "<b>Ascension points (possible to gain during next ascension):</b> " + camp.possibleToGainAscensionPoints() + "\n";
 
 		if (miscStats != "")
 			outputText("\n<b><u>Miscellaneous Stats</u></b>\n" + miscStats);
@@ -289,13 +319,24 @@ public class PlayerInfo extends BaseContent {
 
 		if (player.statusEffectv1(StatusEffects.Dysfunction) > 0)
 			statEffects += "Dysfunction - " + player.statusEffectv1(StatusEffects.Dysfunction) + " hours remaining. (Disables masturbation)\n";
-		
+
+		if (player.statusEffectv1(StatusEffects.HinezumiCoat) > 0)
+			statEffects += "Hinezumi Coat: Unarmed attacks minor deal fire damage and discharge lust (1 point per attack) when you are aroused above 50%.\n";
+
+		if (player.statusEffectv1(StatusEffects.Airweed) > 0)
+			statEffects += "Airweed: Water breathing for " + Math.round(player.statusEffectv1(StatusEffects.Airweed)) + " hours.\n";
+
 		var vthirst:VampireThirstEffect = player.statusEffectByType(StatusEffects.VampireThirst) as VampireThirstEffect;
 		if (vthirst != null) {
 			statEffects += "Vampire Thirst: " + vthirst.value1 + "/" + vthirst.maxThirst() + " ";
 			if (vthirst.currentBoost > 0) statEffects += "(+" + vthirst.currentBoost + " to str / spe / int / lib)";
 			statEffects += "\n";
 		}
+		
+		if (player.hasStatusEffect(StatusEffects.EnergyDependent)) {
+			statEffects += "Energy Dependent: " + Math.round(player.statusEffectv1(StatusEffects.EnergyDependent)) + "/45 (+" + Math.round(player.statusEffectv1(StatusEffects.EnergyDependent)) * 5 + " to spe, +" + Math.round(player.statusEffectv1(StatusEffects.EnergyDependent)) * 12 + " to int)\n";
+		}
+
 		var cthirst:CumThirstEffect = player.statusEffectByType(StatusEffects.CumThirst) as CumThirstEffect;
 		if (cthirst != null) {
 			statEffects += cthirst.getStatusText()+"\n";
@@ -347,12 +388,14 @@ public class PlayerInfo extends BaseContent {
 		combatStats += "<i>Resistance (Poison):</i> " + (100 - Math.round(player.damagePoisonPercent())) + "%\n";
 		combatStats += "<b>Resistance (Lust):</b> " + (100 - Math.round(CoC.instance.player.lustPercent())) + "%\n";
 		combatStats += "\n";
-		combatStats += "<b>Spell Effect Multiplier:</b> " + Math.round(100 * combat.spellMod()) + "%\n";
-		combatStats += "<b>Spell Cost:</b> " + combat.spellCost(100) + "%\n";
-		combatStats += "<b>White Spell Effect Multiplier:</b> " + Math.round(100 * combat.spellModWhite()) + "%\n";
-		combatStats += "<b>White Spell Cost:</b> " + combat.spellCostWhite(100) + "%\n";
-		combatStats += "<b>Black Spell Effect Multiplier:</b> " + Math.round(100 * combat.spellModBlack()) + "%\n";
-		combatStats += "<b>Black Spell Cost:</b> " + combat.spellCostBlack(100) + "%\n";
+		combatStats += "<b>Spells Effect Multiplier:</b> " + Math.round(100 * combat.spellMod()) + "%\n";
+		combatStats += "<b>Spells Cost:</b> " + combat.spellCost(100) + "%\n";
+		combatStats += "<b>White Spells Effect Multiplier:</b> " + Math.round(100 * combat.spellModWhite()) + "%\n";
+		combatStats += "<b>White Spells Cost:</b> " + combat.spellCostWhite(100) + "%\n";
+		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) combatStats += "<b>White Spells Cooldowns:</b> " + combat.spellWhiteCooldown() + " turns\n";
+		combatStats += "<b>Black Spells Effect Multiplier:</b> " + Math.round(100 * combat.spellModBlack()) + "%\n";
+		combatStats += "<b>Black Spells Cost:</b> " + combat.spellCostBlack(100) + "%\n";
+		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) combatStats += "<b>Black Spells Cooldowns:</b> " + combat.spellBlackCooldown() + " turns\n";
 		combatStats += "\n";
 		combatStats += "<b>Heals Effect Multiplier:</b> " + Math.round(100 * combat.healMod()) + "%\n";
 		combatStats += "<b>Heals Cost:</b> " + combat.healCost(100) + "%\n";
@@ -392,10 +435,10 @@ public class PlayerInfo extends BaseContent {
 		combatStats += "<b>Throwed Weapon Accuracy (1st range attack):</b> " + (combat.arrowsAccuracy() / 2) + "%\n";
 		if (player.findPerk(PerkLib.DoubleStrike) >= 0) combatStats += "<b>Throwed Weapon Accuracy (2nd range attack):</b> " + ((combat.arrowsAccuracy() / 2) - 15) + "%\n";
 		if (player.findPerk(PerkLib.TripleStrike) >= 0) combatStats += "<b>Throwed Weapon Accuracy (3rd range attack):</b> " + ((combat.arrowsAccuracy() / 2) - 30) + "%\n";
-		combatStats += "<b>Firearms Accuracy (1st range attack):</b> " + (combat.arrowsAccuracy() / 2) + "%\n";
-		if (player.findPerk(PerkLib.AmateurGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (2nd range attack):</b> " + ((combat.arrowsAccuracy() / 2) - 10) + "%\n";
-		if (player.findPerk(PerkLib.ExpertGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (3rd range attack):</b> " + ((combat.arrowsAccuracy() / 2) - 20) + "%\n";
-		if (player.findPerk(PerkLib.MasterGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (4th range attack):</b> " + ((combat.arrowsAccuracy() / 2) - 30) + "%\n";
+		combatStats += "<b>Firearms Accuracy (1st range attack):</b> " + (combat.firearmsAccuracy() / 2) + "%\n";
+		if (player.findPerk(PerkLib.AmateurGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (2nd range attack):</b> " + ((combat.firearmsAccuracy() / 2) - 10) + "%\n";
+		if (player.findPerk(PerkLib.ExpertGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (3rd range attack):</b> " + ((combat.firearmsAccuracy() / 2) - 20) + "%\n";
+		if (player.findPerk(PerkLib.MasterGunslinger) >= 0) combatStats += "<b>Firearms Accuracy (4th range attack):</b> " + ((combat.firearmsAccuracy() / 2) - 30) + "%\n";
 		combatStats += "\n";
 		combatStats += "<b>Soulskill Effect Multiplier:</b> " + Math.round(100 * combat.soulskillMod()) + "%\n";
 		combatStats += "<b>Physical Soulskill Effect Multiplier:</b> " + Math.round(100 * combat.soulskillPhysicalMod()) + "%\n";
@@ -475,11 +518,15 @@ public class PlayerInfo extends BaseContent {
 		var interpersonStats:String = "";
 			
 		if (flags[kFLAGS.AIKO_TIMES_MET] > 0) {
-			interpersonStats  += "<b>Aiko Affection</b>: "+flags[kFLAGS.AIKO_AFFECTION]+"\n";
+			interpersonStats  += "<b>Aiko Affection:</b> "+flags[kFLAGS.AIKO_AFFECTION]+"\n";
 			if (flags[kFLAGS.AIKO_CORRUPTION_ACTIVE] > 0)
-				interpersonStats  += "<b>Aiko Corruption</b>: "+flags[kFLAGS.AIKO_CORRUPTION]+"\n";
+				interpersonStats  += "<b>Aiko Corruption:</b> "+flags[kFLAGS.AIKO_CORRUPTION]+"\n";
 		}
-		
+
+		if (flags[kFLAGS.ALVINA_FOLLOWER] > 12) {
+			interpersonStats  += "<b>Alvina's Relationship Level:</b> " + (flags[kFLAGS.ALVINA_FOLLOWER] >= 20 ? "Lover" : "Follower") + "\n";
+		}
+
 		if (SceneLib.anzu.anzuRelationshipLevel() > 0) {
 			interpersonStats += "<b>Anzu's Affection:</b> " + flags[kFLAGS.ANZU_AFFECTION] + "%\n";
 			interpersonStats += "<b>Anzu's Relationship Level:</b> " + (flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 1 ? "Acquaintances" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 2 ? "Friend" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 3 ? "Close Friend" : flags[kFLAGS.ANZU_RELATIONSHIP_LEVEL] == 4 ? "Lover" : "Undefined") + "\n";
@@ -490,6 +537,23 @@ public class PlayerInfo extends BaseContent {
         if (flags[kFLAGS.ARIAN_VIRGIN] > 0)
 			interpersonStats += "<b>Arian Sex Counter:</b> " + Math.round(flags[kFLAGS.ARIAN_VIRGIN]) + "\n";
 
+		if (flags[kFLAGS.AURORA_LVL] >= 1) {
+			//interpersonStats += "<b>Aurora:</b> " + Math.round(flags[kFLAGS.GALIA_AFFECTION]) + "%\n";
+			if (flags[kFLAGS.AURORA_LVL] == 13) interpersonStats += "<b>Aurora lvl:</b> 73\n";
+			if (flags[kFLAGS.AURORA_LVL] == 12) interpersonStats += "<b>Aurora lvl:</b> 67\n";
+			if (flags[kFLAGS.AURORA_LVL] == 11) interpersonStats += "<b>Aurora lvl:</b> 61\n";
+			if (flags[kFLAGS.AURORA_LVL] == 10) interpersonStats += "<b>Aurora lvl:</b> 55\n";
+			if (flags[kFLAGS.AURORA_LVL] == 9) interpersonStats += "<b>Aurora lvl:</b> 49\n";
+			if (flags[kFLAGS.AURORA_LVL] == 8) interpersonStats += "<b>Aurora lvl:</b> 43\n";
+			if (flags[kFLAGS.AURORA_LVL] == 7) interpersonStats += "<b>Aurora lvl:</b> 37\n";
+			if (flags[kFLAGS.AURORA_LVL] == 6) interpersonStats += "<b>Aurora lvl:</b> 31\n";
+			if (flags[kFLAGS.AURORA_LVL] == 5) interpersonStats += "<b>Aurora lvl:</b> 25\n";
+			if (flags[kFLAGS.AURORA_LVL] == 4) interpersonStats += "<b>Aurora lvl:</b> 19\n";
+			if (flags[kFLAGS.AURORA_LVL] == 3) interpersonStats += "<b>Aurora lvl:</b> 13\n";
+			if (flags[kFLAGS.AURORA_LVL] == 2) interpersonStats += "<b>Aurora lvl:</b> 7\n";
+			if (flags[kFLAGS.AURORA_LVL] == 1) interpersonStats += "<b>Aurora lvl:</b> 1\n";
+		}
+			
 		if (SceneLib.bazaar.benoit.benoitAffection() > 0)
             interpersonStats += "<b>" + SceneLib.bazaar.benoit.benoitMF("Benoit", "Benoite") + " Affection:</b> " + Math.round(SceneLib.bazaar.benoit.benoitAffection()) + "%\n";
         if (flags[kFLAGS.BROOKE_MET] > 0)
@@ -507,7 +571,8 @@ public class PlayerInfo extends BaseContent {
 
 		if (flags[kFLAGS.CHI_CHI_AFFECTION] > 0) {
 			interpersonStats += "<b>Chi Chi Affection:</b> " + Math.round(flags[kFLAGS.CHI_CHI_AFFECTION]) + "%\n";
-			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 4) interpersonStats += "<b>Chi Chi status:</b> Wife\n";
+			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 6) interpersonStats += "<b>Chi Chi status:</b> Wife\n";
+			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 5) interpersonStats += "<b>Chi Chi status:</b> <font color=\"#800000\">Taken Away by Chon Lao</font>\n";
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 3) interpersonStats += "<b>Chi Chi status:</b> Lover\n";
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 2) interpersonStats += "<b>Chi Chi status:</b> <font color=\"#800000\">Dead</font>\n";
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] < 2) interpersonStats += "<b>Chi Chi status:</b> Apprentice\n";
@@ -528,6 +593,7 @@ public class PlayerInfo extends BaseContent {
 
 		if (flags[kFLAGS.DIANA_AFFECTION] > 0) {
 			interpersonStats += "<b>Diana Affection:</b> " + Math.round(flags[kFLAGS.DIANA_AFFECTION]) + "%\n";
+			interpersonStats += "<b>Spells Casted:</b> " + flags[kFLAGS.DIANA_SPELLS_CASTED] + "\n";
 			if (flags[kFLAGS.DIANA_LVL_UP] == 10) interpersonStats += "<b>Diana lvl:</b> 39\n";
 			if (flags[kFLAGS.DIANA_LVL_UP] == 9) interpersonStats += "<b>Diana lvl:</b> 33\n";
 			if (flags[kFLAGS.DIANA_LVL_UP] == 8) interpersonStats += "<b>Diana lvl:</b> 27\n";
@@ -543,6 +609,10 @@ public class PlayerInfo extends BaseContent {
 
 		if (flags[kFLAGS.DINAH_LVL_UP] > 0.5) {
 			interpersonStats += "<b>Dinah Affection:</b> " + Math.round(flags[kFLAGS.DINAH_AFFECTION]) + "%\n";
+			interpersonStats += "<b>Spells Casted:</b> " + flags[kFLAGS.DINAH_SPELLS_CASTED] + "\n";
+			if (flags[kFLAGS.DINAH_LVL_UP] == 7) interpersonStats += "<b>Dinah lvl:</b> 44\n";
+			if (flags[kFLAGS.DINAH_LVL_UP] == 6) interpersonStats += "<b>Dinah lvl:</b> 38\n";
+			if (flags[kFLAGS.DINAH_LVL_UP] == 5) interpersonStats += "<b>Dinah lvl:</b> 32\n";
 			if (flags[kFLAGS.DINAH_LVL_UP] == 4) interpersonStats += "<b>Dinah lvl:</b> 26\n";
 			if (flags[kFLAGS.DINAH_LVL_UP] == 3) interpersonStats += "<b>Dinah lvl:</b> 20\n";
 			if (flags[kFLAGS.DINAH_LVL_UP] == 2) interpersonStats += "<b>Dinah lvl:</b> 14\n";
@@ -577,7 +647,7 @@ public class PlayerInfo extends BaseContent {
 			if (flags[kFLAGS.EMBER_LVL_UP] == 2) interpersonStats += "<b>Ember lvl:</b> 32\n";
 			if (flags[kFLAGS.EMBER_LVL_UP] == 1) interpersonStats += "<b>Ember lvl:</b> 26\n";
 			if (flags[kFLAGS.EMBER_LVL_UP] < 1) interpersonStats += "<b>Ember lvl:</b> 20\n";
-		}
+		}/*
 
 		if (flags[kFLAGS.GALIA_LVL_UP] > 0.5) {
 			interpersonStats += "<b>Galia Affection:</b> " + Math.round(flags[kFLAGS.GALIA_AFFECTION]) + "%\n";
@@ -586,7 +656,7 @@ public class PlayerInfo extends BaseContent {
 			if (flags[kFLAGS.GALIA_LVL_UP] == 3) interpersonStats += "<b>Galia lvl:</b> 13\n";
 			if (flags[kFLAGS.GALIA_LVL_UP] == 2) interpersonStats += "<b>Galia lvl:</b> 7\n";
 			if (flags[kFLAGS.GALIA_LVL_UP] == 1) interpersonStats += "<b>Galia lvl:</b> 1\n";
-		}
+		}*/
 
 		if (SceneLib.helFollower.helAffection() > 0)
             interpersonStats += "<b>Helia Affection:</b> " + Math.round(SceneLib.helFollower.helAffection()) + "%\n";
@@ -673,6 +743,18 @@ public class PlayerInfo extends BaseContent {
 			if (flags[kFLAGS.LUNA_LVL_UP] == 2) interpersonStats += "<b>Luna lvl:</b> 21\n";
 			if (flags[kFLAGS.LUNA_LVL_UP] == 1) interpersonStats += "<b>Luna lvl:</b> 15\n";
 			if (flags[kFLAGS.LUNA_LVL_UP] == 0) interpersonStats += "<b>Luna lvl:</b> 9\n";
+		}
+		
+		if (flags[kFLAGS.NEISA_FOLLOWER] >= 7)  {
+			if (flags[kFLAGS.NEISA_AFFECTION] < 50) interpersonStats += "<b>Neisa Loyalty:</b> " + Math.round(flags[kFLAGS.NEISA_AFFECTION]) * 2 + "%\n";
+			else interpersonStats += "<b>Neisa Loyalty:</b> 100%\n";
+			if (flags[kFLAGS.NEISA_FOLLOWER] >= 14)  interpersonStats += "<b>Days that passed since last paycheck for Neisa:</b> " + (Math.round(flags[kFLAGS.NEISA_AFFECTION]) - 7) + " days (If you npot pay before 10th day she would leave)\n";
+			else interpersonStats += "<b>Days that passed since last paycheck for Neisa:</b> " + (Math.round(flags[kFLAGS.NEISA_AFFECTION]) - 7) + " days\n";
+			//interpersonStats += "<b>Luna Affection:</b> " + Math.round(flags[kFLAGS.LUNA_AFFECTION]) + "%\n";
+			if (flags[kFLAGS.NEISA_LVL_UP] == 4) interpersonStats += "<b>Neisa lvl:</b> 21\n";
+			if (flags[kFLAGS.NEISA_LVL_UP] == 3) interpersonStats += "<b>Neisa lvl:</b> 15\n";
+			if (flags[kFLAGS.NEISA_LVL_UP] == 2) interpersonStats += "<b>Neisa lvl:</b> 9\n";
+			if (flags[kFLAGS.NEISA_LVL_UP] == 1) interpersonStats += "<b>Neisa lvl:</b> 3\n";
 		}
 		if (flags[kFLAGS.OWCAS_ATTITUDE] > 0)
 			interpersonStats += "<b>Owca's Attitude:</b> " + flags[kFLAGS.OWCAS_ATTITUDE] + "\n";
@@ -788,6 +870,9 @@ public class PlayerInfo extends BaseContent {
 
 		if (player.statusEffectv1(StatusEffects.Birthed) > 0)
 			childStats += "<b>Times Given Birth:</b> " + player.statusEffectv1(StatusEffects.Birthed) + "\n";
+
+		if (flags[kFLAGS.PC_GOBLIN_DAUGHTERS] > 0)
+			childStats += "<b>[name] goblin daughters:</b> " + flags[kFLAGS.PC_GOBLIN_DAUGHTERS] + "\n";
 
 		if (flags[kFLAGS.AMILY_MET] > 0)
 			childStats += "<b>Litters With Amily:</b> " + (flags[kFLAGS.AMILY_BIRTH_TOTAL] + flags[kFLAGS.PC_TIMES_BIRTHED_AMILYKIDS]) + "\n";
@@ -949,11 +1034,11 @@ public class PlayerInfo extends BaseContent {
 			}
 
 			if (player.statPoints>0) {
-				doNext(attributeMenu);
+				EngineCore.doNext(attributeMenu);
 			} else if (player.perkPoints > 0) {
-				doNext(perkBuyMenu);
+				EngineCore.doNext(perkBuyMenu);
 			} else {
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 		}
 		//Spend attribute points
@@ -966,7 +1051,7 @@ public class PlayerInfo extends BaseContent {
 		}
 		else {
 			outputText("<b>ERROR.  LEVEL UP PUSHED WHEN PC CANNOT LEVEL OR GAIN PERKS.  PLEASE REPORT THE STEPS TO REPRODUCE THIS BUG TO ORMAEL@GMAIL.COM OR THE FENOXO.COM XIANXIA MOD THREAD.</b>");
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 	}
 
@@ -1163,9 +1248,9 @@ public class PlayerInfo extends BaseContent {
 		player.tempInt = 0;
 		player.tempWis = 0;
 		player.tempLib = 0;
-		statScreenRefresh();
-		if (player.perkPoints > 0) doNext(perkBuyMenu);
-		else doNext(playerMenu);
+		EngineCore.statScreenRefresh();
+		if (player.perkPoints > 0) EngineCore.doNext(perkBuyMenu);
+		else EngineCore.doNext(playerMenu);
 	}
 
 	public function perkBuyMenu():void {
@@ -1177,7 +1262,7 @@ public class PlayerInfo extends BaseContent {
 			outputText("<b>You do not qualify for any perks at present.  </b>In case you qualify for any in the future, you will keep your " + num2Text(player.perkPoints) + " perk point");
 			if (player.perkPoints > 1) outputText("s");
 			outputText(".");
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 			return;
 		}
         if (CoC.instance.testingBlockExiting) {
@@ -1251,20 +1336,20 @@ public class PlayerInfo extends BaseContent {
 		if (perk.ptype == PerkLib.StrongBack) player.itemSlot4.unlocked = true;
 		if (perk.ptype == PerkLib.TankI || perk.ptype == PerkLib.TankII || perk.ptype == PerkLib.TankIII || perk.ptype == PerkLib.TankIV || perk.ptype == PerkLib.TankV || perk.ptype == PerkLib.TankVI) {
 			HPChange(player.tou, false);
-			statScreenRefresh();
+			//statScreenRefresh();
 		}
 		if (perk.ptype == PerkLib.GoliathI || perk.ptype == PerkLib.GoliathII || perk.ptype == PerkLib.GoliathIII || perk.ptype == PerkLib.GoliathIV || perk.ptype == PerkLib.GoliathV || perk.ptype == PerkLib.GoliathVI) {
 			HPChange(player.str, false);
-			statScreenRefresh();
+			//statScreenRefresh();
 		}
 		if (perk.ptype == PerkLib.CheetahI || perk.ptype == PerkLib.CheetahII || perk.ptype == PerkLib.CheetahIII || perk.ptype == PerkLib.CheetahIV || perk.ptype == PerkLib.CheetahV || perk.ptype == PerkLib.CheetahVI) {
 			HPChange(player.spe, false);
-			statScreenRefresh();
+			//statScreenRefresh();
 		}
 		if (player.perkPoints > 0) {
-			doNext(perkBuyMenu);
+			EngineCore.doNext(perkBuyMenu);
 		} else {
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 	}
 }

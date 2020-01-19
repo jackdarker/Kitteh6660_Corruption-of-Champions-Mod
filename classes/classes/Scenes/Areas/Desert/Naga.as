@@ -20,9 +20,7 @@ public class Naga extends Monster
 				outputText("The venom's effects are almost instantaneous; your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 4) {
 					player.spe -= 3;
-					showStatDown( 'spe' );
-					// speUp.visible = false;
-					// speDown.visible = true;
+					EngineCore.showUpDown();//showStatDown( 'spe' );
 					player.createStatusEffect(StatusEffects.NagaVenom,3,0,0,0);
 				}
 				else {
@@ -35,9 +33,7 @@ public class Naga extends Monster
 				outputText("The venom's effects intensify as your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 3) {
 					player.spe -= 2;
-					showStatDown( 'spe' );
-					// speUp.visible = false;
-					// speDown.visible = true;
+					EngineCore.showUpDown();//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.NagaVenom,1,2);
 				}
 				else player.takeMagicDamage(5+rand(5));
@@ -88,13 +84,13 @@ public class Naga extends Monster
 		{
 			if (flags[kFLAGS.SAMIRAH_FOLLOWER] > 9) {
 				outputText("\n\nShe aproach you and gives you.");
-				doNext(cleanupAfterCombat);
+				EngineCore.doNext(cleanupAfterCombat);
 			}
 			else {
 				if(pcCameWorms){
 					outputText("\n\nThe naga's eyes go wide and she turns to leave, no longer interested in you.");
 					player.orgasm();
-					doNext(cleanupAfterCombat);
+					EngineCore.doNext(cleanupAfterCombat);
 				} else {
 					SceneLib.desert.nagaScene.nagaFUCKSJOOOOOO();
 				}

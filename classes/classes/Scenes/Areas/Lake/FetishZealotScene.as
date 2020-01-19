@@ -5,10 +5,13 @@ package classes.Scenes.Areas.Lake
 {
 import classes.*;
 import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.UniqueSexScenes;
 import classes.Items.Armors.LustyMaidensArmor;
 
 public class FetishZealotScene extends AbstractLakeContent
 	{
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
+		
 		public function FetishZealotScene()
 		{
 		}
@@ -207,6 +210,7 @@ public class FetishZealotScene extends AbstractLakeContent
 					}
 					outputText("After a moment, your student pulls out of you and helps you back up.\n\n");
 					if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+					if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 				}
 			}
 			//Wrapping things up
@@ -256,9 +260,11 @@ public class FetishZealotScene extends AbstractLakeContent
 			else outputText("The zealot quivers for a moment before collapsing, his desires becoming too great for even him to control.");
 			if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
 				outputText("\n\nDo you want to take advantage of his vulnerable state to sate your lusts?");
-				var bikiniTits:Function = null;
-				if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor") bikiniTits = createCallBackFunction2((player.armor as LustyMaidensArmor).lustyMaidenPaizuri,player,monster);
-				simpleChoices("Yes", zealotWinRape, "", null, "", null, "B.Titfuck", bikiniTits, "Leave", cleanupAfterCombat);
+				menu();
+				addButton(0, "Yes", zealotWinRape);
+				if (player.hasVagina() && player.biggestTitSize() >= 4 && player.armorName == "lusty maiden's armor") addButton(1, "B.Titfuck", createCallBackFunction2((player.armor as LustyMaidensArmor).lustyMaidenPaizuri,player,monster));
+				if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+				addButton(14, "Leave", cleanupAfterCombat);
 			}
 			else cleanupAfterCombat();
 		}
@@ -292,6 +298,7 @@ public class FetishZealotScene extends AbstractLakeContent
 				outputText("Your lusts sated for now, you rise up off of him and put your [armor] back on.  You decide to leave him lying there, still coughing from the blow to his stomach.  ");
 				player.cuntChange(monster.cockArea(0), true);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+				if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			}
 			player.orgasm();
 			cleanupAfterCombat();

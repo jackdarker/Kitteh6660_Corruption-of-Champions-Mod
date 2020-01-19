@@ -252,7 +252,7 @@ private function sheilaCorruptionUpdate():void {
 			mainView.statsView.showStatDown( 'cor' );
 			// corUp.visible = false;
 			// corDown.visible = true;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}		
 	}
 	else if(player.cor < sheilaCorruption()) {
@@ -274,7 +274,7 @@ private function sheilaCorruptionUpdate():void {
 			mainView.statsView.showStatUp( 'cor' );
 			// corUp.visible = true;
 			// corDown.visible = false;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 	}
 	//Get one for demon Sheila regardless.
@@ -1234,7 +1234,7 @@ private function shielaXPThreeSexyTimePostSexStayII():void {
 	HPChange(player.maxHP()/2,false);
 	if(model.time.hours > 6) model.time.days++;
 	model.time.hours = 6;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(playerMenu);
 }
 
@@ -3553,7 +3553,7 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE():void 
 	if(!player.isTaur()) outputText("  She grudgingly repositions, allowing you to rest against her.");
 	model.time.days++;
 	model.time.hours = 2;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	//--Next--
 	menu();
 	addButton(0,"Next",normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE2);
@@ -3563,7 +3563,7 @@ private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE():void 
 private function normalSheilaPregNotifREPEATEDEDHelpABitchOutANDSTAYDERE2():void {
 	clearOutput();
 	model.time.hours = 5;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("Your sleep is fitful, but not totally useless, and you yawn and stir a few hours later when Sheila wakes you");
 	if(player.isGoo()) outputText("; she's already dressed and appears to have just been outside");
 	outputText(".");

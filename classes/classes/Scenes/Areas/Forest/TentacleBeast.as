@@ -16,7 +16,8 @@ public class TentacleBeast extends Monster
 		
 		private function tentaclePhysicalAttack():void {
 			outputText("The shambling horror throws its tentacles at you with a murderous force.\n");
-			var temp:int = int((str + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
+			var temp:int = int((str + weaponAttack) - Math.random() * (player.tou) - player.armorDef);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) temp += str + weaponAttack;
 			if(temp < 0) temp = 0;
 			//Miss
 			if(temp == 0 || (player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80)) {
@@ -66,6 +67,7 @@ public class TentacleBeast extends Monster
 				removeStatusEffect(StatusEffects.PhyllaFight);
 				SceneLib.desert.antsScene.phyllaTentacleDefeat();
 			}
+			else if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) cleanupAfterCombat();
 			else {
 				if(!hpVictory && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
 					outputText("  Perhaps you could use it to sate yourself?", true);
@@ -78,22 +80,25 @@ public class TentacleBeast extends Monster
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 		{
-			if (hpVictory) {
-				outputText("Overcome by your wounds, you turn to make a last desperate attempt to run...\n\n");
-				if (hasStatusEffect(StatusEffects.PhyllaFight)) {
-					removeStatusEffect(StatusEffects.PhyllaFight);
-					outputText("...and make it into the nearby tunnel.  ");
-					SceneLib.desert.antsScene.phyllaTentaclePCLoss();
-				} else
-					SceneLib.forest.tentacleBeastScene.tentacleLossRape();
-			} else {
-				outputText("You give up on fighting, too aroused to resist any longer.  Shrugging, you walk into the writhing mass...\n\n");
-				if(hasStatusEffect(StatusEffects.PhyllaFight)) {
-					removeStatusEffect(StatusEffects.PhyllaFight);
-					outputText("...but an insistent voice rouses you from your stupor.  You manage to run into a nearby tunnel.  ");
-					SceneLib.desert.antsScene.phyllaTentaclePCLoss();
-				} else
-					doNext(SceneLib.forest.tentacleBeastScene.tentacleLossRape);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) SceneLib.dungeons.ebonlabyrinth.defeatedByAncientTentacleBeast();
+			else {
+				if (hpVictory) {
+					outputText("Overcome by your wounds, you turn to make a last desperate attempt to run...\n\n");
+					if (hasStatusEffect(StatusEffects.PhyllaFight)) {
+						removeStatusEffect(StatusEffects.PhyllaFight);
+						outputText("...and make it into the nearby tunnel.  ");
+						SceneLib.desert.antsScene.phyllaTentaclePCLoss();
+					} else
+						SceneLib.forest.tentacleBeastScene.tentacleLossRape();
+				} else {
+					outputText("You give up on fighting, too aroused to resist any longer.  Shrugging, you walk into the writhing mass...\n\n");
+					if(hasStatusEffect(StatusEffects.PhyllaFight)) {
+						removeStatusEffect(StatusEffects.PhyllaFight);
+						outputText("...but an insistent voice rouses you from your stupor.  You manage to run into a nearby tunnel.  ");
+						SceneLib.desert.antsScene.phyllaTentaclePCLoss();
+					} else
+						EngineCore.doNext(SceneLib.forest.tentacleBeastScene.tentacleLossRape);
+				}
 			}
 		}
 
@@ -113,10 +118,33 @@ public class TentacleBeast extends Monster
 		}
 
 		protected function setupMonster():void {
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) {
+				this.short = "ancient tentacle beast";
+				this.long = "You see the titanic, shambling form of the tentacle beast before you.  Appearing as a massive shrub, it shifts its bulbous mass and reveals a collection of thorny tendrils and cephalopodic limbs.";
+				initStrTouSpeInte(292, 320, 150, 120);
+				initWisLibSensCor(100, 270, 60, 100);
+				this.weaponAttack = 50;
+				this.armorDef = 90;
+				this.armorMDef = 20;
+				this.bonusHP = 4000;
+				this.bonusLust = 50;
+				this.level = 60;
+				this.additionalXP = 250;
+			}
+			else {
+				this.short = "tentacle beast";
+				this.long = "You see the massive, shambling form of the tentacle beast before you.  Appearing as a large shrub, it shifts its bulbous mass and reveals a collection of thorny tendrils and cephalopodic limbs.";
+				initStrTouSpeInte(73, 90, 25, 45);
+				initWisLibSensCor(40, 90, 20, 100);
+				this.weaponAttack = 10;
+				this.armorDef = 18;
+				this.armorMDef = 2;
+				this.bonusHP = 400;
+				this.bonusLust = 20;
+				this.level = 12;
+			}
 			this.a = "the ";
-			this.short = "tentacle beast";
 			this.imageName = "tentaclebeast";
-			this.long = "You see the massive, shambling form of the tentacle beast before you.  Appearing as a large shrub, it shifts its bulbous mass and reveals a collection of thorny tendrils and cephalopodic limbs.";
 			// this.plural = false;
 			this.createCock(40,1.5);
 			this.createCock(60,1.5);
@@ -139,25 +167,16 @@ public class TentacleBeast extends Monster
 			this.skinDesc = "bark";
 			this.hairColor = "green";
 			this.hairLength = 1;
-			initStrTouSpeInte(73, 90, 25, 45);
-			initWisLibSensCor(40, 90, 20, 100);
 			this.weaponName = "whip-tendril";
 			this.weaponVerb="thorny tendril";
-			this.weaponAttack = 10;
 			this.armorName = "rubbery skin";
-			this.armorDef = 18;
-			this.armorMDef = 2;
-			this.bonusHP = 400;
-			this.bonusLust = 20;
 			this.lust = 10;
 			this.lustVuln = 0.8;
 			this.temperment = TEMPERMENT_LOVE_GRAPPLES;
-			this.level = 12;
 			this.gems = rand(25)+10;
 			this.drop = new WeightedDrop(null, 1);
 			this.special1 = tentaclePhysicalAttack;
 			this.special2 = tentacleEntwine;
-			this.special3 = tentaclePhysicalAttack;
 			this.tailType = Tail.DEMONIC;
 		}
 	}

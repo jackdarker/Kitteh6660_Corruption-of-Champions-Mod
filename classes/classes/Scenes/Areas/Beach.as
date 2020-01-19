@@ -38,7 +38,13 @@ import classes.Scenes.SceneLib;
 			}
 			//Etna
 			if (flags[kFLAGS.ETNA_FOLLOWER] < 1 && flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2 && rand(5) == 0) {
+				player.createStatusEffect(StatusEffects.NearWater,0,0,0,0);
 				SceneLib.etnaScene.repeatYandereEnc();
+				return;
+			}
+			//Harpoon gun
+			if (player.hasStatusEffect(StatusEffects.TelAdreTripxiGuns3) && player.statusEffectv2(StatusEffects.TelAdreTripxiGuns3) == 0 && player.statusEffectv2(StatusEffects.TelAdreTripxi) == 1 && rand(2) == 0) {
+				partsofHarpoonGun();
 				return;
 			}
 			
@@ -83,6 +89,7 @@ import classes.Scenes.SceneLib;
 			select = choice[rand(choice.length)];
 			switch(select) {
 				case 0:
+					player.createStatusEffect(StatusEffects.NearWater,0,0,0,0);
 					demonsPack.demonspackEncounter();
 					break;
 			//	case 1:
@@ -127,6 +134,16 @@ import classes.Scenes.SceneLib;
 			if(player.cor > 60) outputText(" or fuck");
 			outputText(".  The air is fresh, and the sand is cool under your feet.   Soft waves lap against the muddy sand of the sea-shore.   You pass around a few dunes carefully, being wary of hidden 'surprises', and come upon a small dock.  The dock is crafted from old growth trees lashed together with some crude rope.  Judging by the appearance of the rope, it is very old and has not been seen to in quite some time.  Tied to the dock is a small rowboat, only about seven feet long and three feet wide.   The boat appears in much better condition than the dock, and appears to be brand new.\n\n");
 			outputText("<b>You have discovered the sea boat!</b>");
+			doNext(camp.returnToCampUseOneHour);
+		}
+		
+		public function partsofHarpoonGun():void {
+			clearOutput();
+			outputText("As you explore the beach you run into what appears to be the half buried remains of some old contraption. Wait this might just be what that gun vendor was talking about! You proceed to dig up the items releasing this to indeed be the remains of a broken firearm.\n\n");
+			outputText("You carefully put the pieces of the Harpoon gun in your back and head back to your camp.\n\n");
+			player.addStatusValue(StatusEffects.TelAdreTripxiGuns3, 2, 1);
+			player.addStatusValue(StatusEffects.TelAdreTripxi, 2, 1);
+			player.createKeyItem("Harpoon gun", 0, 0, 0, 0);
 			doNext(camp.returnToCampUseOneHour);
 		}
 	}

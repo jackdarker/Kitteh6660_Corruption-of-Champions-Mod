@@ -57,12 +57,21 @@ public class Questlog extends BaseContent
 			if (flags[kFLAGS.DEN_OF_DESIRE_QUEST] == 2) outputText("Completed (Reward taken)");
 			else if (SceneLib.dungeons.checkDenOfDesireClear()) outputText("Completed");
 			else if (flags[kFLAGS.DEN_OF_DESIRE_BOSSES] > 1) outputText("In Progress");
-			else outputText("Not Started");/*
+			else outputText("Not Started");
 			outputText("\n\n<u><b>River Dungeon Exploration</b></u>");
 			outputText("\n<b>1st Floor:</b> ");
-			if (SceneLib.dungeons.checkRiverDungeon1stFloorClear()) outputText("Completed");
+			if (SceneLib.dungeons.checkRiverDungeon1stFloorClear()) {
+				if (player.hasStatusEffect(StatusEffects.RiverDungeonFloorRewards)) outputText("Completed (Reward taken)");
+				else outputText("Completed");
+			}
 			else outputText("Not Started/In Progress");
-			outputText("\n<i><b>2nd Floor:</b> Soon</i>");*/
+			outputText("\n<b>2nd Floor:</b> ");
+			if (SceneLib.dungeons.checkRiverDungeon2ndFloorClear()) {
+				if (player.statusEffectv1(StatusEffects.RiverDungeonFloorRewards) > 1) outputText("Completed (Reward taken)");
+				else outputText("Completed");
+			}
+			else outputText("Not Started/In Progress");/*
+			outputText("\n<i><b>3rd Floor:</b> Soon</i>");*/
 			outputText("\n\n<u><b>Adventure Guild Quests</b></u>");
 			outputText("\n<b>Imps Hunt:</b> ");
 			if (player.statusEffectv1(StatusEffects.AdventureGuildQuests1) == 2 || player.statusEffectv1(StatusEffects.AdventureGuildQuests1) == 4 || player.statusEffectv1(StatusEffects.AdventureGuildQuests1) == 7) outputText("Completed (for today)");
@@ -93,9 +102,9 @@ public class Questlog extends BaseContent
 			if (player.statusEffectv1(StatusEffects.AdventureGuildQuests4) == 2 || player.statusEffectv1(StatusEffects.AdventureGuildQuests4) == 5) outputText("Completed (for today)");
 			else if (player.statusEffectv1(StatusEffects.AdventureGuildQuests4) == 1 || player.statusEffectv1(StatusEffects.AdventureGuildQuests4) == 4) outputText("In Progress");
 			else outputText("Not Started");
-			//outputText("\n<i><b>Spider-silk Gathering:</b> Soon</i>");
+			outputText("\n<i><b>Spider-silk Gathering:</b> Soon</i>");
 			//outputText("\n<i><b>Dragonscale Gathering:</b> Soon</i>");
-			//outputText("\n<i><b>Ebonbloom Gathering:</b> Soon</i>");
+			outputText("\n<i><b>Ebonbloom Gathering:</b> Soon</i>");
 			//outputText("\n<i><b>World Tree Branch Gathering:</b> Soon</i>");
 			outputText("\n\n<u><b>Twilight of the Gods</b></u>");
 			outputText("\n<b>Feral Imps Capture:</b> ");
@@ -110,11 +119,17 @@ public class Questlog extends BaseContent
 			if (SceneLib.dungeons.checkFactoryClear() && flags[kFLAGS.FACTORY_OMNIBUS_DEFEATED] < 2) addButton(0, "Factory", takeRewardForFactory);
 			if (SceneLib.dungeons.checkDeepCaveClear() && flags[kFLAGS.DEFEATED_ZETAZ] < 2) addButton(1, "Deep Cave", takeRewardForDeepCave);
 			if (SceneLib.dungeons.checkLethiceStrongholdClear() && flags[kFLAGS.LETHICE_DEFEATED] < 2) addButton(2, "Stronghold", takeRewardForStronghold);
+			//button 3 - ?Demon Mine? czy też przesunąc Lethice Stronghold niżej z 2 przycisku jak dodam lochy w main storyline przed D3?
+			//button 4 - ?Demon Secret Lab?
 			if (SceneLib.dungeons.checkSandCaveClear() && flags[kFLAGS.DISCOVERED_WITCH_DUNGEON] < 2) addButton(5, "Sand Cave", takeRewardForSandCave);
 			if (SceneLib.dungeons.checkPhoenixTowerClear() && flags[kFLAGS.CLEARED_HEL_TOWER] < 2) addButton(6, "Phoenix Tower", takeRewardForPhoenixTower);
+			//button 7 - ???
+			if (SceneLib.dungeons.checkRiverDungeon1stFloorClear() && !player.hasStatusEffect(StatusEffects.RiverDungeonFloorRewards)) addButton(8, "River Dungeon", takeRewardForRiverDungeon1stFloor).hint("1st floor");
+			if (SceneLib.dungeons.checkPhoenixTowerClear() && flags[kFLAGS.EBON_LABYRINTH] < 3) addButton(9, "Ebon Labyrinth", takeRewardForEbonLabyrinth);
 			if (SceneLib.dungeons.checkHiddenCaveClear() && flags[kFLAGS.HIDDEN_CAVE_LOLI_BAT_GOLEMS] < 6) addButton(10, "Hidden Cave", takeRewardForHiddenCave);
 			if (SceneLib.dungeons.checkHiddenCaveHiddenStageClear() && flags[kFLAGS.HIDDEN_CAVE_BOSSES] < 3) addButton(10, "Hidden C.(HS)", takeRewardForHiddenCaveHiddenStage).hint("Hidden Cave (Hidden Stage bonus)");
 			if (SceneLib.dungeons.checkDenOfDesireClear() && flags[kFLAGS.DEN_OF_DESIRE_QUEST] < 2) addButton(11, "Den of Desire", takeRewardForDenOfDesire);
+			//button 12 - ???
 			//button 13 - Lia undersea chtulu dungeon
 			addButton(14, "Back", playerMenu);
 		}
@@ -125,7 +140,7 @@ public class Questlog extends BaseContent
 			outputText("<b>Gained 2 perk points and 10 stat points</b>");
 			player.perkPoints = player.perkPoints + 2;
 			player.statPoints = player.statPoints + 10;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.FACTORY_OMNIBUS_DEFEATED] = 2;
 			doNext(accessQuestlogMainMenu);
 		}
@@ -135,7 +150,7 @@ public class Questlog extends BaseContent
 			outputText("<b>Gained 4 perk points and 20 stat points</b>");
 			player.perkPoints = player.perkPoints + 4;
 			player.statPoints = player.statPoints + 20;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.DEFEATED_ZETAZ] = 2;
 			doNext(accessQuestlogMainMenu);
 		}
@@ -145,17 +160,17 @@ public class Questlog extends BaseContent
 			outputText("<b>Gained 6 perk points and 30 stat points</b>");
 			player.perkPoints = player.perkPoints + 6;
 			player.statPoints = player.statPoints + 30;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.LETHICE_DEFEATED] = 2;
 			doNext(accessQuestlogMainMenu);
 		}
 		public function takeRewardForSandCave():void {
 			clearOutput();
 			outputText("Your contribution in changing Mareth have been noticed.\n\n");
-			outputText("<b>Gained 1 perk points and 5 stat points</b>");
+			outputText("<b>Gained 1 perk point and 5 stat points</b>");
 			player.perkPoints = player.perkPoints + 1;
 			player.statPoints = player.statPoints + 5;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.DISCOVERED_WITCH_DUNGEON] = 2;
 			doNext(accessQuestlogMainMenu);
 		}
@@ -165,37 +180,67 @@ public class Questlog extends BaseContent
 			outputText("<b>Gained 2 perk points and 10 stat points</b>");
 			player.perkPoints = player.perkPoints + 2;
 			player.statPoints = player.statPoints + 10;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.CLEARED_HEL_TOWER] = 2;
+			doNext(accessQuestlogMainMenu);
+		}
+		public function takeRewardForRiverDungeon1stFloor():void {
+			clearOutput();
+			outputText("Your contribution in changing Mareth have been noticed.\n\n");
+			outputText("<b>Gained 1 perk point and 5 stat points</b>");
+			player.perkPoints = player.perkPoints + 1;
+			player.statPoints = player.statPoints + 5;
+			//statScreenRefresh();
+			player.createStatusEffect(StatusEffects.RiverDungeonFloorRewards,1,0,0,0);
+			doNext(accessQuestlogMainMenu);
+		}
+		public function takeRewardForRiverDungeon2ndFloor():void {
+			clearOutput();
+			outputText("Your contribution in changing Mareth have been noticed.\n\n");
+			outputText("<b>Gained 2 perk points and 10 stat points</b>");
+			player.perkPoints = player.perkPoints + 2;
+			player.statPoints = player.statPoints + 10;
+			//statScreenRefresh();
+			player.addStatusValue(StatusEffects.RiverDungeonFloorRewards,1,1);
+			doNext(accessQuestlogMainMenu);
+		}
+		public function takeRewardForEbonLabyrinth():void {
+			clearOutput();
+			outputText("Your contribution in changing Mareth have been noticed.\n\n");
+			outputText("<b>Gained 2 perk points and 10 stat points</b>");
+			player.perkPoints = player.perkPoints + 2;
+			player.statPoints = player.statPoints + 10;
+			//statScreenRefresh();
+			flags[kFLAGS.EBON_LABYRINTH] = 3;
 			doNext(accessQuestlogMainMenu);
 		}
 		public function takeRewardForHiddenCave():void {
 			clearOutput();
 			outputText("Your contribution in changing Mareth have been noticed.\n\n");
-			outputText("<b>Gained 1 perk points and 5 stat points</b>");
+			outputText("<b>Gained 1 perk point and 5 stat points</b>");
 			player.perkPoints = player.perkPoints + 1;
 			player.statPoints = player.statPoints + 5;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.HIDDEN_CAVE_LOLI_BAT_GOLEMS] = 6;
 			doNext(accessQuestlogMainMenu);
 		}
 		public function takeRewardForHiddenCaveHiddenStage():void {
 			clearOutput();
 			outputText("Your contribution in changing Mareth have been noticed.\n\n");
-			outputText("<b>Gained 1 perk points and 5 stat points</b>");
+			outputText("<b>Gained 1 perk point and 5 stat points</b>");
 			player.perkPoints = player.perkPoints + 1;
 			player.statPoints = player.statPoints + 5;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.HIDDEN_CAVE_BOSSES] = 3;
 			doNext(accessQuestlogMainMenu);
 		}
 		public function takeRewardForDenOfDesire():void {
 			clearOutput();
 			outputText("Your contribution in changing Mareth have been noticed.\n\n");
-			outputText("<b>Gained 2 perk points and 10 stat points</b>");
-			player.perkPoints = player.perkPoints + 2;
-			player.statPoints = player.statPoints + 10;
-			statScreenRefresh();
+			outputText("<b>Gained 3 perk points and 15 stat points</b>");
+			player.perkPoints = player.perkPoints + 3;
+			player.statPoints = player.statPoints + 15;
+			//statScreenRefresh();
 			flags[kFLAGS.DEN_OF_DESIRE_QUEST] = 2;
 			doNext(accessQuestlogMainMenu);
 		}

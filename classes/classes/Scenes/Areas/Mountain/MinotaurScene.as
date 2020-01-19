@@ -6,6 +6,7 @@ import classes.GlobalFlags.kFLAGS;
 import classes.Items.Armors.LustyMaidensArmor;
 import classes.Scenes.SceneLib;
 import classes.Scenes.UniqueSexScenes;
+import classes.Scenes.Dungeons.DungeonAbstractContent;
 
 public class MinotaurScene extends BaseContent {
 
@@ -120,15 +121,13 @@ private function postfightoptions():void {
 		if (player.canOvipositSpider() || (player.canOvipositBee() && player.gender > 0)) addButton(8, "Lay Eggs", layEggsInAMinotaurSpiderLike);
 		if ((temp2 == null || rand(2) == 0) && player.hasVagina() && player.biggestTitSize() >= 4 && player.armor is LustyMaidensArmor) addButton(9, "B.Titfuck", (player.armor as LustyMaidensArmor).lustyMaidenPaizuri);
 		if (player.findPerk(PerkLib.Feeder) >= 0) addButton(10, "Nurse", minotaurDrinksMilkNewsAtEleven);
-		if (player.lowerBody == LowerBody.PLANT_FLOWER) {
-			addButton(11, "Vine in Butt", alrauneVineInButtScene);
-			addButton(12, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
-		}
+		if (player.lowerBody == LowerBody.PLANT_FLOWER) addButton(11, "Vine in Butt", alrauneVineInButtScene);
 		if (player.hasKeyItem("All-Natural Onahole")) {
 			addButton(13, "Use Onahole", onaholeMino);
 		}
 	}
-	addButton(13, "Other", otherpostfightoptions);
+	addButton(12, "Kill", killMinotaur);
+	if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
 	addButton(14, "Leave", cleanupAfterCombat);
 	if(x < 0 && player.hasCock()) outputText("\nSadly, you're too well endowed to penetrate the minotaur.");
 	if(player.gender == 3 && player.isTaur()) outputText("\nIf you had a different body type you might be able to penetrate him while taking him, but as a centaur that's not an option.");
@@ -467,8 +466,9 @@ private function alrauneVineInButtScene():void
 	player.cuntChange(monster.cockArea(0), true);
 	outputText("Your remaining stamens wave around the minotaur, tending to his balls, weaving around his limbs, and generally rubbing and throbbing all over him, spreading liquid pollen around and through him, leaving both of you moaning in pleasure. Your vines throb and pulse, quickening in pace as you can feel the pollen swelling in your pitcher. They wave madly, and then, just as their motion makes you dizzy, you feel them stiffen suddenly, and start spewing their load all in and across the minotaur. You gasp and pause, collapsing on the strong back of the minotaur, basking in the afterglow.");
 	player.orgasm();
-	statScreenRefresh();
-	player.knockUp(PregnancyStore.PREGNANCY_ALRAUNE, PregnancyStore.INCUBATION_ALRAUNE);
+	EngineCore.statScreenRefresh();
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_ALRAUNE, PregnancyStore.INCUBATION_ALRAUNE);
 	cleanupAfterCombat();
 	return;
 }
@@ -512,7 +512,8 @@ private function girlRapeAMinotaur():void {
 	player.orgasm();
 	dynStats("spe", -.5, "int", -.5, "sen", 1.5, "cor", 1);
 	//Preggers chance!
-	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
 	cleanupAfterCombat();
 }
 private function minotaurGetsRapedByHerms():void {
@@ -531,7 +532,9 @@ private function minotaurGetsRapedByHerms():void {
 	dynStats("spe", -.5, "int", -.5, "sen", 1.5, "cor", 1);
 	//Preggers chance!
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
-	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
 	cleanupAfterCombat();
 }
 
@@ -678,8 +681,10 @@ if (doSFWloss() && CoC.instance.inCombat) { //No rape in SFW mode.
 			dynStats("tou", -.5, "sen", 1, "lus", -5, "cor", 1);
 		}
 		//Preggers chance!
-		player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR);
 		if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+		if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	}
 	if(player.cockTotal() > 0 && (player.sens + rand(40) > 50)) {
 		outputText("You orgasm, ");
@@ -693,7 +698,17 @@ if (doSFWloss() && CoC.instance.inCombat) { //No rape in SFW mode.
 	outputText("The bull-man relaxes for a moment, then shoves you off of him and to the cold ground. You pass out as a strange sense of euphoria washes over you while copious quantities of monstrous cum escape your distended ");
 	if(player.hasVagina()) outputText("pussy.");
 	else outputText("asshole.");
-    if (CoC.instance.inCombat) cleanupAfterCombat();
+    if (CoC.instance.inCombat) {
+		if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) {
+			outputText("\n\nUnsatisfied with fucking you silly the beast forcefeeds you a full vial of his cum. You feel something in you flip as you acquire an addiction for the nefarious compound! <b>You are now addicted to minotaur cum!</b>");
+			player.removeStatusEffect(StatusEffects.EbonLabyrinthB);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss1)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss1);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss2)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss2);
+			minoCumAddiction(100);
+			DungeonAbstractContent.dungeonLoc = 0;
+		}
+		cleanupAfterCombat();
+	}
     else doNext(camp.returnToCampUseFourHours);
 }
 
@@ -733,7 +748,18 @@ private function getOralRapedByMinotaur():void {
 	minoCumAddiction(10);
 	player.slimeFeed(this.monster, true);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
-    if (CoC.instance.inCombat) cleanupAfterCombat();
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
+    if (CoC.instance.inCombat) {
+		if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) {
+			outputText("\n\nUnsatisfied with fucking you silly the beast forcefeed you a full vial of his cum. You feel something in you flip as you acquire an addiction for the nefarious compound! <b>You are now addicted to minotaur cum!</b>");
+			player.removeStatusEffect(StatusEffects.EbonLabyrinthB);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss1)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss1);
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss2)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss2);
+			minoCumAddiction(100);
+			DungeonAbstractContent.dungeonLoc = 0;
+		}
+		cleanupAfterCombat();
+	}
     else doNext(camp.returnToCampUseFourHours);
 }
 
@@ -767,6 +793,7 @@ private function minoGetsTitFucked():void {
 	outputText("The bull-man relaxes at last, drenching you with one last wave before he passes out.  You stagger up and nearly trip over your legs, giggling and drunk on cow-spunk as you noisily slurp down the fluids drenching your face and hair.  You black out for a while...\n\n");
 	outputText("You wake up an hour later, unsure how you made it back to your camp, light-headed and euphoric with the lingering after-affects.  You also find a bottle on the ground next to you, filled to the brim with the fluid.  You don't remember filling it up, but you're already itching to pop it open and guzzle it down.  You manage to resist the urge.  Besides, you're still feeling GREAT from your last 'sample'.");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	minoCumAddiction(10);
 	player.slimeFeed(this.monster, true);
 	monster.short = "tit-fucked Minotaur";
@@ -1177,7 +1204,15 @@ private function getMinoHawtDawged():void {
 	//{Loss message 'when you wake up you'll be missing gems' blah blah}
 	dynStats("lus", 15+rand(player.lib/2));
 	player.slimeFeed();
-	minoCumAddiction(5);
+	if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) {
+		outputText("\n\nUnsatisfied with fucking you silly the beast forcefeed you a full vial of his cum. You feel something in you flip as you acquire an addiction for the nefarious compound! <b>You are now addicted to minotaur cum!</b>");
+		player.removeStatusEffect(StatusEffects.EbonLabyrinthB);
+		if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss1)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss1);
+		if (player.hasStatusEffect(StatusEffects.EbonLabyrinthBoss2)) player.removeStatusEffect(StatusEffects.EbonLabyrinthBoss2);
+		minoCumAddiction(100);
+		DungeonAbstractContent.dungeonLoc = 0;
+	}
+	else minoCumAddiction(5);
 	cleanupAfterCombat();
 }
 }

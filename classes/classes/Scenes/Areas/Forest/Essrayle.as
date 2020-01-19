@@ -324,6 +324,7 @@ private function hasPussyFeedEssy(newPage:Boolean = true):void {
 	outputText("\n\nIt takes you a while, but you extricate yourself and clean off the best you can, leaving her with a friendly kiss on the cheek before you head on your way once more.  With visitors like you, she hardly seems like she'll mind being trapped in the enchanted flower pot.");
 	player.orgasm();
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	if(player.fertility < 50) player.fertility++;
 	doNext(playerMenu);
 }
@@ -355,7 +356,7 @@ private function declineEssyPrizes():void {
 	
 	//(Player gains some more gems)
 	player.gems += 100 + rand (70);
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	
 	outputText("\n\n\"<i>Well, maybe in the future you'll change your mind and find another way to do it on your own.  But I guess for now I'll just see you around!  Thanks for the save, hun!</i>\"  The planty beauty blows you a kiss before she heads off, bulging breasts jiggling and bouncing steadily all the way.");
 	doNext(playerMenu);

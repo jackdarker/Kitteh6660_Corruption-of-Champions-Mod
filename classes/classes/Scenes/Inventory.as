@@ -21,12 +21,15 @@ import classes.Items.ShieldLib;
 import classes.Items.Undergarment;
 import classes.Items.UndergarmentLib;
 import classes.Items.Useable;
+import classes.Items.Vehicles;
+import classes.Items.VehiclesLib;
 import classes.Items.Weapon;
 import classes.Items.WeaponLib;
 import classes.Items.WeaponRange;
 import classes.Items.WeaponRangeLib;
 import classes.Scenes.Camp.UniqueCampScenes;
 import classes.Scenes.NPCs.HolliPureScene;
+import classes.Scenes.NPCs.MagnoliaFollower;
 
 use namespace CoC;
 
@@ -42,6 +45,7 @@ use namespace CoC;
 		private var currentItemSlot:ItemSlotClass;	//The slot previously occupied by the current item - only needed for stashes and items with a sub menu.
 		public var HolliPure:HolliPureScene = new HolliPureScene();
 		public var Gardening:UniqueCampScenes = new UniqueCampScenes();
+		public var Magnolia:MagnoliaFollower = new MagnoliaFollower();
 		
 		public function Inventory(saveSystem:Saves) {
 			itemStorage = [];
@@ -65,7 +69,7 @@ use namespace CoC;
 		
 //		public function currentCallNext():Function { return callNext; }
 		
-		public function itemGoNext():void { if (callNext != null) doNext(callNext); }
+		public function itemGoNext():void { if (callNext != null) EngineCore.doNext(callNext); }
 		
 		public function inventoryMenu():void {
 			var x:int;
@@ -88,11 +92,14 @@ use namespace CoC;
 			outputText("<b>Armour:</b> " + player.armor.name + " (Physical / Magical Defense: " + player.armorDef + " / " + player.armorMDef + ")\n");
 			outputText("<b>Upper underwear:</b> " + player.upperGarment.name + "\n");
 			outputText("<b>Lower underwear:</b> " + player.lowerGarment.name + "\n");
-			outputText("<b>Head Accessory:</b> " + player.headjewelryName + "\n");
+			outputText("<b>Head Accessory/Helm:</b> " + player.headjewelryName + "\n");
 			outputText("<b>Necklace:</b> " + player.necklaceName + "\n");
-			/*outputText("<b>Ring:</b> " + player.jewelryName + "\n");
-			outputText("<b>Ring:</b> " + player.jewelryName + "\n");*/
-			outputText("<b>Accessory:</b> " + player.jewelryName + "\n");
+			outputText("<b>Ring (1st):</b> " + player.jewelry.name + "\n");
+			if (player.findPerk(PerkLib.SecondRing) >= 0) outputText("<b>Ring (2nd):</b> " + player.jewelry2.name + "\n");
+			if (player.findPerk(PerkLib.ThirdRing) >= 0) outputText("<b>Ring (3rd):</b> " + player.jewelry3.name + "\n");
+			if (player.findPerk(PerkLib.FourthRing) >= 0) outputText("<b>Ring (4th):</b> " + player.jewelry4.name + "\n");
+			//outputText("<b>Accessory:</b> " + player.jewelryName + "\n");
+			outputText("<b>Vehicle:</b> " + player.vehiclesName + "\n");
 			if (player.hasKeyItem("Bag of Cosmos") >= 0) outputText("\nAt your belt hangs bag of cosmos.\n");
 			if (player.hasKeyItem("Sky Poison Pearl") >= 0) outputText("\nThere is a circular green imprint at the palm of your left hand.\n");
 			if (player.keyItems.length > 0) outputText("<b><u>\nKey Items:</u></b>\n");
@@ -161,40 +168,51 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 		public function miscitemsMenu():void {
 			var foundItem:Boolean = false;
 			menu();
-            if (Holidays.nieveHoliday() && flags[kFLAGS.NIEVE_STAGE] > 0 && flags[kFLAGS.NIEVE_STAGE] < 5) {
-                addButton(0, "Snow", Holidays.nieveBuilding);
-                foundItem = true;
-				}
-				if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 1 && flags[kFLAGS.FUCK_FLOWER_LEVEL] < 4) {
-					addButton(2, (flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), SceneLib.holliScene.treeMenu);
+            if (Holidays.nieveHoliday()) {
+				if (flags[kFLAGS.NIEVE_STAGE] > 0 && flags[kFLAGS.NIEVE_STAGE] < 5) {
+					addButton(0, "Snow", Holidays.nieveBuilding);
 					foundItem = true;
 				}
-				if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FLOWER_LEVEL] >= 1 && flags[kFLAGS.FLOWER_LEVEL] < 4) {
-					addButton(2, (flags[kFLAGS.FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), HolliPure.treeMenu);
+				if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] == 0 && player.hasKeyItem("Mysterious Seed") >= 0) {
+					addButton(7, "Mysterious Seed", Magnolia.treeMenu);
 					foundItem = true;
 				}
-				if (player.hasKeyItem("Dragon Egg") >= 0) {
-					addButton(3, "Egg", SceneLib.emberScene.emberEggInteraction);
+				if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] > 1 && flags[kFLAGS.CHRISTMAS_TREE_LEVEL] < 8) {
+					if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] == 6 && player.hasKeyItem("Decorations") >= 0) addButton(7, "Decorate Tree", Magnolia.treeMenu);
+					else addButton(7, (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] >= 7 ? "Ch. Tree" : "Green Tree"), Magnolia.treeMenu);
 					foundItem = true;
 				}
-				if (flags[kFLAGS.ANEMONE_KID] > 0) {
-					//CoC.instance.anemoneScene.anemoneBarrelDescription();
-					if (model.time.hours >= 6) addButton(4, "Anemone", SceneLib.anemoneScene.approachAnemoneBarrel);
-				}
-				if (flags[kFLAGS.ALRAUNE_SEEDS] > 0) {
-					if (model.time.hours >= 6) addButton(5, "Garden", Gardening.manageuyourgarden).hint("Visit your plant offspring");
-				}
-				if (player.hasKeyItem("Gryphon Statuette") >= 0) {
+			}
+			if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 1 && flags[kFLAGS.FUCK_FLOWER_LEVEL] < 4) {
+				addButton(2, (flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), SceneLib.holliScene.treeMenu);
+				foundItem = true;
+			}
+			if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FLOWER_LEVEL] >= 1 && flags[kFLAGS.FLOWER_LEVEL] < 4) {
+				addButton(2, (flags[kFLAGS.FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), HolliPure.treeMenu);
+				foundItem = true;
+			}
+			if (player.hasKeyItem("Dragon Egg") >= 0) {
+				addButton(3, "Egg", SceneLib.emberScene.emberEggInteraction);
+				foundItem = true;
+			}
+			if (flags[kFLAGS.ANEMONE_KID] > 0) {
+				//CoC.instance.anemoneScene.anemoneBarrelDescription();
+				if (model.time.hours >= 6) addButton(4, "Anemone", SceneLib.anemoneScene.approachAnemoneBarrel);
+			}
+			if (flags[kFLAGS.ALRAUNE_SEEDS] > 0) {
+				if (model.time.hours >= 6) addButton(5, "Garden", Gardening.manageyourgarden).hint("Visit your plant offspring");
+			}
+			if (player.hasKeyItem("Gryphon Statuette") >= 0) {
 					addButton(6, "Gryphon", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 1, player),miscitemsMenu));
 				}
-				if (player.hasKeyItem("Peacock Statuette") >= 0) {
-					addButton(6, "Peacock", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 2, player),miscitemsMenu));
-				}
-				addButton(14, "Back", inventoryMenu);
+			if (player.hasKeyItem("Peacock Statuette") >= 0) {
+				addButton(6, "Peacock", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 2, player),miscitemsMenu));
+			}
+			addButton(14, "Back", inventoryMenu);
 		}
 		private function execAndDoNext(A:Function, B:Function):void {
 			A();
-			doNext(B);
+			EngineCore.doNext(B);
 		}
 		public function BagOfCosmosMenu():void {
 			hideMenus();
@@ -410,7 +428,7 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 				return;
 			}
 			if (showNext)
-				doNext(callNext); //Items with sub menus should return to the inventory screen if the player decides not to use them
+				EngineCore.doNext(callNext); //Items with sub menus should return to the inventory screen if the player decides not to use them
 			else callNext(); //When putting items back in your stash we should skip to the take from stash menu
 		}
 		
@@ -574,7 +592,7 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 			clearOutput();
 			outputText(player.itemSlots[slotNum].quantity + "x " + item.shortName + " " + (player.itemSlots[slotNum].quantity == 1 ? "has": "have") + " been destroyed.");
 			player.destroyItems(item, player.itemSlots[slotNum].quantity);
-			doNext(inventoryMenu);
+			EngineCore.doNext(inventoryMenu);
 		}
 		
 		private function useItem(item:Useable, fromSlot:ItemSlotClass):void {
@@ -615,8 +633,29 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 				else takeItem(item, callNext);
 			}
 			else if (item is Jewelry) {
-				player.jewelry.removeText();
-				item = player.setJewelry(item as Jewelry); //Item is now the player's old jewelry
+				if (player.findPerk(PerkLib.FourthRing) >= 0 && player.jewelry4 == JewelryLib.NOTHING) { //if 4th ring slot is empty, equip in that slot
+					player.setJewelry4(item as Jewelry); 
+					itemGoNext();
+				}
+				else if (player.findPerk(PerkLib.ThirdRing) >= 0 && player.jewelry3 == JewelryLib.NOTHING) { //if 3rd ring slot is empty, equip in that slot
+					player.setJewelry3(item as Jewelry); 
+					itemGoNext();
+				}
+				else if (player.findPerk(PerkLib.SecondRing) >= 0 && player.jewelry2 == JewelryLib.NOTHING) { //if 2nd ring slot is empty, equip in that slot
+					player.setJewelry2(item as Jewelry); 
+					itemGoNext();
+				}
+				else { // otherwise replace 1nd ring slot
+					player.jewelry.removeText();
+					item = player.setJewelry(item as Jewelry); //Item is now the player's old jewelry
+					if (item == null)
+						itemGoNext();
+					else takeItem(item, callNext);
+				}
+			}
+			else if (item is Vehicles) {
+				player.vehicles.removeText();
+				item = player.setVehicle(item as Vehicles); //Item is now the player's old vehicle
 				if (item == null)
 					itemGoNext();
 				else takeItem(item, callNext);
@@ -812,33 +851,49 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 			clearOutput();
 			outputText("Which would you like to unequip?\n\n");
 			menu();
-			if (player.weapon != WeaponLib.FISTS)
+			if (player.weapon != WeaponLib.FISTS && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(0, "Weapon (M)", unequipWeapon).hint(player.weapon.description, capitalizeFirstLetter(player.weapon.name));
 			}
-			if (player.weaponRange != WeaponRangeLib.NOTHING)
+			if (player.weaponRange != WeaponRangeLib.NOTHING && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(1, "Weapon (R)", unequipWeaponRange).hint(player.weaponRange.description, capitalizeFirstLetter(player.weaponRange.name));
 			}
-			if (player.shield != ShieldLib.NOTHING)
+			if (player.shield != ShieldLib.NOTHING && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(2, "Shield", unequipShield).hint(player.shield.description, capitalizeFirstLetter(player.shield.name));
-			}
+			}/*
 			if (player.jewelry != JewelryLib.NOTHING)
 			{
 				addButton(3, "Accessory", unequipJewel).hint(player.jewelry.description, capitalizeFirstLetter(player.jewelry.name));
+			}*/
+			if (player.jewelry != JewelryLib.NOTHING)
+			{
+				addButton(3, "Ring 1", unequipJewel1).hint(player.jewelry.description, capitalizeFirstLetter(player.jewelry.name));
 			}
-			if (player.armor != ArmorLib.NOTHING)
+			if (player.jewelry2 != JewelryLib.NOTHING)
+			{
+				addButton(4, "Ring 2", unequipJewel2).hint(player.jewelry2.description, capitalizeFirstLetter(player.jewelry2.name));
+			}
+			if (player.armor != ArmorLib.NOTHING && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(5, "Armour", unequipArmor).hint(player.armor.description, capitalizeFirstLetter(player.armor.name));
 			}
-			if (player.upperGarment != UndergarmentLib.NOTHING)
+			if (player.upperGarment != UndergarmentLib.NOTHING && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(6, "Upperwear", unequipUpperwear).hint(player.upperGarment.description, capitalizeFirstLetter(player.upperGarment.name));
 			}
-			if (player.lowerGarment != UndergarmentLib.NOTHING)
+			if (player.lowerGarment != UndergarmentLib.NOTHING && !player.hasPerk(PerkLib.Rigidity))
 			{
 				addButton(7, "Lowerwear", unequipLowerwear).hint(player.lowerGarment.description, capitalizeFirstLetter(player.lowerGarment.name));
+			}
+			if (player.jewelry3 != JewelryLib.NOTHING)
+			{
+				addButton(8, "Ring 3", unequipJewel3).hint(player.jewelry3.description, capitalizeFirstLetter(player.jewelry3.name));
+			}
+			if (player.jewelry4 != JewelryLib.NOTHING)
+			{
+				addButton(9, "Ring 4", unequipJewel4).hint(player.jewelry4.description, capitalizeFirstLetter(player.jewelry4.name));
 			}
 			if (player.headJewelry != HeadJewelryLib.NOTHING)
 			{
@@ -847,15 +902,11 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 			if (player.necklace != NecklaceLib.NOTHING)
 			{
 				addButton(11, "Necklace", unequipNecklace).hint(player.necklace.description, capitalizeFirstLetter(player.necklace.name));
+			}
+			if (player.vehicles != VehiclesLib.NOTHING)
+			{
+				addButton(12, "Vehicle", unequipVehicle).hint(player.vehicles.description, capitalizeFirstLetter(player.vehicles.name));
 			}/*
-			if (player.jewelry != JewelryLib.NOTHING)
-			{
-				addButton(3, "Ring 1", unequipJewel).hint(player.jewelry.description, capitalizeFirstLetter(player.jewelry.name));
-			}
-			if (player.jewelry != JewelryLib.NOTHING)
-			{
-				addButton(4 lub 8, "Ring 2", unequipJewel).hint(player.jewelry.description, capitalizeFirstLetter(player.jewelry.name));
-			}
 			zrobić sloty:
 			może jeszcze 1-3 kolejne ringi (poza pierwszym orginalnym slotem)
 			coś w stylu slotu na prawdziwe akcesoria
@@ -880,7 +931,7 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 			else { //Valeria belongs in the camp, not in your inventory!
 				player.armor.removeText();
 				player.setArmor(ArmorLib.NOTHING);
-				doNext(manageEquipment);
+				EngineCore.doNext(manageEquipment);
 			}
 		}
 		public function unequipUpperwear():void {
@@ -895,8 +946,20 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 		public function unequipNecklace():void {
 			takeItem(player.setNecklace(NecklaceLib.NOTHING), inventoryMenu);
 		}
-		public function unequipJewel():void {
+		public function unequipJewel1():void {
 			takeItem(player.setJewelry(JewelryLib.NOTHING), inventoryMenu);
+		}
+		public function unequipJewel2():void {
+			takeItem(player.setJewelry2(JewelryLib.NOTHING), inventoryMenu);
+		}
+		public function unequipJewel3():void {
+			takeItem(player.setJewelry3(JewelryLib.NOTHING), inventoryMenu);
+		}
+		public function unequipJewel4():void {
+			takeItem(player.setJewelry4(JewelryLib.NOTHING), inventoryMenu);
+		}
+		public function unequipVehicle():void {
+			takeItem(player.setVehicle(VehiclesLib.NOTHING), inventoryMenu);
 		}
 		public function unequipShield():void {
 			takeItem(player.setShield(ShieldLib.NOTHING), inventoryMenu);
@@ -1165,102 +1228,102 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false && 
 		
 		private function placeInCampStorage(slotNum:int):void {
 			placeIn(itemStorage, 0, itemStorage.length, slotNum);
-			doNext(pickItemToPlaceInCampStorage);
+			EngineCore.doNext(pickItemToPlaceInCampStorage);
 		}
 		
 		private function placeInBagOfCosmos(slotNum:int):void {
 			placeIn(gearStorage, 45, 57, slotNum);
-			doNext(pickItemToPlaceInBagOfCosmos);
+			EngineCore.doNext(pickItemToPlaceInBagOfCosmos);
 		}
 		
 		private function placeInSkyPoisonPearl1(slotNum:int):void {
 			placeIn(pearlStorage, 0, 14, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl1);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl1);
 		}
 		
 		private function placeInSkyPoisonPearl2(slotNum:int):void {
 			placeIn(pearlStorage, 14, 28, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl2);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl2);
 		}
 		
 		private function placeInSkyPoisonPearl3(slotNum:int):void {
 			placeIn(pearlStorage, 28, 42, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl3);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl3);
 		}
 		
 		private function placeInSkyPoisonPearl4(slotNum:int):void {
 			placeIn(pearlStorage, 42, 56, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl4);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl4);
 		}
 		
 		private function placeInSkyPoisonPearl5(slotNum:int):void {
 			placeIn(pearlStorage, 56, 70, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl5);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl5);
 		}
 		
 		private function placeInSkyPoisonPearl6(slotNum:int):void {
 			placeIn(pearlStorage, 70, 84, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl6);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl6);
 		}
 		
 		private function placeInSkyPoisonPearl7(slotNum:int):void {
 			placeIn(pearlStorage, 84, 98, slotNum);
-			doNext(pickItemToPlaceInSkyPoisonPearl7);
+			EngineCore.doNext(pickItemToPlaceInSkyPoisonPearl7);
 		}
 		
 		private function placeInWarehouse1(slotNum:int):void {
 			placeIn(gearStorage, 57, 69, slotNum);
-			doNext(pickItemToPlaceInWarehouse1);
+			EngineCore.doNext(pickItemToPlaceInWarehouse1);
 		}
 		
 		private function placeInWarehouse2(slotNum:int):void {
 			placeIn(gearStorage, 78, 90, slotNum);
-			doNext(pickItemToPlaceInWarehouse2);
+			EngineCore.doNext(pickItemToPlaceInWarehouse2);
 		}
 		
 		private function placeInGranary(slotNum:int):void {
 			placeIn(gearStorage, 69, 78, slotNum);
-			doNext(pickItemToPlaceInGranary);
+			EngineCore.doNext(pickItemToPlaceInGranary);
 		}
 		
 		private function placeInArmorRack2(slotNum:int):void {
 			placeIn(gearStorage, 9, 18, slotNum);
-			doNext(pickItemToPlaceInArmorRack2);
+			EngineCore.doNext(pickItemToPlaceInArmorRack2);
 		}
 		
 		private function placeInArmorRack(slotNum:int):void {
 			placeIn(gearStorage, 9, 18, slotNum);
-			doNext(pickItemToPlaceInArmorRack);
+			EngineCore.doNext(pickItemToPlaceInArmorRack);
 		}
 		
 		private function placeInWeaponRack2(slotNum:int):void {
 			placeIn(gearStorage, 0, 9, slotNum);
-			doNext(pickItemToPlaceInWeaponRack2);
+			EngineCore.doNext(pickItemToPlaceInWeaponRack2);
 		}
 		
 		private function placeInWeaponRack(slotNum:int):void {
 			placeIn(gearStorage, 0, 9, slotNum);
-			doNext(pickItemToPlaceInWeaponRack);
+			EngineCore.doNext(pickItemToPlaceInWeaponRack);
 		}
 		
 		private function placeInShieldRack2(slotNum:int):void {
 			placeIn(gearStorage, 36, 45, slotNum);
-			doNext(pickItemToPlaceInShieldRack2);
+			EngineCore.doNext(pickItemToPlaceInShieldRack2);
 		}
 		
 		private function placeInShieldRack(slotNum:int):void {
 			placeIn(gearStorage, 36, 45, slotNum);
-			doNext(pickItemToPlaceInShieldRack);
+			EngineCore.doNext(pickItemToPlaceInShieldRack);
 		}
 		
 		private function placeInJewelryBox(slotNum:int):void {
 			placeIn(gearStorage, 18, 27, slotNum);
-			doNext(pickItemToPlaceInJewelryBox);
+			EngineCore.doNext(pickItemToPlaceInJewelryBox);
 		}
 		
 		private function placeInDresser(slotNum:int):void {
 			placeIn(gearStorage, 27, 36, slotNum);
-			doNext(pickItemToPlaceInDresser);
+			EngineCore.doNext(pickItemToPlaceInDresser);
 		}
 		
 		private function placeIn(storage:Array, startSlot:int, endSlot:int, slotNum:int):void {

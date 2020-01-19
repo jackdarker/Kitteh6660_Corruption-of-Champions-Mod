@@ -1,5 +1,6 @@
 ﻿package classes.Scenes.Dungeons.D3 
 {
+import classes.EngineCore;
 import classes.Appearance;
 import classes.AssClass;
 import classes.BodyParts.Butt;
@@ -118,7 +119,7 @@ import classes.StatusEffects.Combat.GardenerSapSpeedDebuff;
 				
 				opts[rand(opts.length)]();
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		
 		override protected function handleStun():Boolean
@@ -208,7 +209,7 @@ import classes.StatusEffects.Combat.GardenerSapSpeedDebuff;
 		{
 			clearOutput();
 			var numRounds:int = player.statusEffectv1(StatusEffects.Tentagrappled);
-			if (rand(player.str) > this.str / (1 + (numRounds / 2)))
+			if ((rand(player.str) > this.str / (1 + (numRounds / 2))) || player.hasPerk(PerkLib.FluidBody))
 			{
 				outputText("You scrabble desperately against the tentacles enveloping your body, pulling against the cast-iron grip around your limbs. You tug against them again and again, and with one final mighty heave, you slip free of their grasp!");
 				player.removeStatusEffect(StatusEffects.Tentagrappled);

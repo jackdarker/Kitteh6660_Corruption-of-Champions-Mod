@@ -21,6 +21,8 @@ import classes.BodyParts.Skin;
 import classes.BodyParts.Tail;
 import classes.BodyParts.Tongue;
 import classes.BodyParts.Wings;
+import classes.StatusEffects;
+import classes.CockTypesEnum;
 import classes.lists.BreastCup;
 import classes.lists.Gender;
 
@@ -31,32 +33,35 @@ public class CharViewContext extends ExecContext {
 	private var charview:CharView;
 	public function CharViewContext(charview:CharView, character:*) {
 		super([
+			{}, // local variables
 			character,
-			{ // Revamp compatibility layer
-				Antennae : Antennae,
-				Arms     : Arms,
-				Beard    : Beard,
-				BreastCup: BreastCup,
-				Butt     : Butt,
-				Claws    : Claws,
-				Ears     : Ears,
-				Eyes     : Eyes,
-				Face     : Face,
-				Gender   : Gender,
-				Gills    : Gills,
-				Hair     : Hair,
-				Hips     : Hips,
-				Horns    : Horns,
-				LowerBody: LowerBody,
-				Neck     : Neck,
-				Pattern  : Pattern,
-				Piercing : Piercing,
-				RearBody : RearBody,
-				Skin     : Skin,
-				Tail     : Tail,
-				Tongue   : Tongue,
-				UnderBody: UnderBody,
-				Wings    : Wings
+			{
+				Antennae     : Antennae,
+				Arms         : Arms,
+				Beard        : Beard,
+				BreastCup    : BreastCup,
+				Butt         : Butt,
+				Claws        : Claws,
+				CockTypesEnum: CockTypesEnum,
+				Ears         : Ears,
+				Eyes         : Eyes,
+				Face         : Face,
+				Gender       : Gender,
+				Gills        : Gills,
+				Hair         : Hair,
+				Hips         : Hips,
+				Horns        : Horns,
+				LowerBody    : LowerBody,
+				Neck         : Neck,
+				Pattern      : Pattern,
+				Piercing     : Piercing,
+				RearBody     : RearBody,
+				Skin         : Skin,
+				Tail         : Tail,
+				Tongue       : Tongue,
+				UnderBody    : UnderBody,
+				Wings        : Wings,
+				StatusEffects: StatusEffects
 			}
 		]);
 		this.charview = charview;
@@ -79,6 +84,9 @@ class Pattern {
 	public static const BATTLE_TATTOO:int           = classes.BodyParts.Skin.PATTERN_BATTLE_TATTOO;
 	public static const SPOTTED:int                 = classes.BodyParts.Skin.PATTERN_SPOTTED;
 	public static const LIGHTNING_SHAPED_TATTOO:int = classes.BodyParts.Skin.PATTERN_LIGHTNING_SHAPED_TATTOO;
+	public static const RED_PANDA_UNDERBODY:int     = classes.BodyParts.Skin.PATTERN_RED_PANDA_UNDERBODY;
+	public static const SCAR_SHAPED_TATTOO:int      = classes.BodyParts.Skin.PATTERN_SCAR_SHAPED_TATTOO;
+	public static const WHITE_BLACK_VEINS:int       = classes.BodyParts.Skin.PATTERN_WHITE_BLACK_VEINS;
 }
 class UnderBody {
 

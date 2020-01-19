@@ -45,17 +45,17 @@ public class HellHound extends Monster
 				temp = Math.round(temp);
 				player.takeFireDamage(temp, true);
 				player.dynStats("lus", 20+(player.sens/10));
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 				if(player.HP <= player.minHP()) {
-					doNext(SceneLib.combat.endHpLoss);
+					EngineCore.doNext(SceneLib.combat.endHpLoss);
 					return;
 				}
 				if(player.lust >= player.maxLust()) {
-					doNext(SceneLib.combat.endLustLoss);
+					EngineCore.doNext(SceneLib.combat.endLustLoss);
 					return;
 				}
 			}
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 		}
 		protected function hellhoundScent():void {
 			if(player.hasStatusEffect(StatusEffects.NoFlee)) {
@@ -86,7 +86,7 @@ public class HellHound extends Monster
 					//Rape if not naga, turned on, and girl that can fit!
 					if (player.hasVagina() && player.lust >= 33 && !player.isNaga()) {
 						outputText("  You find yourself musing that you could probably take advantage of the poor 'doggy'.  Do you fuck it?");
-						EngineCore.simpleChoices("Fuck it", SceneLib.mountain.hellHoundScene.hellHoundPropahRape, "", null, "", null, "", null, "Leave", SceneLib.combat.cleanupAfterCombatImpl);
+						SceneLib.mountain.hellHoundScene.hellHoundPostFightSexScenes();
 					} else {
 						SceneLib.combat.cleanupAfterCombatImpl();
 					}
@@ -98,10 +98,9 @@ public class HellHound extends Monster
 						//Rape if not naga, turned on, and girl that can fit!
 						if (player.hasVagina() && player.lust >= 33 && !player.isNaga()) {
 							outputText(" or make it fuck you");
-							temp2 = SceneLib.mountain.hellHoundScene.hellHoundPropahRape;
 						}
 						outputText(".  What do you do?");
-						EngineCore.simpleChoices("Lick", SceneLib.mountain.hellHoundScene.hellHoundGetsRaped, "Fuck", temp2, "", null, "", null, "Leave", SceneLib.combat.cleanupAfterCombatImpl);
+						SceneLib.mountain.hellHoundScene.hellHoundPostFightSexScenes();
 					}
 					else {
 						outputText("You turn away, not really turned on enough to be interested in such an offer.");
@@ -116,7 +115,7 @@ public class HellHound extends Monster
 			if (player.hasStatusEffect(StatusEffects.RiverDungeonA)) floor1.defeatedByHellHound();
 			else if(pcCameWorms){
 				outputText("\n\nThe hellhound snorts and leaves you to your fate.");
-				doNext(SceneLib.combat.cleanupAfterCombatImpl);
+				EngineCore.doNext(SceneLib.combat.cleanupAfterCombatImpl);
 			}
 			else SceneLib.mountain.hellHoundScene.hellhoundRapesPlayer();
 		}

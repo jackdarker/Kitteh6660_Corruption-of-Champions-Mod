@@ -657,7 +657,7 @@ public function rubisFuckingHouseYouPervert():void {
 			//(Produces money daily?  Not too much, Rubi's a dumb blonde, and we don't want the PC to have a gem farm.  Enough to make it useful, not enough to make it mandatory.)
 			player.gems += flags[kFLAGS.RUBI_PROFIT];
 			flags[kFLAGS.RUBI_PROFIT] = 0;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		outputText("\n\n\"<i>So baby, what do you wanna do to me?</i>\" she whispers into your ear.");
 	}
@@ -2059,7 +2059,7 @@ private function dateIntro(date:Function):void {
 //Costs 2 gems.
 private function iceCreamDate():void {
 	player.gems -= 2;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	rubiSprite();
 	outputText("\n\nYou take your freshly dressed-up lover and head out of the little house.  Hand-in-hand you head down the streets of Tel'Adre, looking for a good place to have a quiet meal.  Past the bakery where Rubi works, you spot a small shop labelled as a \"Ice Cream Parlour\".  Rubi looks inside, [rubi eir] eyes wide as [rubi ey] asks, \"<i>Oh!  Can we stop in here?</i>\"");
 	outputText("\n\nNodding, the two of you head inside.  It's a small shop, with only a few tables, most of which are empty.  There's a counter at the far end of the store, behind which you can see several buckets filled with icy, creamy goodness.  A male fox standing behind the counter tells you to sit anywhere, and that he'll come by for your orders momentarily.  You take Rubi over to a table next to the window and sit, chatting idly until the fox approaches.");
@@ -2092,7 +2092,7 @@ private function fancyDate():void {
 	//Costs 10 gems
 	if(player.gems >= 10) {
 		player.gems -= 10;
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 		outputText("\n\nSince your lover is dressed up for a night on the town, you decide to take [rubi em] to the fanciest restaurant in all of Tel'Adre.  Together, hand in hand, the two of you strike out of Rubi's small, yet cozy home, and head off in search of the best eatery in town.  Rubi directs you over a few streets, and you find yourself in front of \"Bigby's Cafe\", a large, imposing restaurant front.  Columns of fine marble flank the entrance to this impeccable shop.");
 		outputText("\n\nYou offer Rubi your arm, like a " + rubiMF("gentleman","lady") + " should, which [rubi ey] accepts graciously, and you escort [rubi em] inside.  A well-dressed bunny-boy meets you inside and escorts you to a table before handing you each a menu.  He bows and mentions that your waiter will be right with you.  You glance over your menu briefly, only recognizing a few entrees.  Many of the dishes seem to be foreign, at least to you.");
 

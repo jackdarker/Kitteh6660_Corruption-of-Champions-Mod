@@ -63,7 +63,6 @@ public function helAffection(diff:Number = 0):Number {
 }
 public function isHeliaBirthday():Boolean {
 	return date.month == 7;
-
 }
 
 //The Pale Flame Lingers: Introduction -McGirt
@@ -851,7 +850,7 @@ private function talkToHel():void {
 		if(gems < 0) outputText("\n\nYou lost " + gems + " gems in the game!");
 		else outputText("\n\nYou gained " + gems + " gems in the game!");
 		player.gems += gems;
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	else {
 		flags[kFLAGS.FOLLOWER_HEL_TALKS] = 1;
@@ -2442,4 +2441,3 @@ public function mishapsLunaHel():void {
 }
 	}
 }
-

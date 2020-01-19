@@ -5,10 +5,12 @@
 package classes.Scenes.NPCs 
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.SceneLib;
+import classes.internals.WeightedDrop;
 
 use namespace CoC;
 	
@@ -31,7 +33,7 @@ use namespace CoC;
 			}
 			else outputText((flags[kFLAGS.TED_LVL_UP] >= 3 ?"Ted":"Dragon-boy")+" easily hits you with a wide, difficult to avoid swing.  ");//Ted
 			if(damage > 0) player.takePhysDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		private function tedSpecialAttackTwo():void {
 			var damage:Number = 0;
@@ -56,19 +58,19 @@ use namespace CoC;
 				outputText("You are struck by a two-handed overhead swing from the enraged dragon-boy.  ");//Ted
 				damage = player.takePhysDamage(damage, true);
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}//poniżej ataki jakie bedzie używać w dodatku do 2 powyżej w czasie spotkań po Hidden Cave
 		private function tedSpecialAttack1():void {
 			var damage:Number = 0;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		private function tedSpecialAttack2():void {
 			var damage:Number = 0;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		private function tedSpecialAttack3():void {
 			var damage:Number = 0;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		
 		override protected function performCombatAction():void
@@ -146,6 +148,9 @@ use namespace CoC;
 				this.a = "the ";
 				this.short = "mysterious dragon-boy";
 			}
+			if (flags[kFLAGS.TED_LVL_UP] >= 6) this.drop = new WeightedDrop(consumables.BAGOCA3, 1);
+			else if (flags[kFLAGS.TED_LVL_UP] >= 3 && flags[kFLAGS.TED_LVL_UP] < 6) this.drop = new WeightedDrop(consumables.BAGOCA2, 1);
+			else this.drop = new WeightedDrop(consumables.BAGOCA1, 1);
 			this.imageName = "mysterious dragon-boy";
 			this.long = "Before you stands a dragon-boy.  Though he stands only six and half feet tall, he is covered in lean muscle and moves with grace no lesser than most skilled balet dancers.  He wears armor made of green dragon scales and fight using an oversized hammer that got inscribed on it words 'bam' and 'hammer'. Thou to be truth to be said word 'bam' looks like it was orginaly word 'ban'.";
 			// this.plural = false;
@@ -171,7 +176,6 @@ use namespace CoC;
 			this.lustVuln = .9;
 			this.temperment = TEMPERMENT_LUSTY_GRAPPLES;
 			this.gems = rand(10) + 5;
-			this.drop = NO_DROP;
 			this.createPerk(PerkLib.RefinedBodyI, 0, 0, 0, 0);
 			this.createPerk(PerkLib.TankI, 0, 0, 0, 0);
 			this.createPerk(PerkLib.Regeneration, 0, 0, 0, 0);

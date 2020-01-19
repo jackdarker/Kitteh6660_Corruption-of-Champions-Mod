@@ -1,6 +1,7 @@
 ﻿package classes.Scenes.Monsters
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.BodyParts.Wings;
@@ -35,7 +36,7 @@ public class Imp extends Monster
 			else if (pcCameWorms) {
 				outputText("\n\nThe imp grins at your already corrupted state...");
 				player.lust = player.maxLust();
-				doNext(SceneLib.impScene.impRapesYou);
+				EngineCore.doNext(SceneLib.impScene.impRapesYou);
 			}
 			else if (flags[kFLAGS.EVANGELINE_AFFECTION] == 1) {
 				flags[kFLAGS.EVANGELINE_AFFECTION] = 2;
@@ -83,8 +84,8 @@ public class Imp extends Monster
 			}
 			outputText("\n");
 			if (player.lust >= player.maxLust())
-				doNext(SceneLib.combat.endLustLoss);
-			else doNext(EventParser.playerMenu);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
+			else EngineCore.doNext(EventParser.playerMenu);
 		}
 		
 		protected function lustMagicAttack1():void {
@@ -124,8 +125,8 @@ public class Imp extends Monster
 			}
 			outputText("\n");
 			if (player.lust >= player.maxLust())
-				doNext(SceneLib.combat.endLustLoss);
-			else doNext(EventParser.playerMenu);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
+			else EngineCore.doNext(EventParser.playerMenu);
 		}
         public function allVaginaDescript():String {
             if (player.vaginas.length == 1) return Appearance.vaginaDescript(player,rand(player.vaginas.length - 1));

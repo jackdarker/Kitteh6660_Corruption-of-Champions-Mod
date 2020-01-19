@@ -32,7 +32,9 @@ package classes.Scenes.NPCs{
 		//public var FenrisNPC:classes.Scenes.NPCs.Fenris;
 
 	public function FenrisScene()
-	{		}
+	{		
+		var _lvl:uint = Fenris.getInstance().getLevel(); //dummy to force initialisation of instance
+	}
 		
 
 /**this will switch to the next stage; see Fenris.as for stages & flags

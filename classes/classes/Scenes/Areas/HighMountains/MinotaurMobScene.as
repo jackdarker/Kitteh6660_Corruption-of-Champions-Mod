@@ -2,6 +2,7 @@
 import classes.*;
 import classes.BodyParts.Tail;
 import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.UniqueSexScenes;
 
 public class MinotaurMobScene extends BaseContent implements TimeAwareInterface {
 
@@ -11,6 +12,8 @@ public class MinotaurMobScene extends BaseContent implements TimeAwareInterface 
 //327 Number of sons pending
 //328 growup countdown
 
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
+		
 		public function MinotaurMobScene()
 		{
 			EventParser.timeAwareClassAdd(this);
@@ -390,7 +393,8 @@ private function nonAddictMinotaurGangBang():void {
 	//Force cum bottle loot!
 	flags[kFLAGS.BONUS_ITEM_AFTER_COMBAT_ID] = consumables.MINOCUM.id;
 	//Preggers chance!
-	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 75);
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 75);
 	player.orgasm();
 	dynStats("spe", -.5, "int", -.5, "lib", .5, "sen", -.5, "cor", 1);
 	player.slimeFeed(this.monster, true);
@@ -613,16 +617,15 @@ internal function victoryMinotaurGang():void {
 	dynStats("lus", 1);
 	outputText("Your body is burning up, buzzing with growing lust from the obscenity going on a few feet away from you.  What do you do?");
 	//	[win options]
-	var getSuck:Function = null;
-	if(player.hasCock()) getSuck = createCallBackFunction(forceMinitaurToGiveOral,1);
-	var nipFuck:Function = null;
-	if(player.hasFuckableNipples()) nipFuck = victoryBJNippleFuckMinotaurGang;
-	var titFuck:Function = null;
-	if(player.biggestTitSize() >= 6) titFuck = victoryMinotaurGangTitFuck;
-	choices("Gangbang", victoryAllThePenetrationsMinotaurGangBang,
-			"Tit-Fuck", titFuck, "Nipple-Fuck", nipFuck,
-			"Get Licked", createCallBackFunction(forceMinitaurToGiveOral, 0),
-			"Get Sucked", getSuck, "Discipline", disciplineEldestMinotaurSon, "", null, "", null, "", null, "Leave", cleanupAfterCombat);
+	menu();
+	addButton(0, "Gangbang", victoryAllThePenetrationsMinotaurGangBang);
+	if (player.biggestTitSize() >= 6) addButton(1, "Tit-Fuck", victoryMinotaurGangTitFuck);
+	if (player.hasFuckableNipples()) addButton(2, "Nipple-Fuck", victoryBJNippleFuckMinotaurGang);
+	if (player.hasVagina()) addButton(3, "Get Licked", createCallBackFunction(forceMinitaurToGiveOral, 0));
+	if (player.hasCock()) addButton(4, "Get Sucked", createCallBackFunction(forceMinitaurToGiveOral, 1));
+	addButton(5, "Discipline", disciplineEldestMinotaurSon);
+	if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+	addButton(14, "Leave", cleanupAfterCombat);
 }
 //*[Victory Tit-Fuck] (for only the fattest of fat bitch titties) 
 private function victoryMinotaurGangTitFuck():void {
@@ -818,7 +821,8 @@ private function victoryAllThePenetrationsMinotaurGangBang():void {
 	outputText("After getting dressed, you idly scoop a handful of cum from your sodden box and devour it - the perfect snack for the long walk home.");
 
 	//Preggers chance!
-	player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 75);
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_MINOTAUR, PregnancyStore.INCUBATION_MINOTAUR, 75);
 	player.orgasm();
 	dynStats("spe", -.5, "int", -.5, "lib", .5, "sen", -.5, "cor", 1);
 	player.slimeFeed();

@@ -68,16 +68,16 @@ public class GameSettings extends BaseContent {
 			else outputText("Difficulty: <font color=\"#808000\"><b>Normal</b></font>\n No opponent stats modifiers. You can resume from bad-ends with penalties.");
 		}
 		else if (flags[kFLAGS.GAME_DIFFICULTY] == 1) {
-			outputText("Difficulty: <b><font color=\"#800000\">Hard</font></b>\n Opponent has 25% more HP and does 15% more damage. Bad-ends can ruin your game.");
+			outputText("Difficulty: <b><font color=\"#800000\">Hard</font></b>\n Opponent has 50% more HP/Lust/Wrath/Fatigue/Mana/Soulforce, does 15% more damage and giving ~10% more EXP. Bad-ends can ruin your game.");
 		}
 		else if (flags[kFLAGS.GAME_DIFFICULTY] == 2) {
-			outputText("Difficulty: <b><font color=\"#C00000\">Nightmare</font></b>\n Opponent has 50% more HP and does 30% more damage.");
+			outputText("Difficulty: <b><font color=\"#C00000\">Nightmare</font></b>\n Opponent has 100% more HP/Lust/Wrath/Fatigue/Mana/Soulforce, does 30% more damage and giving ~20% more EXP.");
 		}
 		else if (flags[kFLAGS.GAME_DIFFICULTY] == 3) {
-			outputText("Difficulty: <b><font color=\"#FF0000\">Extreme</font></b>\n Opponent has 100% more HP and does more 50% damage.");
+			outputText("Difficulty: <b><font color=\"#FF0000\">Extreme</font></b>\n Opponent has 200% more HP/Lust/Wrath/Fatigue/Mana/Soulforce, does more 50% damage and giving ~30% more EXP.");
 		}
 		else if (flags[kFLAGS.GAME_DIFFICULTY] >= 4) {
-			outputText("Difficulty: <b><font color=\"#FF0000\">Xianxia</font></b>\n Opponent has 200% more HP and does more 100% damage.");
+			outputText("Difficulty: <b><font color=\"#FF0000\">Xianxia</font></b>\n Opponent has 400% more HP/Lust/Wrath/Fatigue/Mana/Soulforce, does more 100% damage and giving ~40% more EXP.");
 		}
 
 		/*if(flags[kFLAGS.EASY_MODE_ENABLE_FLAG])
@@ -131,6 +131,54 @@ public class GameSettings extends BaseContent {
 
 		outputText("\n\n");
 
+		if (flags[kFLAGS.STRENGTH_SCALLING] >= 1) {
+			outputText("Strength Scaling: <font color=\"#008000\"><b>New</b></font>\n Values are less randomn and a bit higher on averange than in old scalling.");
+		}
+		else
+			outputText("Strength Scaling: <font color=\"#800000\"><b>Old</b></font>\n Values are more randomn and a bit lower on averange than in new scalling.");
+
+		outputText("\n\n");
+
+		if (flags[kFLAGS.SPEED_SCALLING] >= 1) {
+			outputText("Speed Scaling: <font color=\"#008000\"><b>New</b></font>\n Values are less randomn and a bit higher on averange than in old scalling.");
+		}
+		else
+			outputText("Speed Scaling: <font color=\"#800000\"><b>Old</b></font>\n Values are more randomn and a bit lower on averange than in new scalling.");
+
+		outputText("\n\n");
+
+		if (flags[kFLAGS.WISDOM_SCALLING] >= 1) {
+			outputText("Wisdom Scaling: <font color=\"#008000\"><b>New</b></font>\n Values are less randomn and a bit higher on averange than in old scalling.");
+		}
+		else
+			outputText("Wisdom Scaling: <font color=\"#800000\"><b>Old</b></font>\n Values are more randomn and a bit lower on averange than in new scalling.");
+
+		outputText("\n\n");
+
+		if (flags[kFLAGS.INTELLIGENCE_SCALLING] >= 1) {
+			outputText("Intelligence Scaling: <font color=\"#008000\"><b>New</b></font>\n Values are less randomn and a bit higher on averange than in old scalling.");
+		}
+		else
+			outputText("Intelligence Scaling: <font color=\"#800000\"><b>Old</b></font>\n Values are more randomn and a bit lower on averange than in new scalling.");
+
+		outputText("\n\n");
+
+		if (flags[kFLAGS.MELEE_DAMAGE_OVERHAUL] >= 1) {
+			outputText("Damage Overhaul: <font color=\"#008000\"><b>On</b></font>\n Damage uses new calculation system.");
+		}
+		else
+			outputText("Damage Overhaul: <font color=\"#800000\"><b>Off</b></font>\n Damage uses old calculation system.");
+
+		outputText("\n\n");
+
+		if (flags[kFLAGS.SPELLS_COOLDOWNS] >= 1) {
+			outputText("Spells Cooldowns: <font color=\"#008000\"><b>Off</b></font>\n Damage dealing spells not have cooldowns and they keep their default power.");
+		}
+		else
+			outputText("Spells Cooldowns: <font color=\"#800000\"><b>On</b></font>\n Damage dealing spells have cooldowns and they dealing more damage than in default cooldownless variant.");
+
+		outputText("\n\n");
+
 		if (flags[kFLAGS.ITS_EVERY_DAY]) {
 			outputText("Eternal Holiday Mode: <font color=\"#008000\"><b>ON</b></font>\n All holiday events like Eastern/X-mas and etc. would happen at any day of the year.");
 		}
@@ -167,9 +215,8 @@ public class GameSettings extends BaseContent {
 		if (player) addButton(8, "Enable Surv", enableSurvivalPrompt).hint("Enable Survival mode. This will enable hunger. \n\n<font color=\"#080000\">Note: This is permanent and cannot be turned off!</font>");
 		if (player) addButton(9, "Enable Real", enableRealisticPrompt).hint("Enable Realistic mode. This will make the game a bit realistic. \n\n<font color=\"#080000\">Note: This is permanent and cannot be turned off! Do not turn this on if you have hyper endowments.</font>");
 		
-		addButton(10, "Eternal Holiday", toggleEternalHoliday).hint("Toggles eternal holiday mode. All holiday events like Eastern/X-mas and etc. would happen at any day of the year.");
 		addButton(11, "Fetishes", fetishSubMenu).hint("Toggle some of the weird fetishes such as watersports and worms.");
-		addButton(12, "No Blood Toggle", toggleNOGORE).hint("Toggles No Blood Mode. If enabled, scenes could have more grungesome/bloody variants showed. Not for weak of hearts players.");
+		addButton(12, "Other Settings", settingsScreenGameSettings2);
 
 		if (flags[kFLAGS.HUNGER_ENABLED] >= 0.5) {
 			removeButton(8);
@@ -188,6 +235,18 @@ public class GameSettings extends BaseContent {
 			flags[kFLAGS.LOW_STANDARDS_FOR_ALL] = 0;
 		}
 		addButton(14, "Back", settingsScreenMain);
+	}
+	public function settingsScreenGameSettings2():void {
+		menu();
+		addButton(0, "Eternal Holiday", toggleEternalHoliday).hint("Toggles eternal holiday mode. All holiday events like Eastern/X-mas and etc. would happen at any day of the year.");
+		addButton(1, "No Blood Toggle", toggleNOGORE).hint("Toggles No Blood Mode. If enabled, scenes could have more grungesome/bloody variants showed. Not for the weak of heart players.");
+		addButton(3, "Wis scalling", toggleWisScaling).hint("Toggles Wisdom scalling for all attacks using it. If enabled, wisdom scaling would be less randomn with big generaly a bit higher values on averange.");
+		addButton(4, "Int scalling", toggleIntScaling).hint("Toggles Intelligance scalling for all attacks using it. If enabled, intelligence scaling would be less randomn with big generaly a bit higher values on averange.");
+		addButton(5, "Damage Overhaul", toggleDamageOverhaul).hint("Toggles Damage Overhaul. If enabled, melle and range attacks would deal randomn damage between 15% to 115%. Int and Wis could increase both values.");
+		addButton(6, "Spells Cooldowns", toggleSpellsCooldowns).hint("Toggles Spells cooldowns. If enabled, spells would have cooldowns and they will be stronger.");
+		addButton(8, "Str scalling", toggleStrScaling).hint("Toggles Strength scalling for all attacks using it. If enabled, strength scaling would be less randomn with big generaly a bit higher values on averange.");
+		addButton(9, "Spe scalling", toggleSpeScaling).hint("Toggles Speed scalling for all attacks using it. If enabled, speed scaling would be less randomn with big generaly a bit higher values on averange.");
+		addButton(14, "Back", settingsScreenGameSettings);
 	}
 
 	public function toggleDebug():void {
@@ -279,7 +338,7 @@ public class GameSettings extends BaseContent {
 	public function toggleEternalHoliday():void {
 		//toggle eternal holiday
 		flags[kFLAGS.ITS_EVERY_DAY] = !flags[kFLAGS.ITS_EVERY_DAY];
-		settingsScreenGameSettings();
+		settingsScreenGameSettings2();
 	}
 
 	public function toggleSFW():void {
@@ -291,7 +350,43 @@ public class GameSettings extends BaseContent {
 	public function toggleNOGORE():void {
 		if (flags[kFLAGS.NO_GORE_MODE] < 1) flags[kFLAGS.NO_GORE_MODE] = 1;
 		else flags[kFLAGS.NO_GORE_MODE] = 0;
-		settingsScreenGameSettings();
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleStrScaling():void {
+		if (flags[kFLAGS.STRENGTH_SCALLING] < 1) flags[kFLAGS.STRENGTH_SCALLING] = 1;
+		else flags[kFLAGS.STRENGTH_SCALLING] = 0;
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleSpeScaling():void {
+		if (flags[kFLAGS.SPEED_SCALLING] < 1) flags[kFLAGS.SPEED_SCALLING] = 1;
+		else flags[kFLAGS.SPEED_SCALLING] = 0;
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleWisScaling():void {
+		if (flags[kFLAGS.WISDOM_SCALLING] < 1) flags[kFLAGS.WISDOM_SCALLING] = 1;
+		else flags[kFLAGS.WISDOM_SCALLING] = 0;
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleIntScaling():void {
+		if (flags[kFLAGS.INTELLIGENCE_SCALLING] < 1) flags[kFLAGS.INTELLIGENCE_SCALLING] = 1;
+		else flags[kFLAGS.INTELLIGENCE_SCALLING] = 0;
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleDamageOverhaul():void {
+		if (flags[kFLAGS.MELEE_DAMAGE_OVERHAUL] < 1) flags[kFLAGS.MELEE_DAMAGE_OVERHAUL] = 1;
+		else flags[kFLAGS.MELEE_DAMAGE_OVERHAUL] = 0;
+		settingsScreenGameSettings2();
+	}
+
+	public function toggleSpellsCooldowns():void {
+		if (flags[kFLAGS.SPELLS_COOLDOWNS] < 1) flags[kFLAGS.SPELLS_COOLDOWNS] = 1;
+		else flags[kFLAGS.SPELLS_COOLDOWNS] = 0;
+		settingsScreenGameSettings2();
 	}
 
 	public function toggleWatersports():void {
@@ -366,7 +461,7 @@ public class GameSettings extends BaseContent {
 		outputText("Survival mode is now enabled.");
 		player.hunger                = 80;
 		flags[kFLAGS.HUNGER_ENABLED] = 0.5;
-		doNext(settingsScreenGameSettings);
+		EngineCore.doNext(settingsScreenGameSettings);
 	}
 
 //Realistic Mode
@@ -381,7 +476,7 @@ public class GameSettings extends BaseContent {
 		clearOutput();
 		outputText("Realistic mode is now enabled.");
 		flags[kFLAGS.HUNGER_ENABLED] = 1;
-		doNext(settingsScreenGameSettings);
+		EngineCore.doNext(settingsScreenGameSettings);
 	}
 
 

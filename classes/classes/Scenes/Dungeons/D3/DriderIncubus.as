@@ -1,5 +1,6 @@
 package classes.Scenes.Dungeons.D3
 {
+	import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.CockTypesEnum;
@@ -229,7 +230,7 @@ this.HP -= (this.maxHP() * 0.08);
 				}
 				
 				player.str -= amount;
-				showStatDown('str');
+				EngineCore.showUpDown()// showStatDown('str');
 				player.addStatusValue(StatusEffects.DriderIncubusVenom, 2, amount);
 					
 				//Alternate if PC cannot move
@@ -274,7 +275,7 @@ this.HP -= (this.maxHP() * 0.08);
 					}
 					
 					player.str -= amount;
-					showStatDown('str');
+					EngineCore.showUpDown()//showStatDown('str');
 					player.addStatusValue(StatusEffects.DriderIncubusVenom, 2, amount);
 				}				
 			}
@@ -456,7 +457,7 @@ this.HP -= (this.maxHP() * 0.08);
 				outputText(" You concentrate to try and throw it off, but he overwhelms your mental defenses. Clouds of swirling pink filled with unsubtle erotic silhouettes fill your vision, effectively blinding you!");
 				player.dynStats("lus", 25);
 				player.createStatusEffect(StatusEffects.PurpleHaze, 2 + rand(2), 0, 0, 0);
-				player.createStatusEffect(StatusEffects.Blind, player.statusEffectv1(StatusEffects.PurpleHaze), 0, 0, 0);
+				if (!player.hasPerk(PerkLib.BlindImmunity)) player.createStatusEffect(StatusEffects.Blind, player.statusEffectv1(StatusEffects.PurpleHaze), 0, 0, 0);
 			}
 		}
 		

@@ -225,7 +225,7 @@ private function readSharkCuntManual2():void {
 	
 	outputText("Handing Izma the gems she asked for, you pick up one of the many issues of 'Combat Manual'. Izma takes a moment to count and store the gems you've given her, while you move over to a nearby rock to have a quick read of the volume.\n\n");
 	player.gems -= 20;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	
 	//(One of the following random effects happens)
 	var choice:Number = rand(3);
@@ -273,7 +273,7 @@ private function confirmBuyCombatManual():void {
 	outputText("\n\n<b>Key item received: Izma's Book - Combat Manual!</b>");
 	player.createKeyItem("Izma's Book - Combat Manual", 0, 0, 0, 0);
 	player.gems -= 400;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(tradeWithFuckingSharkBitches);
 }
 
@@ -295,7 +295,7 @@ private function sharkEdgingGuideLOL():void {
 private function readSharkEdgingGuideLOL():void {
 	spriteSelect(32);
 	player.gems -= 25;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	clearOutput();
 	outputText("You hand Izma the gems she asked for and then pick up a copy.  Izma takes a moment to count the gems, while you sit down near her.\n\n");
 
@@ -332,7 +332,7 @@ private function confirmBuyEtiquetteGuide():void {
 	outputText("\n\n<b>Key item received: Izma's Book - Etiquette Guide!</b>");
 	player.createKeyItem("Izma's Book - Etiquette Guide", 0, 0, 0, 0);
 	player.gems -= 500;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(tradeWithFuckingSharkBitches);
 }
 
@@ -353,7 +353,7 @@ private function sharkgirlPronz():void {
 private function readSharkgirlPornzYouFuckingPervertAsshole():void {
 	spriteSelect(32);
 	player.gems -= 20;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	clearOutput();
 	outputText("Izma colors brightly as you flamboyantly produce the requested gems and present them to her, but dutifully hands over the bound illustrations.  While she fumbles with the gems you move down a few feet to examine the pornographic material.\n\n");
 	
@@ -400,7 +400,7 @@ private function confirmBuyPorn():void {
 	outputText("\n\n<b>Key item received: Izma's Book - Porn!</b>");
 	player.createKeyItem("Izma's Book - Porn", 0, 0, 0, 0);
 	player.gems -= 400;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(tradeWithFuckingSharkBitches);
 }
 
@@ -457,6 +457,7 @@ private function fightSharkCunt():void {
 	else if(flags[kFLAGS.IZMA_TIMES_FOUGHT_AND_WON] < 0 && flags[kFLAGS.IZMA_TIMES_FOUGHT_AND_WON] >= -2) outputText("\"<i>Hm, really?  Well, maybe you'll get lucky this time,</i>\" she mocks, gesturing at you to strike first.");
 	//(If Izmafight = -3 to -4)
 	else outputText("Izma laughs slightly and shakes her head.  \"<i>If you insist.  At least TRY this time, will ya?</i>\"");
+	player.createStatusEffect(StatusEffects.NearWater,0,0,0,0);
 	startCombat(new Izma());
 	spriteSelect(32);
 }
@@ -942,7 +943,8 @@ private function dontEatIzamsLeafAfterRape():void {
 	outputText("Izma cringes.  \"<i>Sorry!  I just don't want to go fathering children with someone who's not my mate!  Please, please take it!</i>\"\n\n");
 	
 	outputText("You slap the leaf out of her hand.  \"<i>Try getting stronger before you impose your decisions on others!</i>\" you bark.  \"<i>Whether I decide to have your kids or not is none of your business; you should be grateful at the chance to father them with someone tougher than you!</i>\"  She shivers and nods meekly, and you turn about and pick your way back to camp.\n\n");
-	player.knockUp(PregnancyStore.PREGNANCY_IZMA, PregnancyStore.INCUBATION_IZMA);
+	if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+    else player.knockUp(PregnancyStore.PREGNANCY_IZMA, PregnancyStore.INCUBATION_IZMA);
 	cleanupAfterCombat();
 	//(Izmafight +1)
 	flags[kFLAGS.IZMA_TIMES_FOUGHT_AND_WON]++;
@@ -964,6 +966,7 @@ private function takeItInZeButtVictoryLikeFromIzma():void {
 	player.buttChange(monster.cockArea(0),true,true,false);
 	outputText("\n\n");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	outputText("The shark grits her teeth and gives a roar as she cums, blowing a massive, hot load straight up your " + assholeDescript() + ", bloating you slightly as she empties her quads inside you.  Your muscles twitch and contract, and you can swear you see stars as she ejaculates.  It takes you a while to catch your breath as you slide off her slowly softening meat pole and crawl onto the sand.\n\n");
 	player.orgasm();
 	//[(if Izmafight <=4)
@@ -2840,7 +2843,8 @@ private function inCampRideIzmasDickDongTheWitchIsDead():void {
  
 	outputText("Izma waves at you and smirks as you go to leave, and you have to wonder if Izma was only acting helpless in order to get off...");
 	if(flags[kFLAGS.IZMA_PREGNANCY_ENABLED] > 0) {
-		player.knockUp(PregnancyStore.PREGNANCY_IZMA, PregnancyStore.INCUBATION_IZMA);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_IZMA, PregnancyStore.INCUBATION_IZMA);
 	}
 	player.slimeFeed();
 	doNext(camp.returnToCampUseOneHour);
@@ -3225,6 +3229,7 @@ private function radarIzmaAnalDominant():void {
 		doNext(camp.returnToCampUseOneHour);
 	}
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("sen", 2);
 }
@@ -3599,4 +3604,3 @@ public function mishapsLunaIzma():void {
 
 }
 }
-

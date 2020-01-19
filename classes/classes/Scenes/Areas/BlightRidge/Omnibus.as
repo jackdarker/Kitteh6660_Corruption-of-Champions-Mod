@@ -12,6 +12,7 @@ import classes.BodyParts.Tail;
 import classes.BodyParts.Wings;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Monsters.AbstractSuccubus;
+import classes.Scenes.SceneLib;
 import classes.internals.*;
 
 use namespace CoC;
@@ -28,13 +29,37 @@ use namespace CoC;
 		
 		override public function won(hpVictory:Boolean,pcCameWorms:Boolean):void
 		{
-			TrueDemons.loseToAOmnibus();
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) SceneLib.dungeons.ebonlabyrinth.defeatedByStrayDemon();
+			else TrueDemons.loseToAOmnibus();
 		}
 		
 		public function Omnibus()
 		{
+			if (player.hasStatusEffect(StatusEffects.EbonLabyrinthB)) {
+				this.short = "stray omnibus";
+				initStrTouSpeInte(280, 245, 210, 175);
+				initWisLibSensCor(175, 180, 90, 100);
+				this.weaponAttack = 52;
+				this.armorDef = 48;
+				this.armorMDef = 8;
+				this.bonusHP = 1150;
+				this.bonusLust = 80;
+				this.level = 66;
+				this.additionalXP = 700;
+			}
+			else {
+				this.short = "omnibus";
+				initStrTouSpeInte(160, 115, 120, 110);
+				initWisLibSensCor(110, 120, 60, 100);
+				this.weaponAttack = 26;
+				this.armorDef = 24;
+				this.armorMDef = 4;
+				this.bonusHP = 575;
+				this.bonusLust = 40;
+				this.level = 29;
+				this.additionalXP = 70;
+			}
 			this.a = "the ";
-			this.short = "omnibus";
 			this.imageName = "omnibus";
 			this.long = "She stands about six feet tall and is hugely voluptuous, her impressive breasts wobble delightfully as she moves.  Her hips flare out into an exaggerated hourglass shape, with a long tail tipped with a fleshy arrow-head spade that waves above her spankable butt.  She is wearing rags that cover only a tiny fraction of her body, concealing just her naughty bits to make the whole display more erotic.  Her crotch is a combination of both genders – a drooling cunt topped with a thick demonic shaft, sprouting from where a clit should be.  She's using a leather whip as a weapon.";
 			// this.plural = false;
@@ -55,24 +80,15 @@ use namespace CoC;
 			this.skinTone = "purple";
 			this.hairColor = "black";
 			this.hairLength = 13;
-			initStrTouSpeInte(160, 115, 120, 110);
-			initWisLibSensCor(110, 120, 60, 100);
 			this.weaponName = "whip";
 			this.weaponVerb="whipping";
-			this.weaponAttack = 26;
 			this.weaponPerk = "";
 			this.weaponValue = 150;
 			this.armorName = "demonic skin";
-			this.armorDef = 24;
-			this.armorMDef = 4;
-			this.bonusHP = 575;
-			this.bonusLust = 40;
 			this.lust = 30;
 			this.lustVuln = .5;
 			this.temperment = TEMPERMENT_LOVE_GRAPPLES;
-			this.level = 29;
 			this.gems = rand(40)+20;
-			this.additionalXP = 70;
 			this.drop = new WeightedDrop().
 					add(consumables.BIMBOLQ, 1).
 					add(consumables.BROBREW, 1).

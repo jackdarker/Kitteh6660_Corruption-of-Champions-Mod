@@ -41,7 +41,7 @@ public class ValaScene extends BaseContent
 			}
 			//Go to pt 2
 			dynStats("lus", 40);
-			doNext(useValaPtII);		
+			EngineCore.doNext(useValaPtII);		
 		}
 		public function useValaPtII():void {
 			spriteSelect(85);
@@ -71,7 +71,7 @@ public class ValaScene extends BaseContent
 				outputText("You clutch your [allbreasts] and squeeze the " + nippleDescript(0) + " until they hurt, the agony giving you strength to drive the dildo back into the fairy. She cums before you do, her pulsing walls locking down and driving the dildo out, inch by painful inch, deeper into your body until the base is so far against your gut that it is pushed into your furthest recesses with a toe-curling, wet slap. You silently scream in ecstasy and agony, unable to believe that the frail fairy managed to fuck your womb with your own toy. Your strength redoubles and you thrust back, your [cock] penetrating her spongy, well-used cervix, her womb sucking you inside it. You release the knotted tension, spraying your spunk deep inside her. You slap your " + buttDescript() + " against hers with each pulsing load, your pussy clenching at the dildo stuffing it even as your empty your seed into the chained slave.  You try to go limp, but the double penetrated girl keeps you from pulling out, both holes clenching you against her until every last drop of your sperm has filled her greedy womb. Fairy cum drips down your length, while the flared tip deep inside her large intestine keeps your pussy twitching against her posterior. You jill your " + clitDescript() + " for a few minutes afterward, just enjoying the afterglow as your strength returns and the fairy's body unclenches, releasing you from your breeder's embrace, the minotaur dildo still halfway up her ass. You remind yourself to clean your [armor] after this is over, sliding into them with wet, squishing noises. Giving your drooling fairy girl's rump a slap on the way out, you head back into the dungeon- you've got demons to stomp.");
 			}
 			flags[kFLAGS.TIMES_FUCKED_VALA_IN_DUNGEON]++;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		//[Free]
@@ -99,7 +99,7 @@ public class ValaScene extends BaseContent
 				outputText(" as you walk, and you end up dragging her across the dungeon floor leaving a trail of her cum behind you. Before things can get too out of hand with the needy girl, you pull out the vial of Pure Honey and arrange the equipment in front of you. Using the cleanest of the pipettes, you take a small portion of the honey and mix it with what you hope to be water, diluting the rich mixture to a less viscous state. Working quickly, you manage to produce a draught that the weak girl can tolerate. By now, she's managed to work her way to a sitting position and is grinding her dripping sex against your [foot]. You lean down and hold her nose to make her open her mouth. She gleefully opens wide, tongue thrashing about in anticipation. You pour the sweet-smelling concoction down her anxious throat and begin to re-cork the rest of your honey.\n\n");
 				outputText("The effects of your cure are more violent than you expected. The fairy thrashes wildly, causing you to drop your bottle of Pure Honey, sending it spilling over the table, shattering the delicate equipment and ruining the unlabeled concoctions within. Moving to keep the girl from hurting herself in her seizure, you hold her head against your chest and wait out the wild bucking. Gradually, her motions slow and her breath calms to a more normal pace. When she looks back up at you, her eyes are clear at last, the pollution of lust burned away by the honey's restorative properties. She gives you a genuine smile and speaks with a voice like the rushing of wind over reeds. \"<i>Thank you. I cannot express my gratitude for what you've done. The fate you've saved me from was worse than any death these wretched creatures could have subjected me to.</i>\"");
 				//[Next]
-				doNext(healValaPartTwoTheHealingHealsOfRevenge);
+				EngineCore.doNext(healValaPartTwoTheHealingHealsOfRevenge);
 			}
 			//Pearl!
 			else {
@@ -114,7 +114,7 @@ public class ValaScene extends BaseContent
 
 				//(Vala unlocked in The Wet Bitch)[End Encounter]
 				flags[kFLAGS.FREED_VALA] = 1;
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 			
 		}
@@ -126,7 +126,7 @@ public class ValaScene extends BaseContent
 			outputText("Leaving the way you came, Vala makes her exodus from the abyssal cavern. Despite her savagely warped body, you do not doubt that her renewed vigor for life will let her achieve some measure of happiness again. You feel like you've managed to do a truly selfless thing in this den of iniquity. Defeating monsters is satisfying, but it is the lives you save that really make you feel like a hero. You sigh contentedly and press on. You've got demons to dethrone.");
 			//[End Encounter]
 			flags[kFLAGS.FREED_VALA] = 1;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 
 		//[Sex]
@@ -152,7 +152,7 @@ public class ValaScene extends BaseContent
 			}
 			dynStats("lus", 33);
 			//[Next]
-			doNext(valaGetsSexedPtDuece);
+			EngineCore.doNext(valaGetsSexedPtDuece);
 		}
 
 		public function valaGetsSexedPtDuece():void {
@@ -209,7 +209,7 @@ public class ValaScene extends BaseContent
 			}
 			//[End Encounter]
 			flags[kFLAGS.TIMES_FUCKED_VALA_IN_DUNGEON]++;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		public function leftValaAlone():void {
@@ -248,7 +248,7 @@ public class ValaScene extends BaseContent
 			//(Without Pure Honey)
 			if(!(player.hasItem(consumables.PURHONY,1) || player.hasItem(consumables.P_PEARL,1))) {
 				outputText("You try your best with what you've got, but nothing seems to restore the broken fairy's mind to her sex-addled  body. You're going to have to go out and gather more materials. Surely there's something that can break the damage the imps have done to Vala.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 			//(With Pure Honey)
 			else if(player.hasItem(consumables.PURHONY,1)) {
@@ -258,7 +258,7 @@ public class ValaScene extends BaseContent
 				outputText("The effects of your cure are more violent than you expected. The fairy thrashes wildly, causing you to drop your bottle of Pure Honey, sending it spilling over the table, shattering the delicate equipment and ruining the unlabeled concoctions within. Moving to keep the girl from hurting herself in her seizure, you hold her head against your chest and wait out the wild bucking. Gradually, her motions slow and her breath calms to a more normal pace. When she looks back up at you, her eyes are clear at last, the pollution of lust burned away by the honey's restorative properties. She gives you a genuine smile and speaks with a voice like the rushing of wind over reeds. \"<i>Thank you,</i>\" she gasps. \"<i>Thank you. I cannot express my gratitude for what you've done. The fate you've saved me from was worse than any death those wretched creatures could have subjected me to.</i>\"");
 				
 				//[Next]
-				doNext(tryToHealValaWHoney2);
+				EngineCore.doNext(tryToHealValaWHoney2);
 			}
 			else {
 				//Pure Pearl
@@ -272,7 +272,7 @@ public class ValaScene extends BaseContent
 				outputText("Leaving the way you came, Vala makes her exodus from the abyssal cavern. Despite her savagely warped body, you do not doubt that her renewed vigor for life will let her achieve some measure of happiness again. You feel like you've managed to do a truly selfless thing in this den of iniquity. Defeating monsters is satisfying, but it's the lives you save that really make you feel like a hero. You sigh contentedly and wonder where she'll end up, now that she's been given her life back.");
 				//(Vala unlocked in The Wet Bitch)[End Encounter]
 				flags[kFLAGS.FREED_VALA] = 1;
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 		}
 		public function tryToHealValaWHoney2():void {
@@ -283,7 +283,7 @@ public class ValaScene extends BaseContent
 			//(Vala unlocked in The Wet Bitch)
 			flags[kFLAGS.FREED_VALA] = 1;
 			//[End Encounter]
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		public function useValaOHYEAHSNAPINTOASLIMJIM():void {
@@ -310,7 +310,7 @@ public class ValaScene extends BaseContent
 			}
 			//[Next]
 			dynStats("lus", 80);
-			doNext(useValaOHYEAHKOOLAIDPTII);
+			EngineCore.doNext(useValaOHYEAHKOOLAIDPTII);
 		}
 
 		public function useValaOHYEAHKOOLAIDPTII():void {
@@ -344,7 +344,7 @@ public class ValaScene extends BaseContent
 			//DAH END
 			player.orgasm();
 			dynStats("cor", 1);
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		//[Wake]
 		public function wakeValaUpBeforeYouGoGo():void {
@@ -380,7 +380,7 @@ public class ValaScene extends BaseContent
 			}
 			dynStats("lus", 999);
 			//[Next]
-			doNext(wakeMeUpBeforeValaGoGosPtII);
+			EngineCore.doNext(wakeMeUpBeforeValaGoGosPtII);
 		}
 
 		public function wakeMeUpBeforeValaGoGosPtII():void {
@@ -427,7 +427,7 @@ public class ValaScene extends BaseContent
 			player.orgasm();
 			dynStats("cor", 1);
 			flags[kFLAGS.TIMES_FUCKED_VALA_IN_DUNGEON]++;
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		//[Reject]
@@ -448,7 +448,7 @@ public class ValaScene extends BaseContent
 			}
 			//Initiate fight
 			startCombat(new Vala(),true);
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		//[Fuck]
@@ -490,7 +490,7 @@ public class ValaScene extends BaseContent
 			}
 			dynStats("lus", 99, "cor", 1);
 			//Next
-			doNext(valaFightVictoryFuckPtII);
+			EngineCore.doNext(valaFightVictoryFuckPtII);
 		}
 
 		//[Fuck]
@@ -677,7 +677,7 @@ public class ValaScene extends BaseContent
 					outputText("Vala's lips, perhaps trained to please imp cocks, are tighter on your " + nippleDescript(0) + " than you would've believed possible, suckling milk from your depths. With a breathtaking mixture of pressure and softness, she nurses your breast more efficiently than any machine, your warm milk filling her hungry maw in short order. She nurses at each breast in turn, bringing each one to frothy lactation faster than the last until your chest is heaving, your breasts jiggling, and your body clenching down in a shivering climax. Your orgasm leaves you unprepared for the fairy girl's and when her body starts quivering, her breasts flood your mouth with more milk than you can handle. Even swallowing as quickly as you can, it runs through your lips and even up your nose in two twin jets of pale alabaster that leave your nostrils wet with the lingering scent of honey wine. Sweating and still leaking milk, she rights herself and lands, cupping her breasts with one hand and stroking the paunch of her tiny stomach with the other. \"<i>Ooo... so full. I hope I was as good for you as you were for me,</i>\" she coos.");
 				}
 			}
-			doNext(cleansedValaFuckHerBrainsOutPtII);
+			EngineCore.doNext(cleansedValaFuckHerBrainsOutPtII);
 			player.orgasm();
 		}
 
@@ -744,8 +744,8 @@ public class ValaScene extends BaseContent
 				if(player.cor > 40) dynStats("cor", -.5);
 			}
 			//[End Encounter]
-			cheatTime(1);
-			doNext(SceneLib.telAdre.barTelAdre);
+			cheatTime2(30);
+			EngineCore.doNext(SceneLib.telAdre.barTelAdre);
 		}
 		//[You]
 		public function cleansedValaRepeatBrainFucking():void {
@@ -753,7 +753,7 @@ public class ValaScene extends BaseContent
 			clearOutput();
 			outputText("She flashes a beautiful smile and tells the bartender that she'll be taking her break early. Grabbing you by the hand, she rushes to the stockroom and sheds her dress without any trace of her former shame about her tattooed back. When you're too slow taking off your [armor], she helps, deft hands made all the quicker by eagerness. When the two of you are naked, she pushes you onto the well-worn stool and sits in your lap, staring into your eyes with a small smile.");
 			//[Next] (go to Growth scene)
-			doNext(cleansedValaFuckHerBrainsOut);
+			EngineCore.doNext(cleansedValaFuckHerBrainsOut);
 		}
 		//[Fairies]
 		public function faerieOrgyFuck():void {
@@ -767,8 +767,8 @@ public class ValaScene extends BaseContent
 				outputText("Vala folds her arms across her breast. \"<i>But which one should we use?</i>\" she ponders. \"<i>I wouldn't advise trying both- your mind wouldn't be able to take it. You'd end up worse than just mind-broken, you'd be a drooling shell. And I'd never do that to my hero,</i>\" she smiles and gives you a wink. \"<i>So, what would you prefer?</i>\"\n\n");
 				simpleChoices("Male",faerieOrgyFuckMaleContinue,"Female",faerieOrgyFuckFemaleContinue,"", null,"", null,"", null);
 			}
-			else if(player.gender == 2) doNext(faerieOrgyFuckFemaleContinue);
-			else if(player.gender == 1) doNext(faerieOrgyFuckMaleContinue);
+			else if(player.gender == 2) EngineCore.doNext(faerieOrgyFuckFemaleContinue);
+			else if(player.gender == 1) EngineCore.doNext(faerieOrgyFuckMaleContinue);
 		}
 			
 		//[Male]
@@ -793,9 +793,9 @@ public class ValaScene extends BaseContent
 			outputText("\n\n");
 
 			outputText("\"<i>You see?</i>\" Vala asks, holding the organic device aloft with a mischievous smile. \"<i>They don't last forever, but while they do, these little toys give us a very intimate connection to loved ones. This way, I can go all week with a reminder of you inside me.</i>\" She gives you a kiss on the lips and the fairies give you a tiny chorus of applause for the entertaining show. It's good that her little friends aren't around more often, you pant to yourself, or you'd be a drooling vegetable in no time.\n\n");
-			cheatTime(1);
+			cheatTime2(30);
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 		//[Female]
@@ -812,9 +812,9 @@ public class ValaScene extends BaseContent
 			outputText("When you finally calm down enough to swallow your spittle, wipe the slick sweat from your face and body, and release the fairy girl from the death-grip between your " + hipDescript() + ", you try to ask what happened to the petals inside your body. The fae girl gives your " + clitDescript() + " a little kiss and places her lips on your pussy. She puffs her cheeks and whispers a string of strange words into your quivering cunt. All at once, the soft petals inside you meld into one warm, hard shape, perfectly mirroring your pussy, labia to cervix. Very carefully, Vala draws the verdant shaft from your body and produces the most intricately ridged, molded dildo that you've ever seen. It's a soft pink color, matching your engorged genitals, and even gently pulses with your every heartbeat.\n\n");
 
 			outputText("\"<i>You see?</i>\" Vala asks, holding the organic device aloft with a mischievous smile. \"<i>They don't last forever, but while they do, these little toys give us a very intimate connection to loved ones. This way, I can go about all week with a reminder of you inside me.</i>\" She gives you a kiss on the lips and the fairies give you a tiny chorus of applause for the entertaining show. It's good that her little friends aren't around more often, you gasp to yourself, or you'd be a drooling vegetable in no time.");
-			cheatTime(1);
+			cheatTime2(30);
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		//[Cum Bath]
 		public function valaCumBath():void {
@@ -851,7 +851,7 @@ public class ValaScene extends BaseContent
 				outputText("The fairy brushes her glittering hair behind her shoulders and sits on her knees in front of you, large pink eyes staring up eagerly.");
 			}
 			//[NEXT]
-			doNext(valaCumBath2);
+			EngineCore.doNext(valaCumBath2);
 		}
 
 		public function valaCumBath2():void {
@@ -879,7 +879,7 @@ public class ValaScene extends BaseContent
 			flags[kFLAGS.VALA_CUMBATH_TIMES]++;
 			player.orgasm();
 			dynStats("lib", -1.5);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 		//Big Vala Intro
@@ -966,7 +966,7 @@ public class ValaScene extends BaseContent
 			outputText("\n\nYou lift her up out of the mess and carry her to the stream where you both clean up.  Vala murmurs, \"<i>My hero...</i>\" as you wash her, too wiped out to do it herself.  Vala recovers by the time you're getting re-dressed, and she gives you a surprisingly chaste, blushing kiss before she gets ready to depart.  The faerie seems to have some degree of magical affinity, as she's able to knit her dress back together with a bit of mental effort, and then she's fluttering away, calling out her goodbyes to you as she journeys back to Tel'Adre.");
 			player.slimeFeed();
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 		//Big Vala: Lick Me (Requires Penor)
@@ -1019,7 +1019,7 @@ public class ValaScene extends BaseContent
 			outputText("\n\nYou lift her up out of the mess and carry her to the stream where you both clean up.  Vala murmurs, \"<i>My hero...</i>\" as you wash her, too wiped out to do it herself.  Vala recovers by the time you're getting re-dressed, and she gives you a surprisingly chaste, blushing kiss before she gets ready to depart.  The faerie seems to have some degree of magical affinity, as she's able to knit her dress and your [armor] back together with a bit of mental effort, and then she's fluttering away, calling out her goodbyes to you as she journeys back to Tel'Adre.");
 			
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 		//Intro to Vala + Vapula Threesomes
@@ -1084,7 +1084,7 @@ public class ValaScene extends BaseContent
 			player.orgasm();
 			dynStats("cor", 1);
 			player.slimeFeed();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		//Giant Vala + Vapula Threesome - Vala Lovey Dovey
 		public function valaLoveyVapula3Some():void {
@@ -1117,7 +1117,7 @@ public class ValaScene extends BaseContent
 			player.orgasm();
 			dynStats("cor", 1);
 			player.slimeFeed();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 
 		public function kinathisValaStuff():void {
@@ -1210,7 +1210,7 @@ public class ValaScene extends BaseContent
 			model.time.hours = 6;
 			model.time.days++;
 			camp.sleepRecovery(false);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("Letting out a yawn, you curl up in the warm covers of the bed.  You sigh and smile as the smell of food wafts over you; it reminds you of your time back home.  The scent of frying meat and eggs soon becomes too much for your sleeping mind and rouses you from your slumber.  Stretching your body out, you look around and remember your night with Vala; you must have fallen asleep in her bed.  Unable to help yourself, you follow the mouth watering aroma to the kitchen and find the loving fairy-girl there.  Her gossamer wings flutter as she hovers at the stove, naked save for the apron she wears.  The sound of grease popping and crackling fills the air along with the smell of a savory, home cooked breakfast.");
 			
 			outputText("\n\nYou can't help but grin, the sweet girl treating you to breakfast after spending the night with her.  Approaching her, you slip your arms around her and hug her gently.  Despite your surprise hug, Vala keeps working, though she is more than happy to press her ass against you.  \"<i>Mmmm... good morning, did you sleep well, [name]?</i>\" she asks as she looks up at you with a bright smile of her face.  You smile back at her and slide your hands into her apron to grope and fondle her oversized breasts, the rough touch pulling a squeak and a soft moan from her lips.  \"<i>H-hey! You're supposed to be enjoying my food, not me!</i>\" she says with a blush on her cheeks, clearly not really minding your hands on her.  Looking back at the food she is preparing, Vala reluctantly pulls away.  \"<i>Breakfast is done - my treat, now let’s eat!</i>\" she cheerfully announces as she takes the food off the stove and plates the mouth-watering feast.  Each plate is blessed with a trio of bacon strips, two fried eggs and two plump sausages.  Shivering in delight at the meal ahead of you, you say a heartfelt thanks to Vala before digging in with her.");
@@ -1220,7 +1220,7 @@ public class ValaScene extends BaseContent
 			outputText("\n\nWith her being as affectionate she is, you can't help but smile and stroke her.  This really was nice; you could see yourself enjoying many more times like this, but unfortunately you do have to get back to your duty.  Pulling Vala into a kiss, you squeeze her and hold her tightly against you for a moment before lifting her off you, telling the girl that you have to go.  She sighs, knowing that you have to get back to being her hero.  \"<i>I know, go and be the big strong hero I know you are, just make sure you come and visit me at the bar whenever you want,</i>\" she says before kissing you one last time and showing you to the door.  Breathing in the morning air, you head back to camp to check up on the place.");
 			
 			//[return to camp][set clock to 7am]
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 	}
 }

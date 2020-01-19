@@ -5,6 +5,7 @@ package classes.Scenes.Explore
 {
 	import classes.BaseContent;
 	import classes.CoC;
+	import classes.EngineCore;
 	import classes.Monster;
 	import classes.Scenes.Areas.BlightRidge.*;
 	import classes.Scenes.Areas.Bog.*;
@@ -149,21 +150,21 @@ package classes.Scenes.Explore
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    statScreenRefresh();
+                    EngineCore.statScreenRefresh();
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				m.onWon = function (hpVictory:Boolean, pcCameWorms:Boolean):void
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    statScreenRefresh();
+                    EngineCore.statScreenRefresh();
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				m.onPcRunAttempt = function ():void
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    statScreenRefresh();
+                    EngineCore.statScreenRefresh();
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				outputText("You are going to fight " + m.a + " " + m.short + ".");
@@ -175,7 +176,7 @@ package classes.Scenes.Explore
 				addButton(2, "Heal", function():void{
 					player.HP = player.maxHP();
 					player.lust = 0;
-					statScreenRefresh();
+					EngineCore.statScreenRefresh();
 				});
 			}
 			if (monsterIdx>1) addButton(6, "Go Back", exploreDebugMonsters, monsterIdx-1);

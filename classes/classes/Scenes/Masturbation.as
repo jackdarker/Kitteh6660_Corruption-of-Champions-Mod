@@ -1,5 +1,6 @@
 package classes.Scenes {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.LowerBody;
 import classes.BodyParts.Tail;
 import classes.GlobalFlags.kFLAGS;
@@ -79,6 +80,9 @@ public class Masturbation extends BaseContent {
 			}
 			if (player.canOviposit() && player.hasFuckableNipples() && player.lust >= 33 && player.biggestTitSize() >= 21) {
 				addButton(button++, "LayInTits", layEggsInYerTits);
+			}
+			if (player.hasVagina() && player.isInGoblinMech() && player.keyItemv1("Cum Reservoir") == 4) {
+				addButton(button++, "Impregnator 1.0", gobomechImpregnator1);
 			}
 			if (fappingItems(false))
 				addButton(13 ,"Items", fappingItems);
@@ -207,7 +211,7 @@ public class Masturbation extends BaseContent {
 					outputText("casting seductive looks around, hoping someone or something is nearby to fuck you.\n\n");
 				}
 			}
-			else if (prison.inPrison) {
+			else if (prison.inPrison || (inDungeon && DungeonAbstractContent.dungeonLoc != -10 && flags[kFLAGS.PLAYER_COMPANION_1] != "")) {
 				outputText("You walk to a secluded corner" + player.clothedOrNakedLower(", remove your [lowergarment]") + " and sit down. ");
 			}
 			//In cabin
@@ -283,8 +287,8 @@ public class Masturbation extends BaseContent {
 				doNext(playerMenu);
 				return;
 			}
-			if (inDungeon && DungeonAbstractContent.dungeonLoc != -10) {
-				outputText("There is no way you could get away with masturbating in a place like this!  You'd better find your way back to camp if you want to take care of that.");
+			if (inDungeon && DungeonAbstractContent.dungeonLoc != -10 && flags[kFLAGS.PLAYER_COMPANION_1] == "") {
+				outputText("There is no way you could get away with masturbating in a place like this!  You'd better find your way back to camp if you want to take care of that. Or find someone to guard you during the deed.");
 				doNext(playerMenu);
 				return;		
 			}
@@ -314,6 +318,9 @@ public class Masturbation extends BaseContent {
 				flags[kFLAGS.TIMES_MASTURBATED]++;
 				gildedCockTurbate();
 				return;
+			}
+			if (inDungeon && DungeonAbstractContent.dungeonLoc != -10 && flags[kFLAGS.PLAYER_COMPANION_1] != "") {
+				outputText("You go to the side, asking " + flags[kFLAGS.PLAYER_COMPANION_1] + " to guard you while taking some time off to relieve yourself.\n\n");
 			}
 			var autofellatio:Boolean = false;
 			var hermtastic:Boolean = false;
@@ -828,7 +835,11 @@ public class Masturbation extends BaseContent {
 					else outputText("You sigh and drift off to sleep."); //Genderless ending
 				}
 			}
-			doNext(camp.returnToCampUseOneHour);
+			if (inDungeon && DungeonAbstractContent.dungeonLoc != -10 && flags[kFLAGS.PLAYER_COMPANION_1] != "") {
+				cheatTime2(60);
+				doNext(playerMenu);
+			}
+			else doNext(camp.returnToCampUseOneHour);
 		}
 		
 		//Genderless people suck!
@@ -1147,6 +1158,7 @@ public class Masturbation extends BaseContent {
 							outputText("down the mottled skin of ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("down the bumpy purple skin of ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1198,6 +1210,7 @@ public class Masturbation extends BaseContent {
 							outputText("down the skin of ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("over the purplish, bumpy flesh of ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1245,6 +1258,7 @@ public class Masturbation extends BaseContent {
 							outputText("it white.  Y");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("purple, bumpy flesh white.  Y");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1312,6 +1326,7 @@ public class Masturbation extends BaseContent {
 							outputText("The swollen lips of your bloated nipple stretch around the tip of your [cock] swallowing it like an enormous mouth.  ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("The swollen tips of your bloated nipple wrap around the pointed tip of your [cock], stretching oddly as it swallows the knot-covered appendage.  ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1366,6 +1381,7 @@ public class Masturbation extends BaseContent {
 							outputText("The swollen lips of your bloated nipple gape wide, but the tip of your [cock] spreads them even wider.  ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("The swollen lips of your bloated nipple gape wide, but the pointed tip of your [cock] slowly spreads them even wider.  ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1414,6 +1430,7 @@ public class Masturbation extends BaseContent {
 							outputText("pooling in and around your sheath.  ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("pooling around the bulbs near your base.  ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -1469,6 +1486,7 @@ public class Masturbation extends BaseContent {
 							outputText("even swallowing your bulging knot without difficulty.  ");
 							break;
 						case CockTypesEnum.LIZARD:
+						case CockTypesEnum.CAVE_WYRM:
 							outputText("swallowing it completely as each of the bulgy knots along its length stretch the orifice further.  ");
 							break;
 						case CockTypesEnum.TENTACLE:
@@ -2305,6 +2323,17 @@ public class Masturbation extends BaseContent {
 				player.orgasm();
 				dynStats("sen", -0.5);
 			}
+			doNext(camp.returnToCampUseOneHour);
+		}
+		
+		private function gobomechImpregnator1():void {
+			clearOutput();
+			outputText("You take a look at your mech reservoir and smile gleefully noticing how it is about full, you're going to enjoy this!\n\n");
+			outputText("You sit in your mech’s driver seat, open your personal compartment and draw out the tube taking your time to methodically plug it after your SPMK1 socket and use the fastener to lock it in place so it doesn't flail out wildly. That done you press the ON button and lay back to enjoy the fruit of your labor.\n\n");
+			outputText("The mech beeps for a few seconds as the pump starts working, and soon freshly harvested cum flows up the tube straight into your thirsty goblin pussy. You moan from pleasure as the reversed strapon vibrates with the cum flow, hitting every side of your vaginal wall. Now this is how you like sex! Efficient, pleasurable and sure to end with a top tier bukake with a heavy pregnancy percentage rate!\n\n");
+			outputText("The machine enters its second stage as the cable start producing small jolts of electricity in your cunt, shocking your clitty in just the right way. Your eyes roll back in absolute bliss and you cum at once as your belly slowly inflates from the sheer amount of fluids your creation is pumping in, filling your addled mind with fireworks. You giggle in delight as the flow slowly ebbs, your SPMK1 holding the cum inside so no drops can leaks out. Once it's over, you unfasten the tube and put it back in its compartment as you pat your belly in contentment. You really hope it took and if it didn’t, you will just have to harvest some more… hurray for progress!");
+			player.cuntChange(8, true, true, false);
+			player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -3612,7 +3641,7 @@ public class Masturbation extends BaseContent {
 			}
 			player.gems += gems;
 			flags[kFLAGS.GILDED_JERKED]++;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -3659,7 +3688,7 @@ public class Masturbation extends BaseContent {
 				player.orgasm();
 				dynStats("sen", -1.5);
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 
@@ -3693,7 +3722,7 @@ public class Masturbation extends BaseContent {
 			if (player.findPerk(PerkLib.ElectrifiedDesire) >= 0 || player.hasStatusEffect(StatusEffects.RaijuLightningStatus)) player.orgasmRaijuStyle();
 			else player.orgasm();
 			dynStats("sen", 0.5);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -3756,3 +3785,4 @@ public class Masturbation extends BaseContent {
 		}
 	}
 }
+

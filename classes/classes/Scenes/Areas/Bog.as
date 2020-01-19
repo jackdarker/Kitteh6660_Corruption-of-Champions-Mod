@@ -4,6 +4,7 @@
 package classes.Scenes.Areas
 {
 import classes.*;
+import classes.EngineCore;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Areas.Bog.*;
 import classes.Scenes.SceneLib;
@@ -48,7 +49,7 @@ public class Bog extends BaseContent
 					inventory.createStorage();
 				}
 				player.gems += gemsFound;
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 				outputText("\n\n<b>You now have " + num2Text(inventory.itemStorageDirectGet().length) + " storage item slots at camp.</b>");
 				doNext(camp.returnToCampUseOneHour);
 				return;

@@ -87,7 +87,7 @@ public class Zetaz extends Monster
 						dmg = player.takePhysDamage(dmg, true);
 					}
 					outputText(" while the dust gets into your eyes, temporarily blinding you!");
-					player.createStatusEffect(StatusEffects.Blind,1,0,0,0);
+					if (!player.hasPerk(PerkLib.BlindImmunity)) player.createStatusEffect(StatusEffects.Blind,1,0,0,0);
 				}
 				//Gigarouse – A stronger version of normal imp's 
 				//'arouse' spell. - copy normal arouse text and 
@@ -115,7 +115,7 @@ public class Zetaz extends Monster
 				if(player.lust >= 60 && player.vaginas[0].vaginalWetness == VaginaClass.WETNESS_DROOLING && player.vaginas.length > 0) outputText("Thick runners of girl-lube stream down the insides of your thighs as your crotch gives into the demonic magics.  You wonder what " + a + short + "'s cock would feel like inside you?  ");
 				if (player.lust >= 60 && player.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLAVERING && player.vaginas.length == 1) outputText("Your [vagina] instantly soaks your groin with the heady proof of your need.  You wonder just how slippery you could " + a + short + "'s dick when it's rammed inside you?  ");
 			}
-			if(player.lust >= player.maxLust()) doNext(SceneLib.combat.endLustLoss);
+			if(player.lust >= player.maxLust()) EngineCore.doNext(SceneLib.combat.endLustLoss);
 		}
 
 		
@@ -154,7 +154,7 @@ public class Zetaz extends Monster
 		{
 			if (pcCameWorms){
 				outputText("\n\nYour foe doesn't seem put off enough to care...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.dungeons.deepcave.loseToZetaz();
 			}

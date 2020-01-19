@@ -51,6 +51,12 @@ public class Face extends SaveableBodyPart {
 	public static const WOLF_FANGS:int		 = 42;//button 0 on 4th page of metamorph
 	public static const ORC_FANGS:int		 = 43;
 	public static const ANIMAL_TOOTHS:int	 = 44;
+	public static const BEAR:int			 = 45;
+	public static const PANDA:int			 = 46;
+	public static const FIRE_SNAIL:int		 = 47;
+	public static const GHOST:int			 = 48;
+	public static const JIANGSHI:int		 = 49;
+	public static const YUKI_ONNA:int		 = 50;
 	// Don't forget to add new types in DebugMenu.as list FACE_TYPE_CONSTANTS
 	
 	public function Face(creature:Creature) {
@@ -87,7 +93,7 @@ public class Face extends SaveableBodyPart {
 		return isAny(HUMAN,
 				MANTICORE, BUCKTEETH, BUNNY, SHARK_TEETH, SNAKE_FANGS, SPIDER_FANGS,
 				YETI_FANGS, SALAMANDER_FANGS, ONI_TEETH, ORC_FANGS, CHESHIRE_SMILE,
-				FERRET_MASK, VAMPIRE, ANIMAL_TOOTHS);
+				FERRET_MASK, VAMPIRE, ANIMAL_TOOTHS, FIRE_SNAIL, GHOST);
 	}
 	public function nounPhrase():String {
 		var stringo:String = "";

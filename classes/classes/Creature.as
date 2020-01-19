@@ -158,6 +158,51 @@ public class Creature extends Utils
 		public function set jewelryEffectId(value:Number):void { _jewelryEffectId = value; }
 		public function set jewelryEffectMagnitude(value:Number):void { _jewelryEffectId = value; }
 		public function set jewelryPerk(value:String):void { _jewelryPerk = value; }
+		private var _jewelryName2:String = "";
+		private var _jewelryEffectId2:Number = 0;
+		private var _jewelryEffectMagnitude2:Number = 0;
+		private var _jewelryPerk2:String = "";
+		private var _jewelryValue2:Number = 0;
+		public function get jewelryName2():String { return _jewelryName2; }
+		public function get jewelryEffectId2():Number { return _jewelryEffectId2; }
+		public function get jewelryEffectMagnitude2():Number { return _jewelryEffectMagnitude2; }
+		public function get jewelryPerk2():String { return _jewelryPerk2; }
+		public function get jewelryValue2():Number { return _jewelryValue2; }
+		public function set jewelryValue2(value:Number):void { _jewelryValue2 = value; }
+		public function set jewelryName2(value:String):void { _jewelryName2 = value; }
+		public function set jewelryEffectId2(value:Number):void { _jewelryEffectId2 = value; }
+		public function set jewelryEffectMagnitude2(value:Number):void { _jewelryEffectId2 = value; }
+		public function set jewelryPerk2(value:String):void { _jewelryPerk2 = value; }
+		private var _jewelryName3:String = "";
+		private var _jewelryEffectId3:Number = 0;
+		private var _jewelryEffectMagnitude3:Number = 0;
+		private var _jewelryPerk3:String = "";
+		private var _jewelryValue3:Number = 0;
+		public function get jewelryName3():String { return _jewelryName3; }
+		public function get jewelryEffectId3():Number { return _jewelryEffectId3; }
+		public function get jewelryEffectMagnitude3():Number { return _jewelryEffectMagnitude3; }
+		public function get jewelryPerk3():String { return _jewelryPerk3; }
+		public function get jewelryValue3():Number { return _jewelryValue3; }
+		public function set jewelryValue3(value:Number):void { _jewelryValue3 = value; }
+		public function set jewelryName3(value:String):void { _jewelryName3 = value; }
+		public function set jewelryEffectId3(value:Number):void { _jewelryEffectId3 = value; }
+		public function set jewelryEffectMagnitude3(value:Number):void { _jewelryEffectId3 = value; }
+		public function set jewelryPerk3(value:String):void { _jewelryPerk3 = value; }
+		private var _jewelryName4:String = "";
+		private var _jewelryEffectId4:Number = 0;
+		private var _jewelryEffectMagnitude4:Number = 0;
+		private var _jewelryPerk4:String = "";
+		private var _jewelryValue4:Number = 0;
+		public function get jewelryName4():String { return _jewelryName4; }
+		public function get jewelryEffectId4():Number { return _jewelryEffectId4; }
+		public function get jewelryEffectMagnitude4():Number { return _jewelryEffectMagnitude4; }
+		public function get jewelryPerk4():String { return _jewelryPerk4; }
+		public function get jewelryValue4():Number { return _jewelryValue4; }
+		public function set jewelryValue4(value:Number):void { _jewelryValue4 = value; }
+		public function set jewelryName4(value:String):void { _jewelryName4 = value; }
+		public function set jewelryEffectId4(value:Number):void { _jewelryEffectId4 = value; }
+		public function set jewelryEffectMagnitude4(value:Number):void { _jewelryEffectId4 = value; }
+		public function set jewelryPerk4(value:String):void { _jewelryPerk4 = value; }
 		//Shield
 		private var _shieldName:String = "";
 		private var _shieldBlock:Number = 0;
@@ -191,6 +236,22 @@ public class Creature extends Utils
 		public function set lowerGarmentName(value:String):void { _lowerGarmentName = value; }
 		public function set lowerGarmentPerk(value:String):void { _lowerGarmentPerk = value; }
 		public function set lowerGarmentValue(value:Number):void { _lowerGarmentValue = value; }
+		//Vehicles
+		private var _vehiclesName:String = "";
+		private var _vehiclesEffectId:Number = 0;
+		private var _vehiclesEffectMagnitude:Number = 0;
+		private var _vehiclesPerk:String = "";
+		private var _vehiclesValue:Number = 0;
+		public function get vehiclesName():String { return _vehiclesName; }
+		public function get vehiclesEffectId():Number { return _vehiclesEffectId; }
+		public function get vehiclesEffectMagnitude():Number { return _vehiclesEffectMagnitude; }
+		public function get vehiclesPerk():String { return _vehiclesPerk; }
+		public function get vehiclesValue():Number { return _vehiclesValue; }
+		public function set vehiclesValue(value:Number):void { _vehiclesValue = value; }
+		public function set vehiclesName(value:String):void { _vehiclesName = value; }
+		public function set vehiclesEffectId(value:Number):void { _vehiclesEffectId = value; }
+		public function set vehiclesEffectMagnitude(value:Number):void { _vehiclesEffectId = value; }
+		public function set vehiclesPerk(value:String):void { _vehiclesPerk = value; }
 		
 		/*
 		
@@ -248,61 +309,169 @@ public class Creature extends Utils
 		protected function maxHP_base():Number {
 			var max:Number = 0;
 			var multimax:Number = 1;
-			max += int(tou * 2 + 50);
-			if (tou >= 21) max += Math.round(tou);
-			if (tou >= 41) max += Math.round(tou);
-			if (tou >= 61) max += Math.round(tou);
-			if (tou >= 81) max += Math.round(tou);
-			if (tou >= 101) max += Math.round(tou);
-			if (tou >= 151) max += Math.round(tou);
-			if (tou >= 201) max += Math.round(tou);
-			if (tou >= 251) max += Math.round(tou);
-			if (tou >= 301) max += Math.round(tou);
-			if (tou >= 351) max += Math.round(tou);
-			if (tou >= 401) max += Math.round(tou);
-			if (tou >= 451) max += Math.round(tou);
-			if (tou >= 501) max += Math.round(tou);
-			if (tou >= 551) max += Math.round(tou);
-			if (tou >= 601) max += Math.round(tou);
-			if (tou >= 651) max += Math.round(tou);
-			if (tou >= 701) max += Math.round(tou);
-			if (tou >= 751) max += Math.round(tou);
-			if (tou >= 801) max += Math.round(tou);
-			if (tou >= 851) max += Math.round(tou);
-			if (tou >= 901) max += Math.round(tou);
-			if (tou >= 951) max += Math.round(tou);
-			if (tou >= 1001) max += Math.round(tou);
-			if (tou >= 1051) max += Math.round(tou);
-			if (tou >= 1101) max += Math.round(tou);
-			if (tou >= 1151) max += Math.round(tou);
-			if (tou >= 1201) max += Math.round(tou);
-			if (tou >= 1251) max += Math.round(tou);
-			if (tou >= 1301) max += Math.round(tou);
-			if (tou >= 1351) max += Math.round(tou);
-			if (tou >= 1401) max += Math.round(tou);
-			if (tou >= 1451) max += Math.round(tou);
-			if (tou >= 1501) max += Math.round(tou);
-			if (tou >= 1551) max += Math.round(tou);
-			if (tou >= 1601) max += Math.round(tou);
-			if (tou >= 1651) max += Math.round(tou);
-			if (tou >= 1701) max += Math.round(tou);
-			if (tou >= 1751) max += Math.round(tou);
-			if (tou >= 1801) max += Math.round(tou);
-			if (tou >= 1851) max += Math.round(tou);
-			if (tou >= 1901) max += Math.round(tou);
-			if (tou >= 1951) max += Math.round(tou);
+			if (findPerk(PerkLib.IcyFlesh) >= 0) {
+				max += int(inte * 2 + 50);
+				if (inte >= 21) max += Math.round(inte);
+				if (inte >= 41) max += Math.round(inte);
+				if (inte >= 61) max += Math.round(inte);
+				if (inte >= 81) max += Math.round(inte);
+				if (inte >= 101) max += Math.round(inte);
+				if (inte >= 151) max += Math.round(inte);
+				if (inte >= 201) max += Math.round(inte);
+				if (inte >= 251) max += Math.round(inte);
+				if (inte >= 301) max += Math.round(inte);
+				if (inte >= 351) max += Math.round(inte);
+				if (inte >= 401) max += Math.round(inte);
+				if (inte >= 451) max += Math.round(inte);
+				if (inte >= 501) max += Math.round(inte);
+				if (inte >= 551) max += Math.round(inte);
+				if (inte >= 601) max += Math.round(inte);
+				if (inte >= 651) max += Math.round(inte);
+				if (inte >= 701) max += Math.round(inte);
+				if (inte >= 751) max += Math.round(inte);
+				if (inte >= 801) max += Math.round(inte);
+				if (inte >= 851) max += Math.round(inte);
+				if (inte >= 901) max += Math.round(inte);
+				if (inte >= 951) max += Math.round(inte);
+				if (inte >= 1001) max += Math.round(inte);
+				if (inte >= 1051) max += Math.round(inte);
+				if (inte >= 1101) max += Math.round(inte);
+				if (inte >= 1151) max += Math.round(inte);
+				if (inte >= 1201) max += Math.round(inte);
+				if (inte >= 1251) max += Math.round(inte);
+				if (inte >= 1301) max += Math.round(inte);
+				if (inte >= 1351) max += Math.round(inte);
+				if (inte >= 1401) max += Math.round(inte);
+				if (inte >= 1451) max += Math.round(inte);
+				if (inte >= 1501) max += Math.round(inte);
+				if (inte >= 1551) max += Math.round(inte);
+				if (inte >= 1601) max += Math.round(inte);
+				if (inte >= 1651) max += Math.round(inte);
+				if (inte >= 1701) max += Math.round(inte);
+				if (inte >= 1751) max += Math.round(inte);
+				if (inte >= 1801) max += Math.round(inte);
+				if (inte >= 1851) max += Math.round(inte);
+				if (inte >= 1901) max += Math.round(inte);
+				if (inte >= 1951) max += Math.round(inte);
+				if (inte >= 2001) max += Math.round(inte);
+				if (inte >= 2051) max += Math.round(inte);
+				if (inte >= 2101) max += Math.round(inte);
+				if (inte >= 2151) max += Math.round(inte);
+				if (inte >= 2201) max += Math.round(inte);
+				if (inte >= 2251) max += Math.round(inte);
+				if (inte >= 2301) max += Math.round(inte);
+				if (inte >= 2351) max += Math.round(inte);
+				if (inte >= 2401) max += Math.round(inte);
+				if (inte >= 2451) max += Math.round(inte);
+				if (inte >= 2501) max += Math.round(inte);
+				if (inte >= 2551) max += Math.round(inte);
+				if (inte >= 2601) max += Math.round(inte);
+				if (inte >= 2651) max += Math.round(inte);
+				if (inte >= 2701) max += Math.round(inte);
+				if (inte >= 2751) max += Math.round(inte);
+				if (inte >= 2801) max += Math.round(inte);
+				if (inte >= 2851) max += Math.round(inte);
+				if (inte >= 2901) max += Math.round(inte);
+				if (inte >= 2951) max += Math.round(inte);
+				if (findPerk(PerkLib.FrozenHeartFinalForm) >= 0) max *= 1.5;
+			}
+			else {
+				max += int(tou * 2 + 50);
+				if (tou >= 21) max += Math.round(tou);
+				if (tou >= 41) max += Math.round(tou);
+				if (tou >= 61) max += Math.round(tou);
+				if (tou >= 81) max += Math.round(tou);
+				if (tou >= 101) max += Math.round(tou);
+				if (tou >= 151) max += Math.round(tou);
+				if (tou >= 201) max += Math.round(tou);
+				if (tou >= 251) max += Math.round(tou);
+				if (tou >= 301) max += Math.round(tou);
+				if (tou >= 351) max += Math.round(tou);
+				if (tou >= 401) max += Math.round(tou);
+				if (tou >= 451) max += Math.round(tou);
+				if (tou >= 501) max += Math.round(tou);
+				if (tou >= 551) max += Math.round(tou);
+				if (tou >= 601) max += Math.round(tou);
+				if (tou >= 651) max += Math.round(tou);
+				if (tou >= 701) max += Math.round(tou);
+				if (tou >= 751) max += Math.round(tou);
+				if (tou >= 801) max += Math.round(tou);
+				if (tou >= 851) max += Math.round(tou);
+				if (tou >= 901) max += Math.round(tou);
+				if (tou >= 951) max += Math.round(tou);
+				if (tou >= 1001) max += Math.round(tou);
+				if (tou >= 1051) max += Math.round(tou);
+				if (tou >= 1101) max += Math.round(tou);
+				if (tou >= 1151) max += Math.round(tou);
+				if (tou >= 1201) max += Math.round(tou);
+				if (tou >= 1251) max += Math.round(tou);
+				if (tou >= 1301) max += Math.round(tou);
+				if (tou >= 1351) max += Math.round(tou);
+				if (tou >= 1401) max += Math.round(tou);
+				if (tou >= 1451) max += Math.round(tou);
+				if (tou >= 1501) max += Math.round(tou);
+				if (tou >= 1551) max += Math.round(tou);
+				if (tou >= 1601) max += Math.round(tou);
+				if (tou >= 1651) max += Math.round(tou);
+				if (tou >= 1701) max += Math.round(tou);
+				if (tou >= 1751) max += Math.round(tou);
+				if (tou >= 1801) max += Math.round(tou);
+				if (tou >= 1851) max += Math.round(tou);
+				if (tou >= 1901) max += Math.round(tou);
+				if (tou >= 1951) max += Math.round(tou);
+				if (tou >= 2001) max += Math.round(tou);
+				if (tou >= 2051) max += Math.round(tou);
+				if (tou >= 2101) max += Math.round(tou);
+				if (tou >= 2151) max += Math.round(tou);
+				if (tou >= 2201) max += Math.round(tou);
+				if (tou >= 2251) max += Math.round(tou);
+				if (tou >= 2301) max += Math.round(tou);
+				if (tou >= 2351) max += Math.round(tou);
+				if (tou >= 2401) max += Math.round(tou);
+				if (tou >= 2451) max += Math.round(tou);
+				if (tou >= 2501) max += Math.round(tou);
+				if (tou >= 2551) max += Math.round(tou);
+				if (tou >= 2601) max += Math.round(tou);
+				if (tou >= 2651) max += Math.round(tou);
+				if (tou >= 2701) max += Math.round(tou);
+				if (tou >= 2751) max += Math.round(tou);
+				if (tou >= 2801) max += Math.round(tou);
+				if (tou >= 2851) max += Math.round(tou);
+				if (tou >= 2901) max += Math.round(tou);
+				if (tou >= 2951) max += Math.round(tou);
+			}
 			if (findPerk(PerkLib.RefinedBodyI) >= 0) max += 50;
 			if (findPerk(PerkLib.RefinedBodyII) >= 0) max += 50;
 			if (findPerk(PerkLib.RefinedBodyIII) >= 0) max += 50;
 			if (findPerk(PerkLib.RefinedBodyIV) >= 0) max += 50;
 			if (findPerk(PerkLib.RefinedBodyV) >= 0) max += 50;
 			if (findPerk(PerkLib.RefinedBodyVI) >= 0) max += 50;
-			if (findPerk(PerkLib.TankI) >= 0) max += Math.round(tou*3);
-			if (findPerk(PerkLib.TankII) >= 0) max += Math.round(tou*3);
-			if (findPerk(PerkLib.TankIII) >= 0) max += Math.round(tou*3);
-			if (findPerk(PerkLib.TankIV) >= 0) max += Math.round(tou*3);
-			if (findPerk(PerkLib.TankV) >= 0) max += Math.round(tou*3);
-			if (findPerk(PerkLib.TankVI) >= 0) max += Math.round(tou*3);
+			if (findPerk(PerkLib.IcyFlesh) >= 0) {
+				if (findPerk(PerkLib.FrozenHeartFinalForm) >= 0) {
+					if (findPerk(PerkLib.TankI) >= 0) max += Math.round(inte*4.5);
+					if (findPerk(PerkLib.TankII) >= 0) max += Math.round(inte*4.5);
+					if (findPerk(PerkLib.TankIII) >= 0) max += Math.round(inte*4.5);
+					if (findPerk(PerkLib.TankIV) >= 0) max += Math.round(inte*4.5);
+					if (findPerk(PerkLib.TankV) >= 0) max += Math.round(inte*4.5);
+					if (findPerk(PerkLib.TankVI) >= 0) max += Math.round(inte*4.5);
+				}
+				else {
+					if (findPerk(PerkLib.TankI) >= 0) max += Math.round(inte*3);
+					if (findPerk(PerkLib.TankII) >= 0) max += Math.round(inte*3);
+					if (findPerk(PerkLib.TankIII) >= 0) max += Math.round(inte*3);
+					if (findPerk(PerkLib.TankIV) >= 0) max += Math.round(inte*3);
+					if (findPerk(PerkLib.TankV) >= 0) max += Math.round(inte*3);
+					if (findPerk(PerkLib.TankVI) >= 0) max += Math.round(inte*3);
+				}
+			}
+			else {
+				if (findPerk(PerkLib.TankI) >= 0) max += Math.round(tou*3);
+				if (findPerk(PerkLib.TankII) >= 0) max += Math.round(tou*3);
+				if (findPerk(PerkLib.TankIII) >= 0) max += Math.round(tou*3);
+				if (findPerk(PerkLib.TankIV) >= 0) max += Math.round(tou*3);
+				if (findPerk(PerkLib.TankV) >= 0) max += Math.round(tou*3);
+				if (findPerk(PerkLib.TankVI) >= 0) max += Math.round(tou*3);
+			}
 			if (findPerk(PerkLib.GoliathI) >= 0) max += Math.round(str*2);
 			if (findPerk(PerkLib.GoliathII) >= 0) max += Math.round(str*2);
 			if (findPerk(PerkLib.GoliathIII) >= 0) max += Math.round(str*2);
@@ -326,6 +495,9 @@ public class Creature extends Utils
 				if (hasStatusEffect(StatusEffects.SummonedElementalsIce)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsIce);
 				if (hasStatusEffect(StatusEffects.SummonedElementalsLightning)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsLightning);
 				if (hasStatusEffect(StatusEffects.SummonedElementalsDarkness)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsDarkness);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsPoison)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsPoison);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsPurity)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsPurity);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsCorruption)) max += maxLust_ElementalBondFleshMulti() * statusEffectv2(StatusEffects.SummonedElementalsCorruption);
 			}
 			if (findPerk(PerkLib.JobGuardian) >= 0) max += 30;
 			if (findPerk(PerkLib.DeityJobMunchkin) >= 0) max += 150;
@@ -362,6 +534,9 @@ public class Creature extends Utils
 			if (findPerk(PerkLib.UnlockBody4thStage) >= 0) max += level * 15;
 			if (findPerk(PerkLib.AscensionUnlockedPotential) >= 0) max += level * 20;
 			if (jewelryEffectId == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude;
+			if (jewelryEffectId2 == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude2;
+			if (jewelryEffectId3 == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude3;
+			if (jewelryEffectId4 == JewelryLib.MODIFIER_HP) max += jewelryEffectMagnitude4;
 			if (findPerk(PerkLib.LimitBreakerBody1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerBody2ndStage) >= 0) multimax += 0.1;
 			max *= multimax;
@@ -419,6 +594,9 @@ public class Creature extends Utils
 				if (hasStatusEffect(StatusEffects.SummonedElementalsIce)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsIce);
 				if (hasStatusEffect(StatusEffects.SummonedElementalsLightning)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsLightning);
 				if (hasStatusEffect(StatusEffects.SummonedElementalsDarkness)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsDarkness);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsPoison)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsPoison);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsPurity)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsPurity);
+				if (hasStatusEffect(StatusEffects.SummonedElementalsCorruption)) max += maxLust_ElementalBondUrgesMulti() * statusEffectv2(StatusEffects.SummonedElementalsCorruption);
 			}
 			if (findPerk(PerkLib.BroBody) >= 0 || findPerk(PerkLib.BimboBody) >= 0 || findPerk(PerkLib.FutaForm) >= 0) max += 20;
 			if (findPerk(PerkLib.OmnibusGift) >= 0) max += 15;
@@ -442,7 +620,19 @@ public class Creature extends Utils
 			return max;
 		}
 		protected function maxHP_mult():Number {
-			return 1 + (countCockSocks("green") * 0.02);
+			var maxHP_mult1:Number = 1;
+			maxHP_mult1 += (countCockSocks("green") * 0.02);
+			if (game.player.vehiclesName == "Goblin Mech Alpha") {
+				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.2;
+				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.35;
+				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 0.5;
+			}
+			if (game.player.vehiclesName == "Goblin Mech Prime") {
+				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.4;
+				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.7;
+				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 1;
+			}
+			return maxHP_mult1;
 		}
 		protected function maxLust_ElementalBondFleshMulti():Number {
 			var multiValue1a:Number = 1;
@@ -461,14 +651,14 @@ public class Creature extends Utils
 		}
 		public function maxHP():Number {
 			var max:Number = Math.round(maxHP_base()*maxHP_mult());
-			return Math.min(3699999,max);
+			return Math.min(9999999,max);
 		}
 		public function minHP():Number {
 			return 0;
 		}
 		public function maxLust():Number {
 			var max:Number = Math.round(maxLust_base()*maxLust_mult());
-			return Math.min(139999,max);
+			return Math.min(199999,max);
 		}
 		public function maxFatigue():Number {
 			return 150;
@@ -993,7 +1183,7 @@ public class Creature extends Utils
 
 
 		//Functions
-
+		
 		//Create a perk
 		public function createPerk(ptype:PerkType, value1:Number, value2:Number, value3:Number, value4:Number):void
 		{
@@ -1113,7 +1303,7 @@ public class Creature extends Utils
 				return -2;
 			for (var counter:int = 0; counter<perks.length; counter++)
 			{
-				if (perk(counter).ptype == ptype)
+				if (perk(counter).ptype.id == ptype.id)
 					return counter;
 			}
 			return -1;
@@ -1918,7 +2108,8 @@ public class Creature extends Utils
 			var isPierced:Boolean = (cocks.length == 1) && (cocks[index].isPierced); //Only describe as pierced or sock covered if the creature has just one cock
 			var hasSock:Boolean = (cocks.length == 1) && (cocks[index].sock != "");
 			var isGooey:Boolean = (skin.type == Skin.GOO);
-			return Appearance.cockAdjective(cocks[index].cockType, cocks[index].cockLength, cocks[index].cockThickness, lust, cumQ(), isPierced, hasSock, isGooey);
+			var isGhastly:Boolean = (skin.type == Skin.TRANSPARENT);
+			return Appearance.cockAdjective(cocks[index].cockType, cocks[index].cockLength, cocks[index].cockThickness, lust, cumQ(), isPierced, hasSock, isGooey, isGhastly);
 		}
 
 		public function wetness():Number
@@ -2399,6 +2590,10 @@ public class Creature extends Utils
 			return countCocksOfType(CockTypesEnum.LIZARD);
 		}
 
+		public function cavewyrmCocks():int { //How many cave wyrm-cocks?
+			return countCocksOfType(CockTypesEnum.CAVE_WYRM);
+		}
+
 		public function pigCocks():int { //How many lizard/snake-cocks?
 			return countCocksOfType(CockTypesEnum.PIG);
 		}
@@ -2580,6 +2775,7 @@ public class Creature extends Utils
 			Wings.FEATHERED_SPHINX,
 			Wings.FEATHERED_ALICORN,
 			Wings.NIGHTMARE,
+			Wings.ETHEREAL_WINGS,
 			//WING_TYPE_IMP_LARGE,
 		];
 
@@ -2615,9 +2811,34 @@ public class Creature extends Utils
 		//PC can swim underwater?
 		public function canSwimUnderwater():Boolean
 		{
-			if (gills.type != Gills.NONE || lowerBody == LowerBody.SCYLLA)
-				return true;	//dodać jeszcze trzeba bedzie tu efekt of itemów i inne opcje dające oddych. pod wodą
+			if (gills.type != Gills.NONE || lowerBody == LowerBody.SCYLLA || hasStatusEffect(StatusEffects.Airweed) || game.player.necklaceName == "Magic coral and pearl necklace" || game.player.headjewelryName == "Aqua breather" || (game.player.isInGoblinMech() && game.player.hasKeyItem("Safety bubble") >= 0))
+				return true;	//efekt of itemów dające oddych. pod wodą
 			return false;
+		}
+		public function underwaterCombatBoost():void
+		{
+			var oldHPratio:Number = hp100/100;
+			createStatusEffect(StatusEffects.UnderwaterCombatBoost, 0, 0, 0, 0);
+			var bonusStr:Number = 0;
+			var bonusSpe:Number = 0;
+			if (game.player.hasPerk(PerkLib.AquaticAffinity)) {
+				bonusStr += 30 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+				bonusSpe += 30 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+			}
+			if (game.player.armorName == "Sexy Aquamarine Bikini" || game.player.armorName == "Sexy Black Bikini" || game.player.armorName == "Sexy Blue Bikini" || game.player.armorName == "Sexy Green Bikini" || game.player.armorName == "Sexy Pink Bikini" || game.player.armorName == "Sexy Red Bikini" || game.player.armorName == "Sexy White Bikini" || game.player.armorName == "Sexy Yellow Bikini") {
+				bonusStr += 20 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+				bonusSpe += 20 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+			}
+			if (game.player.necklaceName == "Magic coral and pearl necklace") bonusSpe += 10 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+			if (bonusStr > 0) {
+				addStatusValue(StatusEffects.UnderwaterCombatBoost, 1, bonusStr);
+				game.player.str += bonusStr;
+			}
+			if (bonusSpe > 0) {
+				addStatusValue(StatusEffects.UnderwaterCombatBoost,2,bonusSpe);
+				game.player.spe += bonusSpe;
+			}
+			HP = oldHPratio * maxHP();
 		}
 
 		//Naked
@@ -2638,14 +2859,14 @@ public class Creature extends Utils
 		public function whenEyesOfTheHunterActivates():Boolean
 		{
 			return (game.player.findPerk(PerkLib.EyesOfTheHunterNovice) >= 0 && game.player.sens >= 25 && (game.monster.findPerk(PerkLib.EnemyBeastOrAnimalMorphType) >= 0 || game.monster.findPerk(PerkLib.EnemyFeralType) >= 0 || game.monster.findPerk(PerkLib.EnemyConstructType) >= 0 || game.monster.findPerk(PerkLib.EnemyPlantType) >= 0 || game.monster.findPerk(PerkLib.EnemyGooType) >= 0
-					|| game.monster.findPerk(PerkLib.EnemyGigantType) >= 0 || game.monster.findPerk(PerkLib.EnemyGroupType) >= 0))
+					|| game.monster.findPerk(PerkLib.EnemyGigantType) >= 0 || game.monster.findPerk(PerkLib.EnemyGroupType) >= 0 || game.monster.findPerk(PerkLib.EnemyGhostType) >= 0))
                     || (game.player.findPerk(PerkLib.EyesOfTheHunterAdept) >= 0 && game.player.sens >= 50 && (game.monster.findPerk(PerkLib.EnemyGodType) >= 0 || game.monster.findPerk(PerkLib.EnemyBossType) >= 0 || game.monster.findPerk(PerkLib.DarknessNature) >= 0 || game.monster.findPerk(PerkLib.FireNature) >= 0 || game.monster.findPerk(PerkLib.IceNature) >= 0 || game.monster.findPerk(PerkLib.LightningNature) >= 0))
                     || (game.player.findPerk(PerkLib.EyesOfTheHunterMaster) >= 0 && game.player.sens >= 75 && (game.monster.findPerk(PerkLib.DarknessVulnerability) >= 0 || game.monster.findPerk(PerkLib.FireVulnerability) >= 0 || game.monster.findPerk(PerkLib.IceVulnerability) >= 0 || game.monster.findPerk(PerkLib.LightningVulnerability) >= 0));
 		}
 		public function whenGeneralEnemyPerksDisplayed():Boolean
 		{
 			return (game.player.findPerk(PerkLib.EyesOfTheHunterNovice) >= 0 && game.player.sens >= 25 && (game.monster.findPerk(PerkLib.EnemyBeastOrAnimalMorphType) >= 0 || game.monster.findPerk(PerkLib.EnemyFeralType) >= 0 || game.monster.findPerk(PerkLib.EnemyConstructType) >= 0 || game.monster.findPerk(PerkLib.EnemyGroupType) >= 0 || game.monster.findPerk(PerkLib.EnemyGooType) >= 0
-					|| game.monster.findPerk(PerkLib.EnemyGigantType) >= 0 || game.monster.findPerk(PerkLib.EnemyPlantType) >= 0))
+					|| game.monster.findPerk(PerkLib.EnemyGigantType) >= 0 || game.monster.findPerk(PerkLib.EnemyGhostType) >= 0 || game.monster.findPerk(PerkLib.EnemyPlantType) >= 0))
                     || (game.player.findPerk(PerkLib.EyesOfTheHunterAdept) >= 0 && game.player.sens >= 50 && (game.monster.findPerk(PerkLib.EnemyGodType) >= 0 || game.monster.findPerk(PerkLib.EnemyBossType) >= 0));
 		}
 		public function whenElementalEnemyPerksDisplayed():Boolean
@@ -2654,11 +2875,20 @@ public class Creature extends Utils
                     || (game.player.findPerk(PerkLib.EyesOfTheHunterMaster) >= 0 && game.player.sens >= 75 && (game.monster.findPerk(PerkLib.DarknessVulnerability) >= 0 || game.monster.findPerk(PerkLib.FireVulnerability) >= 0 || game.monster.findPerk(PerkLib.IceVulnerability) >= 0 || game.monster.findPerk(PerkLib.LightningVulnerability) >= 0));
 		}
 
+		//Unique sex scenes
+		public function pcCanUseUniqueSexScene():Boolean
+		{
+			if ((game.player.tailType == Tail.MANTICORE_PUSSYTAIL && game.monster.hasCock()) || (game.player.lowerBody == LowerBody.PLANT_FLOWER && game.monster.hasCock()) || (game.player.lowerBody == LowerBody.PLANT_FLOWER && game.monster.hasVagina()) || game.player.tailType == Tail.HINEZUMI || game.player.tailType == Tail.SALAMANDER || 
+			((game.player.gender == 1 || game.player.gender == 2) && (game.player.tailType == Tail.HINEZUMI || game.player.tailType == Tail.MOUSE || game.player.tailType == Tail.DEMONIC)) || (game.player.isInGoblinMech() && game.player.hasKeyItem("Cum Reservoir") >= 0 && game.monster.hasCock()) || 
+			(game.player.raijuScore() >= 10 && !game.monster.hasPerk(PerkLib.EnemyGigantType) && !game.monster.isAlraune() && !game.monster.isDrider() && !game.monster.isGoo() && !game.monster.isNaga() && !game.monster.isScylla() && !game.monster.isTaur()))
+				return true;
+			return false;
+		}
+
 		//check for vagoo
 		public function hasVagina():Boolean
 		{
 			return vaginas.length > 0;
-
 		}
 
 		public function hasVirginVagina():Boolean
@@ -3097,6 +3327,7 @@ public class Creature extends Utils
 		public function hasPartialCoat(coat_type:int):Boolean { return skin.hasPartialCoat(coat_type); }
 		public function hasPlainSkin():Boolean { return skin.hasPlainSkin(); }
 		public function hasGooSkin():Boolean { return skin.hasGooSkin(); }
+		public function hasGhostSkin():Boolean { return skin.hasGhostSkin(); }
 		public function isGargoyle():Boolean { return skin.hasBaseOnly(Skin.STONE); }
 		public function skinDescript():String { return skin.describe('basic'); }
 		public function skinFurScales():String { return skin.describe('cover'); }
@@ -3473,6 +3704,8 @@ public class Creature extends Utils
 				case CockTypesEnum.HORSE:
 				case CockTypesEnum.KANGAROO:
 				case CockTypesEnum.LIZARD:
+				case CockTypesEnum.CAVE_WYRM:
+				case CockTypesEnum.RED_PANDA:
 				case CockTypesEnum.PIG:
 				case CockTypesEnum.TENTACLE:
 					if (countCocksOfType(cocks[0].cockType) == cocks.length) return Appearance.cockNoun(cocks[0].cockType) + "s";
@@ -3797,44 +4030,27 @@ public class Creature extends Utils
 			var flychance:Number = 20;
 			if (findPerk(PerkLib.AdvancedAerialCombat) >= 0) flychance += 5;
 			if (findPerk(PerkLib.GreaterAerialCombat) >= 0) flychance += 15;
-			if (hasStatusEffect(StatusEffects.Flying)) chance += flychance;
+			if ((game.player.hasKeyItem("Jetpack") >= 0 || game.player.hasKeyItem("MK2 Jetpack") >= 0) && game.player.isInGoblinMech()) flychance += 25;
 			if (findPerk(PerkLib.Evade) >= 0) {
 				chance += 5;
-				flychance += 5;
-				if (findPerk(PerkLib.ImprovedEvade) >= 0) {
-					chance += 10;
-					flychance += 10;
-				}
-				if (findPerk(PerkLib.GreaterEvade) >= 0) {
-					chance += 15;
-					flychance += 15;
-				}
-				if (findPerk(PerkLib.JobRogue) >= 0) {
-					chance += 5;
-					flychance += 5;
-				}
-				if (findPerk(PerkLib.Spectre) >= 0 && findPerk(PerkLib.Incorporeality) >= 0) {
-					chance += 10;
-					flychance += 10;
-				}
+				if (findPerk(PerkLib.ImprovedEvade) >= 0) chance += 10;
+				if (findPerk(PerkLib.GreaterEvade) >= 0) chance += 15;
+				if (findPerk(PerkLib.JobRogue) >= 0) chance += 5;
+				if (findPerk(PerkLib.Spectre) >= 0 && findPerk(PerkLib.Incorporeality) >= 0) chance += 10;
 			}
 			if (findPerk(PerkLib.ElvenSense) >= 0) {
 				chance += 5;
-				flychance += 5;
-				if (findPerk(PerkLib.ElvishPeripheralNervSysEvolved) >= 0) {
-					chance += 10;
-					flychance += 10;
-				}
-				if (findPerk(PerkLib.ElvishPeripheralNervSysFinalForm) >= 0) {
-					chance += 15;
-					flychance += 15;
-				}
+				if (findPerk(PerkLib.ElvishPeripheralNervSysEvolved) >= 0) chance += 10;
+				if (findPerk(PerkLib.ElvishPeripheralNervSysFinalForm) >= 0) chance += 15;
 			}
 			if (findPerk(PerkLib.Flexibility) >= 0) chance += 6;
 			if (findPerk(PerkLib.Misdirection) >= 0 && armorName == "red, high-society bodysuit") chance += 10;
 			//if (findPerk(PerkLib.Unhindered) >= 0 && meetUnhinderedReq()) chance += 10;
 			if (findPerk(PerkLib.Unhindered) >= 0 && (game.player.armorName == "arcane bangles" || game.player.armorName == "practically indecent steel armor" || game.player.armorName == "revealing chainmail bikini" || game.player.armorName == "slutty swimwear" || game.player.armorName == "barely-decent bondage straps" || game.player.armorName == "nothing")) chance += 10;
 			if (game.player.armor == game.armors.R_CHANG || game.player.armor == game.armors.R_QIPAO || game.player.armor == game.armors.G_CHANG || game.player.armor == game.armors.G_QIPAO || game.player.armor == game.armors.B_CHANG || game.player.armor == game.armors.B_QIPAO || game.player.armor == game.armors.P_CHANG || game.player.armor == game.armors.P_QIPAO) chance += 5;
+			if (game.player.hasKeyItem("Spring Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) chance += 10;
+			if (game.player.hasKeyItem("Rocket Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) chance += 20;
+			if (game.player.hasKeyItem("Nitro Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) chance += 30;
 			if (findPerk(PerkLib.JunglesWanderer) >= 0) chance += 35;
 			if (hasStatusEffect(StatusEffects.Illusion)) {
 				if (findPerk(PerkLib.KitsuneThyroidGlandFinalForm) >= 0) chance += 20;
@@ -3846,6 +4062,7 @@ public class Creature extends Utils
 				if (hasStatusEffect(StatusEffects.EverywhereAndNowhere)) chance += 80;
 				else chance += 30;
 			}
+			if (hasStatusEffect(StatusEffects.Flying)) chance += flychance;
 			return chance;
 		}
 
@@ -3886,8 +4103,11 @@ public class Creature extends Utils
 			if (generalevasion > 0) flyeavsion += generalevasion;
 			if (findPerk(PerkLib.AdvancedAerialCombat) >= 0) flyeavsion += 5;
 			if (findPerk(PerkLib.GreaterAerialCombat) >= 0) flyeavsion += 15;
+			if (game.player.hasKeyItem("Spring Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) generalevasion += 10;
+			if (game.player.hasKeyItem("Rocket Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) generalevasion += 20;
+			if (game.player.hasKeyItem("Nitro Boots") >= 0 && game.player.tallness < 48 && game.player.isBiped()) generalevasion += 30;
 			// perks
-			if ((findPerk(PerkLib.Evade) >= 0 || findPerk(PerkLib.ElvenSense) >= 0) && (roll < generalevasion)) return "Evade";
+			if ((findPerk(PerkLib.Evade) >= 0 || findPerk(PerkLib.ElvenSense) >= 0 || ((game.player.hasKeyItem("Nitro Boots") >= 0 || game.player.hasKeyItem("Rocket Boots") >= 0 || game.player.hasKeyItem("Spring Boots") >= 0) && game.player.tallness < 48 && game.player.isBiped())) && (roll < generalevasion)) return "Evade";
 			if (findPerk(PerkLib.Flexibility) >= 0 && (roll < 6)) return "Flexibility";
 			if (findPerk(PerkLib.Misdirection) >= 0 && armorName == "red, high-society bodysuit" && (roll < 10)) return "Misdirection";
 			//if (findPerk(PerkLib.Unhindered) >= 0 && meetUnhinderedReq() && (roll < 10)) return "Unhindered";
@@ -4035,4 +4255,3 @@ public class Creature extends Utils
 		}
 	}
 }
-

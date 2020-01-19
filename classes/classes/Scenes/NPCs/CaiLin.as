@@ -56,34 +56,38 @@ public class CaiLin extends Monster
 				outputText("The venom's effects are almost instantaneous; your body begins to weaken and even your mind becoming muddled.");
 				if(player.str > 8 && player.tou > 8 && player.spe > 8 && player.inte > 7) {
 					player.str -= 2;
-					showStatDown( 'str' );
+					//showStatDown( 'str' );
 					player.tou -= 2;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 2;
-					showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.inte -= 1;
-					showStatDown( 'inte' );
+					//showStatDown( 'inte' );
+					EngineCore.showUpDown();
 					player.createStatusEffect(StatusEffects.MedusaVenom,2,2,2,1);
 				}
 				else if(player.str > 8 && player.tou > 8 && player.spe > 9) {
 					player.str -= 2;
-					showStatDown( 'str' );
+					//showStatDown( 'str' );
 					player.tou -= 2;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 3;
-					showStatDown( 'spe' );
+					//showStatDown( 'spe' );
+					EngineCore.showUpDown();
 					player.createStatusEffect(StatusEffects.MedusaVenom,2,2,3,0);
 				}
 				else if(player.tou > 9 && player.spe > 10) {
 					player.tou -= 3;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 4;
-					showStatDown( 'spe' );
+					//showStatDown( 'spe' );
+					EngineCore.showUpDown();
 					player.createStatusEffect(StatusEffects.MedusaVenom,0,3,4,0);
 				}
 				else if(player.spe > 12) {
 					player.spe -= 6;
-					showStatDown( 'spe' );
+					//showStatDown( 'spe' );
+					EngineCore.showUpDown();
 					player.createStatusEffect(StatusEffects.MedusaVenom, 0,0,6,0);
 					player.takePoisonDamage(5+rand(5));
 				}
@@ -97,13 +101,13 @@ public class CaiLin extends Monster
 				outputText("The venom's effects intensify causing yor body and mind further weaker and mind even more muddled.");
 				if(player.str > 7 && player.tou > 7 && player.spe > 7 && player.inte > 7) {
 					player.str -= 1;
-					showStatDown( 'str' );
+					//showStatDown( 'str' );
 					player.tou -= 1;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 1;
-					showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.inte -= 1;
-					showStatDown( 'inte' );
+					EngineCore.showUpDown();//showStatDown( 'inte' );
 					player.addStatusValue(StatusEffects.MedusaVenom,1,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,2,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,1);
@@ -111,26 +115,26 @@ public class CaiLin extends Monster
 				}
 				else if(player.str > 7 && player.tou > 7 && player.spe > 8) {
 					player.str -= 1;
-					showStatDown( 'str' );
+					//showStatDown( 'str' );
 					player.tou -= 1;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 2;
-					showStatDown( 'spe' );
+					EngineCore.showUpDown();//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,1,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,2,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,2);
 				}
 				else if(player.tou > 8 && player.spe > 8) {
 					player.tou -= 2;
-					showStatDown( 'tou' );
+					//showStatDown( 'tou' );
 					player.spe -= 2;
-					showStatDown( 'spe' );
+					EngineCore.showUpDown();//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,2,2);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,2);
 				}
 				else if(player.spe > 9) {
 					player.spe -= 3;
-					showStatDown( 'spe' );
+					EngineCore.showUpDown();//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,3,3);
 					player.takeMagicDamage(5+rand(5));
 				}

@@ -53,6 +53,7 @@ package classes.Items
 		public const GELARMR:Armor = new Armor("GelArmr","GelArmr","glistening gel-armor plates","a suit of gel armor",10,0,600,"This suit of interlocking plates is made from a strange green material.  It feels spongy to the touch but is amazingly resiliant.","Heavy");
 		public const GOOARMR:GooArmor = new GooArmor();
 		public const H_GARB_:HereticsGarb = new HereticsGarb();
+		public const HBA_ARM:HBAspArmor = new HBAspArmor();
 		public const I_CORST:InquisitorsCorset = new InquisitorsCorset();
 		public const I_ROBES:InquisitorsRobes = new InquisitorsRobes();
 		public const INDECST:ArmorWithPerk = new ArmorWithPerk("IndecSt","Indec StAr","practically indecent steel armor","a suit of practically indecent steel armor",5,0,400,"This suit of steel 'armor' has two round disks that barely cover the nipples, a tight chainmail bikini, and circular butt-plates.","Medium",
@@ -89,16 +90,34 @@ package classes.Items
 				PerkLib.WizardsAndDaoistsEndurance,20,20,0,0);
 		public const S_SWMWR:SluttySwimwear = new SluttySwimwear();
 		public const SAMUARM:Armor = new Armor("SamuArm","Samu.Armor","samurai armor","a suit of samurai armor",18,0,300,"This suit of armor is originally worn by the Samurai, the warriors from the far East.","Heavy");
-		public const SPKIMO :SakuraPetalKimono = new SakuraPetalKimono();
+		public const SAQBIKNI:ArmorWithPerk = new ArmorWithPerk("SAqBikini","S Aq Bikini","Sexy Aquamarine Bikini","a Sexy Aquamarine Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
+		public const SBABIKNI:ArmorWithPerk = new ArmorWithPerk("SBaBikini","S Ba Bikini","Sexy Black Bikini","a Sexy Black Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
+		public const SBUBIKNI:ArmorWithPerk = new ArmorWithPerk("SBuBikini","S Bu Bikini","Sexy Blue Bikini","a Sexy Blue Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
 		public const SCALEML:Armor = new Armor("ScaleMl","Scale Mail","scale-mail armor","a set of scale-mail armor",12,0,720,"This suit of scale-mail covers the entire body with layered steel scales, providing flexibility and protection.","Heavy");
 		public const SEDUCTA:SeductiveArmor = new SeductiveArmor();
 		public const SEDUCTU:SeductiveArmorUntrapped = new SeductiveArmorUntrapped();
+		public const SGRBIKNI:ArmorWithPerk = new ArmorWithPerk("SGrBikini","S Gr Bikini","Sexy Green Bikini","a Sexy Green Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
+		public const SPIBIKNI:ArmorWithPerk = new ArmorWithPerk("SPiBikini","S Pi Bikini","Sexy Pink Bikini","a Sexy Pink Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
+		public const SPKIMO :SakuraPetalKimono = new SakuraPetalKimono();
+		public const SREBIKNI:ArmorWithPerk = new ArmorWithPerk("SReBikini","S Re Bikini","Sexy Red Bikini","a Sexy Red Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
 		public const SS_ROBE:ArmorWithPerk = new ArmorWithPerk("SS.Robe","SS.Robes","spider-silk robes","a spider-silk robes",0,6,300,"This robe looks incredibly comfortable.  It's made from alchemically enhanced spider-silk, and embroidered with what looks like magical glyphs around the sleeves and hood.","Light",
 				PerkLib.WizardsEndurance,30,0,0,0);
 		public const SSARMOR:Armor = new Armor("SSArmor","SS.Armor","spider-silk armor","a suit of spider-silk armor",25,0,1500,"This armor is as white as the driven snow.  It's crafted out of thousands of strands of spider-silk into an impenetrable protective suit.  The surface is slightly spongy, but so tough you wager most blows would bounce right off.","Heavy");
+		public const SWHBIKNI:ArmorWithPerk = new ArmorWithPerk("SWhBikini","S Wh Bikini","Sexy White Bikini","a Sexy White Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
+		public const SYEBIKNI:ArmorWithPerk = new ArmorWithPerk("SYeBikini","S Ye Bikini","Sexy Yellow Bikini","a Sexy Yellow Bikini",0,0,160,"This item helps female swimmers look sexy while not hindering movement. A perfect dress for a day at the beach.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing chain bikini allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
 		public const T_BSUIT:ArmorWithPerk = new ArmorWithPerk("T.BSuit","Bodysuit","semi-transparent bodysuit","a semi-transparent, curve-hugging bodysuit",0,0,50,"A semi-transparent bodysuit. It looks like it will cling to all the curves of your body.","Light",
 				PerkLib.SluttySeduction,7,0,0,0,"Your clingy transparent bodysuit allows you access to 'Seduce', an improved form of 'Tease'.");
 		public const TBARMOR:Armor = new MaraeArmor();
+		public const TRADITC:ArmorWithPerk = new ArmorWithPerk("TraditC","TraditionalCloth","Traditional clothes","a Traditional clothes",0,0,160,"These clothes bear resemblance to the traditional outfit whore by people in He'Xin'Dao on important days however there is something lewd and obscene about this more skimpy variant of the design. These clothes naturally assist soul force manipulation.","Light",
+				PerkLib.SluttySeduction,10,0,0,0,"Your revealing clothes allows you access to 'Seduce', an improved form of 'Tease'.", false, false);
 		public const TRASARM:Armor = new Armor("TraSArm","TraSArmor","training soul armor","a training soul armor",1,1,240,"This set of heavy armor is made using soulmetal but it main purpose is to allow user train soulforce to the uttermost limit for novice soul cultivator.","Heavy");
 		public const TUBETOP:Armor = new Armor("TubeTop","Tube Top","tube top and short shorts","a snug tube top and VERY short shorts",0,0,25,"A clingy tube top and VERY short shorts.","Light");
 		public const W_ROBES:ArmorWithPerk = new ArmorWithPerk("W.Robes","W.Robes","wizard's robes","a wizard's robes",0,1,50,"These robes appear to have once belonged to a female wizard.  They're long with a slit up the side and full billowing sleeves.  The top is surprisingly low cut.  Somehow you know wearing it would aid your spellcasting.","Light",

@@ -1,4 +1,6 @@
 package classes.Scenes.Places.TelAdre {
+	
+	import classes.EngineCore;
 import classes.BodyParts.Tail;
 import classes.GlobalFlags.kFLAGS;
 
@@ -76,7 +78,7 @@ private function strongStuff():void {
 	}
 	dynStats("tou", 1, "int", -1, "lus", 15);
 	player.gems -= 5;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("You ask for a strong drink anyway, and Aunt Nancy nods.  Easily, she picks up a glass with one hand, reaches out with another two, and fills it with something greenish.\n\n");
 
 	outputText("The bartender sees your gaze and smiles.  \"<i>Heavy mead,</i>\" she explains, hefting it.  \"<i>We make it from honeybee honey.  Have a taste, friend.</i>\"\n\n");

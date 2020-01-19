@@ -1,11 +1,13 @@
 package classes.Scenes.Dungeons.D3 
 {
 import classes.BaseContent;
+import classes.EngineCore;
 import classes.CockTypesEnum;
 import classes.EventParser;
 import classes.GlobalFlags.kFLAGS;
 import classes.PerkLib;
 import classes.PregnancyStore;
+import classes.StatusEffects;
 import classes.Scenes.Dungeons.Factory.IncubusMechanic;
 import classes.Scenes.SceneLib;
 
@@ -125,7 +127,7 @@ import classes.Scenes.SceneLib;
 			clearOutput();
 
 			player.gems -= 500;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n\nYou unceremoniously fill a small pouch with 500 gems and toss it to the incubus.");
 
 			outputText("\n\nHe lamely says, \"<i>You know, I wasn't really serious about the gems. Are you sure you don't want to suck my dick instead?</i>\" The demon offers you your bag full of money back.");
@@ -520,6 +522,7 @@ cleanupAfterCombat(SceneLib.d3.resumeFromFight);
 
 			outputText("\n\nShaking your head, you clear away the errant thoughts and focus on the battles to come.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			player.orgasm();
 			dynStats("cor+", 5);
 

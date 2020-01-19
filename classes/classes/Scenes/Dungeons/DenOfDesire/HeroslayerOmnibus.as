@@ -5,6 +5,7 @@
 package classes.Scenes.Dungeons.DenOfDesire 
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.BodyParts.LowerBody;
@@ -75,7 +76,7 @@ public class HeroslayerOmnibus extends Monster
 				if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 				else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 			}
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 		

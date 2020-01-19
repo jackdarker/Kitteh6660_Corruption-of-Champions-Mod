@@ -4,10 +4,14 @@
 package classes.Scenes.Areas.Plains
 {
 	import classes.*;
+	import classes.EngineCore;
 	import classes.GlobalFlags.*;
+	import classes.Scenes.UniqueSexScenes;
 
 	public class GnollScene extends BaseContent
 	{
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
+		
 		public function GnollScene()
 		{
 		}
@@ -95,6 +99,7 @@ package classes.Scenes.Areas.Plains
 			outputText("The hyena girl slumps against your body, but only for a moment.  Then she's suddenly up again, sliding her bizarre member out of you with an obscene slurp.  She leans down to pat your cheek and giggles, \"<i>Thanks, lover.</i>\"   Then she sprints off towards the horizon.");
 			outputText("  A whimper bubbles up your throat and comes out as a half-giggle as you slump down unconscious.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			player.orgasm();
 			cleanupAfterCombat();
 		}
@@ -120,7 +125,8 @@ package classes.Scenes.Areas.Plains
 					addButton(2, "TakeHerClit", takeGnollClit).hint("Put your vagina to use and ride the gnoll's clit.", "Take Her Clit");
 				}
 				addButton(3, "SuckHerClit", suckGnollClit).hint("Suck the gnoll's clit.", "Suck Her Clit");
-				addButton(4, "Leave", cleanupAfterCombat);
+				if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+				addButton(14, "Leave", cleanupAfterCombat);
 			}
 			else cleanupAfterCombat();
 		}
@@ -298,7 +304,7 @@ package classes.Scenes.Areas.Plains
 			doNext(yoDawgHyenaBallz3);
 			model.time.hours = 7;
 			model.time.days++;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 
 		private function yoDawgHyenaBallz3():void

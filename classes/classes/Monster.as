@@ -1,5 +1,6 @@
 ﻿package classes
 {
+import classes.EngineCore;
 import classes.BodyParts.Antennae;
 import classes.BodyParts.Horns;
 import classes.BodyParts.Tail;
@@ -19,6 +20,7 @@ import classes.Scenes.Areas.Forest.Alraune;
 import classes.Scenes.Areas.Ocean.UnderwaterSharkGirl;
 import classes.Scenes.Areas.Ocean.UnderwaterTigersharkGirl;
 import classes.Scenes.Dungeons.DenOfDesire.HeroslayerOmnibus;
+import classes.Scenes.Dungeons.EbonLabyrinth.Hydra;
 import classes.Scenes.Dungeons.Factory.OmnibusOverseer;
 import classes.Scenes.Dungeons.Factory.SecretarialSuccubus;
 import classes.Scenes.NPCs.ChiChi;
@@ -54,9 +56,10 @@ import flash.utils.getQualifiedClassName;
 		{
 			SceneLib.combat.cleanupAfterCombatImpl();
 		}
-		protected static function showStatDown(a:String):void{
+		/*protected static function showStatDown(a:String):void{
 			CoC.instance.mainView.statsView.showStatDown(a);
-		}
+		}*/
+		
 		protected final function statScreenRefresh():void {
 			EngineCore.statScreenRefresh();
 		}
@@ -69,8 +72,14 @@ import flash.utils.getQualifiedClassName;
 		protected final function combatParry():Boolean {
 			return SceneLib.combat.combatParry();
 		}
+		protected final function combatParry2():Number {
+			return SceneLib.combat.combatParry2();
+		}
 		protected final function combatBlock(doFatigue:Boolean = false):Boolean {
 			return SceneLib.combat.combatBlock(doFatigue);
+		}
+		protected final function combatBlock2():Number {
+			return SceneLib.combat.combatBlock2();
 		}
 		protected function get consumables():ConsumableLib{
 			return game.consumables;
@@ -289,32 +298,70 @@ import flash.utils.getQualifiedClassName;
 			var multimax:Number = 1;
 			if (findPerk(PerkLib.LimitBreakerBody1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerBody2ndStage) >= 0) multimax += 0.1;
+			if (statusEffectv2(StatusEffects.SaiyanNumber1a) > 0) multimax += statusEffectv2(StatusEffects.SaiyanNumber1a);
+			if (statusEffectv2(StatusEffects.SaiyanNumber2a) > 0) multimax += statusEffectv2(StatusEffects.SaiyanNumber2a);
+			if (statusEffectv2(StatusEffects.SaiyanNumber3a) > 0) multimax += statusEffectv2(StatusEffects.SaiyanNumber3a);
 			temp *= multimax;
-			temp = Math.round(temp);
-			return temp;
-		}
-		protected override function maxHP_mult():Number {
-			var temp:Number = 1.0;
 			if (findPerk(PerkLib.ShieldWielder) >= 0) temp *= 1.5;
-			if (findPerk(PerkLib.EnemyBossType) >= 0) temp *= 2;
 			if (findPerk(PerkLib.EnemyGigantType) >= 0) temp *= 3;
 			if (findPerk(PerkLib.EnemyGroupType) >= 0) temp *= 5;
-			//Apply difficulty
-			if (flags[kFLAGS.GAME_DIFFICULTY] <= 0) temp *= 1.0;
-			else if (flags[kFLAGS.GAME_DIFFICULTY] == 1) temp *= 1.25;
-			else if (flags[kFLAGS.GAME_DIFFICULTY] == 2) temp *= 1.5;
-			else if (flags[kFLAGS.GAME_DIFFICULTY] == 3) temp *= 2.0;
-			else temp *= 3.0;
+			temp *= stats_multi_based_on_misc();
+			temp = Math.round(temp);
 			return temp;
 		}
 		public override function maxHP():Number {
             return Math.round(maxHP_base()*maxHP_mult());
         }
+		
+		public override function minHP():Number
+		{
+			var min:Number = 0;
+			if (findPerk(PerkLib.Diehard) >= 0) {
+				min -= maxHP() * 0.02;
+				min -= (200 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}
+			if (findPerk(PerkLib.ImprovedDiehard) >= 0) {
+				min -= maxHP() * 0.04;
+				min -= (400 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}
+			if (findPerk(PerkLib.GreaterDiehard) >= 0) {
+				min -= maxHP() * 0.06;
+				min -= (600 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}
+			if (findPerk(PerkLib.EpicDiehard) >= 0) {
+				min -= maxHP() * 0.08;
+				min -= (800 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]));
+			}//nastepny diehard to 5% i 1000
+			if (findPerk(PerkLib.Ferocity) >= 0) min -= maxHP() * 0.07;
+			if (findPerk(PerkLib.OrcAdrenalGlands) >= 0) min -= maxHP() * 0.01;
+			if (findPerk(PerkLib.OrcAdrenalGlandsEvolved) >= 0) min -= maxHP() * 0.02;
+			if (findPerk(PerkLib.DeityJobMunchkin) >= 0) {
+				min -= str;
+				min -= tou;
+				min -= spe;
+				min -= inte;
+				min -= wis;
+				min -= lib;
+				min -= sens;
+			}
+			min = Math.round(min);
+			return min;
+		}
 
 		public function addHP(hp:Number):void{
 			this.HP += hp;
 			if (this.HP<0) this.HP = 0;
 			else if (this.HP > maxHP()) this.HP = maxHP();
+		}
+
+		public function addSoulforce(soulforce:Number):void{
+			this.soulforce += soulforce;
+			if (this.soulforce > maxSoulforce()) this.soulforce = maxSoulforce();
+		}
+
+		public function addMana(mana:Number):void{
+			this.mana += mana;
+			if (this.mana > maxMana()) this.mana = maxMana();
 		}
 
 		protected override function maxLust_base():Number {
@@ -361,7 +408,11 @@ import flash.utils.getQualifiedClassName;
 			var multimax:Number = 1;
 			if (findPerk(PerkLib.LimitBreakerHeart1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerHeart2ndStage) >= 0) multimax += 0.1;
+			if (statusEffectv3(StatusEffects.SaiyanNumber1a) > 0) multimax += statusEffectv3(StatusEffects.SaiyanNumber1a);
+			if (statusEffectv3(StatusEffects.SaiyanNumber2a) > 0) multimax += statusEffectv3(StatusEffects.SaiyanNumber2a);
+			if (statusEffectv3(StatusEffects.SaiyanNumber3a) > 0) multimax += statusEffectv3(StatusEffects.SaiyanNumber3a);
 			temp *= multimax;
+			temp *= stats_multi_based_on_misc();
 			temp = Math.round(temp);
 			return temp;
 		}
@@ -406,6 +457,7 @@ import flash.utils.getQualifiedClassName;
 			if (findPerk(PerkLib.LimitBreakerHeart1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerHeart2ndStage) >= 0) multimax += 0.1;
 			temp *= multimax;
+			temp *= stats_multi_based_on_misc();
 			temp = Math.round(temp);
 			return temp;
 		}
@@ -474,8 +526,9 @@ import flash.utils.getQualifiedClassName;
 			if (findPerk(PerkLib.LimitBreakerSoul1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerSoul2ndStage) >= 0) multimax += 0.1;
 			temp *= multimax;
+			temp *= stats_multi_based_on_misc();
 			temp = Math.round(temp);
-			if (hasPerk(PerkLib.EnemyTrueDemon) || (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience))) temp = 0;
+			if ((hasPerk(PerkLib.EnemyTrueDemon) && !hasPerk(PerkLib.Phylactery)) || (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience))) temp = 0;
 			return temp;
 		}
 		
@@ -538,11 +591,13 @@ import flash.utils.getQualifiedClassName;
 				if (findPerk(PerkLib.EnemyGroupType) >= 0) temp += 2000;
 			}
 			var multimax:Number = 1;
-			if (game.player.orcScore() >= 5) multimax += 0.1;
-			if (game.player.orcScore() >= 11) multimax += 0.1;
 			if (findPerk(PerkLib.LimitBreakerBody1stStage) >= 0) multimax += 0.05;
 			if (findPerk(PerkLib.LimitBreakerBody2ndStage) >= 0) multimax += 0.1;
+			if (statusEffectv4(StatusEffects.SaiyanNumber1a) > 0) multimax += statusEffectv4(StatusEffects.SaiyanNumber1a);
+			if (statusEffectv4(StatusEffects.SaiyanNumber2a) > 0) multimax += statusEffectv4(StatusEffects.SaiyanNumber2a);
+			if (statusEffectv4(StatusEffects.SaiyanNumber3a) > 0) multimax += statusEffectv4(StatusEffects.SaiyanNumber3a);
 			temp *= multimax;
+			temp *= stats_multi_based_on_misc();
 			temp = Math.round(temp);
 			if (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience)) temp = 0;
 			return temp;
@@ -597,11 +652,33 @@ import flash.utils.getQualifiedClassName;
 				if (findPerk(PerkLib.ArcaneRegenerationMajor) >= 0) tempmulti += 0.2;
 				if (findPerk(PerkLib.ArcaneRegenerationEpic) >= 0) tempmulti += 0.3;
 				if (findPerk(PerkLib.ArcaneRegenerationLegendary) >= 0) tempmulti += 0.4;
-				temp *= tempmulti;
 			}
 			if (findPerk(PerkLib.LimitBreakerSoul1stStage) >= 0) tempmulti += 0.05;
 			if (findPerk(PerkLib.LimitBreakerSoul2ndStage) >= 0) tempmulti += 0.1;
+			temp *= tempmulti;
+			temp *= stats_multi_based_on_misc();
+			temp = Math.round(temp);
 			if (hasPerk(PerkLib.EnemyConstructType) && !hasPerk(PerkLib.Sentience)) temp = 0;
+			return temp;
+		}
+
+		private function stats_multi_based_on_misc():Number {
+			var temp:Number = 1.0;
+			if (findPerk(PerkLib.EnemyEliteType) >= 0) temp += 1;
+			if (findPerk(PerkLib.EnemyChampionType) >= 0) temp += 2;
+			if (findPerk(PerkLib.EnemyBossType) >= 0) temp += 3;
+			if (this.level >= 25) temp += 1;
+			if (this.level >= 50) temp += 1;
+			if (this.level >= 75) temp += 1;
+			if (this.level >= 100) temp += 1;
+			if (this.level >= 125) temp += 1;
+			if (this.level >= 150) temp += 1;
+			if (this.level >= 175) temp += 1;
+			if (this.level >= 200) temp += 1;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 1) temp *= 1.5;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 2) temp *= 2;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 3) temp *= 3;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 4) temp *= 5;
 			return temp;
 		}
 
@@ -610,8 +687,8 @@ import flash.utils.getQualifiedClassName;
 			var armorMod:Number = armorDef;
 			//--BASE--
 			//Modify armor rating based on melee weapons
-			if (game.player.weapon == game.weapons.JRAPIER || game.player.weapon == game.weapons.Q_GUARD || game.player.weapon == game.weapons.B_WIDOW || game.player.weapon == game.weapons.SPEAR || game.player.weapon == game.weapons.SESPEAR || game.player.weapon == game.weapons.DSSPEAR || game.player.weapon == game.weapons.LANCE || game.player.weapon == game.weapons.NORTHIP
-			 || (game.player.weaponName.indexOf("staff") != -1 && game.player.findPerk(PerkLib.StaffChanneling) >= 0)) armorMod = 0;
+			if (game.player.weapon == game.weapons.JRAPIER || game.player.weapon == game.weapons.Q_GUARD || game.player.weapon == game.weapons.B_WIDOW || game.player.weapon == game.weapons.SPEAR || game.player.weapon == game.weapons.SESPEAR || game.player.weapon == game.weapons.DSSPEAR || game.player.weapon == game.weapons.SKYPIER || game.player.weapon == game.weapons.LANCE
+			 || game.player.weapon == game.weapons.NORTHIP || (game.player.weaponName.indexOf("staff") != -1 && game.player.findPerk(PerkLib.StaffChanneling) >= 0)) armorMod = 0;
 			if (game.player.weapon == game.weapons.KATANA) armorMod -= 5;
 			if (game.player.weapon == game.weapons.HALBERD) armorMod *= 0.6;
 			if (game.player.weapon == game.weapons.GUANDAO) armorMod *= 0.4;
@@ -1498,6 +1575,10 @@ import flash.utils.getQualifiedClassName;
 		protected function baseXP():Number
 		{
 			var baseMonXP:Number = this.level * 5;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 1) baseMonXP += this.level * 0.5;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 2) baseMonXP += this.level;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 3) baseMonXP += this.level * 1.5;
+			if (flags[kFLAGS.GAME_DIFFICULTY] == 4) baseMonXP += this.level * 2;
 			if (this.level < 7) baseMonXP += (this.level * 5) + rand(this.level * 5);
 			else baseMonXP += rand(this.level * 5);
 			return baseMonXP;
@@ -2044,11 +2125,11 @@ import flash.utils.getQualifiedClassName;
 				else outputText("'s attack ");
 				outputText("with your [weapon].\n");
 				if (game.player.findPerk(PerkLib.TwinRiposte) >= 0 && (game.player.weaponPerk == "Dual" || game.player.weaponPerk == "Dual Large") && game.player.wrath >= 2) {
-					player.createStatusEffect(StatusEffects.CounterAction,2,0,0,0);
+					player.createStatusEffect(StatusEffects.CounterAction,1,0,0,0);
 					SceneLib.combat.basemeleeattacks();
 				}
 				if (game.player.findPerk(PerkLib.Backlash) >= 0 && game.player.isFistOrFistWeapon()) {
-					player.createStatusEffect(StatusEffects.CounterAction, 1, 0, 0, 0);
+					player.createStatusEffect(StatusEffects.CounterAction,1,0,0,0);
 					outputText(" As you block the blow you exploit the opening in your opponent’s guard to deliver a vicious kick.");
 					SceneLib.combat.basemeleeattacks();
 				}
@@ -2078,7 +2159,7 @@ import flash.utils.getQualifiedClassName;
 			if (game.player.hasStatusEffect(StatusEffects.Exgartuan) && game.player.statusEffectv2(StatusEffects.Exgartuan) == 0 && rand(3) == 0) {
 				if (SceneLib.exgartuan.exgartuanCombatUpdate()) EngineCore.outputText("\n\n");
 			}
-			if (hasStatusEffect(StatusEffects.Constricted) || hasStatusEffect(StatusEffects.ConstrictedScylla) || hasStatusEffect(StatusEffects.GooEngulf) || hasStatusEffect(StatusEffects.EmbraceVampire) || hasStatusEffect(StatusEffects.Pounce)) {
+			if (hasStatusEffect(StatusEffects.Constricted) || hasStatusEffect(StatusEffects.ConstrictedScylla) || hasStatusEffect(StatusEffects.GooEngulf) || hasStatusEffect(StatusEffects.EmbraceVampire) || hasStatusEffect(StatusEffects.Pounce) || hasStatusEffect(StatusEffects.GrabBear)) {
 				if (!handleConstricted()) return;
 			}
 			if (hasStatusEffect(StatusEffects.AbilityCooldown1) ) {
@@ -2103,6 +2184,14 @@ import flash.utils.getQualifiedClassName;
 				}
 				else {
 					addStatusValue(StatusEffects.AbilityCooldown3,1,-1);
+				}
+			}
+			if (hasStatusEffect(StatusEffects.AbilityCooldown4) ) {
+				if (statusEffectv1(StatusEffects.AbilityCooldown4) <= 0) {
+					removeStatusEffect(StatusEffects.AbilityCooldown4);
+				}
+				else {
+					addStatusValue(StatusEffects.AbilityCooldown4,1,-1);
 				}
 			}
 			if (hasStatusEffect(StatusEffects.Lustzerking)) {
@@ -2176,6 +2265,15 @@ import flash.utils.getQualifiedClassName;
 			addStatusValue(StatusEffects.EmbraceVampire, 1, -1);
 			return false;
 			}
+			else if (hasStatusEffect(StatusEffects.GrabBear)) {
+			if (statusEffectv1(StatusEffects.GrabBear) <= 0) {
+				EngineCore.outputText("You try to maintain your grip but " + a + short + " shove you off escaping your grab!");
+				removeStatusEffect(StatusEffects.GrabBear);
+			}
+			else EngineCore.outputText("" + capitalA + short + " struggle but you manage to maintain the grab.");
+			addStatusValue(StatusEffects.GrabBear, 1, -1);
+			return false;
+			}
 			else {
 			EngineCore.outputText("Your prey pushes at your tail, twisting and writhing in an effort to escape from your tail's tight bonds.");
 			if (statusEffectv1(StatusEffects.Constricted) <= 0) {
@@ -2217,6 +2315,10 @@ import flash.utils.getQualifiedClassName;
 		 */
 		protected function handleStun():Boolean
 		{
+			if (hasStatusEffect(StatusEffects.SoulTear)) {
+				removeStatusEffect(StatusEffects.SoulTear);
+				createStatusEffect(StatusEffects.AbilityCooldown4,6,0,0,0);
+			}
 			if (statusEffectv1(StatusEffects.Stunned) <= 0) removeStatusEffect(StatusEffects.Stunned);
 			else addStatusValue(StatusEffects.Stunned, 1, -1);
 			if (statusEffectv1(StatusEffects.StunnedTornado) <= 0) removeStatusEffect(StatusEffects.StunnedTornado);
@@ -2343,7 +2445,7 @@ import flash.utils.getQualifiedClassName;
 		public function teased(lustDelta:Number):void
 		{
 			outputDefaultTeaseReaction(lustDelta);
-			if(lustDelta > 0) {
+			if (lustDelta > 0) {
 				//Imp mob uber interrupt!
 			  	if(hasStatusEffect(StatusEffects.ImpUber)) { // TODO move to proper class
 					outputText("\nThe imps in the back stumble over their spell, their loincloths tenting obviously as your display interrupts their casting.  One of them spontaneously orgasms, having managed to have his spell backfire.  He falls over, weakly twitching as a growing puddle of whiteness surrounds his defeated form.");
@@ -2354,6 +2456,7 @@ import flash.utils.getQualifiedClassName;
 					createStatusEffect(StatusEffects.ImpSkip,0,0,0,0);
 				}
 			}
+			if (hasStatusEffect(StatusEffects.BerzerkingSiegweird)) lustDelta *= 0.5;
 			applyTease(lustDelta);
 		}
 
@@ -2625,7 +2728,7 @@ import flash.utils.getQualifiedClassName;
 					player.removeStatusEffect(StatusEffects.Blind);
 				}
 				else {
-					if(statusEffectv1(StatusEffects.Sandstorm) == 0 || statusEffectv1(StatusEffects.Sandstorm) % 4 == 0) {
+					if((statusEffectv1(StatusEffects.Sandstorm) == 0 || statusEffectv1(StatusEffects.Sandstorm) % 4 == 0) && !player.hasPerk(PerkLib.BlindImmunity)) {
 						player.createStatusEffect(StatusEffects.Blind,0,0,0,0);
 						outputText("<b>The sand is in your eyes!  You're blinded this turn!</b>\n\n");
 					}
@@ -2735,8 +2838,25 @@ import flash.utils.getQualifiedClassName;
 					var hemorrhage:Number = 0;
 					hemorrhage += maxHP() * statusEffectv2(StatusEffects.Hemorrhage);
 					hemorrhage = SceneLib.combat.doDamage(hemorrhage);
-					if (plural) outputText(capitalA + short + " bleed profusely from the jagged wounds your attack left behind. <b>(<font color=\"#800000\">" + store + "</font>)</b>\n\n");
-					else outputText(capitalA + short + " bleeds profusely from the jagged wounds your attack left behind. <b>(<font color=\"#800000\">" + store + "</font>)</b>\n\n");
+					if (plural) outputText(capitalA + short + " bleed profusely from the jagged wounds your attack left behind. <b>(<font color=\"#800000\">" + hemorrhage + "</font>)</b>\n\n");
+					else outputText(capitalA + short + " bleeds profusely from the jagged wounds your attack left behind. <b>(<font color=\"#800000\">" + hemorrhage + "</font>)</b>\n\n");
+				}
+			}
+			if(hasStatusEffect(StatusEffects.Hemorrhage2)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.Hemorrhage2, 1, -1);
+				//Heal wounds
+				if (statusEffectv1(StatusEffects.Hemorrhage2) <= 0) {
+					outputText("The wounds your companion left on " + a + short + " stop bleeding so profusely.\n\n");
+					removeStatusEffect(StatusEffects.Hemorrhage2);
+				}
+				//Deal damage if still wounded.
+				else {
+					var hemorrhage2:Number = 0;
+					hemorrhage2 += maxHP() * statusEffectv2(StatusEffects.Hemorrhage2);
+					hemorrhage2 = SceneLib.combat.doDamage(hemorrhage2);
+					if (plural) outputText(capitalA + short + " bleed profusely from the jagged wounds your companion attack left behind. <b>(<font color=\"#800000\">" + hemorrhage2 + "</font>)</b>\n\n");
+					else outputText(capitalA + short + " bleeds profusely from the jagged wounds your companion attack left behind. <b>(<font color=\"#800000\">" + hemorrhage2 + "</font>)</b>\n\n");
 				}
 			}
 			if (hasStatusEffect(StatusEffects.Bloodlust)) {
@@ -2835,13 +2955,13 @@ import flash.utils.getQualifiedClassName;
 				addStatusValue(StatusEffects.ImmolationDoT,1,-1);
 				//Heal wounds
 				if(statusEffectv1(StatusEffects.ImmolationDoT) <= 0) {
-					outputText("Flames left by immolation spell " + a + short + " finally stop burning.\n\n");
+					outputText("Flames left by immolation spell on " + a + short + " finally stop burning.\n\n");
 					removeStatusEffect(StatusEffects.ImmolationDoT);
 				}
 				//Deal damage if still wounded.
 				else {
 					var store2:Number = int(50+(player.inte/10));
-					store2 = SceneLib.combat.doDamage(store2);
+					store2 = SceneLib.combat.doFireDamage(store2);
 					if(plural) outputText(capitalA + short + " burn from lingering immolination after-effect. <b>(<font color=\"#800000\">" + store2 + "</font>)</b>\n\n");
 					else outputText(capitalA + short + " burns from lingering immolination after-effect. <b>(<font color=\"#800000\">" + store2 + "</font>)</b>\n\n");
 				}
@@ -2852,16 +2972,34 @@ import flash.utils.getQualifiedClassName;
 				addStatusValue(StatusEffects.BurnDoT,1,-1);
 				//Heal wounds
 				if(statusEffectv1(StatusEffects.BurnDoT) <= 0) {
-					outputText("Flames left by Burn " + a + short + " finally stop burning.\n\n");
+					outputText("Flames left by Burn on " + a + short + " finally stop burning.\n\n");
 					removeStatusEffect(StatusEffects.BurnDoT);
 				}
 				//Deal damage if still wounded.
 				else {
 					var store4:Number = (player.str + player.spe + player.tou) * 2.5;
 					store4 += maxHP() * statusEffectv2(StatusEffects.BurnDoT);
-					store4 = SceneLib.combat.doDamage(store4);
+					store4 = SceneLib.combat.doFireDamage(store4);
 					if(plural) outputText(capitalA + short + " burn from lingering Burn after-effect. <b>(<font color=\"#800000\">" + store4 + "</font>)</b>\n\n");
 					else outputText(capitalA + short + " burns from lingering Burn after-effect. <b>(<font color=\"#800000\">" + store4 + "</font>)</b>\n\n");
+				}
+			}
+			//Burn DoT
+			if (hasStatusEffect(StatusEffects.BurnDoT2)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.BurnDoT2,1,-1);
+				//Heal wounds
+				if(statusEffectv1(StatusEffects.BurnDoT2) <= 0) {
+					outputText("Flames left by Burn on " + a + short + " finally stop burning.\n\n");
+					removeStatusEffect(StatusEffects.BurnDoT2);
+				}
+				//Deal damage if still wounded.
+				else {
+					var store8:Number = (player.str + player.spe + player.tou) * 2.5;
+					store8 += maxHP() * statusEffectv2(StatusEffects.BurnDoT2);
+					store8 = SceneLib.combat.doFireDamage(store8);
+					if(plural) outputText(capitalA + short + " burn from lingering Burn after-effect. <b>(<font color=\"#800000\">" + store8 + "</font>)</b>\n\n");
+					else outputText(capitalA + short + " burns from lingering Burn after-effect. <b>(<font color=\"#800000\">" + store8 + "</font>)</b>\n\n");
 				}
 			}
 			//Fire Punch Burn DoT
@@ -2870,53 +3008,220 @@ import flash.utils.getQualifiedClassName;
 				addStatusValue(StatusEffects.FirePunchBurnDoT,1,-1);
 				//Heal wounds
 				if(statusEffectv1(StatusEffects.FirePunchBurnDoT) <= 0) {
-					outputText("Flames left by Fire Punch " + a + short + " finally stop burning.\n\n");
+					outputText("Flames left by Fire Punch on " + a + short + " finally stop burning.\n\n");
 					removeStatusEffect(StatusEffects.FirePunchBurnDoT);
 				}
 				//Deal damage if still wounded.
 				else {
 					var store6:Number = (player.spe + player.inte) * SceneLib.combat.soulskillMod() * 0.5;
-					store6 = SceneLib.combat.doDamage(store6);
+					store6 = SceneLib.combat.doFireDamage(store6);
 					if(plural) outputText(capitalA + short + " burn from lingering Fire Punch after-effect. <b>(<font color=\"#800000\">" + store6 + "</font>)</b>\n\n");
 					else outputText(capitalA + short + " burns from lingering Fire Punch after-effect. <b>(<font color=\"#800000\">" + store6 + "</font>)</b>\n\n");
+				}
+			}
+			//Regen Inhibitor
+			if (hasStatusEffect(StatusEffects.RegenInhibitor)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.RegenInhibitor,1,-1);
+				//Heal wounds
+				if (statusEffectv1(StatusEffects.RegenInhibitor) <= 0) {
+					if (this is Hydra) outputText("The hydra sighs in relief as her wounds resume regenerating!\n\n");
+					removeStatusEffect(StatusEffects.RegenInhibitor);
+				}
+			}
+			//Ice DoT
+			if (hasStatusEffect(StatusEffects.FrostburnDoT)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.FrostburnDoT,1,-1);
+				if (statusEffectv4(StatusEffects.FrostburnDoT) == 0) {
+					if (statusEffectv1(StatusEffects.FrostburnDoT) > 1) addStatusValue(StatusEffects.FrostburnDoT, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.FrostburnDoT) <= 0) {
+						outputText("Wound left by frostburn on " + a + short + " finally close ups.\n\n");
+						removeStatusEffect(StatusEffects.FrostburnDoT);
+					}
+					//Deal damage if still wounded.
+					else {
+						var store12:Number = (player.str + player.spe + player.tou) * 2.5;
+						store12 += maxHP() * statusEffectv2(StatusEffects.FrostburnDoT);
+						if(plural) outputText(capitalA + short + " are hurt by lingering Frostburn after-effect. ");
+						else outputText(capitalA + short + " is hurt by lingering Frostburn after-effect. ");
+						store12 = SceneLib.combat.doIceDamage(store12, true, true);
+						outputText("\n\n");
+					}
 				}
 			}
 			//Acid DoT
 			if (hasStatusEffect(StatusEffects.AcidDoT)) {
 				//Countdown to heal
 				addStatusValue(StatusEffects.AcidDoT,1,-1);
-				if(statusEffectv3(StatusEffects.AcidDoT) > 1) addStatusValue(StatusEffects.AcidDoT,3,-1);
-				//Heal wounds
-				if(statusEffectv1(StatusEffects.AcidDoT) <= 0) {
-					outputText("Wound left by Acid " + a + short + " finally close ups.\n\n");
-					removeStatusEffect(StatusEffects.AcidDoT);
+				if (statusEffectv4(StatusEffects.AcidDoT) == 0) {
+					if (statusEffectv1(StatusEffects.AcidDoT) > 1) addStatusValue(StatusEffects.AcidDoT, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.AcidDoT) <= 0) {
+						outputText("Wound left by acid on " + a + short + " finally close ups.\n\n");
+						removeStatusEffect(StatusEffects.AcidDoT);
+					}
+					//Deal damage if still wounded.
+					else {
+						var store7:Number = (player.str + player.spe + player.tou) * 2.5;
+						store7 += maxHP() * statusEffectv2(StatusEffects.AcidDoT);
+						if(plural) outputText(capitalA + short + " are hurt by lingering Acid after-effect. ");
+						else outputText(capitalA + short + " is hurt by lingering Acid after-effect. ");
+						store7 = SceneLib.combat.doMagicDamage(store7, true, true);
+						outputText("\n\n");
+					}
 				}
-				//Deal damage if still wounded.
+			}
+			//Poison Dot
+			if (hasStatusEffect(StatusEffects.PoisonDoT)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.PoisonDoT,1,-1);
+				if (statusEffectv4(StatusEffects.PoisonDoT) == 0) {
+					if (statusEffectv1(StatusEffects.PoisonDoT) > 1) addStatusValue(StatusEffects.PoisonDoT, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.PoisonDoT) <= 0) {
+						outputText("Wound left by poison on " + a + short + " finally close ups.\n\n");
+						removeStatusEffect(StatusEffects.PoisonDoT);
+					}
+					//Deal damage if still wounded.
+					else {
+						var store10:Number =  (player.str + player.spe + player.tou) * 2.5;
+						store10 += maxHP() * statusEffectv2(StatusEffects.PoisonDoT);
+						if(plural) outputText(capitalA + short + " are hurt by lingering Poison after-effect. ");
+						else outputText(capitalA + short + " is hurt by lingering Poison after-effect. ");
+						store10 = SceneLib.combat.doMagicDamage(store10, true, true);
+						outputText("\n\n");
+					}
+				}
+			}
+			if (hasStatusEffect(StatusEffects.PoisonDoTH)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.PoisonDoTH,1,-1);
+				if (statusEffectv4(StatusEffects.PoisonDoTH) == 0) {
+					if (statusEffectv1(StatusEffects.PoisonDoTH) > 1) addStatusValue(StatusEffects.PoisonDoTH, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.PoisonDoTH) <= 0) {
+						outputText("Wound left by poison on " + a + short + " finally close ups.\n\n");
+						removeStatusEffect(StatusEffects.PoisonDoTH);
+					}
+					//Deal damage if still wounded.
+					else {
+						var store9:Number = 0;
+						store9 += maxHP() * statusEffectv2(StatusEffects.PoisonDoTH);
+						if(plural) outputText(capitalA + short + " are hurt by lingering Poison after-effect. ");
+						else outputText(capitalA + short + " is hurt by lingering Poison after-effect. ");
+						store9 = SceneLib.combat.doMagicDamage(store9, true, true);
+						outputText("\n\n");
+					}
+				}
+			}
+			//Lust Dot
+			if (hasStatusEffect(StatusEffects.LustDoT)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.LustDoT,1,-1);
+				if (statusEffectv4(StatusEffects.LustDoT) == 0) {
+					if (statusEffectv1(StatusEffects.LustDoT) > 1) addStatusValue(StatusEffects.LustDoT, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.LustDoT) <= 0) {
+						outputText("Lingering lust-induncing after-effect on " + a + short + " finally ends.\n\n");
+						removeStatusEffect(StatusEffects.LustDoT);
+					}
+					//Deal damage if still wounded.
+					else {
+						var lustDmg1:Number = Math.round(player.lib / 10);
+						lustDmg1 += maxLust() * statusEffectv2(StatusEffects.LustDoT);
+						if(plural) outputText(capitalA + short + " are aroused by lingering lust-induncing after-effect. ");
+						else outputText(capitalA + short + " is aroused by lingering lust-induncing after-effect. ");
+						teased(lustDmg1);
+						outputText("\n\n");
+					}
+				}
+			}
+			if (hasStatusEffect(StatusEffects.LustDoTH)) {
+				//Countdown to heal
+				addStatusValue(StatusEffects.LustDoTH,1,-1);
+				if (statusEffectv4(StatusEffects.LustDoTH) == 0) {
+					if (statusEffectv1(StatusEffects.LustDoTH) > 1) addStatusValue(StatusEffects.LustDoTH, 1, -1);
+					//Heal wounds
+					if (statusEffectv1(StatusEffects.LustDoTH) <= 0) {
+						outputText("Lingering lust-induncing after-effect on " + a + short + " finally ends.\n\n");
+						removeStatusEffect(StatusEffects.LustDoTH);
+					}
+					//Deal damage if still wounded.
+					else {
+						var lustDmg2:Number = 0;
+						lustDmg2 += maxLust() * statusEffectv2(StatusEffects.LustDoTH);
+						if(plural) outputText(capitalA + short + " are aroused by lingering lust-induncing after-effect. ");
+						else outputText(capitalA + short + " is aroused by lingering lust-induncing after-effect. ");
+						teased(lustDmg2);
+						outputText("\n\n");
+					}
+				}
+			}
+			if (hasStatusEffect(StatusEffects.Maleficium)) {
+				if (statusEffectv1(StatusEffects.Maleficium) <= 0) {
+					removeStatusEffect(StatusEffects.Maleficium);
+					outputText("<b>Enemy Maleficium effect wore off!</b>\n\n");
+				}
+				else addStatusValue(StatusEffects.Maleficium,1,-1);
+			}
+			//Consuming darkness
+			if (player.hasStatusEffect(StatusEffects.ConsumingDarkness)) {
+				if (player.statusEffectv1(StatusEffects.ConsumingDarkness) <= 0) player.removeStatusEffect(StatusEffects.ConsumingDarkness);
 				else {
-					var store7:Number = (player.str + player.spe + player.tou) * 2.5;
-					store7 += maxHP() * statusEffectv2(StatusEffects.AcidDoT);
-					store7 = SceneLib.combat.doDamage(store7);
-					if(plural) outputText(capitalA + short + " are hurt by lingering Acid after-effect. <b>(<font color=\"#800000\">" + store4 + "</font>)</b>\n\n");
-					else outputText(capitalA + short + " is hurt by lingering Acid after-effect. <b>(<font color=\"#800000\">" + store4 + "</font>)</b>\n\n");
+					player.addStatusValue(StatusEffects.ConsumingDarkness, 1, -1);
+					outputText("Hungry darkness gnaw at your foe for ");
+					var store11:Number = 0;
+					store11 += maxHP() * statusEffectv2(StatusEffects.ConsumingDarkness);
+					store11 = SceneLib.combat.doDarknessDamage(store11, true, true);
+					outputText(" damage!\n\n");
+				}
+			}
+			//Curse of Desire
+			if (player.hasStatusEffect(StatusEffects.CurseOfDesire)) {
+				if (player.statusEffectv1(StatusEffects.CurseOfDesire) <= 0) player.removeStatusEffect(StatusEffects.CurseOfDesire);
+				else {
+					player.addStatusValue(StatusEffects.CurseOfDesire, 1, -1);
+					var lustDmg3:Number = 0;
+					lustDmg3 += maxLust() * statusEffectv2(StatusEffects.CurseOfDesire);
+					outputText("The curse of desire slowly sap at your victim's resolve and countenance. ");
+					teased(lustDmg3);
+					outputText("\n\n");
+				}
+			}
+			//Curse of Weeping
+			if (player.hasStatusEffect(StatusEffects.CurseOfWeeping)) {
+				if (player.statusEffectv1(StatusEffects.CurseOfWeeping) <= 0) player.removeStatusEffect(StatusEffects.CurseOfWeeping);
+				else {
+					player.addStatusValue(StatusEffects.CurseOfWeeping, 1, -1);
+					outputText("Your foe is bleeding due to your curse. ");
+					var hemorrhage3:Number = 0;
+					hemorrhage3 += maxHP() * statusEffectv2(StatusEffects.CurseOfWeeping);
+					hemorrhage3 = SceneLib.combat.doDamage(hemorrhage3);
+					outputText("<b>(<font color=\"#800000\">" + hemorrhage3 + "</font>)</b>\n\n");
 				}
 			}
 			//regeneration perks for monsters
 			if (((findPerk(PerkLib.Regeneration) >= 0 || findPerk(PerkLib.LizanRegeneration) >= 0 || findPerk(PerkLib.LizanMarrow) >= 0 || findPerk(PerkLib.LizanMarrowEvolved) >= 0 || findPerk(PerkLib.EnemyPlantType) >= 0 || findPerk(PerkLib.BodyCultivator) >= 0 || findPerk(PerkLib.MonsterRegeneration) >= 0 || findPerk(PerkLib.Lifeline) >= 0 || findPerk(PerkLib.ImprovedLifeline) >= 0 
-			|| findPerk(PerkLib.GreaterLifeline) >= 0 || findPerk(PerkLib.EpicLifeline) >= 0 || findPerk(PerkLib.HclassHeavenTribulationSurvivor) >= 0 || findPerk(PerkLib.GclassHeavenTribulationSurvivor) >= 0 || findPerk(PerkLib.FclassHeavenTribulationSurvivor) >= 0 || hasStatusEffect(StatusEffects.MonsterRegen) || hasStatusEffect(StatusEffects.MonsterRegen2)) && this.HP < maxHP()) 
-			|| (hasStatusEffect(StatusEffects.MonsterVPT) && (this.HP < maxHP()) && (this.HP > 0))) {
+			|| findPerk(PerkLib.GreaterLifeline) >= 0 || findPerk(PerkLib.EpicLifeline) >= 0 || findPerk(PerkLib.IcyFlesh) >= 0 || findPerk(PerkLib.HclassHeavenTribulationSurvivor) >= 0 || findPerk(PerkLib.GclassHeavenTribulationSurvivor) >= 0 || findPerk(PerkLib.FclassHeavenTribulationSurvivor) >= 0 || hasStatusEffect(StatusEffects.MonsterRegen) || hasStatusEffect(StatusEffects.MonsterRegen2))
+			&& this.HP < maxHP()) || (hasStatusEffect(StatusEffects.MonsterVPT) && (this.HP < maxHP()) && (this.HP > 0))) {
 				var healingPercent:Number = 0;
 				var temp2:Number = 0;
 				if (findPerk(PerkLib.Regeneration) >= 0) healingPercent += (0.5 * (1 + newGamePlusMod()));
-				if (findPerk(PerkLib.LizanRegeneration) >= 0) healingPercent += 1.5;
-				if (findPerk(PerkLib.LizanMarrow) >= 0) healingPercent += 0.5;
-				if (findPerk(PerkLib.LizanMarrowEvolved) >= 0) healingPercent += 1;
+				if (findPerk(PerkLib.LizanRegeneration) >= 0 && !hasStatusEffect(StatusEffects.RegenInhibitor)) healingPercent += 1.5;
+				if (findPerk(PerkLib.LizanMarrow) >= 0 && !hasStatusEffect(StatusEffects.RegenInhibitor)) healingPercent += 0.5;
+				if (findPerk(PerkLib.LizanMarrowEvolved) >= 0 && !hasStatusEffect(StatusEffects.RegenInhibitor)) healingPercent += 1;
+				if (findPerk(PerkLib.IcyFlesh) >= 0) healingPercent += 1;
 				if (findPerk(PerkLib.BodyCultivator) >= 0) healingPercent += 0.5;
 				if (findPerk(PerkLib.HclassHeavenTribulationSurvivor) >= 0) healingPercent += 0.5;
 				if (findPerk(PerkLib.GclassHeavenTribulationSurvivor) >= 0) healingPercent += 0.5;
 				if (findPerk(PerkLib.FclassHeavenTribulationSurvivor) >= 0) healingPercent += 0.5;
+				if (findPerk(PerkLib.Ferocity) >= 0 && this.HP < 1) healingPercent -= 1;
 				if (findPerk(PerkLib.EnemyPlantType) >= 0) healingPercent += 1;
-				if (findPerk(PerkLib.MonsterRegeneration) >= 0) healingPercent += perkv1(PerkLib.MonsterRegeneration);
+				if (findPerk(PerkLib.MonsterRegeneration) >= 0 && !hasStatusEffect(StatusEffects.RegenInhibitor)) healingPercent += perkv1(PerkLib.MonsterRegeneration);
 				if (hasStatusEffect(StatusEffects.MonsterRegen)) healingPercent += statusEffectv2(StatusEffects.MonsterRegen);
+				if (findPerk(PerkLib.Diehard) >= 0 && !findPerk(PerkLib.EpicDiehard) >= 0 && this.HP < 1) healingPercent -= 1;
 				temp2 = Math.round(maxHP() * healingPercent / 100);
 				if (findPerk(PerkLib.Lifeline) >= 0) temp2 += (45 * (1 + newGamePlusMod()));
 				if (findPerk(PerkLib.ImprovedLifeline) >= 0) temp2 += (60 * (1 + newGamePlusMod()));
@@ -2924,16 +3229,59 @@ import flash.utils.getQualifiedClassName;
 				if (findPerk(PerkLib.EpicLifeline) >= 0) temp2 += (120 * (1 + newGamePlusMod()));
 				if (hasStatusEffect(StatusEffects.MonsterRegen2)) temp2 += statusEffectv2(StatusEffects.MonsterRegen2);
 				if (hasStatusEffect(StatusEffects.MonsterVPT)) temp2 += statusEffectv1(StatusEffects.MonsterVPT);
-				if (this is ChiChi && (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2 || hasStatusEffect(StatusEffects.MonsterRegen))) {
-					outputText("To your surprise, Chi Chi’s wounds start closing! <b>(<font color=\"#008000\">+" + temp2 + "</font>)</b>.\n\n");
+				if (temp2 > 0) {
+					temp2 = Math.round(temp2);
+					if (this is ChiChi && (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2 || hasStatusEffect(StatusEffects.MonsterRegen))) {
+						outputText("To your surprise, Chi Chi’s wounds start closing! <b>(<font color=\"#008000\">+" + temp2 + "</font>)</b>.\n\n");
+					}
+					else {
+						outputText("Due to natural regeneration " + short + " recover");
+						if (plural) outputText("s");
+						else outputText("ed");
+						outputText(" some HP! <b>(<font color=\"#008000\">+" + temp2 + "</font>)</b>.\n\n");
+					}
+					addHP(temp2);
 				}
-				else {
-					outputText("Due to natural regeneration " + short + " recover");
-					if (plural) outputText("s");
-					else outputText("ed");
-					outputText(" some HP! <b>(<font color=\"#008000\">+" + temp2 + "</font>)</b>.\n\n");
-				}
-				addHP(temp2);
+			}
+			//soulforce and mana regeneration for monsters
+			if (findPerk(PerkLib.JobSoulCultivator) >= 0 && this.soulforce < maxSoulforce()) {
+				var soulforceRecovery:Number = 0;
+				var soulforceRecoveryMulti:Number = 1;
+				if (findPerk(PerkLib.JobSoulCultivator) >= 0) soulforceRecovery += 4;
+				if (findPerk(PerkLib.SoulApprentice) >= 0) soulforceRecovery += 2;
+				if (findPerk(PerkLib.SoulPersonage) >= 0) soulforceRecovery += 2;
+				if (findPerk(PerkLib.SoulWarrior) >= 0) soulforceRecovery += 2;
+				if (findPerk(PerkLib.SoulSprite) >= 0) soulforceRecovery += 3;
+				if (findPerk(PerkLib.SoulScholar) >= 0) soulforceRecovery += 3;
+				if (findPerk(PerkLib.SoulElder) >= 0) soulforceRecovery += 3;
+				if (findPerk(PerkLib.SoulExalt) >= 0) soulforceRecovery += 4;
+				if (findPerk(PerkLib.SoulOverlord) >= 0) soulforceRecovery += 4;
+				if (findPerk(PerkLib.SoulTyrant) >= 0) soulforceRecovery += 4;
+				if (findPerk(PerkLib.SoulKing) >= 0) soulforceRecovery += 5;
+				if (findPerk(PerkLib.SoulEmperor) >= 0) soulforceRecovery += 5;
+				if (findPerk(PerkLib.SoulAncestor) >= 0) soulforceRecovery += 5;
+				if (findPerk(PerkLib.DaoistCultivator) >= 0) soulforceRecoveryMulti += 0.5;
+				soulforceRecovery *= soulforceRecoveryMulti;
+				addSoulforce(soulforceRecovery);
+			}
+			if (findPerk(PerkLib.JobSorcerer) >= 0 && this.mana < maxMana()) {
+				var manaRecovery:Number = 0;
+				var manaRecoveryMulti:Number = 1;
+				if (findPerk(PerkLib.JobSorcerer) >= 0) manaRecovery += 10;
+				if (findPerk(PerkLib.ArcaneRegenerationMinor) >= 0) manaRecovery += 5;
+				if (findPerk(PerkLib.ArcaneRegenerationMajor) >= 0) manaRecovery += 10;
+				if (findPerk(PerkLib.ArcaneRegenerationEpic) >= 0) manaRecovery += 15;
+				if (findPerk(PerkLib.ArcaneRegenerationLegendary) >= 0) manaRecovery += 20;
+				if (findPerk(PerkLib.GreyMage) >= 0) manaRecoveryMulti += 0.5;
+				if (findPerk(PerkLib.GreyArchmage) >= 0) manaRecoveryMulti += 1.5;
+				if (findPerk(PerkLib.ManaAffinityI) >= 0) manaRecoveryMulti += 0.2;
+				if (findPerk(PerkLib.ManaAffinityII) >= 0) manaRecoveryMulti += 0.2;
+				if (findPerk(PerkLib.ManaAffinityIII) >= 0) manaRecoveryMulti += 0.2;
+				if (findPerk(PerkLib.ManaAffinityIV) >= 0) manaRecoveryMulti += 0.2;
+				if (findPerk(PerkLib.ManaAffinityV) >= 0) manaRecoveryMulti += 0.2;
+				if (findPerk(PerkLib.ManaAffinityVI) >= 0) manaRecoveryMulti += 0.2;
+				manaRecovery *= manaRecoveryMulti;
+				addMana(manaRecovery);
 			}
 		}
 		
@@ -2988,6 +3336,164 @@ import flash.utils.getQualifiedClassName;
 		}
 		public function prepareForCombat():void {
 			var bonusStatsAmp:Number = 0.2;
+			if (hasPerk(PerkLib.ChimericalBodyInitialStage)) {
+				tou += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodySemiBasicStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodyBasicStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodyAdvancedStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodySemiSuperiorStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodySuperiorStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (10 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodyPeerlessStage)) {
+				str += (10 * (1 + newGamePlusMod()));
+				tou += (10 * (1 + newGamePlusMod()));
+				spe += (10 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodySemiEpicStage)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				inte += (10 * (1 + newGamePlusMod()));
+				wis += (10 * (1 + newGamePlusMod()));
+				lib += (10 * (1 + newGamePlusMod()));
+				sens += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ChimericalBodyEpicStage)) {
+				str += (10 * (1 + newGamePlusMod()));
+				tou += (10 * (1 + newGamePlusMod()));
+				spe += (10 * (1 + newGamePlusMod()));
+				inte += (10 * (1 + newGamePlusMod()));
+				wis += (10 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.BlackHeartFinalForm)) {
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.CatlikeNimblenessEvolved)) spe += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.DraconicLungs)) spe += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.DraconicLungsEvolved)) {
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.DraconicLungsFinalForm)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ElvishPeripheralNervSysEvolved)) spe += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.ElvishPeripheralNervSysFinalForm)) spe += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.GorgonsEyesEvolved)) {
+				spe += (5 * (1 + newGamePlusMod()));
+				sens += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.HinezumiBurningBloodFinalForm)) tou += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.KitsuneThyroidGland)) spe += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.KitsuneThyroidGlandEvolved)) {
+				spe += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.KitsuneThyroidGlandEvolved)) {
+				spe += (5 * (1 + newGamePlusMod()));
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.LactaBovinaOvariesEvolved)) lib += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.LactaBovinaOvariesFinalForm)) {
+				str += (10 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				lib += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.MantislikeAgility)) {/*
+				if (hasCoatOfType(Skin.CHITIN) && hasPerk(PerkLib.ThickSkin)) spe += (20 * (1 + newGamePlusMod()));
+				if ((skinType == Skin.SCALES && hasPerk(PerkLib.ThickSkin)) || hasCoatOfType(Skin.CHITIN)) spe += (15 * (1 + newGamePlusMod()));
+				if (skinType == Skin.SCALES) spe += (10 * (1 + newGamePlusMod()));*/
+				if (hasPerk(PerkLib.ThickSkin)) spe += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.MantislikeAgilityEvolved)) {/*
+				if (hasCoatOfType(Skin.CHITIN) && hasPerk(PerkLib.ThickSkin)) spe += (25 * (1 + newGamePlusMod()));
+				if ((skinType == Skin.SCALES && hasPerk(PerkLib.ThickSkin)) || hasCoatOfType(Skin.CHITIN)) spe += (20 * (1 + newGamePlusMod()));
+				if (skinType == Skin.SCALES) spe += (15 * (1 + newGamePlusMod()));*/
+				if (hasPerk(PerkLib.ThickSkin)) spe += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.MinotaurTesticlesEvolved)) lib += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.MinotaurTesticlesFinalForm)) {
+				str += (10 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				lib += (10 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ObsidianHeartFinalForm)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.OniMusculature)) str += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.OniMusculatureEvolved)) str += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.OniMusculatureFinalForm)) str += (15 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.OrcAdrenalGlandsEvolved)) str += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.OrcAdrenalGlandsFinalForm)) str += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.PigBoarFat)) tou += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.PigBoarFatEvolved)) tou += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.PigBoarFatFinalForm)) tou += (15 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.SalamanderAdrenalGlands)) {
+				tou += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.SalamanderAdrenalGlandsEvolved)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.SalamanderAdrenalGlandsFinalForm)) {
+				str += (15 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (15 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.ScyllaInkGlands)) str += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.TrachealSystemEvolved)) str += (5 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.TrachealSystemFinalForm)) spe += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.VenomGlandsFinalForm)) tou += (10 * (1 + newGamePlusMod()));
 			if (hasPerk(PerkLib.EzekielBlessing)) {
 				str += (5 * (1 + newGamePlusMod()));
 				tou += (5 * (1 + newGamePlusMod()));
@@ -2997,19 +3503,19 @@ import flash.utils.getQualifiedClassName;
 				sens += (5 * (1 + newGamePlusMod()));
 			}
 			if (hasPerk(PerkLib.JobAllRounder)) {
-				str += (10 * (1 + newGamePlusMod()));
-				tou += (10 * (1 + newGamePlusMod()));
-				spe += (10 * (1 + newGamePlusMod()));
-				inte += (10 * (1 + newGamePlusMod()));
-				wis += (10 * (1 + newGamePlusMod()));
-				lib += (6 * (1 + newGamePlusMod()));
-				sens += (6 * (1 + newGamePlusMod()));
-			}
-			if (hasPerk(PerkLib.JobBeastWarrior) >= 0) {
 				str += (5 * (1 + newGamePlusMod()));
 				tou += (5 * (1 + newGamePlusMod()));
 				spe += (5 * (1 + newGamePlusMod()));
-				if (hasPerk(PerkLib.ImprovingNaturesBlueprintsApexPredator) >= 0) {
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				lib += (5 * (1 + newGamePlusMod()));
+				sens += (5 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.JobBeastWarrior)) {
+				str += (5 * (1 + newGamePlusMod()));
+				tou += (5 * (1 + newGamePlusMod()));
+				spe += (5 * (1 + newGamePlusMod()));
+				if (hasPerk(PerkLib.ImprovingNaturesBlueprintsApexPredator)) {
 					inte += (5 * (1 + newGamePlusMod()));
 					wis += (5 * (1 + newGamePlusMod()));
 				}
@@ -3042,6 +3548,12 @@ import flash.utils.getQualifiedClassName;
 				inte += (5 * (1 + newGamePlusMod()));
 			}
 			if (hasPerk(PerkLib.JobKnight)) tou += (10 * (1 + newGamePlusMod()));
+			if (hasPerk(PerkLib.JobLeader)) {
+				inte += (5 * (1 + newGamePlusMod()));
+				wis += (5 * (1 + newGamePlusMod()));
+				if (hasPerk(PerkLib.ShootTheLoadAndHitTheRoad)) spe += (5 * (1 + newGamePlusMod()));
+				if (!hasPerk(PerkLib.ShootTheLoadAndHitTheRoad)) lib -= (5 * (1 + newGamePlusMod()));
+			}
 			if (hasPerk(PerkLib.JobMonk)) wis += (15 * (1 + newGamePlusMod()));
 			if (hasPerk(PerkLib.JobRanger)) spe += (5 * (1 + newGamePlusMod()));
 			if (hasPerk(PerkLib.JobRogue)) {
@@ -3076,9 +3588,17 @@ import flash.utils.getQualifiedClassName;
 				str += (40 * (1 + newGamePlusMod()));
 				wis += (40 * (1 + newGamePlusMod()));
 			}
+			if (hasPerk(PerkLib.PrestigeJobSpellKnight)) {
+				str += (40 * (1 + newGamePlusMod()));
+				inte += (40 * (1 + newGamePlusMod()));
+			}
 			if (hasPerk(PerkLib.PrestigeJobTempest)) {
 				str += (40 * (1 + newGamePlusMod()));
 				spe += (40 * (1 + newGamePlusMod()));
+			}
+			if (hasPerk(PerkLib.PrestigeJobWarlock)) {
+				inte += (60 * (1 + newGamePlusMod()));
+				lib += (20 * (1 + newGamePlusMod()));
 			}
 			if (hasPerk(PerkLib.DeityJobMunchkin)) {
 				str += (25 * (1 + newGamePlusMod()));
@@ -3177,13 +3697,86 @@ import flash.utils.getQualifiedClassName;
 			if (level > 10) bonusAscMaxHP *= (int)(level / 10 + 1);
 			weaponAttack += (1 + (int)(weaponAttack / 5)) * newGamePlusMod();
 			if (weaponRangeAttack > 0) weaponRangeAttack += (1 + (int)(weaponRangeAttack / 5)) * newGamePlusMod();
+			if (hasPerk(PerkLib.ToughHide)) {
+				armorDef += (2 * (1 + newGamePlusMod()));
+				armorMDef += (1 * (1 + newGamePlusMod()));
+			}
 			if (hasPerk(PerkLib.FeralArmor)) {
 				armorDef += Math.round(tou / 20);
 				armorMDef += Math.round(tou / 20);
 			}
+			if (hasPerk(PerkLib.FleshBodyApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulPersonage)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulWarrior)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+			}
+			if (hasPerk(PerkLib.FleshBodyWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) {
+					armorDef += (3 * (1 + newGamePlusMod()));
+					armorMDef += (2 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulScholar)) {
+					armorDef += (3 * (1 + newGamePlusMod()));
+					armorMDef += (2 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulElder)) {
+					armorDef += (3 * (1 + newGamePlusMod()));
+					armorMDef += (2 * (1 + newGamePlusMod()));
+				}
+			}
+			if (hasPerk(PerkLib.FleshBodyElderStage)) {
+				if (hasPerk(PerkLib.SoulExalt)) {
+					armorDef += (4 * (1 + newGamePlusMod()));
+					armorMDef += (3 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulOverlord)) {
+					armorDef += (4 * (1 + newGamePlusMod()));
+					armorMDef += (3 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulTyrant)) {
+					armorDef += (4 * (1 + newGamePlusMod()));
+					armorMDef += (3 * (1 + newGamePlusMod()));
+				}
+			}
+			if (hasPerk(PerkLib.FleshBodyOverlordStage)) {
+				if (hasPerk(PerkLib.SoulKing)) {
+					armorDef += (5 * (1 + newGamePlusMod()));
+					armorMDef += (4 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulEmperor)) {
+					armorDef += (5 * (1 + newGamePlusMod()));
+					armorMDef += (4 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.SoulAncestor)) {
+					armorDef += (5 * (1 + newGamePlusMod()));
+					armorMDef += (4 * (1 + newGamePlusMod()));
+				}
+			}/*
+			if (hasPerk(PerkLib.FleshBodyTyrantStage)) {
+				if (hasPerk(PerkLib.soul)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+				if (hasPerk(PerkLib.)) {
+					armorDef += (2 * (1 + newGamePlusMod()));
+					armorMDef += (1 * (1 + newGamePlusMod()));
+				}
+			}*/
 			armorDef += ((int)(1 + armorDef / 10)) * newGamePlusMod();
 			armorMDef += ((int)(1 + armorMDef / 10)) * newGamePlusMod();
 		}
 	}
 }
-

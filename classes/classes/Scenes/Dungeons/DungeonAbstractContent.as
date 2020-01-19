@@ -78,7 +78,7 @@ import classes.Scenes.SceneLib;
 		private function moveToRoom(newRoom:DngRoom):void {
 			clearOutput();
 			cheatTime(1 / 12);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			//DungeonCore.setTopButtons();
 			spriteSelect(-1);
 			menu();
@@ -95,7 +95,7 @@ import classes.Scenes.SceneLib;
 		}
 		private function resumeRoom():void {
 			clearOutput();
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			//setTopButtons();
 			spriteSelect(-1);
 			menu();
@@ -143,17 +143,17 @@ import classes.Scenes.SceneLib;
 			clearOutput();
 			Mapper.createMap(actualRoom.floor);
 			rawOutputText( this.name +" "+ Mapper.printMap(actualRoom));
-			doNext(resumeRoom);
+			EngineCore.doNext(resumeRoom);
 		}
 		public function exitDungeon_(byDefeat:Boolean):void {
 			clearOutput();
 			inDungeon = inRoomedDungeon = false;
 			if (byDefeat) {
 				outputText("After your defeat, you somehow turned up back in your camp.");
-				doNext(camp.returnToCampUseEightHours);
+				EngineCore.doNext(camp.returnToCampUseEightHours);
 			}else {
 				outputText("You leave the " + this.name + "and walk back towards camp.");
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 	}

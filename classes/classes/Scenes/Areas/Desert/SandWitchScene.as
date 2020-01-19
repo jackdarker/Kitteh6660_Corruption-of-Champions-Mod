@@ -3,6 +3,7 @@ import classes.*;
 import classes.GlobalFlags.kFLAGS;
 import classes.CoC;
 import classes.Scenes.SceneLib;
+import classes.Scenes.UniqueSexScenes;
 
 public class SandWitchScene extends BaseContent implements TimeAwareInterface {
 
@@ -10,8 +11,10 @@ public class SandWitchScene extends BaseContent implements TimeAwareInterface {
 //const EGG_WITCH_COUNTER:int = 588;
 
 		public var pregnancy:PregnancyStore;
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
 		public static var rapedBefore:Boolean = false;
-
+		
+		
 		public function SandWitchScene()
 		{
 			pregnancy = new PregnancyStore(kFLAGS.EGG_WITCH_TYPE, kFLAGS.EGG_WITCH_COUNTER, 0, 0);
@@ -115,7 +118,7 @@ public class SandWitchScene extends BaseContent implements TimeAwareInterface {
 				outputText("She smiles wickedly and intones, \"<i>nuf erutuf rof riah ydnas, nus tresed eht sa ydnas.</i>\"\n\nYou feel a tingling in your scalp, and realize your hair has become a sandy blonde!");
 				player.hairColor = "sandy blonde";
 			}
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		private function refuseSandWitchMagic():void {
@@ -135,7 +138,7 @@ internal function sandwitchRape():void {
 		if(player.biggestTitSize() >= 9 && player.biggestLactation() >= 3 && player.cor >= 25) {
 			outputText("Overwhelmed by the intense pleasure caused by the vibrating sphere inside your body, you fall to your knees.\n\nYou whimper pathetically, desperate to cum, as the Sand Witch steps nearer to you and gently strokes your face. She smiles cruelly and lets her hands drop down to your chest, then tears your top away, letting your huge breasts bounce free. The mysterious woman firmly rubs and kneads them, making you gasp and writhe, until she starts lightly flicking your painfully hard nipples. You edge closer and closer to orgasm, panting like a whore while the witch teases you with her hands and magic.\n\n");
 			outputText("Just before you cum, she leans down to whisper to you, tickling your ear with her warm breath: \"<i>Evals klim ym emoceb llahs uoy.</i>\"\n\nA familiar pressure builds in your chest, but it's far stronger than ever before. You feel your breasts swell rapidly, and milk sprays from your nipples, splattering you and the witch with white droplets. Your eyes roll back and your tongue hangs out as you cum, mind nearly breaking from the world-shattering orgasm that thunders through you.\n\nYou black out.");
-			doNext(sandWitchBadEnd);
+			EngineCore.doNext(sandWitchBadEnd);
 			return;
 		}
 		player.orgasm();
@@ -204,7 +207,7 @@ internal function sandwitchRape():void {
 			clearOutput();
 			outputText("You stagger and fall to one knee, too overcome by pain to keep fighting.\n\nAs your vision wavers with exhaustion, the witch strides towards you, seeming to glide across the sand. Your consciousness starts to fade, and you see the exotic woman lick her lips and smile cruelly, staring at your generous breasts.\n\nThe last thing you hear before passing out is a mysterious spell, murmured right into your ear in a low, throaty whisper: \"<i>Evals klim ym emoceb llahs uoy.</i>\"\n\nYou dream of walking proudly through the desert, enormous rack jiggling shamelessly with every step, and of tempting nubile young champions to wrap their lips around your nipples and drink. Your sleep becomes fevered as your dreams grow more and more corrupt - you dream of using dark magic to lactate succubus milk, and of your former friends from Ingnam greedily drinking your enhanced milk until their bellies strain to contain it all, then going wide-eyed as pound after pound of breast-flesh suddenly swells upon their chests...");
 			//BAD END.
-			doNext(sandWitchBadEnd);
+			EngineCore.doNext(sandWitchBadEnd);
 			return;
 		}				
 		outputText("\n<b>You fall, defeated by the Sand Witch!</b>\n\n");
@@ -217,14 +220,14 @@ private function sandWitchBadEnd():void {
 	outputText("You awaken in a candlelit stone shrine of some sort, resting naked and facedown on some warm, comfortable body pillows. Remembering your fight against the witch, you hurriedly try to get up, only to gasp with surprise when a painful weight pulls on your chest. Glancing down to find the source of the weight, you blink with shock, then fight rising panic – the \"pillows\" that you are lying on are your own breasts, swollen to such a size that you cannot possibly lift them!\n\n");
 	outputText("\"<i>Hello, my beautiful pet,</i>\" says a familiar voice. Looking to your front – and trying not to notice the vast expanse of cleavage that dominates the lower half of your vision – you see the Sand Witch sitting, nude, in a large granite basin set into the floor just in front of you. She smirks when she sees how your eyes avoid resting on your obscenely massive bust.\n\n");
 	outputText("\"<i>What's wrong? Don't you like them?</i>\" The witch leans toward you and roughly tugs on one huge nipple, causing you to yelp with surprise and pleasure. \"<i>I'm afraid that's too bad. You offered yourself to me, and now you are mine, all mine, forever.</i>\" She slowly rubs her hands over your colossal bosom, crooning with approval as you squirm and bite your lip. \"<i>Mmm, yes... first, you will give me a bath.</i>\"\n\nYou hardly have time to wonder what she means before a familiar, hugely intense pressure builds in your chest...");
-	doNext(sandWitchBadEndPartTwo);
+	EngineCore.doNext(sandWitchBadEndPartTwo);
 }
 
 private function sandWitchBadEndPartTwo():void {
 	clearOutput();
 	outputText("With an audible gurgling noise, your breasts begin to fill with prodigious quantities of milk. Your eyes widen in amazement when you feel your tits swelling, filling, pumping up to their limits. It feels shockingly pleasurable and somehow almost right, like you were meant to have these shamefully huge, milk-filled titties. As you watch the soft flesh stretch taut, your breasts fatten into a very round shape beneath you, and the pleasurable sensation becomes a painful feeling of urgency.\n\n");
 	outputText("For a moment nothing happens, and you are surprised that your nipples are not leaking milk. The Sand Witch smiles at you, leaning to rest her arms and chin on your overstressed tits, and speaks: \"<i>Ask to be milked, slave.</i>\" Appalled, you shake your head, then grit your teeth and moan as you realize that the pressure in your chest is still building up, becoming unbearably painful. The witch patiently repeats herself, staring directly into your eyes, and you are struck by the awful knowledge that you are likely to be trapped here forever.");
-	doNext(sandWitchBadEndPartThree);
+	EngineCore.doNext(sandWitchBadEndPartThree);
 }
 
 private function sandWitchBadEndPartThree():void {
@@ -247,7 +250,7 @@ private function sandwitchRaped():void {
 	spriteSelect(50);
 	clearOutput();
 	if(player.isTaur()) {
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 		sandwitchCentaurBoning();
 		cleanupAfterCombat();
 		return;
@@ -567,7 +570,7 @@ private function SWCentaurMore(argument:Number):Boolean {
 				outputText("\n\n");
 				//[SW_1]
 				SWCentaurMore(1);
-				doNext(camp.returnToCampUseTwoHours);
+				EngineCore.doNext(camp.returnToCampUseTwoHours);
 				//Return true to indicate not to continue the scene.
 				return true;
 			}
@@ -621,16 +624,18 @@ internal function beatSandwitch():void {
 	outputText("  Of course, just taunting, teasing, and humiliating her for her arrogance would be equally amusing, <b>but it would give her plenty of time to turn the tables...</b>");
 	var temp2:Function = null;
 	var temp3:Function = null;
-	if(silly()) temp3 = missingoSex;
+	var temp4:Function = null;
+	if (silly()) temp3 = missingoSex;
+    if (player.pcCanUseUniqueSexScene()) temp4 = uniquuuesexscene.pcUniqueSexScenesChoiceMenu;
     if (player.hasKeyItem("Deluxe Dildo") >= 0) temp2 = sandwitchGetsDildoed;
-    var shouldra:Function = null;
+	var shouldra:Function = null;
 	if(SceneLib.shouldraFollower.followerShouldra() && player.gender > 0) shouldra = SceneLib.shouldraFollower.sandWitchGetsGhostly;
 	//doYesNo(sandwitchRaped, cleanupAfterCombat);
 	var ovi:Function = null;
 	if(player.gender > 0 && player.canOviposit()) ovi = ovipositSandWitches;
 	
 	choices("Yes", sandwitchRaped, "Dildo Rape", temp2, "Use 3i@-", temp3, "Use Shouldra", shouldra, "Lay Eggs", ovi,
-		"Taunt Her", sandwitchSpanking, "", null, "", null, "", null, "Leave", cleanupAfterCombat);
+		"Taunt Her", sandwitchSpanking, "", null, "", null, "U. Sex Scenes", temp4, "Leave", cleanupAfterCombat);
 }
     //RAEP SAND-WITCH!
     private function sandwitchGetsDildoed():void {
@@ -736,14 +741,14 @@ private function missingoSex6():void {
 	spriteSelect(50);
 	player.orgasm();
 	cleanupAfterCombat();
-	hideUpDown();
-	statScreenRefresh();
+	EngineCore.hideUpDown();
+	EngineCore.statScreenRefresh();
 	clearOutput();
 	outputText("You successfully restore your game. Everything's intact. At least, you thought it was. You must have messed up the password somewhere along the line, but oddly enough, the only difference is the clock being set an hour ahead and a few extra gems and EXP in your pocket.\n\n");
 
 	outputText("It is like fucking christmas up in here.");
 	//{Player gains about as many gems experience points as they would from a Sand Witch encounter, and the Champion is returned to camp.}
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 
@@ -800,7 +805,7 @@ private function eggwitchForeplay():void {
 	else outputText("Laying");
 	outputText(" against your mate, you both take the moment to revel in the anticipation of coitus.");
 	dynStats("lus", 25, "cor", -.35);
-	doNext(laySomeEggsInThatWitchFinally);
+	EngineCore.doNext(laySomeEggsInThatWitchFinally);
 	//go to merge
 }
 
@@ -826,7 +831,7 @@ private function getToFuckingWithZeEggsInWitch():void {
 		outputText("\n\n\"<i>Please... take me...</i>\"");
 	}
 	//both go to merge
-	doNext(laySomeEggsInThatWitchFinally);
+	EngineCore.doNext(laySomeEggsInThatWitchFinally);
 	dynStats("lus", 15);
 }
 
@@ -949,7 +954,7 @@ private function helpZeWithBirfBabies():void {
 	}
 	//PC is everything else: 
 	else outputText("\n\nEasing a hand under her armpit, you give her the support she needs to hobble along the hot desert sand.  Which direction to hobble in gives you cause for concern though; you don't really know where you are at this point.  Making the only choice you can, you concentrate on the camp.  With the rough picture in mind you tell the sand witch to hold on, before the two of you slowly make your way across the dry desert sea...");
-	doNext(sandwitchBirthsYourMonstrosities);
+	EngineCore.doNext(sandwitchBirthsYourMonstrosities);
 }
 
 //[Must I really?] (corr >=60)
@@ -970,7 +975,7 @@ private function reluctantlyHelpZeWitch():void {
 	}
 	//PC is everything else:  
 	else outputText("\n\nEasing a hand under her armpit, you give her the support she needs to hobble along the hot desert sand.  Which direction to hobble in gives you cause for concern though; you don't really know where you are at this point.  Making the only choice you can, you concentrate on the camp.  With the rough picture in mind you tell the sand witch to hold on, before the two of you slowly make your way across the dry desert sea...");
-	doNext(sandwitchBirthsYourMonstrosities);
+	EngineCore.doNext(sandwitchBirthsYourMonstrosities);
 }
 
 
@@ -991,7 +996,7 @@ private function sandwitchBirthsYourMonstrosities():void {
 	//[(corr >= 60)
 	if (player.cor >= 60) outputText("\n\n\"<i>Just, use your common sense next time.</i>\"");
 	pregnancy.knockUpForce(); //Clear Pregnancy
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 //irthing scene: Bees (Radar) (edited)
@@ -1006,7 +1011,7 @@ public function witchBirfsSomeBees():void {
 	
 	outputText("\n\nContent with how things turned out, you head back to camp and decide on the next course of action for today.");
 	pregnancy.knockUpForce(); //Clear Pregnancy
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 
 private function sandwitchSpanking():void {

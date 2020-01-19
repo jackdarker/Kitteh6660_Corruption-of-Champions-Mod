@@ -31,9 +31,13 @@ flags[kFLAGS.MATERIALS_STORAGE_UPGRADES]:
 3 - Wood storage built
 4 - Stone storage built
 5 - Stone constructions guide bought
-6 - Sand storage built
-7 - Concrete storage built (unless building won't be req. so much of it to need another storage ^^ or just make one storage that will increase slightly both sand and concrete store space)
-(8 - Possible special materials storage/and or addidtional building guide for specific structures (fireproof dweeling that even with stones and concrete isn't enough?))
+?5a - expanding Wood storage?
+?5b - expanding Stones storage?
+?5c - expanding Nails storage?
+?6 - Sand storage built?
+?6a - water cystern or req. dam be high enough expanded to provide water in unlimited amount as if needed?
+?7 - Concrete storage built (unless building won't be req. so much of it to need another storage ^^ or just make one storage that will increase slightly both sand and concrete store space)?
+?(8 - Possible special materials storage/and or addidtional building guide for specific structures (fireproof dweeling that even with stones and concrete isn't enough?))?
 
 flags[kFLAGS.CAMP_UPGRADES_WAREHOUSE_GRANARY]:
 1 - 1st Warehouse 1st part built
@@ -54,30 +58,43 @@ flags[kFLAGS.CAMP_UPGRADES_HOT_SPRINGS]:
 2 - find the spot
 3 - dig a pool
 4 - add the wood walls
+?5 - expanding hot springs?
 
 flags[kFLAGS.CAMP_UPGRADES_SPARING_RING]:
 1 - unlocking building ring
-2 - ring build (small)
+2 - ring build (small) - 6x training time for npc's
+?3 - ring build (large) - 5x training time for npc's?	/NYI
+?4 - ring build (massive) - 4x training time for npc's?	/NYI
+?5 - ring build (massive w/ wood floor) - 3x training time for npc's?	/NYI
+?6 - ring build (massive w/ stone floor) - 2x training time for npc's?	/NYI
 
 flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE]:
 1 - first arcane circle
 2 - second arcane circle
 3 - third arcane circle
-?4 - 4th?
+4 - fourth arcane circle
+5 - fifth arcane circle
+6 - sixth arcane circle
+7 - seventh arcane circle
+8 - eighth arcane circle
 
 flags[kFLAGS.CAMP_UPGRADES_MAGIC_WARD]:
 1 - readed Warding Tome
 2 - builded Ward / Inactive Ward
 3 - Active Ward
+?4 - ugrade magic ward to better protect camp?
+?5 - upgade range of protection fo ward?
 
 flags[kFLAGS.CAMP_UPGRADES_DAM]:
 1 - minor wood dam
-2 - major wood dam
-3 - minor stone dam
-4 - x
+2 - major wood dam	/NYI
+3 - minor stone dam	/NYI
+4 - major stone dam	/NYI
 
 flags[kFLAGS.CAMP_UPGRADES_FISHERY]:
-1 - fishery
+1 - fishery (grade 1)
+2 - fishery (grade 2)	/NYI
+2 - fishery (grade 3)	/NYI
 
 flags[kFLAGS.CAMP_UPGRADES_]:
 1 - 
@@ -103,7 +120,7 @@ public function buildmisc1Menu():void {
 	}
 	if (flags[kFLAGS.CAMP_UPGRADES_HOT_SPRINGS] == 2 || flags[kFLAGS.CAMP_UPGRADES_HOT_SPRINGS] == 3) addButton(3, "Hot Spring", hotspring).hint("Build up hot spring at the camp. (Req. 100 fatigue)");
 	if (flags[kFLAGS.CAMP_UPGRADES_SPARING_RING] == 1 && flags[kFLAGS.CAMP_UPGRADES_SPARING_RING] < 2) addButton(4, "Sparring Ring", sparringRing).hint("Build up sparring ring at the camp. (Unlock sparring option for all camp members that have this option)(Req. 50 fatigue)");
-	if (player.findPerk(PerkLib.JobElementalConjurer) >= 0 && flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] < 3) addButton(5, "Arcane Circle", arcaneCircle).hint("Build an arcane circle at the camp. (Unlock elementals summons related options)(Req. 50 fatigue, enough mana and blood)");
+	if (player.findPerk(PerkLib.JobElementalConjurer) >= 0 && flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] < 8) addButton(5, "Arcane Circle", arcaneCircle).hint("Build an arcane circle at the camp. (Unlock elementals summons related options)(Req. 50 fatigue, enough stones, mana and blood)");
 	if (player.inte >= 50 && flags[kFLAGS.CAMP_UPGRADES_MAGIC_WARD] == 1) addButton(6, "Magic Ward", magicWard).hint("Set up a Magic Ward around the camp. (Req. 200 fatigue)");
 	if (flags[kFLAGS.CAMP_UPGRADES_DAM] < 1) addButton(7, "Dam", dam).hint("Build up a dam on the steam next to the camp. (Req. 200 fatigue * tier of build dam)");
 	if (flags[kFLAGS.CAMP_UPGRADES_DAM] >= 1 && flags[kFLAGS.CAMP_UPGRADES_FISHERY] < 1) addButton(8, "Fishery", fishery).hint("Build up a fishery on the steam next to the camp. (Req. 200 fatigue)");
@@ -139,12 +156,12 @@ public function materialgatheringstorageupgrade():void {
 	else
 	{	
 		outputText("You are too exhausted to work on expanding your materials storage!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function neednailsbox():void {
 	outputText("When you opening book from your toolbox on the page describing how to build properly storage for wood you realize amount of nails that will be needed is much more than your toolbox can keep.  Damn if you would like to build this structure you would spend much of the time on walking to the carpenter shop in Tel'Adre to buy missing nails unless... there is some way to be able store more than 200 nails.  With thoughts that maybe carpenter shopkeeper will help with this issue, you put back book.");
-	doNext(playerMenu);
+	EngineCore.doNext(playerMenu);
 }
 public function startWoodStorage():void {
 	outputText("Do you start work on building wood storage? (Cost: 250 nails, 250 wood and 100 stones.)\n");
@@ -156,7 +173,7 @@ public function startWoodStorage():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doWoodStorageWork():void {
@@ -178,6 +195,10 @@ private function doWoodStorageWork():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 250;
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 250;
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 100;
@@ -196,19 +217,20 @@ private function doWoodStorageWork():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 115 ? "a daunting" : "an easy") + " task but you eventually manage to finish building wood storage for your camp. Now you can store safetly larger amount of wood!");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function startStoneStorage():void {
@@ -221,7 +243,7 @@ public function startStoneStorage():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doStoneStorageWork():void {
@@ -243,6 +265,10 @@ private function doStoneStorageWork():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 350;
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 400;
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 200;
@@ -261,19 +287,20 @@ private function doStoneStorageWork():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 115 ? "a daunting" : "an easy") + " task but you eventually manage to finish building stone storage for your camp. Now you can store safetly larger amount of stones!");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 
@@ -310,7 +337,7 @@ public function warehousegranary():void {
 	else
 	{	
 		outputText("You are too exhausted to work on constructing your storage building!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function start1stWarehouse1():void {
@@ -323,7 +350,7 @@ public function start1stWarehouse1():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function do1stWarehouse1Work():void {
@@ -343,6 +370,10 @@ private function do1stWarehouse1Work():void {
 	}
 	if (flags[kFLAGS.ANT_KIDS] > 100) {
 		helperArray[helperArray.length] = "group of your ant children";
+		helpers++;
+	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
 		helpers++;
 	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 200;
@@ -366,19 +397,20 @@ private function do1stWarehouse1Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building warehouse frame and walls.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function start1stWarehouse2():void {
@@ -391,7 +423,7 @@ public function start1stWarehouse2():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function do1stWarehouse2Work():void {
@@ -413,6 +445,10 @@ private function do1stWarehouse2Work():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 400;
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 300;
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 140;
@@ -431,22 +467,23 @@ private function do1stWarehouse2Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
 		outputText("\n\n<b>You've built first warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
 		outputText("\n\n<b>You've built first warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building warehouse for your camp. Now you can store safetly larger amount of items!");
 		outputText("\n\n<b>You've built first warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function startGranary1():void {
@@ -459,7 +496,7 @@ public function startGranary1():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doGranary1Work():void {
@@ -479,6 +516,10 @@ private function doGranary1Work():void {
 	}
 	if (flags[kFLAGS.ANT_KIDS] > 100) {
 		helperArray[helperArray.length] = "group of your ant children";
+		helpers++;
+	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
 		helpers++;
 	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 200;
@@ -503,19 +544,20 @@ private function doGranary1Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building granary frame and walls.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function startGranary2():void {
@@ -528,7 +570,7 @@ public function startGranary2():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doGranary2Work():void {
@@ -550,6 +592,10 @@ private function doGranary2Work():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 300;
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 225;
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 105;
@@ -568,22 +614,23 @@ private function doGranary2Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
 		outputText("\n\n<b>You've built granary and gained 9 inventory slots for consumable items.</b>");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
 		outputText("\n\n<b>You've built granary and gained 9 inventory slots for consumable items.</b>");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building granary for your camp. Now you can store safetly larger amount of consumable items!");
 		outputText("\n\n<b>You've built granary and gained 9 inventory slots for consumable items.</b>");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function start2ndWarehouse1():void {
@@ -596,7 +643,7 @@ public function start2ndWarehouse1():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function do2ndWarehouse1Work():void {
@@ -616,6 +663,10 @@ private function do2ndWarehouse1Work():void {
 	}
 	if (flags[kFLAGS.ANT_KIDS] > 100) {
 		helperArray[helperArray.length] = "group of your ant children";
+		helpers++;
+	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
 		helpers++;
 	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 250;
@@ -640,19 +691,20 @@ private function do2ndWarehouse1Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building warehouse frame and walls.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function start2ndWarehouse2():void {
@@ -665,7 +717,7 @@ public function start2ndWarehouse2():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function do2ndWarehouse2Work():void {
@@ -687,6 +739,10 @@ private function do2ndWarehouse2Work():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 400;
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 300;
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 140;
@@ -705,22 +761,23 @@ private function do2ndWarehouse2Work():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
 		outputText("\n\n<b>You've built second warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
 		outputText("\n\n<b>You've built second warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 185 ? "a daunting" : "an easy") + " task but you eventually manage to finish building warehouse for your camp. Now you can store safetly larger amount of items!");
 		outputText("\n\n<b>You've built second warehouse and gained 12 inventory slots.</b>");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 
@@ -742,13 +799,13 @@ public function kitsuneshrine():void {
 	else
 	{	
 		outputText("You are too exhausted to work on constructing shrine!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function findSpotForShrine():void {
 	outputText("Unsatisfied with having to go up to the Deepwoods to offer your prayers, you decide to build a shrine next to your camp. You look for a spot and mark it, planning to come back later with the materials.");
 	flags[kFLAGS.CAMP_UPGRADES_KITSUNE_SHRINE] = 1;
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 public function buildStructure():void {
 	outputText("Do you start work on building the structure? (Cost: 500 wood, 200 nails, 100 stones.)\n");
@@ -760,7 +817,7 @@ public function buildStructure():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildStructure():void {
@@ -780,6 +837,10 @@ private function doBuildStructure():void {
 	}
 	if (flags[kFLAGS.ANT_KIDS] > 100) {
 		helperArray[helperArray.length] = "group of your ant children";
+		helpers++;
+	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
 		helpers++;
 	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 200;
@@ -804,15 +865,15 @@ private function doBuildStructure():void {
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only four hours!");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only six hours!");
-		doNext(camp.returnToCampUseSixHours);
+		EngineCore.doNext(camp.returnToCampUseSixHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 150 ? "a daunting" : "an easy") + " task but you eventually manage to finish it.");
-		doNext(camp.returnToCampUseEightHours);
+		EngineCore.doNext(camp.returnToCampUseEightHours);
 	}
 }
 public function buildAltair():void {
@@ -825,7 +886,7 @@ public function buildAltair():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildAltair():void {
@@ -845,6 +906,10 @@ private function doBuildAltair():void {
 	}
 	if (flags[kFLAGS.ANT_KIDS] > 100) {
 		helperArray[helperArray.length] = "group of your ant children";
+		helpers++;
+	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
 		helpers++;
 	}
 	flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 100;
@@ -868,15 +933,15 @@ private function doBuildAltair():void {
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only hour!");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours!");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 75 ? "a daunting" : "an easy") + " task but you eventually manage to finish it.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function kitsuneshrine2():void {
@@ -884,7 +949,7 @@ public function kitsuneshrine2():void {
 	outputText("You place the statue on the altar, already feeling Taoth's powers coalescing around the shrine like a thick fog.");
 	player.consumeItem(useables.GLDSTAT);
 	flags[kFLAGS.CAMP_UPGRADES_KITSUNE_SHRINE] += 1;
-	doNext(playerMenu);
+	EngineCore.doNext(playerMenu);
 }
 
 //Hot Spring Upgrade
@@ -904,7 +969,7 @@ public function hotspring():void {
 	else
 	{	
 		outputText("You are too exhausted to work on hot spring!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function digApool():void {
@@ -917,7 +982,7 @@ public function digApool():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doDigAPoolWork():void {
@@ -939,6 +1004,10 @@ private function doDigAPoolWork():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 500;
 	clearOutput();
 	outputText("You proceed to dig a proper pool and line it and the border with rocks.");
@@ -955,19 +1024,20 @@ private function doDigAPoolWork():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 75 ? "a daunting" : "an easy") + " task but you eventually manage to finish digging it.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 public function addAWoodenWalls():void {
@@ -980,7 +1050,7 @@ public function addAWoodenWalls():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doAddAWoodenWallsWork():void {
@@ -1002,6 +1072,10 @@ private function doAddAWoodenWallsWork():void {
 		helperArray[helperArray.length] = "group of your ant children";
 		helpers++;
 	}
+	if (flags[kFLAGS.AURORA_LVL] >= 1) {
+		helperArray[helperArray.length] = "Aurora";
+		helpers++;
+	}
 	flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] -= 500;
 	clearOutput();
 	outputText("You start building some cover, so you can actually enjoy bathing without having to worry about potential voyeurs.");
@@ -1018,19 +1092,20 @@ private function doAddAWoodenWallsWork():void {
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigueAmount /= (helpers + 1);
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
 	if (helpers >= 2) {
 		outputText("\n\nThanks to your assistants, the construction takes only one hour!");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 	else if (helpers == 1) {
 		outputText("\n\nThanks to your assistant, the construction takes only two hours.");
-		doNext(camp.returnToCampUseTwoHours);
+		EngineCore.doNext(camp.returnToCampUseTwoHours);
 	}
 	else {
 		outputText("\n\nIt's " + (fatigueAmount >= 75 ? "a daunting" : "an easy") + " task but you eventually manage to finish making a wooden wall.");
-		doNext(camp.returnToCampUseFourHours);
+		EngineCore.doNext(camp.returnToCampUseFourHours);
 	}
 }
 
@@ -1055,7 +1130,7 @@ public function sparringRing():void {
 	else
 	{	
 		outputText("You are too exhausted to work on sparring ring!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function buildSmallRing():void {
@@ -1068,7 +1143,7 @@ public function buildSmallRing():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildSmallRing():void {
@@ -1081,7 +1156,7 @@ private function doBuildSmallRing():void {
 	var fatigueAmount:int = 50;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseFourHours);
+	EngineCore.doNext(camp.returnToCampUseFourHours);
 }
 
 //Arcane Circle Upgrade
@@ -1100,7 +1175,7 @@ public function arcaneCircle():void {
 			}
 			else {
 				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 		}
 		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 2) { 
@@ -1110,10 +1185,60 @@ public function arcaneCircle():void {
 			}
 			else {
 				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
+		}
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 3) { 
+			if (player.findPerk(PerkLib.ElementalContractRank12) >= 0) {
+				buildFourthArcaneCircle();
+				return;
+			}
+			else {
+				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
+				EngineCore.doNext(playerMenu);
+			}
+		}
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 4) { 
+			if (player.findPerk(PerkLib.ElementalContractRank16) >= 0) {
+				buildFifthArcaneCircle();
+				return;
+			}
+			else {
+				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
+				EngineCore.doNext(playerMenu);
+			} 
+		}
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 5) { 
+			if (player.findPerk(PerkLib.ElementalContractRank20) >= 0) {
+				buildSixthArcaneCircle();
+				return;
+			}
+			else {
+				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
+				EngineCore.doNext(playerMenu);
+			} 
+		}
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 6) { 
+			if (player.findPerk(PerkLib.ElementalContractRank24) >= 0) {
+				buildSeventhArcaneCircle();
+				return;
+			}
+			else {
+				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
+				EngineCore.doNext(playerMenu);
+			} 
+		}
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 7) { 
+			if (player.findPerk(PerkLib.ElementalContractRank28) >= 0) {
+				buildEighthArcaneCircle();
+				return;
+			}
+			else {
+				outputText("You lack the proper knowledge and skill to work on this new ritual circle yet!");
+				EngineCore.doNext(playerMenu);
+			} 
 		}/*
-		if (flags[kFLAGS.] == 3) { 
+		if (flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] == 8) { 
 			addAWoodenWalls() 
 			return; 
 		}*/
@@ -1121,7 +1246,7 @@ public function arcaneCircle():void {
 	else
 	{	
 		outputText("You are too exhausted to work on this new ritual circle yet!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function buildFirstArcaneCircle():void {
@@ -1134,7 +1259,7 @@ public function buildFirstArcaneCircle():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildFirstArcaneCircle():void {
@@ -1149,7 +1274,7 @@ private function doBuildFirstArcaneCircle():void {
 	HPChange(-75, true);
 	fatigue(fatigueAmount);
 	useMana(100);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 public function buildSecondArcaneCircle():void {
 	outputText("Do you start work on making second arcane circle? (Cost: 8 stones, 150 HP and 200 mana.)\n");
@@ -1161,7 +1286,7 @@ public function buildSecondArcaneCircle():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildSecondArcaneCircle():void {
@@ -1177,7 +1302,7 @@ private function doBuildSecondArcaneCircle():void {
 	HPChange(-150, true);
 	fatigue(fatigueAmount);
 	useMana(200);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 public function buildThirdArcaneCircle():void {
 	outputText("Do you start work on making third arcane circle? (Cost: 12 stones, 225 HP and 300 mana.)\n");
@@ -1189,7 +1314,7 @@ public function buildThirdArcaneCircle():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function doBuildThirdArcaneCircle():void {
@@ -1205,7 +1330,147 @@ private function doBuildThirdArcaneCircle():void {
 	HPChange(-225, true);
 	fatigue(fatigueAmount);
 	useMana(300);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
+}
+public function buildFourthArcaneCircle():void {
+	outputText("Do you start work on making fourth arcane circle? (Cost: 16 stones, 300 HP and 400 mana.)\n");
+	checkMaterials();
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] >= 16 && player.HP >= 300 && player.mana >= 400)
+	{
+		doYesNo(doBuildFourthArcaneCircle, noThanks);
+	}
+	else
+	{
+		errorNotEnough();
+		EngineCore.doNext(playerMenu);
+	}
+}
+private function doBuildFourthArcaneCircle():void {
+	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 16;
+	clearOutput();
+	outputText("You decide to upgrade your circle in order to contain a stronger being should the binding ritual fail. You draw a fourth larger circle around the smaller one inscribing additional protections and ward. Satisfied you nod at the result.");
+	flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] += 1;
+	outputText(" \"<b>You can now perform the rituals to release more of your minions powers!</b>\"");
+	//Gain fatigue.
+	var fatigueAmount:int = 50;
+	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	outputText("\n\n");
+	HPChange(-300, true);
+	fatigue(fatigueAmount);
+	useMana(400);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
+}
+public function buildFifthArcaneCircle():void {
+	outputText("Do you start work on making fifth arcane circle? (Cost: 20 stones, 375 HP and 500 mana.)\n");
+	checkMaterials();
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] >= 20 && player.HP >= 375 && player.mana >= 500)
+	{
+		doYesNo(doBuildFifthArcaneCircle, noThanks);
+	}
+	else
+	{
+		errorNotEnough();
+		EngineCore.doNext(playerMenu);
+	}
+}
+private function doBuildFifthArcaneCircle():void {
+	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 20;
+	clearOutput();
+	outputText("You decide to upgrade your circle in order to contain a stronger being should the binding ritual fail. You draw a fifth larger circle around the smaller one inscribing additional protections and ward. Satisfied you nod at the result.");
+	flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] += 1;
+	outputText(" \"<b>You can now perform the rituals to release more of your minions powers!</b>\"");
+	//Gain fatigue.
+	var fatigueAmount:int = 50;
+	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	outputText("\n\n");
+	HPChange(-375, true);
+	fatigue(fatigueAmount);
+	useMana(500);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
+}
+public function buildSixthArcaneCircle():void {
+	outputText("Do you start work on making sixth arcane circle? (Cost: 24 stones, 450 HP and 600 mana.)\n");
+	checkMaterials();
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] >= 24 && player.HP >= 450 && player.mana >= 600)
+	{
+		doYesNo(doBuildSixthArcaneCircle, noThanks);
+	}
+	else
+	{
+		errorNotEnough();
+		EngineCore.doNext(playerMenu);
+	}
+}
+private function doBuildSixthArcaneCircle():void {
+	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 24;
+	clearOutput();
+	outputText("You decide to upgrade your circle in order to contain a stronger being should the binding ritual fail. You draw a sixth larger circle around the smaller one inscribing additional protections and ward. Satisfied you nod at the result.");
+	flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] += 1;
+	outputText(" \"<b>You can now perform the rituals to release more of your minions powers!</b>\"");
+	//Gain fatigue.
+	var fatigueAmount:int = 50;
+	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	outputText("\n\n");
+	HPChange(-450, true);
+	fatigue(fatigueAmount);
+	useMana(600);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
+}
+public function buildSeventhArcaneCircle():void {
+	outputText("Do you start work on making seventh arcane circle? (Cost: 28 stones, 525 HP and 700 mana.)\n");
+	checkMaterials();
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] >= 28 && player.HP >= 525 && player.mana >= 700)
+	{
+		doYesNo(doBuildSeventhArcaneCircle, noThanks);
+	}
+	else
+	{
+		errorNotEnough();
+		EngineCore.doNext(playerMenu);
+	}
+}
+private function doBuildSeventhArcaneCircle():void {
+	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 28;
+	clearOutput();
+	outputText("You decide to upgrade your circle in order to contain a stronger being should the binding ritual fail. You draw a seventh larger circle around the smaller one inscribing additional protections and ward. Satisfied you nod at the result.");
+	flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] += 1;
+	outputText(" \"<b>You can now perform the rituals to release more of your minions powers!</b>\"");
+	//Gain fatigue.
+	var fatigueAmount:int = 50;
+	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	outputText("\n\n");
+	HPChange(-525, true);
+	fatigue(fatigueAmount);
+	useMana(700);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
+}
+public function buildEighthArcaneCircle():void {
+	outputText("Do you start work on making eighth arcane circle? (Cost: 32 stones, 600 HP and 800 mana.)\n");
+	checkMaterials();
+	if (flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] >= 32 && player.HP >= 600 && player.mana >= 800)
+	{
+		doYesNo(doBuildEighthArcaneCircle, noThanks);
+	}
+	else
+	{
+		errorNotEnough();
+		EngineCore.doNext(playerMenu);
+	}
+}
+private function doBuildEighthArcaneCircle():void {
+	flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] -= 32;
+	clearOutput();
+	outputText("You decide to upgrade your circle in order to contain a stronger being should the binding ritual fail. You draw a eighth larger circle around the smaller one inscribing additional protections and ward. Satisfied you nod at the result.");
+	flags[kFLAGS.CAMP_UPGRADES_ARCANE_CIRCLE] += 1;
+	outputText(" \"<b>You can now perform the rituals to release more of your minions powers!</b>\"");
+	//Gain fatigue.
+	var fatigueAmount:int = 50;
+	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	outputText("\n\n");
+	HPChange(-600, true);
+	fatigue(fatigueAmount);
+	useMana(800);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 
 //Magic Ward Upgrade
@@ -1221,7 +1486,7 @@ public function magicWard():void {
 	else
 	{	
 		outputText("You are too exhausted to work on magic ward!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function setUpMagicWard():void {
@@ -1234,7 +1499,7 @@ public function setUpMagicWard():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function setUpMagicWard2():void {
@@ -1255,9 +1520,10 @@ private function setUpMagicWard2():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 
 //Dam Upgrade
@@ -1282,7 +1548,7 @@ public function dam():void {
 	else
 	{	
 		outputText("You are too exhausted to work on dam!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function buildUpMinorWoodDam():void {
@@ -1295,7 +1561,7 @@ public function buildUpMinorWoodDam():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function buildUpMinorWoodDam2():void {
@@ -1310,9 +1576,10 @@ private function buildUpMinorWoodDam2():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 public function buildUpWoodDam():void {
 	outputText("Do you start work on upgrading your small wood dam? (Cost: 250 nails, 375 wood.)\n");
@@ -1324,7 +1591,7 @@ public function buildUpWoodDam():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function buildUpWoodDam2():void {
@@ -1339,9 +1606,10 @@ private function buildUpWoodDam2():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 40;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 public function buildUpMajorWoodDam():void {
 	outputText("Do you start work on upgrading your wood dam? (Cost: 300 nails, 450 wood.)\n");
@@ -1353,7 +1621,7 @@ public function buildUpMajorWoodDam():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function buildUpMajorWoodDam2():void {
@@ -1368,9 +1636,10 @@ private function buildUpMajorWoodDam2():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 60;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 
 //Fishery Upgrade
@@ -1389,7 +1658,7 @@ public function fishery():void {
 			}
 			else {
 				outputText("You need to expand your dam more before you can expand your fishery!");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 		}
 		//3 stopień rozbudowy na 5 stopniu tamy (2 st. kamiennej tamy) a 4 stopień na 7 stopniu tamy (4 st. kamiennej)
@@ -1397,7 +1666,7 @@ public function fishery():void {
 	else
 	{	
 		outputText("You are too exhausted to work on fishery!");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 public function buildUpFishery1():void {
@@ -1410,7 +1679,7 @@ public function buildUpFishery1():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function buildUpFishery1Yes():void {
@@ -1426,9 +1695,10 @@ private function buildUpFishery1Yes():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 public function buildUpFishery2():void {
 	outputText("Do you start work on building fishery? (Cost: 300 nails, 450 wood.)\n");
@@ -1440,7 +1710,7 @@ public function buildUpFishery2():void {
 	else
 	{
 		errorNotEnough();
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
 	}
 }
 private function buildUpFishery2Yes():void {
@@ -1455,9 +1725,10 @@ private function buildUpFishery2Yes():void {
 	fatigueAmount -= player.tou / 10;
 	fatigueAmount -= player.spe / 10;
 	if (player.findPerk(PerkLib.IronMan) >= 0) fatigueAmount -= 20;
+	fatigueAmount = Math.round(fatigueAmount);
 	if (fatigueAmount < 10) fatigueAmount = 10;
 	fatigue(fatigueAmount);
-	doNext(camp.returnToCampUseEightHours);
+	EngineCore.doNext(camp.returnToCampUseEightHours);
 }
 
 public function errorNotEnough():void {
@@ -1466,7 +1737,7 @@ public function errorNotEnough():void {
 
 public function noThanks():void {
 	outputText("Deciding not to work on building a new structure right now, you return to the center of your camp.");
-	doNext(playerMenu);
+	EngineCore.doNext(playerMenu);
 }
 
 public function checkMaterials():void {
@@ -1518,7 +1789,7 @@ public function checkMaterials():void {
 // ?button 5 - Kid A barrel changes?
 // ?button 6 - Behemoth lair upgr?
 // ?button 7 - Lith lair upgr? (Rycharde corr drider slave)
-// ?button 8 - Kimika(Kindra) living place upgr? (Adorable Sheep-morph archer with "a slight issue" ^^)
+// ?button 8 - (Kimika)Kindra living place upgr? (Adorable Sheep-morph archer with "a slight issue" ^^)
 // button 9 - previous page
 // ?button 10 - Helia + Helspawn living place?
 // button 14 - back

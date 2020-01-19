@@ -280,7 +280,7 @@ public function urtaBarApproach():void {
 	if(flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] == -1 && flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00148] == 0) {
 		flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00148] = 1;
 		player.gems += 1000;
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 		outputText(images.showImage("urta-bar"));
 		outputText("Urta claps as you walk up to her with an exuberant smile spread across her vulpine face.  She proudly announces, \"<i>You really turned in the Russet Rogue?!  I almost can't believe it.  Do you know how many women that rascal has fleeced out of their possessions?  The last count I made was over three dozen, and he even had the audacity to try it with me.  I'm ashamed to admit it nearly worked, but once he saw ALL of me, well he couldn't keep up the facade.  I nearly caught him that night.</i>\"\n\n");
 
@@ -773,6 +773,7 @@ public function urtaFuckHer(afterBefriending:Boolean = false):void {
 
 		outputText("\"<i>Yes indeed,</i>\" you muse - the sooner the better.");
 		if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+		if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	}
 	else {
 		var x:Number = player.cockThatFits(urtaCapacity());
@@ -1435,6 +1436,7 @@ private function tenderTakeItUpTheAssFromUrta():void {
 	outputText("</i>\"\n\n");
 	outputText("She untangles herself from you, the filled end of her condom loudly popping free from your backside as she disengages herself from you.  The two of you do your best to clean up and get dressed, and you give her a quick but passionate kiss before ducking out the door to check up on your camp.");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("sen", -2);
 	doNext(camp.returnToCampUseOneHour);
@@ -1921,6 +1923,7 @@ private function rideUrtaInButtAtHomeLove():void {
 	else outputText("Urta sighs contentedly and laughs, \"<i>I guess I don't have much of a mess to clean for once!</i>\"");
 	outputText("\n\nThe fox staggers up on weak legs, her now flaccid but still huge member swinging between her knees as she redresses.  You do the same, and the two of you part with another tender kiss and a whispered, \"<i>I love you.</i>\"\n");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("sen", 1);
 	doNext(camp.returnToCampUseOneHour);
@@ -4019,7 +4022,10 @@ private function fillMeUpPleaseUrta():void {
 	urtaLove(2);
 	flags[kFLAGS.TIMES_FUCKED_URTA]++;
 	player.slimeFeed();
-	if(flags[kFLAGS.URTA_FERTILE] == 1) player.knockUp(PregnancyStore.PREGNANCY_URTA, PregnancyStore.INCUBATION_URTA, 25);
+	if (flags[kFLAGS.URTA_FERTILE] == 1) {
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+		else player.knockUp(PregnancyStore.PREGNANCY_URTA, PregnancyStore.INCUBATION_URTA, 25);
+	}
 	player.orgasm();
 	dynStats("lib", .2, "sen", -3);
 }
@@ -4689,7 +4695,7 @@ private function urtasRuinedOrgasmsFromGooPartII():void {
 	model.time.days++;
 	model.time.hours = 11;
 
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(camp.returnToCampUseOneHour);
 }
 
@@ -4867,6 +4873,7 @@ private function doggyStyle():void {
 	outputText(".");
 	player.buttChange(60,true,true,false);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	outputText("\n\nSoon, Urta develops a good rhythm, thrusting in and out, her balls slapping your ");
 	if(player.hasCock()) outputText("dick");
 	else outputText("cunt");
@@ -4902,7 +4909,7 @@ private function doggyStyle():void {
 private function partTwoOfDoggieStyle():void {
 	clearOutput();
 	model.time.hours+=2;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("<b><u>Several hours later</u></b>\nYou awake in Urta's arms, tucked under the sheets of her bed.  You're free of your collar, which you can see now lays on a dresser nearby, but you're a little happy to see you still have a small, almost pregnant bulge in your belly where you know a large reservoir of cum now resides.  Urta gives you a shy smooch, saying, \"<i>Mm, I had so much fun, [name].  I... I don't know what got into me there, but I kinda liked it.  And I just adore you for going along with it.</i>\"");
 
 	outputText("\n\nYou chuckle, confirming you enjoyed it too, and that you're prepared to be her little doggy any time, if it gets you a reward like that.  Your vixen \"Owner\" gives you a giant grin and cuddles up closer, murmuring how happy she is to have found someone as great as you.");
@@ -5004,6 +5011,7 @@ private function getAPetReward():void {
 	flags[kFLAGS.URTA_TIME_SINCE_LAST_CAME] += 2;
 	flags[kFLAGS.URTA_COMFORTABLE_WITH_OWN_BODY] += 2;
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	outputText("...");
 	player.orgasm();
 	menu();
@@ -5013,7 +5021,7 @@ private function getAPetReward():void {
 private function feedTheBeastPartII():void {
 	clearOutput();
 	model.time.hours+=2;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("<b><u>Several hours later...</u></b>\nYou awake in Urta's arms, tucked under the sheets of her bed.  You're free of your collar, which you can see now lays on a dresser nearby.  Urta gives you a shy smooch, saying, \"<i>Mm, I had so much fun, [name].  I... I don't know what got into me there, but I kinda liked it.  And I just adore you for going along with it.</i>\"");
 
 	outputText("\n\nYou chuckle, confirming you enjoyed it too, and that you're prepared to be her little doggy any time, if it gets you a reward like that.  Your vixen \"<i>Owner</i>\" gives you a giant grin and cuddles up closer, murmuring how happy she is to have found someone as great as you.");

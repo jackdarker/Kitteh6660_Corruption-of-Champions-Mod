@@ -286,7 +286,7 @@ public function meetSophieRepeat():void {
 			else {
 				outputText("Her need amplifies the compulsion, and as turned on as you already are, there's no way you could resist.");
 				//To sex
-				doNext(consensualSexSelector);
+				EngineCore.doNext(consensualSexSelector);
 			}
 			return;
 		}
@@ -350,7 +350,7 @@ private function repeatBreastFeeding():void {
 	clearOutput();
 	outputText("You agree and climb the rest of the way up to her nest, finding Sophie waiting for you there.");
 	//– to consentual breastfeeding.
-	doNext(cramANippleInIt);
+	EngineCore.doNext(cramANippleInIt);
 }
 //Normal Harpy Fight
 private function PCIgnoresSophieAndHarpyIsFought():void {
@@ -374,7 +374,7 @@ private function sophieLookingForDemons():void {
 	//Otherwise leave.
 	else {
 		outputText("  You gulp and nod, understanding quite clearly that the harpies don't care for demons in their nesting grounds.  Sophie smiles and turns about, fluffing purple-tinted tail-feathers at you in what is clearly a dismissal.");
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 		return;
 	}
 	outputText("\"<i>Mmmm, have you gotten bored of the talk, ");
@@ -392,7 +392,7 @@ private function shootDownSophieSex():void {
 	sophieBimbo.sophieSprite();
 	clearOutput();
 	outputText("Sophie pouts for a moment, leaning forward to better display her cleavage. \"<i>Really?  Well if you change your mind, come back and visit me.</i>\"  She turns around and fluffs her tail-feathers at you in what is clearly a dismissal.  You climb down, careful to avoid any other nests as you head back to check on your camp and its portal.");
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 	if(player.lib > 25) dynStats("lib", -1);
 	if(player.lust > 50) dynStats("lus", -5);
 }
@@ -412,7 +412,7 @@ private function sophieMeetingChoseSex():void {
 			simpleChoices("Force Sex", FirstTimeSophieForceSex, "Leave", camp.returnToCampUseOneHour, "", null, "", null, "", null);
 			return;
 		}
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 		return;
 	}
 	//(Haz dick (male futa)) 
@@ -421,7 +421,7 @@ private function sophieMeetingChoseSex():void {
 		
 		outputText("As if you could deny the curvy, sexy body of the motherly harpy...");
 		//[To consentual sex]
-		doNext(consensualSexSelector);
+		EngineCore.doNext(consensualSexSelector);
 		return;
 	}
 }
@@ -461,7 +461,7 @@ private function sophieMeetingGotLost():void {
 		dynStats("lus", (10+player.lib/4));
 		if(player.inte < 50) dynStats("int", 1);
 		//[Go to camp if neither of the above]
-		doNext(camp.returnToCampUseOneHour);
+		EngineCore.doNext(camp.returnToCampUseOneHour);
 	}
 }
 	
@@ -476,7 +476,7 @@ private function tellSophieYoureForagingForStuff():void {
 	//(+10 + libmod lust, +1 int up to 50 int))
 	dynStats("lus", (10+player.lib/4));
 	if(player.inte < 50) dynStats("int", 1);
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 	
 //[Harpy Breastfeeding]
@@ -581,7 +581,7 @@ private function cramANippleInIt():void {
 	flags[kFLAGS.BREASTFEAD_SOPHIE_COUNTER]++;
     if (CoC.instance.inCombat)
         cleanupAfterCombat();
-	else doNext(camp.returnToCampUseOneHour);
+	else EngineCore.doNext(camp.returnToCampUseOneHour);
 	//You've now been milked, reset the timer for that
 	if(player.hasStatusEffect(StatusEffects.Feeder)) {
 		player.addStatusValue(StatusEffects.Feeder,1,1);
@@ -599,7 +599,7 @@ private function consensualHotSophieDickings():void {
 	{
 		CoC_Settings.error("");
 		outputText("ERROR: No cock found that fits, yet 'fits' scene was called.");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
         CoC.instance.inCombat = false;
         return;
 	}
@@ -607,7 +607,7 @@ private function consensualHotSophieDickings():void {
 	{
 		CoC_Settings.error("");
 		outputText("ERROR: Cock above max cocks selected for Sophie sex.  Please report bug on fen's bug report forum.");
-		doNext(playerMenu);
+		EngineCore.doNext(playerMenu);
         CoC.instance.inCombat = false;
         return;
 	}
@@ -753,7 +753,7 @@ private function postSophieSexSnuggle():void {
 	dynStats("lib", 1, "sen", 1);
 	
 	//4 hours pass
-	doNext(camp.returnToCampUseFourHours);
+	EngineCore.doNext(camp.returnToCampUseFourHours);
 }
 
 //[No]
@@ -763,7 +763,7 @@ private function postSexSophieSnuggleTurnedDown():void {
 	outputText("You turn down her offer and assure her that you'll be fine.  Sophie giggles while you try to get dressed, and you see her amber eyes watching you as try to climb back down the mountain with a stiffy.  She seems greatly amused by your predicament.");
 	//(+sensitivity, +libido
 	dynStats("lib", 1, "sen", 1);
-	doNext(camp.returnToCampUseOneHour);
+	EngineCore.doNext(camp.returnToCampUseOneHour);
 }
 	
 //[Consentual Sex No Fito]

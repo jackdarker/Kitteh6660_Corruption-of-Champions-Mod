@@ -1,8 +1,11 @@
-﻿package classes.Scenes.NPCs{
+﻿package classes.Scenes.NPCs {
+	
+import classes.EngineCore;
 import classes.BodyParts.Face;
 import classes.BodyParts.Tongue;
 import classes.GlobalFlags.*;
 import classes.PregnancyStore;
+import classes.StatusEffects;
 import classes.Scenes.SceneLib;
 import classes.PerkLib;
 
@@ -422,7 +425,7 @@ private function wakeUpWithUrtaAfterStaying():void {
 	clearOutput();
 	model.time.days++;
 	model.time.hours = 6;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	player.orgasm();
 	camp.sleepRecovery(false);
 	HPChange(player.maxHP(), true);
@@ -1602,6 +1605,7 @@ private function urtaRaepsJoo():void {
 	
 	outputText("\n\nYou come to your senses and notice the amazing softness of the pillow you're laying on.  It feels so good you can't help but dig your head in and rub your cheek against it.  \"<i>You like that, do you?</i>\"  A familiar voice says, sounding rather amused.");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("sen", 3);
 	menu();
@@ -2821,3 +2825,4 @@ private function liannaHandjobbies():void {
 }
 }
 }
+

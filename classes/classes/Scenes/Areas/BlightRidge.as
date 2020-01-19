@@ -11,6 +11,7 @@ import classes.GlobalFlags.kFLAGS;
 import classes.CoC;
 import classes.Scenes.Areas.BlightRidge.*;
 import classes.Scenes.SceneLib;
+import classes.Scenes.Monsters.ImpLord;
 
 use namespace CoC;
 	
@@ -59,6 +60,34 @@ use namespace CoC;
 				menu();
                 addButton(0, "Yes", SceneLib.dungeons.enterDenOfDesire);
                 addButton(1, "No", camp.returnToCampUseOneHour);
+				return;
+			}
+			//Alvina
+			if (flags[kFLAGS.ALVINA_FOLLOWER] < 12 && player.hasKeyItem("Zetaz's Map") >= 0 && ((rand(10) == 0) || (flags[kFLAGS.LETHICE_DEFEATED] > 0 && rand(2) == 0))) {
+				SceneLib.alvinaFollower.alvinaThirdEncounter();
+				return;
+			}
+			if (((flags[kFLAGS.ALVINA_FOLLOWER] > 8 && flags[kFLAGS.ALVINA_FOLLOWER] < 12 && player.hasKeyItem("Zetaz's Map") >= 0) || player.statusEffectv1(StatusEffects.SiegweirdTraining2) == 2) && rand(2) == 0) {
+				SceneLib.alvinaFollower.alvinaThirdEncounter();
+				return;
+			}
+			//Siegweird
+			if (player.statusEffectv1(StatusEffects.AlvinaTraining2) == 3 && rand(4) == 0) {
+				if (flags[kFLAGS.SIEGWEIRD_FOLLOWER] < 3) SceneLib.siegweirdFollower.siegweirdFirstEncounter();
+				else SceneLib.siegweirdFollower.siegweirdRepeatEncounterPostFight();
+				return;
+			}
+			if (flags[kFLAGS.SIEGWEIRD_FOLLOWER] < 2 && rand(4) == 0) {
+				SceneLib.siegweirdFollower.siegweirdFirstEncounter();
+				return;
+			}
+			if (flags[kFLAGS.SIEGWEIRD_FOLLOWER] == 2.5 && rand(4) == 0) {
+				SceneLib.siegweirdFollower.siegweirdRepeatEncounterPostFight();
+				return;
+			}
+			if (flags[kFLAGS.SIEGWEIRD_FOLLOWER] == 2 && rand(2) == 0) {
+				player.createStatusEffect(StatusEffects.SiegweirdImp,0,0,0,0);
+				startCombat(new ImpLord());
 				return;
 			}
 			

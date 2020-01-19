@@ -69,7 +69,7 @@ public class Evangeline3 extends Monster
 		
 		public function SpellMod():Number {
 			var mod:Number = 1;
-			if (findPerk(PerkLib.Channeling) >= 0) mod += .1;
+			if (findPerk(PerkLib.Channeling) >= 0) mod += .2;
 			if (findPerk(PerkLib.JobSorcerer) >= 0) mod += .1;
 			if (findPerk(PerkLib.Mage) >= 0) mod += .2;
 			if (findPerk(PerkLib.Spellpower) >= 0) mod += .2;
@@ -79,7 +79,7 @@ public class Evangeline3 extends Monster
 		
 		public function BlindSpell():void {
 			outputText("Evangeline glare at you and point at you.  A bright flash erupts before you!\n");
-			if (player.findPerk(PerkLib.GorgonsEyes) < 0 && rand(100) > 20) {
+			if ((player.findPerk(PerkLib.GorgonsEyes) < 0 && rand(100) > 20) && !player.hasPerk(PerkLib.BlindImmunity)) {
 				player.createStatusEffect(StatusEffects.Blind,2,0,0,0);
 			}
 			else if (player.findPerk(PerkLib.GorgonsEyes) >= 0) {

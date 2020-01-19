@@ -5,6 +5,7 @@
 package classes.Scenes.Areas.Beach 
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Face;
 import classes.BodyParts.Hips;
@@ -27,7 +28,7 @@ public class Gorgon extends Monster
 			if(pcCameWorms){
 				outputText("\n\nThe gorgon's eyes go wide and she turns to leave, no longer interested in you.");
 				player.orgasm();
-				doNext(cleanupAfterCombat);
+				EngineCore.doNext(cleanupAfterCombat);
 			} else {
 				nagaScene.nagaFUCKSJOOOOOO();
 			}
@@ -74,9 +75,8 @@ public class Gorgon extends Monster
 				outputText("The venom's effects are almost instantaneous; your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 6) {
 					player.spe -= 5;
-					showStatDown( 'spe' );
-					// speUp.visible = false;
-					// speDown.visible = true;
+					//showStatDown( 'spe' );
+					EngineCore.showUpDown();
 					player.createStatusEffect(StatusEffects.NagaVenom,5,0,0,0);
 				}
 				else {
@@ -88,11 +88,9 @@ public class Gorgon extends Monster
 			else {
 				outputText("The venom's effects intensify as your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 5) {
-					//stats(0,0,-2,0,0,0,0,0);
 					player.spe -= 4;
-					showStatDown( 'spe' );
-					// speUp.visible = false;
-					// speDown.visible = true;
+					//showStatDown( 'spe' );
+					EngineCore.showUpDown();
 					player.addStatusValue(StatusEffects.NagaVenom,1,4);
 				}
 				else player.takePhysDamage(15+rand(15));

@@ -1,5 +1,6 @@
 package classes.Scenes.Dungeons.D3 
 {
+import classes.EngineCore;
 import classes.Appearance;
 import classes.BodyParts.Ears;
 import classes.BreastRowClass;
@@ -70,29 +71,29 @@ import classes.VaginaClass;
 		
 		private function addTalkShit():void
 		{
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			
 			if (HP < 1)
 			{
-				doNext(SceneLib.combat.endHpVictory);
+				EngineCore.doNext(SceneLib.combat.endHpVictory);
 				return;
 			}
 			
 			if (lust > maxLust())
 			{
-				doNext(SceneLib.combat.endLustVictory);
+				EngineCore.doNext(SceneLib.combat.endLustVictory);
 				return;
 			}
 			
 			if (player.HP <= player.minHP())
 			{
-				doNext(SceneLib.combat.endHpLoss);
+				EngineCore.doNext(SceneLib.combat.endHpLoss);
 				return;
 			}
 			
 			if (player.lust >= player.maxLust())
 			{
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 				return;
 			}
 			

@@ -14,7 +14,7 @@ public class Hel extends Monster
 		private function helAttack():void {
 			var damage:Number;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if (hasStatusEffect(StatusEffects.Blind) && rand(3) < 1) {
 				outputText(capitalA + short + " completely misses you with a blind attack!\n");
@@ -57,7 +57,7 @@ public class Hel extends Monster
 				if(damage > 0) damage = player.takePhysDamage(damage, true);
 			}
 			
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 
@@ -66,7 +66,7 @@ public class Hel extends Monster
 		private function helAttack2():void {
 			var damage:Number;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if(hasStatusEffect(StatusEffects.Blind) && rand(3) < 1) {
 				outputText(capitalA + short + " completely misses you with a blind attack!\n");
@@ -111,7 +111,7 @@ public class Hel extends Monster
 				}
 			}
 			if(damage > 0) damage = player.takeFireDamage(damage, true);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			outputText("\n");
 		}
 
@@ -160,7 +160,7 @@ public class Hel extends Monster
 		{
 			if (pcCameWorms){
 				outputText("\n\nHelia waits it out in stoic silence...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				if(hasStatusEffect(StatusEffects.Sparring)) SceneLib.helFollower.loseToSparringHeliaLikeAButtRapedChump();
 				else SceneLib.helScene.loseToSalamander();

@@ -3,8 +3,11 @@ import classes.*;
 import classes.BodyParts.Ears;
 import classes.BodyParts.Tail;
 import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.UniqueSexScenes;
 
 public class BunnyGirl extends BaseContent{
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
+		
 		public function isItEaster():Boolean {
 			return (date.date >= 30 && date.date <= 31 && date.month == 2) || (date.month == 3 && date.date <= 1);
 		}
@@ -140,28 +143,27 @@ private function rapeBunBun():void {
 		
 		dynStats("lus", 10, "cor", 3);
 		outputText("(If you’re going to have sex with her, which of her body parts will you use?");
-		var DickInV:Function = null;
-		var Vagina:Function = null;
-		var sixtyNine:Function = null;
-		//Dick requires one 40 area or smaller.
-		if(player.hasVagina()) {
-			DickInV = bunbunFucksYourVag;
-			outputText("  Her dick in your vagina?");
-		}
-		if(player.cockThatFits(40) >= 0) {
-			Vagina = bunbunGetsFucked;
-			outputText("  Fuck her vagina?");
-		}
-		else if(player.cockTotal() > 0) outputText("  <b>You're too big to fit inside her...</b>");
-		if(player.gender > 0) {
-			sixtyNine = bunbun69;
-			outputText("  Sixty-nine her?");
-		}
-		outputText("  Her dick in your ass?)");
 		//var Ass:Number = 0;
 		//Dick In V] [Dick in A] [Vagina] [Ass] [Leave]
-		simpleChoices("Your Vagina",DickInV,"Your Ass",bunbunFucksPCInAss,"Her Vagina",Vagina,"69",sixtyNine,"Leave",camp.returnToCampUseOneHour);
-
+		menu();
+		//Dick requires one 40 area or smaller.
+		if (player.hasVagina()) {
+			addButton(0, "Your Vagina",bunbunFucksYourVag);
+			outputText("  Her dick in your vagina?");
+		}
+		outputText("  Her dick in your ass?)");
+		addButton(1, "Your Ass",bunbunFucksPCInAss);
+		if (player.cockThatFits(40) >= 0) {
+			addButton(2, "Her Vagina",bunbunGetsFucked);
+			outputText("  Fuck her vagina?");
+		}
+		else if (player.cockTotal() > 0) outputText("  <b>You're too big to fit inside her...</b>");
+		if (player.gender > 0) {
+			addButton(3, "69",bunbun69);
+			outputText("  Sixty-nine her?");
+		}
+		if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+		addButton(14, "Leave", camp.returnToCampUseOneHour);
 	}
 }
 
@@ -240,12 +242,15 @@ private function bunbunFucksYourVag():void {
 	outputText("She walks away, her puffy tail twitching with the breeze while your eyes drift closed.");
 	//(Easter vag-preg + 8 hours pass)
 	if (player.bunnyScore() < 4) {
-		player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS);
 	}
 	else {
-		player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_BABY, 60);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_BABY, 60);
 	}
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("lib", 1, "sen", -3);
 	doNext(camp.returnToCampUseEightHours);
@@ -336,6 +341,7 @@ private function bunbunFucksPCInAss():void {
 	//(Easter ass-preg + 8 hours pass)
 	player.buttKnockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS, 1, 1);
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	player.orgasm();
 	dynStats("lib", 1, "sen", 1);
 	doNext(camp.returnToCampUseEightHours);
@@ -964,13 +970,16 @@ private function getEggflated():void {
 	outputText("Eventually, enough of the eggs melt to let you stand under your own power.  You grab your [armor] but hold off on putting it on until you have a chance to shrink down to a more normal size.  Before you leave, you make sure to remove the rope from her wrists, for when she gathers her orgasm-blasted wits.");
 	//[If full bunny morph, End Encounter. Weight up, sensitivity down, fertility up.]
 	if (player.bunnyScore() < 4) {
-		player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_EGGS);
 	}
 	else {
-		player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_BABY, 60);
+		if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+        else player.knockUp(PregnancyStore.PREGNANCY_BUNNY, PregnancyStore.INCUBATION_BUNNY_BABY, 60);
 		player.fertility++;
 	}
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	outputText(player.modThickness(player.maxThicknessCap(),3));
 	outputText(player.modTone(0,3));
 	player.orgasm();

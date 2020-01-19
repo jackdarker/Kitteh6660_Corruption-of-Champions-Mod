@@ -123,16 +123,16 @@ package classes.GlobalFlags
 		public static const HOLIDAY_VALENTINE:int				= 099;
 		
 		//Realistic and Hardcore Achievements (100-109)
-		public static const REALISTIC_TASTES_LIKE_CHICKEN:int	= 100;
-		public static const REALISTIC_CHAMPION_NEEDS_FOOD:int	= 101; //Champion needs food badly!
-		public static const REALISTIC_GOURMAND:int				= 102;
-		public static const REALISTIC_GLUTTON:int				= 103;
-		public static const REALISTIC_FASTING:int				= 104;
-		public static const UNKNOWN_ACHIEVEMENT_105:int			= 105;
-		public static const UNKNOWN_ACHIEVEMENT_106:int			= 106;
-		public static const UNKNOWN_ACHIEVEMENT_107:int			= 107;
-		public static const UNKNOWN_ACHIEVEMENT_108:int			= 108;
-		public static const UNKNOWN_ACHIEVEMENT_109:int			= 109;
+		public static const REALISTIC_TASTES_LIKE_CHICKEN:int			= 100;
+		public static const REALISTIC_CHAMPION_NEEDS_FOOD:int			= 101; //Champion needs food badly!
+		public static const REALISTIC_GOURMAND:int						= 102;
+		public static const REALISTIC_GLUTTON:int						= 103;
+		public static const REALISTIC_FASTING:int						= 104;
+		public static const REALISTIC_ONE_MORE_DISH_PLEASE:int			= 105;
+		public static const REALISTIC_EPIC_GLUTTON:int					= 106;
+		public static const REALISTIC_YOU_NOT_GONNA_EAT_THOSE_RIBS:int	= 107;
+		public static const REALISTIC_LEGENDARY_GLUTTON:int				= 108;
+		public static const REALISTIC_DINNER_FOR_FOUR:int				= 109;
 
 		
 		//General Achievements (110+)
@@ -217,7 +217,7 @@ package classes.GlobalFlags
 		public static const EPIC_ACHIEVEMENTS_LIMBO:int					= 185;
 		public static const EPIC_XXX2_THE_NEXT_LEVEL:int				= 186;
 		public static const EPIC_XXX_THE_RETURN_OF_MARETH_CHAMPION:int	= 187;
-		public static const EPIC_XXX4_:int			= 188;
+		public static const EPIC_XXX_4:int								= 188;
 		
 		
 		public static const GENERAL_PERKY_BEAST_OF_DEATH:int		= 189;
@@ -267,16 +267,16 @@ package classes.GlobalFlags
 		
 		
 		//Epic Achievements (230-239)
-		public static const EPIC_XXX5_:int			= 230;
-		public static const EPIC_XXX6_:int			= 231;
-		public static const UNKNOWN_ACHIEVEMENT_232:int			= 232;
-		public static const UNKNOWN_ACHIEVEMENT_233:int			= 233;
-		public static const UNKNOWN_ACHIEVEMENT_234:int			= 234;
+		public static const EPIC_XXX5_MARETHS_JUDGMENT_DAY:int	= 230;
+		public static const EPIC_XXX6_RISE_OF_THE_DEMONS:int	= 231;
+		public static const EPIC_XXX7_SALVATION:int				= 232;
+		public static const EPIC_XXX8_GENISYS:int				= 233;
+		public static const EPIC_XXX9_DARK_FATE:int				= 234;
 		public static const UNKNOWN_ACHIEVEMENT_235:int			= 235;
 		public static const UNKNOWN_ACHIEVEMENT_236:int			= 236;
 		public static const UNKNOWN_ACHIEVEMENT_237:int			= 237;
-		public static const UNKNOWN_ACHIEVEMENT_238:int			= 238;
-		public static const UNKNOWN_ACHIEVEMENT_239:int			= 239;
+		public static const EPIC_GUARDIAN_OF_NOTRE_DAME:int		= 238;
+		public static const EPIC_THE_DEVIL_WEARS_PRADA:int		= 239;
 		
 		
 		public static const GENERAL_JUST_TO_SPITE_YOU:int							= 240;
@@ -310,8 +310,6 @@ package classes.GlobalFlags
 		public static const UNDERGROUND_POPULATION_CITY_STATE:int			= 266; //Underground Population 5,000 (shadow achievement)
 		public static const UNDERGROUND_POPULATION_KINGDOM:int				= 267; //Underground Population 10,000 (shadow achievement)
 		public static const POPULATION_LARGE_EMPIRE:int						= 268; //Population 10,000 (shadow achievement)
-		
-		public static const LEVEL_SOVEREIGN:int								= 038; //Level 90
 		
 		public static const GENERAL_FAPSTER_2:int								= 269;
 		public static const GENERAL_LEGO_WO_MAN:int								= 270;
@@ -352,11 +350,71 @@ package classes.GlobalFlags
 		public static const ZONE_304:int		= 304;//100 exploration of x1
 		public static const ZONE_305:int		= 305;//100 exploration of x2
 		
-		public static const GENERAL_TEXAS_RANGER:int			= 306;
-		public static const UNKNOWN_ACHIEVEMENT_307:int			= 307;//GENERAL_VAN_DAMME_IT
-		public static const UNKNOWN_ACHIEVEMENT_308:int			= 308;
-		public static const UNKNOWN_ACHIEVEMENT_309:int			= 309;
-		public static const UNKNOWN_ACHIEVEMENT_310:int			= 310;
+		public static const GENERAL_TEXAS_RANGER:int				= 306;
+		public static const UNKNOWN_ACHIEVEMENT_307:int				= 307;	//GENERAL_VAN_DAMME_IT
+		public static const LEVEL_SOVEREIGN:int						= 308;	//Level 90
+		public static const FASHION_KA_CHING:int					= 309;
+		public static const FASHION_ROYALTY:int						= 310;
+		public static const FASHION_COSPLAYER_1:int					= 311;
+		public static const FASHION_HELLBLAZER:int					= 312;
+		public static const FASHION_LESS_THAN_ZERO:int				= 313;
+		public static const FASHION_THUNDERSTUCK:int				= 314;
+		public static const FASHION_DARKNESS_WITHIN:int				= 315;
+		public static const FASHION_POISON_IVY:int					= 316;
+		public static const FASHION_POLAYBOY_BUNNY:int				= 317;
+		public static const FASHION_COSPLAYER_2:int					= 318;
+		public static const FASHION_COSPLAYER_3:int					= 319;
+		public static const FASHION_COSPLAYER_4:int					= 320;
+		public static const WEALTH_POOR_DAOIST:int					= 321;
+		public static const WEALTH_SECTS_CONCLAVE_STUDENT:int		= 322;
+		public static const WEALTH_SECTS_HEAD_ELDER:int				= 323;
+		public static const WEALTH_SECTS_PATRIARCH:int				= 324;
+		public static const WEALTH_MENG_HAO:int						= 325;
+		public static const FASHION_THRONE_OF_INTELLIGENCE:int		= 326;
+		public static const FASHION_THRONE_OF_LIBIDO:int			= 327;
+		public static const FASHION_THRONE_OF_SENSITIVITY:int		= 328;
+		public static const FASHION_THRONE_OF_SPEED:int				= 329;
+		public static const FASHION_THRONE_OF_STRENGTH:int			= 330;
+		public static const FASHION_THRONE_OF_TOUGHNESS:int			= 331;
+		public static const FASHION_THRONE_OF_WISDOM:int			= 332;
+		public static const GENERAL_LEGENDARY_CHIMERA:int			= 333;
+		public static const LEVEL_NEWB_GOD_ESS:int					= 334; //Level 120 (shadow achievement)
+		public static const LEVEL_MID_TIER_GOD_ESS:int				= 335; //Level 150 (shadow achievement)
+		public static const DUNGEON_MIRROR_FLOWER_WATER_MOON:int	= 336;
+		public static const DUNGEON_DUNGEON_SEEKER_1ST_LAYER:int	= 337;
+		public static const DUNGEON_DUNGEON_SEEKER_2ND_LAYER:int	= 338;
+		public static const DUNGEON_DUNGEON_SEEKER_3RD_LAYER:int	= 339;
+		public static const DUNGEON_HONORARY_MINOTAUR:int			= 340;
+		public static const DUNGEON_DUNGEONMASTER:int				= 341;
+		public static const UNKNOWN_ACHIEVEMENT_342:int				= 342;
+		public static const UNKNOWN_ACHIEVEMENT_343:int				= 343;
+		public static const REALISTIC_MYTHICAL_GLUTTON:int			= 344;
+		public static const REALISTIC_DINNER_FOR_OBELIX:int			= 345;
+		public static const REALISTIC_LENT:int						= 346;
+		public static const EPIC_MY_OWN_DEMON_WEAPON:int			= 347;
+		public static const EPIC_348:int				= 348; //getting evolving armor
+		public static const EPIC_ME_EVOLVE:int						= 349;
+		public static const EPIC_US_EVOLVE:int						= 350;
+		public static const EPIC_THEY_EVOLVE:int					= 351;
+		public static const EPIC_EVERYONE_EVOLVE:int				= 352;
+		public static const DUNGEON_GOT_LOST:int					= 353;
+		public static const DUNGEON_HUG_THE_LEFT_WALL:int			= 354;
+		public static const DUNGEON_PAN_AINT_GOT_NOTHING_ON_YOU:int	= 355;
+		public static const DUNGEON_MASTER_OF_THE_LABYRINT:int		= 356;
+		public static const DUNGEON_WHY_ARE_YOU_HERE:int			= 357;
+		public static const EPIC_THRILLER:int						= 358;
+		public static const EPIC_LETS_GO_FISHING:int				= 359;
+		public static const FASHION_SUIT_UP:int						= 360;
+		public static const FASHION_ROLLIN_ROLLIN:int				= 361;
+		public static const UNKNOWN_ACHIEVEMENT_362:int				= 362;
+		public static const UNKNOWN_ACHIEVEMENT_363:int				= 363;
+		public static const UNKNOWN_ACHIEVEMENT_364:int				= 364;
+		public static const UNKNOWN_ACHIEVEMENT_365:int				= 365;
+		public static const UNKNOWN_ACHIEVEMENT_366:int				= 366;
+		public static const UNKNOWN_ACHIEVEMENT_367:int				= 367;
+		public static const UNKNOWN_ACHIEVEMENT_368:int				= 368;
+		public static const UNKNOWN_ACHIEVEMENT_369:int				= 369;
+		public static const UNKNOWN_ACHIEVEMENT_370:int				= 370;
 		
 	}
 

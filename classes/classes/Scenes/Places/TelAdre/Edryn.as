@@ -388,7 +388,7 @@ public function edrynSexSelecter():void {
 	}
 	//Pay gems and update sidebar
 	player.gems -= cost;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	//Actually choose the sex scene
 	edrynFucktroduction();
 	//Increment sex count

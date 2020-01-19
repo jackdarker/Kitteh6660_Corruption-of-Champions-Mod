@@ -415,7 +415,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface
 			outputText("\n\nHanding over the gems, you take the white shell back from her; true to her word, she's rounded it into a proper shield and fitted adjustable straps to the back.  Its hardness is indisputable, but you can only wonder if its liquid absorption properties are still intact.  Worth a test, right?");
 			//this is where the Dragonshell Shield lives, git you one!
 			player.gems -= 200;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			player.removeKeyItem("Dragon Eggshell");
 			inventory.takeItem(shields.DRGNSHL, new YvonneArmorShop().enter);
 		}
@@ -3382,7 +3382,9 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface
 			dynStats("sen", -2);
 			//Preg shit goez hurdur
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
-			player.knockUp(PregnancyStore.PREGNANCY_EMBER, PregnancyStore.INCUBATION_EMBER, 0); //Will always impregnate unless contraceptives are in use
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
+			if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+            else player.knockUp(PregnancyStore.PREGNANCY_EMBER, PregnancyStore.INCUBATION_EMBER, 0); //Will always impregnate unless contraceptives are in use
 			player.createStatusEffect(StatusEffects.EmberFuckCooldown, 36, 0, 0, 0);
 			doNext(createCallBackFunction(emberBreedingAfterMathWatchOutForRadioactiveFallout,false));
 		}

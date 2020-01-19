@@ -1,5 +1,6 @@
 ﻿package classes.Scenes.Places{
 import classes.*;
+import classes.EngineCore;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Areas.Plains.BazaarGatekeeper;
 import classes.Scenes.Places.Bazaar.*;
@@ -224,7 +225,7 @@ private function buyCockMilker():void {
 	outputText("\"<i>Fantastic, fantastic!  Let me get it from the back.</i>\"  Joey rushes behind a curtain, audibly rummaging through the storeroom.  Soon he comes back, carrying a bunch of tubes and nozzles.  \"<i>Here you go!</i>\"  He dumps the collection of junk in your arms, taking the gems from you in the same motion.  You hastily begin stuffing the contraption in your pack.  \"<i>Now, don't get too attached.  A machine's never gonna beat the real thing.</i>\"  He flexes his delicate fingers.  \"<i>Speaking of which, need something?</i>\"");
 	outputText("\n\n(<b>Key Item Acquired: Cock Milker</b>)");
 	player.gems -= 200;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	player.createKeyItem("Cock Milker",0,0,0,0);
 	simpleChoices("JoeyMassage", joeyMassage, "Androgyny", null, "Joey'sOffer", null, "", null, "Leave", enterTheBazaar);
 }
@@ -237,7 +238,7 @@ private function joeyAndrogyny():void {
 		return;
 	}
 	player.gems -= 500;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("Joey takes your hand in his and insistently pulls towards the back rooms.  \"<i>Once we have this all done ");
 	if(player.gender == 1) outputText("you'll be able to be as cute as me!");
 	else if(player.gender == 2) outputText("you'll be able to be as masculine as you want!");
@@ -263,7 +264,7 @@ private function joeyMassage():void {
 	}
 	player.slimeFeed();
 	player.gems -= 10;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("Joey bounces on his feet excitedly, the little poof-ball above his exposed, heart-shaped ass twitching happily.  His soft hand takes yours and leads you towards one of the back rooms, dragging you inside just before the door is silently closed.  The small wooden chamber houses a single, padded bed that's clearly meant for you, and at Joey's insistence you disrobe to lie down on it.  You put your face through a rounded oval and lie down, taking the idle moment to glance around.  A small coal-fired steam-oven isn't far past the bed, and you can make out Joey's small, human feet as he stokes it.\n\n");
 	outputText("One of your chosen masseuse's soft, demure hands rests on your shoulder while the oven starts and begins to vent warm steam through the room.  Joey starts by leaping atop you in a single bound to  straddle your back and rub your shoulders.  His small, skilled fingers work wonders, working out the constant tension this strange land has inspired in you since your arrival.  Each insistent, languid touch dissolves a knot of worry, sending shivers of contentment through you that make you feel as if you're melting into the bed.\n\n");
 	outputText("Once he feels the tension from your upper body has been released, the girly bunny-boy slides himself lower, placing his taut, barely-covered rear atop your " + buttDescript() + ".  Joey's hands slide down along your spine, smoothing out every knotted muscle in your back as he goes.  You could swear his fingers are magic; you feel like a lump of clay being worked by a master sculptor.  Sighing dreamily, you lie there and groan while he finishes the small of your back, muscles rendered into goo-like softness.\n\n");
@@ -592,7 +593,7 @@ private function buyGretasBikini():void {
 	clearOutput();
 	flags[kFLAGS.OWN_MAIDEN_BIKINI] = 1;
 	player.gems -= 500;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("Greta's eyes widen in surprise.  \"<i>Really?</i>\"");
 	outputText("\n\nYou nod and pull out your gems, counting out the exact amount for her.  As soon as you finish, Greta pulls you over the counter and kisses you on the lips, her tongue sensually assaulting your surprised palate. Before you can react, she pulls back with a hum of pleasure.");
 	outputText("\n\n\"<i>Thanks, sugar!  Have fun and be safe, and if you don't want to be safe, come visit me sometime!</i>\"");
@@ -802,7 +803,7 @@ private function yesPutDatSockOnMe(target:int):void {
 
 	if (!conflict) { // There's no conflict. DO IT!!!
 		player.cocks[target].sock = flags[kFLAGS.SOCK_HOLDING];
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 
 		outputText("With one hand she lifts your limp cock up, giving it a pleasant little stroke.");
 	
@@ -904,7 +905,7 @@ There's another option on the list, cheerfully presented with a pastel border an
 private function joeySweetMassage():void {
 	clearOutput();
 	player.gems -= 20;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	outputText("Joey claps excitedly, his little puffy tail bouncing happily.  \"<i>Great!  It's a customer favorite, so I'm sure you'll just love, love, love it!</i>\"  He takes your hand and leads you towards the back rooms, letting the door shut behind the two of you with a soft click.  As usual, in the center of the room is a padded bed meant for you, and at Joey's insistence you disrobe to lie down on it.  You put your face through the rounded oval and relax, taking the moment to watch Joey's bare feet with their cute painted nails prance in and out of sight as he bustles around the room.  He pauses briefly by the coal-fired steam-oven, stoking it for a minute before turning back towards you.");
 	
 	outputText("\n\nThe warm, steamy air caresses your " + player.skinFurScales() + " even before Joey does, running down your back, butt and [legs].  In no time at all, the air in the room is thick and warm, making you feel delightfully lazy with every breath, and a bead of sweat forms on your brow.  The bed shifts a bit as Joey leaps up onto it, straddling your waist, while he starts working his fingers over your shoulders.  His petite hands are surprisingly talented, finding every little knot you've accumulated in your journeys and unravelling them with one blissful touch.");
@@ -1212,6 +1213,7 @@ private function finalGayFinallee(road:int = 0):void {
 	player.buttChange(30,true,true,false);
 	outputText("\n\nYou can barely focus on pleasuring the two cocks in your hands as your lower body receives a slut's treatment.  \"<i>Ragh! Hole so tight around orc cock!  Make good orc bitch!</i>\"  The large green man groans and you feel his heavy sack clench against your cheeks.  Your eyes go wide as you're suddenly flooded with orc spunk, the sensation and sound of the cum overflowing from your hole to splatter against the Orc's balls and thighs overwhelming your senses.  The Orc lets out a \"<i>Wrahhg!</i>\" as he pins your hips, hilting his orc cock as he continues to unload his thick, fertile seed into you.  Your belly soon distends and bulges from the amount of cum shooting up your ass.  The orc man pants over you as you feel your " + assholeDescript()  + " dripping orc spunk like a leaking dam.");
 	if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+	if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 	//now it's time for the choice before to matter, we got three endings here, one for each choice.
 	//((Ending 1 , suck tiger, //bumpy road))
 	if(road == 0) {
@@ -1239,7 +1241,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.L_DRAFT, camp.returnToCampUseOneHour);
 		//Time set to morning
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	//((Ending 2 , suck bear, //crazy steel jaw))
 	else if(road == 1) {
@@ -1271,7 +1273,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.L_DRAFT, camp.returnToCampUseOneHour);
 		//Time set to morning
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 	}
 	//((Ending 3 , suck none, //No furry plx))
 	else {
@@ -1302,7 +1304,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Lust sated
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.BIMBOLQ, camp.returnToCampUseOneHour);
-		statScreenRefresh();
+		EngineCore.statScreenRefresh();
 		//Time set to morning
 	}
 }

@@ -48,7 +48,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			mainView.showMenuButton( MainView.MENU_STATS );
 			mainView.showMenuButton( MainView.MENU_PERKS );
 			mainView.showMenuButton( MainView.MENU_APPEARANCE );
-			showStats();
+			EngineCore.showStats();
 			mainView.setMenuButton( MainView.MENU_NEW_MAIN, "Main Menu", CoC.instance.mainMenu.mainMenu );
 			mainView.newGameButton.toolTipText = "Return to main menu.";
 			mainView.newGameButton.toolTipHeader = "Main Menu";
@@ -116,21 +116,21 @@ CoC.instance.saves.saveGame(player.slotName);
 			}
 			flags[kFLAGS.IN_INGNAM] = 0;
 			flags[kFLAGS.INGNAM_PROLOGUE_COMPLETE] = 1;
-			doNext(CoC.instance.charCreation.arrival);
+			EngineCore.doNext(CoC.instance.charCreation.arrival);
 		}
 		
 		public function returnToMareth():void {
 			clearOutput();
 			outputText("You make your journey to Mount Ilgast, walk through the portal back to Mareth and return to your camp.");
 			flags[kFLAGS.IN_INGNAM] = 0;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function returnToIngnam():void {
 			clearOutput();
 			outputText("You enter the portal and make your return to Ingnam, thanks to the debug powers.");
 			flags[kFLAGS.IN_INGNAM] = 1;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		//Explore Ingnam
@@ -145,7 +145,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			else {
 				outputText("You explore the village of Ingnam for a while but you don't find anything intersting.");
 			}
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		//Shopping time!
@@ -314,7 +314,7 @@ CoC.instance.saves.saveGame(player.slotName);
 				outputText("You have purchased " + item.longName + " for " + price + " gems. ");
 				player.gems -= price;
 				menu();
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 				inventory.takeItem(item, shopToGo);
 			}
 			else {
@@ -396,7 +396,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			}
 			outputText("\n\nPLACEHOLDER.");
 			flags[kFLAGS.INGNAM_GREETED_AFTER_LONGTIME] = 1;
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		
 		public function appearanceFreakout():void {
@@ -424,7 +424,7 @@ CoC.instance.saves.saveGame(player.slotName);
 				flags[kFLAGS.INGNAM_TAIL_LAST_TYPE] = player.tailType;
 				flags[kFLAGS.INGNAM_TAIL_FREAKOUT] = 1;
 			}
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 
 		
@@ -447,7 +447,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			clearOutput();
 			if (player.gems < 5) {
 				outputText("You don't have enough gems for that.");
-				doNext(orderDrink);
+				EngineCore.doNext(orderDrink);
 				return;
 			}
 			player.gems -= 5;
@@ -481,13 +481,13 @@ CoC.instance.saves.saveGame(player.slotName);
 				}
 			}
 			cheatTime(1/12);
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		public function buyMilk():void {
 			clearOutput();
 			if (player.gems < 2) {
 				outputText("You don't have enough gems for that.");
-				doNext(orderDrink);
+				EngineCore.doNext(orderDrink);
 				return;
 			}
 			player.gems -= 2;
@@ -497,13 +497,13 @@ CoC.instance.saves.saveGame(player.slotName);
 			HPChange(player.maxHP() / 4, false);
 			player.refillHunger(10);
 			cheatTime(1/12);
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		public function buyRootBeer():void {
 			clearOutput();
 			if (player.gems < 3) {
 				outputText("You don't have enough gems for that.");
-				doNext(orderDrink);
+				EngineCore.doNext(orderDrink);
 				return;
 			}
 			player.gems -= 3;
@@ -513,7 +513,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			HPChange(player.maxHP() / 4, false);
 			player.refillHunger(10);
 			cheatTime(1/12);
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		
 		public function orderFood():void { //Order food, because you need to be able to fill hunger.
@@ -536,7 +536,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			clearOutput();
 			if (player.gems < 5) {
 				outputText("You don't have enough gems for that.");
-				doNext(orderDrink);
+				EngineCore.doNext(orderDrink);
 				return;
 			}
 			player.gems -= 5;
@@ -545,14 +545,14 @@ CoC.instance.saves.saveGame(player.slotName);
 			HPChange(player.maxHP() / 3, false);
 			player.refillHunger(25);
 			cheatTime(1/12);
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		
 		public function buySoup():void { //Eat soup. Again, it's vague to let you imagine what soup you're eating.
 			clearOutput();
 			if (player.gems < 3) {
 				outputText("You don't have enough gems for that.");
-				doNext(orderDrink);
+				EngineCore.doNext(orderDrink);
 				return;
 			}
 			player.gems -= 3;
@@ -561,19 +561,19 @@ CoC.instance.saves.saveGame(player.slotName);
 			HPChange(player.maxHP() / 3, false);
 			player.refillHunger(20);
 			cheatTime(1/12);
-			doNext(menuTavern);
+			EngineCore.doNext(menuTavern);
 		}
 		
 		private function buyHardBiscuits():void {
 			clearOutput();
 			if(player.gems < 5) {
 				outputText("You can't afford one of those!");
-				doNext(orderFood);
+				EngineCore.doNext(orderFood);
 				return;
 			}
 			outputText("You pay five gems for a pack of hard biscuits.  ");
 			player.gems -= 5;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			inventory.takeItem(consumables.H_BISCU, orderFood);
 		}
 
@@ -581,12 +581,12 @@ CoC.instance.saves.saveGame(player.slotName);
 			clearOutput();
 			if (player.gems < 10) {
 				outputText("You can't afford one of those!");
-				doNext(orderFood);
+				EngineCore.doNext(orderFood);
 				return;
 			}
 			outputText("You pay twenty gems for a pack of trail mix.  ");
 			player.gems -= 10;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			inventory.takeItem(consumables.TRAILMX, orderFood);
 		}
 		
@@ -612,7 +612,7 @@ CoC.instance.saves.saveGame(player.slotName);
 				outputText("\n\n\"<i>You're welcome. I have nothing left to tell you but you're always welcome,</i>\" he says.");
 				flags[kFLAGS.INGNAM_RUMORS] = 3; //Finished
 			}
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 	}

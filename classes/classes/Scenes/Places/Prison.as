@@ -166,7 +166,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.esteem > oldEsteem) showStatUp("esteem");
 			if (player.esteem < oldEsteem) showStatDown("esteem");
 			dynStats("lus", 0, "scale", false);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		/**
 		 * Change the player's willpower.
@@ -180,7 +180,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.will > oldWill) showStatUp("will");
 			if (player.will < oldWill) showStatDown("will");
 			dynStats("lus", 0, "scale", false);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		/**
 		 * Change the player's obedience.
@@ -224,7 +224,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.obey > oldObey) showStatUp("obey");
 			if (player.obey < oldObey) showStatDown("obey");
 			dynStats("lus", 0, "scale", false);
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 		
 		public function prisonWillCostDescript(baseVal:Number):String
@@ -533,7 +533,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			var nextNeeded:* = false;
 			if(!debug && !prisonCanRestraintBreakDoor())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			nextNeeded = true;
@@ -551,7 +551,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			
 			if(nextNeeded)
 			{
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		
@@ -584,7 +584,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			
 			if(nextNeeded)
 			{
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		
@@ -617,7 +617,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			
 			if(nextNeeded)
 			{
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		
@@ -627,7 +627,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			nextNeeded = true;
 			if(!debug && !prisonCanRestraintBreakMouth())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
@@ -655,7 +655,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			
 			if(nextNeeded)
 			{
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 		}
 		
@@ -988,7 +988,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		public function goDirectlyToPrisonDoNotPassGoDoNotCollect200Gems():void {
 			clearOutput();
 			outputText("You peer around the corner of a tent. You are unsurprised to see a collection of beast men around a cookfire, but you find yourself far more interested in the cage wagon beyond them. You become so wrapped up in trying to identify the lumpy shapes in the shadowy interior that the sound of twigs snapping behind you doesn't immediately trigger alarm bells in your mind, and before you can properly respond you are knocked unconscious by a brutal blow to the back of your head.");
-			doNext(prisonIntro);
+			EngineCore.doNext(prisonIntro);
 		}
 		
 		public function goBackToPrisonBecauseQuestTimeIsUp():void {
@@ -1145,8 +1145,8 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.statusEffectv1(StatusEffects.PrisonRestraints) > 0) flags[kFLAGS.PRISON_DOOR_UNLOCKED] = 0;
 			else flags[kFLAGS.PRISON_DOOR_UNLOCKED] = 1;
 			//Start!
-			hideUpDown();
-			showStats();
+			EngineCore.hideUpDown();
+			EngineCore.showStats();
 			clearOutput();
 			outputText(images.showImage("prison-cell"));
 			switch(flags[kFLAGS.PRISON_PUNISHMENT]) {
@@ -1375,13 +1375,13 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			clearOutput();
 			if(!prisonCanTrainWorkout())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			if(player.fatigue > player.maxFatigue() - 25)
 			{
 				outputText("<b>There's no way you could exercise right now - you're exhausted!</b>  ");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			fatigue(25);
@@ -1425,7 +1425,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			//Increase muscles.
 			if (player.tone < 60) outputText(player.modTone(85, 5 + rand(5)));
 			else outputText(player.modTone(85, 1 + rand(4)));
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		private function doPrisonTrainCardio():void 
@@ -1433,13 +1433,13 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			clearOutput();
 			if(!prisonCanTrainCardio())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			if(player.fatigue > player.maxFatigue() - 30)
 			{
 				outputText("<b>There's no way you could exercise right now - you're exhausted!</b>  ");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			fatigue(30);
@@ -1483,7 +1483,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			//Decrease thickness.
 			if (player.thickness > 40) outputText(player.modThickness(1, 5 + rand(2)));
 			else outputText(player.modThickness(1, 2 + rand(2)));
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		//Special training
@@ -1493,7 +1493,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			dynStats("lus", 20);
 			changeObey(1,inPrison);
 			changeEsteem(-1,inPrison);
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		public function prisonCaptorTrainAnalCapcity():void
@@ -1517,7 +1517,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 					player.addStatusValue(StatusEffects.BonusACapacity, 1, 0.5);
 				}
 			}
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		public function prisonCaptorTrainPuppyTricks():void
@@ -1525,7 +1525,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			outputText("(Placeholder) You decide to practice behaving like a dog -- crawling, sitting, begging, posing as if in heat with high corruption. \n\nVarious scenes will play out depending on your esteem, obedience, and corruption, as well as your state of restraint and other random factors, and you will receive stat boosts as appropriate to the scene. For now, this placeholder just gives you a small increase to your obedience and a small boost to your self esteem.\n");
 			changeObey(1,inPrison);
 			changeEsteem(1,inPrison);
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		
@@ -1558,7 +1558,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				dynStats("lib", -0.5);
 			}
 			changeEsteem(5, inPrison);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function doPrisonStudyDetermination():void
@@ -1573,21 +1573,21 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				dynStats("inte", 0.5);
 			}
 			changeObey(-5,inPrison);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function doPrisonStudySelfpity():void
 		{
 			outputText("You turn your thoughts inward in an attempt to calm your nerves and bring balance to your emotions, but end up wallowing in self pity over your hopeless situation instead.\n");
 			changeEsteem(-5,inPrison);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function doPrisonStudyDiscipline():void
 		{
 			outputText("You turn your thoughts inward in an attempt to improve your determination, but end up daydreaming about how pleasant it is to be told what to do rather than having to think for yourself.\n");
 			changeObey(5,inPrison);
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		//Special study
@@ -1596,7 +1596,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			outputText("(Placeholder) You decide to spend some time working on your manners -- i.e., conditioning yourself to think of your captor as [captorTitle] and to use the proper form of address when speaking to her. \n\n Various scenes will play out depending on your esteem, obedience, and corruption, as well as randomized factors, and you will receive stat boosts as appropriate to the scene. For now, this placeholder just gives you a small increase to your obedience and a small hit to your self esteem.\n\n");
 			changeObey(1,inPrison);
 			changeEsteem(-1,inPrison);
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		public function prisonCaptorStudyBreathing():void
@@ -1604,7 +1604,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			outputText("(Placeholder) You decide to spend some time working on your breathing -- i.e., working on holding your breath, practicing rhythmic breathing, and if corruption is high enough and props are available (the dildo bat weapon, the dildo rack, or your own very long penis), using said props to aid in this endeavor. \n\nVarious scenes will play out depending on your esteem, obedience, and corruption, as well as randomized factors, and you will receive stat boosts as appropriate to the scene. For now, this placeholder just gives you a small increase to your obedience and a small boost to your self esteem.\n\n");
 			changeObey(1,inPrison);
 			changeEsteem(1,inPrison);
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		public function prisonCaptorCleanRoom():void
@@ -1641,7 +1641,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			player.changeStatusValue(StatusEffects.PrisonCaptorEllyStatus,2,newCleanliness);
 			changeObey(0.2,inPrison);
-			doNext(camp.returnToCampUseTwoHours);
+			EngineCore.doNext(camp.returnToCampUseTwoHours);
 		}
 		
 		//------------
@@ -1724,14 +1724,14 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeFight())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			if(player.will < prisonWillCost(20))
 			{
 				outputText("You simply don't have the willpower to try to fight your way to freedom right now.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			changeWill(-prisonWillCost(20));
@@ -1759,14 +1759,14 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeSeduce())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			if(player.will < prisonWillCost(10))
 			{
 				outputText("You simply don't have the willpower to try to seduce your guard right now.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			changeWill(-prisonWillCost(10));
@@ -1777,14 +1777,14 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeBribe())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			if(player.will < prisonWillCost(10))
 			{
 				outputText("You find that you don't have the willpower needed to try to bribe your way free.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			changeWill(-prisonWillCost(10));
@@ -1795,14 +1795,14 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeSneak())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			if(player.will < prisonWillCost(15))
 			{
 				outputText("The subterfuge needed to sneak past your guard requires more willpower to execute than you have right now.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			changeWill(-prisonWillCost(15));
@@ -1813,14 +1813,14 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeRun())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			if(player.will < prisonWillCost(5))
 			{
 				outputText("You don't even have enough willpower at the moment to stand up and walk out the door.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			changeWill(-prisonWillCost(5));
@@ -1831,13 +1831,13 @@ public class Prison extends BaseContent implements TimeAwareInterface
 		{
 			if(!prisonCanEscapeRun())
 			{
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			clearOutput();
 			outputText("Knowing you have a task to complete, you work up the courage to take advantage of your completely unrestrained state and cautiously slip out the door when no one is watching.\n");
 			prisonEscapeSuccessText();
-			doNext(prisonEscapeFinalePart1);
+			EngineCore.doNext(prisonEscapeFinalePart1);
 		}
 		
 		public function prisonEscapeFight():void
@@ -1889,7 +1889,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				outputText("Overcome with arousal by your display the " + prisonGuard.guardType + " communicates " + prisonGuard.guardPronoun3 + " agreement with a nod and approaches confidently.");
 				dynStats("lus", 25);
 				prisonEscapeSuccessText();
-				doNext(prisonEscapeFinalePart1);
+				EngineCore.doNext(prisonEscapeFinalePart1);
 			}
 			else if(sexyScore > 50)
 			{
@@ -1900,7 +1900,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			else
 			{
 				outputText("The " + prisonGuard.guardType + " seems completely uninterested in your offer, and walks back out the door.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 			
 		}
@@ -1942,7 +1942,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				}
 				outputText(" gives you a key, then leaves you to your own devices.");
 				prisonEscapeSuccessText();
-				doNext(prisonEscapeFinalePart1);
+				EngineCore.doNext(prisonEscapeFinalePart1);
 			}
 			else if(charmScore > 50)
 			{
@@ -1953,7 +1953,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			else
 			{
 				outputText("The " + prisonGuard.guardType + " seems completely uninterested in your offer, and walks back out the door.");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 			
 		}
@@ -1984,7 +1984,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			{
 				outputText("When " + prisonGuard.guardPronoun1 + " doesn't see you, " + prisonGuard.guardPronoun1 + " walks further into the room leaving the door open in " + prisonGuard.guardPronoun3 + " befuddlement. You take this opportunity to quickly and quietly slip out of the shadowed corner where you were hiding and pull the door shut behind you, locking the " + prisonGuard.guardType + " inside. ");
 				prisonEscapeSuccessText();
-				doNext(prisonEscapeFinalePart1);
+				EngineCore.doNext(prisonEscapeFinalePart1);
 			}
 			else if(stealthScore > 50)
 			{
@@ -1994,7 +1994,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			else
 			{
 				outputText("The " + prisonGuard.guardType + " immediately sees you crouching stupidly in a corner, and assumes you are cowering in fear. Perplexed, " + prisonGuard.guardPronoun1 + " turns around and leaves the room");
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 			}
 			
 		}
@@ -2016,7 +2016,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			outputText("You work up the courage to take advantage of your completely unrestrained state and cautiously slip out the door when no one is watching.\n");
 			prisonEscapeSuccessText();
-			doNext(prisonEscapeFinalePart1);
+			EngineCore.doNext(prisonEscapeFinalePart1);
 		}
 		
 		public function prisonEscapeSuccessText():void
@@ -2061,11 +2061,11 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			outputText("Having retrieved your old items, you quietly make your way out of your captor's stronghold and head back towards your camp.");
 			if(!flags[kFLAGS.PRISON_CAPTURE_CHANCE] || flags[kFLAGS.PRISON_CAPTURE_CHANCE] <= 0)
 			{
-				doNext(captorChanceChoose);
+				EngineCore.doNext(captorChanceChoose);
 			}
 			else
 			{
-				doNext(camp.returnToCampUseOneHour);
+				EngineCore.doNext(camp.returnToCampUseOneHour);
 			}
 			return;
 		}
@@ -2161,7 +2161,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			outputText("\n\n<b>Of course, you could always return to the prison anytime from the Places menu.</b>");
 			flags[kFLAGS.PRISON_CAPTURE_CHANCE] = 50;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 			return;
 		}
 		public function chooseMaybeChance():void
@@ -2189,7 +2189,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			outputText("\n\n<b>Of course, you could always return to the prison anytime from the Places menu.</b>");
 			flags[kFLAGS.PRISON_CAPTURE_CHANCE] = 15;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 			return;
 		}
 		public function chooseNeverChance():void
@@ -2213,7 +2213,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			outputText("\n\n<b>Of course, you could always return to the prison anytime from the Places menu.</b>");
 			flags[kFLAGS.PRISON_CAPTURE_CHANCE] = -1;
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 			return;
 		}
 		
@@ -2433,7 +2433,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			
 			outputText("\n");
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 			return true;
 		}
 		
@@ -2539,7 +2539,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				flags[kFLAGS.PRISON_DIRT_ENABLED] = 1;
 				prisonCaptorTrainingStatusUpdate();
 				player.changeStatusValue(StatusEffects.PrisonCaptorEllyStatus,2,51);
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return;
 			}
 			outputText("From the look on " + prisonCaptor.captorPronoun3 + " face you know immediately that ");
@@ -2548,7 +2548,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			{
 				case 0:
 					outputText(prisonCaptor.captorPronoun1 + " is satisfied with what [captorhe] sees.");
-					doNext(playerMenu);
+					EngineCore.doNext(playerMenu);
 					return;
 				case 1:
 					outputText(prisonCaptor.captorPronoun1 + " is a bit annoyed with what [captorhe] sees, but not overly upset.\n\n");
@@ -2597,7 +2597,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			}
 			
 			outputText("(Placeholder) [captorTitle] [captorName] reaches a decision. \"<i>Perhaps having your freedoms a bit more restricted for a while will help you show some respect,</i>\" " + prisonCaptor.captorPronoun1 + " says as " + prisonCaptor.captorPronoun1 + " adjusts your restraints.");
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 	  
 		public function prisonCaptorRestraintCheckEvent():Boolean
@@ -2609,7 +2609,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 					outputText("\nYour " + prisonCaptor.captorTitle + " enters the room and looks pensive for a moment, then " + prisonCaptor.captorPronoun1 + " declares decisively, \"<i>I don't think we need to bother keeping the door locked anymore. Even if you do somehow work up the nerve to walk out the door, you'll soon find your way back to where you know you belong.</i>\"\n");
 					player.changeStatusValue(StatusEffects.PrisonRestraints, 1, 0);
 					flags[kFLAGS.PRISON_DOOR_UNLOCKED] = 1;
-					doNext(playerMenu);
+					EngineCore.doNext(playerMenu);
 					return true;
 				}
 				return false;
@@ -2618,7 +2618,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			{
 				outputText("\n" + prison.prisonCaptor.captorTitle + " " + prisonCaptor.captorName + " enters the room and looks pensive for a moment, then " + prisonCaptor.captorPronoun1 + " declares decisively, \"<i>I think you might be learning your lesson. As a reward, I'll loosen your bindings a bit.</i>\"\n");
 				prisonRestraintReduction(1);
-				doNext(playerMenu);
+				EngineCore.doNext(playerMenu);
 				return true;
 			}
 			return false;
@@ -2655,7 +2655,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			changeEsteem(5,inPrison);
 			changeObey(-1,inPrison);
 			changeWill(-prisonWillCost(15));
-			doNext(playerMenu);
+			EngineCore.doNext(playerMenu);
 		}
 		
 		public function prisonCaptorSubmitFuck():void
@@ -2745,7 +2745,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			player.slimeFeed();
 			changeObey(1,inPrison);
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function prisonCaptorResistFuck():void
@@ -2851,7 +2851,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			player.slimeFeed();
 			player.changeStatusValue(StatusEffects.PrisonRestraints,2,2);
 			player.orgasm();
-			doNext(camp.returnToCampUseOneHour);
+			EngineCore.doNext(camp.returnToCampUseOneHour);
 		}
 		
 		public function prisonCaptorPunishmentFuck():void
@@ -2965,7 +2965,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 				outputText("You eat the stale, flavorless brick of bread. It satisfies your hunger, but not much else.");
 				player.refillHunger(40);
 			}
-			doNext(inventory.inventoryMenu);
+			EngineCore.doNext(inventory.inventoryMenu);
 		}
 		
 		public function prisonItemBreadHeatEffect(bonusResist:Number = 0):void

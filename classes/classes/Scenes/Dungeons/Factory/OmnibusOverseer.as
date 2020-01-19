@@ -24,7 +24,7 @@ public class OmnibusOverseer extends Monster
 		{
 			if (pcCameWorms){
 				outputText("\n\nYour foe doesn't seem to care...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				factory.doLossOmnibus();
 			}

@@ -782,7 +782,7 @@ import classes.lists.Gender;
 			else if (player.findFirstCockType(CockTypesEnum.RHINO) >= 0) {
 				outputText("\n\nAndy chuckles fondly as his hands slide down to either side of your [cock]. Soft hands firmly massage the ridge on either side of your shaft. You groan as the sensation intensifies. Then his mouth is on you, a single hot wet tongue dragging up and down the belly of your [cock] and causing you to convulse each time he completes a circuit.");
 			}
-			else if (player.findFirstCockType(CockTypesEnum.LIZARD) >= 0) {
+			else if (player.findFirstCockType(CockTypesEnum.LIZARD) >= 0 || player.findFirstCockType(CockTypesEnum.CAVE_WYRM) >= 0) {
 				outputText("\n\nAndy kisses your shaft at the base, pulling off with a wet pop. When his lips return he slides up the side of your [cock] with a serene expression. Then his thumbs rubs against your sensitive [cockHead], swirling your pre-cum around the sensitive area. As he swirls your pre-cum and slobbers up your schlong, your hips jerk of their own accord and there is nothing you can do to stop them, not that you would if you could.");
 			}
 			else if (player.findFirstCockType(CockTypesEnum.TENTACLE) >= 0) {
@@ -1099,7 +1099,10 @@ import classes.lists.Gender;
 				outputText("\n\nAndy chuckles as you look down at him, \"<i>Sorry about the knot, [name].</i>\" You shrug because it’s no big deal. You can feel the hot wetness of Andy’s seed inside you as the two of you wait for the swelling of his knot to go down.");
 				outputText("\n\nThe two of you talk, holding an engaging conversation that discusses a range of unimportant but interesting topics. When his dick and knot finally deflate and send a cascade of satyr spunk dripping from your used hole you stay for a minute and enjoy his company. After a short time the two of you rise and you reward him with a kiss before grabbing your [armor] and pulling it on as you head back to camp.");
 			}
-			if (player.hasVagina()) player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR, 50); //2x chance of pregnancy
+			if (player.hasVagina()) {
+				if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+				else player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR, 50); //2x chance of pregnancy
+			}
 			else player.buttKnockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR, 50);
 			player.slimeFeed();
 			player.orgasm();
@@ -1220,6 +1223,7 @@ import classes.lists.Gender;
 			}
 			outputText("\n\nAs he helps you clean up he tells you how much he likes your ass. After chatting for a little bit he tells you he has to get back to work. As you walk out the tent flap all eyes are on you. After a few moments one of the satyrs sticks his fingers to his lips and gives a high pitched wolf whistle. Some of the tables with people in them erupt in stomping and clapping. Harry's harpy wife catches your eye and gives you a conspiratorial wink, rubbing her pussy through her tight little cut off pants as she watches you leave.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			flags[kFLAGS.BLACK_COCK_HARRY_SEX_COUNTER]++;
 			player.orgasm();
 			doNext(camp.returnToCampUseOneHour);
@@ -1392,7 +1396,9 @@ import classes.lists.Gender;
 			fatigue(25);
 			dynStats("lib", 1, "sens", 2, "cor", 1);
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
-			if (player.hasVagina()) player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
+			if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+			else if (player.hasVagina()) player.knockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR);
 			player.buttKnockUp(PregnancyStore.PREGNANCY_SATYR, PregnancyStore.INCUBATION_SATYR);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -1428,7 +1434,7 @@ import classes.lists.Gender;
 					dynStats("lib", 1);
 				}
 			}
-			if (player.hasPerk(PerkLib.TransformationImmunity)) changeLimit = 0;
+			if (player.hasPerk(PerkLib.TransformationImmunity) || player.hasPerk(PerkLib.Undeath)) changeLimit = 0;
 			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].cockLength < 12) { 
 				outputText("\n\nHeat funnels into your cock as the alcohol flushes through you. Reaching down to inspect it, you find it has grown longer.");
 				player.cocks[player.smallestCockIndex()].cockLength+=1; //fixme

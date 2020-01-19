@@ -942,7 +942,7 @@ private function dominikaBlowjobs2():void {
 	flags[kFLAGS.DOMINIKA_TIMES_HYPNO_BJ]++;
 	model.time.days++;
 	model.time.hours = 7;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh();
 	doNext(camp.returnToCampUseOneHour);
 }
 

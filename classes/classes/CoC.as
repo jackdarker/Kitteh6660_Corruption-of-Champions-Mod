@@ -56,11 +56,11 @@ import mx.logging.targets.TraceTarget;
 public class CoC extends MovieClip
 {
     {
-        /*
-         * This is a static initializer block, used as an ugly hack to setup
-         * logging before any of the class variables are initialized.
-         * This is done because they could log messages during construction.
-         */
+        ///*
+         //* This is a static initializer block, used as an ugly hack to setup
+         //* logging before any of the class variables are initialized.
+         //* This is done because they could log messages during construction.
+         //*/
 
         CoC.setUpLogging();
     }
@@ -72,8 +72,8 @@ public class CoC extends MovieClip
     public var date:Date = new Date();
 
     //Mod save version.
-    public var modSaveVersion:Number = 25;
-    public var levelCap:Number = 150;
+    public var modSaveVersion:Number = 26;
+    public var levelCap:Number = 185;
 
     //Used to restrict random drops from overlapping uniques
     public var plotFight:Boolean = false;
@@ -97,7 +97,11 @@ public class CoC extends MovieClip
     public var headjewelries:HeadJewelryLib		= new HeadJewelryLib();
     public var necklaces:NecklaceLib			= new NecklaceLib();
     public var jewelries:JewelryLib				= new JewelryLib();
+    public var jewelries2:JewelryLib			= new JewelryLib();
+    public var jewelries3:JewelryLib			= new JewelryLib();
+    public var jewelries4:JewelryLib			= new JewelryLib();
     public var shields:ShieldLib				= new ShieldLib();
+    public var vehicles:VehiclesLib				= new VehiclesLib();
 
 
     // Force updates in Pepper Flash ahuehue
@@ -249,8 +253,8 @@ public class CoC extends MovieClip
         //model.debug = debug; // TODO: Set on model?
 
 			//Version NUMBER
-			ver = "1.0.2_mod_Xianxia_0.8m3";
-			version = ver + " (<b>Bugfixes adn QoL changes</b>)";
+			ver = "1.0.2_mod_Xianxia_0.8n6";
+			version = ver + " (<b>Yuki onna TF, some bugfixes</b>)";
 
         this.images = new ImageManager(stage, mainView);
         this.inputManager = new InputManager(stage, mainView, false);

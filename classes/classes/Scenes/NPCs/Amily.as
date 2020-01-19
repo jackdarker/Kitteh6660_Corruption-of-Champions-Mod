@@ -1,6 +1,7 @@
 ﻿package classes.Scenes.NPCs
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Hips;
 import classes.Scenes.SceneLib;
@@ -26,7 +27,7 @@ import classes.StatusEffects.Combat.AmilyVenomDebuff;
 		public function amilyAttack():void {
 			var damage:Number;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if(hasStatusEffect(StatusEffects.Blind) && rand(3) < 2) {
 				outputText(capitalA + short + " completely misses you with a blind attack!\n");
@@ -91,7 +92,7 @@ import classes.StatusEffects.Combat.AmilyVenomDebuff;
 			var dodged:Number = 0;
 			var damage:Number = 0;
 			//return to combat menu when finished
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 			//Blind dodge change
 			if(hasStatusEffect(StatusEffects.Blind) && rand(3) < 2) {
 				dodged++;

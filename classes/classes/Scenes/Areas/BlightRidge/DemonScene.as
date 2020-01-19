@@ -57,11 +57,11 @@ import classes.Scenes.UniqueSexScenes;
 					addButton (2, "Service Him", GiveIncubusOral);
 					addButton (3, "Catch Anal", FactoryScene.doRideIncubusAnally);
 				}
-				if (player.lowerBody == LowerBody.PLANT_FLOWER) addButton(7, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
+				//if (player.lowerBody == LowerBody.PLANT_FLOWER) addButton(7, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
 			}
-			addButton (4, "Leave", cleanupAfterCombat);
 			if (monster.HP < 1) addButton (5, "Kill Him", killDemon);
-			if (player.tailType == Tail.MANTICORE_PUSSYTAIL) addButton(6, "Tail Rape", uniquuuesexscene.manticoreTailRapeScene);
+			if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+			addButton (14, "Leave", cleanupAfterCombat);
 		}
 		
 		public function lustyPaizuri():void {
@@ -167,6 +167,7 @@ import classes.Scenes.UniqueSexScenes;
 			player.cuntChange(player.vaginalCapacity()*.8, true);
 			player.orgasm();
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			dynStats("cor", 2);
 			player.knockUp(PregnancyStore.PREGNANCY_IMP, PregnancyStore.INCUBATION_IMP);
 			cleanupAfterCombat();
@@ -204,6 +205,7 @@ import classes.Scenes.UniqueSexScenes;
 				player.refillHunger(100);
 				player.orgasm();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+				if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 				dynStats("cor", 20);
 				cleanupAfterCombat();
 				}
@@ -250,6 +252,7 @@ import classes.Scenes.UniqueSexScenes;
 					player.refillHunger(100);
 					player.orgasm();
 					if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+					if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 					dynStats("cor", 25);
 					player.buttChange(monster.cockArea(0), true);	
 					cleanupAfterCombat();
@@ -283,6 +286,7 @@ import classes.Scenes.UniqueSexScenes;
 							player.buttChange(monster.cockArea(0), true);
 							player.orgasm();
 							if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+							if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 							cleanupAfterCombat();
 					}
 				}
@@ -305,14 +309,15 @@ import classes.Scenes.UniqueSexScenes;
 			if (player.lust>=33 && player.gender > 0) {
 				outputText("\nNow would be the perfect opportunity to taste the fruits of her sex-ready form...\n\nDo you fuck her?");
 				if (player.gender == 1 || player.gender == 3) addButton (0, "M. Fuck", OmnibusGetsRapedByMale);
-				if (player.gender == 2 || player.gender == 3) addButton (1, "F. Fuck", OmnibusGetsRapedByFemale);
+				if (player.gender == 2 || player.gender == 3) addButton (1, "F. Fuck", OmnibusGetsRapedByFemale);/*
 				if (player.lowerBody == LowerBody.PLANT_FLOWER) {
 					addButton(2, "Seeding", uniquuuesexscene.alrauneSeedingScene);
 					addButton(3, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
-				}
+				}*/
 			}
-			addButton (4, "Leave", cleanupAfterCombat);
-			if(monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+			addButton (14, "Leave", cleanupAfterCombat);
 		}
 		
 		public function OmnibusGetsRapedByMale():void {
@@ -389,10 +394,10 @@ import classes.Scenes.UniqueSexScenes;
 				else if (player.cor < 66) outputText("You groan, wondering why she just won't get over her little act.  Even though this wasn't your best idea, it isn't nearly as bad as she makes it out to be.  You get dressed and leave, eager to be rid of her.\n\n");
 				else outputText("You bend over, rub her belly softly and whisper into her ear, \"<i>I'll be sure to spit them on my cock first chance I get, dear.</i>\"\n\n");
 				outputText("As you leave, you don't bother to spare a glance at the confused omnibus; she isn't worth your time.");
-				}
-				player.orgasm();
-				dynStats("lib", 3, "sen", 3, "cor", 1);
-				cleanupAfterCombat();
+			}
+			player.orgasm();
+			dynStats("lib", 3, "sen", 3, "cor", 1);
+			cleanupAfterCombat();
 		}
 		
 		public function OmnibusGetsRapedByFemale():void {
@@ -557,10 +562,11 @@ import classes.Scenes.UniqueSexScenes;
 					addButton (0, "M. Fuck", SuccubusGetsRapedByMale);
 					addButton (1, "F. Fuck", SuccubusGetsRapedByFemale);
 				}
-				if (player.lowerBody == LowerBody.PLANT_FLOWER) addButton(2, "Seeding", uniquuuesexscene.alrauneSeedingScene);
+				//if (player.lowerBody == LowerBody.PLANT_FLOWER) addButton(2, "Seeding", uniquuuesexscene.alrauneSeedingScene);
 			}
-			addButton (4, "Leave", cleanupAfterCombat);
-			if(monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			if (player.pcCanUseUniqueSexScene()) addButton(13, "U. Sex Scenes", uniquuuesexscene.pcUniqueSexScenesChoiceMenu).hint("Other non typical sex scenes.");
+			addButton (14, "Leave", cleanupAfterCombat);
 		}
 		
 		public function SuccubusGetsRapedByMale():void {

@@ -1,5 +1,6 @@
 package classes.Scenes.Places.TelAdre {
 import classes.CoC;
+import classes.EngineCore;
 import classes.ItemType;
 
 import coc.xxc.BoundStory;
@@ -43,7 +44,7 @@ public class Shop extends TelAdreAbstractContent {
         localvars.debit.keyItem = keyItem;
         display("debit",localvars.debit);
         player.gems -= priceOverride >= 0 ? priceOverride : itype.value;
-        statScreenRefresh();
+        EngineCore.statScreenRefresh();
         if (keyItem != "") {
             player.createKeyItem(keyItem, 0, 0, 0, 0);
             doNext(inside);

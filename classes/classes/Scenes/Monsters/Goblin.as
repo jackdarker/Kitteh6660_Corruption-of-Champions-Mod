@@ -125,7 +125,7 @@ public class Goblin extends Monster
 			} else if (pcCameWorms) {
 				outputText("\n\nThe goblin's eyes go wide and she turns to leave, no longer interested in you.");
 				player.orgasm();
-				doNext(SceneLib.combat.cleanupAfterCombatImpl);
+				EngineCore.doNext(SceneLib.combat.cleanupAfterCombatImpl);
 			} else {
 				SceneLib.goblinScene.goblinRapesPlayer();
 			}

@@ -89,6 +89,10 @@ public class SceneLib {
 	
 	public static var displacerbeastScene:DisplacerBeastScene = new DisplacerBeastScene();
 
+    public static var aethertwins:AetherTwinsFollowers = new AetherTwinsFollowers();
+
+    public static var alvinaFollower:AlvinaFollower = new AlvinaFollower();
+
     public static var amilyScene:AmilyScene = new AmilyScene();
 
     public static var anemoneScene:AnemoneScene = new AnemoneScene();
@@ -97,7 +101,11 @@ public class SceneLib {
 
     public static var arianScene:ArianScene = new ArianScene();
 
+    public static var auroraFollower:AuroraFollower = new AuroraFollower();
+
     public static var ayaneFollower:AyaneFollower = new AyaneFollower();
+
+    public static var bashemathScene:BashemathFollower = new BashemathFollower();
 
     public static var ceraphScene:CeraphScene = new CeraphScene();
 
@@ -118,6 +126,8 @@ public class SceneLib {
     public static var etnaScene:EtnaFollower = new EtnaFollower();
 
     public static var evangelineFollower:EvangelineFollower = new EvangelineFollower();
+
+    public static var excelliaFollower:ExcelliaFollower = new ExcelliaFollower();
 
     public static var exgartuan:Exgartuan = new Exgartuan();
 
@@ -157,13 +167,21 @@ public class SceneLib {
 
     public static var marblePurification:MarblePurification = new MarblePurification();
 
+    public static var michikoFollower:Michiko = new Michiko();
+
     public static var milkWaifu:MilkWaifu = new MilkWaifu();
+
+    public static var neisaFollower:NeisaFollower = new NeisaFollower();
+
+    public static var mitziFollower:MitziFollower = new MitziFollower();
 
     public static var patchouliScene:PatchouliScene = new PatchouliScene();
 
     public static var raphael:Raphael = new Raphael();
 
     public static var rathazul:Rathazul = new Rathazul();
+
+    public static var siegweirdFollower:SiegweirdFollower = new SiegweirdFollower();
 
     public static var sheilaScene:SheilaScene = new SheilaScene();
 

@@ -5,10 +5,21 @@
 package classes.Scenes.Places.HeXinDao 
 {
 	import classes.*;
-	import classes.GlobalFlags.kFLAGS;
-	import classes.Scenes.SceneLib;
+	import classes.BodyParts.Arms;
+	import classes.BodyParts.Eyes;
+	import classes.BodyParts.Face;
+	import classes.BodyParts.Horns;
+	import classes.BodyParts.LowerBody;
 	import classes.BodyParts.Tail;
+	import classes.GlobalFlags.kFLAGS;
+	import classes.GlobalFlags.kACHIEVEMENTS;
+	import classes.Scenes.SceneLib;
 	import classes.Scenes.Dungeons.RiverDungeon;
+	import classes.Items.ArmorLib;
+	import classes.Items.ShieldLib;
+	import classes.Items.UndergarmentLib;
+	import classes.Items.WeaponLib;
+	import classes.Items.WeaponRangeLib;
 	
 	public class JourneyToTheEast extends HeXinDaoAbstractContent
 	{
@@ -23,17 +34,23 @@ package classes.Scenes.Places.HeXinDao
 				outputText("You enter the town local Inn ‘Journey to the East’ and look around. ");
 			}
 			outputText("You can see many people enjoying a meal or drink in the dining hall, a barman standing by ready to serve drinks.");
-			if (model.time.hours >= 18 && rand(4) == 0) {
+			if (flags[kFLAGS.CHI_CHI_FOLLOWER] != 2 && flags[kFLAGS.CHI_CHI_FOLLOWER] != 5 && model.time.hours >= 18 && rand(4) == 0) {
 				ChiChiDrunkSex();
 				return;
 			}
 			menu();
 			addButton(0, "Drink", drinkAlcohol);
 			addButton(4, "Adv.Guild", BoardkeeperYangMain);
+			if (flags[kFLAGS.MICHIKO_FOLLOWER] < 1) addButton(10, "???", SceneLib.michikoFollower.firstMeetingMichiko).hint("You see some suspicious looking squirrel in one of inn corners.");
 			if (flags[kFLAGS.NEISA_FOLLOWER] == 1) addButton(11, "ShieldMaiden", firstTimeMeetingNeisa);
 			if (flags[kFLAGS.NEISA_FOLLOWER] == 2) addButton(11, "Neisa", meetingNeisaAfterDecline);
-			//if (flags[kFLAGS.NEISA_FOLLOWER] == 4) addButton(11, "Neisa", meetingNeisaPostDungeonExploration);
-			//addButtonDisabled(12, "???", "You see some suspicious looking squirrel in one of inn corners. (Liadri + Star should bring this npc to more completness)");
+			if (flags[kFLAGS.NEISA_FOLLOWER] == 4 || flags[kFLAGS.NEISA_FOLLOWER] == 5) addButton(11, "Neisa", meetingNeisaPostDungeonExploration).hint("Neisa is sitting at a table enjoying one of the local drinks.");
+			if (flags[kFLAGS.NEISA_FOLLOWER] == 6) addButton(11, "Neisa", meetingNeisaPostDungeonExploration2).hint("Neisa is sitting at a table enjoying one of the local drinks.");
+			addButtonDisabled(12, "???", "You see some suspicious looking human bimbo with animal tail in one of inn corners.");
+			if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] < 2 && (player.humanScore() >= (player.humanMaxScore() - player.internalChimeraScore()))) {
+				if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] < 1) addButton(13, "???", firstTimeMeetingNekomataBoy).hint("A strange cat morph with two tails is sitting at one of the tables muttering to himself.");
+				if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] == 1) addButton(13, "???", firstTimeMeetingNekomataBoy).hint("A strange cat morph with two tails is sitting at one of the tables muttering to himself.");
+			}
 			addButton(14, "Leave", heXinDao.riverislandVillageStuff);
 		}
 		
@@ -49,13 +66,14 @@ package classes.Scenes.Places.HeXinDao
 			addButton(1, "Gob.Ale", buyDrink, consumables.GOB_ALE);
 			addButton(2, "OrcMead", buyDrink, consumables.ORCMEAD);
 			addButton(3, "OniSake", buyDrink, consumables.ONISAKE);
-			addButton(5, "SalamFW", buyDrink, consumables.SALAMFW);
-			addButton(6, "NoceLiq", buyDrink, consumables.NOCELIQ);
+			addButton(5, "Fiery S", buyDrink, consumables.FIERYS_);
+			addButton(6, "SalamFW", buyDrink, consumables.SALAMFW);
+			addButton(7, "NoceLiq", buyDrink, consumables.NOCELIQ);
 			addButton(12, "BimboL", buyDrink, consumables.BIMBOLQ);
 			addButton(13, "BroBrew", buyDrink, consumables.BROBREW);
 			addButton(14, "Back", notThirsty);
 		}
-		//drink list (to be expanded)	fire mouse TF, some generic nonTF beers
+		//drink list (to be expanded) some generic nonTF beers
 		private function notThirsty():void {
 			clearOutput();
 			outputText("In the end you realise you are not thirsty after all and wave a goodbye before leaving.\n\n");
@@ -71,7 +89,7 @@ package classes.Scenes.Places.HeXinDao
 			}
 			player.gems -= cost;
 			statScreenRefresh();
-			outputText("\n\nThe barman hands over the drink you ordered.");
+			outputText("\n\nThe barman hands over the drink you ordered. ");
 			inventory.takeItem(drink, drinkAlcohol);
 		}
 		
@@ -86,7 +104,8 @@ package classes.Scenes.Places.HeXinDao
 				if (player.keyItemv1("Adventurer Guild: Copper plate") > 1) addButton(2, "Promotion", BoardkeeperYangPromotion).hint("Ask Yang for a promotion once you have achieved enough jobs.");
 				else addButtonDisabled(2, "Promotion", "Not meet req.");
 				addButton(3, "Sex", BoardkeeperYangSex);
-				addButton(4, "Back", curry(enteringInn,false));
+				addButton(4, "Back", curry(enteringInn, false));
+				if (flags[kFLAGS.AURORA_LVL] == 0.3 || (flags[kFLAGS.AURORA_LVL] >= 0.6 && flags[kFLAGS.AURORA_LVL] < 0.75)) addButton(5, "GRJ", BoardkeeperYangGolemRetrievalJob).hint("Golem retrieval job");
 			}
 			else {
 				outputText("You approach the board covered in colorful papers and the panda girl next to it smile at you.\n\n");
@@ -136,7 +155,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				addButtonDisabled(4, "Demons", "Only for Iron tier Adventurer.");
 			}
-			//addButton(5, "Gel", BoardkeeperYangQuestGel).hint("Copper tier Quest.");
+			addButton(5, "Gel", BoardkeeperYangQuestGel).hint("Copper tier Quest.");
 			addButton(6, "Chitin", BoardkeeperYangQuestChitin).hint("Copper tier Quest.");
 			if (flags[kFLAGS.GALIA_LVL_UP] == 0.53 || (flags[kFLAGS.GALIA_LVL_UP] >= 0.5 && flags[kFLAGS.GALIA_TALKS] > 0)) addButtonDisabled(10, "Ferals (C)", "You already finished this quest.");
 			else if (player.statusEffectv2(StatusEffects.AdventureGuildQuests2) >= 2) {
@@ -157,6 +176,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.IMPSKLL, 5)) {
 						outputText("Yang examine the skulls to make sure those are imps then nods giving you your payment.\n\n");
 						outputText("\"<i>Good job [name] here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 1, 1);
 						player.destroyItems(useables.IMPSKLL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 7;
@@ -176,6 +196,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.IMPSKLL, 4)) {
 						outputText("Yang examine the skulls to make sure those are imps then nods giving you your payment.\n\n");
 						outputText("\"<i>Good job [name] here is your payment along with a special training scroll.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 1, 1);
 						player.destroyItems(useables.IMPSKLL, 4);
 						player.perkPoints += 1;
@@ -197,6 +218,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("(<b>Acquired demon hunter amulet!</b>)\n\n");
 						outputText("(<b>Gained New Perk: Sense Corruption</b>)");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 1, 1);
 						player.createKeyItem("Demon Hunter Amulet", 0, 0, 0, 0);
 						player.createPerk(PerkLib.SenseCorruption, 0, 0, 0, 0);
@@ -211,6 +233,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				outputText("Yang eyes you with keen interest then ask.\n\n");
 				outputText("\"<i>Would you actually be interested into something easier? Right now there's a bounty on imp slaying. Bring me back 3 imp skulls and I will see it through that you are properly rewarded.</i>\"\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter1)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter1, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests1)) player.addStatusValue(StatusEffects.AdventureGuildQuests1, 1, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests1, 1, 0, 0, 0);
 			}
@@ -227,6 +250,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.SEVTENT, 3)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job there. I hope those plants did not prove to much trouble. Here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 1, 1);
 						player.destroyItems(useables.SEVTENT, 3);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
@@ -242,6 +266,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.SEVTENT, 2)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job [name] here is your payment along with a special training scroll.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 1, 1);
 						player.destroyItems(useables.SEVTENT, 2);
 						player.perkPoints += 1;
@@ -260,6 +285,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("\"<i>Everyone makes mistakes and plants assignments are way more dangerous than imps, you clearly outpaced expectation. Here is your payment. This reminds me some man told me to leave you this scroll as a reward too... should help you sense the anger of your opponents he said.</i>\"\n\n");
 						outputText("(<b>Gained New Perk: Sense Wrath</b>)");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 1, 1);
 						player.createPerk(PerkLib.SenseWrath, 0, 0, 0, 0);
 						player.destroyItems(useables.SEVTENT, 1);
@@ -270,6 +296,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				outputText("\"<i>Someone put up a bounty for slaying tentacle beast. I would need lets say 1 tentacle from those mishapen creature as proof of your deed. Of course you will be rewarded for the job.</i>\"\n\n");
 				outputText("You shrug and accept the job. Plants... what could go wrong?\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter2)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter2, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests2)) player.addStatusValue(StatusEffects.AdventureGuildQuests2, 1, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests2, 1, 0, 0, 0);
 			}
@@ -286,6 +313,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.DEMSKLL, 3)) {
 						outputText("You turn in the quest and Yang nod.\n\n");
 						outputText("\"<i>Good job as usual here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 2, 1);
 						player.destroyItems(useables.DEMSKLL, 3);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
@@ -306,6 +334,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.DEMSKLL, 2)) {
 						outputText("You turn in the quest and Yang nod.\n\n");
 						outputText("\"<i>Good job [name] here is your payment along with a special training scroll.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 2, 1);
 						player.destroyItems(useables.DEMSKLL, 2);
 						player.perkPoints += 1;
@@ -333,6 +362,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("You spend the four next hour with the rattel morph learning new demon killing tricks. By the end of your training you have accumulated a good bank of knowledge on demon weak points and how to exploit them. Chika leaves by the end warning that you and her will eventually meet again.\n\n");
 						outputText("(<b>Gained New Perk: Demon Slayer</b>)");
 						if (player.hasKeyItem("Adventurer Guild: Iron plate") >= 0) player.addKeyValue("Adventurer Guild: Iron plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 2, 1);
 						player.createPerk(PerkLib.DemonSlayer, 0.1, 0, 0, 0);
 						player.destroyItems(useables.DEMSKLL, 1);
@@ -347,6 +377,7 @@ package classes.Scenes.Places.HeXinDao
 				outputText("\"<i>Hey [name] happen I have a new higher grade job for you if you’re interested.</i>\"\n\n");
 				outputText("Of course your interested what’s the job?\n\n");
 				outputText("\"<i>See it happens the town offer a generous sum for every demon slain. If you can bring me proof of the death of demon. Should you come back I have a special reward for you in addition to your pay.</i>\"\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter1)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter1, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests1)) player.addStatusValue(StatusEffects.AdventureGuildQuests1, 2, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests1, 0, 1, 0, 0);
 			}
@@ -363,6 +394,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.FIMPSKL, 5)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job there. I heard those creatures are actually out there killing instead of raping, it’s quite chilling. Here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 2, 1);
 						player.destroyItems(useables.FIMPSKL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 7;
@@ -378,6 +410,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.FIMPSKL, 4)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job there. I heard those creatures are actually out there killing instead of raping, it’s quite chilling. Here is your payment along with a special training scroll.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 2, 1);
 						player.destroyItems(useables.FIMPSKL, 4);
 						player.perkPoints += 1;
@@ -396,6 +429,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("\"<i>Everyone makes mistakes and feral imps assignments are way more dangerous than normal imps, you clearly outpaced expectation. Here is your payment. This reminds me some man told me to leave you this scroll as a reward too... should help you fight feral opponents he said.</i>\"\n\n");
 						outputText("(<b>Gained New Perk: Feral Hunter</b>)");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter2, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 2, 1);
 						player.createPerk(PerkLib.FeralHunter, 0.1, 0, 0, 0);
 						player.destroyItems(useables.FIMPSKL, 3);
@@ -406,6 +440,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				outputText("\"<i>Someone put up a bounty for slaying feral imps. I would need lets say 3 feral imps skulls from those mishapen creature as proof of your deed. Of course you will be rewarded for the job.</i>\"\n\n");
 				outputText("You shrug and accept the job. It's time to hunt some imps.\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter2)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter2, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests2)) player.addStatusValue(StatusEffects.AdventureGuildQuests2, 2, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests2, 0, 1, 0, 0);
 			}
@@ -422,6 +457,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.MINOHOR, 4)) {
 						outputText("Yang count the horns then smile.\n\n");
 						outputText("\"<i>Well you did bag four out of four nice job. The guild asked me to pay you this reward money as usual for slaying bulls. Do come and find me later on for a new job, or for something else...</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 3, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 3, 1);
 						player.destroyItems(useables.MINOHOR, 4);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
@@ -437,6 +473,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.MINOHOR, 3)) {
 						outputText("Yang count the horns then smile.\n\n");
 						outputText("\"<i>Well you did bag three out of three nice job. The guild asked me to pay you with this special training scroll for slaying bulls. Do come and find me later on for a new job, or for something else...</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 3, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 3, 1);
 						player.destroyItems(useables.MINOHOR, 3);
 						player.perkPoints += 1;
@@ -453,6 +490,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("\"<i>Well you indeed did bag two out of two. The guild asked me to pay you this specific tome. Betcha will find nice uses for these. Do come and find me later on for a new job, or for something else...</i>\"\n\n");
 						outputText("Yang gives you a telltale wink before handing you over your reward.\n\n");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter1, 3, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 3, 1);
 						player.destroyItems(useables.MINOHOR, 2);
 						inventory.takeItem(consumables.TCLEAVE, curry(enteringInn,false));
@@ -463,6 +501,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				outputText("Yang takes on a grave expression.\n\n");
 				outputText("\"<i>Look [name] I won’t sugar coat it up for you. We’re buried knee deep into horsecocks, specificaly minotaur cocks. What the guild would like you to do is go out, kill some of the bulls out there, say two or so of them, and bring back their horns. You do that for us and we'll reward you accordingly.</i>\"\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter1)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter1, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests1)) player.addStatusValue(StatusEffects.AdventureGuildQuests1, 3, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests1, 0, 0, 1, 0);
 			}
@@ -479,6 +518,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.GREENGL, 5)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job there. I hope gathering these did not prove to much trouble. Here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter4, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 2, 1);
 						player.destroyItems(useables.GREENGL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 3;
@@ -495,6 +535,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>My my, nice job. I can only hope you kept that weapon clean of innocent blood. Regardless here is your payment. This reminds me the client told me to leave you this scroll as a reward too you know what to do with it I suppose?</i>\"\n\n");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter4, 2, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 2, 1);
 						player.destroyItems(useables.GREENGL, 5);
 						player.perkPoints += 1;
@@ -504,6 +545,7 @@ package classes.Scenes.Places.HeXinDao
 			}
 			else {
 				outputText("\"<i>You may or may not like that one. The good news is you are going out to gather gel the bad news is it primarily drop from goo girls which is a friendly species so your morality may be put to the test. How you handle that is up to you. Regardless bring us back 5 gel and your job will be done.</i>\"\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter4)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter4, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests4)) player.addStatusValue(StatusEffects.AdventureGuildQuests4, 2, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests4, 0, 1, 0, 0);
 			}
@@ -520,6 +562,7 @@ package classes.Scenes.Places.HeXinDao
 					if (player.hasItem(useables.B_CHITN, 5)) {
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>Good job there. I hope gathering these did not prove to much trouble. Here is your payment.</i>\"\n\n");
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter4, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 1, 1);
 						player.destroyItems(useables.B_CHITN, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 4;
@@ -541,6 +584,7 @@ package classes.Scenes.Places.HeXinDao
 						outputText("You turn in the quest and Yang nod in appreciation.\n\n");
 						outputText("\"<i>My my, nice job. I can only hope you kept that weapon clean of innocent blood. Regardless here is your payment. This reminds me the client told me to leave you this scroll as a reward too you know what to do with it I suppose?</i>\"\n\n");
 						if (player.hasKeyItem("Adventurer Guild: Copper plate") >= 0) player.addKeyValue("Adventurer Guild: Copper plate", 1, 1);
+						player.addStatusValue(StatusEffects.AdventureGuildQuestsCounter4, 1, 1);
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 1, 1);
 						if (player.statusEffectv3(StatusEffects.AdventureGuildQuests4) > 0) {
 							player.removeStatusEffect(StatusEffects.AdventureGuildQuests4);
@@ -555,6 +599,7 @@ package classes.Scenes.Places.HeXinDao
 			else {
 				outputText("\"<i>You may or may not like that one. The good news is you are going out to gather chitin the bad news is it primarily drop from bee girls which is a friendly species so your morality may be put to the test. How you handle that is up to you, ");
 				outputText("for all I know chitin is often found on the forest ground where bee girls trives. Regardless bring us back 5 chitin and your job will be done.</i>\"\n\n");
+				if (!player.hasStatusEffect(StatusEffects.AdventureGuildQuestsCounter4)) player.createStatusEffect(StatusEffects.AdventureGuildQuestsCounter4, 0, 0, 0, 0);
 				if (player.hasStatusEffect(StatusEffects.AdventureGuildQuests4)) player.addStatusValue(StatusEffects.AdventureGuildQuests4, 1, 1);
 				else player.createStatusEffect(StatusEffects.AdventureGuildQuests4, 1, 0, 0, 0);
 			}
@@ -628,6 +673,34 @@ package classes.Scenes.Places.HeXinDao
 		public function BoardkeeperYangQuest1():void {
 			clearOutput();
 			outputText("Placeholder for lazyLia writing ^^\n\n");
+			doNext(curry(enteringInn,false));
+		}
+		public function BoardkeeperYangGolemRetrievalJob():void {
+			clearOutput();
+			if (flags[kFLAGS.AURORA_LVL] == 0.3) {
+				outputText("You ask Yang if it would be possible for you to post a job. You happen to have a chained golem you want retrieved from the hidden cave and brought up back to your camp.\n\n");
+				outputText("Yang nods \"<i>Yeah, sure we can do that. Just write a full job description and I will post it on the board. It will cost 10 spirit stones.</i>\"\n\n");
+				if (flags[kFLAGS.SPIRIT_STONES] < 10) {
+					outputText("You tell her you’ll be back with the stones the moment you have them.\n\n");
+					doNext(curry(enteringInn,false));
+				}
+				else {
+					menu();
+					addButton(0, "Maybe later", BoardkeeperYangGolemRetrievalJob1);
+					addButton(1, "Post the Req", BoardkeeperYangGolemRetrievalJob2);
+				}
+			}
+			else SceneLib.auroraFollower.putInTheJadeTalismanEpilogue();
+		}
+		public function BoardkeeperYangGolemRetrievalJob1():void {
+			outputText("You tell Yang you will come back later to post the request.\n\n");
+			doNext(curry(enteringInn,false));
+		}
+		public function BoardkeeperYangGolemRetrievalJob2():void {
+			outputText("Yang wait at you arm crossed. You write a full job description and hand it over to Yang along with the stones. This done, she then posts it on the board as an iron plate request.\n\n");
+			flags[kFLAGS.SPIRIT_STONES] -= 10;
+			flags[kFLAGS.AURORA_LVL] = 0.35;
+			statScreenRefresh();
 			doNext(curry(enteringInn,false));
 		}
 		public function BoardkeeperYangTalk():void {
@@ -746,11 +819,178 @@ package classes.Scenes.Places.HeXinDao
 			addButton(3, "No", firstTimeMeetingNeisaNo);
 		}
 		public function meetingNeisaPostDungeonExploration():void {
-			outputText("Placeholder until this part of the text will be written.\n\n");
+			if (flags[kFLAGS.NEISA_FOLLOWER] == 5) {
+				outputText("You walk up to Neisa who reminds you right away.\n\n");
+				outputText("\"<i>I work for 1 spirit stone a day and payment is once per week, this is not negotiable.</i>\"\n\n");
+			}
+			else {
+				outputText("You walk up to Neisa who acknowledges your presence right away.\n\n");
+				outputText("\"<i>Aye [name] how's the adventuring going? I've been without a contract for a while now and it so happens I could lend you my help. For a modest fee of course. Only 1 spirit stone a day payable once per week, I need something to subsist on.</i>\"\n\n");
+				outputText("Do you hire her?\n\n");
+			}
 			menu();
-			//addButton(1, "Yes", firstTimeMeetingNeisaYes);
-			//addButton(3, "No", firstTimeMeetingNeisaNo);
-			addButton(4, "Back", curry(enteringInn, false));
+			addButton(1, "Hire her", meetingNeisaPostDungeonExplorationHireHer);
+			addButton(3, "No", meetingNeisaPostDungeonExplorationNo);
+		}
+		public function meetingNeisaPostDungeonExploration2():void {
+			outputText("Neisa gets to the point right away.\n\n");
+			outputText("\"<i>I'm still waiting for those 10 spirit stone you owe me [name].</i>\"\n\n");
+			menu();
+			if (flags[kFLAGS.SPIRIT_STONES] >= 10) addButton(1, "Pay", meetingNeisaPostDungeonExplorationPay);
+			else addButtonDisabled(1, "Pay", "You still not have 10 spirit stones to pay back.");
+			addButton(3, "Don't pay", meetingNeisaPostDungeonExplorationDontPay);
+		}
+		public function meetingNeisaPostDungeonExplorationDontPay():void {
+			outputText("You walk away to go get the cash, gosh you're lucky she doesn't send the city guards on your back.\n\n");
+			doNext(curry(enteringInn,false));
+		}
+		public function meetingNeisaPostDungeonExplorationPay():void {
+			flags[kFLAGS.SPIRIT_STONES] -= 10;
+			outputText("You hand over the payment, Neisa counting to be sure.\n\n");
+			outputText("\"<i>Looks like we're even. I'll pass on the fact you skipped the payment and offer you my aid again so long as you can afford it.</i>\"\n\n");
+			menu();
+			addButton(1, "Hire her", meetingNeisaPostDungeonExplorationHireHer);
+			addButton(3, "No", meetingNeisaPostDungeonExplorationNo);
+		}
+		public function meetingNeisaPostDungeonExplorationHireHer():void {
+			outputText("Neisa packs up her things, ready to accompany you.\n\n");
+			outputText("\"<i>Well lead the way, Boss.</i>\"\n\n");
+			outputText("(<b>Neisa has been added to the Followers menu!</b>)\n\n");
+			if (flags[kFLAGS.NEISA_FOLLOWER] < 6) {
+				flags[kFLAGS.NEISA_LVL_UP] = 1;
+				flags[kFLAGS.NEISA_AFFECTION] = 1;
+				flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
+			}
+			flags[kFLAGS.NEISA_FOLLOWER] = 7;
+			doNext(camp.returnToCampUseOneHour);
+		}
+		public function meetingNeisaPostDungeonExplorationNo():void {
+			outputText("Nah you don't have that much right now.\n\n");
+			outputText("\"<i>Well I hope whatever you meet out there doesn't outright kill or fuck the soul out of you then. See me again if you ever change your mind.</i>\"\n\n");
+			if (flags[kFLAGS.NEISA_FOLLOWER] == 4) flags[kFLAGS.NEISA_FOLLOWER] = 5;
+			doNext(curry(enteringInn,false));
+		}
+		
+		public function firstTimeMeetingNekomataBoy():void {
+			clearOutput();
+			if (flags[kFLAGS.CURSE_OF_THE_JIANGSHI] == 1) {
+				outputText("You wave again at the sketchy cat morph.\n\n");
+				outputText("\"<i>Hey it's you the human! Have you thought it through and are you ready to take on my offer? There's 3000 gems down the line if you say yes.</i>\"\n\n");
+			}
+			else {
+				outputText("You wave at the weird cat morph who lifts his eyes from his drink to acknowledge you then opens his eyes wide in surprise.\n\n");
+				outputText("\"<i>A real human, here of all places? You just came at the perfect time "+player.mf("mister","miss")+"!</i>\"\n\n");
+				outputText("The perfect time?\n\n");
+				outputText("\"<i>I am a researcher studying the flow of Chi in the human body, the spiritual energy outsiders calls soulforce. I would like you to assist me in proving my thesis that humans are naturally disposed to soulforce.</i>\"\n\n");
+				outputText("What is in it for you?\n\n");
+				outputText("\"<i>Gems… how about three thousand? I know you outsiders have no interest in spirit stones and all I need is your collaboration here and now.</i>\"\n\n");
+				outputText("Why now… he sure did make an interesting offer. Do you shake hands and seal the deal with him?"+(flags[kFLAGS.PATCHOULI_FOLLOWER] >= 2 ? " Something tells you cats morph aren't exactly the most trustworthy of people. It might be Patchouli who's getting in your head again.":"")+"\n\n");
+			}
+			menu();
+			addButton(1, "No", firstTimeMeetingNekomataBoyNo);
+			addButton(3, "Yes", firstTimeMeetingNekomataBoyYes);
+		}
+		public function firstTimeMeetingNekomataBoyNo():void {
+			outputText("Yeah no, this is looking too good to be true and truth be told it likely is. You tell the sketchy cat you will pass on it for now and head back towards the bar.\n\n");
+			flags[kFLAGS.CURSE_OF_THE_JIANGSHI] = 1;
+			doNext(curry(enteringInn,false));
+		}
+		public function firstTimeMeetingNekomataBoyYes():void {
+			clearOutput();
+			outputText("You shake hand with the twin tailed cat morph.\n\n");
+			outputText("\"<i>It's a deal! Now come over to my house, I will get those tests done fast and then you can leave three thousand gems richer.</i>\"\n\n");
+			outputText("He leads you to a big house at the far side of town and once inside, shows you the way to his lobby.\n\n");
+			outputText("\"<i>After you, just go sit in the chair on the side, close your eyes and relax.</i>\"\n\n");
+			outputText("You walk down the stairs then head for a chair to the side but just as you head for the seat you're suddenly struck by something heavy behind the head.\n\n");
+			flags[kFLAGS.CURSE_OF_THE_JIANGSHI] = 2;
+			doNext(firstTimeMeetingNekomataBoyYesPart2);
+		}
+		public function firstTimeMeetingNekomataBoyYesPart2():void {
+			clearOutput();
+			outputText("You wake up a few minutes later strapped to what appears to be a table. Your mind feels hazy, as if you were floating in the fog.\n\n");
+			outputText("\"<i>Awake so soon? Well I guess that’s fine, it’s not like I don't enjoy when they struggle anyway. Can you even hear me in there? Well that's unlikely, what with all the sedative I injected in you, couldn't afford you waking and putting up a fight while I was playing dress up right?</i>\"\n\n");
+			outputText("The cat morph chuckles to himself and you indeed notice the guy took his time to rid you of your armor, weaponry and other troublesome equipment. You're now dressed in what appears to be traditional oriental clothes fit for a "+player.mf("man","woman albeit of a somewhat riské style")+", he even took the time to braid your hair.\n\n");
+			outputText("\"<i>See I have a client up there who is VERY fond of humans… human sex slaves that is. This guy likes his slaves obedient and always ready to serve with the bare minimum willpower yet willing and capable of defending him. Friend, it so happens that the slave market is an ever evolving business, one I intend to get rich with, so you’re going to help me with that. Did you know that by ");
+			outputText("violently stripping potential slaves of their life forces, pouring a decent amount of corruption and making them energy dependant, you can create effiencient and willing sex zombies? You of all people shall become the fruit of my years of research into creating the perfect slave, I call this new model of sex zombie, Jiangshi. First things first though, let's make you better looking.</i>\"\n\n");
+			outputText("You try to protest but before you know it the mad cat grabs what appears to be a paper tag and sticks it to your forehead. The cat chuckles.\n\n");
+			outputText("\"<i>Don't you worry it will all be over soon, the suffering is momentary if there is any. All you will think about is sex and within seconds you will be too empty headed to care about anything else.</i>\"\n\n");
+			if (player.gender > 1 && player.biggestTitSize() > 0) {
+				outputText("You moan, confused as your breast begin to heat up and inflate, your nipples stiffening as your boobs balloons in to ");
+				if (player.biggestTitSize() < 7) {
+					outputText("a pretty impressive E.");
+					player.growTits((7 - player.biggestTitSize()), 1, false, 3);
+				}
+				else {
+					player.growTits(1, 1, false, 3);
+					outputText("a pretty impressive " + player.biggestTitSize() + ".");
+				}
+				if (player.hasCock()) outputText(" This said the transformation doesn't end there as heat begins to move down to your crotch.");
+			}
+			if (player.gender == 1) {
+				outputText(" Your penis suddenly begins to drip pre as you immediately go erect, the blood vessels pulsing purple as if your cock was possessed while your member inflates in size, gaining five extra inches!");
+				player.increaseCock(0, 5);
+			}
+			if (player.femininity > 50) player.femininity = 100;
+			else player.femininity = 0;
+			outputText(" The sexual changes are so intense you cum at once, your expression turning vacant. Your face begins to tingle as the magic alters your hormones, maxing out your "+player.mf("masculinity","femininity")+", you sure must look great right now. It'd be nice if it ended there but it doesn't, you watch in horror as your skin begins to bleach out, becoming paler by the second. You hear the last ");
+			outputText("of your heartbeat a few seconds later before it falls silent. Your body stiffens to mimic this inertia, moving your joints is going to be difficult. Despite all this your sensations don't all die out, instead you begin to hear a different kind of heartbeat, the cat’s cock looks increasingly tempting now. How do you know it has a cock? It'd be a simple guess if not for the fact ");
+			outputText("that you can smell and literally see his soulforce accumulating at his crotch. You need to get off this table and get to it, you yearn for it desperately. Food… this thing is food! Your mind begins to recede into a sluggish state, all of your thoughts focusing on sex. You voice your need with a long dim witted moan, trying to reach for the cat morph’s robe with your stiff yet tied up arms.\n\n");
+			outputText("\"<i>Looks like the changes are about over, Ahh don't I love that vacant stupid expression of yours, that’s the look of just anybody who can only think about dicks and cunts. So, since you’re already this eager, how about you took a direct taste of mine, Eh???</i>\"\n\n");
+			outputText("He grins wide and opens up his wizard robe, revealing the hardening cock you have been focusing on all this time before he unstraps you from the table and lets you get up on your own. Without hesitation you take his cock inside your mouth. He grumbles to himself, annoyed at your sluggish somewhat stiff motions but you still manage to properly suck him.\n\n");
+			outputText("\"<i>Um, I didn't consider rigor mortis in my calculation, I will need to mention this hiccup to the client… at least "+player.mf("he","she")+" makes up for the clumsy moves with sheer determination and relentlessness.</i>\"\n\n");
+			outputText("A few seconds later he finally orgasms, causing that amassed energy in his cock to flood down your throat in a white cascade. You almost faint as pleasure floods your head along with his energy yet thoughts becomes increasingly clearer as this seems to not only restore your mind but also sharpen it, heck not just your mind but your movement also becomes more fluid. ");
+			outputText("It would seem your torturer messed up something in the charm and instead of removing your free will only emptied you of it, turning you into some kind of energy vampire that gets dumber when starved. Well your face might be stuck in that zombie like expression right now but your mind is racing as you take full awareness of the situation, and how easily it would be to turn the tables on your captor.\n\n");
+			outputText("Satisfied with fucking your throat, the cat morph heads to the back of the room to retrieve a big box, likely the one he intended for you to lay into until he shipped you to whatever asshole serves as his client. Poor guy thinks you're too stupid to attempt anything. He gets one hell of a surprise as you grab his left arm with until now unprecedented agility, immobilizing him and begin ");
+			outputText("to drink directly from the tap of his life force through your hand. He did say something about making you capable of guarding your master too, right? Seems he loaded you with quite a few upgrades. Guess he didn't account for the risks of getting overwhelmed by his own creations as you literally drain his soulforce until he passes out. ");
+			outputText("You let him fall limply on the ground and look at him, he has foam at the mouth. Geeze your nails are poisonous too? While you doubt you killed him, you don't want him to just get away with this either so you dump him in the box he originally reserved for you and lock him up.\n\n");
+			outputText("Thinking your problems to be over, you attempt to remove the cursed spell tag on your forehead but to your surprise it just doesn't come off. Guess you're stuck into this weird zombie like existence until you can find someone to help you with this. You literally hop out of the mage’s house, arm stretched forward, and head back to camp.\n\n");
+			outputText("(<b>Gained Perks: Halted vitals, Super strength, Poison nails, Rigidity, Life leech, Undeath, Energy dependent</b>)\n\n");
+			if (rand(2) == 0) player.skinTone = "ghostly pale";
+			else player.skinTone = "light blue";
+			player.faceType = Face.JIANGSHI;
+			player.eyes.type = Eyes.JIANGSHI;
+			player.eyes.colour = "turquoise";
+			player.horns.type = Horns.SPELL_TAG;
+			player.horns.count = 1;
+			player.arms.type = Arms.JIANGSHI;
+			player.lowerBody = LowerBody.JIANGSHI;
+			player.createPerk(PerkLib.HaltedVitals, 0, 0, 0, 0);
+			player.createPerk(PerkLib.SuperStrength, 0, 0, 0, 0);
+			player.createPerk(PerkLib.PoisonNails, 0, 0, 0, 0);
+			player.createPerk(PerkLib.Rigidity, 0, 0, 0, 0);
+			player.createPerk(PerkLib.LifeLeech, 0, 0, 0, 0);
+			player.createPerk(PerkLib.Undeath, 0, 0, 0, 0);
+			player.createPerk(PerkLib.EnergyDependent, 0, 0, 0, 0);
+			player.createStatusEffect(StatusEffects.EnergyDependent, 0, 0, 0, 0);
+			if (flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] == 0) flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD]++;
+			if (player.weapon != WeaponLib.FISTS) {
+				if (flags[kFLAGS.AETHER_DEXTER_TWIN_AT_CAMP] == 2) flags[kFLAGS.AETHER_DEXTER_TWIN_AT_CAMP] = 1;
+				flags[kFLAGS.PLAYER_DISARMED_WEAPON_ID] = player.weapon.id;
+				player.setWeapon(WeaponLib.FISTS);
+			}
+			if (player.weaponRange != WeaponRangeLib.NOTHING) {
+				flags[kFLAGS.PLAYER_DISARMED_WEAPON_R_ID] = player.weaponRange.id;
+				player.setWeaponRange(WeaponRangeLib.NOTHING);
+			}
+			if (player.shield != ShieldLib.NOTHING) {
+				if (flags[kFLAGS.AETHER_SINISTER_TWIN_AT_CAMP] == 2) flags[kFLAGS.AETHER_SINISTER_TWIN_AT_CAMP] = 1;
+				flags[kFLAGS.PLAYER_DISARMED_SHIELD_ID] = player.shield.id;
+				player.setShield(ShieldLib.NOTHING);
+			}
+			if (player.armor != ArmorLib.NOTHING) {
+				flags[kFLAGS.PLAYER_DISARMED_ARMOR_ID] = player.armor.id;
+				player.setArmor(armors.TRADITC);
+			}
+			if (player.lowerGarment != UndergarmentLib.NOTHING) {
+				flags[kFLAGS.PLAYER_DISARMED_UNDERWEAR_BOTTOM_ID] = player.lowerGarment.id;
+				player.setUndergarment(UndergarmentLib.NOTHING, UndergarmentLib.TYPE_LOWERWEAR);
+			}
+			if (player.upperGarment != UndergarmentLib.NOTHING) {
+				flags[kFLAGS.PLAYER_DISARMED_UNDERWEAR_UPPER_ID] = player.upperGarment.id;
+				player.setUndergarment(UndergarmentLib.NOTHING, UndergarmentLib.TYPE_UPPERWEAR);
+			}
+			awardAchievement("Thriller", kACHIEVEMENTS.EPIC_THRILLER);
+			doNext(camp.returnToCampUseFourHours);
 		}
 		
 		public function ChiChiDrunkSex():void {

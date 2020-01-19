@@ -100,7 +100,7 @@ public function encounterLottie(charge:Boolean = false):void {
 		if(flags[kFLAGS.LIFETIME_GYM_MEMBER] == 0) {
 			outputText("The centauress working the door walks up to collect her fee, and you drop 10 gems for an hour at the gym into her hand.\n\n");
 			player.gems -= 10;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 		}
 	}
 	flags[kFLAGS.UNKNOWN_FLAG_NUMBER_00281]++;

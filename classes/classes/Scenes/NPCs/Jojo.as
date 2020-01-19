@@ -45,7 +45,7 @@ public class Jojo extends Monster
 			}
 			
 			if (lust >= 100) {
-				doNext(SceneLib.combat.endLustVictory);
+				EngineCore.doNext(SceneLib.combat.endLustVictory);
 				return;
 			}
 			else if (lust >= 85)
@@ -56,7 +56,7 @@ public class Jojo extends Monster
 				outputText("The mouse's eyes constantly dart over your most sexual parts, betraying his lust.  ");
 			else if (lust > 50)
 				outputText("The mouse's skin remains flushed with the beginnings of arousal.  ");
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 		}
 		
 		public function Jojo()

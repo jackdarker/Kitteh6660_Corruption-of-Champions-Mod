@@ -2360,6 +2360,7 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 			outputText("\n\nYou might want to stay and watch that, but you've spent too long down here already.  You collect your things, trying your best not to step on the twenty or so passed out ants on the floor as you head back to camp.");
 			player.orgasm();
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			dynStats("sen", -1);
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -2616,7 +2617,7 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 				var gems:int = 0;
 				gems = 10 + rand(10) + kidsMod * 2;
 				player.gems += gems;
-				statScreenRefresh();
+				EngineCore.statScreenRefresh();
 				//If Phylla IS NOT Laying Eggs
 				if (flags[kFLAGS.PHYLLA_EGG_LAYING] == 0) {
 					outputText("You ask Phylla is she's found any gems while digging out her colony.  She nods happily and runs over to a small stone chest and rifles though it.  After a moment, she runs back over to you and holds up all four of her hands.");
@@ -2655,18 +2656,23 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 			if (flags[kFLAGS.ANT_KIDS] > 100) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 200) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 300) kidsMod2++;
-			if (flags[kFLAGS.ANT_KIDS] > 500) kidsMod2++;
-			if (flags[kFLAGS.ANT_KIDS] > 700) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 400) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 600) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 800) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 1000) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 1250) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 1500) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 1750) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 2000) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 2500) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 3000) kidsMod2++;
+			if (flags[kFLAGS.ANT_KIDS] > 3500) kidsMod2++;
 			if (flags[kFLAGS.ANT_KIDS] > 4000) kidsMod2++;
-			var stones:int = 2 + rand(10) + (kidsMod2 * 2);
+			var stones:int = 4 + rand(8) + (kidsMod2 * 2);
 			flags[kFLAGS.ACHIEVEMENT_PROGRESS_ANTWORKS] += stones;
 			if (flags[kFLAGS.ACHIEVEMENT_PROGRESS_ANTWORKS] >= 200) awardAchievement("AntWorks", kACHIEVEMENTS.GENERAL_ANTWORKS);
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] += stones;
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			//If Phylla IS NOT Laying Eggs
 			if (flags[kFLAGS.PHYLLA_EGG_LAYING] == 0) {
 				outputText("You ask Phylla is she's got any spare stones from digging, which you can take.  She nods happily and runs over to a small stone pile and rifles though it.  After a moment, she runs back over to you and holds up all four of her hands.");
@@ -2755,4 +2761,3 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 		}
 	}
 }
-

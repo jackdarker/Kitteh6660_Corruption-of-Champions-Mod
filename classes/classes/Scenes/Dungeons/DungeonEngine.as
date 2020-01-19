@@ -1,6 +1,8 @@
 package classes.Scenes.Dungeons 
 {
+import classes.EngineCore;
 import classes.BaseContent;
+import classes.StatusEffects;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.SceneLib;
 
@@ -121,33 +123,69 @@ public class DungeonEngine extends BaseContent
 		private static const DUNGEON_ANZU_BASEMENT:int 			= 102;
 		private static const DUNGEON_ANZU_ARMORY:int 			= 103;
 		
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_01:int  = 104;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_02:int  = 105;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_03:int  = 106;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_04:int  = 107;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_05:int  = 108;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_06:int  = 109;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_07:int  = 110;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_08:int  = 111;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_09:int  = 112;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_10:int  = 113;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_11:int  = 114;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_12:int  = 115;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_13:int  = 116;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_14:int  = 117;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_15:int  = 118;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_16:int  = 119;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_17:int  = 120;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_18:int  = 121;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_19:int  = 122;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_20:int  = 123;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_21:int  = 124;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_22:int  = 125;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_23:int  = 126;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_24:int  = 127;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_25:int  = 128;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_26:int  = 129;
-		private static const DUNGEON_RIVER_FLOOR_02_ROOM_27:int  = 130;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_01:int = 104;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_02:int = 105;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_03:int = 106;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_04:int = 107;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_05:int = 108;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_06:int = 109;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_07:int = 110;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_08:int = 111;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_09:int = 112;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_10:int = 113;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_11:int = 114;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_12:int = 115;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_13:int = 116;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_14:int = 117;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_15:int = 118;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_16:int = 119;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_17:int = 120;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_18:int = 121;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_19:int = 122;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_20:int = 123;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_21:int = 124;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_22:int = 125;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_23:int = 126;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_24:int = 127;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_25:int = 128;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_26:int = 129;
+		private static const DUNGEON_RIVER_FLOOR_02_ROOM_27:int = 130;
+		
+		private static const DUNGEON_EBON_LABYRINTH_0:int	= 131;
+		private static const DUNGEON_EBON_LABYRINTH_1:int	= 132;
+		private static const DUNGEON_EBON_LABYRINTH_2:int	= 133;
+		private static const DUNGEON_EBON_LABYRINTH_3:int	= 134;
+		
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_01:int = 135;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_02:int = 136;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_03:int = 137;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_04:int = 138;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_05:int = 139;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_06:int = 140;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_07:int = 141;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_08:int = 142;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_09:int = 143;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_10:int = 144;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_11:int = 145;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_12:int = 146;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_13:int = 147;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_14:int = 148;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_15:int = 149;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_16:int = 150;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_17:int = 151;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_18:int = 152;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_19:int = 153;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_20:int = 154;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_21:int = 155;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_22:int = 156;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_23:int = 157;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_24:int = 158;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_25:int = 159;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_26:int = 160;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_27:int = 161;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_28:int = 162;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_29:int = 163;
+		private static const DUNGEON_RIVER_FLOOR_03_ROOM_30:int = 164;
 		
 		//Register dungeons
 		public var factory:Factory = new Factory;
@@ -159,6 +197,8 @@ public class DungeonEngine extends BaseContent
 		public var hiddencave:HiddenCave = new HiddenCave();
 		public var denofdesire:DenOfDesire = new DenOfDesire();
 		public var anzupalace:AnzuPalace = new AnzuPalace();
+		public var ebonlabyrinth:EbonLabyrinth = new EbonLabyrinth;
+		public var beehive:BeeHive = new BeeHive;
 		
 		public var map:DungeonMap = new DungeonMap;
 		
@@ -237,7 +277,7 @@ public class DungeonEngine extends BaseContent
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_HIDDEN_CAVE_MEDIUM_CAVE) hiddencave.roomMediumCave();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_HIDDEN_CAVE_SMALL_CAVE_E) hiddencave.roomSmallCaveE();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_HIDDEN_CAVE_SMALL_CAVE_N) hiddencave.roomSmallCaveN();
-			//River Dungeon
+			//River Dungeon 1st floor
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_01) riverdungeon.roomA01();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_02) riverdungeon.roomA02();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_03) riverdungeon.roomA03();
@@ -258,6 +298,34 @@ public class DungeonEngine extends BaseContent
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_18) riverdungeon.roomA18();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_19) riverdungeon.roomA19();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_01_ROOM_20) riverdungeon.roomA20();
+			//River Dungeon 2nd floor
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_01) riverdungeon.roomB01();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_02) riverdungeon.roomB02();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_03) riverdungeon.roomB03();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_04) riverdungeon.roomB04();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_05) riverdungeon.roomB05();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_06) riverdungeon.roomB06();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_07) riverdungeon.roomB07();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_08) riverdungeon.roomB08();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_09) riverdungeon.roomB09();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_10) riverdungeon.roomB10();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_11) riverdungeon.roomB11();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_12) riverdungeon.roomB12();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_13) riverdungeon.roomB13();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_14) riverdungeon.roomB14();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_15) riverdungeon.roomB15();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_16) riverdungeon.roomB16();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_17) riverdungeon.roomB17();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_18) riverdungeon.roomB18();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_19) riverdungeon.roomB19();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_20) riverdungeon.roomB20();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_21) riverdungeon.roomB21();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_22) riverdungeon.roomB22();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_23) riverdungeon.roomB23();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_24) riverdungeon.roomB24();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_25) riverdungeon.roomB25();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_26) riverdungeon.roomB26();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_RIVER_FLOOR_02_ROOM_27) riverdungeon.roomB27();
 			//Den of Desire
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_DEN_OF_DESIRE_ENTRANCE) denofdesire.roomEntrance();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_DEN_OF_DESIRE_GREAT_HALL_AREA) denofdesire.roomGreatHallArea();
@@ -280,6 +348,11 @@ public class DungeonEngine extends BaseContent
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_ANZU_ROOF) anzupalace.roomRoof();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_ANZU_BASEMENT) anzupalace.roomBasement();
 			if (DungeonAbstractContent.dungeonLoc == DUNGEON_ANZU_ARMORY) anzupalace.roomArmory();
+			//Ebon Labyrinth
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_EBON_LABYRINTH_0) ebonlabyrinth.roomAAA();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_EBON_LABYRINTH_1) ebonlabyrinth.roomBBB();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_EBON_LABYRINTH_2) ebonlabyrinth.roomCCC();
+			if (DungeonAbstractContent.dungeonLoc == DUNGEON_EBON_LABYRINTH_3) ebonlabyrinth.roomDDD();
 		}
 		
 		public function checkFactoryClear():Boolean {
@@ -307,7 +380,13 @@ public class DungeonEngine extends BaseContent
 			return (flags[kFLAGS.DEN_OF_DESIRE_BOSSES] > 2);
 		}
 		public function checkRiverDungeon1stFloorClear():Boolean {
-			return (flags[kFLAGS.RIVER_DUNGEON_FLOORS_PROGRESS] > 2);//1 - pok 1 golema, 2 pokonanie 2 golem, 3 pokonanie obu golemów
+			return (flags[kFLAGS.RIVER_DUNGEON_FLOORS_PROGRESS] > 1);//1 - pokonanie 1 golema, 2 pokonanie obu golemów
+		}
+		public function checkRiverDungeon2ndFloorClear():Boolean {
+			return (flags[kFLAGS.RIVER_DUNGEON_FLOORS_PROGRESS] > 4);//x - pokonanie chimerycznego żywiołaka
+		}
+		public function checkEbonLabyrinthClear():Boolean {
+			return (flags[kFLAGS.EBON_LABYRINTH] > 1);//exploracja 50 pokoi bez porażki
 		}
 		
 		public function enterFactory():void {
@@ -327,8 +406,19 @@ public class DungeonEngine extends BaseContent
 			denofdesire.enterDungeon();
 		}
 		
-		public function navigateToRoom(room:Function = null, timeToPass:Number = 1/12):void {
-			cheatTime(timeToPass);
+		public function navigateToRoom(room:Function = null):void {
+			cheatTime2(5);
+			room();
+		}
+		public function navigateToRoomRD(room:Function = null):void {
+			if (player.hasStatusEffect(StatusEffects.ThereCouldBeOnlyOne)) player.removeStatusEffect(StatusEffects.ThereCouldBeOnlyOne);
+			cheatTime2(5);
+			room();
+		}
+		public function navigateToRoomEL(room:Function = null):void {
+			if (player.hasStatusEffect(StatusEffects.ThereCouldBeOnlyOne)) player.removeStatusEffect(StatusEffects.ThereCouldBeOnlyOne);
+			player.addStatusValue(StatusEffects.EbonLabyrinthB, 1, 1);
+			cheatTime2(15);
 			room();
 		}
 		
@@ -351,7 +441,7 @@ public class DungeonEngine extends BaseContent
 		 * @param	eastFunction
 		 */
 		public function setDungeonButtons(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null):void {
-			statScreenRefresh();
+			EngineCore.statScreenRefresh();
 			hideUpDown();
 			spriteSelect(-1);
 			menu();
@@ -360,8 +450,60 @@ public class DungeonEngine extends BaseContent
 			if (westFunction != null) addButton(10, "West", navigateToRoom, westFunction);
 			if (eastFunction != null) addButton(12, "East", navigateToRoom, eastFunction);
             if (player.lust >= 30) addButton(8, "Masturbate", SceneLib.masturbation.masturbateGo);
+			else addButtonDisabled(8, "Masturbate", "Req. 30+ lust.");
             addButton(13, "Inventory", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
 			addButton(14, "Map", map.displayMap).hint("View the map of this dungeon.");
+			setTopButtons();
+		}
+		public function setDungeonButtonsRD(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null):void {
+			EngineCore.statScreenRefresh();
+			hideUpDown();
+			spriteSelect(-1);
+			menu();
+			if (northFunction != null) addButton(6, "North", navigateToRoomRD, northFunction);
+			if (southFunction != null) addButton(11, "South", navigateToRoomRD, southFunction);
+			if (westFunction != null) addButton(10, "West", navigateToRoomRD, westFunction);
+			if (eastFunction != null) addButton(12, "East", navigateToRoomRD, eastFunction);
+            if (player.lust >= 30) addButton(8, "Masturbate", SceneLib.masturbation.masturbateGo);
+			else addButtonDisabled(8, "Masturbate", "Req. 30+ lust.");
+            addButton(13, "Inventory", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
+			addButton(14, "Map", map.displayMap2).hint("View the map of this dungeon.");
+			setTopButtons();
+		}
+		public function setDungeonButtonsRD3D(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null, upFunction:Function = null, downFunction:Function = null):void {
+			EngineCore.statScreenRefresh();
+			hideUpDown();
+			spriteSelect(-1);
+			menu();
+			if (northFunction != null) addButton(6, "North", navigateToRoomRD, northFunction);
+			if (southFunction != null) addButton(11, "South", navigateToRoomRD, southFunction);
+			if (westFunction != null) addButton(10, "West", navigateToRoomRD, westFunction);
+			if (eastFunction != null) addButton(12, "East", navigateToRoomRD, eastFunction);
+            if (upFunction != null) addButton(5, "Up", navigateToRoomRD, upFunction);
+			if (downFunction != null) addButton(7, "Down", navigateToRoomRD, downFunction);
+            if (player.lust >= 30) addButton(8, "Masturbate", SceneLib.masturbation.masturbateGo);
+			else addButtonDisabled(8, "Masturbate", "Req. 30+ lust.");
+            addButton(13, "Inventory", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
+			addButton(14, "Map", map.displayMap2).hint("View the map of this dungeon.");
+			setTopButtons();
+		}
+		public function setDungeonButtonsEL(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null, upFunction:Function = null, downFunction:Function = null):void {
+			EngineCore.statScreenRefresh();
+			hideUpDown();
+			spriteSelect(-1);
+			menu();
+			addButton(2, "North", navigateToRoomEL, northFunction);
+			addButton(12, "South", navigateToRoomEL, southFunction);
+			addButton(6, "West", navigateToRoomEL, westFunction);
+			addButton(8, "East", navigateToRoomEL, eastFunction);
+			addButton(1, "Up", navigateToRoomEL, upFunction);
+			addButton(13, "Down", navigateToRoomEL, downFunction);
+            if (model.time.hours >= 21 || model.time.hours < 6) addButton(0, "Sleep", ebonlabyrinth.doSleepEL).hint("Turn yourself in for the night. May result in monster ambush!");
+			else addButtonDisabled(0, "Sleep", "It's still too early to go to sleep.");
+            if (player.lust >= 30) addButton(5, "Masturbate", SceneLib.masturbation.masturbateGo);
+			else addButtonDisabled(5, "Masturbate", "Req. 30+ lust.");
+			addButton(9, "Inventory", inventory.inventoryMenu).hint("The inventory allows you to use an item.  Be careful as this leaves you open to a counterattack when in combat.");
+            addButton(14, "Exit", ebonlabyrinth.exitDungeon);
 			setTopButtons();
 		}
 		

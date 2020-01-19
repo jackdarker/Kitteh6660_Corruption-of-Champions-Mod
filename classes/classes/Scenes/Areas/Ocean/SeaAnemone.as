@@ -46,7 +46,7 @@ public class SeaAnemone extends Monster
 		{
 			if(pcCameWorms){
 				outputText("\n\nYour foe doesn't seem to mind at all...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.anemoneScene.loseToAnemone();
 			}

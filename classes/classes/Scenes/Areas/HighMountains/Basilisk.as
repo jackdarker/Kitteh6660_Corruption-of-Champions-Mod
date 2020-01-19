@@ -80,7 +80,7 @@ import classes.internals.ChainedDrop;
 		{
 			if (pcCameWorms){
 				outputText("\n\nThe basilisk smirks, but waits for you to finish...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.highMountains.basiliskScene.loseToBasilisk();
 			}

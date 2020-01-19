@@ -7,35 +7,41 @@ import classes.BodyParts.LowerBody;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Dungeons.RiverDungeon;
 import classes.Scenes.SceneLib;
+import classes.Scenes.UniqueSexScenes;
 import classes.internals.*;
 
 public class GreenSlime extends Monster
 	{
 		public var floor1:RiverDungeon = new RiverDungeon();
+		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
 		
 		override public function defeated(hpVictory:Boolean):void
 		{
-			outputText("You smile in satisfaction as the " + short + " collapses, unable to continue fighting.", true);
+			outputText("You smile in satisfaction as the " + short + " collapses, unable to continue fighting.");
 			if (player.hasStatusEffect(StatusEffects.RiverDungeonA)) SceneLib.combat.cleanupAfterCombatImpl();
-			//Boobfeed.
-			else if (player.hasStatusEffect(StatusEffects.Feeder) && flags[kFLAGS.SFW_MODE] <= 0) {
-				//Eligable to rape
-				if(player.lust >= 33 && player.gender > 0) {
-					outputText("\n\nYou're horny enough to try and rape it, though you'd rather see how much milk you can squirt into it.  What do you do?");
-					EngineCore.simpleChoices("B.Feed",SceneLib.lake.greenSlimeScene.rapeOozeWithMilk,"Rape",SceneLib.lake.greenSlimeScene.slimeVictoryRape,"",null,"",null,"Leave",SceneLib.combat.cleanupAfterCombatImpl);
+			else {
+				var temp3:Function = null;
+				if (player.pcCanUseUniqueSexScene()) temp3 = uniquuuesexscene.pcUniqueSexScenesChoiceMenu;
+				//Boobfeed.
+				else if (player.hasStatusEffect(StatusEffects.Feeder) && flags[kFLAGS.SFW_MODE] <= 0) {
+					//Eligable to rape
+					if(player.lust >= 33 && player.gender > 0) {
+						outputText("\n\nYou're horny enough to try and rape it, though you'd rather see how much milk you can squirt into it.  What do you do?");
+						EngineCore.simpleChoices("B.Feed",SceneLib.lake.greenSlimeScene.rapeOozeWithMilk,"Rape",SceneLib.lake.greenSlimeScene.slimeVictoryRape,"",null,"U. Sex Scenes",temp3,"Leave",SceneLib.combat.cleanupAfterCombatImpl);
+					}
+					//Rapes not on the table.
+					else {
+						outputText("\n\nYour nipples ache with the desire to forcibly breastfeed the gelatinous beast.  Do you?");
+						EngineCore.doYesNo(SceneLib.lake.greenSlimeScene.rapeOozeWithMilk,SceneLib.combat.cleanupAfterCombatImpl);
+					}
 				}
-				//Rapes not on the table.
-				else {
-					outputText("\n\nYour nipples ache with the desire to forcibly breastfeed the gelatinous beast.  Do you?");
-					EngineCore.doYesNo(SceneLib.lake.greenSlimeScene.rapeOozeWithMilk,SceneLib.combat.cleanupAfterCombatImpl);
+				//Not a breastfeeder
+				else if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
+					outputText("  Sadly you realize your own needs have not been met.  Of course, you could always play with the poor thing... Do you rape it?");
+					EngineCore.simpleChoices("Rape",SceneLib.lake.greenSlimeScene.slimeVictoryRape,"",null,"",null,"U. Sex Scenes",temp3,"Leave",SceneLib.combat.cleanupAfterCombatImpl);
 				}
+				else SceneLib.combat.cleanupAfterCombatImpl();
 			}
-			//Not a breastfeeder
-			else if (player.lust >= 33 && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
-				outputText("  Sadly you realize your own needs have not been met.  Of course, you could always play with the poor thing... Do you rape it?");
-				EngineCore.doYesNo(SceneLib.lake.greenSlimeScene.slimeVictoryRape, SceneLib.combat.cleanupAfterCombatImpl);
-			}
-			else SceneLib.combat.cleanupAfterCombatImpl();
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -45,20 +51,20 @@ public class GreenSlime extends Monster
 				if (pcCameWorms) {
 					outputText("\n\nThe slime doesn't even seem to notice.\n\n");
 				}
-				doNext(SceneLib.lake.greenSlimeScene.slimeLoss);
+				EngineCore.doNext(SceneLib.lake.greenSlimeScene.slimeLoss);
 			}
 		}
 		
 		private function lustAttack():void {
 			outputText("The creature surges forward slowly with a swing that you easily manage to avoid.  You notice traces of green liquid spurt from the creature as it does, forming a thin mist that makes your skin tingle with excitement when you inhale it.");
 			player.dynStats("lus", player.lib / 10 + 8);
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 		}
 		
 		private function lustReduction():void {
 			outputText("The creature collapses backwards as its cohesion begins to give out, and the faint outline of eyes and a mouth form on its face.  Its chest heaves as if it were gasping, and the bolt upright erection it sports visibly quivers and pulses before relaxing slightly.");
 			lust -= 13;
-			doNext(EventParser.playerMenu);
+			EngineCore.doNext(EventParser.playerMenu);
 		}
 		
 		public function GreenSlime()

@@ -1,6 +1,7 @@
 package classes.Scenes.Areas.Plains
 {
 import classes.*;
+import classes.EngineCore;
 import classes.BodyParts.Butt;
 import classes.BodyParts.Face;
 import classes.BodyParts.Hips;
@@ -127,7 +128,7 @@ public class Satyr extends Monster
 		{
 			if (pcCameWorms) {
 				outputText("\n\nThe satyr laughs heartily at your eagerness...");
-				doNext(SceneLib.combat.endLustLoss);
+				EngineCore.doNext(SceneLib.combat.endLustLoss);
 			} else {
 				SceneLib.plains.satyrScene.loseToSatyr();
 			}

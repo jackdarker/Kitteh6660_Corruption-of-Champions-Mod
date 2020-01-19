@@ -1760,7 +1760,8 @@ import classes.lists.Gender;
 			outputText("\n\nYou moan as Joy begins pumping inside you, careful not to hurt you; but at the same time making a face of barely contained lust. Slowly she speeds up, until she's thrusting into you in a frantic rhythm, almost as if her life depended on it. You pull her into a kiss and begin groping her " + joyBreastDescript() + ". ");
 			player.cuntChange(joyCockLength() * joyCockGirth(), true);
 			outputText("\n\n\"<i>Oh, like, like, [name]!</i>\" She cries; and, as suddenly as it started, she ends, her balls squeezing a copious torrent of spunk into your thirsty cunt.");
-			player.knockUp(PregnancyStore.PREGNANCY_JOJO, PregnancyStore.INCUBATION_MOUSE); //Chance of player getting pregnant!
+			if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
+			else player.knockUp(PregnancyStore.PREGNANCY_JOJO, PregnancyStore.INCUBATION_MOUSE); //Chance of player getting pregnant!
 			outputText("\n\nHer orgasm triggers your own, and you tweak her nipples as you feel your [vagina] clench and begin drawing in Joy's mouse-spunk all the way into your womb " + (player.hasCock() ? ", your own [cock] throbs and spurts jets of cum over your head, to splay on the ground below" : "") + ". Joy's continued spurts of jism feel so good... so good, that when she stops cumming you give a disappointed sigh. Then you reach down between her legs and give her " + joyBallsDescript() + " a squeeze to try and coax more seed out of her.");
 			outputText("\n\nJoy moans and obliges with a last few spurts, but soon all that's left is a pitiful trickle that quickly dries up.");
 			outputText("\n\nSatisfied for the moment you pull her closer into an embrace and enjoy as your afterglow sets in.");
@@ -1773,6 +1774,7 @@ import classes.lists.Gender;
 			outputText("\n\n\"<i>Yay!</i>\" Joy perks right up at that, throwing her arms into the air in delight.");
 			outputText("\n\nYou giggle at her reaction and gather your discarded clothes. Then take Joy's hand and begin making your way towards the nearest stream.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			player.orgasm();
 			dynStats("sens", 1, "cor", -(1 + Math.ceil(player.cor / 20)));
 			flags[kFLAGS.JOJO_VAGINAL_CATCH_COUNTER]++;
@@ -1826,6 +1828,7 @@ import classes.lists.Gender;
 			outputText("\n\nYou laugh at Joy's mortified expression and comfort her by hugging her and telling her you would never refuse something as cute as her... but if she really expects to have a shot at your ass again she'd better grab your stuff and help you clean up. Then you release her and make your way towards the stream.");
 			outputText("\n\nThe mouse bimbo watches you go. \"<i>Like, [name], that was really mean!</i>\" She whines, then scampers after you.");
 			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
+			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
 			player.orgasm();
 			dynStats("sens", 1, "cor", -(1 + Math.ceil(player.cor / 20)));
 			flags[kFLAGS.JOJO_ANAL_CATCH_COUNTER]++;
@@ -2291,4 +2294,4 @@ import classes.lists.Gender;
 		}
 	}
 
-}
+}

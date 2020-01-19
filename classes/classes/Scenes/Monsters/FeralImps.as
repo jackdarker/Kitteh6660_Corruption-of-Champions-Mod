@@ -1,3 +1,7 @@
+/**
+ * ...
+ * @author Ormael
+ */
 package classes.Scenes.Monsters 
 {
 import classes.*;
@@ -251,7 +255,7 @@ import classes.internals.*;
 				this.gems = rand(5) + 5;
 				this.special1 = clawAttack;
 			}
-			if (flags[kFLAGS.FERAL_EXTRAS] < 4 || flags[kFLAGS.FERAL_EXTRAS] == 5) {
+			if (flags[kFLAGS.FERAL_EXTRAS] != 4) {
 				this.createCock(4, 1, CockTypesEnum.DEMON);
 				this.balls = 2;
 				this.ballSize = 1;
