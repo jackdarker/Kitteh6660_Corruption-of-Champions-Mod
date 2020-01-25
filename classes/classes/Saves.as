@@ -32,6 +32,8 @@ import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 import flash.utils.getDefinitionByName;
+import flash.globalization.DateTimeFormatter;
+import flash.globalization.LocaleID;
 
 CONFIG::AIR
 {
@@ -91,8 +93,12 @@ public function loadSaveDisplay(saveFile:Object, slotName:String):String
 		}
 		holding = slotName;
 		holding += ":  <b>";
-		holding += saveFile.data.short;
-		holding += "</b> - <i>" + saveFile.data.notes + "</i>\r";
+		holding += saveFile.data.short+"</b> " ;
+		if ("timeStamp" in saveFile.data)
+		{
+			holding += saveFile.data.timeStamp;
+		}
+		holding += " - <i>" + saveFile.data.notes + "</i>\r";
 		holding += "Days - " + saveFile.data.days + " | Gender - ";
 		if (saveFile.data.gender == 0)
 			holding += "U";
@@ -787,6 +793,9 @@ public function saveGameObject(slot:String, isFile:Boolean):void
 	
 	try
 	{
+		var dtf:DateTimeFormatter = new DateTimeFormatter(LocaleID.DEFAULT);
+		dtf.setDateTimePattern("yyyy-MM-dd hh:mm:ss");
+		saveFile.data.timeStamp = dtf.format(new Date());
 		//flags
 		saveFile.data.flags = [];
 		for (var i:int = 0; i < flags.length; i++)
