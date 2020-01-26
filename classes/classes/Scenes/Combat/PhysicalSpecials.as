@@ -1561,7 +1561,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 			monster.teased(lustDmg);
 		}
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.lust >= monster.maxLust()) doNext(endLustVictory);
 		else enemyAI();
 	}
@@ -4530,7 +4530,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 			outputText("discharge!");
 			monster.createStatusEffect(StatusEffects.Stunned, 2, 0, 0, 0);
 		}
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4561,7 +4561,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4623,7 +4623,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4668,7 +4668,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4697,7 +4697,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4727,7 +4727,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -4773,7 +4773,7 @@ public class PhysicalSpecials extends BaseCombatContent {
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 

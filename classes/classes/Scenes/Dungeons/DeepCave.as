@@ -175,7 +175,7 @@ use namespace CoC;
 			spriteSelect(52);
 			clearOutput();
 			player.gems -= itype.value * 3;
-			statScreenRefresh();
+			//EngineCore.statScreenRefresh(true);
 			inventory.takeItem(itype, incubusShop);
 		}
 		

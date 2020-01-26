@@ -798,7 +798,7 @@ private function snuggleWithUrta(truth:Boolean):void {
 private function morningAfterCampVisitEmbark(truth:Boolean):void {
 	clearOutput();
 	model.time.days++;
-	statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	outputText("Sadly, morning comes, and your time with " + player2.short + " comes to an end.  You push " + player2.mf("his", "her") + " shoulder gently to rouse " + player2.mf("him", "her") + ", smiling at " + player2.mf("him", "her") + " when " + player2.mf("he", "she") + " wakes.  You kiss " + player2.mf("him", "her") + " on the lips before rolling out from under the blanket.  The two of you eat a quiet breakfast together, simply enjoying each other's company.  ");
 	if (truth)
 	{
@@ -943,7 +943,7 @@ private function urtaGameOver():void {
 	model.time.days++;
 	resetToPC();
 	model.time.hours = 6;
-	statScreenRefresh();
+	//statScreenRefresh();
 	doNext(camp.returnToCampUseOneHour);
 }
 

@@ -89,7 +89,7 @@ public class IngnamFarm extends BaseContent
 			outputText("\n\nYou walk back to Ingnam.");
 			if (player.HP > player.maxHP()) player.HP = player.maxHP();
 			player.gems += 5;
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);	
 		}
 	}

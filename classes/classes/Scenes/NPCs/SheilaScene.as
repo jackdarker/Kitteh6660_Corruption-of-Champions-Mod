@@ -249,10 +249,11 @@ private function sheilaCorruptionUpdate():void {
 				else sheilaCorruption(1);
 			}
 			player.cor = Math.round(player.cor);
-			mainView.statsView.showStatDown( 'cor' );
+			//mainView.statsView.showStatDown( 'cor' );
 			// corUp.visible = false;
 			// corDown.visible = true;
-			EngineCore.statScreenRefresh();
+			EngineCore.showUpDown(true);
+			EngineCore.statScreenRefresh(true);
 		}		
 	}
 	else if(player.cor < sheilaCorruption()) {
@@ -271,14 +272,15 @@ private function sheilaCorruptionUpdate():void {
 				else sheilaCorruption(-1);
 			}
 			player.cor = Math.round(player.cor);
-			mainView.statsView.showStatUp( 'cor' );
-			// corUp.visible = true;
-			// corDown.visible = false;
-			EngineCore.statScreenRefresh();
+			//mainView.statsView.showStatUp( 'cor' );
+			
 		}
+		EngineCore.showUpDown(false);
+		EngineCore.statScreenRefresh(false);
 	}
 	//Get one for demon Sheila regardless.
 	if(flags[kFLAGS.SHEILA_DEMON] == 1) dynStats("cor", 1);
+	
 }
 
 //XP0: the first encounter (sheila xp =0 and demon sheila = 0):

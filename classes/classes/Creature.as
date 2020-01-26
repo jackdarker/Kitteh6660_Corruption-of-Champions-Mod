@@ -1296,7 +1296,7 @@ public class Creature extends Utils
 			return false;
 		}
 
-		//has perk?
+		//returns the perk-index if found, otherwise a value <0
 		public function findPerk(ptype:PerkType):Number
 		{
 			if (perks.length <= 0)

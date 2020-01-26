@@ -1013,7 +1013,7 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if (monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -1281,7 +1281,7 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 
 	public function hungeringCold():void {
@@ -1341,7 +1341,7 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 
 	public function acidSpit():void {
@@ -2305,7 +2305,7 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.HinezumiBurningBloodFinalForm)) blazingBattleSpiritDuration += 7;
 		outputText("Your bodily flames begin to rage as you enter a passionate battle fury.\n\n");
 		player.createStatusEffect(StatusEffects.BlazingBattleSpirit,blazingBattleSpiritDuration,0,0,0);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -2314,7 +2314,7 @@ public class MagicSpecials extends BaseCombatContent {
 		player.HP -= player.HP * 0.05;
 		outputText("You wince in pain but feel relief as your wounds begin to smoke and close.\n\n");
 		player.createStatusEffect(StatusEffects.Cauterize,10,0,0,0);
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	
@@ -2339,14 +2339,15 @@ public class MagicSpecials extends BaseCombatContent {
 		tempTouSpe = temp;
 		player.changeStatusValue(StatusEffects.DwarfRage,1,tempStr);
 		player.changeStatusValue(StatusEffects.DwarfRage,2,tempTouSpe);
-		mainView.statsView.showStatUp('str');
+		/*mainView.statsView.showStatUp('str');
 		mainView.statsView.showStatUp('tou');
-		mainView.statsView.showStatUp('spe');
+		mainView.statsView.showStatUp('spe');*/
 		player.str += player.statusEffectv1(StatusEffects.DwarfRage);
 		player.tou += player.statusEffectv2(StatusEffects.DwarfRage);
 		player.spe += player.statusEffectv2(StatusEffects.DwarfRage);
-		player.HP = oldHPratio*player.maxHP();
-		statScreenRefresh();
+		player.HP = oldHPratio * player.maxHP();
+		EngineCore.showUpDown(false);
+		EngineCore.statScreenRefresh(false);
 		enemyAI();
 	}
 
@@ -2408,14 +2409,15 @@ public class MagicSpecials extends BaseCombatContent {
 		player.changeStatusValue(StatusEffects.CrinosShape,1,tempStr);
 		player.changeStatusValue(StatusEffects.CrinosShape,2,tempTou);
 		player.changeStatusValue(StatusEffects.CrinosShape,3,tempSpe);
-		mainView.statsView.showStatUp('str');
+		/*mainView.statsView.showStatUp('str');
 		mainView.statsView.showStatUp('tou');
-		mainView.statsView.showStatUp('spe');
+		mainView.statsView.showStatUp('spe');*/
 		player.str += player.statusEffectv1(StatusEffects.CrinosShape);
 		player.tou += player.statusEffectv2(StatusEffects.CrinosShape);
 		player.spe += player.statusEffectv3(StatusEffects.CrinosShape);
-		player.HP = oldHPratio*player.maxHP();
-		statScreenRefresh();
+		player.HP = oldHPratio * player.maxHP();
+		EngineCore.showUpDown(false);
+		EngineCore.statScreenRefresh(false);
 		enemyAI();
 	}
 	public function returnToNormalShape():void {
@@ -2535,7 +2537,7 @@ public class MagicSpecials extends BaseCombatContent {
 	//	if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 	//	spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if (monster.HP <= monster.minHP())
 		{
 			doNext(endHpVictory);
@@ -2734,7 +2736,7 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if (!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell, 0, 0, 0, 0);
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -2839,7 +2841,7 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if (!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell, 0, 0, 0, 0);
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -2955,7 +2957,7 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if (!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell, 0, 0, 0, 0);
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -3063,7 +3065,7 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if (!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell, 0, 0, 0, 0);
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -3177,7 +3179,7 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if (!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell, 0, 0, 0, 0);
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -3426,7 +3428,7 @@ public class MagicSpecials extends BaseCombatContent {
 		outputText("\n\n");
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		outputText("\n\n");
 		if (monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();

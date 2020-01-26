@@ -228,7 +228,7 @@ package classes.Scenes.Dungeons
 		 * @param	eastFunction
 		 */
 		public function setDungeonButtons(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null):void {
-			statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			menu();
@@ -252,7 +252,7 @@ package classes.Scenes.Dungeons
 		
 		public function generateRoomMenu(tRoom:room):void
 		{
-			statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			setTopButtons();

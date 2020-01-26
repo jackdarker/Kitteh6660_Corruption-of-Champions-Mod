@@ -277,7 +277,7 @@ package classes.Scenes.NPCs
 				createStatusEffect(StatusEffects.Round,2,0,0,0);
 			} else addStatusValue(StatusEffects.Round, 1, 1);
 			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
-			statScreenRefresh();
+			//statScreenRefresh();
 			outputText("\n", false);
 			//TODO ?combatRoundOver();
 	}

@@ -225,7 +225,7 @@ private function buyCockMilker():void {
 	outputText("\"<i>Fantastic, fantastic!  Let me get it from the back.</i>\"  Joey rushes behind a curtain, audibly rummaging through the storeroom.  Soon he comes back, carrying a bunch of tubes and nozzles.  \"<i>Here you go!</i>\"  He dumps the collection of junk in your arms, taking the gems from you in the same motion.  You hastily begin stuffing the contraption in your pack.  \"<i>Now, don't get too attached.  A machine's never gonna beat the real thing.</i>\"  He flexes his delicate fingers.  \"<i>Speaking of which, need something?</i>\"");
 	outputText("\n\n(<b>Key Item Acquired: Cock Milker</b>)");
 	player.gems -= 200;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.createKeyItem("Cock Milker",0,0,0,0);
 	simpleChoices("JoeyMassage", joeyMassage, "Androgyny", null, "Joey'sOffer", null, "", null, "Leave", enterTheBazaar);
 }
@@ -238,7 +238,7 @@ private function joeyAndrogyny():void {
 		return;
 	}
 	player.gems -= 500;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("Joey takes your hand in his and insistently pulls towards the back rooms.  \"<i>Once we have this all done ");
 	if(player.gender == 1) outputText("you'll be able to be as cute as me!");
 	else if(player.gender == 2) outputText("you'll be able to be as masculine as you want!");
@@ -264,7 +264,7 @@ private function joeyMassage():void {
 	}
 	player.slimeFeed();
 	player.gems -= 10;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("Joey bounces on his feet excitedly, the little poof-ball above his exposed, heart-shaped ass twitching happily.  His soft hand takes yours and leads you towards one of the back rooms, dragging you inside just before the door is silently closed.  The small wooden chamber houses a single, padded bed that's clearly meant for you, and at Joey's insistence you disrobe to lie down on it.  You put your face through a rounded oval and lie down, taking the idle moment to glance around.  A small coal-fired steam-oven isn't far past the bed, and you can make out Joey's small, human feet as he stokes it.\n\n");
 	outputText("One of your chosen masseuse's soft, demure hands rests on your shoulder while the oven starts and begins to vent warm steam through the room.  Joey starts by leaping atop you in a single bound to  straddle your back and rub your shoulders.  His small, skilled fingers work wonders, working out the constant tension this strange land has inspired in you since your arrival.  Each insistent, languid touch dissolves a knot of worry, sending shivers of contentment through you that make you feel as if you're melting into the bed.\n\n");
 	outputText("Once he feels the tension from your upper body has been released, the girly bunny-boy slides himself lower, placing his taut, barely-covered rear atop your " + buttDescript() + ".  Joey's hands slide down along your spine, smoothing out every knotted muscle in your back as he goes.  You could swear his fingers are magic; you feel like a lump of clay being worked by a master sculptor.  Sighing dreamily, you lie there and groan while he finishes the small of your back, muscles rendered into goo-like softness.\n\n");
@@ -593,7 +593,7 @@ private function buyGretasBikini():void {
 	clearOutput();
 	flags[kFLAGS.OWN_MAIDEN_BIKINI] = 1;
 	player.gems -= 500;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("Greta's eyes widen in surprise.  \"<i>Really?</i>\"");
 	outputText("\n\nYou nod and pull out your gems, counting out the exact amount for her.  As soon as you finish, Greta pulls you over the counter and kisses you on the lips, her tongue sensually assaulting your surprised palate. Before you can react, she pulls back with a hum of pleasure.");
 	outputText("\n\n\"<i>Thanks, sugar!  Have fun and be safe, and if you don't want to be safe, come visit me sometime!</i>\"");
@@ -803,15 +803,12 @@ private function yesPutDatSockOnMe(target:int):void {
 
 	if (!conflict) { // There's no conflict. DO IT!!!
 		player.cocks[target].sock = flags[kFLAGS.SOCK_HOLDING];
-		EngineCore.statScreenRefresh();
-
 		outputText("With one hand she lifts your limp cock up, giving it a pleasant little stroke.");
-	
 		outputText("\n\nHer other hand approaches, her thumb, fore- and middle-fingers holding the sock open as she slips it over your " + player.cockHead(target) + ".  She pulls it snugly into place and then gives your penis a little kiss.  The second her lips make contact with your flesh, a chill runs across your body, followed by a flood of warmth.");
-	
 		outputText("\n\nGreta smiles knowingly and returns to her chair behind the counter.");
 		//(Cock-sock get! +2 Corruption, +5 Arousal)
 		dynStats("lus", 5, "cor", 2);
+		EngineCore.statScreenRefresh(true);
 		menu();
 		addButton(0,"Next",gretasGarments);
 	}
@@ -905,17 +902,14 @@ There's another option on the list, cheerfully presented with a pastel border an
 private function joeySweetMassage():void {
 	clearOutput();
 	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	
 	outputText("Joey claps excitedly, his little puffy tail bouncing happily.  \"<i>Great!  It's a customer favorite, so I'm sure you'll just love, love, love it!</i>\"  He takes your hand and leads you towards the back rooms, letting the door shut behind the two of you with a soft click.  As usual, in the center of the room is a padded bed meant for you, and at Joey's insistence you disrobe to lie down on it.  You put your face through the rounded oval and relax, taking the moment to watch Joey's bare feet with their cute painted nails prance in and out of sight as he bustles around the room.  He pauses briefly by the coal-fired steam-oven, stoking it for a minute before turning back towards you.");
-	
 	outputText("\n\nThe warm, steamy air caresses your " + player.skinFurScales() + " even before Joey does, running down your back, butt and [legs].  In no time at all, the air in the room is thick and warm, making you feel delightfully lazy with every breath, and a bead of sweat forms on your brow.  The bed shifts a bit as Joey leaps up onto it, straddling your waist, while he starts working his fingers over your shoulders.  His petite hands are surprisingly talented, finding every little knot you've accumulated in your journeys and unravelling them with one blissful touch.");
-	
 	outputText("\n\nAs usual, he works his way down your body, sliding his hairless body against yours as he goes.  His magic fingers work out a particularly troublesome knot in your lower back in no time, then he moves to your arms and legs.  He doesn't stop until you feel like putty, so relaxed you wonder if you're even capable of movement.  Afterwards he simply rubs you down, checking for any missed tension spots.  The whole while his little cock strains the little white thong he sports, occasionally pressing against your back, butt or leg.");
-	
 	outputText("\n\nJoey hops off of you and you notice his cute femboy feet round the table, heading towards a small counter nearby hosting a large number of bottles.  You hear the sounds of a cork being pulled from one such bottle, followed by the bunny-boy gulping down its contents.  Then, surprisingly, he bends over, letting his thong pool around his ankles and revealing his cute, pink asshole.  He retrieves something else from the table and pulls it into view... a large multihued egg!  Joey places the egg at his butthole, which contracts in anticipation.  Slowly he works it inside, a task that you're sure would put the average anal acrobat to the test, but Joey is clearly no amateur.  The egg disappears completely within a couple minutes, swallowed up by that sweet little pucker.  Joey pulls his thong back up and turns towards you, his modest erection raging right in front of your face.");
-
 	outputText("\n\nRather than the usual stream of off-white jism, what starts pouring out the tip of his cock is a rich brown color.  It's viscous, and when it dribbles down onto the floor it forms a velvety pool.  Your masseuse scoops some of it up with two fingers and slips them into his mouth, closing his eyes as if he's enjoying an incredibly tasty treat.  \"<i>Mmm,</i>\" he moans, \"<i>chocolate.  This is what makes the sweet massage so sweet.  It's just as good as my creamy lotion, and twice as tasty.</i>\"  Joey turns away, retrieving another large egg from the table.  You wonder briefly if he has room for two of the two huge eggs in his ass, before he asks, \"<i>Would you like an egg too?  They don't have anything to do with the massage, but I just </i>love<i> feeling so full, don't you?</i>\"");
 	dynStats("lus", 25);
+	EngineCore.statScreenRefresh();
 	//[Yes (gives the chocolate-egg stuffed ass from the Easter bunny)] [No (This just skips the "If Yes" paragraphs)]
 	menu();
 	addButton(0,"Yes",eggsInButt,true);
@@ -1241,7 +1235,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.L_DRAFT, camp.returnToCampUseOneHour);
 		//Time set to morning
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 	//((Ending 2 , suck bear, //crazy steel jaw))
 	else if(road == 1) {
@@ -1273,7 +1267,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.L_DRAFT, camp.returnToCampUseOneHour);
 		//Time set to morning
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 	//((Ending 3 , suck none, //No furry plx))
 	else {
@@ -1304,7 +1298,7 @@ private function finalGayFinallee(road:int = 0):void {
 		//Lust sated
 		//Gained 1 lust draft, lost a few gems(9 or so?)
 		inventory.takeItem(consumables.BIMBOLQ, camp.returnToCampUseOneHour);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		//Time set to morning
 	}
 }

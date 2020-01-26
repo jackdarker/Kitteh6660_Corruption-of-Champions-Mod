@@ -314,7 +314,7 @@ CoC.instance.saves.saveGame(player.slotName);
 				outputText("You have purchased " + item.longName + " for " + price + " gems. ");
 				player.gems -= price;
 				menu();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				inventory.takeItem(item, shopToGo);
 			}
 			else {
@@ -573,7 +573,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			}
 			outputText("You pay five gems for a pack of hard biscuits.  ");
 			player.gems -= 5;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			inventory.takeItem(consumables.H_BISCU, orderFood);
 		}
 
@@ -586,7 +586,7 @@ CoC.instance.saves.saveGame(player.slotName);
 			}
 			outputText("You pay twenty gems for a pack of trail mix.  ");
 			player.gems -= 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			inventory.takeItem(consumables.TRAILMX, orderFood);
 		}
 		

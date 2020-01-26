@@ -1417,7 +1417,7 @@ import coc.view.MainView;
 		}
 			
 		public function arrival():void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			model.time.hours = 11;
 			clearOutput();
 			outputText("You are prepared for what is to come.  Most of the last year has been spent honing your body and mind to prepare for the challenges ahead.  You are the Champion of Ingnam.  The one who will journey to the demon realm and guarantee the safety of your friends and family, even though you'll never see them again.  You wipe away a tear as you enter the courtyard and see Elder Nomur waiting for you.  You are ready.\n\n");
@@ -1588,7 +1588,7 @@ import coc.view.MainView;
             }
 			CoC.instance.saves.loadPermObject();
 			flags[kFLAGS.MOD_SAVE_VERSION] = CoC.instance.modSaveVersion;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			chooseToPlay();
 			return;
 		}
@@ -1625,7 +1625,7 @@ import coc.view.MainView;
 			}
 			player.perkPoints += 1;
 			clearOutput();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			outputText("Would you like to play through the " + (1 * (1 + player.newGamePlusMod())) + "-day");
 			if (player.newGamePlusMod() > 0) outputText("s");
 			outputText(" prologue in Ingnam or just skip?");

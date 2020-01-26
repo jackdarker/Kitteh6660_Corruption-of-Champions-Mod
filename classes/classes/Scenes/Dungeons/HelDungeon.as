@@ -187,10 +187,10 @@ use namespace CoC;
 			doYesNo(reallyRetry, declineRetry);
 		}
 		public function reallyRetry():void {
-			dynStats("lus", 0, "scale", false);
+			//dynStats("lus", 0, "scale", false);
 			player.fatigue = 0;
 			player.HP = player.maxHP();
-			statScreenRefresh();
+			//statScreenRefresh();
 			//Restart dungeon, resets all encounters.
 			flags[kFLAGS.HEL_HARPIES_DEFEATED] = 0;
 			flags[kFLAGS.HEL_PHOENIXES_DEFEATED] = 0;

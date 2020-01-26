@@ -63,7 +63,7 @@ public class CaiLin extends Monster
 					//showStatDown( 'spe' );
 					player.inte -= 1;
 					//showStatDown( 'inte' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.createStatusEffect(StatusEffects.MedusaVenom,2,2,2,1);
 				}
 				else if(player.str > 8 && player.tou > 8 && player.spe > 9) {
@@ -73,7 +73,7 @@ public class CaiLin extends Monster
 					//showStatDown( 'tou' );
 					player.spe -= 3;
 					//showStatDown( 'spe' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.createStatusEffect(StatusEffects.MedusaVenom,2,2,3,0);
 				}
 				else if(player.tou > 9 && player.spe > 10) {
@@ -81,13 +81,13 @@ public class CaiLin extends Monster
 					//showStatDown( 'tou' );
 					player.spe -= 4;
 					//showStatDown( 'spe' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.createStatusEffect(StatusEffects.MedusaVenom,0,3,4,0);
 				}
 				else if(player.spe > 12) {
 					player.spe -= 6;
 					//showStatDown( 'spe' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.createStatusEffect(StatusEffects.MedusaVenom, 0,0,6,0);
 					player.takePoisonDamage(5+rand(5));
 				}
@@ -107,7 +107,7 @@ public class CaiLin extends Monster
 					player.spe -= 1;
 					//showStatDown( 'spe' );
 					player.inte -= 1;
-					EngineCore.showUpDown();//showStatDown( 'inte' );
+					//showStatDown( 'inte' );
 					player.addStatusValue(StatusEffects.MedusaVenom,1,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,2,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,1);
@@ -119,7 +119,7 @@ public class CaiLin extends Monster
 					player.tou -= 1;
 					//showStatDown( 'tou' );
 					player.spe -= 2;
-					EngineCore.showUpDown();//showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,1,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,2,1);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,2);
@@ -128,13 +128,13 @@ public class CaiLin extends Monster
 					player.tou -= 2;
 					//showStatDown( 'tou' );
 					player.spe -= 2;
-					EngineCore.showUpDown();//showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,2,2);
 					player.addStatusValue(StatusEffects.MedusaVenom,3,2);
 				}
 				else if(player.spe > 9) {
 					player.spe -= 3;
-					EngineCore.showUpDown();//showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.MedusaVenom,3,3);
 					player.takeMagicDamage(5+rand(5));
 				}

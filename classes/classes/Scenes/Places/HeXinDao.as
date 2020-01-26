@@ -86,7 +86,7 @@ public class HeXinDao extends BaseContent
 		outputText("Wow! You were lucky! There was " + Gems + " gems inside! This sure is good fortune for the coming year.");
 		player.createStatusEffect(StatusEffects.CanGetLunarGift,0,0,0,0);
 		player.gems += Gems;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		EngineCore.doNext(riverislandVillageStuffLunar);
 	}
 	public function riverislandVillageStuffLunarFood():void {
@@ -251,7 +251,7 @@ public class HeXinDao extends BaseContent
 						sayLine1(consumables.FATPILL,"It's quite useful item for soul cultivators, this little pill can help you not feel hunger for a few days.")).hint("Fasting Pill.");
 			}
 			addButton(14, "Back", golemmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
 		}
 		function TierII():void {
 			menu();
@@ -286,7 +286,7 @@ public class HeXinDao extends BaseContent
 				).hint("Violet Pupil Transformation Manual.");
 			}
             addButton(14, "Back", golemmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
 		}
 		function TierIII():void {
 			menu();
@@ -303,7 +303,7 @@ public class HeXinDao extends BaseContent
 					"\n\nSince you going deeper into all that 'soulforce' stuff you now got something to train with someone that would goes into fights alongside you.  Maybe there is some more of those 'combined' soulskills somewhere?  "
 			).hint("Yin Yang Blast Manual.");*/
 			addButton(14, "Back", golemmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
 		}/*
 		if (player.findPerk(PerkLib.SoulExalt) >= 0) { lub soul overlord - each soul stage above starting allow to extend channeling time by 1 round
 			addButton(1, "GHoMB", buyItem2,consumables.HOB4MAN,
@@ -316,7 +316,7 @@ public class HeXinDao extends BaseContent
 					sayLine2(consumables.HG_SFRP,"It's quite useful item for all cultivators at Soul Overlord or above stage, this small pill can help you restore some of used up soulforce and it would be much more than the mid-grade one.")).hint("High-grade Soulforce Recovery Pill.");
 		}
         addButton(14, "Back", riverislandVillageStuff);
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
     }
     private function debitItem1(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,onBuy:String):void{
         var value:int = itype.value * priceRate;
@@ -329,7 +329,7 @@ public class HeXinDao extends BaseContent
             player.gems -= value;
             outputText(onBuy);
             inventory.takeItem(itype, returnFunc);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
     }
     private function debitItem2(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,onBuy:String):void{
@@ -342,7 +342,7 @@ public class HeXinDao extends BaseContent
             flags[kFLAGS.SPIRIT_STONES] -= itype.value / 5;
             outputText(onBuy);
             inventory.takeItem(itype, returnFunc);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
     }
     private function confirmBuy1(returnFunc:Function,shopKeep:String,priceRate:int,itype:ItemType,descString:String,onBuyString:String="\n"):void{
@@ -383,7 +383,7 @@ public class HeXinDao extends BaseContent
         addButton(11, "Sell", sellItemsForSpiritStones).hint("Sell items for spirit stones.");
         addButton(12, "Exchange", exchangeGemsToSpiritStonesorReverse).hint("Exchange gems to spirit stones or spirit stones to gems.");
         addButton(14, "Back", riverislandVillageStuff);
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         //buyItem,consumables.,sayLine(consumables.,""),onBuyString
         function Tier1():void {
             menu();
@@ -402,7 +402,7 @@ public class HeXinDao extends BaseContent
             addButton(12, "IncubiD", buyItem,consumables.INCUBID,sayLine(consumables.INCUBID,"incubus"),onBuyString).hint("Buy a flask of Incubi draft.");
             addButton(13, "KangaFruit", buyItem,consumables.KANGAFT,sayLine(consumables.KANGAFT,"kangaroo"),onBuyString).hint("Buy a piece of kanga fruit.");
             addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
         function Tier2():void {
             menu();
@@ -420,7 +420,7 @@ public class HeXinDao extends BaseContent
             addButton(11, "SnakeOil", buyItem,consumables.SNAKOIL,sayLine(consumables.SNAKOIL,"snake"),onBuyString).hint("Buy a vial of snake oil.");
             addButton(12, "SucMilk", buyItem,consumables.SUCMILK,sayLine(consumables.SUCMILK,"sucubus"),onBuyString).hint("Buy a bottle of Succubi milk.");
             addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
 		function Tier3():void {
 			menu();
@@ -429,7 +429,7 @@ public class HeXinDao extends BaseContent
             addButton(2, "WetCloth", buyItem,consumables.WETCLTH,sayLine(consumables.WETCLTH,"goo"),onBuyString).hint("Buy a wet cloth dripping with slippery slime.");
             addButton(3, "YetiCum", buyItem,consumables.YETICUM,sayLine(consumables.YETICUM,"yeti"),onBuyString).hint("Buy a bottle of Yeti Cum.");
 			addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
 		}
         function Tier4():void {
             menu();
@@ -444,7 +444,7 @@ public class HeXinDao extends BaseContent
             addButton(8, "SkySeed", buyItem,consumables.SKYSEED,sayLine(consumables.SKYSEED,"avian"),onBuyString).hint("Buy a skyborn seed.");
             //addButton(9, "B.Gossr", BGossr).hint("Buy .");
             addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
         function Tier5():void {
             menu();
@@ -453,7 +453,7 @@ public class HeXinDao extends BaseContent
             addButton(2, "DrakeHeart", buyItem,consumables.DRAKHRT,sayLine(consumables.DRAKHRT,"dragon"),onBuyString).hint("Buy a drake's heart's flower.");
             addButton(4, "Hummus", buyItem,consumables.HUMMUS_,sayLine(consumables.HUMMUS_,"humanity"),onBuyString).hint("Buy a blob of cheesy-looking hummus.");
             addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
         function Tier6():void {
             menu();
@@ -464,7 +464,7 @@ public class HeXinDao extends BaseContent
             addButton(4, "Icicle", buyItem,consumables.ICICLE_,sayLine(consumables.ICICLE_,"ice shard"),onBuyString).hint("Buy an icicle.");
             addButton(5, "S.Delight", buyItem,consumables.SDELITE,sayLine(consumables.SDELITE,"Succubi's Delight"),onBuyString).hint("Buy a bottle of 'Succubi's Delight'.");
             addButton(14, "Back", mogahenmerchant);
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
         }
     }
 
@@ -507,7 +507,7 @@ public class HeXinDao extends BaseContent
             player.gems += 5*value;
             flags[kFLAGS.SPIRIT_STONES]-=value;
         }
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         EngineCore.doNext(exchangeGemsToSpiritStonesorReverse);
 
     }
@@ -556,7 +556,7 @@ public class HeXinDao extends BaseContent
         addButton(10, necklaces.SMNECK.shortName, weaponBuy, necklaces.SMNECK);
         addButton(11, jewelries.SOULRNG.shortName, weaponBuy, jewelries.SOULRNG);
         addButton(14, "Back", riverislandVillageStuff);
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
     }
     public function soulequipmentshelf1():void {
         menu();
@@ -624,7 +624,7 @@ public class HeXinDao extends BaseContent
     }
     private function debitWeapon(itype:ItemType):void {
         flags[kFLAGS.SPIRIT_STONES] -= itype.value / 10;
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         inventory.takeItem(itype, serenamerchant);
     }
 	
@@ -666,7 +666,7 @@ public class HeXinDao extends BaseContent
         //addButton(9, weapons.MACE.shortName, weaponBuy, weapons.MACE);//bow made for soul cultivator xD
         addButton(13, "Training", ermaswiftarrowmerchantarcherytraining).hint("Archery training.");
         addButton(14, "Back", riverislandVillageStuff);
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
     }
 
     private function weaponrangeBuy(itype:ItemType):void {
@@ -685,7 +685,7 @@ public class HeXinDao extends BaseContent
     }
     private function debitWeaponRange(itype:ItemType):void {
         player.gems -= itype.value;
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         inventory.takeItem(itype, ermaswiftarrowmerchant);
     }
 	
@@ -741,7 +741,7 @@ public function soularena():void {
 		addButton(2, "Challenge", soularenaChallenge).hint("Go to the section of soul arena for challenges. (Who knows what reward you may get after winning any of the challenges there...)");
 		if (flags[kFLAGS.IGNIS_ARENA_SEER] >= 1) addButton(10, "Ignis", ignisarenaseer.mainIgnisMenu);
 		addButton(14, "Back", riverislandVillageStuff);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 }
 
@@ -1020,7 +1020,7 @@ public function soularena():void {
         dynStats("tou", tempToughness);
         flags[kFLAGS.SPIRIT_STONES]--;
 		player.refillHunger(100);
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         EngineCore.doNext(camp.returnToCampUseOneHour);
     }
 }

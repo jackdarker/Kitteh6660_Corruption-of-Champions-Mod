@@ -104,7 +104,7 @@ public class Lumi extends BaseContent {
         spriteSelect(37);
         trace("LUMI ENHANCE");
         player.gems -= 100;
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         player.consumeItem(itype);
         clearOutput();
         outputText("Lumi grabs the item from you and runs over to her table, stopping for only a second to put her apron on.  ");
@@ -207,7 +207,7 @@ public class Lumi extends BaseContent {
         if (player.gems >= cost) {
             outputText("You pay Lumi the gems, and she hands you " + itype.longName + " saying, \"<i>Here ya go!</i>\"\n\n");
             player.gems -= cost;
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
             inventory.takeItem(itype, lumiShop, lumiLabChoices);
         }
         else {
@@ -352,7 +352,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Toolbelt!</b>");
 			player.createKeyItem("Blueprint - Toolbelt", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -365,7 +365,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Potent Drug injectors!</b>");
 			player.createKeyItem("Blueprint - Potent Drug injectors", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -378,7 +378,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Improved Drug injectors!</b>");
 			player.createKeyItem("Blueprint - Improved Drug injectors", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -391,7 +391,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Drug injectors!</b>");
 			player.createKeyItem("Blueprint - Drug injectors", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -404,7 +404,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Gun Scope with Aimbot!</b>");
 			player.createKeyItem("Blueprint - Gun Scope with Aimbot", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -417,7 +417,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Gun Scope with Aim tech!</b>");
 			player.createKeyItem("Blueprint - Gun Scope with Aim tech", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -430,7 +430,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Gun Scope!</b>");
 			player.createKeyItem("Blueprint - Gun Scope", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -443,7 +443,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - S.A Tech Goggle!</b>");
 			player.createKeyItem("Blueprint - S.A Tech Goggle", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -456,7 +456,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Scanner goggle!</b>");
 			player.createKeyItem("Blueprint - Scanner goggle", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -469,7 +469,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Machinist Goggles!</b>");
 			player.createKeyItem("Blueprint - Machinist Goggles", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -482,7 +482,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Nitro Boots!</b>");
 			player.createKeyItem("Blueprint - Nitro Boots", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -495,7 +495,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Rocket Boots!</b>");
 			player.createKeyItem("Blueprint - Rocket Boots", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -508,7 +508,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Spring Boots!</b>");
 			player.createKeyItem("Blueprint - Spring Boots", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -521,7 +521,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - M.G.S. bracer!</b>");
 			player.createKeyItem("Blueprint - M.G.S. bracer", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -534,7 +534,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Powboy!</b>");
 			player.createKeyItem("Blueprint - Powboy", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -547,7 +547,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Power bracer!</b>");
 			player.createKeyItem("Blueprint - Power bracer", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -560,7 +560,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Ripper 2.0!</b>");
 			player.createKeyItem("Blueprint - Ripper 2.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -573,7 +573,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Ripper 1.0!</b>");
 			player.createKeyItem("Blueprint - Ripper 1.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -586,7 +586,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Machined greatsword!</b>");
 			player.createKeyItem("Blueprint - Machined greatsword", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -599,7 +599,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Upgraded Armor plating 3.0!</b>");
 			player.createKeyItem("Blueprint - Upgraded Armor plating 3.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -612,7 +612,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Upgraded Armor plating 2.0!</b>");
 			player.createKeyItem("Blueprint - Upgraded Armor plating 2.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -625,7 +625,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Upgraded Armor plating 1.0!</b>");
 			player.createKeyItem("Blueprint - Upgraded Armor plating 1.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -638,7 +638,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Taser with an overcharged battery!</b>");
 			player.createKeyItem("Blueprint - Taser with an overcharged battery", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -651,7 +651,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Taser!</b>");
 			player.createKeyItem("Blueprint - Taser", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -664,7 +664,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Safety bubble!</b>");
 			player.createKeyItem("Blueprint - Safety bubble", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -677,7 +677,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Machine Gun MK3!</b>");
 			player.createKeyItem("Blueprint - Machine Gun MK3", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -690,7 +690,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Machine Gun MK2!</b>");
 			player.createKeyItem("Blueprint - Machine Gun MK2", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -703,7 +703,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Machine Gun MK1!</b>");
 			player.createKeyItem("Blueprint - Machine Gun MK1", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -716,7 +716,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Repeater Gun!</b>");
 			player.createKeyItem("Blueprint - Repeater Gun", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -729,7 +729,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Dynapunch Glove!</b>");
 			player.createKeyItem("Blueprint - Dynapunch Glove", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -742,7 +742,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Whitefire Beam Cannon!</b>");
 			player.createKeyItem("Blueprint - Whitefire Beam Cannon", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -755,7 +755,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Snowball Generator!</b>");
 			player.createKeyItem("Blueprint - Snowball Generator", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -768,7 +768,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Raijin blaster!</b>");
 			player.createKeyItem("Blueprint - Raijin blaster", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -781,7 +781,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Gravity shots!</b>");
 			player.createKeyItem("Blueprint - Gravity shots", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -794,7 +794,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Medical Dispenser 2.0!</b>");
 			player.createKeyItem("Blueprint - Medical Dispenser 2.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -807,7 +807,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Stimpack Dispenser 1.0!</b>");
 			player.createKeyItem("Blueprint - Stimpack Dispenser 1.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -820,7 +820,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Missile launcher!</b>");
 			player.createKeyItem("Blueprint - Missile launcher", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -833,7 +833,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Omni Missile!</b>");
 			player.createKeyItem("Blueprint - Omni Missile", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -846,7 +846,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Aphrodigas Gun!</b>");
 			player.createKeyItem("Blueprint - Aphrodigas Gun", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -859,7 +859,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Lustnade Launcher!</b>");
 			player.createKeyItem("Blueprint - Lustnade Launcher", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -872,7 +872,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Cum Reservoir!</b>");
 			player.createKeyItem("Blueprint - Cum Reservoir", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -885,7 +885,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - SPMK1!</b>");
 			player.createKeyItem("Blueprint - SPMK1", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -898,7 +898,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Impregnator 1.0!</b>");
 			player.createKeyItem("Blueprint - Impregnator 1.0", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -911,7 +911,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Jetpack!</b>");
 			player.createKeyItem("Blueprint - Jetpack", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -924,7 +924,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - MK2 Jetpack!</b>");
 			player.createKeyItem("Blueprint - MK2 Jetpack", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -950,7 +950,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Energy Core!</b>");
 			player.createKeyItem("Blueprint - Energy Core", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -963,7 +963,7 @@ public class Lumi extends BaseContent {
 			outputText("\"<i>Greaf far you that ya starting a new project. Ya tell me the result in a few days gotcha?</i>\"\n\n");
 			outputText("<b>Gained Key Item: Blueprint - Mechanism!</b>");
 			player.createKeyItem("Blueprint - Mechanism", 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(lumiEngineering);
 		}
 		else lumiEngineeringBuyBlueprintNotEnoughGems();
@@ -1015,7 +1015,7 @@ public class Lumi extends BaseContent {
 			flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] -= (flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] - 200);
 			outputText("Metal Pieces: " + flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] + "/200");
 		}
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		doNext(lumiEngineeringBuyMetalPieces);
 	}
 	public function lumiEngineeringBuySet1():void {
@@ -1025,7 +1025,7 @@ public class Lumi extends BaseContent {
 		outputText("\"<i>I'm surprised ya don'f gat one of dese already. Its used in next to everything in everyday goblin life.Y'all need one to craft anything of note.</i>\"\n\n");
 		outputText("<b>Gained Key Item: Mechanic's Wrench!</b>");
 		player.createKeyItem("Mechanic's Wrench", 0, 0, 0, 0);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		doNext(lumiEngineering);
 	}
 	public function lumiEngineeringBuySet2():void {
@@ -1035,7 +1035,7 @@ public class Lumi extends BaseContent {
 		outputText("\"<i>'m surprised ya don'f gat one of dese already. Yall need one to craft.</i>\"\n\n");
 		outputText("<b>Gained Key Item: Engineer's Toolbox!</b>");
 		player.createKeyItem("Engineer's Toolbox", 0, 0, 0, 0);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		doNext(lumiEngineering);
 	}
 	
@@ -1180,7 +1180,7 @@ public class Lumi extends BaseContent {
 		flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] -= 5;
 		player.destroyItems(useables.GOLCORE, 3);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Energy Core is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(useables.ENECORE, camp.returnToCampUseOneHour);
 		else inventory.takeItem(useables.ENECORE, camp.returnToCampUseFourHours);
 	}
@@ -1189,7 +1189,7 @@ public class Lumi extends BaseContent {
 		flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] -= 5;
 		flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 200;
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Mechanism is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(useables.MECHANI, camp.returnToCampUseOneHour);
 		else inventory.takeItem(useables.MECHANI, camp.returnToCampUseFourHours);
 	}
@@ -1199,7 +1199,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Toolbelt is ready.\n\n");
 		player.createKeyItem("Toolbelt", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Toolbelt");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1214,7 +1214,7 @@ public class Lumi extends BaseContent {
 		player.removeKeyItem("Improved Drug injectors");
 		player.lib += 25;
 		player.sens += 5;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1229,7 +1229,7 @@ public class Lumi extends BaseContent {
 		player.removeKeyItem("Drug injectors");
 		player.lib += 25;
 		player.sens += 5;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1243,7 +1243,7 @@ public class Lumi extends BaseContent {
 		player.removeKeyItem("Blueprint - Drug injectors");
 		player.lib += 25;
 		player.sens += 5;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1256,7 +1256,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Gun Scope with Aimbot", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Gun Scope with Aimbot");
 		player.removeKeyItem("Gun Scope with Aim tech");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1268,7 +1268,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Gun Scope with Aim tech", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Gun Scope with Aim tech");
 		player.removeKeyItem("Gun Scope");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1279,7 +1279,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Gun Scope is ready.\n\n");
 		player.createKeyItem("Gun Scope", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Gun Scope");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1290,7 +1290,7 @@ public class Lumi extends BaseContent {
 		player.destroyItems(useables.ENECORE, 5);
 		player.destroyItems(headjewelries.SCANGOG, 1);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "eight":"twelve")+" hours your brand new S.A Tech Goggle is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(headjewelries.SATGOG, camp.returnToCampUseEightHours);
 		else inventory.takeItem(headjewelries.SATGOG, camp.returnToCampUseTwelveHours);
 	}
@@ -1301,7 +1301,7 @@ public class Lumi extends BaseContent {
 		player.destroyItems(useables.ENECORE, 2);
 		player.destroyItems(headjewelries.MACHGOG, 1);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Scanner goggle is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(headjewelries.SCANGOG, camp.returnToCampUseFourHours);
 		else inventory.takeItem(headjewelries.SCANGOG, camp.returnToCampUseEightHours);
 	}
@@ -1310,7 +1310,7 @@ public class Lumi extends BaseContent {
 		flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] -= 1;
 		flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] -= 100;
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Machinist Goggles is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(headjewelries.MACHGOG, camp.returnToCampUseOneHour);
 		else inventory.takeItem(headjewelries.MACHGOG, camp.returnToCampUseFourHours);
 	}
@@ -1324,7 +1324,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Nitro Boots", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Nitro Boots");
 		player.removeKeyItem("Rocket Boots");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1338,7 +1338,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Rocket Boots", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Rocket Boots");
 		player.removeKeyItem("Spring Boots");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1350,7 +1350,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Spring Boots is ready.\n\n");
 		player.createKeyItem("Spring Boots", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Spring Boots");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1363,7 +1363,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("M.G.S. bracer", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - M.G.S. bracer");
 		player.removeKeyItem("Powboy");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1376,7 +1376,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Powboy", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Powboy");
 		player.removeKeyItem("Power bracer");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1388,7 +1388,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Power bracer is ready.\n\n");
 		player.createKeyItem("Power bracer", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Power bracer");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1400,7 +1400,7 @@ public class Lumi extends BaseContent {
 		player.destroyItems(useables.MECHANI, 10);
 		player.destroyItems(weapons.RIPPER1, 1);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "eight":"twelve")+" hours your brand new Ripper 2.0 is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(weapons.RIPPER2, camp.returnToCampUseEightHours);
 		else inventory.takeItem(weapons.RIPPER2, camp.returnToCampUseTwelveHours);
 	}
@@ -1412,7 +1412,7 @@ public class Lumi extends BaseContent {
 		player.destroyItems(useables.MECHANI, 5);
 		player.destroyItems(weapons.MACGRSW, 1);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Ripper 1.0 is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(weapons.RIPPER1, camp.returnToCampUseFourHours);
 		else inventory.takeItem(weapons.RIPPER1, camp.returnToCampUseEightHours);
 	}
@@ -1423,7 +1423,7 @@ public class Lumi extends BaseContent {
 		player.destroyItems(useables.ENECORE, 1);
 		player.destroyItems(useables.MECHANI, 2);
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Machined greatsword is ready.\n\n");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) inventory.takeItem(weapons.MACGRSW, camp.returnToCampUseOneHour);
 		else inventory.takeItem(weapons.MACGRSW, camp.returnToCampUseFourHours);
 	}
@@ -1435,7 +1435,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Upgraded Armor plating 3.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Upgraded Armor plating 3.0");
 		player.removeKeyItem("Upgraded Armor plating 2.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1447,7 +1447,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Upgraded Armor plating 2.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Upgraded Armor plating 2.0");
 		player.removeKeyItem("Upgraded Armor plating 1.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1458,7 +1458,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Upgraded Armor plating 1.0 is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Upgraded Armor plating 1.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Upgraded Armor plating 1.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1471,7 +1471,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Taser with an overcharged battery is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Taser with an overcharged battery", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Taser with an overcharged battery");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1484,7 +1484,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Taser is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Taser", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Taser");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1496,7 +1496,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Safety bubble is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Safety bubble", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Safety bubble");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1509,7 +1509,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Machine Gun MK3", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Machine Gun MK3");
 		player.removeKeyItem("Machine Gun MK2");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1522,7 +1522,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Machine Gun MK2", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Machine Gun MK2");
 		player.removeKeyItem("Machine Gun MK1");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1535,7 +1535,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Machine Gun MK1", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Machine Gun MK1");
 		player.removeKeyItem("Repeater Gun");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1546,7 +1546,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Repeater Gun is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Repeater Gun", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Repeater Gun");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1558,7 +1558,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Dynapunch Glove is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Dynapunch Glove", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Dynapunch Glove");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1570,7 +1570,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Whitefire Beam Cannon is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Whitefire Beam Cannon", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Whitefire Beam Cannon");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1582,7 +1582,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Snowball Generator is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Snowball Generator", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Snowball Generator");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1596,7 +1596,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Raijin blaster is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Raijin blaster", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Raijin blaster");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1609,7 +1609,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Gravity shots is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Gravity shots", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Gravity shots");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1623,7 +1623,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Medical Dispenser 2.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Medical Dispenser 2.0");
 		player.removeKeyItem("Stimpack Dispenser 1.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1635,7 +1635,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Stimpack Dispenser 1.0 is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Stimpack Dispenser 1.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Stimpack Dispenser 1.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1648,7 +1648,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Omni Missile", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Omni Missile");
 		player.removeKeyItem("Missile launcher");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseEightHours);
 		else doNext(camp.returnToCampUseTwelveHours);
 	}
@@ -1660,7 +1660,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "four":"eight")+" hours your brand new Missile launcher is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Missile launcher", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Missile launcher");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1674,7 +1674,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("Lustnade Launcher", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Lustnade Launcher");
 		player.removeKeyItem("Aphrodigas Gun");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1686,7 +1686,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Aphrodigas Gun is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Aphrodigas Gun", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Aphrodigas Gun");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1697,7 +1697,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Impregnator 1.0 is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Impregnator 1.0", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Impregnator 1.0");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1707,7 +1707,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new SPMK1 is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("SPMK1", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - SPMK1");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1718,7 +1718,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Cum Reservoir is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Cum Reservoir", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Cum Reservoir");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}
@@ -1731,7 +1731,7 @@ public class Lumi extends BaseContent {
 		player.createKeyItem("MK2 Jetpack", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - MK2 Jetpack");
 		player.removeKeyItem("Jetpack");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseFourHours);
 		else doNext(camp.returnToCampUseEightHours);
 	}
@@ -1743,7 +1743,7 @@ public class Lumi extends BaseContent {
 		outputText("You get to work spending the necessary time to craft your newest toy. After "+(player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop) ? "an hour":"four hours")+" your brand new Jetpack is ready and installed up your " + player.vehiclesName + ".\n\n");
 		player.createKeyItem("Jetpack", 0, 0, 0, 0);
 		player.removeKeyItem("Blueprint - Jetpack");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) doNext(camp.returnToCampUseOneHour);
 		else doNext(camp.returnToCampUseFourHours);
 	}/*

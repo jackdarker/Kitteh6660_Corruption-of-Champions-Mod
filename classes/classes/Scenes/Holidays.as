@@ -3580,7 +3580,7 @@ public class Holidays {
             return;
         }
         player.gems -= 35;
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(true);
         EngineCore.outputText("You opt for a slice of the tasty treat - you've only got until the festivities wade away, so you might as well take one now!  Do you eat the treat or save it for later?\n\n");
         EngineCore.menu();
         EngineCore.addButton(0, "Eat", CoC.instance.mutations.winterPudding, player, true, null, "Eat the delicious Winter Pudding.");
@@ -3751,7 +3751,7 @@ public class Holidays {
             if (player.gems >= 9) {
                 EngineCore.outputText("Taking a handful of gems out of your pouch, you spread them evenly around the Snowman's face, giving it a nice, vacant smile.  It still needs a nose, however, and for that, you'll need a carrot.  Perhaps there's a farm nearby?");
                 player.gems -= 9;
-                EngineCore.statScreenRefresh();
+                EngineCore.statScreenRefresh(true);
                 flags[kFLAGS.NIEVE_MOUTH] = "gems";
                 flags[kFLAGS.NIEVE_STAGE] = 3;
             }

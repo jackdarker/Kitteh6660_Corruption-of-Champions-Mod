@@ -2617,7 +2617,7 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 				var gems:int = 0;
 				gems = 10 + rand(10) + kidsMod * 2;
 				player.gems += gems;
-				EngineCore.statScreenRefresh();
+				//EngineCore.statScreenRefresh();
 				//If Phylla IS NOT Laying Eggs
 				if (flags[kFLAGS.PHYLLA_EGG_LAYING] == 0) {
 					outputText("You ask Phylla is she's found any gems while digging out her colony.  She nods happily and runs over to a small stone chest and rifles though it.  After a moment, she runs back over to you and holds up all four of her hands.");
@@ -2672,7 +2672,7 @@ public class AntsScene extends BaseContent implements TimeAwareInterface
 			flags[kFLAGS.ACHIEVEMENT_PROGRESS_ANTWORKS] += stones;
 			if (flags[kFLAGS.ACHIEVEMENT_PROGRESS_ANTWORKS] >= 200) awardAchievement("AntWorks", kACHIEVEMENTS.GENERAL_ANTWORKS);
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] += stones;
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			//If Phylla IS NOT Laying Eggs
 			if (flags[kFLAGS.PHYLLA_EGG_LAYING] == 0) {
 				outputText("You ask Phylla is she's got any spare stones from digging, which you can take.  She nods happily and runs over to a small stone pile and rifles though it.  After a moment, she runs back over to you and holds up all four of her hands.");

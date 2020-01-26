@@ -78,7 +78,7 @@ import classes.Scenes.SceneLib;
 		private function moveToRoom(newRoom:DngRoom):void {
 			clearOutput();
 			cheatTime(1 / 12);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			//DungeonCore.setTopButtons();
 			spriteSelect(-1);
 			menu();
@@ -95,7 +95,7 @@ import classes.Scenes.SceneLib;
 		}
 		private function resumeRoom():void {
 			clearOutput();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			//setTopButtons();
 			spriteSelect(-1);
 			menu();

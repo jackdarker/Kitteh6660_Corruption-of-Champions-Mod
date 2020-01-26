@@ -164,7 +164,7 @@ use namespace CoC;
 							inventory.createStorage();
 						}
 						player.gems += gemsFound;
-						EngineCore.statScreenRefresh();
+						//EngineCore.statScreenRefresh();
 						outputText("\n\n<b>You now have " + num2Text(inventory.itemStorageDirectGet().length) + " storage item slots at camp.</b>");
 					}
 					else {
@@ -190,7 +190,7 @@ use namespace CoC;
 							var gemsFound2:int = 40 + rand(160);
 							outputText("As you wander the rift your foot hits something burrowed under the snow. It is a treasure chest and it looks packed to the brim.\n\nInside was " + String(gemsFound) + " gems! ");
 							player.gems += gemsFound2;
-							EngineCore.statScreenRefresh();
+							//EngineCore.statScreenRefresh();
 						}
 					}
 					doNext(camp.returnToCampUseOneHour);

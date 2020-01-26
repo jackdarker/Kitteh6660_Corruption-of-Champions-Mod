@@ -363,14 +363,14 @@ private function talkWhitney():void {
 private function breastMilkerPurchase():void {
 	clearOutput();
 	outputText("Whitney takes the gems and leaves with the promise of having your gear set up within the hour.  She calls back over her shoulder with a cryptic warning, \"<i>Watch how much time you spend getting milked like an animal, lest you wind up like one.</i>\"");
-	doNext(camp.returnToCampUseOneHour);
 	player.createKeyItem("Breast Milker - Installed At Whitney's Farm", 0, 0, 0, 0);
 	player.gems -= 250;
-	EngineCore.statScreenRefresh();
+	doNext(camp.returnToCampUseOneHour);
+	//EngineCore.statScreenRefresh();
 }
 
 private function breastMilkerNoPurchase():void {
-	doNext(camp.returnToCampUseOneHour);
+	
 	clearOutput();
 	outputText("Whitney shrugs and the two of you chat about other things, just passing the time and enjoying a relatively normal chat.");
 	//+3 int if less than 15, +2 int if less 20, +1 int if less than 30, +.5 int if less than 40.
@@ -378,6 +378,7 @@ private function breastMilkerNoPurchase():void {
 	if (player.inte100 < 20) dynStats("int", 1);
 	if (player.inte100 < 30) dynStats("int", .5);
 	if (player.inte100 < 40) dynStats("int", .5);
+	doNext(camp.returnToCampUseOneHour);
 }
 
 public function workFarm():void {
@@ -1126,14 +1127,14 @@ public function cockPumping():void {
 	}	
 	if(payout > 0) {
 		if (player.cumQ() < 1000) player.modCumMultiplier(1);
-		if (payout == 1) outputText(Num2Text(payout) + " gem rolls ");
+		if (payout == 1) 
+			outputText(Num2Text(payout) + " gem rolls ");
 		else outputText(Num2Text(payout) + " gems roll");
-	
-	outputText("out into a collection plate.  Whitney really put a lot of work into this! ");
+			outputText("out into a collection plate.  Whitney really put a lot of work into this! ");
 	
 		player.gems += payout;
 		flags[kFLAGS.WHITNEY_GEMS_PAID_THIS_WEEK] += payout;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 	if (player.countCockSocks("gilded") > 0) {
 		
@@ -1144,13 +1145,10 @@ public function cockPumping():void {
 		
 		if (payout > 0) {
 			outputText("\n\nAs you take your payment, <b>y");
-		}
-		else {
+		} else {
 			outputText("\n\n<b>Y");
 		}
-		
 		outputText("ou see a few sparkling gems in your trail of cum on the floor. You reach down and pick up all " + gems + " of them</b>, and then you are");
-		
 		player.gems += gems;
 		
 	}

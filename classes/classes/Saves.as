@@ -13,8 +13,8 @@ import classes.GlobalFlags.kACHIEVEMENTS;
 import classes.GlobalFlags.kCOUNTERS;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.*;
-	import classes.Scenes.Areas.Desert.SandWitchScene;
-	import classes.Scenes.Dungeons.DungeonAbstractContent;
+import classes.Scenes.Areas.Desert.SandWitchScene;
+import classes.Scenes.Dungeons.DungeonAbstractContent;
 import classes.Scenes.NPCs.JojoScene;
 import classes.Scenes.NPCs.XXCNPC;
 import classes.Scenes.SceneLib;
@@ -156,7 +156,7 @@ CONFIG::AIR
 		clearOutput();
 		loadGameObject(gameObject, slot);
 		outputText("Slot " + slot + " Loaded!");
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh(true);
 		doNext(playerMenu);
 	}
 	
@@ -208,7 +208,7 @@ public function loadScreenAIR():void
 					clearOutput();
 					loadGameObject(gameObjects[i]);
 					outputText("Slot " + String(i+1) + " Loaded!");
-					EngineCore.statScreenRefresh();
+					//EngineCore.statScreenRefresh(true);
 					EngineCore.doNext(playerMenu);
 				}
 			})(i);
@@ -272,8 +272,8 @@ public function loadScreen():void
 					if (loadGame(saveFileNames[i])) 
 					{
 						EngineCore.doNext(playerMenu);
-						EngineCore.showStats();
-						EngineCore.statScreenRefresh();
+						//EngineCore.showStats();
+						//EngineCore.statScreenRefresh();
 						clearOutput();
 						outputText("Slot " + i + " Loaded!");
 					}
@@ -584,7 +584,7 @@ public function loadGame(slot:String):void
 			trace("Setting in-use save slot to: " + slot);
 			player.slotName = slot;
 		}
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		EngineCore.doNext(playerMenu);
 	}
 }
@@ -1425,7 +1425,7 @@ public function onDataLoaded(evt:Event):void
 		}
 		loadGameObject(tmpObj);
 		outputText("Loaded Save");
-        EngineCore.statScreenRefresh();
+       // EngineCore.statScreenRefresh();
 	}
 	catch (rangeError:RangeError)
 	{

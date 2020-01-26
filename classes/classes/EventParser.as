@@ -341,11 +341,12 @@ public class EventParser {
             SceneLib.prison.goBackToPrisonBecauseQuestTimeIsUp();
             return true;
         }
-        EngineCore.statScreenRefresh();
+        
         if (needNext) {
             EngineCore.doNext(playerMenu);
             return true;
         }
+		EngineCore.statScreenRefresh(true);
         playerMenu();
         return false;
     }
@@ -618,7 +619,7 @@ public class EventParser {
                 CoC.instance.model.time.hours = 0;
             }
         }
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(true);
     }
 	public static function cheatTime2(time:Number, needNext:Boolean = false):void {
         //Advance minutes
@@ -639,7 +640,7 @@ public class EventParser {
                 CoC.instance.model.time.hours = 0;
             }
         }
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(true);
     }
 
     public static function growHair(amount:Number = .1):Boolean {

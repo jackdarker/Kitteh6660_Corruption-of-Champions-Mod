@@ -270,7 +270,7 @@ public class YaraPiercingStudio extends TelAdreAbstractContent {
         if (mat == 13) {
             player.gems -= 1000;
         }
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         //set up material description
         switch (mat) {
             case MAT_AMETHYST:
@@ -572,7 +572,7 @@ public class YaraPiercingStudio extends TelAdreAbstractContent {
             applyPiercing(loc);
             dynStats("tou", -5);
             player.gems -= 100;
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
             doNext(piercingStudio);
         }
     }

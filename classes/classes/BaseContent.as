@@ -189,7 +189,7 @@ import coc.xxc.StoryContext;
 
 		protected function statScreenRefresh():void
 		{
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(false);
 		}
 
 		protected function get combat():Combat {

@@ -230,7 +230,7 @@ this.HP -= (this.maxHP() * 0.08);
 				}
 				
 				player.str -= amount;
-				EngineCore.showUpDown()// showStatDown('str');
+				EngineCore.showUpDown(false);// showStatDown('str');
 				player.addStatusValue(StatusEffects.DriderIncubusVenom, 2, amount);
 					
 				//Alternate if PC cannot move
@@ -275,7 +275,7 @@ this.HP -= (this.maxHP() * 0.08);
 					}
 					
 					player.str -= amount;
-					EngineCore.showUpDown()//showStatDown('str');
+					//showStatDown('str');
 					player.addStatusValue(StatusEffects.DriderIncubusVenom, 2, amount);
 				}				
 			}

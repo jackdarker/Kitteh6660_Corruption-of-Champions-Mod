@@ -1,6 +1,7 @@
 package classes.Scenes.Combat 
 {
 	import classes.*;
+	import classes.EngineCore;
 	import classes.GlobalFlags.*;
 	import classes.Items.*;
 	import classes.Scenes.Areas.Forest.TentacleBeast;
@@ -114,7 +115,7 @@ package classes.Scenes.Combat
 		public function spellChargeWeapon(silent:Boolean = false):void {
 			if (silent) {
 				player.createStatusEffect(StatusEffects.ChargeWeapon,10*player.spellMod(),0,0,0);
-				statScreenRefresh();
+				//statScreenRefresh();
 				return;
 			}
 			
@@ -134,7 +135,7 @@ package classes.Scenes.Combat
 			var temp:int = 10 * player.spellMod();
 			if (temp > 100) temp = 100;
 			player.createStatusEffect(StatusEffects.ChargeWeapon, temp, 0, 0, 0);
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.doAI();
@@ -213,7 +214,7 @@ package classes.Scenes.Combat
 			outputText("\n\n", false);
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
-			statScreenRefresh();
+			//statScreenRefresh();
 			monster.doAI();
 		}
 		
@@ -300,7 +301,7 @@ package classes.Scenes.Combat
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.HP -= temp;
-			statScreenRefresh();
+			//statScreenRefresh();
 			if (monster.HP < 1) doNext(combat.endHpVictory);
 			else monster.doAI();
 		}
@@ -315,7 +316,7 @@ package classes.Scenes.Combat
 			doNext(combat.combatMenu);
 		//This is now automatic - newRound arg defaults to true:	menuLoc = 0;
 			player.changeFatigue(15,1);
-			statScreenRefresh();
+			//statScreenRefresh();
 			if (monster is FrostGiant && player.hasStatusEffect(StatusEffects.GiantBoulder)) {
 				(monster as FrostGiant).giantBoulderHit(2);
 				monster.doAI();
@@ -424,7 +425,7 @@ package classes.Scenes.Combat
 			}
 			
 			outputText("\n\n", false);
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			if (player.lust >= player.maxLust()) doNext(combat.endLustLoss);
@@ -447,11 +448,12 @@ package classes.Scenes.Combat
 				//if (player.tou + temp > 100) tempTou = 100 - player.tou;
 				player.changeStatusValue(StatusEffects.Might,1,tempStr);
 				player.changeStatusValue(StatusEffects.Might,2,tempTou);
-				mainView.statsView.showStatUp('str');
-				mainView.statsView.showStatUp('tou');
+				//mainView.statsView.showStatUp('str');
+				//mainView.statsView.showStatUp('tou');
 				player.str += player.statusEffectv1(StatusEffects.Might);
 				player.tou += player.statusEffectv2(StatusEffects.Might);
-				statScreenRefresh();
+				EngineCore.showUpDown(false);
+				EngineCore.statScreenRefresh(false);
 			}
 			
 			if (silent)	{ // for Battlemage
@@ -567,7 +569,7 @@ package classes.Scenes.Combat
 			flags[kFLAGS.SPELLS_CAST]++;
 			spellPerkUnlock();
 			monster.HP -= temp;
-			statScreenRefresh();
+			//statScreenRefresh();
 			if (monster.HP < 1) doNext(combat.endHpVictory);
 			else monster.doAI();
 		}
@@ -589,9 +591,10 @@ package classes.Scenes.Combat
 				player.str -= player.statusEffectv1(StatusEffects.Might);
 				player.tou -= player.statusEffectv2(StatusEffects.Might);
 				player.removeStatusEffect(StatusEffects.Might);
-				showStatDown("str");
-				showStatDown("tou");
-				statScreenRefresh();
+				//showStatDown("str");
+				//showStatDown("tou");
+				EngineCore.showUpDown(false);
+				EngineCore.statScreenRefresh(false);
 			}
 			//Remove opponent's effects
 				if (player.hasStatusEffect(StatusEffects.ChargeWeapon)) {
@@ -615,7 +618,7 @@ package classes.Scenes.Combat
 				monster.str -= monster.statusEffectv1(StatusEffects.Might);
 				monster.tou -= monster.statusEffectv2(StatusEffects.Might);
 				monster.removeStatusEffect(StatusEffects.Might);
-				statScreenRefresh();
+				//statScreenRefresh();
 			}
 			if (monster.hasStatusEffect(StatusEffects.Shell)) {
 				outputText("\nThe magical shell around " + monster.a + " " + monster.short + " shatters!");
@@ -1167,7 +1170,7 @@ package classes.Scenes.Combat
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
 			dmg = combat.doDamage(dmg, true, true);
-			statScreenRefresh();
+			//statScreenRefresh();
 			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;
@@ -1211,7 +1214,7 @@ package classes.Scenes.Combat
 				if (monster.findPerk(PerkLib.Acid) < 0) monster.createPerk(PerkLib.Acid,0,0,0,0);
 			}
 			dmg = combat.doDamage(dmg, true, true);
-			statScreenRefresh();
+			//statScreenRefresh();
 			outputText("\n\n");
 			flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 			flags[kFLAGS.SPELLS_CAST]++;

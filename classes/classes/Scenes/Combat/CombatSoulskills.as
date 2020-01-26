@@ -2,6 +2,7 @@
  * Coded by aimozg on 30.05.2017.
  */
 package classes.Scenes.Combat {
+	import classes.EngineCore;
 import classes.BodyParts.Arms;
 import classes.BodyParts.LowerBody;
 import classes.BodyParts.Tail;
@@ -926,7 +927,7 @@ public class CombatSoulskills extends BaseCombatContent {
 		monster.HP -= damage;
 		combat.heroBaneProc(damage);
 		combat.EruptingRiposte();
-		statScreenRefresh();
+		//statScreenRefresh()();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -1250,15 +1251,16 @@ public class CombatSoulskills extends BaseCombatContent {
 			tempStrTou = TranceBoost;
 			player.createStatusEffect(StatusEffects.TranceTransformation, 0, 0, 0, 0);
 			player.changeStatusValue(StatusEffects.TranceTransformation, 1, tempStrTou);
-			mainView.statsView.showStatUp('str');
+			//mainView.statsView.showStatUp('str');
 			// strUp.visible = true;
 			// strDown.visible = false;
-			mainView.statsView.showStatUp('tou');
+			//mainView.statsView.showStatUp('tou');
 			// touUp.visible = true;
 			// touDown.visible = false;
 			player.str += player.statusEffectv1(StatusEffects.TranceTransformation);
 			player.tou += player.statusEffectv1(StatusEffects.TranceTransformation);
-			statScreenRefresh();
+			EngineCore.showUpDown(false);
+			EngineCore.statScreenRefresh(false);
 		};
 		var tempStrTou:Number = 0;
 		var tempSpe:Number = 0;
@@ -1287,9 +1289,10 @@ public class CombatSoulskills extends BaseCombatContent {
 		if (!player.hasStatusEffect(StatusEffects.BeatOfWar)) player.createStatusEffect(StatusEffects.BeatOfWar,0,0,0,0);//player.addStatusValue(StatusEffects.BeatOfWar, 1, BeatOfWarBoost);
 		tempStr = BeatOfWarBoost;
 		player.addStatusValue(StatusEffects.BeatOfWar,1,tempStr);
-		mainView.statsView.showStatUp('str');
+		//mainView.statsView.showStatUp('str');
 		player.str += BeatOfWarBoost;			//player.statusEffectv1(StatusEffects.BeatOfWar);
-		statScreenRefresh();
+		EngineCore.showUpDown(false);
+		EngineCore.statScreenRefresh(false);
 		outputText("You momentarily attune yourself to the song of the mother tree, and prepare to add a note of your own to it’s rhythm. You feel the beat shift the song’s tempo slightly, taking a twist towards the ominous. This attunement augments your strength.\n\n");
 		combat.basemeleeattacks();
 	}

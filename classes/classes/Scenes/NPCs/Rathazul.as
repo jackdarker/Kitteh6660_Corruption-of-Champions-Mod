@@ -359,11 +359,11 @@ private function rathazulPurifyIncubiDraft():void {
 		doNext(returnToRathazulMenu);
 		return;
 	}
+	player.gems -= 20;
 	if (!debug)
 		player.destroyItems(consumables.INCUBID, 1);
 	inventory.takeItem(consumables.P_DRAFT, returnToRathazulMenu);
-	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -405,11 +405,11 @@ private function rathazulPurifySuccubiMilk():void {
 		doNext(returnToRathazulMenu);
 		return;
 	}
+	player.gems -= 20;
 	if (!debug)
 		player.destroyItems(consumables.SUCMILK, 1);
 	inventory.takeItem(consumables.P_S_MLK, returnToRathazulMenu);
-	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -421,11 +421,11 @@ private function rathazulPurifySuccubiDelight():void {
 		doNext(returnToRathazulMenu);
 		return;
 	}
+	player.gems -= 20;
 	if (!debug)
 		player.destroyItems(consumables.SDELITE, 1);
 	inventory.takeItem(consumables.PSDELIT, returnToRathazulMenu);
-	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -437,11 +437,11 @@ private function rathazulPurifyLaBova():void {
 		doNext(returnToRathazulMenu);
 		return;
 	}
+	player.gems -= 20;
 	if (!debug)
 		player.destroyItems(consumables.LABOVA_, 1);
 	inventory.takeItem(consumables.P_LBOVA, returnToRathazulMenu);
-	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -586,7 +586,7 @@ private function makeADeBimboDraft():void {
 	//Take items
 	player.gems -= 250;
 	player.consumeItem(consumables.SMART_T,5);
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul,2,1);
 	inventory.takeItem(consumables.DEBIMBO, returnToRathazulMenu);
 }
@@ -600,11 +600,11 @@ private function purifyMinoCum():void{
 		doNext(returnToRathazulMenu);
 		return;
 	}
+	player.gems -= 20;
 	clearOutput();
 	if (!debug) player.destroyItems(consumables.MINOCUM, 1);
 	inventory.takeItem(consumables.P_M_CUM, returnToRathazulMenu);
-	player.gems -= 20;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -664,7 +664,7 @@ private function buyDyes(fromPage2:Boolean = false):void {
 		outputText("Rathazul smiles and pulls forth several vials of colored fluids.  Which type of dye would you like?");
 		outputText("\n\n<b>(-50 Gems)</b>");
 		player.gems -= 50;
-		EngineCore.statScreenRefresh();
+		EngineCore.statScreenRefresh(true);
 	}
 	menu();
 	addButton(0, "Auburn", buyDye, consumables.AUBURND);
@@ -705,7 +705,7 @@ private function buyDye(dye:ItemType):void {
 	clearOutput();
 	outputText(images.showImage("rathazul-buy-dye"));
 	inventory.takeItem(dye, rathazulShopMenu);
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -714,7 +714,7 @@ private function buyDyeNevermind():void {
 	clearOutput();
 	outputText("You change your mind about the dye, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	doNext(rathazulShopMenu);
 }
 
@@ -725,7 +725,7 @@ private function makeDyes():void {
 	outputText("Rathazul smiles and pulls forth several vials preparing for mixing.  Which type of dye need?");
 	outputText("\n\n<b>(-50 Gems)</b>");
 	player.gems -= 50;
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	menu();
 	if (player.hasItem(consumables.REPTLUM, 1) && flags[kFLAGS.ARIAN_SCALES] > 0) {
 		if (player.hasItem(consumables.WHITEDY, 1)) addButton(0, "White", makeDye1);
@@ -742,7 +742,7 @@ private function makeDye1():void {
 	player.destroyItems(consumables.REPTLUM, 1);
 	player.destroyItems(consumables.WHITEDY, 1);
 	outputText(images.showImage("rathazul-buy-dye"));
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	inventory.takeItem(useables.VIALCLE, rathazulShopMenu);
 }
@@ -753,7 +753,7 @@ private function makeDye2():void {
 	player.destroyItems(consumables.REPTLUM, 1);
 	player.destroyItems(consumables.BLUEDYE, 1);
 	outputText(images.showImage("rathazul-buy-dye"));
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	inventory.takeItem(useables.VIALTUR, rathazulShopMenu);
 }
@@ -764,7 +764,7 @@ private function makeDye3():void {
 	player.destroyItems(consumables.REPTLUM, 1);
 	player.destroyItems(consumables.PINKDYE, 1);
 	outputText(images.showImage("rathazul-buy-dye"));
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	inventory.takeItem(useables.VIALPIN, rathazulShopMenu);
 }
@@ -775,7 +775,7 @@ private function makeDye4():void {
 	player.destroyItems(consumables.REPTLUM, 1);
 	player.destroyItems(consumables.RAINDYE, 1);
 	outputText(images.showImage("rathazul-buy-dye"));
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	inventory.takeItem(useables.VIALRAI, rathazulShopMenu);
 }
@@ -785,7 +785,7 @@ private function makeDyeNevermind():void {
 	clearOutput();
 	outputText("You change your mind about the dye, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	doNext(rathazulShopMenu);
 }
 
@@ -796,7 +796,7 @@ private function buyOils():void {
 	outputText("Rathazul smiles and pulls forth several bottles of skin oil.  Which type of skin oil would you like?");
 	outputText("\n\n<b>(-50 Gems)</b>");
 	player.gems -= 50;
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	menu();
 	addButton(0, "Dark", buyOil, consumables.DARK_OL);
 	addButton(1, "Ebony", buyOil, consumables.EBONYOL);
@@ -814,7 +814,7 @@ private function buyOil(oil:ItemType):void {
 	clearOutput();
 	outputText(images.showImage("rathazul-buy-oil"));
 	inventory.takeItem(oil, rathazulShopMenu);
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -823,7 +823,7 @@ private function buyOilNevermind():void {
 	clearOutput();
 	outputText("You change your mind about the oil, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	doNext(rathazulShopMenu);
 }
 
@@ -834,7 +834,7 @@ private function buyLotions():void {
 	outputText("Rathazul smiles and pulls forth several vials of body lotion.  Which type of body lotion would you like?");
 	outputText("\n\n<b>(-50 Gems)</b>");
 	player.gems -= 50;
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	menu();
 	addButton(0, "Clear", buyLotion, consumables.CLEARLN);
 	addButton(1, "Rough", buyLotion, consumables.ROUGHLN);
@@ -848,7 +848,7 @@ private function buyLotion(lotion:ItemType):void {
 	clearOutput();
 	outputText(images.showImage("rathazul-buy-lotion"));
 	inventory.takeItem(lotion, rathazulShopMenu);
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 }
 
@@ -857,7 +857,7 @@ private function buyLotionNevermind():void {
 	clearOutput();
 	outputText("You change your mind about the lotion, and Rathazul returns your gems.\n\n<b>(+50 Gems)</b>");
 	player.gems += 50;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	doNext(rathazulShopMenu);
 }
 
@@ -871,7 +871,7 @@ private function buyReducto():void {
 		outputText("Rathazul hands you the Reducto with a nod before returning to his work.\n\n");
 		player.gems -= cost;
 		inventory.takeItem(consumables.REDUCTO, rathazulShopMenu);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
 	else {
@@ -890,7 +890,7 @@ private function buyGroPlus():void {
 		outputText("Rathazul hands you the GroPlus with a nod before returning to his work.\n\n");
 		player.gems -= cost;
 		inventory.takeItem(consumables.GROPLUS, rathazulShopMenu);
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
 	else {
@@ -902,28 +902,28 @@ private function buyGroPlus():void {
 	private function buyPuritySomething(item:ItemType):void {
 		clearOutput();
 		player.gems -= 100;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		inventory.takeItem(item, rathazulShopMenu);
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
 	private function buyPuritySomething1(item:ItemType):void {
 		clearOutput();
 		player.gems -= 12;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		inventory.takeItem(item, rathazulShopMenu);
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
 	private function buyPuritySomething2(item:ItemType):void {
 		clearOutput();
 		player.gems -= 30;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		inventory.takeItem(item, rathazulShopMenu);
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
 	private function buyPuritySomething3(item:ItemType):void {
 		clearOutput();
 		player.gems -= 85;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 		inventory.takeItem(item, rathazulShopMenu);
 		player.addStatusValue(StatusEffects.MetRathazul, 2, 1);
 	}
@@ -936,9 +936,9 @@ private function rathazulMakesPureHoney():void {
 		doNext(rathazulShopMenu);
 		return;
 	}
-	player.destroyItems(consumables.BEEHONY, 1);
 	player.gems -= 25;
-	EngineCore.statScreenRefresh();
+	player.destroyItems(consumables.BEEHONY, 1);
+	//EngineCore.statScreenRefresh();
 	outputText("You hand over a vial of bee honey and the 25 gems.");
 	outputText("\n\n\"<i>I'll see what I can do,</i>\" he says as he takes the bee honey and begin brewing something. ");
 	outputText("\n\nA few minutes later, he comes back with the crystal vial that contains glittering liquid.  \"<i>It's ready. The honey should be pure now,</i>\" he says. He hands you over the vial of honey and goes back to working.  ");
@@ -960,7 +960,7 @@ private function rathazulMakesMilkPotion():void {
 	player.destroyItems(consumables.LACTAID, 5);
 	player.destroyItems(consumables.P_LBOVA, 2);
 	player.gems -= 250;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("You hand over the ingredients and 250 gems.");
 	outputText("\n\n\"<i>I'll see what I can do,</i>\" he says as he takes the ingredients and begin brewing something. ");
 	outputText("\n\nA few minutes later, he comes back with the potion.  \"<i>It's ready. If you have some issues with lactation or you want to produce milk forever, drink this. Keep in mind that it might be irreversible,</i>\" he says. He hands you over the potion and goes back to working.  ");
@@ -983,7 +983,7 @@ private function rathazulMakesScorpioPotion():void {
 	player.destroyItems(consumables.BEEHONY, 2);
 	player.destroyItems(consumables.SNAKOIL, 2);
 	player.gems -= 100;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("You hand over two vials of Bee Honey, two vials of Snake Oil and one hundred gems to Rathazul, which he gingerly takes them and proceeds to make a special potion for you.");
 	outputText("\n\nAfter a while, the rat hands you a vial labeled \"Scorpinum\" and nods.");
 	player.addStatusValue(StatusEffects.MetRathazul, 2, 1);

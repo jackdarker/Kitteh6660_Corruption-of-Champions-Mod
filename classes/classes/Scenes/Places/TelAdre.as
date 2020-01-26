@@ -299,7 +299,7 @@ public function oswaldPawn():void {
 
 private function buyCarrotFromOswald():void {
 	player.gems -= 500;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	player.createKeyItem("Carrot",0,0,0,0);
 	clearOutput();
 	outputText("Gems change hands in a flash, and you're now the proud owner of a bright orange carrot!\n\n(<b>Acquired Key Item: Carrot</b>)");
@@ -349,7 +349,7 @@ private function oswaldPawnSell(slot:int):void { //Moved here from Inventory.as
 		player.itemSlots[slot].removeOneItem();
 		player.gems += itemValue;
 	}
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(oswaldPawn);
 }
 
@@ -365,7 +365,7 @@ private function oswaldPawnSellAll():void {
 	}
 	outputText("You lay out all the items you're carrying on the counter in front of Oswald.  He examines them all and nods.  Nervously, he pulls out " + num2Text(itemValue) + " gems and drops them into your waiting hand.");
 	player.gems += itemValue;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(oswaldPawn);
 }
 
@@ -642,7 +642,7 @@ private function carpentryShopBuyNailsYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough gems.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopBuyNails);
 }
 
@@ -695,7 +695,7 @@ private function carpentryShopBuyWoodYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough gems.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopBuyWood);
 }
 
@@ -748,7 +748,7 @@ private function carpentryShopBuyStoneYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough gems.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopBuyStone);
 }
 
@@ -794,7 +794,7 @@ private function carpentryShopSellNailsYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough nails.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopSellNails);
 }
 
@@ -839,7 +839,7 @@ private function carpentryShopSellWoodYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough wood.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopSellWood);
 }
 
@@ -884,7 +884,7 @@ private function carpentryShopSellStoneYes():void {
 		}
 	}
 	else outputText("\"<i>I'm sorry, my friend. You do not have enough stones.</i>\"");
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopSellStone);
 }
 
@@ -920,7 +920,7 @@ public function carpentryShopBuySetYes():void {
 	outputText("<b>Gained Key Item: Carpenter's Toolbox!</b>");
 	player.createKeyItem("Carpenter's Toolbox", 0, 0, 0, 0);
 	flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] = 1;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopInside);
 }
 
@@ -962,7 +962,7 @@ public function carpentryShopBuySet2Yes():void {
 	outputText("<b>Gained Key Item: Nail's Box!</b>");
 	player.createKeyItem("Nail's Box", 0, 0, 0, 0);
 	flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] += 1;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopInside);
 }
 
@@ -1004,7 +1004,7 @@ public function carpentryShopBuySet3Yes():void {
 	outputText("<b>Gained Key Item: Stone Building Guide!</b>");
 	player.createKeyItem("Stone Building Guide", 0, 0, 0, 0);
 	flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] += 1;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	EngineCore.doNext(carpentryShopInside);
 }
 
@@ -1079,7 +1079,7 @@ private function buyItem(odd:ItemType):void{
 
 private function buyItemYes(odd:ItemType):void {
 	player.gems -= odd.value;// * 3
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("Kaiba smile wide as you hand the gems to him.\n\n");
 	outputText("\"<i>Thanks for your patronage.</i>\"\n\n");
 	inventory.takeItem(odd, kaibaShopInside);
@@ -1202,7 +1202,7 @@ private function buyItemT1(odd:ItemType, page:int = 1):void{
 }
 private function buyItemT1Yes(odd:ItemType):void {
 	player.gems -= odd.value;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("You pass on the gems to Tripxi who hands you the weapon over.\n\n");
 	outputText("\"<i>Kill some demons with this baby will you. I'd like to think that my tools help clean the place some of my peers are busy dirtying with stupid sex toys.</i>\"\n\n");
 	inventory.takeItem(odd, tripxiShopMainMenu2a);
@@ -1226,7 +1226,7 @@ private function buyItemT2(odd:ItemType):void{
 }
 private function buyItemT2Yes(odd:ItemType):void {
 	player.gems -= odd.value;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("You pass on the gems to Tripxi who hands you the weapon over.\n\n");
 	outputText("\"<i>Kill some demons with this baby will you. I'd like to think that my tools help clean the place some of my peers are busy dirtying with stupid sex toys.</i>\"\n\n");
 	inventory.takeItem(odd, tripxiShopMainMenu2b);
@@ -1250,7 +1250,7 @@ private function buyItemT3(odd:ItemType):void{
 }
 private function buyItemT3Yes(odd:ItemType):void {
 	player.gems -= odd.value;
-	EngineCore.statScreenRefresh();
+	//EngineCore.statScreenRefresh();
 	outputText("You pass on the gems to Tripxi who hands you the weapon over.\n\n");
 	outputText("\"<i>Kill some demons with this baby will you. I'd like to think that my tools help clean the place some of my peers are busy dirtying with stupid sex toys.</i>\"\n\n");
 	inventory.takeItem(odd, tripxiShopMainMenu2c);
@@ -1397,7 +1397,7 @@ private function buyGymLifeTimeMembership():void {
 	}
 	flags[kFLAGS.LIFETIME_GYM_MEMBER] = 1;
 	player.gems -= 500;
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	//[Bring up gym menu]
 	gymMenu();
 }
@@ -1414,7 +1414,7 @@ private function weightLifting():void {
 	//Deduct gems if not a full member.
 	if(flags[kFLAGS.LIFETIME_GYM_MEMBER] == 0) {
 		player.gems -= 10;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 	//[Lift Weights] +25 fatigue!
 	fatigue(25);
@@ -1465,7 +1465,7 @@ private function goJogging():void {
 	//Deduct gems if not a full member.
 	if(flags[kFLAGS.LIFETIME_GYM_MEMBER] == 0) {
 		player.gems -= 10;
-		EngineCore.statScreenRefresh();
+		//EngineCore.statScreenRefresh();
 	}
 	//[Jogging] +30 fatigue!
 	fatigue(30);

@@ -441,7 +441,7 @@ public class DungeonEngine extends BaseContent
 		 * @param	eastFunction
 		 */
 		public function setDungeonButtons(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null):void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			menu();
@@ -456,7 +456,7 @@ public class DungeonEngine extends BaseContent
 			setTopButtons();
 		}
 		public function setDungeonButtonsRD(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null):void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			menu();
@@ -471,7 +471,7 @@ public class DungeonEngine extends BaseContent
 			setTopButtons();
 		}
 		public function setDungeonButtonsRD3D(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null, upFunction:Function = null, downFunction:Function = null):void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			menu();
@@ -488,7 +488,7 @@ public class DungeonEngine extends BaseContent
 			setTopButtons();
 		}
 		public function setDungeonButtonsEL(northFunction:Function = null, southFunction:Function = null, westFunction:Function = null, eastFunction:Function = null, upFunction:Function = null, downFunction:Function = null):void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			menu();

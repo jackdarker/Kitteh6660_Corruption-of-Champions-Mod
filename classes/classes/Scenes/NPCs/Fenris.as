@@ -877,7 +877,7 @@ package classes.Scenes.NPCs{
 		public function timeChange():Boolean
 		{
 			//pregnancy.pregnancyAdvance();
-			trace("\nFenris time change: Time is " + CoC.instance.model.time.hours , false);
+			//trace("\nFenris time change: Time is " + CoC.instance.model.time.hours , false);
 			var _Return:Boolean = getMainQuestStage() >= MAINQUEST_Greetings;
 			if (_Return) {
 				_Return = false;

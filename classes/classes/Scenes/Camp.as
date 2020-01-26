@@ -121,8 +121,8 @@ public function EzekielCurseQuickFix():void
 	outputText("Like with a magic wand touch some divine being has blessed you. And before leaving meantioned about never again selling or discarding odd fruits.");
 	if (player.findPerk(PerkLib.EzekielBlessing) < 0) player.createPerk(PerkLib.EzekielBlessing, 0, 0, 0, 0);
 	if (player.hasStatusEffect(StatusEffects.EzekielCurse)) player.removeStatusEffect(StatusEffects.EzekielCurse);
-	EngineCore.statScreenRefresh();
 	dynStats("str", 5, "tou", 5, "spe", 5, "inte", 5, "lib", 5);
+	EngineCore.statScreenRefresh(true);
 	doCamp();
 
 }
@@ -132,8 +132,7 @@ private function doCamp():void { //Only called by playerMenu
 	if (player.slotName != "VOID" && mainView.getButtonText(0) != "Game Over" && flags[kFLAGS.HARDCORE_MODE] > 0) 
 	{
 		trace("Autosaving to slot: " + player.slotName);
-
-CoC.instance.saves.saveGame(player.slotName);
+		CoC.instance.saves.saveGame(player.slotName);
     }
     CoC.instance.inCombat = false;
     if (ingnam.inIngnam) { //Ingnam

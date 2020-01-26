@@ -567,7 +567,7 @@ public class DebugMenu extends BaseContent
 		
 		private function statChangeApply(stats:String = "", increment:Number = 0):void {
 			dynStats(stats, increment);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			statChangeAttributeMenu(stats);
 		}
 		

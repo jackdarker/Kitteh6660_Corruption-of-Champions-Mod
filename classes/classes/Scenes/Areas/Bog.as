@@ -49,7 +49,7 @@ public class Bog extends BaseContent
 					inventory.createStorage();
 				}
 				player.gems += gemsFound;
-				EngineCore.statScreenRefresh();
+				//EngineCore.statScreenRefresh();
 				outputText("\n\n<b>You now have " + num2Text(inventory.itemStorageDirectGet().length) + " storage item slots at camp.</b>");
 				doNext(camp.returnToCampUseOneHour);
 				return;

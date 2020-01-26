@@ -38,7 +38,7 @@ public class Pregnancy extends NPCAwareContent {
             //Remove bonus libido from heat
             player.dynStats("lib", -player.statusEffectv2(StatusEffects.Heat));
             if(player.lib < 10) player.lib = 10;
-            EngineCore.statScreenRefresh();
+            //EngineCore.statScreenRefresh();
             player.removeStatusEffect(StatusEffects.Heat);
             displayedUpdate = true;
         }

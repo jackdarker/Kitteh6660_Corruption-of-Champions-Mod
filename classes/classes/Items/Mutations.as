@@ -108,17 +108,17 @@ public final class Mutations extends MutationsHelper
 			if (player.wis < 50) {
 				if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wis += 2 + rand(7);
 				else player.wis += 1 + rand(4);
-				dynStats();
+				//dynStats();
 			}
 			else if (player.wis < 100) {
 				if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wis += 2 + rand(5);
 				else player.wis += 1 + rand(3);
-				dynStats();
+				//dynStats();
 			}
 			else {
 				if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wis += 2 + rand(3);
 				else player.wis += 1 + rand(2);
-				dynStats();
+				//dynStats();
 			}
 		}/*
 //Dao Dew
@@ -227,7 +227,7 @@ public final class Mutations extends MutationsHelper
 			clearOutput();
 			outputText("You take first bite of fruit that Evangeline gave you.  Surprisingly it taste delicious as nothing else you tasted before so without thinking more you ate rest of the fruit.");
 			if (player.findPerk(PerkLib.EzekielBlessing) < 0) player.createPerk(PerkLib.EzekielBlessing, 0, 0, 0, 0);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh(true);
 			dynStats("str", 5, "tou", 5, "spe", 5, "inte", 5, "wis", 5, "lib", 5, "sen", 5);
 			player.refillHunger(50);
 		}
@@ -238,7 +238,7 @@ public final class Mutations extends MutationsHelper
 			if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wrath += 40;
 			else player.wrath += 20;
 			if (player.wrath > player.maxWrath()) player.wrath = player.maxWrath();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		public function mediumangrypill(player:Player):void {
 			clearOutput();
@@ -246,7 +246,7 @@ public final class Mutations extends MutationsHelper
 			if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wrath += 120;
 			else player.wrath += 60;
 			if (player.wrath > player.maxWrath()) player.wrath = player.maxWrath();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		public function bigangrypill(player:Player):void {
 			clearOutput();
@@ -254,7 +254,7 @@ public final class Mutations extends MutationsHelper
 			if (player.hasPerk(PerkLib.GoblinoidBlood) && player.hasPerk(PerkLib.NaturalPunchingBagFinalForm)) player.wrath += 360;
 			else player.wrath += 180;
 			if (player.wrath > player.maxWrath()) player.wrath = player.maxWrath();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		
 		public function mediumhealpill(player:Player):void {
@@ -280,7 +280,7 @@ public final class Mutations extends MutationsHelper
 				outputText("You shudder as a small orgasm passes through you. When you recover you actually feel more aroused.");
 				dynStats("lus", 15);
 			}
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		public function bighealpill(player:Player):void {
 			var rand:int = Math.random() * 100;
@@ -304,7 +304,7 @@ public final class Mutations extends MutationsHelper
 				outputText("You shudder as a small orgasm passes through you. When you recover you actually feel more aroused.");
 				dynStats("lus", 45);
 			}
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		
 		public function peppermintwhite(player:Player):void {
@@ -313,7 +313,7 @@ public final class Mutations extends MutationsHelper
             //Recovers health and fatigue, adds five to max health, and one to libido.*/
             HPChange(EngineCore.maxHP(),true);
             fatigue(-100);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 
 		public function lowgradeelementalPearl(player:Player):void {
@@ -379,7 +379,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 100;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(5);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 		public function lowgradesoulforcerecoverypill2(player:Player):void {
@@ -390,7 +390,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 1000;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(50);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 		public function midgradesoulforcerecoverypill(player:Player):void {
@@ -401,7 +401,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 600;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(25);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 		public function midgradesoulforcerecoverypill2(player:Player):void {
@@ -412,7 +412,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 6000;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(250);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 		public function highgradesoulforcerecoverypill(player:Player):void {
@@ -423,7 +423,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 3600;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(125);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 		public function highgradesoulforcerecoverypill2(player:Player):void {
@@ -434,7 +434,7 @@ public final class Mutations extends MutationsHelper
 				player.soulforce += 36000;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(125);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 			}
 		}
 	//	public function superiorgradesoulforcerecoverypill(player:Player):void {
@@ -442,13 +442,13 @@ public final class Mutations extends MutationsHelper
 	//		player.soulforce += 21600;
 	//		if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
 	//		if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(625);
-	//		statScreenRefresh();
+	//		statScreenRefresh(true);
 	//	}
 		public function fasteningpill(player:Player):void {
 			outputText("You cram the pill in your mouth and swallow it.  Surprisingly there is no discomfort, only a sensation of your stomach been full.");
 			if (player.hasStatusEffect(StatusEffects.FastingPill)) player.addStatusValue(StatusEffects.FastingPill, 1, 24);
 			else player.createStatusEffect(StatusEffects.FastingPill,73,0,0,0);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 
 		public function triplethrustmanual(player:Player):void
@@ -753,19 +753,19 @@ public final class Mutations extends MutationsHelper
 			outputText("You grab your mana potion, pull the cork off and swiftly chug it down.\n\n(Recovered mana: 200)");
 			player.mana += 200;
 			if (player.mana > player.maxMana()) player.mana = player.maxMana();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		public function dilutedarcaneregenconcotion(player:Player):void {
 			outputText("You grab your mana potion, pull the cork off and swiftly chug it down.\n\n(Recovered mana: 1200)");
 			player.mana += 1200;
 			if (player.mana > player.maxMana()) player.mana = player.maxMana();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		public function arcaneregenconcotion(player:Player):void {
 			outputText("You grab your mana potion, pull the cork off and swiftly chug it down.\n\n(Recovered mana: 7200)");
 			player.mana += 7200;
 			if (player.mana > player.maxMana()) player.mana = player.maxMana();
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		
 		public function tomeofcleave(player:Player):void
@@ -10734,7 +10734,7 @@ public final class Mutations extends MutationsHelper
 				outputText("\n\n<b>You've received " + num2Text(gems) + " shining gems from the kitsune's gift!  How generous!</b>");
 				player.gems += gems;
 				//add X gems to inventory
-				statScreenRefresh();
+				statScreenRefresh(true);
 				break;
 
 			//[Kitsune Tea/Scholar's Tea] //Just use Scholar's Tea and drop the "trick" effect if you don't want to throw in another new item.
@@ -10776,7 +10776,7 @@ public final class Mutations extends MutationsHelper
 				outputText("\n\n<b>The kitsune's familiar has stolen your gems!</b>");
 				// Lose X gems as though losing in battle to a kitsune
 				player.gems -= 2 + rand(15);
-				statScreenRefresh();
+				statScreenRefresh(true);
 				break;
 
 			//[Prank]

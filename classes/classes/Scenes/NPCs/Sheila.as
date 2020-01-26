@@ -118,7 +118,7 @@ public class Sheila extends Monster
 				if(!hasStatusEffect(StatusEffects.TwuWuv)) {
 					createStatusEffect(StatusEffects.TwuWuv,0,0,0,0);
 					var counter:int = 40+rand(5);
-					EngineCore.showUpDown();//showStatDown( 'inte' );
+					//showStatDown( 'inte' );
 					while(counter > 0) {
 						if(player.inte >= 2) {
 							player.inte--;

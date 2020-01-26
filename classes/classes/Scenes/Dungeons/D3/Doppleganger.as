@@ -71,7 +71,7 @@ import classes.VaginaClass;
 		
 		private function addTalkShit():void
 		{
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			
 			if (HP < 1)
 			{

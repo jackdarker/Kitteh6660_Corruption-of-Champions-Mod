@@ -388,7 +388,7 @@ private function benoitTransactBuy(slot:int = 1):void {
 	benoitAffection(3);
 	
 	player.gems -= int(buyMod * itype.value);
-	statScreenRefresh();
+	//statScreenRefresh();
 	inventory.takeItem(itype, benoitsBuyMenu);
 }
 
@@ -409,7 +409,7 @@ private function benoitSellTransact(slot:int, sellMod:int):void {
 		//(+1 Affection)
 		benoitAffection(1);
 	}
-	statScreenRefresh();
+	//statScreenRefresh();
 	doNext(benoitSellMenu);
 }
 
@@ -426,7 +426,7 @@ private function benoitSellAllTransact(totalItems:int, sellMod:int):void {
 		outputText("Benoit" + benoitMF("", "e") + " gives your objects the briefest of goings-over with " + benoitMF("his", "her") + " fingers before stowing them away and handing over your " + num2Text(itemValue) + " gem reward with a trusting smile.");
 	else outputText("Following a painstaking examination of the items you've given him with his hands and nose, Benoit grudgingly accepts them and carefully counts out your " + num2Text(itemValue) + " gem reward.");
 	player.gems += itemValue;
-	statScreenRefresh();
+	//statScreenRefresh();
 	//(+1 Affection per item)
 	benoitAffection(totalItems);
 	doNext(benoitIntro);
@@ -589,7 +589,7 @@ private function buyFlintlockConfirmation():void {
 	flags[kFLAGS.BENOIT_PISTOL_BOUGHT]++;
 	player.ammo = 4;
 	player.gems -= 200;
-	statScreenRefresh();
+	//statScreenRefresh();
 	inventory.takeItem(weaponsrange.FLINTLK, benoitsBuyMenu);
 }
 
@@ -611,7 +611,7 @@ private function buyAlarmClockConfirmation():void {
 	outputText("\"<i>Here you go.  I have no need for zis,</i>\" " + benoitMF("Benoit", "Benoite") + " says.");
 	outputText("\n\n<b>You can now set alarm. Go to your cabin to set the alarm. (And change the time when you'll wake up.)</b>");
 	player.gems -= 500;
-	statScreenRefresh();
+	//statScreenRefresh();
 	flags[kFLAGS.BENOIT_CLOCK_BOUGHT]++;
 	flags[kFLAGS.BENOIT_CLOCK_ALARM] = 6;
 	doNext(benoitsBuyMenu);
@@ -650,7 +650,7 @@ private function buyBackpackConfirmation(size:int = 1, sizeDesc:String = "Small"
 		outputText(" for a total of " + num2Text(inventory.getMaxSlots()) + " slots.)</b>");
 	}
 	player.gems -= price;
-	statScreenRefresh();
+	//statScreenRefresh();
 	doNext(benoitsBuyMenu);
 }
 
@@ -673,7 +673,7 @@ private function buyZweihanderConfirmation():void {
 	outputText("" + benoitMF("He", "She") + " gives you the axe, and you pack it with the rest of your stuff.");
 	player.gems -= 2000;
 	flags[kFLAGS.BENOIT_PISTOL_BOUGHT] = 2;
-	statScreenRefresh();
+	//statScreenRefresh();
 	inventory.takeItem(weapons.FRTAXE, benoitsBuyMenu);
 }
 

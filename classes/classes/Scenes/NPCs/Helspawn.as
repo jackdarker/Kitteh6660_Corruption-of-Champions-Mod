@@ -104,9 +104,10 @@ private function calledShot():void {
 				outputText("\nDat ass.  You lean back, enjoying the show as the slutty little salamander slips right past your guard, practically grinding up against you until you can feel a fire boiling in your loins!");
 				var lustDelta:Number = player.lustVuln * (10 + player.lib/10);
 				player.lust += lustDelta;
-				game.mainView.statsView.showStatUp( 'lust' );
+				//game.mainView.statsView.showStatUp( 'lust' );
 				// lustDown.visible = false;
 				// lustUp.visible = true;
+				EngineCore.showUpDown(false);
 				lustDelta = Math.round(lustDelta * 10)/10;
 				outputText(" (" + lustDelta + ")");
 			}

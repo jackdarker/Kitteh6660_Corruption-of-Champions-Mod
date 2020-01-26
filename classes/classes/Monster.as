@@ -56,12 +56,9 @@ import flash.utils.getQualifiedClassName;
 		{
 			SceneLib.combat.cleanupAfterCombatImpl();
 		}
-		/*protected static function showStatDown(a:String):void{
-			CoC.instance.mainView.statsView.showStatDown(a);
-		}*/
 		
 		protected final function statScreenRefresh():void {
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(false);
 		}
 		protected final function doNext(eventNo:Function):void { //Now typesafe
 			EngineCore.doNext(eventNo);

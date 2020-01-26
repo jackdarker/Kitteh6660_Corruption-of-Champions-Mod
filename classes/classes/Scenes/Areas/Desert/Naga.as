@@ -20,7 +20,7 @@ public class Naga extends Monster
 				outputText("The venom's effects are almost instantaneous; your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 4) {
 					player.spe -= 3;
-					EngineCore.showUpDown();//showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.createStatusEffect(StatusEffects.NagaVenom,3,0,0,0);
 				}
 				else {
@@ -33,12 +33,13 @@ public class Naga extends Monster
 				outputText("The venom's effects intensify as your vision begins to blur and it becomes increasingly harder to stand.");
 				if(player.spe > 3) {
 					player.spe -= 2;
-					EngineCore.showUpDown();//showStatDown( 'spe' );
+					//showStatDown( 'spe' );
 					player.addStatusValue(StatusEffects.NagaVenom,1,2);
 				}
 				else player.takeMagicDamage(5+rand(5));
 				player.takeMagicDamage(5+rand(5));
 			}
+			EngineCore.showUpDown(false);
 		}
 		
 		//2b)  Ability - Constrict - entangles player, raises lust 

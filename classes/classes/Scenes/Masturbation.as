@@ -3641,7 +3641,7 @@ public class Masturbation extends BaseContent {
 			}
 			player.gems += gems;
 			flags[kFLAGS.GILDED_JERKED]++;
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -3688,7 +3688,7 @@ public class Masturbation extends BaseContent {
 				player.orgasm();
 				dynStats("sen", -1.5);
 			}
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 
@@ -3722,7 +3722,7 @@ public class Masturbation extends BaseContent {
 			if (player.findPerk(PerkLib.ElectrifiedDesire) >= 0 || player.hasStatusEffect(StatusEffects.RaijuLightningStatus)) player.orgasmRaijuStyle();
 			else player.orgasm();
 			dynStats("sen", 0.5);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			doNext(camp.returnToCampUseOneHour);
 		}
 		

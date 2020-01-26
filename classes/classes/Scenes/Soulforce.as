@@ -1576,7 +1576,7 @@ public function FightHellfireSnail():void {
 		public function AddMetalPieces():void {
 			outputText("\n\n<b>(Gained 50 Metal Pieces!)</b>\n\n");
 			flags[kFLAGS.CAMP_CABIN_METAL_PIECES_RESOURCES] += 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			MaterialMenu();
 		}
 		public function AddPolarMidnightScroll():void {
@@ -1787,452 +1787,452 @@ public function FightHellfireSnail():void {
 		}
 		public function AddStr1():void {
 			player.str = player.str + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function AddStr2():void {
 			player.str = player.str + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function AddStr3():void {
 			player.str = player.str + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function AddStr4():void {
 			player.str = player.str + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function AddStr5():void {
 			player.str = player.str + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function AddTou1():void {
 			player.tou = player.tou + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function AddTou2():void {
 			player.tou = player.tou + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function AddTou3():void {
 			player.tou = player.tou + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function AddTou4():void {
 			player.tou = player.tou + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function AddTou5():void {
 			player.tou = player.tou + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function AddSpe1():void {
 			player.spe = player.spe + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function AddSpe2():void {
 			player.spe = player.spe + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function AddSpe3():void {
 			player.spe = player.spe + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function AddSpe4():void {
 			player.spe = player.spe + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function AddSpe5():void {
 			player.spe = player.spe + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function AddInte1():void {
 			player.inte = player.inte + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function AddInte2():void {
 			player.inte = player.inte + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function AddInte3():void {
 			player.inte = player.inte + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function AddInte4():void {
 			player.inte = player.inte + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function AddInte5():void {
 			player.inte = player.inte + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function AddWis1():void {
 			player.wis = player.wis + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function AddWis2():void {
 			player.wis = player.wis + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function AddWis3():void {
 			player.wis = player.wis + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function AddWis4():void {
 			player.wis = player.wis + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function AddWis5():void {
 			player.wis = player.wis + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function AddLib1():void {
 			player.lib = player.lib + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function AddLib2():void {
 			player.lib = player.lib + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function AddLib3():void {
 			player.lib = player.lib + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function AddLib4():void {
 			player.lib = player.lib + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function AddLib5():void {
 			player.lib = player.lib + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function AddSens1():void {
 			player.sens = player.sens + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function AddSens2():void {
 			player.sens = player.sens + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function AddSens3():void {
 			player.sens = player.sens + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function AddSens4():void {
 			player.sens = player.sens + 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function AddSens5():void {
 			player.sens = player.sens + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function AddCor1():void {
 			player.cor = player.cor + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function AddCor2():void {
 			player.cor = player.cor + 5;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function AddCor3():void {
 			player.cor = player.cor + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function AddCor4():void {
 			player.cor = player.cor + 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function AddTone1():void {
 			player.tone = player.tone + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddTone2():void {
 			player.tone = player.tone + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddThickness1():void {
 			player.thickness = player.thickness + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddThickness2():void {
 			player.thickness = player.thickness + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddFeminity1():void {
 			player.femininity = player.femininity + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddFeminity2():void {
 			player.femininity = player.femininity + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubStr1():void {
 			player.str = player.str - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function SubStr2():void {
 			player.str = player.str - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function SubStr3():void {
 			player.str = player.str - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function SubStr4():void {
 			player.str = player.str - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function SubStr5():void {
 			player.str = player.str - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuStr();
 		}
 		public function SubTou1():void {
 			player.tou = player.tou - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function SubTou2():void {
 			player.tou = player.tou - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function SubTou3():void {
 			player.tou = player.tou - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function SubTou4():void {
 			player.tou = player.tou - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function SubTou5():void {
 			player.tou = player.tou - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuTou();
 		}
 		public function SubSpe1():void {
 			player.spe = player.spe - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function SubSpe2():void {
 			player.spe = player.spe - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function SubSpe3():void {
 			player.spe = player.spe - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function SubSpe4():void {
 			player.spe = player.spe - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function SubSpe5():void {
 			player.spe = player.spe - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSpe();
 		}
 		public function SubInte1():void {
 			player.inte = player.inte - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function SubInte2():void {
 			player.inte = player.inte - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function SubInte3():void {
 			player.inte = player.inte - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function SubInte4():void {
 			player.inte = player.inte - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function SubInte5():void {
 			player.inte = player.inte - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuInte();
 		}
 		public function SubWis1():void {
 			player.wis = player.wis - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function SubWis2():void {
 			player.wis = player.wis - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function SubWis3():void {
 			player.wis = player.wis - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function SubWis4():void {
 			player.wis = player.wis - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function SubWis5():void {
 			player.wis = player.wis - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuWis();
 		}
 		public function SubLib1():void {
 			player.lib = player.lib - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function SubLib2():void {
 			player.lib = player.lib - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function SubLib3():void {
 			player.lib = player.lib - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function SubLib4():void {
 			player.lib = player.lib - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function SubLib5():void {
 			player.lib = player.lib - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuLib();
 		}
 		public function SubSens1():void {
 			player.sens = player.sens - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function SubSens2():void {
 			player.sens = player.sens - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function SubSens3():void {
 			player.sens = player.sens - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function SubSens4():void {
 			player.sens = player.sens - 200;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function SubSens5():void {
 			player.sens = player.sens - 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuSens();
 		}
 		public function SubCor1():void {
 			player.cor = player.cor - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function SubCor2():void {
 			player.cor = player.cor - 5;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function SubCor3():void {
 			player.cor = player.cor - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function SubCor4():void {
 			player.cor = player.cor - 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuCor();
 		}
 		public function SubTone1():void {
 			player.tone = player.tone - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubTone2():void {
 			player.tone = player.tone - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubThickness1():void {
 			player.thickness = player.thickness - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubThickness2():void {
 			player.thickness = player.thickness - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubFeminity1():void {
 			player.femininity = player.femininity - 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function SubFeminity2():void {
 			player.femininity = player.femininity - 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			StatsMenuToneThicknessFeminity();
 		}
 		public function AddPerkPoint():void {
@@ -2249,46 +2249,46 @@ public function FightHellfireSnail():void {
 		}
 		public function AddGems1():void {
 			player.gems = player.gems + 100;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddGems2():void {
 			player.gems = player.gems + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddEXP1():void {
 			player.XP = player.XP + 100;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddEXP2():void {
 			player.XP = player.XP + 1000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddEXP3():void {
 			player.XP = player.XP + 10000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddEXP4():void {
 			player.XP = player.XP + 100000;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddLvL1():void {
 			player.level = player.level + 1;
 			player.statPoints += 5;
 			player.perkPoints = player.perkPoints + 1;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddLvL2():void {
 			player.level = player.level + 10;
 			player.statPoints += 50;
 			player.perkPoints = player.perkPoints + 10;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			PerksGemsEXPLvL();
 		}
 		public function AddRapPerk():void {
@@ -2348,19 +2348,19 @@ public function FightHellfireSnail():void {
 		public function AddWood():void {
 			outputText("\n\n<b>(Gained 100 Wood!)</b>");
 			flags[kFLAGS.CAMP_CABIN_WOOD_RESOURCES] += 100;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			MaterialMenu();
 		}
 		public function AddNail():void {
 			outputText("\n\n<b>(Gained 50 Nails!)</b>");
 			flags[kFLAGS.CAMP_CABIN_NAILS_RESOURCES] += 50;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			MaterialMenu();
 		}
 		public function AddStone():void {
 			outputText("\n\n<b>(Gained 100 Stones!)</b>");
 			flags[kFLAGS.CAMP_CABIN_STONE_RESOURCES] += 100;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			MaterialMenu();
 		}
 		public function FightForPearl():void {
@@ -2894,7 +2894,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 50;
 				player.refillHunger(10);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(10);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -2910,7 +2910,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 100;
 				player.refillHunger(20);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(20);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -2926,7 +2926,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 200;
 				player.refillHunger(40);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(40);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -2942,7 +2942,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 400;
 				player.refillHunger(80);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(80);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -2958,7 +2958,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 800;
 				player.refillHunger(160);
 				if (player.isGargoyle() && player.hasPerk(PerkLib.GargoylePure)) player.refillGargoyleHunger(160);
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -2986,7 +2986,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 40;
 				player.lust -= 20;
 				if (player.lust < 0) player.lust = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3002,7 +3002,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 80;
 				player.lust -= 40;
 				if (player.lust < 0) player.lust = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3018,7 +3018,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 200;
 				player.lust -= 100;
 				if (player.lust < 0) player.lust = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3034,7 +3034,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 400;
 				player.lust -= 200;
 				if (player.lust < 0) player.lust = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				doNext(playerMenu);
 			}
@@ -3050,7 +3050,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 800;
 				player.lust -= 400;
 				if (player.lust < 0) player.lust = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3088,7 +3088,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 100;
 				player.mana += 100;
 				if (player.mana > player.maxMana()) player.mana = player.maxMana();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3104,7 +3104,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 200;
 				player.mana += 200;
 				if (player.mana > player.maxMana()) player.mana = player.maxMana();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3120,7 +3120,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 500;
 				player.mana += 500;
 				if (player.mana > player.maxMana()) player.mana = player.maxMana();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3136,7 +3136,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 1000;
 				player.mana += 1000;
 				if (player.mana > player.maxMana()) player.mana = player.maxMana();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3152,7 +3152,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 2000;
 				player.mana += 2000;
 				if (player.mana > player.maxMana()) player.mana = player.maxMana();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3172,7 +3172,7 @@ public function FightHellfireSnail():void {
 				player.mana -= 100;
 				player.soulforce += 50;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3188,7 +3188,7 @@ public function FightHellfireSnail():void {
 				player.mana -= 200;
 				player.soulforce += 100;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3204,7 +3204,7 @@ public function FightHellfireSnail():void {
 				player.mana -= 500;
 				player.soulforce += 250;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3220,7 +3220,7 @@ public function FightHellfireSnail():void {
 				player.mana -= 1000;
 				player.soulforce += 500;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3236,7 +3236,7 @@ public function FightHellfireSnail():void {
 				player.mana -= 2000;
 				player.soulforce += 1000;
 				if (player.soulforce > player.maxSoulforce()) player.soulforce = player.maxSoulforce();
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3265,7 +3265,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 100;
 				player.cor -= 1;
 				if (player.cor < 0) player.cor = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3281,7 +3281,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 200;
 				player.cor -= 2;
 				if (player.cor < 0) player.cor = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3297,7 +3297,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 500;
 				player.cor -= 5;
 				if (player.cor < 0) player.cor = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3313,7 +3313,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 1000;
 				player.cor -= 10;
 				if (player.cor < 0) player.cor = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3329,7 +3329,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 2000;
 				player.cor -= 20;
 				if (player.cor < 0) player.cor = 0;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3345,7 +3345,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 50;
 				player.cor += 1;
 				if (player.cor > 100) player.cor = 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3361,7 +3361,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 100;
 				player.cor += 2;
 				if (player.cor > 100) player.cor = 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3377,7 +3377,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 250;
 				player.cor += 5;
 				if (player.cor > 100) player.cor = 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3393,7 +3393,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 500;
 				player.cor += 10;
 				if (player.cor > 100) player.cor = 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3409,7 +3409,7 @@ public function FightHellfireSnail():void {
 				player.soulforce -= 1000;
 				player.cor += 20;
 				if (player.cor > 100) player.cor = 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				flags[kFLAGS.DAILY_SOULFORCE_USE_LIMIT]++;
 				EngineCore.doNext(playerMenu);
 			}
@@ -3440,7 +3440,7 @@ public function FightHellfireSnail():void {
 		public function TamaniEnc():void {
 			if (player.soulforce >= 80) {
 				player.soulforce -= 80;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				tamaniScene.encounterTamani();
 			}
 			else {
@@ -3451,7 +3451,7 @@ public function FightHellfireSnail():void {
 		public function TamaniDaughtersEnc():void {
 			if (player.soulforce >= 10 * (8 + (Math.floor(flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] / 20)))) {
 				player.soulforce -= 10 * (8 + (Math.floor(flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] / 20)));
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				tamaniDaughtersScene.encounterTamanisDaughters();
 			}
 			else {
@@ -3462,7 +3462,7 @@ public function FightHellfireSnail():void {
 		public function KitsuneMansion():void {
 			if (player.soulforce >= 90) {
 				player.soulforce -= 90;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				SceneLib.kitsuneScene.enterTheTrickster();
 			}
 			else {
@@ -3473,7 +3473,7 @@ public function FightHellfireSnail():void {
 		public function IzumiEnc():void {
 			if (player.soulforce >= 300) {
 				player.soulforce -= 300;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				izumiScenes.encounter();
 			}
 			else {
@@ -3484,7 +3484,7 @@ public function FightHellfireSnail():void {
 		public function findWorldTree():void {
 			if (player.soulforce >= 100) {
 				player.soulforce -= 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				wolrdtreeScene.YggdrasilDiscovery();
 			}
 			else {
@@ -3495,7 +3495,7 @@ public function FightHellfireSnail():void {
 		public function findGiacomo():void {
 			if (player.soulforce >= 100) {
 				player.soulforce -= 100;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				SceneLib.giacomoShop.giacomoEncounter();
 			}
 			else {

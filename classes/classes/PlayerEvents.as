@@ -66,7 +66,7 @@ public class PlayerEvents extends BaseContent implements TimeAwareInterface {
 			}
 			//Normal
 			if (player.findPerk(PerkLib.WellAdjusted) < 0) {
-				dynStats("lus", player.lib * 0.04, "scale", false); //Raise lust
+				dynStats("lus", player.lib * 0.04, "scale", false); //Raise lust			TODO there are alot of dynstat calls here that slows down execution- can we combine them together?
 				if (player.findPerk(PerkLib.Lusty) >= 0) dynStats("lus", player.lib * 0.02, "scale", false); //Double lust rise if lusty.
 			}
 			else { //Well adjusted perk
@@ -637,7 +637,7 @@ if (CoC.instance.model.time.hours > 23) { //Once per day
 					player.inte -= 12;
 				}
 				//Tripxi firearms selection update
-				if (player.statusEffectv2(StatusEffects.TelAdreTripxi) == 3) {
+				if (player.statusEffectv2(StatusEffects.TelAdreTripxi) == 3) {	//TODO dow e need calc this every hour?
 					player.addStatusValue(StatusEffects.TelAdreTripxi, 2, -2);
 					if (player.statusEffectv1(StatusEffects.TelAdreTripxiGuns1) == 2) player.addStatusValue(StatusEffects.TelAdreTripxiGuns1, 1, 1);
 					if (player.statusEffectv2(StatusEffects.TelAdreTripxiGuns1) == 2) player.addStatusValue(StatusEffects.TelAdreTripxiGuns1, 2, 1);
@@ -1722,7 +1722,7 @@ if (CoC.instance.model.time.hours > 23) { //Once per day
 					player.dynStats("lib", -player.statusEffectv2(StatusEffects.Heat), "scale", false);
 					player.removeStatusEffect(StatusEffects.Heat); //remove heat
 					if (player.lib < 1) player.lib = 1;
-					EngineCore.statScreenRefresh();
+					//EngineCore.statScreenRefresh();
 					outputText("\n<b>Your body calms down, at last getting over your heat.</b>\n");
 					needNext = true;
 				}
@@ -1730,12 +1730,12 @@ if (CoC.instance.model.time.hours > 23) { //Once per day
 			}
 
 			if (player.inRut) { //Rut v1 is bonus cum, v2 is bonus libido, v3 is hours till it's gone
-				trace("RUT:" + player.statusEffectv3(StatusEffects.Rut));
+				//trace("RUT:" + player.statusEffectv3(StatusEffects.Rut));
 				if (player.statusEffectv3(StatusEffects.Rut) <= 1 || player.cockTotal() == 0) { //Remove bonus libido from rut
 					player.dynStats("lib", -player.statusEffectv2(StatusEffects.Rut), "scale", false);
 					player.removeStatusEffect(StatusEffects.Rut); //remove heat
 					if (player.lib < 10) player.lib = 10;
-                    EngineCore.statScreenRefresh();
+                    //EngineCore.statScreenRefresh();
 					outputText("\n<b>Your body calms down, at last getting over your rut.</b>\n");
 					needNext = true;
 				}

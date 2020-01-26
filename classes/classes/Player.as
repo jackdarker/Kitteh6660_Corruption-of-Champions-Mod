@@ -1793,8 +1793,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reducePhysDamage(damage);
@@ -1809,8 +1809,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -1823,6 +1823,7 @@ use namespace CoC;
 					HP = minHP();
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
+				EngineCore.showUpDown(false);
 			}
 			return returnDamage;
 		}
@@ -1910,8 +1911,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reduceMagicDamage(damage);
@@ -1926,8 +1927,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -1937,6 +1938,7 @@ use namespace CoC;
 					HP = minHP();
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
+				EngineCore.showUpDown(false);
 			}
 			return returnDamage;
 		}
@@ -2004,8 +2006,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reduceFireDamage(damage);
@@ -2024,8 +2026,8 @@ use namespace CoC;
 						createStatusEffect(StatusEffects.HydraRegenerationDisabled, 0, 0, 0, 0);
 						outputText(" <b>The fire damage you took suddenly weakened your ability to regenerate!</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -2036,6 +2038,7 @@ use namespace CoC;
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
 			}
+			EngineCore.showUpDown(false);
 			return returnDamage;
 		}
 		public function reduceFireDamage(damage:Number):Number {
@@ -2111,8 +2114,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reduceIceDamage(damage);
@@ -2127,8 +2130,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -2138,6 +2141,7 @@ use namespace CoC;
 					HP = minHP();
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
+				EngineCore.showUpDown(false);
 			}
 			return returnDamage;
 		}
@@ -2202,8 +2206,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reduceLightningDamage(damage);
@@ -2218,8 +2222,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -2229,6 +2233,7 @@ use namespace CoC;
 					HP = minHP();
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
+				EngineCore.showUpDown(false);
 			}
 			return returnDamage;
 		}
@@ -2293,8 +2298,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reduceDarknessDamage(damage);
@@ -2309,8 +2314,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -2320,7 +2325,9 @@ use namespace CoC;
 					HP = minHP();
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
+				EngineCore.showUpDown(false);
 			}
+			
 			return returnDamage;
 		}
 		public function reduceDarknessDamage(damage:Number):Number {
@@ -2386,8 +2393,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">Absorbed " + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">Absorbed " + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('mana');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('mana');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				else {
 					damage = reducePoisonDamage(damage);
@@ -2402,8 +2409,8 @@ use namespace CoC;
 						if (damage > 0) outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
 						else outputText("<b>(<font color=\"#000080\">" + damage + "</font>)</b>");
 					}
-					game.mainView.statsView.showStatDown('hp');
-					dynStats("lus", 0); //Force display arrow.
+					//game.mainView.statsView.showStatDown('hp');
+					//dynStats("lus", 0); //Force display arrow.
 				}
 				if (flags[kFLAGS.MINOTAUR_CUM_REALLY_ADDICTED_STATE] > 0) {
 					dynStats("lus", int(damage / 2));
@@ -2414,6 +2421,7 @@ use namespace CoC;
 					//This call did nothing. There is no event 5010: if (game.inCombat) game.doNext(5010);
 				}
 			}
+			EngineCore.showUpDown(false);
 			return returnDamage;
 		}
 		public function reducePoisonDamage(damage:Number):Number {
@@ -7520,7 +7528,7 @@ use namespace CoC;
 					modThickness(100, weightChange);
 					hunger = maxHunger();
 				}
-				if (hunger > oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatUp('hunger');
+				//if (hunger > oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatUp('hunger');
 				//game.dynStats("lus", 0, "scale", false);
 				if (nl) outputText("\n");
 				//Messages
@@ -7537,21 +7545,23 @@ use namespace CoC;
 				if (oldHunger >= 240) EngineCore.awardAchievement("Epic Glutton ", kACHIEVEMENTS.REALISTIC_EPIC_GLUTTON);
 				if (oldHunger >= 490) EngineCore.awardAchievement("Legendary Glutton ", kACHIEVEMENTS.REALISTIC_LEGENDARY_GLUTTON);
 				if (oldHunger >= 990) EngineCore.awardAchievement("Mythical Glutton ", kACHIEVEMENTS.REALISTIC_MYTHICAL_GLUTTON);
-				if (hunger > oldHunger) CoC.instance.mainView.statsView.showStatUp("hunger");
-				dynStats("lus", 0, "scale", false);
-				EngineCore.statScreenRefresh();
+				//if (hunger > oldHunger) CoC.instance.mainView.statsView.showStatUp("hunger");
+				//dynStats("lus", 0, "scale", false);
+				EngineCore.showUpDown(false)
+				EngineCore.statScreenRefresh(false);
 			}
 		}
 		public function refillGargoyleHunger(amnt:Number = 0, nl:Boolean = true):void {
 			var oldHunger:Number = hunger;
 			hunger += amnt;
 			if (hunger > maxHunger()) hunger = maxHunger();
-			if (hunger > oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatUp('hunger');
+			//if (hunger > oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatUp('hunger');
 			//game.dynStats("lus", 0, "scale", false);
 			if (nl) outputText("\n");
-			if (hunger > oldHunger) CoC.instance.mainView.statsView.showStatUp("hunger");
-			dynStats("lus", 0, "scale", false);
-			EngineCore.statScreenRefresh();
+			//if (hunger > oldHunger) CoC.instance.mainView.statsView.showStatUp("hunger");
+			//dynStats("lus", 0, "scale", false);
+			EngineCore.showUpDown(false);
+			EngineCore.statScreenRefresh(false);
 		}
 		
 		/**
@@ -7562,8 +7572,9 @@ use namespace CoC;
 			var oldHunger:Number = hunger;
 			hunger -= amnt;
 			if (hunger < 0) hunger = 0;
-			if (hunger < oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatDown('hunger');
-			dynStats("lus", 0, "scale", false);
+			//if (hunger < oldHunger && flags[kFLAGS.USE_OLD_INTERFACE] == 0) CoC.instance.mainView.statsView.showStatDown('hunger');
+			//dynStats("lus", 0, "scale", false);
+			EngineCore.showUpDown(false);
 		}
 		
 		public function corruptionTolerance():int {
@@ -8483,8 +8494,8 @@ use namespace CoC;
 				cor:0
 			};
 		private function calcMaxStatsRacial():void {
-			if(flags[kFLAGS.TIMES_TRANSFORMED] != _NeedsStatsRacialBonusRefresh) {
-			Begin("Player", "getAllMaxStats.racial");
+			var _updateStats:Boolean = _NeedsStatsPerkBonusRefresh || (flags[kFLAGS.TIMES_TRANSFORMED] != _NeedsStatsRacialBonusRefresh);
+			if (!_updateStats)	return; //no calculation necessary
 			var maxStr:int = 0;
 			var maxTou:int = 0;
 			var maxSpe:int = 0;
@@ -8493,7 +8504,10 @@ use namespace CoC;
 			var maxLib:int = 0;
 			var maxSen:int = 0;
 			var maxCor:int = 0;
-			var newGamePlusMod:int = this.newGamePlusMod()+1;
+			var newGamePlusMod:int = this.newGamePlusMod() + 1;
+			//recalc racial bonus only if changed
+			if(true/*flags[kFLAGS.TIMES_TRANSFORMED] != _NeedsStatsRacialBonusRefresh*/ ) {
+			Begin("Player", "getAllMaxStats.racial");
 			//Alter max stats depending on race (+15 za pkt)
 			if (cowScore() >= 4) {
 				if (cowScore() >= 10) {
@@ -9404,422 +9418,425 @@ use namespace CoC;
 			_NeedsStatsRacialBonusRefresh = flags[kFLAGS.TIMES_TRANSFORMED]
 			End("Player", "getAllMaxStats.racial");
 		}
-			if(_NeedsStatsPerkBonusRefresh){
-			Begin("Player","getAllMaxStats.perks2");
-			if (findPerk(PerkLib.ChimericalBodyInitialStage) >= 0) {
-				maxTou += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodySemiBasicStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodyBasicStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodyAdvancedStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodySemiSuperiorStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodySuperiorStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (10 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodyPeerlessStage) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (10 * newGamePlusMod);
-				maxSpe += (10 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ChimericalBodySemiEpicStage) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (10 * newGamePlusMod);
-				maxWis += (10 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-				maxSen += (10 * newGamePlusMod);// 8/8/8/7/7/7/7
-			}
-			if (findPerk(PerkLib.ChimericalBodyEpicStage) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (10 * newGamePlusMod);
-				maxSpe += (10 * newGamePlusMod);
-				maxInt += (10 * newGamePlusMod);
-				maxWis += (10 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);// 10/10/10/7/7/6/6
-			}
-			if (findPerk(PerkLib.BlackHeartFinalForm) >= 0) {
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.CatlikeNimblenessEvolved) >= 0) maxSpe += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.DraconicLungs) >= 0) maxSpe += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.DraconicLungsEvolved) >= 0) {
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.DraconicLungsFinalForm) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ElvishPeripheralNervSysEvolved) >= 0) maxSpe += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.ElvishPeripheralNervSysFinalForm) >= 0) maxSpe += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.GorgonsEyesEvolved) >= 0) {
-				maxSpe += (5 * newGamePlusMod);
-				maxSen += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.HinezumiBurningBloodFinalForm) >= 0) maxTou += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.KitsuneThyroidGland) >= 0) maxSpe += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.KitsuneThyroidGlandEvolved) >= 0) {
-				maxSpe += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.KitsuneThyroidGlandEvolved) >= 0) {
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.LactaBovinaOvariesEvolved) >= 0) maxLib += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.LactaBovinaOvariesFinalForm) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.MantislikeAgility) >= 0) {
-				if (hasCoatOfType(Skin.CHITIN) && findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (20 * newGamePlusMod);
-				if ((skinType == Skin.SCALES && findPerk(PerkLib.ThickSkin) >= 0) || hasCoatOfType(Skin.CHITIN)) maxSpe += (15 * newGamePlusMod);
-				if (skinType == Skin.SCALES) maxSpe += (10 * newGamePlusMod);
-				if (findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.MantislikeAgilityEvolved) >= 0) {
-				if (hasCoatOfType(Skin.CHITIN) && findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (25 * newGamePlusMod);
-				if ((skinType == Skin.SCALES && findPerk(PerkLib.ThickSkin) >= 0) || hasCoatOfType(Skin.CHITIN)) maxSpe += (20 * newGamePlusMod);
-				if (skinType == Skin.SCALES) maxSpe += (15 * newGamePlusMod);
-				if (findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.MinotaurTesticlesEvolved) >= 0) maxLib += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.MinotaurTesticlesFinalForm) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.NaturalPunchingBag) >= 0) maxTou += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.NaturalPunchingBagEvolved) >= 0) maxTou += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.NaturalPunchingBagFinalForm) >= 0) maxTou += (20 * newGamePlusMod);
-			if (findPerk(PerkLib.ObsidianHeartFinalForm) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.OniMusculature) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.OniMusculatureEvolved) >= 0) maxStr += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.OniMusculatureFinalForm) >= 0) maxStr += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.OrcAdrenalGlandsEvolved) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.OrcAdrenalGlandsFinalForm) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.PigBoarFat) >= 0) maxTou += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.PigBoarFatEvolved) >= 0) maxTou += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.PigBoarFatFinalForm) >= 0) maxTou += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.SalamanderAdrenalGlands) >= 0) {
-				maxTou += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.SalamanderAdrenalGlandsEvolved) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.SalamanderAdrenalGlandsFinalForm) >= 0) {
-				maxStr += (15 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (15 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ScyllaInkGlands) >= 0) maxStr += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.TrachealSystemEvolved) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.TrachealSystemFinalForm) >= 0) maxSpe += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.VenomGlandsFinalForm) >= 0) maxTou += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.EzekielBlessing) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			//Perks
-			if (findPerk(PerkLib.JobAllRounder) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-				maxSen += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobBeastWarrior) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxTou += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-				if (findPerk(PerkLib.ImprovingNaturesBlueprintsApexPredator) >= 0) {
+			//recalc perk bonus only if changed
+			if(true /*_NeedsStatsPerkBonusRefresh*/ ){	
+				Begin("Player","getAllMaxStats.perks2");
+				if (findPerk(PerkLib.ChimericalBodyInitialStage) >= 0) {
+					maxTou += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodySemiBasicStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodyBasicStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodyAdvancedStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodySemiSuperiorStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodySuperiorStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (10 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodyPeerlessStage) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (10 * newGamePlusMod);
+					maxSpe += (10 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ChimericalBodySemiEpicStage) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxInt += (10 * newGamePlusMod);
+					maxWis += (10 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
+					maxSen += (10 * newGamePlusMod);// 8/8/8/7/7/7/7
+				}
+				if (findPerk(PerkLib.ChimericalBodyEpicStage) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (10 * newGamePlusMod);
+					maxSpe += (10 * newGamePlusMod);
+					maxInt += (10 * newGamePlusMod);
+					maxWis += (10 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);// 10/10/10/7/7/6/6
+				}
+				if (findPerk(PerkLib.BlackHeartFinalForm) >= 0) {
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.CatlikeNimblenessEvolved) >= 0) maxSpe += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.DraconicLungs) >= 0) maxSpe += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.DraconicLungsEvolved) >= 0) {
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.DraconicLungsFinalForm) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ElvishPeripheralNervSysEvolved) >= 0) maxSpe += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.ElvishPeripheralNervSysFinalForm) >= 0) maxSpe += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.GorgonsEyesEvolved) >= 0) {
+					maxSpe += (5 * newGamePlusMod);
+					maxSen += (10 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.HinezumiBurningBloodFinalForm) >= 0) maxTou += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.KitsuneThyroidGland) >= 0) maxSpe += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.KitsuneThyroidGlandEvolved) >= 0) {
+					maxSpe += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.KitsuneThyroidGlandEvolved) >= 0) {
+					maxSpe += (5 * newGamePlusMod);
 					maxInt += (5 * newGamePlusMod);
 					maxWis += (5 * newGamePlusMod);
 				}
-				else {
-					maxInt -= (5 * newGamePlusMod);
-					maxWis -= (5 * newGamePlusMod);
+				if (findPerk(PerkLib.LactaBovinaOvariesEvolved) >= 0) maxLib += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.LactaBovinaOvariesFinalForm) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
 				}
-			}
-			if (findPerk(PerkLib.JobBrawler) >= 0) maxStr += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.JobCourtesan) >= 0) maxLib += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.JobDefender) >= 0) maxTou += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.JobDervish) >= 0) maxSpe += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.JobElementalConjurer) >= 0) maxWis += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobEnchanter) >= 0) maxInt += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.JobEromancer) >= 0) {
-				maxInt += (5 * newGamePlusMod);
-				maxLib += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobGolemancer) >= 0) {
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobGuardian) >= 0) maxTou += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobGunslinger) >= 0) maxWis += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.JobHealer) >= 0) {
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobHunter) >= 0) {
-				maxSpe += (10 * newGamePlusMod);
-				maxInt += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobKnight) >= 0) maxTou += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.JobLeader) >= 0) {
-				maxInt += (5 * newGamePlusMod);
-				maxWis += (5 * newGamePlusMod);
-				if (findPerk(PerkLib.ShootTheLoadAndHitTheRoad) >= 0) maxSpe += (5 * newGamePlusMod);
-				if (findPerk(PerkLib.ShootTheLoadAndHitTheRoad) < 0) maxLib -= (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobMonk) >= 0) maxWis += (15 * newGamePlusMod);
-			if (findPerk(PerkLib.JobRanger) >= 0) maxSpe += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobRogue) >= 0) {
-				maxStr += (5 * newGamePlusMod);
-				maxSpe += (5 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.JobSeducer) >= 0) maxLib += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobSorcerer) >= 0) maxInt += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobSoulCultivator) >= 0) maxWis += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.JobSwordsman) >= 0) maxStr += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.JobWarlord) >= 0) maxTou += (20 * newGamePlusMod);
-			if (findPerk(PerkLib.JobWarrior) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.PrestigeJobArcaneArcher) >= 0) {
-				maxSpe += (40 * newGamePlusMod);
-				maxInt += (40 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobBerserker) >= 0) {
-				maxStr += (60 * newGamePlusMod);
-				maxTou += (20 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobGreySage) >= 0) {
-				maxInt += (80 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobSeer) >= 0) {
-				maxInt += (60 * newGamePlusMod);
-				maxWis += (20 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobSentinel) >= 0) {
-				maxStr += (20 * newGamePlusMod);
-				maxTou += (60 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobSoulArcher) >= 0) {
-				maxSpe += (40 * newGamePlusMod);
-				maxWis += (40 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobSoulArtMaster) >= 0) {
-				maxStr += (40 * newGamePlusMod);
-				maxWis += (40 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobSpellKnight) >= 0) {
-				maxStr += (40 * newGamePlusMod);
-				maxInt += (40 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobTempest) >= 0) {
-				maxStr += (40 * newGamePlusMod);
-				maxSpe += (40 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.PrestigeJobWarlock) >= 0) {
-				maxInt += (60 * newGamePlusMod);
-				maxLib += (20 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.DeityJobMunchkin) >= 0) {
-				maxStr += (25 * newGamePlusMod);
-				maxTou += (25 * newGamePlusMod);
-				maxSpe += (25 * newGamePlusMod);
-				maxInt += (25 * newGamePlusMod);
-				maxWis += (25 * newGamePlusMod);
-				maxLib += (15 * newGamePlusMod);
-				maxSen += (15 * newGamePlusMod);
-			}
-			
-			if (findPerk(PerkLib.CarefulButRecklessAimAndShooting) >= 0 && findPerk(PerkLib.ColdAim) < 0) maxTou -= (15 * newGamePlusMod);
-			if (findPerk(PerkLib.WeaponMastery) >= 0) maxStr += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.WeaponGrandMastery) >= 0) maxStr += (10 * newGamePlusMod);
-			if (findPerk(PerkLib.ElementalConjurerResolve) >= 0) {
-				if (findPerk(PerkLib.ElementalConjurerMindAndBodyResolve) < 0) {
-					maxStr -= (15 * newGamePlusMod);
-					maxTou -= (15 * newGamePlusMod);
-					maxSpe -= (15 * newGamePlusMod);
+				if (findPerk(PerkLib.MantislikeAgility) >= 0) {
+					if (hasCoatOfType(Skin.CHITIN) && findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (20 * newGamePlusMod);
+					if ((skinType == Skin.SCALES && findPerk(PerkLib.ThickSkin) >= 0) || hasCoatOfType(Skin.CHITIN)) maxSpe += (15 * newGamePlusMod);
+					if (skinType == Skin.SCALES) maxSpe += (10 * newGamePlusMod);
+					if (findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (5 * newGamePlusMod);
 				}
-				maxInt += (20 * newGamePlusMod);
-				maxWis += (30 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ElementalConjurerDedication) >= 0) {
-				if (findPerk(PerkLib.ElementalConjurerMindAndBodyDedication) < 0) {
-					maxStr -= (30 * newGamePlusMod);
-					maxTou -= (30 * newGamePlusMod);
-					maxSpe -= (30 * newGamePlusMod);
+				if (findPerk(PerkLib.MantislikeAgilityEvolved) >= 0) {
+					if (hasCoatOfType(Skin.CHITIN) && findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (25 * newGamePlusMod);
+					if ((skinType == Skin.SCALES && findPerk(PerkLib.ThickSkin) >= 0) || hasCoatOfType(Skin.CHITIN)) maxSpe += (20 * newGamePlusMod);
+					if (skinType == Skin.SCALES) maxSpe += (15 * newGamePlusMod);
+					if (findPerk(PerkLib.ThickSkin) >= 0) maxSpe += (10 * newGamePlusMod);
 				}
-				maxInt += (40 * newGamePlusMod);
-				maxWis += (60 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.ElementalConjurerSacrifice) >= 0) {
-				if (findPerk(PerkLib.ElementalConjurerMindAndBodySacrifice) < 0) {
-					maxStr -= (45 * newGamePlusMod);
-					maxTou -= (45 * newGamePlusMod);
-					maxSpe -= (45 * newGamePlusMod);
+				if (findPerk(PerkLib.MinotaurTesticlesEvolved) >= 0) maxLib += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.MinotaurTesticlesFinalForm) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
 				}
-				maxInt += (60 * newGamePlusMod);
-				maxWis += (90 * newGamePlusMod);
+				if (findPerk(PerkLib.NaturalPunchingBag) >= 0) maxTou += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.NaturalPunchingBagEvolved) >= 0) maxTou += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.NaturalPunchingBagFinalForm) >= 0) maxTou += (20 * newGamePlusMod);
+				if (findPerk(PerkLib.ObsidianHeartFinalForm) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.OniMusculature) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.OniMusculatureEvolved) >= 0) maxStr += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.OniMusculatureFinalForm) >= 0) maxStr += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.OrcAdrenalGlandsEvolved) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.OrcAdrenalGlandsFinalForm) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.PigBoarFat) >= 0) maxTou += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.PigBoarFatEvolved) >= 0) maxTou += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.PigBoarFatFinalForm) >= 0) maxTou += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.SalamanderAdrenalGlands) >= 0) {
+					maxTou += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.SalamanderAdrenalGlandsEvolved) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.SalamanderAdrenalGlandsFinalForm) >= 0) {
+					maxStr += (15 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (15 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ScyllaInkGlands) >= 0) maxStr += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.TrachealSystemEvolved) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.TrachealSystemFinalForm) >= 0) maxSpe += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.VenomGlandsFinalForm) >= 0) maxTou += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.EzekielBlessing) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				//Perks
+				if (findPerk(PerkLib.JobAllRounder) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+					maxSen += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobBeastWarrior) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxTou += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+					if (findPerk(PerkLib.ImprovingNaturesBlueprintsApexPredator) >= 0) {
+						maxInt += (5 * newGamePlusMod);
+						maxWis += (5 * newGamePlusMod);
+					}
+					else {
+						maxInt -= (5 * newGamePlusMod);
+						maxWis -= (5 * newGamePlusMod);
+					}
+				}
+				if (findPerk(PerkLib.JobBrawler) >= 0) maxStr += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.JobCourtesan) >= 0) maxLib += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.JobDefender) >= 0) maxTou += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.JobDervish) >= 0) maxSpe += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.JobElementalConjurer) >= 0) maxWis += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobEnchanter) >= 0) maxInt += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.JobEromancer) >= 0) {
+					maxInt += (5 * newGamePlusMod);
+					maxLib += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobGolemancer) >= 0) {
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobGuardian) >= 0) maxTou += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobGunslinger) >= 0) maxWis += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.JobHealer) >= 0) {
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobHunter) >= 0) {
+					maxSpe += (10 * newGamePlusMod);
+					maxInt += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobKnight) >= 0) maxTou += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.JobLeader) >= 0) {
+					maxInt += (5 * newGamePlusMod);
+					maxWis += (5 * newGamePlusMod);
+					if (findPerk(PerkLib.ShootTheLoadAndHitTheRoad) >= 0) maxSpe += (5 * newGamePlusMod);
+					if (findPerk(PerkLib.ShootTheLoadAndHitTheRoad) < 0) maxLib -= (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobMonk) >= 0) maxWis += (15 * newGamePlusMod);
+				if (findPerk(PerkLib.JobRanger) >= 0) maxSpe += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobRogue) >= 0) {
+					maxStr += (5 * newGamePlusMod);
+					maxSpe += (5 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.JobSeducer) >= 0) maxLib += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobSorcerer) >= 0) maxInt += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobSoulCultivator) >= 0) maxWis += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.JobSwordsman) >= 0) maxStr += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.JobWarlord) >= 0) maxTou += (20 * newGamePlusMod);
+				if (findPerk(PerkLib.JobWarrior) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.PrestigeJobArcaneArcher) >= 0) {
+					maxSpe += (40 * newGamePlusMod);
+					maxInt += (40 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobBerserker) >= 0) {
+					maxStr += (60 * newGamePlusMod);
+					maxTou += (20 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobGreySage) >= 0) {
+					maxInt += (80 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobSeer) >= 0) {
+					maxInt += (60 * newGamePlusMod);
+					maxWis += (20 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobSentinel) >= 0) {
+					maxStr += (20 * newGamePlusMod);
+					maxTou += (60 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobSoulArcher) >= 0) {
+					maxSpe += (40 * newGamePlusMod);
+					maxWis += (40 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobSoulArtMaster) >= 0) {
+					maxStr += (40 * newGamePlusMod);
+					maxWis += (40 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobSpellKnight) >= 0) {
+					maxStr += (40 * newGamePlusMod);
+					maxInt += (40 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobTempest) >= 0) {
+					maxStr += (40 * newGamePlusMod);
+					maxSpe += (40 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.PrestigeJobWarlock) >= 0) {
+					maxInt += (60 * newGamePlusMod);
+					maxLib += (20 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.DeityJobMunchkin) >= 0) {
+					maxStr += (25 * newGamePlusMod);
+					maxTou += (25 * newGamePlusMod);
+					maxSpe += (25 * newGamePlusMod);
+					maxInt += (25 * newGamePlusMod);
+					maxWis += (25 * newGamePlusMod);
+					maxLib += (15 * newGamePlusMod);
+					maxSen += (15 * newGamePlusMod);
+				}
+				
+				if (findPerk(PerkLib.CarefulButRecklessAimAndShooting) >= 0 && findPerk(PerkLib.ColdAim) < 0) maxTou -= (15 * newGamePlusMod);
+				if (findPerk(PerkLib.WeaponMastery) >= 0) maxStr += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.WeaponGrandMastery) >= 0) maxStr += (10 * newGamePlusMod);
+				if (findPerk(PerkLib.ElementalConjurerResolve) >= 0) {
+					if (findPerk(PerkLib.ElementalConjurerMindAndBodyResolve) < 0) {
+						maxStr -= (15 * newGamePlusMod);
+						maxTou -= (15 * newGamePlusMod);
+						maxSpe -= (15 * newGamePlusMod);
+					}
+					maxInt += (20 * newGamePlusMod);
+					maxWis += (30 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ElementalConjurerDedication) >= 0) {
+					if (findPerk(PerkLib.ElementalConjurerMindAndBodyDedication) < 0) {
+						maxStr -= (30 * newGamePlusMod);
+						maxTou -= (30 * newGamePlusMod);
+						maxSpe -= (30 * newGamePlusMod);
+					}
+					maxInt += (40 * newGamePlusMod);
+					maxWis += (60 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.ElementalConjurerSacrifice) >= 0) {
+					if (findPerk(PerkLib.ElementalConjurerMindAndBodySacrifice) < 0) {
+						maxStr -= (45 * newGamePlusMod);
+						maxTou -= (45 * newGamePlusMod);
+						maxSpe -= (45 * newGamePlusMod);
+					}
+					maxInt += (60 * newGamePlusMod);
+					maxWis += (90 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.HclassHeavenTribulationSurvivor) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (10 * newGamePlusMod);
+					maxSpe += (10 * newGamePlusMod);
+					maxInt += (10 * newGamePlusMod);
+					maxWis += (10 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
+					maxSen += (10 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.GclassHeavenTribulationSurvivor) >= 0) {
+					maxStr += (15 * newGamePlusMod);
+					maxTou += (15 * newGamePlusMod);
+					maxSpe += (15 * newGamePlusMod);
+					maxInt += (15 * newGamePlusMod);
+					maxWis += (15 * newGamePlusMod);
+					maxLib += (15 * newGamePlusMod);
+					maxSen += (15 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.FclassHeavenTribulationSurvivor) >= 0) {
+					maxStr += (20 * newGamePlusMod);
+					maxTou += (20 * newGamePlusMod);
+					maxSpe += (20 * newGamePlusMod);
+					maxInt += (20 * newGamePlusMod);
+					maxWis += (20 * newGamePlusMod);
+					maxLib += (20 * newGamePlusMod);
+					maxSen += (20 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.EpicStrength) >= 0) maxStr += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendaryStrength) >= 0) maxStr += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalStrength) >= 0) maxStr += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicToughness) >= 0) maxTou += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendaryToughness) >= 0) maxTou += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalToughness) >= 0) maxTou += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicSpeed) >= 0) maxSpe += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendarySpeed) >= 0) maxSpe += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalSpeed) >= 0) maxSpe += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicIntelligence) >= 0) maxInt += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendaryIntelligence) >= 0) maxInt += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalIntelligence) >= 0) maxInt += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicWisdom) >= 0) maxWis += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendaryWisdom) >= 0) maxWis += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalWisdom) >= 0) maxWis += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicLibido) >= 0) maxLib += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendaryLibido) >= 0) maxLib += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalLibido) >= 0) maxLib += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.EpicSensitivity) >= 0) maxSen += (35 + (5 * newGamePlusMod));
+				if (findPerk(PerkLib.LegendarySensitivity) >= 0) maxSen += (50 + (10 * newGamePlusMod));
+				if (findPerk(PerkLib.MythicalSensitivity) >= 0) maxSen += (65 + (15 * newGamePlusMod));
+				if (findPerk(PerkLib.IronStomachSu) >= 0) maxTou += (5 * newGamePlusMod);
+				if (findPerk(PerkLib.SoulApprentice) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulPersonage) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulWarrior) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulSprite) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulScholar) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulElder) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulExalt) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulOverlord) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulTyrant) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulKing) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulEmperor) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.SoulAncestor) >= 0) maxWis += 5;
+				if (findPerk(PerkLib.EpicGolemMaker) >= 0) {
+					maxInt += 10;
+					maxWis += 10;
+				}
+				if (findPerk(PerkLib.LegendaryGolemMaker) >= 0) {
+					maxInt += 20;
+					maxWis += 20;
+				}
+				if (findPerk(PerkLib.MythicalGolemMaker) >= 0) {
+					maxInt += 30;
+					maxWis += 30;
+				}
+				if (findPerk(PerkLib.LimitBreakerFlesh1stStage) >= 0) {
+					maxStr += (10 * newGamePlusMod);
+					maxTou += (10 * newGamePlusMod);
+					maxSpe += (10 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.LimitBreakerFlesh2ndStage) >= 0) {
+					maxInt += (10 * newGamePlusMod);
+					maxWis += (10 * newGamePlusMod);
+					maxLib += (10 * newGamePlusMod);
+					maxSen += (10 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.LimitBreakerPsyche1stStage) >= 0) {
+					maxStr += (20 * newGamePlusMod);
+					maxTou += (20 * newGamePlusMod);
+					maxSpe += (20 * newGamePlusMod);
+				}
+				if (findPerk(PerkLib.LimitBreakerPsyche2ndStage) >= 0) {
+					maxInt += (20 * newGamePlusMod);
+					maxWis += (20 * newGamePlusMod);
+					maxLib += (20 * newGamePlusMod);
+					maxSen += (20 * newGamePlusMod);
+				}
+				if (hasPerk(PerkLib.ProductivityDrugs)) maxLib += perkv1(PerkLib.ProductivityDrugs);
+				if (hasPerk(PerkLib.TitanicStrength)) maxStr += Math.round(maxStr * 0.01 * Math.round(tallness / 3) * newGamePlusMod);
+				if (hasPerk(PerkLib.IcyFlesh)) maxTou = 1;
+				_NeedsStatsPerkBonusRefresh = false; 
+				End("Player", "getAllMaxStats.perks2");
 			}
-			if (findPerk(PerkLib.HclassHeavenTribulationSurvivor) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (10 * newGamePlusMod);
-				maxSpe += (10 * newGamePlusMod);
-				maxInt += (10 * newGamePlusMod);
-				maxWis += (10 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-				maxSen += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.GclassHeavenTribulationSurvivor) >= 0) {
-				maxStr += (15 * newGamePlusMod);
-				maxTou += (15 * newGamePlusMod);
-				maxSpe += (15 * newGamePlusMod);
-				maxInt += (15 * newGamePlusMod);
-				maxWis += (15 * newGamePlusMod);
-				maxLib += (15 * newGamePlusMod);
-				maxSen += (15 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.FclassHeavenTribulationSurvivor) >= 0) {
-				maxStr += (20 * newGamePlusMod);
-				maxTou += (20 * newGamePlusMod);
-				maxSpe += (20 * newGamePlusMod);
-				maxInt += (20 * newGamePlusMod);
-				maxWis += (20 * newGamePlusMod);
-				maxLib += (20 * newGamePlusMod);
-				maxSen += (20 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.EpicStrength) >= 0) maxStr += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendaryStrength) >= 0) maxStr += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalStrength) >= 0) maxStr += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicToughness) >= 0) maxTou += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendaryToughness) >= 0) maxTou += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalToughness) >= 0) maxTou += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicSpeed) >= 0) maxSpe += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendarySpeed) >= 0) maxSpe += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalSpeed) >= 0) maxSpe += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicIntelligence) >= 0) maxInt += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendaryIntelligence) >= 0) maxInt += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalIntelligence) >= 0) maxInt += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicWisdom) >= 0) maxWis += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendaryWisdom) >= 0) maxWis += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalWisdom) >= 0) maxWis += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicLibido) >= 0) maxLib += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendaryLibido) >= 0) maxLib += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalLibido) >= 0) maxLib += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.EpicSensitivity) >= 0) maxSen += (35 + (5 * newGamePlusMod));
-			if (findPerk(PerkLib.LegendarySensitivity) >= 0) maxSen += (50 + (10 * newGamePlusMod));
-			if (findPerk(PerkLib.MythicalSensitivity) >= 0) maxSen += (65 + (15 * newGamePlusMod));
-			if (findPerk(PerkLib.IronStomachSu) >= 0) maxTou += (5 * newGamePlusMod);
-			if (findPerk(PerkLib.SoulApprentice) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulPersonage) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulWarrior) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulSprite) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulScholar) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulElder) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulExalt) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulOverlord) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulTyrant) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulKing) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulEmperor) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.SoulAncestor) >= 0) maxWis += 5;
-			if (findPerk(PerkLib.EpicGolemMaker) >= 0) {
-				maxInt += 10;
-				maxWis += 10;
-			}
-			if (findPerk(PerkLib.LegendaryGolemMaker) >= 0) {
-				maxInt += 20;
-				maxWis += 20;
-			}
-			if (findPerk(PerkLib.MythicalGolemMaker) >= 0) {
-				maxInt += 30;
-				maxWis += 30;
-			}
-			if (findPerk(PerkLib.LimitBreakerFlesh1stStage) >= 0) {
-				maxStr += (10 * newGamePlusMod);
-				maxTou += (10 * newGamePlusMod);
-				maxSpe += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.LimitBreakerFlesh2ndStage) >= 0) {
-				maxInt += (10 * newGamePlusMod);
-				maxWis += (10 * newGamePlusMod);
-				maxLib += (10 * newGamePlusMod);
-				maxSen += (10 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.LimitBreakerPsyche1stStage) >= 0) {
-				maxStr += (20 * newGamePlusMod);
-				maxTou += (20 * newGamePlusMod);
-				maxSpe += (20 * newGamePlusMod);
-			}
-			if (findPerk(PerkLib.LimitBreakerPsyche2ndStage) >= 0) {
-				maxInt += (20 * newGamePlusMod);
-				maxWis += (20 * newGamePlusMod);
-				maxLib += (20 * newGamePlusMod);
-				maxSen += (20 * newGamePlusMod);
-			}
-			if (hasPerk(PerkLib.ProductivityDrugs)) maxLib += perkv1(PerkLib.ProductivityDrugs);
-			if (hasPerk(PerkLib.TitanicStrength)) maxStr += Math.round(maxStr * 0.01 * Math.round(tallness / 3) * newGamePlusMod);
-			if (hasPerk(PerkLib.IcyFlesh)) maxTou = 1;
-			
 			this._MaxStatsRacialBonus.str = maxStr;
 			this._MaxStatsRacialBonus.tou = maxTou;
 			this._MaxStatsRacialBonus.spe = maxSpe;
@@ -9828,9 +9845,6 @@ use namespace CoC;
 			this._MaxStatsRacialBonus.lib = maxLib;
 			this._MaxStatsRacialBonus.sen = maxSen;
 			this._MaxStatsRacialBonus.cor = maxCor;
-			_NeedsStatsPerkBonusRefresh = false; 
-			End("Player", "getAllMaxStats.perks2");
-		}
 	}
 			
 		
@@ -9858,7 +9872,7 @@ use namespace CoC;
 			{
 				str += statusEffectv2(StatusEffects.DriderIncubusVenom);
 				removeStatusEffect(StatusEffects.DriderIncubusVenom);
-				CoC.instance.mainView.statsView.showStatUp('str');
+				//CoC.instance.mainView.statsView.showStatUp('str');
 			}
 			if(CoC.instance.monster.hasStatusEffect(StatusEffects.Sandstorm)) CoC.instance.monster.removeStatusEffect(StatusEffects.Sandstorm);
 			if(hasStatusEffect(StatusEffects.DwarfRage)) {
@@ -9885,12 +9899,12 @@ use namespace CoC;
 			}
 			if(CoC.instance.monster.hasStatusEffect(StatusEffects.TwuWuv)) {
 				inte += CoC.instance.monster.statusEffectv1(StatusEffects.TwuWuv);
-				EngineCore.statScreenRefresh();
-				CoC.instance.mainView.statsView.showStatUp( 'inte' );
+				//EngineCore.statScreenRefresh();
+				//CoC.instance.mainView.statsView.showStatUp( 'inte' );
 			}
 			if(hasStatusEffect(StatusEffects.NagaVenom)) {
 				spe += statusEffectv1(StatusEffects.NagaVenom);
-				CoC.instance.mainView.statsView.showStatUp( 'spe' );
+				//CoC.instance.mainView.statsView.showStatUp( 'spe' );
 				removeStatusEffect(StatusEffects.NagaVenom);
 			}
 			if(hasStatusEffect(StatusEffects.MedusaVenom)) {
@@ -9898,15 +9912,15 @@ use namespace CoC;
 				tou += statusEffectv2(StatusEffects.MedusaVenom);
 				spe += statusEffectv3(StatusEffects.MedusaVenom);
 				inte += statusEffectv4(StatusEffects.MedusaVenom);
-				CoC.instance.mainView.statsView.showStatUp( 'str' );
-				CoC.instance.mainView.statsView.showStatUp( 'tou' );
-				CoC.instance.mainView.statsView.showStatUp( 'spe' );
-				CoC.instance.mainView.statsView.showStatUp( 'inte' );
+				//CoC.instance.mainView.statsView.showStatUp( 'str' );
+				//CoC.instance.mainView.statsView.showStatUp( 'tou' );
+				//CoC.instance.mainView.statsView.showStatUp( 'spe' );
+				//CoC.instance.mainView.statsView.showStatUp( 'inte' );
 				removeStatusEffect(StatusEffects.MedusaVenom);
 			}
 			if(hasStatusEffect(StatusEffects.Frostbite)) {
 				str += statusEffectv1(StatusEffects.Frostbite);
-				CoC.instance.mainView.statsView.showStatUp( 'str' );
+				//CoC.instance.mainView.statsView.showStatUp( 'str' );
 				removeStatusEffect(StatusEffects.Frostbite);
 			}
 			if(hasStatusEffect(StatusEffects.Flying)) {
@@ -10045,7 +10059,7 @@ use namespace CoC;
 			}
 			if(amount == 0) consumed = true;
 			return consumed;
-*/
+*/			
 		}
 
 		public function getLowestSlot(itype:ItemType):ItemSlotClass
@@ -10561,21 +10575,21 @@ use namespace CoC;
 			//These are reset when up/down arrows are hidden with
 			//hideUpDown();
 			//Just check str because they are either all 0 or real values
-			if(game.oldStats.oldStr == 0) {
-				game.oldStats.oldStr = str;
-				game.oldStats.oldTou = tou;
-				game.oldStats.oldSpe = spe;
-				game.oldStats.oldInte = inte;
-				game.oldStats.oldWis = wis;
-				game.oldStats.oldLib = lib;
-				game.oldStats.oldSens = sens;
-				game.oldStats.oldCor = cor;
-				game.oldStats.oldHP = HP;
-				game.oldStats.oldLust = lust;
-				game.oldStats.oldFatigue = fatigue;
-				game.oldStats.oldSoulforce = soulforce;
-				game.oldStats.oldHunger = hunger;
-			}
+			//if(game.oldStats.oldStr == 0) {		moved to EngineCore.ShowUpDown
+				//game.oldStats.oldStr = str;
+				//game.oldStats.oldTou = tou;
+				//game.oldStats.oldSpe = spe;
+				//game.oldStats.oldInte = inte;
+				//game.oldStats.oldWis = wis;
+				//game.oldStats.oldLib = lib;
+				//game.oldStats.oldSens = sens;
+				//game.oldStats.oldCor = cor;
+				//game.oldStats.oldHP = HP;
+				//game.oldStats.oldLust = lust;
+				//game.oldStats.oldFatigue = fatigue;
+				//game.oldStats.oldSoulforce = soulforce;
+				//game.oldStats.oldHunger = hunger;
+			//}
 			if (scale) {
 				//MOD CHANGES FOR PERKS
 				//Bimbos learn slower
@@ -10602,7 +10616,7 @@ use namespace CoC;
 				if (dcor > 0 && findPerk(PerkLib.PurityBlessing) >= 0) dcor *= 0.5;
 				if (dcor > 0 && findPerk(PerkLib.PureAndLoving) >= 0) dcor *= 0.75;
 				if (dcor > 0 && weapon == game.weapons.HNTCANE) dcor *= 0.5;
-				if (findPerk(PerkLib.AscensionMoralShifter) >= 0) dcor *= 1 + (perkv1(PerkLib.AscensionMoralShifter) * 0.2);
+				dcor *= 1 + (perkv1(PerkLib.AscensionMoralShifter) * 0.2); //if (findPerk(PerkLib.AscensionMoralShifter) >= 0) dcor *= 1 + (perkv1(PerkLib.AscensionMoralShifter) * 0.2);
 				if (findPerk(PerkLib.Lycanthropy) >= 0) dcor *= 1.2;
 				if (hasStatusEffect(StatusEffects.BlessingOfDivineFera)) dcor *= 2;
 				
@@ -10615,13 +10629,13 @@ use namespace CoC;
 				
 				
 				//Bonus gain for perks!
-				if (findPerk(PerkLib.Strong) >= 0) dstr += dstr * perk(findPerk(PerkLib.Strong)).value1;
-				if (findPerk(PerkLib.Tough) >= 0) dtou += dtou * perk(findPerk(PerkLib.Tough)).value1;
-				if (findPerk(PerkLib.Fast) >= 0) dspe += dspe * perk(findPerk(PerkLib.Fast)).value1;
-				if (findPerk(PerkLib.Smart) >= 0) dinte += dinte * perk(findPerk(PerkLib.Smart)).value1;
-				if (findPerk(PerkLib.Wise) >= 0) dwis += dwis * perk(findPerk(PerkLib.Wise)).value1;
-				if (findPerk(PerkLib.Lusty) >= 0) dlib += dlib * perk(findPerk(PerkLib.Lusty)).value1;
-				if (findPerk(PerkLib.Sensitive) >= 0) dsens += dsens * perk(findPerk(PerkLib.Sensitive)).value1;
+				dstr += dstr * perkv1(PerkLib.Strong);//if (findPerk(PerkLib.Strong) >= 0) dstr += dstr * perk(findPerk(PerkLib.Strong)).value1;
+				dtou += dtou * perkv1(PerkLib.Tough);//if (findPerk(PerkLib.Tough) >= 0) dtou += dtou * perk(findPerk(PerkLib.Tough)).value1;
+				dspe += dspe * perkv1(PerkLib.Fast);//if (findPerk(PerkLib.Fast) >= 0) dspe += dspe * perk(findPerk(PerkLib.Fast)).value1;
+				dinte += dinte * perkv1(PerkLib.Smart);//if (findPerk(PerkLib.Smart) >= 0) dinte += dinte * perk(findPerk(PerkLib.Smart)).value1;
+				dwis += dwis * perkv1(PerkLib.Wise);//if (findPerk(PerkLib.Wise) >= 0) dwis += dwis * perk(findPerk(PerkLib.Wise)).value1;
+				dlib += dlib * perkv1(PerkLib.Lusty);//if (findPerk(PerkLib.Lusty) >= 0) dlib += dlib * perk(findPerk(PerkLib.Lusty)).value1;
+				dsens += dsens * perkv1(PerkLib.Sensitive);//if (findPerk(PerkLib.Sensitive) >= 0) dsens += dsens * perk(findPerk(PerkLib.Sensitive)).value1;
 				
 				// Uma's Str Cap from Perks (Moved to max stats)
 				/*if (findPerk(PerkLib.ChiReflowSpeed) >= 0)
@@ -10643,8 +10657,8 @@ use namespace CoC;
 			super.modStats(dstr,dtou,dspe,dinte,dwis,dlib,dsens,dlust,dcor,false,max);
 			//Refresh the stat pane with updated values
 			//mainView.statsView.showUpDown();
-			EngineCore.needsUpDownRefresh(false);
-			EngineCore.needsStatScreenRefresh(false);
+			EngineCore.showUpDown(false);
+			EngineCore.statScreenRefresh(false);
 		}
 	}
 }

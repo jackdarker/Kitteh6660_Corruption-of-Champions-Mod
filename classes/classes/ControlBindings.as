@@ -107,8 +107,8 @@ internal class ControlBindings {
                             var saveFile:* = SharedObject.getLocal("CoC_1", "/");
                             if (saveFile.data.exists) {
                                 if (CoC.instance.saves.loadGame("CoC_1")) {
-                                    EngineCore.showStats();
-                                    EngineCore.statScreenRefresh();
+                                    //EngineCore.showStats();
+                                    EngineCore.statScreenRefresh(true);
                                     EngineCore.clearOutput();
                                     EngineCore.outputText("Slot 1 Loaded!");
                                     EngineCore.doNext(EventParser.playerMenu);
@@ -125,8 +125,8 @@ internal class ControlBindings {
                             var saveFile:* = SharedObject.getLocal("CoC_2", "/");
                             if (saveFile.data.exists) {
                                 if (CoC.instance.saves.loadGame("CoC_2")) {
-                                    EngineCore.showStats();
-                                    EngineCore.statScreenRefresh();
+                                    //EngineCore.showStats();
+                                    EngineCore.statScreenRefresh(true);
                                     EngineCore.clearOutput();
                                     EngineCore.outputText("Slot 2 Loaded!");
                                     EngineCore.doNext(EventParser.playerMenu);
@@ -143,8 +143,8 @@ internal class ControlBindings {
                             var saveFile:* = SharedObject.getLocal("CoC_3", "/");
                             if (saveFile.data.exists) {
                                 if (CoC.instance.saves.loadGame("CoC_3")) {
-                                    EngineCore.showStats();
-                                    EngineCore.statScreenRefresh();
+                                    //EngineCore.showStats();
+                                    EngineCore.statScreenRefresh(true);
                                     EngineCore.clearOutput();
                                     EngineCore.outputText("Slot 3 Loaded!");
                                     EngineCore.doNext(EventParser.playerMenu);
@@ -161,8 +161,8 @@ internal class ControlBindings {
                             var saveFile:* = SharedObject.getLocal("CoC_4", "/");
                             if (saveFile.data.exists) {
                                 if (CoC.instance.saves.loadGame("CoC_4")) {
-                                    EngineCore.showStats();
-                                    EngineCore.statScreenRefresh();
+                                    //EngineCore.showStats();
+                                    EngineCore.statScreenRefresh(true);
                                     EngineCore.clearOutput();
                                     EngineCore.outputText("Slot 4 Loaded!");
                                     EngineCore.doNext(EventParser.playerMenu);
@@ -179,8 +179,8 @@ internal class ControlBindings {
                             var saveFile:* = SharedObject.getLocal("CoC_5", "/");
                             if (saveFile.data.exists) {
                                 if (CoC.instance.saves.loadGame("CoC_5")) {
-                                    EngineCore.showStats();
-                                    EngineCore.statScreenRefresh();
+                                    //EngineCore.showStats();
+                                    EngineCore.statScreenRefresh(true);
                                     EngineCore.clearOutput();
                                     EngineCore.outputText("Slot 5 Loaded!");
                                     EngineCore.doNext(EventParser.playerMenu);

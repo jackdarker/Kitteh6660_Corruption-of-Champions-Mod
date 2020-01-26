@@ -44,7 +44,7 @@ public class Shop extends TelAdreAbstractContent {
         localvars.debit.keyItem = keyItem;
         display("debit",localvars.debit);
         player.gems -= priceOverride >= 0 ? priceOverride : itype.value;
-        EngineCore.statScreenRefresh();
+        //EngineCore.statScreenRefresh();
         if (keyItem != "") {
             player.createKeyItem(keyItem, 0, 0, 0, 0);
             doNext(inside);

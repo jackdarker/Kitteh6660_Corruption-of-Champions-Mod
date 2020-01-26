@@ -415,7 +415,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface
 			outputText("\n\nHanding over the gems, you take the white shell back from her; true to her word, she's rounded it into a proper shield and fitted adjustable straps to the back.  Its hardness is indisputable, but you can only wonder if its liquid absorption properties are still intact.  Worth a test, right?");
 			//this is where the Dragonshell Shield lives, git you one!
 			player.gems -= 200;
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			player.removeKeyItem("Dragon Eggshell");
 			inventory.takeItem(shields.DRGNSHL, new YvonneArmorShop().enter);
 		}

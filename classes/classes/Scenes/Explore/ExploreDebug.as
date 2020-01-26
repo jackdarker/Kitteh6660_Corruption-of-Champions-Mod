@@ -150,21 +150,21 @@ package classes.Scenes.Explore
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    EngineCore.statScreenRefresh();
+                    EngineCore.statScreenRefresh(true);
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				m.onWon = function (hpVictory:Boolean, pcCameWorms:Boolean):void
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    EngineCore.statScreenRefresh();
+                    EngineCore.statScreenRefresh(true);
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				m.onPcRunAttempt = function ():void
 				{
                     CoC.instance.inCombat = false;
                     CoC.instance.player.clearStatuses(false);
-                    EngineCore.statScreenRefresh();
+                    EngineCore.statScreenRefresh(true);
 					exploreDebugMonsters(monsterIdx + 1);
 				};
 				outputText("You are going to fight " + m.a + " " + m.short + ".");
@@ -176,7 +176,7 @@ package classes.Scenes.Explore
 				addButton(2, "Heal", function():void{
 					player.HP = player.maxHP();
 					player.lust = 0;
-					EngineCore.statScreenRefresh();
+					EngineCore.statScreenRefresh(true);
 				});
 			}
 			if (monsterIdx>1) addButton(6, "Go Back", exploreDebugMonsters, monsterIdx-1);

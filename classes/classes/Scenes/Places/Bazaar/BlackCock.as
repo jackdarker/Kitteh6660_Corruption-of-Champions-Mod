@@ -146,7 +146,7 @@ import classes.lists.Gender;
 				return;
 			}
 			player.gems -= gemCost;
-			statScreenRefresh();
+			//statScreenRefresh();
 			inventory.takeItem(item, checkFoodMenu);
 		}
 		
@@ -191,7 +191,7 @@ import classes.lists.Gender;
 				return;
 			}
 			player.gems -= gemCost;
-			statScreenRefresh();
+			//statScreenRefresh();
 			eatFoodNomNom(foodName, foodEatDesc);
 		}
 		
@@ -379,7 +379,7 @@ import classes.lists.Gender;
 					outputText("\n\n<b>Something wrong has happened. Let me play you the song of my people. Actually, you should let Ormael/Aimozg/Oxdeception know.</b>");
 			}
 			player.gems -= 5;
-			statScreenRefresh();
+			//statScreenRefresh();
 			flags[kFLAGS.BLACK_COCK_ANITA_SONGS_LISTENED]++;
 			doNext(camp.returnToCampUseOneHour);
 		}
@@ -659,7 +659,7 @@ import classes.lists.Gender;
 				default:
 			}
 			player.gems -= 5;
-			statScreenRefresh();
+			//statScreenRefresh();
 			applyAndysSmokeEffect();
 			outputText("\n\nWhat do you want to do?");
 			menu();

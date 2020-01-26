@@ -303,7 +303,7 @@ import classes.StatusEffects;
 		
 		private function generateRoomMenu(tRoom:room):void
 		{
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			hideUpDown();
 			spriteSelect(-1);
 			SceneLib.dungeons.setTopButtons();

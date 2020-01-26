@@ -300,7 +300,7 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
 				outputText("\n\nYou have to lean on Isabella's shoulder while the two of your hike back to camp.  She clearly won.");
 				inCombat = false;
 				player.HP = 1;
-				EngineCore.statScreenRefresh();
+				//EngineCore.statScreenRefresh();
 				EngineCore.doNext(nextFunc);
 				return;
 			}
@@ -308,13 +308,13 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
 			if(monster.hasStatusEffect(StatusEffects.PeachLootLoss)) {
 				inCombat = false;
 				player.HP = 1;
-				EngineCore.statScreenRefresh();
+				EngineCore.statScreenRefresh(true);
 				return;
 			}
 			if(monster.short == "Ember") {
 				inCombat = false;
 				player.HP = 1;
-				EngineCore.statScreenRefresh();
+				//EngineCore.statScreenRefresh();
 				EngineCore.doNext(nextFunc);
 				return;
 			}
@@ -528,7 +528,7 @@ public function combatMenu(newRound:Boolean = true):void { //If returning from a
 	EngineCore.hideUpDown();
 	if (newRound) combatStatusesUpdate(); //Update Combat Statuses
 	display();
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	if (newRound) combatRoundOver();
 	if (combatIsOver()) return;
 	ui.mainMenu();
@@ -1507,7 +1507,7 @@ public function packAttack():void {
 			else outputText(monster.capitalA + monster.short + " <b>mutilates</b> you with powerful fists and " + monster.weaponVerb + "s! ");
 			player.takePhysDamage(damage, true);
 		}
-		EngineCore.statScreenRefresh();
+		EngineCore.statScreenRefresh(true);
 		outputText("\n");
 	}
 }
@@ -4751,7 +4751,7 @@ public function doPoisonDamage(damage:Number, apply:Boolean = true, display:Bool
 		if (player.hasPerk(PerkLib.BloodMage)
 			&& (type == USEMANA_MAGIC || type == USEMANA_WHITE || type == USEMANA_BLACK)) {
 			player.takePhysDamage(mod);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			return;
 		}
 		//Mana restoration buffs!
@@ -4759,13 +4759,14 @@ public function doPoisonDamage(damage:Number, apply:Boolean = true, display:Bool
 			mod *= manaRecoveryMultiplier();
 		}
 		player.mana = boundFloat(0, player.mana - mod, player.maxMana());
-		if(mod < 0) {
+		/*if(mod < 0) {
 			mainView.statsView.showStatUp( 'mana' );
 		}
 		if(mod > 0) {
 			mainView.statsView.showStatDown( 'mana' );
-		}
-		EngineCore.statScreenRefresh();
+		}*/
+		EngineCore.showUpDown(false);
+		EngineCore.statScreenRefresh(false);
 	}
 	public function manaRecoveryMultiplier():Number {
 		var multi:Number = 1;
@@ -4813,7 +4814,7 @@ public function fatigueImpl(mod:Number,type:Number  = USEFATG_NORMAL):void {
 		//Blood mages use HP for spells
 		if (player.hasPerk(PerkLib.BloodMage)) {
 			player.takePhysDamage(mod);
-			EngineCore.statScreenRefresh();
+			//EngineCore.statScreenRefresh();
 			return;
 		}
 	}
@@ -4824,16 +4825,17 @@ public function fatigueImpl(mod:Number,type:Number  = USEFATG_NORMAL):void {
 		mod *= fatigueRecoveryMultiplier();
 	}
 	player.fatigue += mod;
-	if(mod < 0) {
+	/*if(mod < 0) {
 		mainView.statsView.showStatUp( 'fatigue' );
 	}
 	if(mod > 0) {
 		mainView.statsView.showStatDown( 'fatigue' );
-	}
-	dynStats("lus", 0, "scale", false); //Force display fatigue up/down by invoking zero lust change.
+	}*/
+	//dynStats("lus", 0, "scale", false); //Force display fatigue up/down by invoking zero lust change.
 	if(player.fatigue > player.maxFatigue()) player.fatigue = player.maxFatigue();
-	if(player.fatigue < 0) player.fatigue = 0;
-	EngineCore.statScreenRefresh();
+	if (player.fatigue < 0) player.fatigue = 0;
+	EngineCore.showUpDown(false);
+	EngineCore.statScreenRefresh(false);
 }
 	public function fatigueRecoveryMultiplier():Number {
 		var multi:Number = 1;
@@ -5011,8 +5013,9 @@ public function awardPlayer(nextFunc:Function = null):void
 	inCombat = false;
 	player.gems += monster.gems;
 	player.XP += monster.XP;
-	mainView.statsView.showStatUp('xp');
-	dynStats("lust", 0, "scale", false); //Forces up arrow.
+	//mainView.statsView.showStatUp('xp');
+	//dynStats("lust", 0, "scale", false); //Forces up arrow.
+	EngineCore.showUpDown(false);
 }
 
 //Update combat status effects
@@ -5508,7 +5511,7 @@ private function combatStatusesUpdate():void {
 		if(player.hasPerk(PerkLib.Medicine) && rand(100) <= 14) {
 			outputText("You manage to cleanse [monster a] [monster name] venom from your system with your knowledge of medicine!\n\n");
 			player.spe += player.statusEffectv1(StatusEffects.NagaVenom);
-			mainView.statsView.showStatUp( 'spe' );
+			//mainView.statsView.showStatUp( 'spe' );
 			// speUp.visible = true;
 			// speDown.visible = false;
 			player.removeStatusEffect(StatusEffects.NagaVenom);
@@ -5529,10 +5532,10 @@ private function combatStatusesUpdate():void {
 			player.tou += player.statusEffectv2(StatusEffects.MedusaVenom);
 			player.spe += player.statusEffectv3(StatusEffects.MedusaVenom);
 			player.inte += player.statusEffectv4(StatusEffects.MedusaVenom);
-			mainView.statsView.showStatUp( 'str' );
+			/*mainView.statsView.showStatUp( 'str' );
 			mainView.statsView.showStatUp( 'tou' );
 			mainView.statsView.showStatUp( 'spe' );
-			mainView.statsView.showStatUp( 'inte' );
+			mainView.statsView.showStatUp( 'inte' );*/
 			player.removeStatusEffect(StatusEffects.MedusaVenom);
 		}
 		else if (player.str <= 5 && player.tou <= 5 && player.spe <= 5 && player.inte <= 5) player.takePhysDamage(5);
@@ -5602,7 +5605,7 @@ private function combatStatusesUpdate():void {
 			
 			player.str += player.statusEffectv2(StatusEffects.DriderIncubusVenom);
 			player.removeStatusEffect(StatusEffects.DriderIncubusVenom);
-			CoC.instance.mainView.statsView.showStatUp('str');
+			//CoC.instance.mainView.statsView.showStatUp('str');
 		}
 		else
 		{
@@ -5611,7 +5614,7 @@ private function combatStatusesUpdate():void {
 			{
 				player.str += player.statusEffectv2(StatusEffects.DriderIncubusVenom);
 				player.removeStatusEffect(StatusEffects.DriderIncubusVenom);
-				CoC.instance.mainView.statsView.showStatUp('str');
+				//CoC.instance.mainView.statsView.showStatUp('str');
 				outputText("The drider incubus’ venom wanes, the effects of the poision weakening as strength returns to your limbs!\n\n");
 			}
 			else
@@ -7217,7 +7220,7 @@ public function teaseXP(XP:Number = 0):void {
 	// Called after the monster's action. Increments round counter. Setups doNext to win/loss/combat menu
 public function combatRoundOver():void {
 	combatRound++;
-	EngineCore.statScreenRefresh();
+	EngineCore.statScreenRefresh(true);
 	flags[kFLAGS.ENEMY_CRITICAL] = 0;
 	combatIsOver();
 }

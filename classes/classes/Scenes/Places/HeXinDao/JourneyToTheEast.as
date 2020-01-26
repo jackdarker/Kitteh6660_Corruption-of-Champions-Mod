@@ -88,7 +88,7 @@ package classes.Scenes.Places.HeXinDao
 				return;
 			}
 			player.gems -= cost;
-			statScreenRefresh();
+			//statScreenRefresh();
 			outputText("\n\nThe barman hands over the drink you ordered. ");
 			inventory.takeItem(drink, drinkAlcohol);
 		}
@@ -135,7 +135,7 @@ package classes.Scenes.Places.HeXinDao
 				outputText("She picks up a small Copper colored plate and give it to you.\n\n");
 				outputText("\"<i>Well as of now you are officially a member of the adventurer guild. Tell whenever you are ready ask for a quest and I will direct you to your target.</i>\"\n\n");
 				flags[kFLAGS.SPIRIT_STONES] -= 5;
-				statScreenRefresh();
+				//statScreenRefresh();
 				player.createKeyItem("Adventurer Guild: Copper plate", 0, 0, 0, 0);
 				doNext(curry(enteringInn,false));
 			}
@@ -180,7 +180,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 1, 1);
 						player.destroyItems(useables.IMPSKLL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 7;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else {
 						outputText("The panda tap her foot on the ground.\n\n");
@@ -254,7 +254,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 1, 1);
 						player.destroyItems(useables.SEVTENT, 3);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else outputText("You try turn in the quest but Yang tells you you don’t have enough tentacles yet.\n\n");
 				}
@@ -317,7 +317,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 2, 1);
 						player.destroyItems(useables.DEMSKLL, 3);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else {
 						outputText("The panda tap her foot on the ground.\n\n");
@@ -398,7 +398,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests2, 2, 1);
 						player.destroyItems(useables.FIMPSKL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 7;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else outputText("You try turn in the quest but Yang tells you you don’t have enough feral imp skulls yet.\n\n");
 				}
@@ -461,7 +461,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests1, 3, 1);
 						player.destroyItems(useables.MINOHOR, 4);
 						flags[kFLAGS.SPIRIT_STONES] += 8;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else outputText("\"<i>Hey [name], I counted those horns and clearly you forgot a few. Get out there and bring me the remaining ones.</i>\"\n\n");
 				}
@@ -522,7 +522,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 2, 1);
 						player.destroyItems(useables.GREENGL, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 3;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else outputText("You try to turn in the quest but Yang tells you you don’t have enough gel yet.\n\n");
 				}
@@ -566,7 +566,7 @@ package classes.Scenes.Places.HeXinDao
 						player.addStatusValue(StatusEffects.AdventureGuildQuests4, 1, 1);
 						player.destroyItems(useables.B_CHITN, 5);
 						flags[kFLAGS.SPIRIT_STONES] += 4;
-						statScreenRefresh();
+						//statScreenRefresh();
 					}
 					else outputText("You try to turn in the quest but Yang tells you you don’t have enough chitin yet.\n\n");
 				}
@@ -615,7 +615,7 @@ package classes.Scenes.Places.HeXinDao
 					else flags[kFLAGS.GALIA_LVL_UP] += 0.05;
 					flags[kFLAGS.GALIA_AFFECTION] = 0;
 					flags[kFLAGS.SPIRIT_STONES] += 2;
-					statScreenRefresh();
+					//statScreenRefresh();
 				}
 				else outputText("You try turn in the quest but looking inside your bag Yang tells you you cant turn an empty bag in and need to capture an imp first.\n\n");
 			}
@@ -640,7 +640,7 @@ package classes.Scenes.Places.HeXinDao
 			flags[kFLAGS.GALIA_LVL_UP] = 0.53;
 			flags[kFLAGS.GALIA_AFFECTION] = 0;
 			flags[kFLAGS.SPIRIT_STONES] += 22;
-			statScreenRefresh();
+			//statScreenRefresh();
 			doNext(curry(enteringInn, false));
 		}
 		public function BoardkeeperYangQuestEzekiel1Keep():void {
@@ -700,7 +700,7 @@ package classes.Scenes.Places.HeXinDao
 			outputText("Yang wait at you arm crossed. You write a full job description and hand it over to Yang along with the stones. This done, she then posts it on the board as an iron plate request.\n\n");
 			flags[kFLAGS.SPIRIT_STONES] -= 10;
 			flags[kFLAGS.AURORA_LVL] = 0.35;
-			statScreenRefresh();
+			//statScreenRefresh();
 			doNext(curry(enteringInn,false));
 		}
 		public function BoardkeeperYangTalk():void {

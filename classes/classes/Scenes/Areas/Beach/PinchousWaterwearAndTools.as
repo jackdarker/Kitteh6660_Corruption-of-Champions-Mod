@@ -98,7 +98,7 @@ public class PinchousWaterwearAndTools extends BaseContent
 		}
 		private function debitWeapon(itype:ItemType):void {
 			player.gems -= itype.value;
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			inventory.takeItem(itype, PinchousWaterwearAndToolsShopMenu2);
 		}
 		public function leavePinchousWaterwearAndToolsShop():void {

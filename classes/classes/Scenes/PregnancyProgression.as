@@ -36,7 +36,7 @@ package classes.Scenes
 				//Remove bonus libido from heat
 				dynStats("lib", -player.statusEffectv2(StatusEffects.Heat));
 				if (player.lib < 10) player.lib = 10;
-				statScreenRefresh();
+				//statScreenRefresh();
 				player.removeStatusEffect(StatusEffects.Heat);
 				displayedUpdate = true;
 			}

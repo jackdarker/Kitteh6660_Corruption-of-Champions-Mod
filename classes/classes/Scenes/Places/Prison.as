@@ -166,7 +166,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.esteem > oldEsteem) showStatUp("esteem");
 			if (player.esteem < oldEsteem) showStatDown("esteem");
 			dynStats("lus", 0, "scale", false);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		/**
 		 * Change the player's willpower.
@@ -180,7 +180,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.will > oldWill) showStatUp("will");
 			if (player.will < oldWill) showStatDown("will");
 			dynStats("lus", 0, "scale", false);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		/**
 		 * Change the player's obedience.
@@ -224,7 +224,7 @@ public class Prison extends BaseContent implements TimeAwareInterface
 			if (player.obey > oldObey) showStatUp("obey");
 			if (player.obey < oldObey) showStatDown("obey");
 			dynStats("lus", 0, "scale", false);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 		}
 		
 		public function prisonWillCostDescript(baseVal:Number):String

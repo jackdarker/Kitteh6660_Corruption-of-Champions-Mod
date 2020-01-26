@@ -80,7 +80,7 @@ use namespace CoC;
 				}
 			}
 			if (damage > 0) player.takePhysDamage(damage, true);
-			EngineCore.statScreenRefresh();
+			EngineCore.statScreenRefresh(true);
 			outputText("\n");
 		}
 		private function gooPlay():void

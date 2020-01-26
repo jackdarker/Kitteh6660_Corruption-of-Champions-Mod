@@ -73,7 +73,7 @@ public class EngineCore {
             else {
                 if (display) HPChangeNotify(changeNum);
                 CoC.instance.player.HP += int(changeNum);
-                CoC.instance.mainView.statsView.showStatUp('hp');
+                //CoC.instance.mainView.statsView.showStatUp('hp');
                 // hpUp.visible = true;
             }
         }
@@ -82,17 +82,18 @@ public class EngineCore {
             if (CoC.instance.player.HP + changeNum <= 0) {
                 if (display) HPChangeNotify(changeNum);
                 CoC.instance.player.HP = 0;
-                CoC.instance.mainView.statsView.showStatDown('hp');
+                //CoC.instance.mainView.statsView.showStatDown('hp');
             }
             else {
                 if (display) HPChangeNotify(changeNum);
                 CoC.instance.player.HP += changeNum;
-                CoC.instance.mainView.statsView.showStatDown('hp');
+                //CoC.instance.mainView.statsView.showStatDown('hp');
             }
         }
-        CoC.instance.player.dynStats("lust", 0, "scale", false); //Workaround to showing the arrow.
-        EngineCore.statScreenRefresh();
-        return CoC.instance.player.HP - before;
+        //CoC.instance.player.dynStats("lust", 0, "scale", false); //Workaround to showing the arrow.
+		EngineCore.showUpDown(false);
+        EngineCore.statScreenRefresh(false);
+		return CoC.instance.player.HP - before;
     }
 
     public static function HPChangeNotify(changeNum:Number):void {
@@ -132,6 +133,7 @@ public class EngineCore {
                 //	CoC.instance.mainView.statsView.showStatUp( 'hp' );
                 // hpUp.visible = true;
             }
+			EngineCore.showUpDown(false);
         }
         //Negative Soulforce
         /*	else
@@ -149,7 +151,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(false);
         return CoC.instance.player.soulforce - before;
     }
 
@@ -171,6 +173,7 @@ public class EngineCore {
                 //	CoC.instance.mainView.statsView.showStatUp( 'hp' );
                 // hpUp.visible = true;
             }
+			EngineCore.showUpDown(false);
         }
         //Negative Mana
         /*	else
@@ -188,7 +191,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(false);
         return CoC.instance.player.mana - before;
     }
 
@@ -210,6 +213,7 @@ public class EngineCore {
                 //	CoC.instance.mainView.statsView.showStatUp( 'hp' );
                 // hpUp.visible = true;
             }
+			EngineCore.showUpDown(false);
         }
         //Negative Wrath
         /*	else
@@ -227,7 +231,7 @@ public class EngineCore {
             }
             dynStats("lust", 0, "scale", false) //Workaround to showing the arrow.
         */
-        EngineCore.statScreenRefresh();
+        EngineCore.statScreenRefresh(false);
         return CoC.instance.player.wrath - before;
     }
 
@@ -818,6 +822,8 @@ public class EngineCore {
      * @param    eventNo The event parser or function to call if 'No' button is pressed.
      */
     public static function doYesNo(eventYes:Function, eventNo:Function):void {
+		statScreenRefresh(true);
+		showUpDown(true);
         menu();
         addButton(6, "Yes", eventYes);	//jk: moved the buttons because I accidently pressing YES instead of NEXT all the time
         addButton(7, "No", eventNo);	//f.e. when picking up items with full inventory
@@ -834,8 +840,8 @@ public class EngineCore {
             return;
         }
         //trace("DoNext have item:", eventNo);
-		if (_needsStatScreenUpdate) statScreenRefresh();
-		if (_needsUpDownUpdate) showUpDown();
+		statScreenRefresh(true/*_needsStatScreenUpdate*/);
+		showUpDown(true /*_needsUpDownUpdate*/);
         menu();
         addButton(0, "Next", event);
     }
@@ -844,20 +850,17 @@ public class EngineCore {
         CoC.instance.mainView.invert();
     }
 	private static var _needsStatScreenUpdate:Boolean;
-	/**
-	 * Used to update the display of statistics
-	 * @param	immediate	:	if false the update will be delayed until next turn is started (to improve performance)
-	 */
-	public static function needsStatScreenRefresh(immediate:Boolean):void {	//Todo do UI update only after turn complete
-		if (immediate)
-			statScreenRefresh()
-		else
-			_needsStatScreenUpdate = true;
-	}
     /**
      * Used to update the display of statistics
+	 * this gets already called in doNext() !
+	 * @param	immediate	:	if false the update will be delayed until next turn is started (to improve performance)
      */
-    public static function statScreenRefresh():void {
+    public static function statScreenRefresh(immediate:Boolean = false):void {		//Todo instead of calling this from a game-class, this should only be called by the engine
+		if (!immediate) {
+			_needsStatScreenUpdate = true;
+			return;
+		}	
+		
         Utils.Begin("engineCore", "statScreenRefresh");
         CoC.instance.mainView.statsView.show(); // show() method refreshes.
         CoC.instance.mainViewManager.refreshStats();
@@ -902,21 +905,22 @@ public class EngineCore {
     public static function hideUpDown():void {
         CoC.instance.mainView.statsView.hideUpDown();
         //Clear storage values so up/down arrows can be properly displayed
-        CoC.instance.oldStats.oldStr = 0;
-        CoC.instance.oldStats.oldTou = 0;
-        CoC.instance.oldStats.oldSpe = 0;
-        CoC.instance.oldStats.oldInte = 0;
-        CoC.instance.oldStats.oldWis = 0;
-        CoC.instance.oldStats.oldLib = 0;
-        CoC.instance.oldStats.oldSens = 0;
-        CoC.instance.oldStats.oldCor = 0;
-        CoC.instance.oldStats.oldHP = 0;
-        CoC.instance.oldStats.oldLust = 0;
-        CoC.instance.oldStats.oldWrath = 0;
-        CoC.instance.oldStats.oldFatigue = 0;
-        CoC.instance.oldStats.oldMana = 0;
-        CoC.instance.oldStats.oldSoulforce = 0;
-        CoC.instance.oldStats.oldHunger = 0;
+		//Todo why ? this breaks the logic in showUpDown
+        //CoC.instance.oldStats.oldStr = 0;
+        //CoC.instance.oldStats.oldTou = 0;
+        //CoC.instance.oldStats.oldSpe = 0;
+        //CoC.instance.oldStats.oldInte = 0;
+        //CoC.instance.oldStats.oldWis = 0;
+        //CoC.instance.oldStats.oldLib = 0;
+        //CoC.instance.oldStats.oldSens = 0;
+        //CoC.instance.oldStats.oldCor = 0;
+        //CoC.instance.oldStats.oldHP = 0;
+        //CoC.instance.oldStats.oldLust = 0;
+        //CoC.instance.oldStats.oldWrath = 0;
+        //CoC.instance.oldStats.oldFatigue = 0;
+        //CoC.instance.oldStats.oldMana = 0;
+        //CoC.instance.oldStats.oldSoulforce = 0;
+        //CoC.instance.oldStats.oldHunger = 0;
     }
 
     public static function fatigue(mod:Number, type:Number = 0):void {
@@ -988,16 +992,14 @@ public class EngineCore {
     }
 
 	private static var _needsUpDownUpdate:Boolean;
-	public static function needsUpDownRefresh(immediate:Boolean):void { 
-		if (immediate) 
-			showUpDown();
-		else
+    //displays up/down arrows depending on stat-change since last call
+    public static function showUpDown(immediate:Boolean = false):void { //Moved from StatsView.
+		if (!immediate) {
 			_needsUpDownUpdate = true;
-	}
-    
-    public static function showUpDown():void { //Moved from StatsView.
+			return;
+		}
+			
         Utils.Begin("engineCore", "showUpDown");
-
         function _oldStatNameFor(statName:String):String {
             return 'old' + statName.charAt(0).toUpperCase() + statName.substr(1);
         }
@@ -1017,6 +1019,20 @@ public class EngineCore {
                 CoC.instance.mainView.statsView.showStatDown(statName);
             }
         }
+			CoC.instance.oldStats.oldStr = CoC.instance.player.str;
+			CoC.instance.oldStats.oldTou = CoC.instance.player.tou;
+			CoC.instance.oldStats.oldSpe = CoC.instance.player.spe;
+			CoC.instance.oldStats.oldInte = CoC.instance.player.inte;
+			CoC.instance.oldStats.oldWis = CoC.instance.player.wis;
+			CoC.instance.oldStats.oldLib = CoC.instance.player.lib;
+			CoC.instance.oldStats.oldSens = CoC.instance.player.sens;
+			CoC.instance.oldStats.oldCor = CoC.instance.player.cor;
+			CoC.instance.oldStats.oldHP = CoC.instance.player.HP;
+			CoC.instance.oldStats.oldLust = CoC.instance.player.lust;
+			CoC.instance.oldStats.oldFatigue = CoC.instance.player.fatigue;
+			CoC.instance.oldStats.oldSoulforce = CoC.instance.player.soulforce;
+			CoC.instance.oldStats.oldHunger = CoC.instance.player.hunger;
+		
 		_needsUpDownUpdate = false;
         Utils.End("engineCore", "showUpDown");
     }

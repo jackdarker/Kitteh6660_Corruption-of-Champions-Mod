@@ -76,7 +76,7 @@ public class Gorgon extends Monster
 				if(player.spe > 6) {
 					player.spe -= 5;
 					//showStatDown( 'spe' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.createStatusEffect(StatusEffects.NagaVenom,5,0,0,0);
 				}
 				else {
@@ -90,7 +90,7 @@ public class Gorgon extends Monster
 				if(player.spe > 5) {
 					player.spe -= 4;
 					//showStatDown( 'spe' );
-					EngineCore.showUpDown();
+					EngineCore.showUpDown(false);
 					player.addStatusValue(StatusEffects.NagaVenom,1,4);
 				}
 				else player.takePhysDamage(15+rand(15));

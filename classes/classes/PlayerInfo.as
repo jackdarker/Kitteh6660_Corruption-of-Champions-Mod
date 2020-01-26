@@ -1248,7 +1248,8 @@ public class PlayerInfo extends BaseContent {
 		player.tempInt = 0;
 		player.tempWis = 0;
 		player.tempLib = 0;
-		EngineCore.statScreenRefresh();
+		EngineCore.showUpDown(true);
+		EngineCore.statScreenRefresh(true);
 		if (player.perkPoints > 0) EngineCore.doNext(perkBuyMenu);
 		else EngineCore.doNext(playerMenu);
 	}

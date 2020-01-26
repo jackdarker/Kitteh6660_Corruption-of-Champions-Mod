@@ -2,6 +2,7 @@
  * Coded by aimozg on 30.05.2017.
  */
 package classes.Scenes.Combat {
+	import classes.EngineCore;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.HeadJewelryLib;
 import classes.Items.JewelryLib;
@@ -1294,7 +1295,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else
 		{
@@ -1311,7 +1312,7 @@ public class CombatMagic extends BaseCombatContent {
 		doNext(combatMenu);
 		if (player.hasPerk(PerkLib.LastResort) && player.mana < spellCostBlack(20)) player.HP -= spellCostBlack(20);
 		else useMana(20,6);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if ((monster is FrostGiant || monster is YoungFrostGiant) && player.hasStatusEffect(StatusEffects.GiantBoulder)) {
 			if (monster as FrostGiant) (monster as FrostGiant).giantBoulderHit(2);
 			if (monster as YoungFrostGiant) (monster as YoungFrostGiant).youngGiantBoulderHit(2);
@@ -1435,7 +1436,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -1520,7 +1521,7 @@ public class CombatMagic extends BaseCombatContent {
 			}
 			player.tou += player.statusEffectv2(StatusEffects.Might);
 			player.HP = oldHPratio*player.maxHP();
-			statScreenRefresh();
+			//statScreenRefresh();
 		};
 
 		if (silent)	{ // for Battlemage
@@ -1636,11 +1637,12 @@ public class CombatMagic extends BaseCombatContent {
 			tempSpe = BlinkBoost;
 			//if(player.spe + temp > 100) tempSpe = 100 - player.spe;
 			player.changeStatusValue(StatusEffects.Blink,1,tempSpe);
-			mainView.statsView.showStatUp('spe');
+			//mainView.statsView.showStatUp('spe');
 			// strUp.visible = true;
 			// strDown.visible = false;
 			player.spe += player.statusEffectv1(StatusEffects.Blink);
-			statScreenRefresh();
+			EngineCore.showUpDown(false);
+			EngineCore.statScreenRefresh(false);
 		};
 
 		if (silent)	{ // for Battleflash
@@ -1755,7 +1757,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 
 //(45) Darkness Shard
@@ -1821,14 +1823,14 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 	
 	public function spellWaveOfEcstasy():void {
 		doNext(combatMenu);
 		if (player.hasPerk(PerkLib.LastResort) && player.mana < spellCostBlack(100)) player.HP -= spellCostBlack(100);
 		else useMana(100,6);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if ((monster is FrostGiant || monster is YoungFrostGiant) && player.hasStatusEffect(StatusEffects.GiantBoulder)) {
 			if (monster as FrostGiant) (monster as FrostGiant).giantBoulderHit(2);
 			if (monster as YoungFrostGiant) (monster as YoungFrostGiant).youngGiantBoulderHit(2);
@@ -1955,7 +1957,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -2019,7 +2021,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -2062,7 +2064,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2111,7 +2113,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2162,7 +2164,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2214,7 +2216,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2260,7 +2262,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2331,7 +2333,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -2381,7 +2383,7 @@ public class CombatMagic extends BaseCombatContent {
 			if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 			spellPerkUnlock();
 			combat.heroBaneProc(damage);
-			statScreenRefresh();
+			//statScreenRefresh();
 			if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 			else enemyAI();
 		}
@@ -2476,7 +2478,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -2565,7 +2567,7 @@ public class CombatMagic extends BaseCombatContent {
 			if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 			spellPerkUnlock();
 			combat.heroBaneProc(damage);
-			statScreenRefresh();
+			//statScreenRefresh();
 			if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 			else enemyAI();
 		}
@@ -2602,7 +2604,7 @@ public class CombatMagic extends BaseCombatContent {
 		if (silent) {
 			if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 			player.createStatusEffect(StatusEffects.ManaShield,0,0,0,0);
-			statScreenRefresh();
+			//statScreenRefresh();
 			return;
 		}
 		clearOutput();
@@ -2660,7 +2662,7 @@ public class CombatMagic extends BaseCombatContent {
 		}
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2725,7 +2727,7 @@ public class CombatMagic extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.EternalyLastingBuffs)) ChargeWeaponDuration += 5;
 		if (silent) {
 			player.createStatusEffect(StatusEffects.ChargeWeapon,ChargeWeaponBoost,ChargeWeaponDuration,0,0);
-			statScreenRefresh();
+			//statScreenRefresh();
 			return;
 		}
 
@@ -2742,7 +2744,7 @@ public class CombatMagic extends BaseCombatContent {
 		outputText("You utter words of power, summoning an electrical charge around your [weapon].  It crackles loudly, ensuring you'll do more damage with it for the rest of the fight.\n\n");
 		player.createStatusEffect(StatusEffects.ChargeWeapon, ChargeWeaponBoost, ChargeWeaponDuration, 0, 0);
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2805,7 +2807,7 @@ public class CombatMagic extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.EternalyLastingBuffs)) ChargeArmorDuration += 5;
 		if (silent) {
 			player.createStatusEffect(StatusEffects.ChargeArmor,ChargeArmorBoost,ChargeArmorDuration,0,0);
-			statScreenRefresh();
+			//statScreenRefresh();
 			return;
 		}
 
@@ -2825,7 +2827,7 @@ public class CombatMagic extends BaseCombatContent {
 		outputText("  It crackles loudly, ensuring you'll have more protection for the rest of the fight.\n\n");
 		player.createStatusEffect(StatusEffects.ChargeArmor, ChargeArmorBoost, ChargeArmorDuration, 0, 0);
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2844,7 +2846,7 @@ public class CombatMagic extends BaseCombatContent {
 		spellHealEffect();
 		outputText("\n\n");
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
@@ -2940,7 +2942,7 @@ public class CombatMagic extends BaseCombatContent {
 				flags[kFLAGS.SPELLS_CAST]++;
 				if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 				spellPerkUnlock();
-				statScreenRefresh();
+				//statScreenRefresh();
 				enemyAI();
 				return;
 			}
@@ -2972,7 +2974,7 @@ public class CombatMagic extends BaseCombatContent {
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
-		statScreenRefresh();
+		//statScreenRefresh();
 		enemyAI();
 	}
 	//(30) Whitefire – burns the enemy for 10 + int/3 + rand(int/2) * spellMod.
@@ -3026,7 +3028,7 @@ public class CombatMagic extends BaseCombatContent {
 			if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 			spellPerkUnlock();
 			combat.heroBaneProc(damage);
-			statScreenRefresh();
+			//statScreenRefresh();
 		}
 		else
 		{
@@ -3082,7 +3084,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 
 //(45) Lightning Bolt - base lighting spell
@@ -3140,7 +3142,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 	}
 	
 	//(50) Pyre Burst – aoe fire spell
@@ -3218,7 +3220,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if (monster.HP <= monster.minHP())
 		{
 			doNext(endHpVictory);
@@ -3288,7 +3290,7 @@ public class CombatMagic extends BaseCombatContent {
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
 		combat.heroBaneProc(damage);
-		statScreenRefresh();
+		//statScreenRefresh();
 		if(monster.HP <= monster.minHP()) doNext(endHpVictory);
 		else enemyAI();
 	}
@@ -3314,7 +3316,7 @@ public class CombatMagic extends BaseCombatContent {
 			player.createStatusEffect(StatusEffects.Blizzard, 1 + player.inte / 25,0,0,0);
 		}
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
-		statScreenRefresh();
+		//statScreenRefresh();
 		flags[kFLAGS.SPELLS_CAST]++;
 		if(!player.hasStatusEffect(StatusEffects.CastedSpell)) player.createStatusEffect(StatusEffects.CastedSpell,0,0,0,0);
 		spellPerkUnlock();
