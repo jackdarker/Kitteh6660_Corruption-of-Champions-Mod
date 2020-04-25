@@ -435,9 +435,11 @@ public class Izumi extends Monster
 			if (player.hasStatusEffect(StatusEffects.Groundpound))
 			{
 				// Can't use dynStats to achieve this, as it can give back more speed than we originally took away due to perks
-				player.spe += player.statusEffectv2(StatusEffects.Groundpound);
+				/*player.spe += player.statusEffectv2(StatusEffects.Groundpound);
 				var max:int = player.getMaxStats("spe");
-				if (player.spe > max) player.spe = max;
+				if (player.spe > max) player.spe = max;*/
+				//-> but then you dont give back enough since you used dynstats to degrade it  !
+				player.dynStats("spe-", player.statusEffectv2(StatusEffects.Groundpound));
 				
 				player.removeStatusEffect(StatusEffects.Groundpound);
 				

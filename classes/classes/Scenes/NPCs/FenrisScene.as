@@ -13,7 +13,7 @@ package classes.Scenes.NPCs{
 	import classes.GlobalFlags.kFLAGS;
 	import classes.internals.*;
 	import classes.StatusEffects;
-	import classes.Items.Consumables.SimpleConsumable;
+	import classes.Items.Consumable;
 	import classes.Items.Useable;
 	import classes.ItemType;
 
@@ -615,7 +615,7 @@ private function buildRandomGiveFoodMenu():void {
 	if (player.hasItem(consumables.SDELITE)) _foods.add(consumables.SDELITE, 1);
 	if (player.hasItem(consumables.PPHILTR)) _foods.add(consumables.PPHILTR, 1);
 
-	var _item:SimpleConsumable;
+	var _item:Consumable;
 	_item = _foods.roll();
 	if (_item != null) addButton(0, _item.shortName, giveFood,_item, 101, null, "");
 	_item = _foods.roll();
@@ -664,7 +664,7 @@ private function createMultiPageMenu(init:Boolean,Name:String,Func1:Function,Arg
 	addButton(bt, Name, Func1, Arg1, Arg2, Arg3);
 	ButtonCnt += 1;
 }*/
-private function giveFood(Food:SimpleConsumable, dlgstage:int = -1):void {
+private function giveFood(Food:Consumable, dlgstage:int = -1):void {
 	if (dlgstage < 0) dlgstage = _dlgStage;
 	_dlgStage = dlgstage;
 	clearOutput();

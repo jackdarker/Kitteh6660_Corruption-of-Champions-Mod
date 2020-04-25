@@ -1981,7 +1981,7 @@ public static const UNKNOWN_FLAG_NUMBER_01972:int                               
 public static const UNKNOWN_FLAG_NUMBER_01973:int                                   = 1973;
 public static const FENRIS_FLAG:int                                   				= 1974;	//placeholderflag to store info of fenris
 public static const FENRIS_BREAST:int                                   			= 1975;	//placeholderflag for breaststore of fenris
-public static const UNKNOWN_FLAG_NUMBER_01976:int                                   = 1976;
+public static const HHC_FOLLOWER:int                                 				= 1976;	//placeholderflag for hell-hound companion
 public static const UNKNOWN_FLAG_NUMBER_01977:int                                   = 1977;
 public static const UNKNOWN_FLAG_NUMBER_01978:int                                   = 1978;
 public static const UNKNOWN_FLAG_NUMBER_01979:int                                   = 1979;

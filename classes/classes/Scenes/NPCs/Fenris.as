@@ -24,7 +24,7 @@ package classes.Scenes.NPCs{
 	import classes.CoC;
 	import classes.BaseContent;
 	import classes.CockTypesEnum;
-	import classes.Items.Consumables.SimpleConsumable;
+	import classes.Items.Consumable;
 	import classes.ItemType;
 	import classes.SaveAwareInterface;
 
@@ -473,7 +473,7 @@ package classes.Scenes.NPCs{
 			return man;
 		}
 		//returns 0 if he eats it
-		public function eatThis(Food:SimpleConsumable, Result:ReturnResult):void {
+		public function eatThis(Food:Consumable, Result:ReturnResult):void {
 			if (Food == CoC.instance.consumables.VITAL_T) {
 				Result.Code = 0;
 				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."

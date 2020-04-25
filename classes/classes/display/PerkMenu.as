@@ -24,6 +24,15 @@ public class PerkMenu extends BaseContent {
 		var temp:int = 0;
 		clearOutput();
 		displayHeader("Perks");
+		outputText("free freePrestigeJobsSlots " + (player.freePrestigeJobsSlots().toString()) + "\n");
+		outputText("free freeHiddenJobsSlots " + (player.freeHiddenJobsSlots().toString()) + "\n");
+		outputText("free freeAdvancedJobsSlots " + (player.freeAdvancedJobsSlots().toString()) + "\n");
+		outputText("free maxMusclesMutations " + (player.maxMusclesMutations().toString()) + "\n");
+		outputText("free maxMouthMutations " + (player.maxMouthMutations().toString()) + "\n");
+		outputText("free maxAdrenalGlandsMutations " + (player.maxAdrenalGlandsMutations().toString()) + "\n");
+		outputText("free maxBloodsteamMutations " + (player.maxBloodsteamMutations().toString()) + "\n");
+		outputText("free maxFatTissueMutations " + (player.maxFatTissueMutations().toString()) + "\n");
+		outputText("--------------------------------\n");
 		while(temp < player.perks.length) {
 			outputText("<b>" + player.perk(temp).perkName + "</b> - " + player.perk(temp).perkDesc + "\n");
 			temp++;

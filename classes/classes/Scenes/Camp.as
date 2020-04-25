@@ -516,7 +516,7 @@ private function doCamp():void { //Only called by playerMenu
 		return;
 	}
 	//Mitzi Daughters + Izma Daughters
-	if(flags[kFLAGS.MITZI_DAUGHTERS] >= 4 && izmaScene.totalIzmaChildren() >= 2) {
+	if(flags[kFLAGS.MITZI_DAUGHTERS] >= 4 && izmaScene.totalIzmaChildren() >= 2 && false) { //Todo fix endless recursion !
 		SceneLib.mitziFollower.MitziDaughtersIzmaDaughters();
 		return;
 	}

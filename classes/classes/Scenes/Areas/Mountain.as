@@ -224,6 +224,11 @@ public class Mountain extends BaseContent
 						chance:0.5,
 						call:SceneLib.feralDragonScene.dragonEncounter,
 						mods:[SceneLib.exploration.furriteMod]
+					},{
+						name:"hhc",
+						chance:SceneLib.hhcScene.encounterChance,
+						call:SceneLib.hhcScene.execEncounter,
+						mods:[SceneLib.exploration.furriteMod]
 					}
 					)
 			;

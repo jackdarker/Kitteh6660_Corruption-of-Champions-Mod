@@ -6759,7 +6759,7 @@ public function wrathregeneration2():Number {
 
 internal var combatRound:int = 0;
 public function startCombatImpl(monster_:Monster, plotFight_:Boolean = false):void {
-	combatRound = 0;
+	combatRound = 0;														
 	CoC.instance.plotFight = plotFight_;
 	mainView.hideMenuButton( MainView.MENU_DATA );
 	mainView.hideMenuButton( MainView.MENU_APPEARANCE );
@@ -6818,7 +6818,7 @@ public function startCombatImpl(monster_:Monster, plotFight_:Boolean = false):vo
 		EngineCore.doNext(endLustLoss);
 		return;
 	}
-	if (player.hasPerk(PerkLib.Feeder) && flags[kFLAGS.DISPLACER_BEAST_WINS] >= 1) {
+	if (DisplacerBeast == Object(monster).constructor && player.hasPerk(PerkLib.Feeder) && flags[kFLAGS.DISPLACER_BEAST_WINS] >= 1) { //todo fix this
 		SceneLib.displacerbeastScene.displacerBeastMilkfeeding();
 		EngineCore.doNext(endHpVictory);
 		return;
@@ -6878,7 +6878,7 @@ public function startCombatImmediateImpl(monster_:Monster, _plotFight:Boolean):v
 		player.removeStatusEffect(StatusEffects.SoulDrill1);
 		player.createStatusEffect(StatusEffects.SoulDrill1,0,0,0,0);
 	}
-	playerMenu();
+	playerMenu();			//TODO OMG duplictaed code except this line
 }
 public function display():void {
 	if (!monster.checkCalled){

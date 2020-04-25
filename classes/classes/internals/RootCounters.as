@@ -3,8 +3,6 @@
  */
 package classes.internals {
 import classes.internals.MonsterCounters;
-import classes.internals.MonsterCounters;
-import classes.internals.MonsterCounters;
 
 public class RootCounters extends CountersAPI {
 	public function RootCounters(_storage:CountersStorage) {

@@ -57,7 +57,7 @@ import classes.StatusEffects;
 			if (monster.HP <= monster.minHP() || monster.lust >= monster.maxLust()) enemyAI();
 			else {
 				menu();
-				addButton(0, "Next", combatMenu, false);
+				addButton(0, "Next", combatMenu, false);	
 			}
 		}
 		public function neisaCombatActions0():void {
