@@ -23,7 +23,11 @@ public class EventParser {
     private static var _campSet:Boolean = false;
 
     public static function playerMenu():void {
-        CoC.instance.mainViewManager.hidePlayerDoll();
+        if (CoC.instance.flags[kFLAGS.CHARVIEW_STYLE] != 2) {
+            CoC.instance.mainViewManager.hidePlayerDoll();
+        } else {
+            CoC.instance.mainViewManager.showPlayerDoll(false);
+        }
         if (!CoC.instance.inCombat) {
             CoC.instance.spriteSelect(-1);
         }
@@ -316,7 +320,7 @@ public class EventParser {
             }
         }
         //Unequip shield if you're wielding a large weapon.
-        if (((player.weaponPerk == "Large" && player.findPerk(PerkLib.TitanGrip) < 0) || player.weaponPerk == "Dual" || player.weaponPerk == "Dual Large") && player.shield != ShieldLib.NOTHING) {
+        if (((player.weaponPerk == "Large" && player.findPerk(PerkLib.GigantGrip) < 0) || player.weaponPerk == "Dual" || player.weaponPerk == "Dual Large") && player.shield != ShieldLib.NOTHING) {
             EngineCore.outputText("Your current weapon requires the use of two hands. As such, your shield has been unequipped automatically. ");
             SceneLib.inventory.takeItem(player.setShield(ShieldLib.NOTHING), playerMenu);
             return true;
@@ -357,7 +361,7 @@ public class EventParser {
         if (player.hasStatusEffect(StatusEffects.LootEgg)) {
             trace("EGG LOOT HAS");
             if (!player.hasStatusEffect(StatusEffects.Eggs)) { //Handling of errors.
-                EngineCore.outputText("Oops, looks like something went wrong with the coding regarding gathering eggs after pregnancy. Hopefully this should never happen again. If you encounter this again, please let Ormael/Aimozg/Oxdeception know so he can fix it.");
+                EngineCore.outputText("Oops, looks like something went wrong with the coding regarding gathering eggs after pregnancy. Hopefully this should never happen again. If you encounter this again, please let Ormael/Aimozg know so he can fix it.");
                 player.removeStatusEffect(StatusEffects.LootEgg);
                 EngineCore.doNext(playerMenu);
                 return 2;

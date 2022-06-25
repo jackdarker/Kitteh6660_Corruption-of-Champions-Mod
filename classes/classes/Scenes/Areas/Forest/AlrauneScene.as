@@ -32,11 +32,15 @@ public class AlrauneScene extends BaseContent
 			outputText("\"<i>Mmmmmm such a nice catch... Come closer into my pitcher.</i>\"\n\n");
 			outputText("There's no way you will let this thing pull you in!\n\n");
 		}
+		if (flags[kFLAGS.CODEX_ENTRY_ALRAUNE] <= 0) {
+			flags[kFLAGS.CODEX_ENTRY_ALRAUNE] = 1;
+			outputText("\n\n<b>New codex entry unlocked: Alraune!</b>");
+		}
 		startCombat(new Alraune());
 	}
 	
 	public function alrauneVolcanicCrag():void {
-		spriteSelect(SpriteDb.s_alraune);
+		spriteSelect(SpriteDb.s_cinderbloom);
 		clearOutput();
 		if (isHalloween()) {
 			outputText("As you wander the area you come across a rather large pumpkin growing in the crag. You ponder how plants even manage to grow this big to begin with. While you are busy examining it, large vines surge out at you, binding your arms and legs and reeling you toward the pumpkin as it opens up, revealing a beautiful woman with pale orange skin and light green eyes.\n\n");
@@ -52,7 +56,7 @@ public class AlrauneScene extends BaseContent
 	}
 	
 	public function alrauneGlacialRift():void {
-		spriteSelect(SpriteDb.s_alraune);
+		spriteSelect(SpriteDb.s_snow_lily);
 		clearOutput();
 		if (isHalloween()) {
 			outputText("As you wander the area you come across a rather large pumpkin growing in the rift. You ponder how plants even manage to grow this big to begin with. While you are busy examining it, large vines surge out at you, binding your arms and legs and reeling you toward the pumpkin as it opens up, revealing a beautiful woman with pale orange skin and light green eyes.\n\n");
@@ -68,7 +72,10 @@ public class AlrauneScene extends BaseContent
 	}
 	
 	public function alrauneDeepwoodsWon():void {
-		spriteSelect(SpriteDb.s_alraune);
+		if (monster.short == "cinderbloom alraune") spriteSelect(SpriteDb.s_cinderbloom);
+		else if (monster.short == "snow lily alraune") spriteSelect(SpriteDb.s_snow_lily);
+		else if (isHalloween()) spriteSelect(SpriteDb.s_alraune);
+		else spriteSelect(SpriteDb.s_alraune);
 		clearOutput();
 		if (isHalloween()) outputText("The Jack-O-Raune, unable to fight any longer, retreat in her pumpkin in self defence, her vines unwrapping from you. Well, you are free, but the god damn plant woman left you horny and frustrated, what a tease! Guess it's time to head back to camp.\n\n");
 		else outputText("The alraune, unable to fight any longer, closes her petals in self defence, her vines unwrapping from you. Well, you are free, but the god damn plant woman left you horny and frustrated, what a tease! Guess it's time to head back to camp.\n\n");
@@ -76,7 +83,10 @@ public class AlrauneScene extends BaseContent
 	}
 	
 	public function alrauneDeepwoodsLost():void {
-		spriteSelect(SpriteDb.s_alraune);
+		if (monster.short == "cinderbloom alraune") spriteSelect(SpriteDb.s_cinderbloom);
+		else if (monster.short == "snow lily alraune") spriteSelect(SpriteDb.s_snow_lily);
+		else if (isHalloween()) spriteSelect(SpriteDb.s_alraune);
+		else spriteSelect(SpriteDb.s_alraune);
 		clearOutput();
 		if (player.gender == 1) {
 			if (monster.statusEffectv1(StatusEffects.Level) > 2) outputText("Your desire finally breaks your resolve as you stop struggling and make a dopey lust drunk face while the vines bring you to their mistress. ");
@@ -89,6 +99,7 @@ public class AlrauneScene extends BaseContent
 			outputText("She wraps some of her vines around you both, using them to pull you both closer as she slides on your cock. You moan in incomprehensible babble as your drugged penis is milked by the alraune, cum flooding out at about a rate as steady as her pussy nectar. Men can, normally, only orgasm once or twice before they need a rest; you however simply can’t lose your hard on, cumming over and over as your drugged balls keep producing an almost endless amount of semen. ");
 			outputText("Whenever the Alraune sees the signs of thirst on your face, she quenches it with her breast, filling your mouth with more nectar. Go figure because plants don't leak any other fluids than that. Thankfully your stamina eventually gives out as you fall unconscious, way before your raging erection dies out.\n\n");
 			outputText("When you wake up you are in a different area with your gear packed up next to you. Seems some thief made off with a small amount of your gems though.\n\n");
+			player.sexReward("vaginalFluids","Dick")
 		}
 		else {
 			if (monster.statusEffectv1(StatusEffects.Level) > 2) outputText("Your desire finally breaks your resolve as you stop struggling and make a dopey lust drunk face while the vines bring you to their mistress. ");
@@ -115,10 +126,8 @@ public class AlrauneScene extends BaseContent
 			outputText("When you wake up you are in a different area with your gear packed up next to you. Seems some thief made off with a small amount of your gems though.\n\n");
 			if (player.goblinScore() > 9) player.knockUp(PregnancyStore.PREGNANCY_GOBLIN, PregnancyStore.INCUBATION_GOBLIN);
             else player.knockUp(PregnancyStore.PREGNANCY_ALRAUNE, PregnancyStore.INCUBATION_ALRAUNE);
-			if (player.isGargoyle() && player.hasPerk(PerkLib.GargoyleCorrupted)) player.refillGargoyleHunger(30);
-			if (player.jiangshiScore() >= 20 && player.statusEffectv1(StatusEffects.EnergyDependent) < 45) player.EnergyDependentRestore();
+			player.sexReward("cum", "Vaginal");
 		}
-		player.orgasm();
 		dynStats("lib", 15, "sen", 5);
 		cleanupAfterCombat();
 	}

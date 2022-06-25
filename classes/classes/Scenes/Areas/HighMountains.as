@@ -71,7 +71,7 @@ use namespace CoC;
 				}
 			}
 			//Etna
-			if (flags[kFLAGS.ETNA_FOLLOWER] < 1 && !player.hasStatusEffect(StatusEffects.EtnaOff) && rand(3) == 0) {
+			if (flags[kFLAGS.ETNA_FOLLOWER] < 1 && !player.hasStatusEffect(StatusEffects.EtnaOff) && rand(3) == 0 && (player.level >= 20)) {
 				if (flags[kFLAGS.ETNA_AFFECTION] < 5) SceneLib.etnaScene.firstEnc();
 				else SceneLib.etnaScene.repeatEnc();
 				return;
@@ -183,7 +183,7 @@ use namespace CoC;
 			}
 			//Dark Elf Scout
 			if (chooser == 4) {
-				if (rand(2) == 0) darkelfScene.introDarkELfSlaver();
+				if (rand(4) == 0) darkelfScene.introDarkELfSlaver();
 				else {
 					clearOutput();
 					outputText("A harpy wings out of the sky and attacks!");

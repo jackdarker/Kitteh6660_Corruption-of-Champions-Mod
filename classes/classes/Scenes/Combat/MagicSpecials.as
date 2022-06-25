@@ -47,7 +47,7 @@ public class MagicSpecials extends BaseCombatContent {
 	//------------
 	internal function buildMenu(buttons:ButtonDataList):void {
 		var bd:ButtonData;
-		if (player.harpyScore() >= 8 || player.sirenScore() >= 10) {
+		if (player.hasPerk(PerkLib.HarpySong) || player.hasPerk(PerkLib.MelkieSong)) {
 			bd = buttons.add("Compelling Aria", singCompellingAria, "Sing for a moment.");
 			bd.requireFatigue(spellCost(50));
 			if (player.hasStatusEffect(StatusEffects.CooldownCompellingAria)) {
@@ -72,7 +72,7 @@ public class MagicSpecials extends BaseCombatContent {
 			bd = buttons.add("Pleasure bolt", PleasureBolt, "Release a discharge of your lust inducing electricity. It will rise your lust by 2% of max lust after each use.", "Pleasure bolt");
 			if ((player.hasVagina() && (player.cowScore() >= 9 || player.hasPerk(PerkLib.LactaBovinaOvaries))) || (player.hasCock() && (player.minotaurScore() >= 9 || player.hasPerk(PerkLib.MinotaurTesticles)))) {
 				bd = buttons.add("Plasma blast", PlasmaBlast, "Masturbate to unleash a massive discharge of milk/cum mized with plasma.", "Plasma blast");
-				if (player.hasStatusEffect(StatusEffects.CooldownMilkBlast) || player.hasStatusEffect(StatusEffects.CooldownCumCannon)) {
+				if (player.hasStatusEffect(StatusEffects.CooldownPlasmaBlast)) {
 					if (player.hasPerk(PerkLib.LactaBovinaOvariesFinalForm) || player.hasPerk(PerkLib.MinotaurTesticlesFinalForm)) bd.disable("\n<b>You need more time before you can do it again.</b>");
 					else bd.disable("You can't use it more than once during fight.");
 				}
@@ -313,7 +313,14 @@ public class MagicSpecials extends BaseCombatContent {
 			bd = buttons.add("HungeringCold", hungeringCold).hint("Freeze the air around your target, encasing it in ice and dealing hypothermia damage. Weakens opponents ice resistance to further attacks damage by 50% stacking up to 3 times. \n\nWould go into cooldown after use for: " + HCCDv + " rounds", "Hungering cold");
 			bd.requireFatigue(spellCost(40));
 			if (player.hasStatusEffect(StatusEffects.CooldownHungeringCold)) {
-				bd.disable("You need more time before you can use Hungering cold again.");
+				bd.disable("You need more time before you can use Hungering Cold again.");
+			}
+		}
+		if (player.yukiOnnaScore() >= 14 && player.hasPerk(PerkLib.ColdAffinity)) {
+			bd = buttons.add("Frozen Kiss", frozenKiss).hint("Inflict damage, drain health, stun for 2 rounds and lust out the opponent. Usable only if the victim is humanoid and non giant.", "Frozen Kiss");
+			bd.requireFatigue(spellCost(60));
+			if (player.hasStatusEffect(StatusEffects.CooldownFrozenKiss)) {
+				bd.disable("You need more time before you can use Frozen Kiss again.");
 			}
 		}
 		if (player.hasPerk(PerkLib.FireLord)) {
@@ -360,9 +367,9 @@ public class MagicSpecials extends BaseCombatContent {
 			}
 		}
 		if (player.hasPerk(PerkLib.JobWarrior)) {
-			bd = buttons.add("DwarfRage", dwarfrage).hint("Throw yourself into a dwarf rage!  Greatly increases your strength, speed and fortitude! \n", "Dwarf Rage");
+			bd = buttons.add("WarriorRage", warriorsrage).hint("Throw yourself into a warrior's rage!  Greatly increases your strength, speed and fortitude! \n", "Warrior's Rage");
 			bd.requireWrath(50);
-			if(player.hasStatusEffect(StatusEffects.DwarfRage)) {
+			if(player.hasStatusEffect(StatusEffects.WarriorsRage)) {
 				bd.disable("You already raging!");
 			}
 		}
@@ -600,6 +607,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = calcGlacialMod(damage);
 		if (monster.hasPerk(PerkLib.EnemyGroupType)) damage *= 5;
 		if (combat.wearingWinterScarf()) damage *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		outputText("Tapping into the power deep within you, you let loose a bellowing roar at your enemy, a powerful wave of cold blasting the area in front of you.  " + monster.capitalA + monster.short + " does " + monster.pronoun3 + " best to avoid it, but the wave of freezing air is too fast.");
 		//Shell
@@ -643,7 +653,7 @@ public class MagicSpecials extends BaseCombatContent {
 		else {
 			if(!monster.hasPerk(PerkLib.Resolute)) {
 				outputText("  " + monster.capitalA + monster.short + " scream for an instant as it is flash frozen solid by the wave along with everything around it! Your opponent now trapped in a block of ice tries very hard to burst out and get free of its glacial prison.");
-				monster.createStatusEffect(StatusEffects.FreezingBreathStun,3,0,0,0);
+				monster.createStatusEffect(StatusEffects.FrozenSolid,3,0,0,0);
 			}
 			else {
 				outputText("  " + monster.capitalA + monster.short + " reels as your wave of force slams into " + monster.pronoun2 + " like a ton of rock!  The impact sends " + monster.pronoun2 + " staggering back, but <b>" + monster.pronoun1 + " ");
@@ -697,6 +707,9 @@ public class MagicSpecials extends BaseCombatContent {
 		else damage += (player.tou/3 + rand(player.tou/2));
 		damage = calcGlacialMod(damage);
 		if (combat.wearingWinterScarf()) damage *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		outputText("You inhale deeply, then blow a freezing breath attack at your opponent, encasing it in ice!");
 		//Shell
@@ -743,7 +756,7 @@ public class MagicSpecials extends BaseCombatContent {
 				if(!monster.plural) outputText("is ");
 				else outputText("are");
 				outputText(" frozen solid!");
-				monster.createStatusEffect(StatusEffects.FreezingBreathStun,3,0,0,0);
+				monster.createStatusEffect(StatusEffects.FrozenSolid,3,0,0,0);
 			}
 			else {
 				outputText("  " + monster.capitalA + monster.short + " reels as your wave of force slams into " + monster.pronoun2 + " like a ton of rock!  The impact sends " + monster.pronoun2 + " staggering back, but <b>" + monster.pronoun1 + " ");
@@ -769,14 +782,24 @@ public class MagicSpecials extends BaseCombatContent {
 	public function singCompellingAria():void {
 		flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
 		clearOutput();
+		var IntligenceModifier:Number = 0;
+		if (player.hasPerk(PerkLib.MelkieLungEvolved)) IntligenceModifier += scalingBonusIntelligence();
+		if (player.hasPerk(PerkLib.MelkieLungFinalForm)) IntligenceModifier += scalingBonusIntelligence();
 		if (player.statusEffectv1(StatusEffects.ChanneledAttack) == 2) {
-			outputText("You end your theme with a powerful finale compelling everyone around adore and love you.");
+			outputText("You end your theme with a powerful finale compelling everyone around to adore and love you.");
 			var lustDmgF:Number = monster.lustVuln * 3 * (player.inte / 5 * (player.teaseLevel * 0.2) + rand(monster.lib - monster.inte * 2 + monster.cor) / 5);
+			lustDmg += IntligenceModifier;
 			if (player.hasPerk(PerkLib.EromancyExpert)) lustDmgF *= 1.5;
 			if (monster.hasPerk(PerkLib.EnemyGroupType)) {
 				if (player.hasPerk(PerkLib.ArouseTheAudience)) lustDmgF *= 7.5;
 				else lustDmgF *= 5;
 			}
+			if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.MelkieLung)) lustDmgF *= 1.2;
+			if (player.hasPerk(PerkLib.MelkieLungEvolved)) lustDmgF *= 1.3;
+			if (player.hasPerk(PerkLib.MelkieLungFinalForm)) lustDmgF *= 1.4;
 			lustDmgF = Math.round(lustDmgF);
 			monster.teased(lustDmgF);
 			if(!monster.hasPerk(PerkLib.Resolute)) monster.createStatusEffect(StatusEffects.Stunned,4,0,0,0);
@@ -798,7 +821,14 @@ public class MagicSpecials extends BaseCombatContent {
 			if(monster.plural) outputText("s");
 			outputText(" ears.");
 			var lustDmg2:Number = monster.lustVuln * (player.inte / 5 * (player.teaseLevel * 0.2) + rand(monster.lib - monster.inte * 2 + monster.cor) / 5);
+			lustDmg += IntligenceModifier * 0.5;
 			if (player.hasPerk(PerkLib.EromancyExpert)) lustDmg2 *= 1.5;
+			if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.MelkieLung)) lustDmgF *= 1.2;
+			if (player.hasPerk(PerkLib.MelkieLungEvolved)) lustDmgF *= 1.3;
+			if (player.hasPerk(PerkLib.MelkieLungFinalForm)) lustDmgF *= 1.4;
 			lustDmg2 = Math.round(lustDmg2);
 			monster.teased(lustDmg2);
 			player.addStatusValue(StatusEffects.ChanneledAttack, 1, 1);
@@ -810,7 +840,14 @@ public class MagicSpecials extends BaseCombatContent {
 			clearOutput();
 			outputText("You start singing a enrapturing song.");
 			var lustDmg:Number = monster.lustVuln * 0.5 * (player.inte / 5 * (player.teaseLevel * 0.2) + rand(monster.lib - monster.inte * 2 + monster.cor) / 5);
+			lustDmg += IntligenceModifier * 0.25;
 			if (player.hasPerk(PerkLib.EromancyExpert)) lustDmg *= 1.5;
+			if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.MelkieLung)) lustDmgF *= 1.2;
+			if (player.hasPerk(PerkLib.MelkieLungEvolved)) lustDmgF *= 1.3;
+			if (player.hasPerk(PerkLib.MelkieLungFinalForm)) lustDmgF *= 1.4;
 			lustDmg = Math.round(lustDmg);
 			monster.teased(lustDmg);
 			player.createStatusEffect(StatusEffects.ChanneledAttack, 1, 0, 0, 0);
@@ -889,6 +926,9 @@ public class MagicSpecials extends BaseCombatContent {
 			if (player.findPerk(PerkLib.ChiReflowLust) >= 0) lustDmgF *= UmasShop.NEEDLEWORK_LUST_TEASE_DAMAGE_MULTI;
 			if (player.findPerk(PerkLib.ArouseTheAudience) >= 0 && player.findPerk(PerkLib.EnemyGroupType) >= 0) lustDmgF *= 1.5;
 			lustDmgF = lustDmgF * monster.lustVuln;
+			if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
 			lustDmgF = Math.round(lustDmgF);
 			monster.teased(lustDmgF);
 			if (crit == true) outputText(" <b>Critical!</b>");
@@ -1005,6 +1045,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.findPerk(PerkLib.ChiReflowLust) >= 0) lustDmgF *= UmasShop.NEEDLEWORK_LUST_TEASE_DAMAGE_MULTI;
 		if (player.findPerk(PerkLib.ArouseTheAudience) >= 0 && player.findPerk(PerkLib.EnemyGroupType) >= 0) lustDmgF *= 1.5;
 		lustDmgF = lustDmgF * monster.lustVuln;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
 		lustDmgF = Math.round(lustDmgF);
 		monster.teased(lustDmgF);
 		if (crit2 == true) outputText(" <b>Critical!</b>");
@@ -1030,6 +1073,9 @@ public class MagicSpecials extends BaseCombatContent {
 			damage += player.cumQ();
 			damage *= (player.lust100 * 0.01);
 			damage *= 1.2;
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			damage = Math.round(damage);
 			damage = doLightingDamage(damage, true, true);
 			if (monster.lustVuln > 0) {
@@ -1045,6 +1091,9 @@ public class MagicSpecials extends BaseCombatContent {
 			damage += player.lactationQ();
 			damage *= (player.lust100 * 0.01);
 			damage *= 1.2;
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			damage = Math.round(damage);
 			damage = doLightingDamage(damage, true, true);
 			if (monster.lustVuln > 0) {
@@ -1062,6 +1111,9 @@ public class MagicSpecials extends BaseCombatContent {
 			damage += player.cumQ();
 			damage *= 1.5;
 			damage *= (player.lust100 * 0.02);
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			damage = Math.round(damage);
 			damage = doLightingDamage(damage, true, true);
 			if (monster.lustVuln > 0) {
@@ -1132,6 +1184,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage += 50 + rand(20);
 		damage += (player.level * 10);
 		damage = calcInfernoMod(damage);
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1260,10 +1315,13 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = calcGlacialMod(damage);
 		if (combat.wearingWinterScarf()) damage *= 1.2;
 		if (player.hasPerk(PerkLib.HexKnowledge) && monster.cor < 34) damage = Math.round(damage * 1.2);
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//if (monster.short == "goo-girl") damage = Math.round(damage * 1.5); - pomyśleć czy bdą dostawać bonusowe obrażenia
 		//if (monster.short == "tentacle beast") damage = Math.round(damage * 1.2); - tak samo przemyśleć czy bedą dodatkowo ranione
-		outputText("You thrust both hands forward, gathering moisture and freezing it in the shape of Icy dagger like shards. The wind whips past you, cold and carrying with it long pointed shards of ice. They crash against " + monster.a + monster.short + ". " + monster.Pronoun1 + " screams in pain as " + monster.pronoun3 + " body is impaled multiple time by the barrage of projectiles. ");
+		outputText("You thrust both hands forward, gathering moisture and freezing it in the shape of Icy dagger like shards. The wind whips past you, cold and carrying with it long pointed shards of ice. They crash against " + monster.a + monster.short + ". " + monster.Pronoun1 + " screams in pain as " + monster.pronoun3 + " body is impaled multiple times by the barrage of projectiles. ");
 		damage = doIceDamage(damage, true, true);
 		//Using fire attacks on the goo]
 		//if(monster.short == "goo-girl") {
@@ -1281,7 +1339,14 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		//statScreenRefresh();
+
+		if (monster is Lethice && (monster as Lethice).fightPhase == 3)
+		{
+			outputText("\n\n<i>“Ouch. Such arcane skills for one so uncouth,”</i> Lethice growls. With a snap of her fingers, a pearlescent dome surrounds her. <i>“How will you beat me without your magics?”</i>\n\n");
+			monster.createStatusEffect(StatusEffects.Shell, 2, 0, 0, 0);
+			enemyAI();
+		}
+		else combatRoundOver();
 	}
 
 	public function hungeringCold():void {
@@ -1320,6 +1385,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = calcGlacialMod(damage);
 		if (combat.wearingWinterScarf()) damage *= 1.2;
 		if (player.hasPerk(PerkLib.HexKnowledge) && monster.cor < 34) damage = Math.round(damage * 1.2);
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//if (monster.short == "goo-girl") damage = Math.round(damage * 1.5); - pomyśleć czy bdą dostawać bonusowe obrażenia
 		//if (monster.short == "tentacle beast") damage = Math.round(damage * 1.2); - tak samo przemyśleć czy bedą dodatkowo ranione
@@ -1341,7 +1409,68 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.weapon == weapons.DEMSCYT && player.cor < 90) dynStats("cor", 0.3);
 		checkAchievementDamage(damage);
 		combat.heroBaneProc(damage);
-		//statScreenRefresh();
+
+		if (monster is Lethice && (monster as Lethice).fightPhase == 3)
+		{
+			outputText("\n\n<i>“Ouch. Such arcane skills for one so uncouth,”</i> Lethice growls. With a snap of her fingers, a pearlescent dome surrounds her. <i>“How will you beat me without your magics?”</i>\n\n");
+			monster.createStatusEffect(StatusEffects.Shell, 2, 0, 0, 0);
+			enemyAI();
+		}
+		else combatRoundOver();
+	}
+
+	public function frozenKiss():void {
+		flags[kFLAGS.LAST_ATTACK_TYPE] = 2;
+		clearOutput();
+		fatigue(60, USEFATG_MAGIC_NOBM);
+		player.createStatusEffect(StatusEffects.CooldownFrozenKiss,8,0,0,0);
+		var damage:Number = scalingBonusIntelligence() * spellModBlack() * 0.2;
+		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
+		//High damage to goes.
+		damage = calcGlacialMod(damage);
+		if (combat.wearingWinterScarf()) damage *= 1.2;
+		if (player.hasPerk(PerkLib.HexKnowledge) && monster.cor < 34) damage = Math.round(damage * 1.2);
+		damage = Math.round(damage);
+		outputText("You suddenly close the gap between you and " + monster.a + monster.short + " embracing " + monster.pronoun2 + " with both arms and drawing " + monster.pronoun2 + " in for a sudden kiss. At first " + monster.a + monster.short + " is surprised but " + monster.pronoun3 + " expression changes to horror as it starts to realise you're draining " + monster.pronoun3 + " warmth away. ");
+		var lustDmg:Number = player.lust / 10 + player.lib / 10;
+		if (player.hasPerk(PerkLib.EromancyExpert)) lustDmg *= 1.5;
+		if(monster.lustVuln == 0) {
+			outputText("It has no effect!  Your foe clearly does not experience lust in the same way as you.\n\n");
+			enemyAI();
+			return;
+		}
+		outputText(" " + monster.Pronoun1 + " barely manages to shove you off before you turn " + monster.pronoun2 + " into a frozen husk, highly shocked yet aroused by the experience.  ");
+		if(monster.cocks.length > 0) {
+			if(monster.lust >= (monster.maxLust() * 0.6) && monster.cocks.length > 0) outputText("You see " + monster.pronoun3 + " " + monster.multiCockDescriptLight() + " dribble pre-cum.  ");
+			if(monster.lust >= (monster.maxLust() * 0.3) && monster.lust < (monster.maxLust() * 0.6) && monster.cocks.length == 1) outputText(monster.capitalA + monster.short + "'s " + monster.cockDescriptShort(0) + " hardens, distracting " + monster.pronoun2 + " further.  ");
+			if(monster.lust >= (monster.maxLust() * 0.3) && monster.lust < (monster.maxLust() * 0.6) && monster.cocks.length > 1) outputText("You see " + monster.pronoun3 + " " + monster.multiCockDescriptLight() + " harden uncomfortably.  ");
+		}
+		if(monster.vaginas.length > 0) {
+			if(monster.plural) {
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_NORMAL) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + "s dampen perceptibly.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_WET) outputText(monster.capitalA + monster.short + "'s crotches become sticky with girl-lust.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLICK) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + "s become sloppy and wet.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_DROOLING) outputText("Thick runners of girl-lube stream down the insides of " + monster.a + monster.short + "'s thighs.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLAVERING) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + "s instantly soak " + monster.pronoun2 + " groin.  ");
+			}
+			else {
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_NORMAL) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + " dampens perceptibly.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_WET) outputText(monster.capitalA + monster.short + "'s crotch becomes sticky with girl-lust.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLICK) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + " becomes sloppy and wet.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_DROOLING) outputText("Thick runners of girl-lube stream down the insides of " + monster.a + monster.short + "'s thighs.  ");
+				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLAVERING) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + " instantly soaks her groin.  ");
+			}
+		}
+		monster.teased(lustDmg);
+		outputText("  ");
+		damage = doIceDamage(damage, true, true);
+		HPChange(damage,false);
+		outputText("\n\n");
+		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
+		doNext(playerMenu);
+		if (monster.lust >= monster.maxLust()) doNext(endLustVictory);
+		else if (monster.HP <= monster.minHP()) doNext(endHpVictory);
+		else enemyAI();
 	}
 
 	public function acidSpit():void {
@@ -1353,6 +1482,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage += scalingBonusStrength();// * 0.5
 		damage += player.tou;
 		damage += scalingBonusToughness();// * 0.5
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1428,6 +1560,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage += player.tou;
 		damage += scalingBonusToughness();// * 0.5
 		damage = calcInfernoMod(damage);
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1539,6 +1674,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.DraconicLungsEvolved)) damage *= 3;
 		if (player.hasPerk(PerkLib.DraconicLungsFinalForm)) damage *= 5;
 		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1660,6 +1798,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.DraconicLungsFinalForm)) damage *= 5;
 		if (combat.wearingWinterScarf()) damage *= 1.2;
 		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1747,6 +1888,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.DraconicLungsFinalForm)) damage *= 5;
 		if (player.hasPerk(PerkLib.ElectrifiedDesire)) damage *= (1 + (player.lust100 * 0.01));
 		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1833,6 +1977,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.DraconicLungsEvolved)) damage *= 3;
 		if (player.hasPerk(PerkLib.DraconicLungsFinalForm)) damage *= 5;
 		if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		//Shell
 		if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -1930,6 +2077,9 @@ public class MagicSpecials extends BaseCombatContent {
 			if (combat.wearingWinterScarf()) damage *= 1.05;
 			if (flags[kFLAGS.SPELLS_COOLDOWNS] == 0) damage *= 4;
 			damage *= 10;
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			damage = Math.round(damage);
 			//Shell
 			if(monster.hasStatusEffect(StatusEffects.Shell)) {
@@ -2318,33 +2468,33 @@ public class MagicSpecials extends BaseCombatContent {
 		enemyAI();
 	}
 	
-	public function dwarfrage():void {
+	public function warriorsrage():void {
 		clearOutput();
 		player.wrath -= 50;
 		var temp:Number = 0;
 		var tempStr:Number = 0;
 		var tempTouSpe:Number = 0;
-		var dwarfrageDuration:Number = 10;
-		var DwarfRageBoost:Number = 10;
-		if (player.hasPerk(PerkLib.JobSwordsman)) DwarfRageBoost += 5;
-		if (player.hasPerk(PerkLib.JobBrawler)) DwarfRageBoost += 5;
-		if (player.hasPerk(PerkLib.Berzerker)) DwarfRageBoost += 5;
-		if (player.hasPerk(PerkLib.Lustzerker)) DwarfRageBoost += 5;
-	//	DwarfRageBoost += player.tou / 10;player.tou * 0.1 - im wytrzymalesze ciało tym wiekszy bonus może udźwignąć
+		var warriorsrageDuration:Number = 10;
+		var WarriorsRageBoost:Number = 10;
+		if (player.hasPerk(PerkLib.JobSwordsman)) WarriorsRageBoost += 5;
+		if (player.hasPerk(PerkLib.JobBrawler)) WarriorsRageBoost += 5;
+		if (player.hasPerk(PerkLib.Berzerker)) WarriorsRageBoost += 5;
+		if (player.hasPerk(PerkLib.Lustzerker)) WarriorsRageBoost += 5;
+	//	WarriorsRageBoost += player.tou / 10;player.tou * 0.1 - im wytrzymalesze ciało tym wiekszy bonus może udźwignąć
 		outputText("You roar and unleash your dwarf rage in order to destroy your foe!\n\n");
 		var oldHPratio:Number = player.hp100/100;
-		player.createStatusEffect(StatusEffects.DwarfRage, 0, 0, dwarfrageDuration, 0);
-		temp = DwarfRageBoost;
+		player.createStatusEffect(StatusEffects.WarriorsRage, 0, 0, warriorsrageDuration, 0);
+		temp = WarriorsRageBoost;
 		tempStr = temp * 2;
 		tempTouSpe = temp;
-		player.changeStatusValue(StatusEffects.DwarfRage,1,tempStr);
-		player.changeStatusValue(StatusEffects.DwarfRage,2,tempTouSpe);
+		player.changeStatusValue(StatusEffects.WarriorsRage,1,tempStr);
+		player.changeStatusValue(StatusEffects.WarriorsRage,2,tempTouSpe);
 		/*mainView.statsView.showStatUp('str');
 		mainView.statsView.showStatUp('tou');
 		mainView.statsView.showStatUp('spe');*/
-		player.str += player.statusEffectv1(StatusEffects.DwarfRage);
-		player.tou += player.statusEffectv2(StatusEffects.DwarfRage);
-		player.spe += player.statusEffectv2(StatusEffects.DwarfRage);
+		player.str += player.statusEffectv1(StatusEffects.WarriorsRage);
+		player.tou += player.statusEffectv2(StatusEffects.WarriorsRage);
+		player.spe += player.statusEffectv2(StatusEffects.WarriorsRage);
 		player.HP = oldHPratio * player.maxHP();
 		EngineCore.showUpDown(false);
 		EngineCore.statScreenRefresh(false);
@@ -2520,6 +2670,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage = calcInfernoMod(damage);
 		if (monster.short == "goo-girl") damage = Math.round(damage * 1.5);
 		if (monster.short == "tentacle beast") damage = Math.round(damage * 1.2);
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		outputText("for ");
 		damage = doFireDamage(damage, true, true);
@@ -2629,6 +2782,9 @@ public class MagicSpecials extends BaseCombatContent {
 		damage += combat.unarmedAttack();
 		damage += player.tou;
 		damage += scalingBonusToughness();// * 0.5
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		damage = doMagicDamage(damage, true, true);
 		if (monster.hasStatusEffect(StatusEffects.AcidDoT)) monster.addStatusValue(StatusEffects.AcidDoT, 4, 1); //More heads will produce more potent acid
@@ -2730,9 +2886,16 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.EromancyExpert)) lustDmg *= 1.5;
 		lustDmg *= 0.1;
 		//ew. bonusy do lust dmg tutaj
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		lustDmg = Math.round(lustDmg);
 		monster.teased(lustDmg);
 		outputText(" ");
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
+		damage = Math.round(damage);
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
@@ -2835,9 +2998,16 @@ public class MagicSpecials extends BaseCombatContent {
 		lustDmg *= 0.25;
 		if (player.shieldName == "spirit focus") lustDmg *= 1.2;
 		if (player.headjewelryName == "fox hairpin") lustDmg *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		lustDmg = Math.round(lustDmg);
 		monster.teased(lustDmg);
 		outputText(" ");
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
+		damage = Math.round(damage);
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
@@ -2951,9 +3121,16 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.KitsuneThyroidGlandEvolved) && player.tailType == Tail.FOX && player.tailCount == 9) lustDmg *= 1.5;
 		if (player.shieldName == "spirit focus") lustDmg *= 1.2;
 		if (player.headjewelryName == "fox hairpin") lustDmg *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		lustDmg = Math.round(lustDmg);
 		monster.teased(lustDmg);
 		outputText(" ");
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
+		damage = Math.round(damage);
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
@@ -3059,9 +3236,16 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.KitsuneThyroidGlandEvolved) && player.tailType == Tail.FOX && player.tailCount == 9) lustDmg *= 1.5;
 		if (player.shieldName == "spirit focus") lustDmg *= 1.2;
 		if (player.headjewelryName == "fox hairpin") lustDmg *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		lustDmg = Math.round(lustDmg);
 		monster.teased(lustDmg);
 		outputText(" ")
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
+		damage = Math.round(damage);
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
@@ -3173,9 +3357,16 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.hasPerk(PerkLib.KitsuneThyroidGlandEvolved) && player.tailType == Tail.FOX && player.tailCount == 9) lustDmg *= 1.5;
 		if (player.shieldName == "spirit focus") lustDmg *= 1.2;
 		if (player.headjewelryName == "fox hairpin") lustDmg *= 1.2;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		lustDmg = Math.round(lustDmg);
 		monster.teased(lustDmg);
 		outputText(" ");
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
+		damage = Math.round(damage);
 		damage = doFireDamage(damage, true, true);
 		if (crit == true) outputText(" <b>*Critical Hit!*</b>");
 		outputText("\n\n");
@@ -3404,6 +3595,9 @@ public class MagicSpecials extends BaseCombatContent {
 		if (player.findPerk(PerkLib.ChiReflowLust) >= 0) lustDmgF *= UmasShop.NEEDLEWORK_LUST_TEASE_DAMAGE_MULTI;
 		if (player.findPerk(PerkLib.ArouseTheAudience) >= 0 && player.findPerk(PerkLib.EnemyGroupType) >= 0) lustDmgF *= 1.5;
 		lustDmgF = lustDmgF * monster.lustVuln;
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmgF *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmgF *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmgF *= 1.50;
 		lustDmgF = Math.round(lustDmgF);
 		monster.teased(lustDmgF);
 		if (critL == true) outputText(" <b>Critical!</b>");
@@ -3466,6 +3660,7 @@ public class MagicSpecials extends BaseCombatContent {
 			outputText("\n\n" + monster.a + monster.short + " hazard an answer and your smirk as you respond, “Sadly incorrect!” Your curse smiting your foe for its mistake, leaving it stunned by pain and pleasure.");
 			//damage dealth
 			var damage:Number = ((scalingBonusWisdom() * 0.5) + scalingBonusIntelligence()) * spellMod();
+			if (player.headJewelry == headjewelries.SPHINXAS) damage *= 1.5;
 			//Determine if critical hit!
 			var crit:Boolean = false;
 			var critChance:int = 5;
@@ -3475,6 +3670,9 @@ public class MagicSpecials extends BaseCombatContent {
 				crit = true;
 				damage *= 1.75;
 			}
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			damage = Math.round(damage);
 			damage = doMagicDamage(damage, true, true);
 			//Lust damage dealth
@@ -3670,6 +3868,9 @@ public class MagicSpecials extends BaseCombatContent {
 				if(monster.lust >= (monster.maxLust() * 0.6) && monster.vaginas[0].vaginalWetness == VaginaClass.WETNESS_SLAVERING) outputText(monster.capitalA + monster.short + "'s " + monster.vaginaDescript() + " instantly soaks her groin.  ");
 			}
 		}
+		if (player.hasPerk(PerkLib.RacialParagon)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) lustDmg *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) lustDmg *= 1.50;
 		monster.teased(lustDmg);
 		outputText("\n\n");
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP(1 + combat.bonusExpAfterSuccesfullTease());
@@ -3720,6 +3921,9 @@ public class MagicSpecials extends BaseCombatContent {
 			}
 			var damage:Number = Math.round(player.inte / 5) + rand(player.level) + player.level;
 			damage *= Math.round(1 + (0.1 * player.poltergeistScore()));
+			if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+			if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 			if (player.hasPerk(PerkLib.EromancyExpert)) damage *= 1.5;
 			if (player.poltergeistScore() >= 18) {
 				damage += Math.round(player.lust * 0.1);
@@ -3778,6 +3982,9 @@ public class MagicSpecials extends BaseCombatContent {
 		var damage:Number = 0;
 		damage += unarmedAttack();
 		damage *= spellMod();
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		outputText("You growl as you unsheath your claws, enhancing them with a dash of fire magic. You leap forward and viciously rend your opponent for " + damage + " physical and ");
 		damage = doDamage(damage);//phys dmg
@@ -3818,6 +4025,9 @@ public class MagicSpecials extends BaseCombatContent {
 		var damage:Number = 0;
 		damage += scalingBonusToughness();
 		if (monster.hasPerk(PerkLib.EnemyGroupType)) damage *= 5;
+		if (player.hasPerk(PerkLib.RacialParagon)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.Apex)) damage *= 1.50;
+		if (player.hasPerk(PerkLib.AlphaAndOmega)) damage *= 1.50;
 		damage = Math.round(damage);
 		monster.HP -= damage;
 		outputText("You call on the power of your tainted blood drawing out an almighty scream so strong and sharp it explode from you like a shockwave sending " + monster.a + monster.short + " flying. " + monster.Pronoun1 + " will be shaken from the glass shattering blast for a moment " + damage + " damage.");

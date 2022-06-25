@@ -216,7 +216,7 @@ public class Holli extends Monster
 		}
 
 
-		override public function teased(lustDelta:Number):void
+		override public function teased(lustDelta:Number, isNotSilent:Boolean = true):void
 		{
 			if (hasStatusEffect(StatusEffects.HolliBurning)) {
 				outputText("Holli doesn't even seem to notice, so concerned is she with defeating you before the mounting bonfire causes her any more pain.");
@@ -266,6 +266,7 @@ public class Holli extends Monster
 			this.drop = NO_DROP;
 			this.createPerk(PerkLib.FireVulnerability, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyPlantType, 0, 0, 0, 0);
+			this.createPerk(PerkLib.UniqueNPC, 0, 0, 0, 0);
 			checkMonster();
 		}
 		

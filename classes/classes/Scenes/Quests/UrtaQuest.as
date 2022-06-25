@@ -55,6 +55,16 @@ public var urtaQItems7:ItemSlotClass = new ItemSlotClass();
 public var urtaQItems8:ItemSlotClass = new ItemSlotClass();
 public var urtaQItems9:ItemSlotClass = new ItemSlotClass();
 public var urtaQItems10:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems11:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems12:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems13:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems14:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems15:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems16:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems17:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems18:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems19:ItemSlotClass = new ItemSlotClass();
+public var urtaQItems20:ItemSlotClass = new ItemSlotClass();
 
 public function urtaBusy():Boolean {
 	return (telAdre.edryn.pregnancy.type == PregnancyStore.PREGNANCY_TAOTH || flags[kFLAGS.URTA_QUEST_STATUS] == -1);
@@ -181,6 +191,16 @@ private function resetToPC():void {
 	player.itemSlot8 = urtaQItems8;
 	player.itemSlot9 = urtaQItems9;
 	player.itemSlot10 = urtaQItems10;
+	player.itemSlot11 = urtaQItems11;
+	player.itemSlot12 = urtaQItems12;
+	player.itemSlot13 = urtaQItems13;
+	player.itemSlot14 = urtaQItems14;
+	player.itemSlot15 = urtaQItems15;
+	player.itemSlot16 = urtaQItems16;
+	player.itemSlot17 = urtaQItems17;
+	player.itemSlot18 = urtaQItems18;
+	player.itemSlot19 = urtaQItems19;
+	player.itemSlot20 = urtaQItems20;
 	model.player = player;
 
 	// See called method comment.
@@ -204,6 +224,16 @@ public function startUrtaQuest():void {
 	urtaQItems8 = player.itemSlot8;
 	urtaQItems9 = player.itemSlot9;
 	urtaQItems10 = player.itemSlot10;
+	urtaQItems11 = player.itemSlot11;
+	urtaQItems12 = player.itemSlot12;
+	urtaQItems13 = player.itemSlot13;
+	urtaQItems14 = player.itemSlot14;
+	urtaQItems15 = player.itemSlot15;
+	urtaQItems16 = player.itemSlot16;
+	urtaQItems17 = player.itemSlot17;
+	urtaQItems18 = player.itemSlot18;
+	urtaQItems19 = player.itemSlot19;
+	urtaQItems20 = player.itemSlot20;
 	player.itemSlot1 = new ItemSlotClass();
 	player.itemSlot2 = new ItemSlotClass();
 	player.itemSlot3 = new ItemSlotClass();
@@ -214,6 +244,16 @@ public function startUrtaQuest():void {
 	player.itemSlot8 = new ItemSlotClass();
 	player.itemSlot9 = new ItemSlotClass();
 	player.itemSlot10 = new ItemSlotClass();
+	player.itemSlot11 = new ItemSlotClass();
+	player.itemSlot12 = new ItemSlotClass();
+	player.itemSlot13 = new ItemSlotClass();
+	player.itemSlot14 = new ItemSlotClass();
+	player.itemSlot15 = new ItemSlotClass();
+	player.itemSlot16 = new ItemSlotClass();
+	player.itemSlot17 = new ItemSlotClass();
+	player.itemSlot18 = new ItemSlotClass();
+	player.itemSlot19 = new ItemSlotClass();
+	player.itemSlot20 = new ItemSlotClass();
 	player2 = player;
 
 	player = new Player();
@@ -251,27 +291,27 @@ public function startUrtaQuest():void {
 	player.vaginas[0].vaginalWetness = VaginaClass.WETNESS_DROOLING;
 	player.vaginas[0].vaginalLooseness = VaginaClass.LOOSENESS_NORMAL;
 	player.clitLength = 1;
-	player.str = 100;
-	player.tou = 110;
-	player.spe = 120;
+	player.str = 143;
+	player.tou = 183;
+	player.spe = 178;
 	player.inte = 60;
 	player.wis = 50;
 	player.lib = 90;
 	player.sens = 50;
 	player.cor = 30;
-	player.lust = 55;
+	player.lust = 40;
 	player.hunger = 100;
 	player.soulforce = 50;
 	player.wrath = 0;
 	player.gems = 183;
-	player.level = 26;
-	player.teaseLevel = 5;
-	player.str += (player.newGamePlusMod() * 30);
-	player.tou += (player.newGamePlusMod() * 33);
-	player.spe += (player.newGamePlusMod() * 36);
-	player.inte += (player.newGamePlusMod() * 18);
-	player.wis += (player.newGamePlusMod() * 15);
-	player.lib += (player.newGamePlusMod() * 27);
+	player.level = 30;
+	player.teaseLevel = 15;
+	player.str += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 34);
+	player.tou += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 37);
+	player.spe += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 40);
+	player.inte += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 20);
+	player.wis += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 18);
+	player.lib += (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] * 30);
 
 	//PERKS
 	player.createPerk(PerkLib.Agility,0,0,0,0);
@@ -284,16 +324,27 @@ public function startUrtaQuest():void {
 	player.createPerk(PerkLib.LungingAttacks,0,0,0,0);
 	player.createPerk(PerkLib.ImmovableObject,0,0,0,0);
 	player.createPerk(PerkLib.BrutalBlows,0,0,0,0);
+	player.createPerk(PerkLib.WeaponMastery,0,0,0,0);
+	player.createPerk(PerkLib.WeaponGrandMastery,0,0,0,0);
 	player.createPerk(PerkLib.Brawler,0,0,0,0);
 	player.createPerk(PerkLib.Berzerker,0,0,0,0);
 	player.createPerk(PerkLib.HistoryFighter,0,0,0,0);
 	player.createPerk(PerkLib.JobWarrior,0,0,0,0);
 	player.createPerk(PerkLib.JobSwordsman,0,0,0,0);
+	player.createPerk(PerkLib.JobDervish,0,0,0,0);
+	player.createPerk(PerkLib.JobSeducer,0,0,0,0);
 	player.createPerk(PerkLib.JobAllRounder,0,0,0,0);
 	player.createPerk(PerkLib.HiddenMomentum,0,0,0,0);
 	player.createPerk(PerkLib.HoldWithBothHands,0,0,0,0);
-	player.createPerk(PerkLib.ColdFury,0,0,0,0);
-	player.createPerk(PerkLib.BasicSelfControl,0,0,0,0);
+	player.createPerk(PerkLib.ColdFury, 0, 0, 0, 0);
+	player.createPerk(PerkLib.UnlockBody, 0, 0, 0, 0);
+	player.createPerk(PerkLib.UnlockBody2ndStage, 0, 0, 0, 0);
+	player.createPerk(PerkLib.BasicSelfControl, 0, 0, 0, 0);
+	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.HalfStepToImprovedSelfControl, 0, 0, 0, 0);
+	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.ImprovedSelfControl, 0, 0, 0, 0);
+	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.HalfStepToAdvancedSelfControl, 0, 0, 0, 0);
+	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.AdvancedSelfControl, 0, 0, 0, 0);
+	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.HalfStepToSuperiorSelfControl, 0, 0, 0, 0);
 	player.createPerk(PerkLib.ResistanceI,0,0,0,0);
 	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.ResistanceII,0,0,0,0);
 	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.ResistanceIII,0,0,0,0);
@@ -306,6 +357,12 @@ public function startUrtaQuest():void {
 	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.InhumanDesireIV,0,0,0,0);
 	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.InhumanDesireV,0,0,0,0);
 	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.InhumanDesireVI,0,0,0,0);
+	player.createPerk(PerkLib.DemonicDesireI,0,0,0,0);
+	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.DemonicDesireII,0,0,0,0);
+	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.DemonicDesireIII,0,0,0,0);
+	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.DemonicDesireIV,0,0,0,0);
+	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.DemonicDesireV,0,0,0,0);
+	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.DemonicDesireVI,0,0,0,0);
 	player.createPerk(PerkLib.RefinedBodyI,0,0,0,0);
 	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.RefinedBodyII,0,0,0,0);
 	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.RefinedBodyIII,0,0,0,0);
@@ -318,6 +375,18 @@ public function startUrtaQuest():void {
 	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.TankIV,0,0,0,0);
 	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.TankV,0,0,0,0);
 	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.TankVI,0,0,0,0);
+	player.createPerk(PerkLib.GoliathI,0,0,0,0);
+	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.GoliathII,0,0,0,0);
+	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.GoliathIII,0,0,0,0);
+	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.GoliathIV,0,0,0,0);
+	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.GoliathV,0,0,0,0);
+	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.GoliathVI,0,0,0,0);
+	player.createPerk(PerkLib.CheetahI,0,0,0,0);
+	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.CheetahII,0,0,0,0);
+	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.CheetahIII,0,0,0,0);
+	if (player.newGamePlusMod() >= 3) player.createPerk(PerkLib.CheetahIV,0,0,0,0);
+	if (player.newGamePlusMod() >= 4) player.createPerk(PerkLib.CheetahV,0,0,0,0);
+	if (player.newGamePlusMod() >= 5) player.createPerk(PerkLib.CheetahVI,0,0,0,0);
 	player.createPerk(PerkLib.DancersVitalityI,0,0,0,0);
 	if (player.newGamePlusMod() >= 1) player.createPerk(PerkLib.DancersVitalityII,0,0,0,0);
 	if (player.newGamePlusMod() >= 2) player.createPerk(PerkLib.DancersVitalityIII,0,0,0,0);
@@ -984,8 +1053,8 @@ public function urtaSpecials():void {
 	addButton(1, "Vault", urtaVaultAttack).hint("Make a vaulting attack for an extra 25% damage.  Automatically crits stunned foes. \n\nFatigue cost: 30");
 	addButton(2, "Sidewinder", urtaSidewinder).hint("An attack that hits for reduced damage but has a high chance of stunning. \n\nFatigue cost: 15");
 	addButton(3, "Dirt Kick", urtaDirtKick).hint("Attempt to blind your foe with a spray of kicked dirt. \n\nFatigue cost: 5");
-	addButton(4, "Metabolize", urtaMetabolize).hint("Convert 10% of your maximum HP into fatigue.");
-	addButton(5, "SecondWind", urtaSecondWind).hint("Regain 50% of your HP, 150 fatigue, and reduce lust by 100 once per fight.", "Second Wind");
+	addButton(4, "Metabolize", urtaMetabolize).hint("Convert 5% of your maximum HP into fatigue.");
+	addButton(5, "SecondWind", urtaSecondWind).hint("Regain 30% of your HP, 200 fatigue, and reduce lust by 200.", "Second Wind");
 	addButton(14, "Back", combat.combatMenu, false);
 }
 
@@ -1018,26 +1087,26 @@ private function berzerk():void {
 
 private function urtaMetabolize():void {
 	clearOutput();
-	var damage:int = player.takePhysDamage(Math.round(player.maxHP()/10));
-	outputText("You work your body as hard as you can, restoring your fatigue at the cost of health. (" + damage + ")\nRestored 20 fatigue!\n\n");
-	fatigue(-20);
+	var damage:int = player.takePhysDamage(Math.round(player.maxHP()/5));
+	outputText("You work your body as hard as you can, restoring your fatigue at the cost of health. (" + damage + ")\nRestored 25 fatigue!\n\n");
+	fatigue(-25);
     SceneLib.combat.enemyAIImpl();
 }
 
 private function urtaSecondWind():void {
 	clearOutput();
 	if(monster.hasStatusEffect(StatusEffects.UrtaSecondWinded)) {
-		outputText("You've already pushed yourself as hard as you can!");
+		outputText("You've already pushed yourself as hard as you can!  Wait a bit before you try it again!");
 //Gone		menuLoc = 3;
 //		doNext(combat.combatMenu);
 		menu();
 		addButton(0, "Next", combat.combatMenu, false);
 		return;
 	}
-	monster.createStatusEffect(StatusEffects.UrtaSecondWinded,0,0,0,0);
-	HPChange(Math.round(player.maxHP()/2),false);
-	fatigue(-150);
-	dynStats("lus", -100);
+	monster.createStatusEffect(StatusEffects.UrtaSecondWinded,3,0,0,0);
+	HPChange(Math.round(player.maxHP()*0.3),false);
+	fatigue(-200);
+	dynStats("lus", -200);
 	outputText("Closing your eyes for a moment, you focus all of your willpower on pushing yourself to your absolute limits, forcing your lusts down and drawing on reserves of energy you didn't know you had!\n\n");
     SceneLib.combat.enemyAIImpl();
 }
@@ -1097,24 +1166,19 @@ private function urtaComboAttack():void {
 	}*/
 	//Basic damage stuff
 	damage = player.str;
-	if (player.str >= 21) damage += ((player.str - 20) * 0.5);
-	if (player.str >= 41) damage += ((player.str - 40) * 0.5);
-	if (player.str >= 61) damage += ((player.str - 60) * 0.5);
-	if (player.str >= 81) damage += ((player.str - 80) * 0.5);
-	if (player.str >= 101) damage += ((player.str - 100) * 0.5);
-	if (player.str >= 151) damage += ((player.str - 150) * 0.5);
-	if (player.str >= 201) damage += ((player.str - 200) * 0.5);
-	if (player.str >= 251) damage += ((player.str - 250) * 0.5);
-	if (player.str >= 301) damage += ((player.str - 300) * 0.5);
-	if (player.str >= 351) damage += ((player.str - 350) * 0.5);
-	if (player.str >= 401) damage += ((player.str - 400) * 0.5);
-	if (player.findPerk(PerkLib.HoldWithBothHands) >= 0 && player.weaponName != "fists") damage *= 1.2;
+	damage += combat.scalingBonusStrength() * 0.5;
+	damage *= 1.2;
 	//Weapon addition!
 	if (player.weaponAttack < 51) damage *= (1 + (player.weaponAttack * 0.05));
 	else damage *= (3.5 + ((player.weaponAttack - 50) * 0.04));
 	//Determine if critical hit!
 	var crit:Boolean = false;
-	if(rand(100) <= 4 || (player.findPerk(PerkLib.Tactician) >= 0 && player.inte >= 50 && (player.inte - 50)/5 > rand(100))) {
+	var critChance:int = 5;
+	critChance += combat.combatPhysicalCritical();
+	if (player.hasPerk(PerkLib.WeaponMastery)) critChance += 10;
+	if (player.hasPerk(PerkLib.WeaponGrandMastery)) critChance += 10;
+	if (monster.isImmuneToCrits() && player.findPerk(PerkLib.EnableCriticals) < 0) critChance = 0;
+	if (rand(100) < critChance) {
 		crit = true;
 		damage *= 2;
 	}
@@ -1249,25 +1313,20 @@ private function urtaSidewinder():void {
 	}*/
 	//Basic damage stuff
 	damage = player.str;
-	if (player.str >= 21) damage += ((player.str - 20) * 0.4);
-	if (player.str >= 41) damage += ((player.str - 40) * 0.4);
-	if (player.str >= 61) damage += ((player.str - 60) * 0.4);
-	if (player.str >= 81) damage += ((player.str - 80) * 0.4);
-	if (player.str >= 101) damage += ((player.str - 100) * 0.4);
-	if (player.str >= 151) damage += ((player.str - 150) * 0.4);
-	if (player.str >= 201) damage += ((player.str - 200) * 0.4);
-	if (player.str >= 251) damage += ((player.str - 250) * 0.4);
-	if (player.str >= 301) damage += ((player.str - 300) * 0.4);
-	if (player.str >= 351) damage += ((player.str - 350) * 0.4);
-	if (player.str >= 401) damage += ((player.str - 400) * 0.4);
+	damage += combat.scalingBonusStrength() * 0.5;
 	//Weapon addition!
-	if (player.weaponAttack < 51) damage *= (1 + (player.weaponAttack * 0.04));
-	else damage *= (3 + ((player.weaponAttack - 50) * 0.03));
+	if (player.weaponAttack < 51) damage *= (1 + (player.weaponAttack * 0.05));
+	else damage *= (3.5 + ((player.weaponAttack - 50) * 0.04));
 	//70% crappier than normal attack.
 	damage *= .7;
 	//Determine if critical hit!
 	var crit:Boolean = false;
-	if(rand(100) <= 4 || (player.findPerk(PerkLib.Tactician) >= 0 && player.inte >= 50 && (player.inte - 50)/5 > rand(100))) {
+	var critChance:int = 5;
+	critChance += combat.combatPhysicalCritical();
+	if (player.hasPerk(PerkLib.WeaponMastery)) critChance += 10;
+	if (player.hasPerk(PerkLib.WeaponGrandMastery)) critChance += 10;
+	if (monster.isImmuneToCrits() && player.findPerk(PerkLib.EnableCriticals) < 0) critChance = 0;
+	if (rand(100) < critChance) {
 		crit = true;
 		damage *= 1.75;
 	}
@@ -1315,7 +1374,7 @@ private function urtaSidewinder():void {
 		else monster.armorDef = 0;
 	}
 	if(!monster.hasStatusEffect(StatusEffects.Stunned) && monster.findPerk(PerkLib.Resolute) < 0 && damage > 0) {
-		if(monster.tou/10 + rand(20) + 1 < 20) {
+		if(rand(3) > 0) {
 			outputText("\n<b>" + monster.capitalA + monster.short + " is stunned!</b>");
 			monster.createStatusEffect(StatusEffects.Stunned,1,0,0,0);
 		}
@@ -1387,25 +1446,21 @@ private function urtaVaultAttack():void {
 	}*/
 	//Basic damage stuff
 	damage = player.str;
-	if (player.str >= 21) damage += ((player.str - 20) * 0.4);
-	if (player.str >= 41) damage += ((player.str - 40) * 0.4);
-	if (player.str >= 61) damage += ((player.str - 60) * 0.4);
-	if (player.str >= 81) damage += ((player.str - 80) * 0.4);
-	if (player.str >= 101) damage += ((player.str - 100) * 0.4);
-	if (player.str >= 151) damage += ((player.str - 150) * 0.4);
-	if (player.str >= 201) damage += ((player.str - 200) * 0.4);
-	if (player.str >= 251) damage += ((player.str - 250) * 0.4);
-	if (player.str >= 301) damage += ((player.str - 300) * 0.4);
-	if (player.str >= 351) damage += ((player.str - 350) * 0.4);
-	if (player.str >= 401) damage += ((player.str - 400) * 0.4);
+	damage += combat.scalingBonusStrength() * 0.5;
 	//Weapon addition!
-	if (player.weaponAttack < 51) damage *= (1 + (player.weaponAttack * 0.04));
-	else damage *= (3 + ((player.weaponAttack - 50) * 0.03));
+	if (player.weaponAttack < 51) damage *= (1 + (player.weaponAttack * 0.05));
+	else damage *= (3.5 + ((player.weaponAttack - 50) * 0.04));
 	//25% better than normal attack.
 	damage *= 1.25;
 	//Determine if critical hit!
 	var crit:Boolean = false;
-	if(monster.hasStatusEffect(StatusEffects.Stunned) || rand(100) <= 4 || (player.findPerk(PerkLib.Tactician) >= 0 && player.inte >= 50 && (player.inte - 50) / 5 > rand(100))) {
+	var critChance:int = 5;
+	critChance += combat.combatPhysicalCritical();
+	if (player.hasPerk(PerkLib.WeaponMastery)) critChance += 10;
+	if (player.hasPerk(PerkLib.WeaponGrandMastery)) critChance += 10;
+	if (monster.isImmuneToCrits() && player.findPerk(PerkLib.EnableCriticals) < 0) critChance = 0;
+	if (monster.monsterIsStunned()) critChance = 100;
+	if (rand(100) < critChance) {
 		crit = true;
 		damage *= 2;
 	}

@@ -12,8 +12,9 @@ import classes.BodyParts.Tail;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.MutationsHelper;
 import classes.Scenes.UniqueSexScenes;
+import classes.display.SpriteDb;
 
-	public class HellCatScene extends BaseContent
+public class HellCatScene extends BaseContent
 	{
 		public var uniquuuesexscene:UniqueSexScenes = new UniqueSexScenes();
 		
@@ -24,9 +25,14 @@ import classes.Scenes.UniqueSexScenes;
 		}
 
 public function HellCatIntro():void {
+	spriteSelect(SpriteDb.s_Hellcat_16bit);
 	clearOutput();
 	outputText("As you explore the crag you run into a strange sight. You spot a hooded figure with a cape walking silently toward you. Only when it's finally up close does it throw its cape open revealing the ashen naked skin of a human woman inside or what could have been a human if not for the swishing tail of fire, black furry cat legs and pawed hands with sharp claws. The hood now pulled back reveals a somewhat human face with eyes and hair ");
 	outputText("of literal fire and feline ears to top it off. Well, guess you have seen everything now including pyrocatgirls. Speaking of pyro, the intent of the cat girl manifest as a large fireball which she proceeds to throw at you. Barely dodging this surprise assault you steady yourself just in time to see her grin wide as a 10 inch spiked cat cock slides out of the sheath just above her drooling pussy. You ready your [weapon] for a fight!");
+	if (flags[kFLAGS.CODEX_ENTRY_HELLCATS] <= 0) {
+		flags[kFLAGS.CODEX_ENTRY_HELLCATS] = 1;
+		outputText("\n\n<b>New codex entry unlocked: Hellcats!</b>");
+	}
 	if (flags[kFLAGS.WITCHES_SABBATH] < 1) flags[kFLAGS.WITCHES_SABBATH] = 1;
 	startCombat(new HellCat());
 }
@@ -49,7 +55,7 @@ public function DefeatedHellCatPussycat():void {
 	outputText("to wrap around every inches of your length" + (player.cockAdjective.length > 20 ? "  wich to your absolute surprise it does. Guess corrupted creatures are all adept at taking impossible lengths and girths in" : "") + ". Now fully in control you savor the sensation of your [cock] as you proceed to mate with the catgirl. ");
 	outputText("God the slut is enjoying herself even more than you do, guess you can’t rape the willing? You would tell her to shut the fuck up if you weren't busy moaning from the hellish ministrations of her pussy around your cock.\n\n");
 	outputText("Before a minute has passed you’re already reaching your own orgasm, your [cock] flooding her warm cunt with fresh baby bater. The hellcat only relax her rocking hips once you’ve shot all of your ropes inside, purring in contentment. Done with the horny witch you grab back your gear and head back to camp.");
-	player.orgasm();
+	player.sexReward("Default","Default",true,false);
 	cleanupAfterCombat();
 }
 public function DefeatedHellCatCatcock():void {
@@ -61,8 +67,7 @@ public function DefeatedHellCatCatcock():void {
 	outputText("You are do distracted by the overload of sensations that you forget your partner who reaching her own orgasm flood your burning pussy with a welcome load of catjizz. You thought this would end the heat but it only makes it worse, the hot cum bubbling in your pussy only seems to make the heat in your brain more intense. You need to fuck, you desperately need to fuck!\n\n");
 	outputText("The catgirl does not seem to mind as you repetitively ravish her cock. Only when she pass out from exhaustion do you realise her cum is only intensifying the heat. You kick her in frustration as you head back to camp. <b>It would seem you have gone into heat!</b>");
 	player.goIntoHeat(false);
-	player.orgasm();
-	player.slimeFeed();
+	player.sexReward("cum","Vaginal");
 	cleanupAfterCombat();
 }
 public function DefeatedByHellCat():void {
@@ -98,11 +103,13 @@ public function DefeatedByHellCat():void {
 			player.goIntoRut(false);
 			player.goIntoHeat(false);
 		}
+		player.sexReward("vaginalFluids","Dick");
 		cleanupAfterCombat();
 	}
 }
 
 public function WitchesSabbath():void {
+	spriteSelect(SpriteDb.s_Hellcat_16bit);
 	clearOutput();
 	if (flags[kFLAGS.WITCHES_SABBATH] > 3) {
 		if (player.gender == 3) {

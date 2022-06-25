@@ -77,6 +77,10 @@ public class SpriteDb {
 	}
 	[Embed(source="../../../res/sprites/ceani.png")]
 	public static var s_ceani:Class;
+	[Embed(source="../../../res/sprites/celess.png")]
+	public static var s_celessWhite:Class;
+	[Embed(source="../../../res/sprites/darkCeless.png")]
+	public static var s_celessBlack:Class;
 	[Embed(source="../../../res/sprites/ceraph.png")]
 	public static var s_ceraph_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/ceraph-old.png")]
@@ -113,6 +117,8 @@ public class SpriteDb {
 	public static function get s_chickenHarpy(): Class {
 		return is8bit ? null : s_chickenHarpy_16bit;
 	}
+	[Embed(source="../../../res/sprites/cinderbloom.png")]
+	public static var s_cinderbloom:Class;
 	[Embed(source="../../../res/sprites/christmas elf.png")]
 	public static var s_christmas_elf_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/xmas-elf-old.png")]
@@ -296,6 +302,8 @@ public class SpriteDb {
 	public static function get s_hel_sprite(): Class {
 		return is8bit ? s_hel_sprite_8bit : s_hel_sprite_16bit;
 	}
+	[Embed(source="../../../res/sprites/Hellcat witch.png")]
+	public static var s_Hellcat_16bit:Class;
 	[Embed(source="../../../res/sprites/hellhound.png")]
 	public static var s_hellhound_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/hellhound-old.png")]
@@ -303,6 +311,8 @@ public class SpriteDb {
 	public static function get s_hellhound(): Class {
 		return is8bit ? s_hellhound_8bit : s_hellhound_16bit;
 	}
+	[Embed(source="../../../res/sprites/Hydra.png")]
+	public static var s_hydra_16bit:Class;
 	[Embed(source="../../../res/sprites/ifris.png")]
 	public static var s_ifris_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/ifris-old.png")]
@@ -429,6 +439,8 @@ public class SpriteDb {
 	public static function get s_lilium(): Class {
 		return is8bit ? s_lilium_8bit : s_lilium_16bit;
 	}
+	[Embed(source="../../../res/sprites/Loppe.png")]
+	public static var s_Loppe_16bit:Class;
 	[Embed(source="../../../res/sprites/lottie.png")]
 	public static var s_lottie_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/lottie-old.png")]
@@ -655,6 +667,8 @@ public class SpriteDb {
 	public static function get s_sophieBimbo(): Class {
 		return is8bit ? s_sophieBimbo_8bit : s_sophieBimbo_16bit;
 	}
+	[Embed(source="../../../res/sprites/snow_lily.png")]
+	public static var s_snow_lily:Class;
 	[Embed(source="../../../res/sprites/spear gnoll.png")]
 	public static var s_spear_gnoll_16bit:Class;
 	[Embed(source="../../../res/sprites8bit/gnoll-spearthrower-old.png")]

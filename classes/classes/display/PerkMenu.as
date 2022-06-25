@@ -47,7 +47,7 @@ public class PerkMenu extends BaseContent {
 			addButton(button++, "Perk Up", CoC.instance.playerInfo.perkBuyMenu);
 		}
 		addButton(4, "Database", perkDatabase);
-		if (player.hasPerk(PerkLib.DoubleAttack) || player.hasPerk(PerkLib.DoubleAttackLarge) || player.hasPerk(PerkLib.DoubleAttackSmall) || player.hasPerk(PerkLib.Combo) || player.hasPerk(PerkLib.Poisoning) || (player.hasPerk(PerkLib.JobBeastWarrior) && (player.haveNaturalClaws() || player.haveNaturalClawsTypeWeapon()))) {
+		if (player.hasPerk(PerkLib.DoubleAttack) || player.hasPerk(PerkLib.DoubleAttackLarge) || player.hasPerk(PerkLib.DoubleAttackSmall) || player.hasPerk(PerkLib.Combo) || player.hasPerk(PerkLib.Poisoning) || player.hasPerk(PerkLib.SwiftCasting) || (player.hasPerk(PerkLib.JobBeastWarrior) && (player.haveNaturalClaws() || player.haveNaturalClawsTypeWeapon()))) {
 			outputText("\n<b>You can adjust your melee attack settings.</b>");
 			addButton(5, "Melee Opt",doubleAttackOptions);
 		}
@@ -72,6 +72,10 @@ public class PerkMenu extends BaseContent {
 		if (player.hasPerk(PerkLib.JobLeader)) {
 			outputText("\n<b>You can adjust your Will-o'-the-wisp behaviour during combat.</b>");
 			addButton(14, "Will-o'-the-wisp",WOTWbehaviourOptions);
+		}
+		if (player.hasPerk(PerkLib.DarkRitual)){
+			outputText("\n<b>You can choose if you wish to use dark ritual and sacrifice health to empower your magic.</b>");
+			addButton(12, "D.Ritual",DarkRitualOption);
 		}
 	}
 
@@ -475,12 +479,37 @@ public class PerkMenu extends BaseContent {
             golemsbehaviourOptions();
         }
 	}
+
+	public function DarkRitualOption():void {
+		clearOutput();
+		menu();
+		outputText("Set weither you will be sacrificing blood to empower your magic or not.\n\n");
+		if (!player.hasStatusEffect(StatusEffects.DarkRitual)) {
+			outputText("Dark ritual is currently: <b>Inactive</b>.");
+			addButton(10, "On", DarkRitualOptionOn);
+		}
+		if (player.hasStatusEffect(StatusEffects.DarkRitual)) {
+			outputText("Dark ritual is currently: <b>Active</b>.");
+			addButton(11, "Off", DarkRitualOptionOff);
+		}
+		var e:MouseEvent;
+		if (SceneLib.combat.inCombat) addButton(14, "Back", combat.combatMenu);
+		else addButton(14, "Back", displayPerks);
+		function DarkRitualOptionOn():void {
+			player.createStatusEffect(StatusEffects.DarkRitual,0,0,0,0);
+			DarkRitualOption();
+		}
+		function DarkRitualOptionOff():void {
+			player.removeStatusEffect(StatusEffects.DarkRitual);
+			DarkRitualOption();
+		}
+	}
 	
 	public function WOTWbehaviourOptions():void {
 		clearOutput();
 		menu();
 		outputText("You can choose how your will-o'-the-wisp will behave during each fight.\n\n");
-		outputText("\n<b>Will-o'-the-wisp behavious:</b>\n");
+		outputText("\n<b>Will-o'-the-wisp behaviour:</b>\n");
 		if (flags[kFLAGS.WILL_O_THE_WISP] == 1) outputText("Commanding other pets or minions (other minions will get boost to dmg).");
 		if (flags[kFLAGS.WILL_O_THE_WISP] < 1) outputText("Attacking at the begining of each turn.");
 		if (flags[kFLAGS.WILL_O_THE_WISP] == 1) addButton(10, "Attacking", WOTWAttacking,false);

@@ -26,6 +26,7 @@ import classes.Scenes.NPCs.ChiChiFollower;
 import classes.Scenes.NPCs.Jinx;
 import classes.Scenes.NPCs.Syth;
 import classes.Scenes.NPCs.Rangiku;
+import classes.Scenes.NPCs.Veronika;
 //import classes.Scenes.Places.HeXinDao.*;
 //import classes.Items.Armor;
 //import classes.Scenes.Dungeons.DeepCave.ValaScene;
@@ -66,7 +67,8 @@ public class HeXinDao extends BaseContent
 		else if (flags[kFLAGS.LUNAR_NEW_YEAR] == 2016) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "monkey";
 		else if (flags[kFLAGS.LUNAR_NEW_YEAR] == 2017) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "rooster";
 		else if (flags[kFLAGS.LUNAR_NEW_YEAR] == 2018) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "dog";
-		else if (flags[kFLAGS.LUNAR_NEW_YEAR] >= 2019) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "pig";;
+		else if (flags[kFLAGS.LUNAR_NEW_YEAR] == 2019) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "pig";
+		else if (flags[kFLAGS.LUNAR_NEW_YEAR] >= 2020) flags[kFLAGS.LUNAR_NEW_YEAR_ANIMAL] = "rat";
 		outputText("You go deeper in town and discover the whole place is indeed covered in red. The big question now is what should you check upon first?");
 		menu();
 		if (!player.hasStatusEffect(StatusEffects.CanGetLunarGift)) addButton(0, "Gifts", riverislandVillageStuffLunarGifts);
@@ -189,7 +191,7 @@ public class HeXinDao extends BaseContent
         addButton(8, "Restaurant", restaurantShiraOfTheEast);
 		addButton(10, "Eraendir", eraendirorsbulg.EraendirMainMenu);
 		addButton(11, "Orsbulg", eraendirorsbulg.OrsbulgMainMenu);
-		//12 - golemancer lub firearms dealer
+		addButton(12, "Golemancer", golemancershop);
         if (flags[kFLAGS.CHI_CHI_AFFECTION] >= 20 && flags[kFLAGS.CHI_CHI_FOLLOWER] < 2) addButton(13, "Chi Chi", chichiScene.MeetingChiChiInHeXinDao);
         addButton(14, "Leave", camp.returnToCampUseOneHour);
     }
@@ -451,6 +453,7 @@ public class HeXinDao extends BaseContent
             addButton(0, "SpHoney", buyItem,consumables.SPHONEY,sayLine(consumables.SPHONEY,"bee"),onBuyString).hint("Buy a bottle of special bee honey.");
             addButton(1, "SatyrWine", buyItem,consumables.SATYR_W,sayLine(consumables.SATYR_W,"satyr"),onBuyString).hint("Buy a bottle of satyr wine.");
             addButton(2, "DrakeHeart", buyItem,consumables.DRAKHRT,sayLine(consumables.DRAKHRT,"dragon"),onBuyString).hint("Buy a drake's heart's flower.");
+            addButton(3, "C.Venom", buyItem,consumables.C_VEMOM,sayLine(consumables.C_VEMOM,"Centipede"),onBuyString).hint("Buy a bottle of Centipede venom.");
             addButton(4, "Hummus", buyItem,consumables.HUMMUS_,sayLine(consumables.HUMMUS_,"humanity"),onBuyString).hint("Buy a blob of cheesy-looking hummus.");
             addButton(14, "Back", mogahenmerchant);
             //EngineCore.statScreenRefresh();
@@ -727,7 +730,7 @@ public class HeXinDao extends BaseContent
 	}
 
 public function soularena():void {
-	clearOutput();//arena do walk z przeciwnikami na exp tylko - zadnych sex scenes tylko walk do wygranej niewazne czy przez hp czy lust - przeciwnicy: dummy golem, grupa dummy golems, true golem, ?group of true golems, weak deviant golem?, niskopoziomowi przeciwnicy uzywajacy soul skills (moze po prostu wesje zwyklych przeciwnikow ale z dodanymi soul attakami?)
+	clearOutput();//arena do walk z przeciwnikami na exp tylko - zadnych sex scenes tylko walk do wygranej niewazne czy przez hp czy lust - przeciwnicy: ?weak deviant golem?, niskopoziomowi przeciwnicy uzywajacy soul skills (moze po prostu wesje zwyklych przeciwnikow ale z dodanymi soul attakami?)
 	if (flags[kFLAGS.CHI_CHI_AFFECTION] >= 10 && flags[kFLAGS.CHI_CHI_AFFECTION] < 15) chichiScene.EnterOfTheChiChi();
 	else {
 		outputText("Coming closer to the arena you see two muscular tigersharks standing on each side of the entrance, which only briefly glance at you the moment you pass by them. Inside after few a moment a tall slightly muscular male cat-morph approaches you. Most of its body is covered by armor yet two long tails waves behind him from time to time.");//osoba zarządzająca areną bedzie male nekomanta npc
@@ -735,7 +738,7 @@ public function soularena():void {
 		outputText("\n\nSo which one of the three possible sub areas you gonna visit this time?");
 		if (flags[kFLAGS.IGNIS_ARENA_SEER] >= 1) outputText("\n\nYou notice Ignis sitting in the stands, a notebook in his paws. The kitsune seems to be watching the fights and taking notes as he does so.");
 		if (flags[kFLAGS.CHI_CHI_AFFECTION] < 1) flags[kFLAGS.CHI_CHI_AFFECTION] = 0;
-		menu();//statuseffect(soulArena) dodać na początku walk co pozwoli dać inne dropy itp. w stosuku do spotkania podobnego wroga w innym miejscu a nawet łatwo pozwoli zrobić wersje soulforce niektórych ras bez tworzenia nowych opisów monsterów - zrobić to dla trybu challenge, w który walka z wrogie da określony drop a nawet można na niej grać aby uzyskać nagro...np. nowego camp member ^^
+		menu();//statuseffect(soulArena) dodać na początku walk co pozwoli dać inne dropy itp. w stosunku do spotkania podobnego wroga w innym miejscu a nawet łatwo pozwoli zrobić wersje soulforce niektórych ras bez tworzenia nowych opisów monsterów - zrobić to dla trybu challenge, w który walka z wrogie da określony drop a nawet można na niej grać aby uzyskać nagro...np. nowego camp member ^^
 		addButton(0, "Solo", soularenaSolo).hint("Go to the section of soul arena for 1 on 1 fights.");
 		addButton(1, "Group", soularenaGroup).hint("Go to the section of soul arena for group fights.");
 		addButton(2, "Challenge", soularenaChallenge).hint("Go to the section of soul arena for challenges. (Who knows what reward you may get after winning any of the challenges there...)");
@@ -778,28 +781,40 @@ public function soularena():void {
     public function soularenaChallenge():void {
         clearOutput();
         outputText("Picking the one in the middle prepared for challanges you enter there and looking around checking who if there is currently anyone up for a challange.");
-        menu();
-        if (player.statusEffectv1(StatusEffects.SoulArenaGaunlets1) > 1) addButtonDisabled(0, "Gaunlet 1", "You already won this gaunlet today. Come back tomorrow.");
-		else addButton(0, "Gaunlet 1", gaunletchallange1fight1).hint("Fight 3 diff enemies one after another.");
-        if (player.statusEffectv1(StatusEffects.SoulArenaGaunlets1) > 0) {
-			if (player.statusEffectv2(StatusEffects.SoulArenaGaunlets1) > 1) addButtonDisabled(1, "Gaunlet 2", "You already won this gaunlet today. Come back tomorrow.");
-			else addButton(1, "Gaunlet 2", gaunletchallange2fight1).hint("Fight 4 diff enemies one after another.");
-		}
-        //addButton(2, "Gaunlet 3", gaunletchallange3).hint("Fight 5 diff enemies one after another.");
-        //addButton(3, "Gaunlet 4", gaunletchallange4).hint("Fight 6 diff enemies one after another.");
-        //addButton(4, "Gaunlet 5", gaunletchallange5).hint("Fight 7 diff enemies one after another.");
-        //addButton(5, "Golemancer", arenaSelection,Jeniffer);
-        //addButton(6, "AyotechManiac", arenaSelection,Jinx);
-        //addButton(7, "MachoSalamander", arenaSelection,Syth);
-        //addButton(8, "MissSalamander", arenaSelection,Asuka);
-        addButton(9, "LvL 24 Gargoyle", arenaSelection,GargoyleBasic);
-        //if (flags[kFLAGS.CHI_CHI_AFFECTION] < 15) addButton(10, "Chi Chi", chichiScene.EnterOfTheChiChi);
-        //addButton(10, "MissOni", arenaSelection,Rangiku);
-        addButton(11, "LvL 33 Golems", arenaSelection,GolemsBasic);
-        addButton(12, "LvL 42 Golems", arenaSelection,GolemsImproved);
-        addButton(13, "LvL 51 Golems", arenaSelection,GolemsAdvanced);
-        addButton(14, "Back", soularena);
+        soularenaChallengeSubpages();
     }
+	private function soularenaChallengeSubpages(page:int = 1):void {
+		menu();
+		if (page == 1) {
+			if (player.statusEffectv1(StatusEffects.SoulArenaGaunlets1) > 1) addButtonDisabled(0, "Gaunlet 1", "You already won this gaunlet today. Come back tomorrow.");
+			else addButton(0, "Gaunlet 1", gaunletchallange1fight1).hint("Fight 3 diff enemies one after another.");
+			if (player.statusEffectv1(StatusEffects.SoulArenaGaunlets1) > 0) {
+				if (player.statusEffectv2(StatusEffects.SoulArenaGaunlets1) > 1) addButtonDisabled(1, "Gaunlet 2", "You already won this gaunlet today. Come back tomorrow.");
+				else addButton(1, "Gaunlet 2", gaunletchallange2fight1).hint("Fight 4 diff enemies one after another.");
+			}
+			else addButtonDisabled(1, "Gaunlet 2", "You need to finish Gaunlet 1 first.");
+			//addButton(2, "Gaunlet 3", gaunletchallange3).hint("Fight 5 diff enemies one after another.");
+			//addButton(3, "Gaunlet 4", gaunletchallange4).hint("Fight 6 diff enemies one after another.");
+			//addButton(4, "Gaunlet 5", gaunletchallange5).hint("Fight 7 diff enemies one after another.");
+			//addButton(5, "Gaunlet 6", gaunletchallange6).hint("Fight 8 diff enemies one after another.");gdzieś tam tu dodać grupowe tylko walki dające na pierwszej walce oblokowanie perków do powiekszania drużyny
+			addButton(9, "LvL 24 Gargoyle", arenaSelection,GargoyleBasic);
+			addButton(10, "LvL 33 Golems", arenaSelection,GolemsBasic);
+			addButton(11, "LvL 42 Golems", arenaSelection,GolemsImproved);
+			addButton(12, "LvL 51 Golems", arenaSelection, GolemsAdvanced);
+			//addButton(13, "-2-", soularenaChallengeSubpages, page + 1);
+			addButton(14, "Back", soularena);
+		}
+		if (page == 2) {
+			addButton(0, "Kitty", arenaSelection,Veronika);
+			addButton(1, "Golemancer", arenaSelection,Jeniffer);
+			addButton(2, "AyotechManiac", arenaSelection,Jinx);
+			addButton(5, "Macho Mander", arenaSelection,Syth);
+			addButton(6, "Miss Mander", arenaSelection,Asuka);
+			addButton(7, "Miss Oni", arenaSelection,Rangiku);
+			addButton(13, "-1-", soularenaChallengeSubpages, page - 1);
+			addButton(14, "Back", soularena);
+		}
+	}
     private function arenaSelection(mon:Class):void{
         player.createStatusEffect(StatusEffects.SoulArena, 0, 0, 0, 0);
         if (flags[kFLAGS.CHI_CHI_AFFECTION] < 10) flags[kFLAGS.CHI_CHI_AFFECTION]++;
@@ -917,6 +932,92 @@ public function soularena():void {
 			inventory.takeItem(weapons.SCECOMM, cleanupAfterCombat);
 		}
 	}
+	
+	private function golemancershop():void {
+		clearOutput();
+		if (player.hasStatusEffect(StatusEffects.GolemancerShop)) {
+			outputText("The goblin golemancer answers at the counter as you walk in.\n\n");
+			outputText("\"<i>What spicing will it be?</i>\"");
+		}
+		else {
+			outputText("You enter a shop filled with what appears to be stone body parts, weird arcanic objects and other items needed to craft golems. A small goblin answers at the counter, semi annoyed at having to pause her work.\n\n");
+			outputText("\"<i>Welcome to my shop " + player.mf("mister", "miss") + ", what are ya here to buy?</i>\"");
+			player.createStatusEffect(StatusEffects.GolemancerShop, 0, 0, 0, 0);
+		}
+		golemancershop1();
+	}
+	private function golemancershopRepeat():void {
+		clearOutput();
+		outputText("\"<i>Came here to buy uh? I thought so. Let's do business, show me the stones.</i>\"");
+		golemancershop1();
+	}
+	private function golemancershop1():void {
+		menu();
+		addButton(5, "G.Rod", buyItem, weapons.G_ROD).hint("Golemancer Rod");
+		addButton(6, "Y.U.Panel", buyItem, shields.Y_U_PAN).hint("Yogi Uh Panel");/*
+		if (player.hasPerk(PerkLib.MasterGolemMaker)) {
+			if (player.hasKeyItem("Golems, Animations and You") >= 0) addButtonDisabled(12, "G,A&Y Man.", "You already bought 'Golems, Animations and You' manual.");
+			else addButton(12, "G,A&Y Man.", golemancershopPermGolemsUpgradesGuide).hint("Buy 'Golems, Animations and You' manual to make golems great again.");
+		}*/
+		if (player.hasPerk(PerkLib.JobGolemancer)) {
+			if (player.statusEffectv1(StatusEffects.GolemancerShop) == 0) addButton(13, "'Free Cores?'", golemancershopNotSoFreeCores).hint("A dark side of you wispers: 'Dew it!!! Press this button!!! Dew it now!!!'");
+			else if (player.statusEffectv1(StatusEffects.GolemancerShop) == 0) addButtonDisabled(13, "'Free Cores?'", "You already 'Dew It and pressed the button'. No more freebies for ya...")
+			else addButtonDisabled(13, "'Free Cores?'", "How could so esteemed and well known golemancer like you ask for freebies? Go smash few golems to take their cores instead to try beg her...")
+		}
+		addButton(14, "Leave", riverislandVillageStuff);
+	}
+	private function golemancershopNotSoFreeCores():void {
+		clearOutput();
+		outputText("You ask if the goblin would have any free supplies for a fellow golemancer.\n\n");
+		outputText("\"<i>Well as a matter of fact I do. I give these away for first timers. You can have one and one of those packages, got to keep myself competitive after all. <b>Still, you will owe me a favor later on.</b></i>\"\n\n");
+		outputText("<b>You have now 15 golem cores in your bag for cores to new golems!</b>\n\n");
+		player.addStatusValue(StatusEffects.GolemancerShop, 1, 1);
+		flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG] += 15;
+		doNext(golemancershopRepeat);
+	}
+	private function golemancershopPermGolemsUpgradesGuide():void {
+		clearOutput();
+		outputText("You would like to buy a 'Golems, Animations and You' manual from her if she got one.\n\n");
+		outputText("\"<i>As it happens yes I do have one though it does not come cheap. ");
+		menu();
+		if (player.statusEffectv1(StatusEffects.GolemancerShop) == 1) {
+			outputText("3000 gems and it's yours hows that for a price?</i>\"");
+			if (player.gems > 2999) addButtonDisabled(1, "Buy", "You not have enough gems to buy this.");
+			else addButton(1, "Buy", golemancershopPermGolemsUpgradesGuideYes);
+		}
+		if (player.statusEffectv1(StatusEffects.GolemancerShop) == 0) {
+			outputText("Come to think of it you have been a very faithful customer so I will make you a one time deal by cuting the price down by two third of the total. 500 gems and it's yours.</i>\"");
+			if (player.gems > 499) addButtonDisabled(1, "Buy", "You not have enough gems to buy this.");
+			else addButton(1, "Buy", golemancershopPermGolemsUpgradesGuideYes);
+		}
+		addButton(3, "Don't Buy", golemancershopRepeat);
+	}
+	private function golemancershopPermGolemsUpgradesGuideYes():void {
+		if (player.statusEffectv1(StatusEffects.GolemancerShop) == 1) player.gems -= 3000;
+		if (player.statusEffectv1(StatusEffects.GolemancerShop) == 0) player.gems -= 500;
+		statScreenRefresh();
+		outputText("She counts the gems before handing your purchase over.\n\n");
+		outputText("\"<i>Always happy to do business, anything else you want to buy?</i>\"\n\n");
+		player.createKeyItem("Golems, Animations and You", 0, 0, 0, 0);
+		doNext(golemancershopRepeat);
+	}	
+	private function buyItem(odd:ItemType):void {
+		clearOutput();
+		var cost:int = odd.value / 5;//zmniejszane do /10 dla golemancer pc?
+		outputText("\"<i>That will be " + cost + " spirit stones. Show me da money baby.</i>\"\n\n");
+		menu();
+		if (flags[kFLAGS.SPIRIT_STONES] < cost) addButtonDisabled(1, "Buy", "You not have enough spirit stones to buy this.");
+		else addButton(1, "Buy", curry(buyItemYes,odd));
+		addButton(3, "Don't Buy", golemancershopRepeat);
+	}
+	private function buyItemYes(odd:ItemType):void {
+		flags[kFLAGS.SPIRIT_STONES] -= odd.value / 5;// * 3
+		statScreenRefresh();
+		outputText("She counts the stones before handing your purchase over.\n\n");
+		outputText("\"<i>Always happy to do business, anything else you want to buy?</i>\"\n\n");
+		inventory.takeItem(odd, golemancershopRepeat);
+	}
+	
     public function restaurantShiraOfTheEast():void {
         clearOutput();
         outputText("You enter the exotic food restaurant ‘Shira of the east’ and check up the menu. Would you like to eat there?");
@@ -925,7 +1026,6 @@ public function soularena():void {
         addButton(0, "Yes", restaurant,true);
         addButton(1, "No", restaurant,false);
     }
-
     private function restaurant(selected:Boolean):void {
         if(!selected){
             outputText(" You aren’t hungry at the time maybe you will eat later.");

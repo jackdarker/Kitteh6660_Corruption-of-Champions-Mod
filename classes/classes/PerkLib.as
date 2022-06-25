@@ -79,6 +79,8 @@ public class PerkLib
 				"Numerous internal mutation changed your body to allow handle 2nd mutation of the same organ/internal body part.");
 		public static const AscensionAdditionalOrganMutation02:PerkType = mk("Ascension: Additional Organ Mutation (2nd Stage)", "Ascension: Additional Organ Mutation (2nd Stage)",
 				"Numerous internal mutation changed your body to allow handle 3rd mutation of the same organ/internal body part.");
+		public static const AscensionAdditionalOrganMutation03:PerkType = mk("Ascension: Additional Organ Mutation (3rd Stage)", "Ascension: Additional Organ Mutation (3rd Stage)",
+				"Numerous internal mutation changed your body to allow handle 4th mutation of the same organ/internal body part.");
 		public static const AscensionBuildingPrestige01:PerkType = mk("Ascension: Building Prestige (1st Stage)", "Ascension: Building Prestige (1st Stage)",
 				"Your understanding of prestige jobs from previous life allows to pick 2nd one at lvl 42+.");
 		public static const AscensionBuildingPrestige02:PerkType = mk("Ascension: Building Prestige (2nd Stage)", "Ascension: Building Prestige (2nd Stage)",
@@ -117,8 +119,6 @@ public class PerkLib
 				"Due to reincarnation experience your body becoming strong faster than in previous life (increased passive hp, lust, fatigue gains at lvl-up).");
 		public static const AscensionUnlockedPotential2ndStage:PerkType = mk("Ascension: Unlocked Potential (2nd Stage)", "Ascension: Unlocked Potential (2nd Stage)",
 				"Due to reincarnation experience your body becoming strong faster than in previous life (increased passive wrath, mana, soulforce gains at lvl-up).");
-	//	public static const AscensionAdditionalOrganMutation03:PerkType = mk("Ascension: Additional Organ Mutation (3rd Stage)", "Ascension: Additional Organ Mutation (3rd Stage)",
-	//			"Numerous internal mutation changed your body to allow handle 4th mutation of the same organ/internal body part.");
 	//	public static const AscensionTranscendentalGeneticMemoryStage6:PerkType = mk("Ascension: Transcendental Genetic Memory (Stage 6)", "Ascension: Transcendental Genetic Memory (Stage 6)",
 	//			"Allows to retain up to 90 choosen unlocked metamorph options.");
 	//	public static const AscensionTranscendentalGeneticMemoryStage7:PerkType = mk("Ascension: Transcendental Genetic Memory (Stage 7)", "Ascension: Transcendental Genetic Memory (Stage 7)",
@@ -135,7 +135,49 @@ public class PerkLib
 	//			".");
 	//	public static const Ascension:PerkType = mk("Ascension: ", "Ascension: ",
 	//			".");
-		
+
+		// Bloodline perks
+		public static const DragonsDescendant:PerkType = mk("Dragon's descendant", "Dragon's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and a Dragon. (+2 to dragon score)");
+		public static const BloodlineDragon:PerkType = mk("Bloodline: Dragon", "Bloodline: Dragon",
+				"Your Dragon bloodline appears strongly within you. (+2 to dragon score)", null, true);
+		public static const ElfsDescendant:PerkType = mk("Elf's descendant", "Elf's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and an Elf. (+2 to elf score)");
+		public static const BloodlineElf:PerkType = mk("Bloodline: Elf", "Bloodline: Elf",
+				"Your Elf bloodline appears strongly within you. (+2 to elf score)", null, true);
+		public static const GoblinsDescendant:PerkType = mk("Race's descendant", "Race's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and a Goblin. (+2 to goblin score)");
+		public static const BloodlineGoblin:PerkType = mk("Bloodline: Goblin", "Bloodline: Goblin",
+				"Your Goblin bloodline appears strongly within you. (+2 to goblin score)", null, true);
+		public static const KitsunesDescendant:PerkType = mk("Kitsune's descendant", "Kitsune's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and a Kitsune. (+2 to kitsune score)");
+		public static const BloodlineKitsune:PerkType = mk("Bloodline: Kitsune", "Bloodline: Kitsune",
+				"Your Kitsune bloodline appears strongly within you. (+2 to kitsune score)", null, true);
+		public static const RaijusDescendant:PerkType = mk("Raiju's descendant", "Raiju's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and a Raiju. (+2 to raiju score)");
+		public static const BloodlineRaiju:PerkType = mk("Bloodline: Raiju", "Bloodline: Raiju",
+				"Your Raiju bloodline appears strongly within you. (+2 to raiju score)", null, true);
+		public static const MelkiesDescendant:PerkType = mk("Melkie's descendant", "Melkie's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and an Melkie. (+2 to melkie score)");
+		public static const BloodlineMelkie:PerkType = mk("Bloodline: Melkie", "Bloodline: Melkie",
+				"Your Melkie bloodline appears strongly within you. (+2 to melkie score)", null, true);
+		public static const MinotaursDescendant:PerkType = mk("Minotaur's descendant", "Minotaur's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and a Minotaur. (+2 to minotaur/cow score)");
+		public static const BloodlineMinotaur:PerkType = mk("Bloodline: Minotaur", "Bloodline: Minotaur",
+				"Your Minotaur bloodline appears strongly within you. (+2 to minotaur/cow score)", null, true);
+		public static const OnisDescendant:PerkType = mk("Oni's descendant", "Oni's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and an Oni. (+2 to oni score)");
+		public static const BloodlineOni:PerkType = mk("Bloodline: Oni", "Bloodline: Oni",
+				"Your Oni bloodline appears strongly within you. (+2 to oni score)", null, true);
+		public static const OrcsDescendant:PerkType = mk("Orc's descendant", "Orc's descendant",
+				"You are a descendant of your ancestor, who was the child of a human and an Orc. (+2 to orc score)");
+		public static const BloodlineOrc:PerkType = mk("Bloodline: Orc", "Bloodline: Orc",
+				"Your Orc bloodline appears strongly within you. (+2 to orc score)", null, true);
+	//	public static const sDescendant:PerkType = mk("Race's descendant", "Race's descendant",
+	//			"You are a descendant of your ancestor, who was the child of a human and a (Race). (+2 to  score)");
+	//	public static const Bloodline:PerkType = mk("Bloodline: Demon", "Bloodline: Demon",
+	//			"Your Demonic bloodline appears strongly within you. (+2 to  score)", null, true);
+
 		// History perks
 		public static const HistoryAlchemist:PerkType = mk("History: Alchemist", "History: Alchemist",
 				"Alchemical experience makes items more reactive to your body.");
@@ -162,9 +204,9 @@ public class PerkLib
 		public static const PastLifeReligious:PerkType = mk("Past Life: Religious", "Past Life: Religious",
 				"Replaces masturbate with meditate when corruption less than or equal to 66. Reduces minimum libido slightly.", null, true);
 		public static const HistoryScholar:PerkType = mk("History: Scholar", "History: Scholar",
-				"Time spent focusing your mind makes spellcasting use 20% less mana.");
+				"Time spent focusing your mind makes your max mana increase by 10%.");
 		public static const PastLifeScholar:PerkType = mk("Past Life: Scholar", "Past Life: Scholar",
-				"Time spent focusing your mind makes spellcasting use 20% less mana.", null, true);
+				"Time spent focusing your mind makes your max mana increase by 10%.", null, true);
 		public static const HistoryScout:PerkType = mk("History: Scout", "History: Scout",
 				"A past full of archery training increases physical range damage dealt by 10% and acc by 20%.");
 		public static const PastLifeScout:PerkType = mk("Past Life: Scout", "Past Life: Scout",
@@ -181,12 +223,25 @@ public class PerkLib
 				"Knowledge of armor and fitting increases armor effectiveness by roughly 5% each (phys + mag).");
 		public static const PastLifeSmith:PerkType = mk("Past Life: Smith", "Past Life: Smith",
 				"Knowledge of armor and fitting increases armor effectiveness by roughly 5% each (phys + mag).", null, true);
+		public static const HistoryTactician:PerkType = mk("History: Tactician", "History: Tactician",
+				" (+10% to minions/pets damage).");
+		public static const PastLifeTactician:PerkType = mk("Past Life: Tactician", "Past Life: Tactician",
+				" (+10% to minions/pets damage).", null, true);
 		public static const HistoryWhore:PerkType = mk("History: Whore", "History: Whore",
 				"Seductive experience causes your tease attacks to be 15% more effective.");
 		public static const PastLifeWhore:PerkType = mk("Past Life: Whore", "Past Life: Whore",
 				"Seductive experience causes your tease attacks to be 15% more effective.", null, true);
 		
 		// Ordinary (levelup) perks
+		public static const AlphaAndOmega:PerkType = mk("Alpha and Omega", "Alpha and Omega",
+				"Add up to 2 to each stat per level but remove all chimerical disposition stat gains and increase racial skill power by 50%. Stacks on top of Apex.",
+				"You choose the 'Alpha and Omega' perk. Further increasing your specialisation into a unique race and increasing racial skill power by an addtionnal 50%.");
+		public static const Apex:PerkType = mk("Apex", "Apex",
+				"Add up to 2 to each stat per level but remove all chimerical disposition stat gains and increase racial skill power by 50%. Stacks on top of Racial Paragon.",
+				"You choose the 'Apex' perk. Further increasing your specialisation into a unique race and increasing racial skill power by 50%.");
+		public static const DevastatingCharge:PerkType = mk("Devastating charge", "Devastating charge",
+				"When using the charge action you have a 20% chance to stun the opponent for a round. Charge is 50% more powerful.",
+				"You choose the 'Devastating charge' perk, when using the charge action you have a 20% chance to stun the opponent for a round. Charge is 50% more powerful.");
 		public static const FrozenHeart:PerkType = mk("Frozen heart", "Frozen heart",
 				"Allow to retain the ability Ice barrage and hungering cold at all time and increase their damage by 10%.",
 				"You choose the 'Frozen heart' perk, freezing your heart.");
@@ -199,6 +254,12 @@ public class PerkLib
 		public static const HexKnowledge:PerkType = mk("Hex Knowledge", "Hex Knowledge",
 				"Allow to cast hex magic spells as long corruption is 80+, locks out access to white spells and deal 20% more dmg when using black or hex magic to attack pure enemies.",
 				"You choose the 'Hex Knowledge' perk, gaining access to hex magic.");
+		public static const DarkRitual:PerkType = mk("Dark Ritual", "Dark Ritual",
+				"Allow to use the Dark Ritual option wich can be Toggled on or off. While Dark Ritual is active spells are 300% stronger but consume 10% health on cast as they are paid in blood.",
+				"You choose the 'Dark Ritual' perk, Allowing you to sacricice health to empower your spells.");
+		//public static const BloodSacrifice:PerkType = mk("Blood Sacrifice", "Blood Sacrifice",
+				//"You are currently sacrificing blood to empower your spells.",
+				//"You are currently sacrificing blood to empower your spells.");
 		public static const JobLeader:PerkType = mk("Job: Leader", "Job: Leader",
 				"You've trained in ways to better lead combat companions or command minions. (+5 to max int/wis, -5 to max lib - scalable)",
 				"You choose 'Job: Leader' perk, training yourself to better lead your companions or command minions.");
@@ -211,9 +272,25 @@ public class PerkLib
 		public static const MotivationSu:PerkType = mk("Motivation (Su)", "Motivation (Su)",
 				"Decrease to 5% henchmans idle time during combat.",
 				"You choose the 'Motivation (Su)' perk, further increasing motivation of allies to act in combat.");
+		public static const PowerShot:PerkType = mk("Power Shot", "Power Shot",
+				"Enable Power Shoot p. special. Add some of your strength (~40% of str scaling value) to bow damage.",
+				"You choose the 'Power Shot' perk. Enable Power Shoot p. special. Add some of your strength (~40% of str scaling value) to bow damage.");
+		public static const PurityElixir:PurityElixirPerk = new PurityElixirPerk();
 		public static const ShootTheLoadAndHitTheRoad:PerkType = mk("Shoot the load and hit the road", "Shoot the load and hit the road",
 				"Removes penalty to libido and boost slightly speed. (+5 to max spe - scalable).",
 				"You choose the 'Shoot the load and hit the road' perk, removing penalty to libido and slight boosting speed.");
+		public static const TemporalGolemsRestructuration:PerkType = mk("Temporal Golems Restructuration", "Temporal Golems Restructuration",
+				"Allow to use option of send all temporal golems to attack in one turn. Adding option to make 5 temporal golems at once and shorten a bit time to make 1 temporal golem..",
+				"You choose the 'Temporal Golems Restructuration' perk, adding option to make faster and more temporal golems at once and have option to send them all at once to attack.");
+		public static const TwinHeart:PerkType = mk("Twin Heart", "Twin Heart",
+				"+40% fatigue recovery and +5 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10% as well as its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).",
+				"You choose the 'Twin Heart' perk, +40% fatigue recovery and +5 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10% as well as its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).");
+		public static const TwinHeartEvolved:PerkType = mk("Twin Heart (Evolved)", "Twin Heart (Evolved)",
+				"+40% fatigue recovery and +10 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10%, increase damage by 20%, its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).",
+				"You choose the 'Twin Heart (Evolved)' perk, +40% fatigue recovery and +10 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10%, increase damage by 20%, its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).");
+		public static const TwinHeartFinalForm:PerkType = mk("Twin Heart (Final Form)", "Twin Heart (Final Form)",
+				"+40% fatigue recovery and +30 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10%, increase damage by 60%, its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).",
+				"You choose the 'Twin Heart (Final Form)' perk, +40% fatigue recovery and +30 to max tou/spe (scalable). +100% fatigue recovery, reduce Charge fatigue cost by 10%, increase damage by 60%, its cooldown by 1 round so long as your body is tauric/drider. (Also raise all Taur race score by 1, by 2 as long pc is tauric/drider).");
 		public static const WispCaptain:PerkType = mk("Wisp Captain", "Wisp Captain",
 				"Increase wisp commanding aura boosting other summoned pets/minions attack power effects by 30% (60% in total).",
 				"You choose the 'Wisp Captain' perk, training your wisp to Wisp Captain.");
@@ -229,6 +306,9 @@ public class PerkLib
 		public static const TooAngryToDie:PerkType = mk("Too Angry to Die", "Too Angry to Die",
 				"+600 to max Wrath.",//stay alive when berserking at cost of super fast 20% max wrath drain per turn when below min HP or above max Lust (?drain decreased by some specific perks?)?
 				"You choose the 'Too Angry to Die' perk, .");
+		public static const AdvancedGolemancyTheory:PerkType = mk("Advanced Golemancy Theory", "Advanced Golemancy Theory",
+				"Enable option to make steel golems and store 1 such golem.",
+				"You choose the 'Advanced Golemancy Theory' perk, allowing to make steel golems.");
 		public static const ElementsOfMarethBasic:PerkType = mk("Elements of Mareth: ", "Elements of Mareth: ",
 				"You can now summon and command ice, lightning and darkness elementals. Also increase elementals command limit by 1.",
 				"You choose 'Elements of Mareth: ' perk, your time spent in Mareth allowed you to get basic understanding of native elements that aren't classified as one of four traditional.");
@@ -246,7 +326,7 @@ public class PerkLib
 				"You choose the 'Hellcat Parathyroid Glands' perk, .");
 		public static const HellcatParathyroidGlandsEvolved:PerkType = mk("Hellcat Parathyroid Glands (Evolved)", "Hellcat Parathyroid Glands (Evolved)",
 				".",
-				"You choose the 'Hellcat Parathyroid Glands (Evolved)' perk, .");
+				"You choose the 'Hellcat Parathyroid Glands (EvFolved)' perk, .");
 		public static const HellcatParathyroidGlandsFinalForm:PerkType = mk("Hellcat Parathyroid Glands (Final Form)", "Hellcat Parathyroid Glands (Final Form)",
 				".",
 				"You choose the 'Hellcat Parathyroid Glands (Final Form)' perk, .");
@@ -262,6 +342,9 @@ public class PerkLib
 		/*public static const :PerkType = mk("", "",
 				".",
 				"You choose the '' perk, increasing amount of food you can eat. As side effect your vitality increased (+x to max Tou (scalable)).");
+		public static const :PerkType = mk("", "",
+				".",
+				"You choose the '' perk, .");
 		public static const :PerkType = mk("", "",
 				".",
 				"You choose the '' perk, .");
@@ -418,6 +501,12 @@ public class PerkLib
 		public static const ArouseTheAudience:PerkType = mk("Arouse the audience", "Arouse the audience",
 				"Increase the damage of non periodic tease against groups by 50% and periodic by 20%.",
 				"You choose the 'Arouse the audience' perk, increasing the damage of tease against groups.");
+		public static const AuraOfPurity:PerkType = mk("Aura of Purity", "Aura of Purity",
+				"Those of impure heart who come close to you are seared by holy fire and blinded by your inner light.",
+				"Those of impure heart who come close to you are seared by holy fire and blinded by your inner light.");
+		public static const AuraOfCorruption:PerkType = mk("Aura of Corruption", "Aura of Corruption",
+				"You radiate corruption, tainting everything near you with uncontrollable lust.",
+				"You radiate corruption, tainting everything near you with uncontrollable lust.");
 		public static const ArousingAura:PerkType = mk("Arousing Aura", "Arousing Aura",
 				"Exude a lust-inducing aura (Req's corruption of 70 or more)",
 				"You choose the 'Arousing Aura' perk, causing you to radiate an aura of lust when your corruption is over 70.");
@@ -547,6 +636,9 @@ public class PerkLib
 		public static const CatlikeNimblenessEvolved:PerkType = mk("Cat-like Nimbleness (Evolved)", "Cat-like Nimbleness (Evolved)",
 				"Your nimble body allows you to move more swiftly and with greater nimbleness than before.",
 				"You choose the 'Cat-like Nimbleness (Evolved)' perk. Continuous usage of cat-like flexibility caused it to undergo change.");
+		public static const CatlikeNimblenessFinalForm:PerkType = mk("Cat-like Nimbleness (Final Form)", "Cat-like Nimbleness (Final Form)",
+				"Your nimble body allows you to move more swiftly and with even greater nimbleness than before.",
+				"You choose the 'Cat-like Nimbleness (Final Form)' perk. Continuous usage of cat-like flexibility caused it to undergo change.");
 		public static const Channeling:PerkType = mk("Channeling", "Channeling",
 				"[if (player.inte>=60)" +
 						"Increases base spell strength by 20% and base mana pool by 30." +
@@ -621,11 +713,11 @@ public class PerkLib
 				"Add your wisdom to gun damage as a modifier.",
 				"You choose the 'Church of the gun' perk, adding wisdom scaling to firearms damage.");
 		public static const ClawingFlurry:PerkType = mk("Clawing flurry", "Clawing flurry",
-				"When attacking with your claws, add an additional attack striking up to 5 times.",
-				"You choose the 'Clawing flurry' perk, gaining an additional attack with your claws!");
+				"When attacking with your natural weapons, add an additional attack striking up to 5 times.",
+				"You choose the 'Clawing flurry' perk, gaining an additional attack with your natural weapons!");
 		public static const ClawTraining:PerkType = mk("Claw training", "Claw training",
-				"Gain 1 extra natural attack with your claws.",
-				"You choose the 'Claw training' perk, gain 1 extra natural attack with your claws!");
+				"Gain 1 extra natural attack with your natural weapons.",
+				"You choose the 'Claw training' perk, gain 1 extra natural attack with your natural weapons!");
 		public static const CloseToDeath:PerkType = mk("Close to death", "Close to death",
 				"Increasing healing spells effect by 50% when below 25% max HP.",
 				"You choose the 'Close to death' perk, increasing healing spells effect when below 25% max HP.");
@@ -704,9 +796,9 @@ public class PerkLib
 		public static const DancersVitalityVI:PerkType = mk("Dancer's Vitality VI", "Dancer's Vitality VI",
 				"+1.5 extra fatigue per point of speed.",
 				"You choose the 'Dancer's Vitality VI' perk, granting +1.5 extra maximum fatigue for each point of speed.");
-		public static const Dantain:PerkType = mk("Dantain", "Dantain",
+		public static const Dantain:PerkType = mk("Dantian", "Dantian",
 				"Increase max soulforce by 10% + 10% to 25% (per each attained cultivation stage) of base value.",
-				"You choose the 'Dantain' perk.  As a result of many cultivation sessions you managed to find dantain in your body, which resulted in increased capacity to store soulforce.");
+				"You choose the 'Dantian' perk.  As a result of many cultivation sessions you managed to find dantian in your body, which resulted in increased capacity to store soulforce.");
 		public static const DaoistCultivator:PerkType = mk("Daoist Cultivator", "Daoist Cultivator",
 				"Allow you to train your soul cultivator mind to unleash soulskills with their apex power. (+10% soulskill/m.soulskill power, -10% soulskills cost, +50% base soulforce recovery multiplier)",
 				"You choose the 'Daoist Cultivator' perk, starting journey on the daoist cultivators path! (+10% soulskill/m.soulskill power, -10% soulskills cost, +50% base soulforce recovery multiplier)");
@@ -800,18 +892,42 @@ public class PerkLib
 		public static const DualWield:PerkType = mk("Dual Wield", "Dual Wield",
 				"Allows you to wield two normal sized melee weapons (excluding staffs).",
 				"You choose the 'Dual Wield' perk, training skill of using two melee weapons excluding staffs.");
+		public static const DualWieldFirearms:PerkType = mk("Dual Wield (Firearms)", "Dual Wield (Firearms)",
+				"Allows you to wield two firearms (non 2H ones).",
+				"You choose the 'Dual Wield (Firearms)' perk, training skill of using two firearms (non 2H ones).");
 		public static const DualWieldLarge:PerkType = mk("Dual Wield (Large)", "Dual Wield (Large)",
 				"Allows you to wield two large sized melee weapons.",
 				"You choose the 'Dual Wield (Large)' perk, training skill of using two large melee weapons.");
 		public static const DualWieldSmall:PerkType = mk("Dual Wield (Small)", "Dual Wield (Small)",
 				"Allows you to wield two small sized melee weapons.",
 				"You choose the 'Dual Wield (Small)' perk, training skill of using two small melee weapons.");
+		public static const EasterBunnyBalls:PerkType = mk("Easter bunny balls", "Easter bunny balls",
+				"Your balls constantly grows until emptied through your cock, producing eggs.",
+				"Your balls constantly grows until emptied through your cock, producing eggs.");
+		public static const EasterBunnyEggBag:PerkType = mk("Easter Bunny egg bag", "Easter Bunny egg bag",
+				"Keep oviposition, easter bunny balls and egg throw ability so long as you have balls. May now shoot more then one eggs per round. Double cum production.",
+				"Keep oviposition, easter bunny balls and egg throw ability so long as you have balls. May now shoot more then one eggs per round. Double cum production.");
+		public static const EasterBunnyEggBagEvolved:PerkType = mk("Easter bunny balls (Evolved)", "Easter bunny balls (Evolved)",
+				"Raise libido by a percentage based on current ball size. Triple cum production.",
+				"Raise libido by a percentage based on current ball size. Triple cum production.");
+		public static const EasterBunnyEggBagFinalForm:PerkType = mk("Easter bunny balls (Final Form)", "Easter bunny balls (Final Form)",
+				"Further raise libido by a percentage based on current ball size. Double ball growth rates. Double cum production again.\n",
+				"Further raise libido by a percentage based on current ball size. Double ball growth rates. Double cum production again.");
 		public static const EagleEye:PerkType = mk("Eagle eye", "Eagle eye",
 				"Increase traditional range weapons (like bows) base attack by another 50%.",
 				"You choose the 'Eagle eye' perk, increasing traditional range weapons base attack.");
 		public static const EclipsingShadow:PerkType = mk("Eclipsing Shadow", "Eclipsing Shadow",
 				"Cumulative 20% damage increase for every subsequent darkness spell without interruption.",
 				"You choose the 'Eclipsing Shadow' perk. Cumulative 20% damage increase for every subsequent darkness spell without interruption.");
+		public static const EclipticMind:PerkType = mk("Ecliptic Mind", "Ecliptic Mind",
+				"Allows to retains aura at all time, gaining whichever corresponds to your alignment. Empower the effect of your aura based on your purity or corruption score.",
+				"Allows to retains aura at all time, gaining whichever corresponds to your alignment. Empower the effect of your aura based on your purity or corruption score.");
+		public static const EclipticMindEvolved:PerkType = mk("Ecliptic Mind, evolved", "Ecliptic Mind, evolved",
+				"Further empower the effect of your aura based on your purity or corruption score. Aura effect is doubled against creatures of the opposite alignment.",
+				"Further empower the effect of your aura based on your purity or corruption score. Aura effect is doubled against creatures of the opposite alignment.");
+		public static const EclipticMindFinalForm:PerkType = mk("Ecliptic Mind, final form", "Ecliptic Mind, final form",
+				"Further empower the effect of your aura based on your purity or corruption score. Aura effect is tripled against creatures of the opposite alignment. Gain minor regeneration based on your alignment.",
+				"Further empower the effect of your aura based on your purity or corruption score. Aura effect is tripled against creatures of the opposite alignment. Gain minor regeneration based on your alignment.");
 		public static const ElementalArrows:PerkType = mk("Elemental Arrows", "Elemental Arrows",
 				"Shoot elemental arrows adding your intelligence to your damage.",
 				"You choose the 'Elemental Arrows' perk, allowing you to shoot elemental arrows.");
@@ -974,6 +1090,12 @@ public class PerkLib
 		public static const EpicGolemMaker:PerkType = mk("Epic Golem Maker", "Epic Golem Maker",
 				"Your proficiency in making golems allows to make stronger golems and slightly rise your intelligence and wisdom.",
 				"You choose 'Epic Golem Maker' perk, increasing your proficiency in making golems.");
+		public static const EpicGolemMaker2ndCircle:PerkType = mk("Epic Golem Maker (2nd Circle)", "Epic Golem Maker (2nd Circle)",
+				"Your proficiency in making golems allows to make stronger than before golems and slightly rise your intelligence and wisdom.",
+				"You choose 'Epic Golem Maker (2nd Circle)' perk, increasing your proficiency in making golems.");
+		public static const EpicGolemMaker3rdCircle:PerkType = mk("Epic Golem Maker (3rd Circle)", "Epic Golem Maker (3rd Circle)",
+				"Your proficiency in making golems allows to make stronger golems as much stronger their creator became and slightly rise your intelligence and wisdom. Also allow to make and store 1 improved stone golem.",
+				"You choose 'Epic Golem Maker (3rd Circle)' perk, increasing your proficiency in making golems. Also allow to make improved stone golems.");
 		public static const EpicIntelligence:PerkType = mk("Epic Intelligence", "Epic Intelligence",
 				"Increases maximum intelligence by 35 + 5 * NG tier.",
 				"You choose the 'Epic Intelligence' perk. Increases maximum intelligence by 35 + 5 * NG tier.");
@@ -1021,13 +1143,13 @@ public class PerkLib
 				"You choose the 'Escort' perk, gaining +15% tease dmg.");
 		public static const EternalyLastingBuffs:PerkType = mk("(Eternaly) Lasting Buffs", "(Eternaly) Lasting Buffs",
 				"Buff spells last another 5 turns longer at another 2x increase of their costs.",
-				"You choose the '(Eternaly) Lasting Buffs' perk. Your mastery over buffs reached (eternaly) lasting level.");
+				"You choose the '(Eternaly) Lasting Buffs' perk. Your mastery over buffs reached (eternaly) lasting level. (+5 turns duration and increasing cost 2x)");
 		public static const Evade:PerkType = mk("Evade", "Evade",
 				"Increases chances of evading enemy attacks. (+5% to evasion)",
 				"You choose the 'Evade' perk, allowing you to avoid enemy attacks more often! (+5% to evasion)");
 		public static const EverLastingBuffs:PerkType = mk("(Ever)Lasting Buffs", "(Ever)Lasting Buffs",
 				"Buff spells last 5 turns longer at the double of normal costs.",
-				"You choose the '(Ever)Lasting Buffs' perk. Your mastery over buffs reached (ever)lasting level.");
+				"You choose the '(Ever)Lasting Buffs' perk. Your mastery over buffs reached (ever)lasting level. (+5 turns duration and increasing cost 2x)");
 		public static const ExpertAllRounderEducation:PerkType = mk("Expert All-Rounder Education", "Expert All-Rounder Education",
 				"Limit of advanced job you can learn is increased by 3.",
 				"You choose the 'Expert All-Rounder Education' perk, expanding amount of advanced jobs you can learn. (+3)");
@@ -1041,8 +1163,8 @@ public class PerkLib
 				"Gunshots deals double damage against groups and large enemies.",
 				"You choose the 'Explosive cartridge' perk, allowing for your gunshots dealing extra damage to group or large enemies.");
 		public static const ExtraClawAttack:PerkType = mk("Extra claw attack", "Extra claw attack",
-				"When attacking with your claws, add an additional attack striking up to 3 times.",
-				"You choose the 'Extra claw attack' perk, gaining an additional attack with your claws!");
+				"When attacking with your natural weapons, add an additional attack striking up to 3 times.",
+				"You choose the 'Extra claw attack' perk, gaining an additional attack with your natural weapons!");
 		public static const ExtremelyLucky:PerkType = mk("Extremely Lucky", "Extremely Lucky",
 				"You're banned from casinos with that luck of yours, but you still find stuff lying around after battles, increasing your gain upon victory. (15% more gems from victories)",
 				"You choose the 'Extremely Lucky' perk, increasing gem gains from victories by 15%.");
@@ -1112,6 +1234,15 @@ public class PerkLib
 		public static const Fusion:PerkType = mk("Fusion", "Fusion",
 				"Using your knowledge of alchemy and enhancement, you found a way to fuse two of the same item together, further enhacing transformative effects +1 effect.",
 				"You choose the 'Fusion' perk, number of possible effects of transformatives +1.");
+		public static const GigantGrip:PerkType = mk("Gigant's Grip", "Gigant's Grip",
+				"Gain an ability to wield large weapons in one hand. (+5 to max Str)",
+				"You choose the 'Gigant's Grip' perk, gaining an ability to wield large weapons in one hand. (+5 to max Str)");
+		public static const GigantGripEx:PerkType = mk("Gigant's Grip (Ex)", "Gigant's Grip (Ex)",
+				"Allow to apply all perks boosting Large weapon performance (increased atk and etc.) to Massive weapons. Exception are perks that allow for multi attacks of large weapons. (+5 to max Str/Tou)",
+				"You choose the 'Gigant's Grip (Ex)' perk, allowing to apply all perks boosting Large weapon performance (increased atk and etc.) to Massive weapons. Exception are perks that allow for multi attacks of large weapons. (+5 to max Str/Tou)");
+		public static const GigantGripSu:PerkType = mk("Gigant's Grip (Su)", "Gigant's Grip (Su)",
+				"Gain an ability to wield four large weapons as long you have 4 or more arms. (+5 to max Str/Tou/Spe)",
+				"You choose the 'Gigant's Grip (Su)' perk, gaining an ability to wield large weapons in one hand. (+5 to max Str/Tou/Spe)");
 		public static const GiantsReach:PerkType = mk("Giant's Reach", "Giant's Reach",
 				"When fighting groups of enemies with Large weapons it creates small shockwaves increasing range (and damage) of Aoe attacks.",
 				"You choose 'Giant's Reach' perk. Increase range of attacks with large weapons in fights against group enemies.");
@@ -1125,20 +1256,20 @@ public class PerkLib
 				"You have surpassed your mortal self to become the embodiment of melee damage, further increasing it. (+10% melee phys dmg)",
 				"You choose the 'God of Steel' perk, gaining +10% melee phys dmg.");
 		public static const GolemArmyCaptain:PerkType = mk("Golem Army Captain", "Golem Army Captain",
-				"+2 to max limit of pernament and temporal stored golems.",
-				"You choose the 'Golem Army Captain' perk, allowing to store additional pernament and temporal golems in your golem bag.");
+				"+2/4 to max limit of stored pernament/temporal stone golems.",// +1 to max limit for stored pernament steel golems.
+				"You choose the 'Golem Army Captain' perk, allowing to store additional pernament (+2) and temporal (+4) stone golems golems in your golem bag.");// Allow to store steel golem. (+1)
 		public static const GolemArmyColonel:PerkType = mk("Golem Army Colonel", "Golem Army Colonel",
-				"+4 to max limit of pernament and temporal stored golems.",
-				"You choose the 'Golem Army Colonel' perk, allowing to store additional pernament and temporal golems in your golem bag.");
+				"+4/8 to max limit of stored pernament/temporal stone golems.",
+				"You choose the 'Golem Army Colonel' perk, allowing to store additional pernament (+4) and temporal (+8) stone golems in your golem bag.");
 		public static const GolemArmyGeneral:PerkType = mk("Golem Army General", "Golem Army General",
-				"+5 to max limit of pernament and temporal stored golems.",
-				"You choose the 'Golem Army General' perk, allowing to store additional pernament and temporal golems in your golem bag.");
+				"+1/5/10 to max limit stored of (pernament improved/normal)/temporal stone golems.",
+				"You choose the 'Golem Army General' perk, allowing to store additional pernament (improved stone +1/stone +5) and temporal (+10) stone golems in your golem bag.");
 		public static const GolemArmyLieutenant:PerkType = mk("Golem Army Lieutenant", "Golem Army Lieutenant",
-				"+1 to max limit of pernament and temporal stored golems.",
-				"You choose the 'Golem Army Lieutenant' perk, allowing to store additional pernament and temporal golems in your golem bag.");
+				"+1/2 to max limit stored of pernament/temporal stone golems.",
+				"You choose the 'Golem Army Lieutenant' perk, allowing to store additional pernament (+1) and temporal (+2) stone golems in your golem bag.");
 		public static const GolemArmyMajor:PerkType = mk("Golem Army Major", "Golem Army Major",
-				"+3 to max limit of pernament and temporal stored golems.",
-				"You choose the 'Golem Army Major' perk, allowing to store additional pernament and temporal golems in your golem bag.");
+				"+3/6 to max limit stored of pernament/temporal stone golems.",
+				"You choose the 'Golem Army Major' perk, allowing to store additional pernament (+3) and temporal (+6) stone golems in your golem bag.");
 		public static const GoliathI:PerkType = mk("Goliath I", "Goliath I",
 				"+2 extra HP per point of strength.",
 				"You choose the 'Goliath I' perk, granting +2 extra maximum HP for each point of strength.");
@@ -1195,7 +1326,7 @@ public class PerkLib
 						"]",
 				"You choose the 'Grand Mage' perk, increasing base spell strength by 30%, mana pool by 45 and lust bar by 10.");
 		public static const GrandMasterGolemMaker:PerkType = mk("Grand-Master Golem Maker", "Grand-Master Golem Maker",
-				"Your proficiency in making golems allows to make golems that can attack flying enemies at small cost in mana drawn form it owner (aka PC). Also allowing to store one more in golem bag.",
+				"Your proficiency in making golems allows to make golems that can attack flying enemies at small cost in mana drawn from it owner (aka PC). Also allowing to store one more in golem bag.",
 				"You choose 'Grand-Master Golem Maker' perk, increasing your proficiency in making golems.");
 		public static const GrandTactician:PerkType = mk("Grand Tactician", "Grand Tactician",
 				"[if(player.inte>=150)" +
@@ -1681,6 +1812,9 @@ public class PerkLib
 		public static const Lifeline:PerkType = mk("Lifeline", "Lifeline",
 				"Increases self healing by 90 out of combat and by 45 in combat (using defend option will double it).",
 				"You choose the 'Lifeline' perk, increasing your self healing.");
+		public static const LightningReload:PerkType = mk("Lightning Reload", "Lightning Reload",
+				"Allow to reload in middle of shooting as long PC have enough fatigue for that without ending turn.",
+				"You choose the 'Lightning Reload' perk, lowering even more time needed to reload with ammo range weapons like pistols.");
 		public static const LightningStrikes:PerkType = mk("Lightning Strikes", "Lightning Strikes",
 				"[if(player.spe>=60)" +
 						"Increases the attack damage for non-heavy/non-small weapons.</b>" +
@@ -1808,6 +1942,9 @@ public class PerkLib
 		public static const Manyshot:PerkType = mk("Manyshot", "Manyshot",
 				"You always shoot two arrows instead of one on your first strike.",
 				"You choose the 'Manyshot' perk, to always shoot two arrows instead of one on your first strike.");
+		public static const MarkedForDeath:PerkType = mk("Marked for death", "Marked for death",
+				"You can now use sneak attack with ranged weapon. (bows and snipper firearms)",
+				"You choose the 'Marked for death' perk. You can now use sneak attack with ranged weapon. (bows and snipper firearms)");
 		public static const Masochist:PerkType = mk("Masochist", "Masochist",
 				"Take 20% less physical damage but gain lust when you take damage.",
 				"You choose the 'Masochist' perk, reducing the damage you take but raising your lust each time!  This perk only functions while your libido is at or above 60!");
@@ -1832,6 +1969,17 @@ public class PerkLib
 		public static const Medicine:PerkType = mk("Medicine", "Medicine",
 				"Grants 15% chance per round of cleansing poisons/drugs from your body. Increases HP restoration on rest.",
 				"You choose the 'Medicine' perk, giving you a chance to remove debilitating poisons automatically! Also, increases HP restoration on rest.");
+		public static const MelkieLung:PerkType = mk("Melkie Lungs", "Melkie Lungs",
+				"Increase damage reduction against spells by 5% and increase the power of compelling aria by 20%, Compelling Aria is kept at all time.",
+				"You choose the 'Melkie Lungs' perk, gaining increased magic resistances and the power to sing regardless of being a Melkie.");
+		public static const MelkieLungEvolved:PerkType = mk("Melkie Lungs (Evolved)", "Melkie Lungs (Evolved)",
+				"Increase damage reduction against spells by 10% and increase the power of compelling aria by 30%. Compelling Aria now has an Intelligence scaling.",
+				"You choose the 'Melkie Lungs (Evolved)' perk, gaining increased magic resistances and improving the power of your song based on your inteligence.");
+		public static const MelkieLungFinalForm:PerkType = mk("Melkie Lungs (Final Form)", "Melkie Lungs (Final Form)",
+				"Increase damage reduction against spells by 15% and increase the power of compelling aria by 40%. Compelling Aria intelligence scaling is doubled.",
+				"You choose the 'Melkie Lungs (Final Form)' perk, gaining increased magic resistances and further improving the power of your song.");
+		public static const MelkieSong:PerkType = mk("Melkie Song", "Melkie Song",
+				"Your voice is supernaturaly enhanced and may be used during battle to arouse foes.");
 		public static const Metamorph:MetamorphPerk = new MetamorphPerk();
 		public static const MetamorphEx:PerkType = mk("Metamorph (Ex)", "Metamorph (Ex)",
 				"Mold your own body even further than before using genetic memory and soulforce.",
@@ -1873,8 +2021,8 @@ public class PerkLib
 				"Some people get all the luck it seems... Shut up and take our money is what all enemies scream at you upon defeat, increasing your gains on victory. (15% more gems from victories)",
 				"You choose the 'Money Finder' perk, increasing gem gains from victories by 15%.");
 		public static const MultiClawAttack:PerkType = mk("Multi Claw Attack", "Multi Claw Attack",
-				"When attacking with your claws, add an additional attack striking up to 4 times.",
-				"You choose the 'Multi Claw Attack' perk, gaining an additional attack with your claws!");
+				"When attacking with your natural weapons, add an additional attack striking up to 4 times.",
+				"You choose the 'Multi Claw Attack' perk, gaining an additional attack with your natural weapons!");
 		public static const Multishot:PerkType = mk("Multishot", "Multishot",
 				"Allows you to perform additional range attack per round.",
 				"You choose the 'Multishot' perk, This allows you to make additional range attack.");
@@ -1891,8 +2039,8 @@ public class PerkLib
 				"Increases maximum fatigue by 20000.",
 				"You choose the 'Mythical Endurance' perk. Thanks to your mythical physical conditioning, your maximum fatigue has been increased by 20000!");
 		public static const MythicalGolemMaker:PerkType = mk("Mythical Golem Maker", "Mythical Golem Maker",
-				"Your proficiency in making golems allows to make stronger golems as much stronger their creator became and slightly rise your intelligence and wisdom.",
-				"You choose 'Mythical Golem Maker' perk, increasing your proficiency in making golems.");
+				"Your proficiency in making golems allows to make stronger golems as much stronger their creator became and slightly rise your intelligence and wisdom. Also allow to make and store 1 improved stone golem.",
+				"You choose 'Mythical Golem Maker' perk, increasing your proficiency in making golems. Also allow to make improved stone golems.");
 		public static const MythicalIntelligence:PerkType = mk("Mythical Intelligence", "Mythical Intelligence",
 				"Increases maximum intelligence by 65 + 15 * NG tier.",
 				"You choose the 'Mythical Intelligence' perk. Increases maximum intelligence by 65 + 15 * NG tier.");
@@ -2171,22 +2319,22 @@ public class PerkLib
 				"Allows you to perform four melee attacks with small weapons per round.",
 				"You choose the 'Quadruple Attack (Small)' perk.  This allows you to make four melee attacks with small weapons.");
 		public static const QuickStrike:PerkType = mk("Quick Strike", "Quick Strike",
-				"Add speed based scaling of melee attacks when using small weapon(s) and attacking more than once per turn. It effect is added on top of Speed Demon perk boost.",
+				"Add speed based scaling of melee attacks when using small weapon(s). It effect is added on top of Speed Demon perk boost.",
 				"You choose the 'Quick Strike' perk, allowing you to use your speed when attacking with small melee weapons.");
+		public static const RacialParagon:PerkType = mk("Racial Paragon", "Racial Paragon",
+				"Add up to 1 to each stat per level and increase racial skill power by 50% but remove all chimerical disposition stat gains and degeneration as well lock you into a single race.",
+				"You choose the 'Racial Paragon' perk, chosing to specialise into a specific race and increasing racial skill power by 50%.");
 		public static const Rage:PerkType = mk("Rage", "Rage",
 				"Increasing crit chance by up to 50% in berserk state that would reset after succesful crit attack.",
 				"You choose the 'Rage' perk, increasing crit chance by up to 50% in berserk state until next crit attack.");
-		public static const RapidReload:PerkType = mk("Rapid Reload", "Rapid Reload",
-				"Allow to not spend whole turn to use Reload button as long PC got enough fatigue.",
-				"You choose the 'Rapid Reload' perk, lowering time needed to reload ammo for range weapons like pistols.");
-		public static const LightningReload:PerkType = mk("Lightning Reload", "Lightning Reload",
-				"Allow to reload in middle of shooting as long PC have enough fatigue for that without ending turn.",
-				"You choose the 'Lightning Reload' perk, lowering even more time needed to reload with ammo range weapons like pistols.");
 		public static const RagingInferno:PerkType = mk("Raging Inferno", "Raging Inferno",
 				"Cumulative 20% damage increase for every subsequent fire spell without interruption.",
 				"You choose the 'Raging Inferno' perk. Cumulative 20% damage increase for every subsequent fire spell without interruption.");
 				//"Cumulative 10% damage increase for every subsequent fire spell. Each turn without casted fire spell lower damage by 10%.",
 				//"You choose the 'Raging Inferno' perk. Cumulative 10% damage increase for every subsequent fire spell.");
+		public static const RapidReload:PerkType = mk("Rapid Reload", "Rapid Reload",
+				"Allow to not spend whole turn to use Reload button as long PC got enough fatigue.",
+				"You choose the 'Rapid Reload' perk, lowering time needed to reload ammo for range weapons like pistols.");
 		public static const RecoveryMantra:PerkType = mk("Recovery mantra", "Recovery mantra",
 				"Gain soulforce recovery equal to 2% of your total soulforce.",
 				"You choose the 'Recovery mantra' perk, gaining soulfroce recovery rate equal to 2% of your total soulforce.");
@@ -2328,6 +2476,8 @@ public class PerkLib
 		public static const ShitYouTouchedSasha:PerkType = mk("SHIT YOU TOUCHED SASHA!!!", "SHIT YOU TOUCHED SASHA!!!",
 				"DIE!!! (You're fucked... not even this final +10% ranged damage buff will save your sorry ass...)",
 				"You choose the 'SHIT YOU TOUCHED SASHA!!!' perk, gaining +10% range phys dmg.");
+		public static const HarpySong:PerkType = mk("Harpy Song", "Harpy Song",
+				"Your voice is supernaturaly enhanced and may be used during battle to arouse foes.");
 		public static const SkippingWork:PerkType = mk("Skipping Work", "Skipping Work",
 				"Sample Text Here/+20% fatigue recovery rate",
 				"You choose the 'Skipping Work' perk, gaining +20% fatigue recovery rate.");
@@ -2347,53 +2497,53 @@ public class PerkLib
 				"Get out there ya commie! (Just go, don't argue with him and take a +10% ranged damage buff)",
 				"You choose the 'Soldier's Friend' perk, gaining +10% range phys dmg.");
 		public static const SoulAncestor:PerkType = mk("Soul Ancestor", "Soul Ancestor",
-				"Allow reaching 12th stage of soul cultivation. (+35 max Hunger, +140 max SF at lvl 72, 74, 76; +25% to max SF at lvl 72)",
+				"Allow reaching 12th stage of soul cultivation. (+35 max Hunger, +5 to max Wis, +140 max SF at lvl 72, 74, 76; +25% to max SF at lvl 72)",
 				"You choose the 'Soul Ancestor' perk, reaching 12th stage of soul cultivation! (+35 max Hunger, +140 max SF at lvl 72, 74, 76; +25% to max SF at lvl 72)");
 		public static const SoulApprentice:PerkType = mk("Soul Apprentice", "Soul Apprentice",
-				"Allow reaching 1st stage of soul cultivation. (+20 max Hunger, +30 max SF at lvl 6, 8, 10; +10% to max SF at lvl 6)",
+				"Allow reaching 1st stage of soul cultivation. (+20 max Hunger, +5 to max Wis, +30 max SF at lvl 6, 8, 10; +10% to max SF at lvl 6)",
 				"You choose the 'Soul Apprentice' perk, reaching 1st stage of soul cultivation! (+20 max Hunger, +30 max SF at lvl 6, 8, 10; +10% to max SF at lvl 6)");
 		public static const SoulEmperor:PerkType = mk("Soul Emperor", "Soul Emperor",
-				"Allow reaching 11th stage of soul cultivation. (+35 max Hunger, +130 max SF at lvl 66, 68, 70; +25% to max SF at lvl 66)",
+				"Allow reaching 11th stage of soul cultivation. (+35 max Hunger, +5 to max Wis, +130 max SF at lvl 66, 68, 70; +25% to max SF at lvl 66)",
 				"You choose the 'Soul Emperor' perk, reaching 11th stage of soul cultivation! (+35 max Hunger, +130 max SF at lvl 66, 68, 70; +25% to max SF at lvl 66)");
 		public static const SoulElder:PerkType = mk("Soul Elder", "Soul Elder",
-				"Allow reaching 6th stage of soul cultivation. (+25 max Hunger, +80 max SF at lvl 36, 38, 40; +15% to max SF at lvl 36)",
+				"Allow reaching 6th stage of soul cultivation. (+25 max Hunger, +5 to max Wis, +80 max SF at lvl 36, 38, 40; +15% to max SF at lvl 36)",
 				"You choose the 'Soul Elder' perk, reaching 6th stage of soul cultivation! (+25 max Hunger, +80 max SF at lvl 36, 38, 40; +15% to max SF at lvl 36)");
 		public static const SoulExalt:PerkType = mk("Soul Exalt", "Soul Exalt",
-				"Allow reaching 7th stage of soul cultivation. (+30 max Hunger, +90 max SF at lvl 42, 44, 46; +20% to max SF at lvl 42)",
+				"Allow reaching 7th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +90 max SF at lvl 42, 44, 46; +20% to max SF at lvl 42)",
 				"You choose the 'Soul Exalt' perk, reaching 7th stage of soul cultivation! (+30 max Hunger, +90 max SF at lvl 42, 44, 46; +20% to max SF at lvl 42)");
 		public static const SoulKing:PerkType = mk("Soul King", "Soul King",
-				"Allow reaching 10th stage of soul cultivation. (+35 max Hunger, +120 max SF at lvl 60, 62, 64; +25% to max SF at lvl 60)",
+				"Allow reaching 10th stage of soul cultivation. (+35 max Hunger, +5 to max Wis, +120 max SF at lvl 60, 62, 64; +25% to max SF at lvl 60)",
 				"You choose the 'Soul King' perk, reaching 10th stage of soul cultivation! (+35 max Hunger, +120 max SF at lvl 60, 62, 64; +25% to max SF at lvl 60)");
 		public static const SoulOfSteel:PerkType = mk("Soul of Steel", "Soul of Steel",
 				"Every aspect of you has become a weapon. Your melee damage has increased yet again, but could you even be considered living at this point? (+10% melee phys dmg)",
 				"You choose the 'Soul of Steel' perk, gaining +10% melee phys dmg.");
 		public static const SoulOverlord:PerkType = mk("Soul Overlord", "Soul Overlord",
-				"Allow reaching 8th stage of soul cultivation. (+30 max Hunger, +100 max SF at lvl 48, 50, 52; +20% to max SF at lvl 48)",
+				"Allow reaching 8th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +100 max SF at lvl 48, 50, 52; +20% to max SF at lvl 48)",
 				"You choose the 'Soul Overlord' perk, reaching 8th stage of soul cultivation! (+30 max Hunger, +100 max SF at lvl 48, 50, 52; +20% to max SF at lvl 48)");
 		public static const SoulPersonage:PerkType = mk("Soul Personage", "Soul Personage",
-				"Allow reaching 2nd stage of soul cultivation. (+20 max Hunger, +40 max SF at lvl 12, 14, 16; +10% to max SF at lvl 12)",
+				"Allow reaching 2nd stage of soul cultivation. (+20 max Hunger, +5 to max Wis, +40 max SF at lvl 12, 14, 16; +10% to max SF at lvl 12)",
 				"You choose the 'Soul Personage' perk, reaching 2nd stage of soul cultivation! (+20 max Hunger, +40 max SF at lvl 12, 14, 16; +10% to max SF at lvl 12)");
 		public static const SoulPowered:PerkType = mk("Soul Powered", "Soul Powered",
 				"You use your soul force more than anything else... increasing its size by 10%.",
 				"You choose the 'Soul Powered' perk, gaining +10% max Soulforce.");
 		public static const SoulScholar:PerkType = mk("Soul Scholar", "Soul Scholar",
-				"Allow reaching 5th stage of soul cultivation. (+25 max Hunger, +70 max SF at lvl 30, 32, 34; +15% to max SF at lvl 30)",
+				"Allow reaching 5th stage of soul cultivation. (+25 max Hunger, +5 to max Wis, +70 max SF at lvl 30, 32, 34; +15% to max SF at lvl 30)",
 				"You choose the 'Soul Scholar' perk, reaching 5th stage of soul cultivation! (+25 max Hunger, +70 max SF at lvl 30, 32, 34; +15% to max SF at lvl 30)");
 		public static const SoulSprite:PerkType = mk("Soul Sprite", "Soul Sprite",
-				"Allow reaching 4th stage of soul cultivation. (+25 max Hunger, +60 max SF at lvl 24, 26, 28; +15% to max SF at lvl 24)",
+				"Allow reaching 4th stage of soul cultivation. (+25 max Hunger, +5 to max Wis, +60 max SF at lvl 24, 26, 28; +15% to max SF at lvl 24)",
 				"You choose the 'Soul Sprite' perk, reaching 4th stage of soul cultivation! (+25 max Hunger, +60 max SF at lvl 24, 26, 28; +15% to max SF at lvl 24)");
 		public static const SoulTyrant:PerkType = mk("Soul Tyrant", "Soul Tyrant",
-				"Allow reaching 9th stage of soul cultivation. (+30 max Hunger, +110 max SF at lvl 54, 56, 58; +20% to max SF at lvl 54)",
+				"Allow reaching 9th stage of soul cultivation. (+30 max Hunger, +5 to max Wis, +110 max SF at lvl 54, 56, 58; +20% to max SF at lvl 54)",
 				"You choose the 'Soul Tyrant' perk, reaching 9th stage of soul cultivation! (+30 max Hunger, +110 max SF at lvl 54, 56, 58; +20% to max SF at lvl 54)");
 		public static const SoulWarrior:PerkType = mk("Soul Warrior", "Soul Warrior",
-				"Allow reaching 3rd stage of soul cultivation. (+20 max Hunger, +50 max SF at lvl 18, 20, 22; +10% to max SF at lvl 18)",
+				"Allow reaching 3rd stage of soul cultivation. (+20 max Hunger, +5 to max Wis, +50 max SF at lvl 18, 20, 22; +10% to max SF at lvl 18)",
 				"You choose the 'Soul Warrior' perk, reaching 3rd stage of soul cultivation! (+20 max Hunger, +50 max SF at lvl 18, 20, 22; +10% to max SF at lvl 18)");
 		public static const Spectre:PerkType = mk("Spectre", "Spectre",
 				"You have mastered dematerialization, so now you can use it to avoid incoming attacks (+10% to dodge chance) and slip from enemy grasp (you can try to possess during struggle, and even if not successfull you'll escape from constriction).",
 				"You choose the 'Spectre' perk. You have mastered dematerialization, so now you can use it to avoid incoming attacks (+10% to dodge chance) and slip from enemy grasp (you can try to possess during struggle, and even if not successfull you'll escape from constriction).");
 		public static const SpeedDemon:PerkType = mk("Speed Demon", "Speed Demon",
-				"Add speed based scaling of melee attacks when using non large weapon(s) and attacking more than once per turn.",
-				"You choose the 'Speed Demon' perk, allowing you to use your speed when attacking with non large melee weapons.");
+				"Add speed based scaling of melee attacks when using smaller than large weapon(s).",
+				"You choose the 'Speed Demon' perk, allowing you to use your speed when attacking with smaller than large melee weapons.");
 		public static const SpeedyRecovery:PerkType = mk("Speedy Recovery", "Speedy Recovery",
 				"Regain fatigue +50% out of combat / +100% in combat faster.",
 				"You choose the 'Speedy Recovery' perk, boosting your fatigue recovery rate!");
@@ -2500,11 +2650,14 @@ public class PerkLib
 				"Basic attack with wizard's staff is replaced with ranged magic bolt.",
 				"You choose the 'Staff Channeling' perk. Basic attack with wizard's staff is replaced with ranged magic bolt.");
 		public static const StrongBack:PerkType = mk("Strong Back", "Strong Back",
-				"Enables fourth item slot.",
-				"You choose the 'Strong Back' perk, enabling a fourth item slot.");
+				"Enables sixth item slot.",
+				"You choose the 'Strong Back' perk, enabling a sixth item slot.");
 		public static const StrongBack2:PerkType = mk("Strong Back 2: Strong Harder", "Strong Back 2: Strong Harder",
-				"Enables fifth item slot.",
-				"You choose the 'Strong Back 2: Strong Harder' perk, enabling a fifth item slot.");
+				"Enables seventh item slot.",
+				"You choose the 'Strong Back 2: Strong Harder' perk, enabling a seventh item slot.");
+		public static const StrongBack3:PerkType = mk("Strong Back 3: Strong Hardest", "Strong Back 3: Strong Hardest",
+				"Enables eighth item slot.",
+				"You choose the 'Strong Back 3: Strong Hardest' perk, enabling a eighth item slot.");
 		public static const SwiftCasting:PerkType = mk("Swift casting", "Swift casting",
 				"When attacking with melee using a one handed weapon with no shield equiped, pc can choose an available spell in combat options to cast during the round. It will be used at the end of the full attack.",
 				"You choose the 'Swift casting' perk, allowing to cast one of simple spells after melee attack.");
@@ -2548,9 +2701,15 @@ public class PerkLib
 		public static const ThunderousStrikes:PerkType = mk("Thunderous Strikes", "Thunderous Strikes",
 				"+20% 'Attack' damage while strength is at or above 80.",
 				"You choose the 'Thunderous Strikes' perk, increasing normal damage by 20% while your strength is over 80.");
-		public static const TitanGrip:PerkType = mk("Titan Grip", "Titan Grip",
-				"Gain an ability to wield large weapons in one hand.",
-				"You choose the 'Titan Grip' perk, gaining an ability to wield large weapons in one hand.");
+		public static const TitanGrip:PerkType = mk("Titan's Grip", "Titan's Grip",
+				"Gain an ability to wield massive weapons in one hand. (+5 to max Str)",
+				"You choose the 'Titan's Grip' perk, gaining an ability to wield large weapons in one hand. (+5 to max Str)");
+		public static const TitanGripEx:PerkType = mk("Titan's Grip (Ex)", "Titan's Grip (Ex)",
+				"Gain an ability to wield large weapons in one hand. (+5 to max Str/Tou)",
+				"You choose the 'Titan's Grip (Ex)' perk, gaining an ability to wield large weapons in one hand. (+5 to max Str/Tou)");
+		public static const TitanGripSu:PerkType = mk("Titan's Grip (Su)", "Titan's Grip (Su)",
+				"Gain an ability to wield large weapons in one hand. (+5 to max Str/Tou/Spe)",
+				"You choose the 'Titan's Grip (Su)' perk, gaining an ability to wield large weapons in one hand. (+5 to max Str/Tou/Spe)");
 		public static const Tongs:PerkType = mk("Tongs", "Tongs",
 				"You no longer burn your hands when forging, allowing you to actually get work done! This increases armor proficiency. (+5% phys/mag resistance)",
 				"You choose the 'Tongs' perk, increasing armor proficiency. (+5% phys/mag resistance)");
@@ -2707,6 +2866,9 @@ public class PerkLib
 		public static const VitalShot:PerkType = mk("Vital Shot", "Vital Shot",
 				"Gain a +10% chance to do a critical strike with arrows.",
 				"You choose the 'Vital Shot' perk, gaining an additional +10% chance to cause a critical hit with arrows.");
+		public static const WalpurgisIzaliaRobe:PerkType = mk("Walpurgis Izalia Robe", "Walpurgis Izalia Robe",
+				"Increase fire and darkness damage by 100%, weaken all other elemental damage by 99%, increase fire resistance by 25%, reduce spellcasting cost by 60%.",
+				"Increase fire damage by 100%, weaken all other elemental damage by 99%, increase fire resistance by 25%, reduce spellcasting cost by 60%.\n");
 		public static const WarCaster:PerkType = mk("War caster", "War caster",
 				"Increases magical and physical critical chance by up to 25% based on intelligence.",
 				"You choose the 'War caster' perk, increasing magical and physical critical chance by up to 25% based on intelligence.");
@@ -2730,6 +2892,15 @@ public class PerkLib
 		public static const WellAdjusted:PerkType = mk("Well Adjusted", "Well Adjusted",
 				"You gain half as much lust as time passes in Mareth.",
 				"You choose the 'Well Adjusted' perk, reducing the amount of lust you naturally gain over time while in this strange land!");
+		public static const WhaleFat:PerkType = mk("Whale fat", "Whale fat",
+				"Your whale fat increase your damage reduction against physical attacks and grants you resistance to cold permanantly.",
+				"You choose the 'Whale fat' perk, making your more resilient against physical attacks and gaining cold affinity permanantly.");
+		public static const WhaleFatEvolved:PerkType = mk("Whale fat, Evolved", "Whale fat, Evolved",
+				"Your whale fat further increase your damage reduction against physical attacks and the duration of juggle is increased by 1 round.",
+				"You choose the 'Whale fat' perk, making your more resilient against physical attacks and increasing the duration of Juggle by 1 round while playing.");
+		public static const WhaleFatFinalForm:PerkType = mk("Whale fat, Final Form", "Whale fat, Final Form",
+				"Your whale fat further increase your damage reduction against physical attacks and the duration of juggle is increased by 1 additionnal round. Juggle can now be used a third time",
+				"You choose the 'Whale fat' perk, making your more resilient against physical attacks and Juggle can now be used a third time while playing.");
 		public static const Whipping:PerkType = mk("Whipping", "Whipping",
 				"Whipping special deal increased damage based on current strength.",
 				"You choose the 'Whipping' perk, making your Whipping special stronger.");
@@ -2773,7 +2944,6 @@ public class PerkLib
 		public static const JobBarbarian:PerkType = mk("Job: Barbarian", "Job: Barbarian",
 				"You've trained in using large weapons in fights.",
 				"You choose 'Job: Barbarian' perk, training yourself to became Barbarian.");
-		
 
 		// Needlework perks
 		public static const ChiReflowAttack:PerkType = mk("Chi Reflow - Attack", "Chi Reflow - Attack",
@@ -2812,6 +2982,8 @@ public class PerkLib
 		public static const BlindImmunity:PerkType = mk("Blind Immunity", "Blind Immunity", "Gives PC immunity to enemy blinding effects.");
 		public static const BloodMage:PerkType = mk("Blood Mage", "Blood Mage",
 				"Spellcasting now consumes health instead of mana!",null,true);
+		public static const KrakenBlackDress:PerkType = mk("Kraken black dress", "Kraken black dress",
+				"Increase ink spray duration by 1 round and doubles Grapple damage.",null,true);
 		public static const LastResort:PerkType = mk("Last Resort", "Last Resort",
 				"When mana is too low to cast a spell, automatically cast from hp instead.",null,true);
 		public static const Obsession:ObsessionPerk = new ObsessionPerk();
@@ -2897,6 +3069,8 @@ public class PerkLib
 				"Allows access to demons charm attacks.");
 		public static const DeadMetabolism:PerkType = mk("Dead metabolism", "Dead metabolism",
 				"Kills off hunger. (hunger meter wouldn't decay with time)");
+		public static const DemonEnergyThirst:PerkType = mk("Demonic hunger", "Demonic hunger",
+				"You can metabolise sex into energy and can feed from your partners orgasms.");
 		public static const Diapause:PerkType = mk("Diapause", "Diapause",
 				"Pregnancy does not advance normally, but develops quickly after taking in fluids.");
 		public static const DragonDarknessBreath:PerkType = mk("Dragon darkness breath", "Dragon darkness breath",
@@ -2930,7 +3104,7 @@ public class PerkLib
 		public static const FenrirSpikedCollar:PerkType = mk("Fenrir spiked collar", "Fenrir spiked collar",
 				"The magical chain as well as the strongly enchanted collar increase damage reduction by 10%.");
 		public static const Ferocity:PerkType = mk("Ferocity", "Ferocity",
-				"You can remains conscious and continue fighting even if your HP is below 0. You gonna loose 1% of max HP each round and would loose fight when negative HP reach 7% of max HP.");
+				"You can remains conscious and continue fighting even if your HP is below 0. You gonna loose 1% of max HP each round and would loose fight when negative HP reach 7% (or more if PC got other perks to stay undefeated below 0%) of max HP.");
 		public static const FireAffinity:PerkType = mk("Fire Affinity", "Fire Affinity",
 				"You have high resistance to fire effects, immunity to the burn condition, and mastery over fire abilities and magic. However, you are highly susceptible to ice.");
 		public static const FlawlessBody:PerkType = mk("Flawless Body", "Flawless Body",
@@ -2971,6 +3145,8 @@ public class PerkLib
 				"Allows you to shoot blinding and probably slightly arousing ink out of your genitalia similar like octopus.");
 		public static const JunglesWanderer:PerkType = mk("Jungle’s Wanderer", "Jungle’s Wanderer",
 				"Your nimble body has adapted to moving through jungles and forests, evading enemy attacks with ease and making yourself harder to catch. (+35 to the Evasion percentage)");
+		public static const KitsuneEnergyThirst:PerkType = mk("Kitsune hunger", "Kitsune hunger",
+				"You can metabolise sex into life force and can feed from your partners orgasms.");
 		public static const LifeLeech:PerkType = mk("Life leech", "Life leech",
 				"Your unarmed strike steals vital energy from your victims, dealing 5% extra damage and restoring 1% mana, health, fatigue and soulforce per hit.");
 		public static const Lycanthropy:PerkType = mk("Lycanthropy", "Lycanthropy",
@@ -3030,7 +3206,6 @@ public class PerkLib
 				"Increase max Strength by a percentage equal to the size in ft of the player x4.");
 		public static const TransformationResistance:PerkType = mk("Transformation Resistance", "Transformation Resistance",
 				"Reduces the likelihood of undergoing a transformation. Disables Bad Ends from transformative items.");
-				
 		// Quest, Event & NPC perks
 		public static const AdvancedLeadership:PerkType = mk("Advanced Leadership", "Advanced Leadership",
 				"Allows to form 4 people party.");
@@ -3156,6 +3331,7 @@ public class PerkLib
 		public static const Sentience:PerkType = mk("Sentience", "Sentience", "");
 		public static const ShieldWielder:PerkType = mk("Shield wielder", "Shield wielder", "");
 		public static const TeaseResistance:PerkType = mk("Tease Resistance", "Tease Resistance", "");//NYU
+		public static const UniqueNPC:PerkType = mk("Unique npc", "Unique npc", "");
 		//public static const Enemy_Type:PerkType = mk("-type enemy", "-type enemy", "");
 		//public static const Enemy_Type:PerkType = mk("-type enemy", "-type enemy", "");undead?
 		//public static const :PerkType = mk("", "", ""); na poźniej dopisane perki wzór
@@ -3172,9 +3348,13 @@ public class PerkLib
             // STRENGTH
             //------------
             JobWarrior.requireStr(10);
-            StrongBack.requireStr(25);
-            StrongBack2.requirePerk(StrongBack)
-                    .requireStr(50);
+            StrongBack.requireStr(20);
+            StrongBack2.requireLevel(2)
+					.requirePerk(StrongBack)
+                    .requireStr(40);
+            StrongBack3.requireLevel(4)
+					.requirePerk(StrongBack2)
+                    .requireStr(60);
             BasicTranquilness.requireStr(30)
                     .requireTou(10)
                     .requireSpe(10);
@@ -3261,7 +3441,7 @@ public class PerkLib
                     .requirePerk(Berzerker)
                     .requirePerk(ImprovedSelfControl)
                     .requireStr(75);
-            TitanGrip.requireLevel(18)
+            GigantGrip.requireLevel(18)
                     .requirePerk(WeaponMastery)
                     .requireStr(100);
             HiddenMomentum.requireLevel(18)
@@ -3280,13 +3460,16 @@ public class PerkLib
             WeaponGrandMastery.requirePerk(WeaponMastery)
                     .requireStr(140)
                     .requireLevel(24);
-            DualWieldLarge.requirePerk(TitanGrip)
+            DualWieldLarge.requirePerk(GigantGrip)
                     .requireStr(125)
                     .requireLevel(24);
             TripleAttackLarge.requirePerk(DoubleAttackLarge)
                     .requireStr(125)
                     .requireSpe(100)
                     .requireLevel(24);
+            GigantGripEx.requireLevel(24)
+                    .requireStr(120)
+                    .requirePerk(GigantGrip);
             ImprovedBrawn.requireLevel(24)
                     .requireStr(105)
                     .requirePerk(Brawn)
@@ -3764,6 +3947,7 @@ public class PerkLib
             CarefulButRecklessAimAndShooting.requirePerk(JobRanger)
                     .requireSpe(30);
             Sharpshooter.requirePerk(JobRanger);
+            PowerShot.requirePerk(JobRanger);
             NaturesSpringI.requirePerk(ArchersStaminaI)
                     .requireSpe(30);
             NaturesSpringII.requirePerk(NaturesSpringI)
@@ -3893,7 +4077,9 @@ public class PerkLib
             DeadlySneaker.requirePerk(SneakyAttack)
                     .requireSpe(60)
                     .requireLevel(12);
-            Feint.requirePerk(SneakyAttack)
+            MarkedForDeath.requireAnyPerk(JobHunter, JobGunslinger)
+                    .requireLevel(12);
+            Feint.requireAnyPerk(SneakyAttack, MarkedForDeath)
                     .requireSpe(50)
                     .requireLevel(12);
             TripleAttackSmall.requirePerk(DoubleAttackSmall)
@@ -3910,6 +4096,9 @@ public class PerkLib
                     .requireSpe(75)
                     .requireLevel(12);
             SpeedDemon.requireAnyPerk(JobDervish, JobRogue)
+                    .requireSpe(90)
+                    .requireLevel(12);
+            DevastatingCharge.requirePerk(Naturaljouster)
                     .requireSpe(90)
                     .requireLevel(12);
             //Tier 3 Speed Perks
@@ -4359,9 +4548,12 @@ public class PerkLib
                     .requireInt(200)
                     .requireLevel(42)
 					.requireCustomFunction(function (player:Player):Boolean {
-                        return player.statusEffectv1(StatusEffects.AlvinaTraining2) > 3;// || player.statusEffectv1(StatusEffects.SiegweirdTraining2) > 2
-                    }, "Finished Alvina quest line up to the optional battle");//Siegweird
-        	HalfStepToPeerlessSpirituality.requireWis(160)
+                        return player.statusEffectv1(StatusEffects.AlvinaTraining2) > 2;// || player.statusEffectv1(StatusEffects.SiegweirdTraining2) > 2
+                    }, "Finished a certain black mage quest line up to the third part of the training");//Siegweird
+			DarkRitual.requirePerk(HexKnowledge)
+					.requireInt(200)
+					.requireLevel(45);
+			HalfStepToPeerlessSpirituality.requireWis(160)
                     .requireInt(240)
                     .requirePerk(SuperiorSpirituality)
                     .requireLevel(42);
@@ -4385,7 +4577,7 @@ public class PerkLib
                     .requireLevel(48);
             HexKnowledge.requirePerk(PrestigeJobWarlock)
                     .requireInt(225)
-                    .requireLevel(48);
+                    .requireLevel(43);
             //Tier 9 Intelligence perks
             HalfStepToInhumanSpirituality.requireWis(200)
                     .requireInt(300)
@@ -4478,6 +4670,11 @@ public class PerkLib
 					.requireWis(30)
 					.requireTou(25)
                     .requireSpe(20)
+                    .requireLevel(6);
+            DualWieldFirearms.requirePerk(JobGunslinger)
+					.requireWis(25)
+					.requireTou(20)
+                    .requireSpe(15)
                     .requireLevel(6);
             //Tier 2 Wisdom perks
             JobMonk.requireAdvancedJobSlot()
@@ -5133,13 +5330,20 @@ public class PerkLib
             CatlikeNimbleness.requirePerk(Flexibility).requireCustomFunction(function (player:Player):Boolean {
                 return player.catScore() >= 4 || player.nekomataScore() >= 4 || player.displacerbeastScore() >= 4 || player.hellcatScore() >= 4 || player.cheshireScore() >= 4;
             }, "Any cat race");
-            DraconicLungs.requirePerk(DragonFireBreath)
+            DraconicLungs.requireLungsMutationSlot()
+				.requirePerk(DragonFireBreath)
                 .requirePerk(DragonIceBreath)
                 .requirePerk(DragonLightningBreath)
                 .requirePerk(DragonDarknessBreath).requireCustomFunction(function (player:Player):Boolean {
                 return player.dragonScore() >= 4;
-            }, "Dragon race");
-            ElvishPeripheralNervSys.requirePerk(ElvenSense).requireCustomFunction(function (player:Player):Boolean {
+            }, "Dragon race");/*
+			EasterBunnyEggBag.requirePerk(EasterBunnyBalls).requireCustomFunction(function (player:Player):Boolean {
+				return player.easterbunnyScore() >= 12;
+			}, "Easter Bunny race");*/
+			EclipticMind.requirePerk(EclipticMind).requireCustomFunction(function (player:Player):Boolean {
+				return player.alicornScore() >= 12 || player.unicornScore() >= 12 || player.alicornkinScore() >= 10|| player.unicornkinScore() >= 10 ;
+			}, "Unicorn or Bicorn race");
+			ElvishPeripheralNervSys.requirePerk(ElvenSense).requireCustomFunction(function (player:Player):Boolean {
                 return player.elfScore() >= 4;
             }, "Elf race");
             FrozenHeart.requireHeartMutationSlot().requireCustomFunction(function (player:Player):Boolean {
@@ -5191,6 +5395,9 @@ public class PerkLib
             MantislikeAgility.requireMusclesMutationSlot().requirePerk(TrachealSystem).requireCustomFunction(function (player:Player):Boolean {
                 return player.mantisScore() >= 5;
             }, "Mantis race");
+			MelkieLung.requireLungsMutationSlot().requireCustomFunction(function (player:Player):Boolean {
+				return player.melkieScore() >= 12;
+			}, "Melkie race");
             MinotaurTesticles.requireCustomFunction(function (player:Player):Boolean {
                 return player.hasCock();
 				}, "is Male")
@@ -5230,6 +5437,9 @@ public class PerkLib
             TrachealSystem.requireCustomFunction(function (player:Player):Boolean {
                 return player.beeScore() >= 4 || player.mantisScore() >= 4 || player.scorpionScore() >= 4 || player.spiderScore() >= 4;
             }, "Any insect race");
+            TwinHeart.requireHeartMutationSlot().requireCustomFunction(function (player:Player):Boolean {
+				return player.centaurScore() >= 4 || player.unicornScore() >= 8;
+            }, "Centaur or Unicorn race");
 			VampiricBloodsteam.requireBloodsteamMutationSlot().requireCustomFunction(function (player:Player):Boolean {
                 return player.hasStatusEffect(StatusEffects.VampireThirst);
 				}, "Vampire Thirst")
@@ -5242,6 +5452,9 @@ public class PerkLib
 				.requireCustomFunction(function (player:Player):Boolean {
                 return player.spiderScore() >= 4 || player.nagaScore() >= 4 || player.gorgonScore() >= 4 || player.vouivreScore() >= 4 || player.couatlScore() >= 4 || player.hydraScore() >= 4;
             }, "Spider or any snake-like race");
+			WhaleFat.requireMouthMutationSlot().requireCustomFunction(function (player:Player):Boolean {
+				return player.orcaScore() >= 12;
+			}, "Orca race")
             /*
 			if (player.() >=  && ) {
 			_add(new PerkClass(PerkLib.));
@@ -5340,10 +5553,17 @@ public class PerkLib
             TrachealSystemEvolved.requireLevel(6).requirePerk(TrachealSystem).requireCustomFunction(function (player:Player):Boolean {
                 return player.beeScore() >= 8 || player.mantisScore() >= 8 || player.scorpionScore() >= 8 || player.spiderScore() >= 8;
             }, "Any insect race");
+            TwinHeartEvolved.requireLevel(6)
+				.requirePerk(TwinHeart)
+				.requireCustomFunction(function (player:Player):Boolean {
+				return player.centaurScore() >= 8 || player.unicornScore() >= 8;
+            }, "Centaur or Unicorn race");
 			ChimericalBodyInitialStage.requireLevel(6)
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.internalChimeraScore() >= 2;
                     }, "Two racial perks");
+			RacialParagon.requireLevel(6)
+					.requirePerk(JobBeastWarrior);
             //Speedy Recovery - Regain Fatigue 50% faster.
             SpeedyRecovery.requireLevel(6);
             ResistanceI.requireLevel(6);
@@ -5477,7 +5697,13 @@ public class PerkLib
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.dragonScore() >= 10;
                     }, "Dragon race");
-            ElvishPeripheralNervSysEvolved.requireLevel(12).requirePerk(ElvishPeripheralNervSys).requireCustomFunction(function (player:Player):Boolean {
+			EasterBunnyEggBagEvolved.requireLevel(12).requirePerk(EasterBunnyEggBag).requireCustomFunction(function (player:Player):Boolean {
+				return player.easterbunnyScore() >= 12;
+			}, "Easter bunny race");
+			EclipticMindEvolved.requireLevel(12).requirePerk(EclipticMindEvolved).requireCustomFunction(function (player:Player):Boolean {
+				return player.alicornScore() >= 12 || player.unicornScore() >= 12 || player.alicornkinScore() >= 10|| player.unicornkinScore() >= 10 ;
+			}, "Unicorn or Bicorn race");
+			ElvishPeripheralNervSysEvolved.requireLevel(12).requirePerk(ElvishPeripheralNervSys).requireCustomFunction(function (player:Player):Boolean {
                 return player.elfScore() >= 8;
             }, "Elf race");
 			HollowFangsEvolved.requireLevel(12).requirePerk(HollowFangs)
@@ -5495,6 +5721,9 @@ public class PerkLib
             MantislikeAgilityEvolved.requireLevel(12).requirePerk(MantislikeAgility).requireCustomFunction(function (player:Player):Boolean {
                 return player.mantisScore() >= 10
             }, "Mantis race");
+			MelkieLungEvolved.requirePerk(MelkieLung).requireCustomFunction(function (player:Player):Boolean {
+				return player.melkieScore() >= 12;
+			}, "Melkie race");
             NaturalPunchingBagEvolved.requireLevel(12).requirePerk(NaturalPunchingBag).requireCustomFunction(function (player:Player):Boolean {
                 return player.goblinScore() >= 8
             }, "Goblin race");
@@ -5525,11 +5754,16 @@ public class PerkLib
 			VenomGlandsEvolved.requireLevel(12).requirePerk(VenomGlands).requireCustomFunction(function (player:Player):Boolean {
                 return player.spiderScore() >= 8 || player.nagaScore() >= 8 || player.gorgonScore() >= 8 || player.vouivreScore() >= 8 || player.couatlScore() >= 8 || player.hydraScore() >= 8;
             }, "Spider or any snake-like race");
-            ChimericalBodySemiBasicStage.requirePerk(ChimericalBodyInitialStage)
+			WhaleFatEvolved.requireLevel(12).requirePerk(WhaleFat).requireCustomFunction(function (player:Player):Boolean {
+				return player.orcaScore() >= 12;
+			}, "Orca race");
+			ChimericalBodySemiBasicStage.requirePerk(ChimericalBodyInitialStage)
                     .requireLevel(12)
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.internalChimeraScore() >= 4;
                     }, "Four racial perks");
+			Apex.requireLevel(12)
+					.requirePerk(RacialParagon);
 			EnergyHunger.requireLevel(2)
                     .requireHungerEnabled();
             Survivalist2.requireLevel(12)
@@ -5656,6 +5890,8 @@ public class PerkLib
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.internalChimeraScore() >= 8;
                     }, "Eight racial perks");
+			AlphaAndOmega.requireLevel(18)
+					.requirePerk(Apex);
             JobWarlord.requireAdvancedJobSlot()
 					.requireAnyPerk(Whirlwind, Whipping, WhirlwindFeral)
                     .requireLevel(18);
@@ -5714,6 +5950,11 @@ public class PerkLib
 				.requireCustomFunction(function (player:Player):Boolean {
                 return player.demonScore() >= 14;
             }, "Demon race");
+			CatlikeNimblenessFinalForm.requireLevel(24)
+					.requirePerk(CatlikeNimblenessEvolved)
+					.requireCustomFunction(function (player:Player):Boolean {
+						return player.catScore() >= 8 || player.nekomataScore() >= 8 || player.displacerbeastScore() >= 8 || player.hellcatScore() >= 8 || player.cheshireScore() >= 8;
+					}, "Any cat race");
             FrozenHeartFinalForm.requireLevel(24)
 				.requirePerk(FrozenHeartEvolved)
 				.requireCustomFunction(function (player:Player):Boolean {
@@ -5728,9 +5969,17 @@ public class PerkLib
             TrachealSystemFinalForm.requireLevel(24).requirePerk(TrachealSystemEvolved).requireCustomFunction(function (player:Player):Boolean {
                 return player.beeScore() >= 12 || player.mantisScore() >= 12 || player.scorpionScore() >= 12 || player.spiderScore() >= 12;
             }, "Any insect race");
+            TwinHeartFinalForm.requireLevel(24)
+				.requirePerk(TwinHeartEvolved)
+				.requireCustomFunction(function (player:Player):Boolean {
+                return player.centaurScore() >= 12 || player.unicornScore() >= 12;
+            }, "Centaur or Unicorn race");
 			VenomGlandsFinalForm.requireLevel(24).requirePerk(VenomGlandsEvolved).requireCustomFunction(function (player:Player):Boolean {
                 return player.spiderScore() >= 12 || player.nagaScore() >= 12 || player.gorgonScore() >= 12 || player.vouivreScore() >= 12 || player.couatlScore() >= 12 || player.hydraScore() >= 12;
             }, "Spider or any snake-like race");
+			WhaleFatFinalForm.requireLevel(24).requirePerk(WhaleFatEvolved).requireCustomFunction(function (player:Player):Boolean {
+				return player.orcaScore() >= 12;
+			}, "Orca race");
 			ChimericalBodySemiAdvancedStage.requirePerk(ChimericalBodyBasicStage)
                     .requireLevel(24)
                     .requireCustomFunction(function (player:Player):Boolean {
@@ -5739,6 +5988,7 @@ public class PerkLib
             JobAllRounder.requireLevel(24)
                     .requirePerk(JobBeastWarrior)
                     .requirePerk(JobGuardian)
+                    .requirePerk(JobLeader)
                     .requirePerk(JobRanger)
                     .requirePerk(JobSeducer)
                     .requirePerk(JobSorcerer)
@@ -5834,7 +6084,13 @@ public class PerkLib
                     .requireCustomFunction(function (player:Player):Boolean {
                         return player.dragonScore() >= 16;
                     }, "Dragon race");
-            ElvishPeripheralNervSysFinalForm.requireLevel(30).requirePerk(ElvishPeripheralNervSysEvolved).requireCustomFunction(function (player:Player):Boolean {
+			EasterBunnyEggBagFinalForm.requireLevel(30).requirePerk(EasterBunnyEggBagEvolved).requireCustomFunction(function (player:Player):Boolean {
+				return player.easterbunnyScore() >= 12;
+			}, "Easter Bunny race");
+			EclipticMindFinalForm.requireLevel(30).requirePerk(EclipticMindFinalForm).requireCustomFunction(function (player:Player):Boolean {
+				return player.alicornScore() >= 12 || player.unicornScore() >= 12 || player.alicornkinScore() >= 10|| player.unicornkinScore() >= 10 ;
+			}, "Unicorn or Bicorn race");
+			ElvishPeripheralNervSysFinalForm.requireLevel(30).requirePerk(ElvishPeripheralNervSysEvolved).requireCustomFunction(function (player:Player):Boolean {
                 return player.elfScore() >= 12;
             }, "Elf race");
 			HollowFangsFinalForm.requireLevel(30).requirePerk(HollowFangsEvolved)
@@ -5945,6 +6201,9 @@ public class PerkLib
 				.requireCustomFunction(function (player:Player):Boolean {
 					return player.cowScore() >= 12;
             }, "Lacta Bovine race");
+			MelkieLungFinalForm.requirePerk(MelkieLungEvolved).requireCustomFunction(function (player:Player):Boolean {
+				return player.melkieScore() >= 12;
+			}, "Melkie race");
             MinotaurTesticlesFinalForm.requireLevel(36)
 				.requirePerk(MinotaurTesticlesEvolved)
 				.requireCustomFunction(function (player:Player):Boolean {
@@ -5974,6 +6233,10 @@ public class PerkLib
                     .requireInt(125)
                     .requireWis(125)
                     .requirePerk(MasterGolemMaker);
+            TemporalGolemsRestructuration.requireLevel(36)
+                    .requireInt(120)
+                    .requireWis(120)
+                    .requirePerk(MasterGolemMaker);
             AdvancedAllRounderEducation.requireLevel(36)
                     .requirePerk(IntermediateAllRounderEducation);
             //Tier 7
@@ -5991,6 +6254,10 @@ public class PerkLib
                     .requireWis(135)
                     .requirePerk(GolemArmyLieutenant)
                     .requirePerk(GrandMasterGolemMaker);
+            //AdvancedGolemancyTheory.requireLevel(42)
+            //        .requireInt(140)
+            //        .requireWis(140)
+            //        .requirePerk(GrandMasterGolemMaker);
             EpicDiehard.requireLevel(42)
                     .requirePerk(EpicToughness)
                     .requirePerk(GreaterDiehard);
@@ -6062,7 +6329,7 @@ public class PerkLib
                      .requireCustomFunction(function (player:Player):Boolean {
                          return player.internalChimeraScore() >= 61;
                      }, "Sixty one racial perks");
-            LegendaryGolemMaker.requireLevel(60)
+            EpicGolemMaker2ndCircle.requireLevel(60)
                     .requireInt(175)
                     .requireWis(175)
                     .requirePerk(EpicGolemMaker);
@@ -6080,14 +6347,14 @@ public class PerkLib
                     .requireInt(185)
                     .requireWis(185)
                     .requirePerk(GolemArmyMajor)
-                    .requirePerk(LegendaryGolemMaker);
+                    .requirePerk(EpicGolemMaker2ndCircle);
 			LimitBreakerSoul1stStage.requireLevel(66)
 					.requirePerk(LimitBreakerPsyche1stStage);
             //Tier 12
-            MythicalGolemMaker.requireLevel(72)
+            EpicGolemMaker3rdCircle.requireLevel(72)
                     .requireInt(200)
                     .requireWis(200)
-                    .requirePerk(LegendaryGolemMaker);
+                    .requirePerk(EpicGolemMaker2ndCircle);
             WispColonel.requireLevel(72)
                     .requirePerk(WispMajor)
 					.requireInt(200)
@@ -6125,7 +6392,7 @@ public class PerkLib
                     .requireInt(210)
                     .requireWis(210)
                     .requirePerk(GolemArmyColonel)
-                    .requirePerk(MythicalGolemMaker);
+                    .requirePerk(EpicGolemMaker3rdCircle);
 			LimitBreakerHeart2ndStage.requireLevel(78)
 					.requirePerk(LimitBreakerBody2ndStage);
             //Tier 14

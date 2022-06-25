@@ -2159,9 +2159,9 @@ public class Creature extends Utils
 			//Naga = +20 capacity
 			else if (lowerBody == 3)
 				bonus = 20;
-			//Wet pussy provides 20 point boost
+			//Wet pussy provides 50 point boost
 			if (findPerk(PerkLib.WetPussy) >= 0)
-				bonus += 20;
+				bonus += 50;
 			if (findPerk(PerkLib.HistorySlut) >= 0 || findPerk(PerkLib.PastLifeSlut) >= 0)
 				bonus += 20;
 			if (findPerk(PerkLib.OneTrackMind) >= 0)
@@ -2398,7 +2398,7 @@ public class Creature extends Utils
 				percent += 0.05 + (perkv1(PerkLib.MagicalVirility) * 0.01);
 			//Messy Orgasms?
 			if (findPerk(PerkLib.MessyOrgasms) >= 0)
-				percent += 0.03;
+				percent += 0.06;
 			//Satyr Sexuality
 			if (findPerk(PerkLib.SatyrSexuality) >= 0)
 				percent += 0.10;
@@ -2453,7 +2453,7 @@ public class Creature extends Utils
 			if (findPerk(PerkLib.FertilityMinus) >= 0 && lib < 25)
 				quantity *= 0.7;
 			if (findPerk(PerkLib.MessyOrgasms) >= 0)
-				quantity *= 1.5;
+				quantity *= 2;
 			if (findPerk(PerkLib.OneTrackMind) >= 0)
 				quantity *= 1.1;
 			if (findPerk(PerkLib.MinotaurTesticlesFinalForm) >= 0)
@@ -2468,6 +2468,10 @@ public class Creature extends Utils
 				quantity += 1000;
 			if (findPerk(PerkLib.MinotaurTesticlesEvolved) >= 0)
 				quantity += 200;
+			if (findPerk(PerkLib.EasterBunnyEggBagEvolved) >= 0)
+				quantity *= 2;
+			if (findPerk(PerkLib.EasterBunnyEggBagFinalForm) >= 0)
+				quantity *= 2;
 			if (findPerk(PerkLib.ProductivityDrugs) >= 0)
 				quantity += (perkv3(PerkLib.ProductivityDrugs));
 			//if(hasPerk("Elven Bounty") >= 0) quantity += 250;;
@@ -2509,7 +2513,7 @@ public class Creature extends Utils
 			if (findPerk(PerkLib.BroBody) >= 0) cumCap *= 1.3;
 			if (findPerk(PerkLib.FertilityPlus) >= 0) cumCap *= 1.5;
 			if (findPerk(PerkLib.FertilityMinus) >= 0 && lib < 25) cumCap *= 0.7;
-			if (findPerk(PerkLib.MessyOrgasms) >= 0) cumCap *= 1.5;
+			if (findPerk(PerkLib.MessyOrgasms) >= 0) cumCap *= 2;
 			if (findPerk(PerkLib.OneTrackMind) >= 0) cumCap *= 1.1;
 			if (findPerk(PerkLib.MaraesGiftStud) >= 0) cumCap += 350;
 			if (findPerk(PerkLib.FerasBoonAlpha) >= 0) cumCap += 200;
@@ -2880,7 +2884,8 @@ public class Creature extends Utils
 		{
 			if ((game.player.tailType == Tail.MANTICORE_PUSSYTAIL && game.monster.hasCock()) || (game.player.lowerBody == LowerBody.PLANT_FLOWER && game.monster.hasCock()) || (game.player.lowerBody == LowerBody.PLANT_FLOWER && game.monster.hasVagina()) || game.player.tailType == Tail.HINEZUMI || game.player.tailType == Tail.SALAMANDER || 
 			((game.player.gender == 1 || game.player.gender == 2) && (game.player.tailType == Tail.HINEZUMI || game.player.tailType == Tail.MOUSE || game.player.tailType == Tail.DEMONIC)) || (game.player.isInGoblinMech() && game.player.hasKeyItem("Cum Reservoir") >= 0 && game.monster.hasCock()) || 
-			(game.player.raijuScore() >= 10 && !game.monster.hasPerk(PerkLib.EnemyGigantType) && !game.monster.isAlraune() && !game.monster.isDrider() && !game.monster.isGoo() && !game.monster.isNaga() && !game.monster.isScylla() && !game.monster.isTaur()))
+			(game.player.raijuScore() >= 10 && !game.monster.hasPerk(PerkLib.EnemyGigantType) && !game.monster.isAlraune() && !game.monster.isDrider() && !game.monster.isGoo() && !game.monster.isNaga() && !game.monster.isScylla() && !game.monster.isTaur()) || 
+			(game.player.yukiOnnaScore() >= 14 && game.monster.hasCock() && !game.monster.hasPerk(PerkLib.UniqueNPC) && !game.monster.hasPerk(PerkLib.EnemyGigantType) && !game.monster.isAlraune() && !game.monster.isDrider() && !game.monster.isGoo() && !game.monster.isNaga() && !game.monster.isScylla() && !game.monster.isTaur()))
 				return true;
 			return false;
 		}
@@ -3325,6 +3330,7 @@ public class Creature extends Utils
 		public function hasMostlyPlainSkin():Boolean { return skin.hasMostlyPlainSkin(); }
 		public function hasPlainSkinOnly():Boolean { return skin.hasPlainSkinOnly(); }
 		public function hasPartialCoat(coat_type:int):Boolean { return skin.hasPartialCoat(coat_type); }
+		public function hasRubberSkin():Boolean { return skin.hasRubberSkin(); }
 		public function hasPlainSkin():Boolean { return skin.hasPlainSkin(); }
 		public function hasGooSkin():Boolean { return skin.hasGooSkin(); }
 		public function hasGhostSkin():Boolean { return skin.hasGhostSkin(); }
@@ -3346,6 +3352,7 @@ public class Creature extends Utils
 		public function isNaga():Boolean { return lowerBodyPart.isNaga(); }
 		public function isTaur():Boolean { return lowerBodyPart.isTaur(); }
 		public function isScylla():Boolean { return lowerBodyPart.isScylla(); }
+		public function isKraken():Boolean { return lowerBodyPart.isKraken(); }
 		public function isAlraune():Boolean { return lowerBodyPart.isAlraune(); }
 		
 		public function isFlying():Boolean {

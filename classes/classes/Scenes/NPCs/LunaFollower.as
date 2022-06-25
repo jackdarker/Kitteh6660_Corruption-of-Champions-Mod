@@ -644,7 +644,7 @@ package classes.Scenes.NPCs
 			outputText("You re-equip your [armor], turning to thank Luna once more, before you continue on with your day.\n\n");
 			lunaJealousy(-100);
 			lunaAffection(2);
-			player.orgasm();
+			player.sexReward("saliva");
 			doNext(camp.returnToCampUseOneHour);
 		}
 		public function sexMenuBoobjob():void {
@@ -660,7 +660,7 @@ package classes.Scenes.NPCs
 			outputText("Taking in a deep breath, you thank Luna for her work, patting her on the head, before re-dressing and moving on with your day.\n\n");
 			lunaJealousy(-100);
 			lunaAffection(2);
-			player.orgasm();
+			player.sexReward("Default", "Default",true,false);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		public function sexMenuDoggyTreats():void {
@@ -672,12 +672,12 @@ package classes.Scenes.NPCs
 			outputText("Bad girl, eh? Well the way her tail is swishing from side to side to present her ass is certainly not something you’re going to say no to. You swiftly grab her from behind and push her on all fours as your [cock] goes rock hard. You’re not sure if you’ve shoved your cock into her plump ass, or if she pushed herself onto your length, maybe both but before you know it you’re deep inside of her. She can’t help but howl as you begin to work her pucker.\n\n");
 			outputText("\"<i>AwoOOOOO! Now this is true mating!!! Fuck my ass until it’s full, [name]!</i>\"\n\n");
 			outputText("You slap her butt hard, reminding her that you are her master and that therefore she will address you as such. She doesn’t seem to mind, if anything it only drives her deeper into her frenzied lust as her ass practically hugs your crotch, looking for attention. You play a little with her tail, using your free hand as you fuck the wolf slut harder, her pucker tightening around your prick just like a cunt. Truth be told you wouldn't be surprised if the changes to her body made her capable of savoring as much pleasure from her ass as from her pussy, ");
-			outputText("what with doggystyle being one of her favorite positions. Regardless, her ass molds to your cock just as good as a vagina, and the pleasure you feel from it is good enough for you to feel your -cock- starting to twitch in delight. Luna growls in pleasure from each thrust, and this only drives you further on. Eventually, you can’t hold it anymore and lose control of your [cock], Luna howling in pleasure as you flood her asshole with your cum, the excess puddling on the ground between her legs. ");
+			outputText("what with doggystyle being one of her favorite positions. Regardless, her ass molds to your cock just as good as a vagina, and the pleasure you feel from it is good enough for you to feel your [cock] starting to twitch in delight. Luna growls in pleasure from each thrust, and this only drives you further on. Eventually, you can’t hold it anymore and lose control of your [cock], Luna howling in pleasure as you flood her asshole with your cum, the excess puddling on the ground between her legs. ");
 			outputText("You fall limply on her back, needing some rest and she is all too happy to pull you into her embrace for a while, hugging snuggly to you and getting a full whiff of your scent.\n\n");
 			outputText("You rest like this for a moment before lifting back up and resuming your duties. Luna has regained her human form since then and is already starting to put back on her maid uniform.\n\n");
 			lunaJealousy(-100);
 			lunaAffection(2);
-			player.orgasm();
+			player.sexReward("Default", "Default",true,false);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		public function sexMenuSandwichWithAyane():void {
@@ -702,7 +702,7 @@ package classes.Scenes.NPCs
 			outputText("You decide to take a nap to recover some energy. A few hour later, you wake up ready to resume adventuring.\n\n");
 			lunaJealousy(-100);
 			lunaAffection(2);
-			player.orgasm();
+			player.sexReward("Default", "Default",true,false);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		
@@ -728,7 +728,7 @@ package classes.Scenes.NPCs
 				outputText("Finally you reach your climax " + ((player.dogScore() > 5 || player.wolfScore() > 5) ? "howling in tandem with her" : "roaring in tandem with her howl") + " as you paint her cunt white like the moon with your hot seed. She sighs in relief, turning over without unplugging you from her cunt to embrace you.\n\n");
 				lunaJealousy(-100);
 				lunaAffection(2);
-				player.orgasm();
+				player.sexReward("vaginalFluids","Dick");
 				if (flags[kFLAGS.LUNA_MOONING] == 1) {
 					outputText("You rest a moment in her arms before breaking the hug. As much as your savage lover would like you to dom her all day you’ve got other things to do. The both of you redress before resuming normal activities.\n\n");
 					doNext(camp.returnToCampUseOneHour);
@@ -757,7 +757,7 @@ package classes.Scenes.NPCs
 				outputText(". The waters flooding your fingers a few seconds later are the only telltale sign your beta finally reached her climax, but you think it’s more than enough of a reward for her.\n\n");
 				lunaJealousy(-100);
 				lunaAffection(2);
-				player.orgasm();
+				player.sexReward("saliva");
 				if (flags[kFLAGS.LUNA_MOONING] == 1) {
 					outputText("Satisfied, you rest a moment in her arms before breaking up. As much as your savage lover would like you to dom her all day you got other things to do. The both of you redress before resuming activity.\n\n");
 					doNext(camp.returnToCampUseOneHour);

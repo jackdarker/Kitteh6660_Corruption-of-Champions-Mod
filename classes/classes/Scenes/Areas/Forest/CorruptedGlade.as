@@ -113,7 +113,7 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface {
 					booster += 3;
 				else if (player.ballSize < 6)
 					booster += 2;
-				if (player.findPerk(PerkLib.MessyOrgasms) >= 0 && player.cumMultiplier < 3) booster += 1;
+				if (player.findPerk(PerkLib.MessyOrgasms) >= 0 && player.cumMultiplier < 3) booster += 2;
 				player.cumMultiplier += booster;
 			}
 			else { //Oral sex for those without!
@@ -336,6 +336,11 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface {
 					camp.cabinProgress.incrementWoodSupply(10);
 					fatigue(30 - (player.str / 10));
 					outputText("\n\n");
+					if (!player.hasStatusEffect(StatusEffects.ResourceNode1)) player.createStatusEffect(StatusEffects.ResourceNode1, 0, 0, 0, 0);
+					if (player.statusEffectv1(StatusEffects.ResourceNode1) < 15) {
+						if (player.statusEffectv1(StatusEffects.ResourceNode1) == 14) outputText("You have found this type of logging area enough times to be able to find them in the future without trouble. ('Woodcutting' option has been unlocked in Places menu)\n\n");
+						player.addStatusValue(StatusEffects.ResourceNode1, 1, 1);
+					}
 					break;
 				case 4: //Weapon
 					outputText("You ready your [weapon] and hack away at the plants without mercy. Eventually, you manage to cut down every perverted plant in the glade except for the trees. They gradually wither away. You give the breast-knotted trees some vandalism before turning to leave.\n\n");
@@ -358,7 +363,7 @@ public class CorruptedGlade extends BaseContent implements TimeAwareInterface {
 					}
 					break;
 				default:
-					outputText("<b>Please report this error to Ormael/Aimozg/Oxdeception.</b>\n\n");
+					outputText("<b>Please report this error to Ormael/Aimozg.</b>\n\n");
 			}
 			if (flags[kFLAGS.CORRUPTED_GLADES_DESTROYED] == 0) outputText("That's one glade eliminated! With effort and dedication, you will be able to cleanse the forest of foul glades.");
 			else outputText("Once again, the forest is cleansed of a tainted glade.");

@@ -168,7 +168,7 @@ use namespace CoC;
 					},{
 						name  : "beegirl",
 						call  : beeGirlScene.beeEncounter,
-						chance: 0.40
+						chance: 0.50
 					}, {
 						name  : "truffle",
 						call  : findTruffle,
@@ -184,8 +184,8 @@ use namespace CoC;
 					}, {
 						name  : "woods",
 						call  : camp.cabinProgress.gatherWoods,
-						chance: 0.50,
-						when  : camp.cabinProgress.canGatherWoods
+						when  : camp.cabinProgress.canGatherWoods,
+						chance: 4
 					}, {
 						name  : "marble",
 						call  : marbleVsImp,
@@ -210,7 +210,7 @@ use namespace CoC;
 						when: function ():Boolean {
 							return player.hasStatusEffect(StatusEffects.TelAdreTripxiGuns2) && player.statusEffectv1(StatusEffects.TelAdreTripxiGuns2) == 0 && player.statusEffectv2(StatusEffects.TelAdreTripxi) == 1;
 						},
-						chance: 3,
+						chance: 30,
 						call: partsofM1Cerberus
 					}, {
 						name: "walk",
@@ -292,7 +292,8 @@ use namespace CoC;
 				when  : function():Boolean {
 					return flags[kFLAGS.ETNA_FOLLOWER] < 1
 						   && flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2
-						   && !player.hasStatusEffect(StatusEffects.EtnaOff);
+						   && !player.hasStatusEffect(StatusEffects.EtnaOff)
+						   && (player.level >= 20);
 				},
 				call  : SceneLib.etnaScene.repeatYandereEnc
 			}, {
@@ -300,7 +301,8 @@ use namespace CoC;
 				when  : function():Boolean {
 					return flags[kFLAGS.ELECTRA_FOLLOWER] < 2
 						   && flags[kFLAGS.ELECTRA_AFFECTION] >= 2
-						   && !player.hasStatusEffect(StatusEffects.ElectraOff);
+						   && !player.hasStatusEffect(StatusEffects.ElectraOff)
+						   && (player.level >= 20);
 				},
 				chance: 0.5,
 				call  : function ():void {
@@ -333,7 +335,7 @@ use namespace CoC;
 				chance: 0.6,
 				call  : function ():void {
 					if (flags[kFLAGS.TAMANI_DAUGHTER_PREGGO_COUNTDOWN] == 0
-						&& flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] >= 16) {
+						&& flags[kFLAGS.TAMANI_NUMBER_OF_DAUGHTERS] >= 16 && rand(5) == 0) {
 						tamaniDaughtersScene.encounterTamanisDaughters();
 					} else {
 						tamaniScene.encounterTamani();
@@ -384,8 +386,8 @@ use namespace CoC;
 			},{
 				name  : "woods",
 				call  : camp.cabinProgress.gatherWoods,
-				chance: 0.50,
-				when  : camp.cabinProgress.canGatherWoods
+				when  : camp.cabinProgress.canGatherWoods,
+				chance: 4
 			}, {
 				name  : "corrGlade",
 				call  : corruptedGladeFn,
@@ -406,7 +408,7 @@ use namespace CoC;
 			}, {
 				name  : "dark_elf_scout",
 				call  : darkelfScene.introDarkELfScout,
-				chance: 0.8
+				chance: 0.2
 			}, {
 				name: "aiko",
 				call: aikoScene.encounterAiko,
@@ -418,13 +420,20 @@ use namespace CoC;
 			}, {
 				name: "ted",
 				when: function():Boolean {
-					return flags[kFLAGS.TED_LVL_UP] >= 1 && flags[kFLAGS.TED_LVL_UP] < 4 && player.statusEffectv1(StatusEffects.CampSparingNpcsTimers4) < 1;
+					return flags[kFLAGS.TED_LVL_UP] >= 1 && flags[kFLAGS.TED_LVL_UP] < 4 && !player.hasStatusEffect(StatusEffects.TedOff) && player.statusEffectv1(StatusEffects.CampSparingNpcsTimers4) < 1;
 				},
 				call: SceneLib.tedScene.introPostHiddenCave
 			},{
 				name: "dungeon",
 				call: SceneLib.dungeons.enterDeepCave,
 				when: SceneLib.dungeons.canFindDeepCave
+			}, {
+				name: "snippler",
+				when: function ():Boolean {
+					return player.hasStatusEffect(StatusEffects.TelAdreTripxiGuns4) && player.statusEffectv1(StatusEffects.TelAdreTripxiGuns4) == 0 && player.statusEffectv2(StatusEffects.TelAdreTripxi) == 1;
+				},
+				chance: 30,
+				call: partsofSnippler
 			}, {
 				name  : "walk",
 				call  : deepwoodsWalkFn,
@@ -436,6 +445,7 @@ use namespace CoC;
 			deepwoodsStory = ZoneStmt.wrap(_deepwoodsEncounter,game.rootStory).bind(game.context);
 		}
 		public function exploreDeepwoods():void {
+			player.addStatusValue(StatusEffects.ExploredDeepwoods,1,1);
 			deepwoodsStory.execute();
 		}
 
@@ -693,6 +703,15 @@ use namespace CoC;
 			player.addStatusValue(StatusEffects.TelAdreTripxiGuns2, 1, 1);
 			player.addStatusValue(StatusEffects.TelAdreTripxi, 2, 1);
 			player.createKeyItem("M1 Cerberus", 0, 0, 0, 0);
+			doNext(camp.returnToCampUseOneHour);
+		}
+		public function partsofSnippler():void {
+			clearOutput();
+			outputText("As you explore the deepwoods you run into what appears to be the half buried remains of some old contraption. Wait this might just be what that gun vendor was talking about! You proceed to dig up the items releasing this to indeed be the remains of a broken firearm.\n\n");
+			outputText("You carefully put the pieces of the Snippler in your back and head back to your camp.\n\n");
+			player.addStatusValue(StatusEffects.TelAdreTripxiGuns4, 1, 1);
+			player.addStatusValue(StatusEffects.TelAdreTripxi, 2, 1);
+			player.createKeyItem("Snippler", 0, 0, 0, 0);
 			doNext(camp.returnToCampUseOneHour);
 		}
 		public function discoverDeepwoods():void {

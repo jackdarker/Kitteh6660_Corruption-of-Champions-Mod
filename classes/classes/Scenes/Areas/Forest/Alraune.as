@@ -27,7 +27,9 @@ public class Alraune extends Monster
 		
 		public function alrauneStruggle():void {
 			clearOutput();
-			game.spriteSelect(SpriteDb.s_alraune);
+			if (this.short == "snow lily alraune") game.spriteSelect(SpriteDb.s_snow_lily);
+			else if (this.short == "cinderbloom alraune") game.spriteSelect(SpriteDb.s_cinderbloom);
+			else game.spriteSelect(SpriteDb.s_alraune);
 			outputText("You struggle against ");
 			if (Holidays.isHalloween()) outputText("Jack-O-Raune");
 			else outputText("the " + this.short + "");
@@ -184,7 +186,6 @@ public class Alraune extends Monster
 				//	.add(consumables.W__BOOK, 1 / 4)
 				//	.add(consumables.BEEHONY, 1 / 2)
 				//	.elseDrop(useables.B_CHITN);
-			this.createPerk(PerkLib.Regeneration, 0, 0, 0, 0);
 			this.createPerk(PerkLib.FireVulnerability, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyPlantType, 0, 0, 0, 0);
 			this.createStatusEffect(StatusEffects.GenericRunDisabled, 0, 0, 0, 0);

@@ -74,8 +74,8 @@ package classes.Scenes.NPCs {
 			outputText("He looks at you nervously, and you get the impression he is asking you to help him find more food. You shrug, wondering what it is that hellhounds eat anyway; it then occurs to you that he might hunt lesser creatures like imps and goblins. \n\n");
 			outputText("When you say as much his skinny faces spread into twin grins, his eagerness apparent in his suddenly twitching tail.");
 			menu();
-			addButton(1, "Shoo", shoo, 0, 0,0, "Piss of hell hound");
-			addButton(2, "Hunt Goblin",huntGoblin,0,0,0,"hunt down some goblin to play with")
+			addButton(1, "Shoo", shoo);// , 0, 0, 0, "Piss of hell hound");
+			addButton(2, "Hunt Goblin", huntGoblin);// , 0, 0, 0, "hunt down some goblin to play with")
 			addButton(14, "Leave", curry(doNext, camp.returnToCampUseOneHour));
 		}
 		public function shoo():void {

@@ -49,7 +49,10 @@ import classes.internals.Utils;
 			menu();
 			addButton(0, "Shop", YuShopMain);
 			addButton(1, "Talk", YuShopTalkMain);
-			if (flags[kFLAGS.YU_TALKS] == 1) addButton(2, "Sex", YuShopSex);
+			if (flags[kFLAGS.YU_TALKS] == 1) {
+				if (player.gender == 0) addButtonDisabled(2, "Sex", "You need to have any gender other than genderless.");
+				else addButton(2, "Sex", YuShopSex);
+			}
 			else addButtonDisabled(2, "Sex", "You need to talk with her first.");
 			addButton(14, "Leave", camp.returnToCampUseOneHour);
 		}
@@ -73,7 +76,9 @@ import classes.internals.Utils;
 			addButton(6, undergarments.F_PANTY.shortName, buyItem, 6).hint("Fur panty");
 			addButton(7, undergarments.F_LOIN_.shortName, buyItem, 7).hint("Fur loincloth");
 			addButton(8, weapons.NORTHIP.shortName, buyItem, 8).hint("Northerner ice picks");
-			addButton(13, consumables.WHITEIS.shortName, buyItem, 13).hint("White Ice Shard");
+			addButton(10, armors.BLIZZ_K.shortName, buyItem, 10).hint("Blizzard Kimono");
+			addButton(11, headjewelries.SNOWFH.shortName, buyItem, 11).hint("Snowflake hairpin");
+			addButton(12, consumables.SKELP__.shortName, buyItem, 12).hint("Skelp");
 			addButton(14, "Back", YuMenuMain2);
 		}		
 		private function buyItem(item:Number = 0):void
@@ -87,7 +92,9 @@ import classes.internals.Utils;
 			if (item == 6) yetiBuy(undergarments.F_PANTY);
 			if (item == 7) yetiBuy(undergarments.F_LOIN_);
 			if (item == 8) yetiBuy(weapons.NORTHIP);
-			if (item == 13) yetiBuy(consumables.WHITEIS);
+			if (item == 10) yetiBuy(armors.BLIZZ_K);
+			if (item == 11) yetiBuy(headjewelries.SNOWFH);
+			if (item == 12) yetiBuy(consumables.SKELP__);
 		}
 		public function yetiBuy(itype:ItemType):void {
 			clearOutput();
@@ -185,7 +192,7 @@ import classes.internals.Utils;
 				outputText("While you are lost in thought, Yu use the opportunity to insert the glacial dildo into your cunt making you gasp as the home made toy give your burning body some seriously needed cool. You need to calm that heat and the only way you have is this icy dildo! You barely register as Yu mount the dildo herself and begin sliding against it causing it to slide in and out of your own pussy. ");
 				outputText("You need it deeper and faster and to make it clear you slide up to the middle of the length causing Yu to yelp in surprise at the swift insertion. The both of you keep fucking until you both cum, your pussy juices freezing on the dildo yet your cunt burning brightly with the need for a good working. Eventually the both of you fall off asleep. Yu making sure to protect you from the cold.\n\n");
 			}
-			player.orgasm();
+			player.sexReward("Default","Default",true,false);
 			outputText("You wake up in Yu cave house a few hour later. Yu is still there sleeping next to you but you have adventuring to do. You give you a parting kiss before grabbing back your gear and traveling back to your camp.\n\n");
 			doNext(camp.returnToCampUseOneHour);
 		}

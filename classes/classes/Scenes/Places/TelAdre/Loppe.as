@@ -3,6 +3,7 @@
 	import classes.EngineCore;
 import classes.BodyParts.Tongue;
 import classes.GlobalFlags.kFLAGS;
+import classes.display.SpriteDb;
 
 public class Loppe extends TelAdreAbstractContent {
 public function Loppe(){
@@ -66,6 +67,7 @@ private function appearanceOfLoppe():void {
 //First Meeting (edited) (C)
 //Happens randomly when choosing to go into the bar after 16:00
 public function loppeFirstMeeting():void {
+	spriteSelect(SpriteDb.s_Loppe_16bit);
 	clearOutput();
 	outputText("Wandering towards the bar, you notice an unusual commotion; there are a lot more people hanging around here than is usual for the time of day.  Feeling curious, you go over to investigate, and ask a bystander what all of this is about.");
 	outputText("\n\n\"<i>You don't know?  Today we're having a show at the bar.  A dancer is going to be dancing for us.  You should go and have a look, it's very beautiful!</i>\"");
@@ -278,6 +280,7 @@ private function yesLoppesHouse():void {
 //Generic Meeting (edited) (C)
 //Loppe can be found from 6:00 to 15:00 (yeah she works out like a boss!)
 public function loppeGenericMeetings():void {
+	spriteSelect(SpriteDb.s_Loppe_16bit);
 	clearOutput();
 	outputText("You decide to approach the bunny-girl.  Loppe smiles and wipes the sweat off her brow with the towel.  \"<i>Hey there, [name], nice seeing you around here.  So... do you want to do something?  Talk, maybe?  Or go to my place for a 'workout'?</i>\" she asks with a smirk.");
 	//Appearance
@@ -1105,7 +1108,7 @@ private function loppeRidesPCCockFinal():void {
 	//[(Exhibitionist)
 	if(flags[kFLAGS.PC_FETISH] > 0) outputText("; it gives you something of a thrill, though nowhere near as much as taking them off for her in the first place did");
 	outputText(".  Finished, you depart.");
-	player.orgasm();
+	player.sexReward("vaginalFluids");
 	dynStats("tou", .5, "lib", .5, "sen", -4);
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
 	//3 hours pass.
@@ -1196,7 +1199,7 @@ private function loppeWorshipsDicks():void {
 	outputText("\n\n<b>Two hours later...</b>");
 
 	outputText("\n\nA familiar feeling emanates from your crotch... a distinct sucking and bobbing feeling.  Your eyes open and you awaken with a gasp as you blast a fresh batch of cum into Loppe's eager mouth.  She withdraws with a slurp and smiles gleefully at you.  \"<i>Morning, sleepyhead!  Rest well?  Want me to wake you up some more?</i>\" she asks, licking her lips.  \"<i>I placed your stuff on the chair over there.  And don't worry, it's all cleaned too.  See you later on?  For more 'appreciation', of course...</i>\"");
-	player.orgasm();
+	player.sexReward("saliva");
 	dynStats("tou", .5, "lib", .5, "sen", -4);
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
 	doNext(camp.returnToCampUseFourHours);
@@ -1349,7 +1352,7 @@ private function getFuckedInYerTwatYaCunt():void {
 
 	outputText("\n\nYou slide out from beneath the covers and start redressing yourself.  Once you're done, Loppe steals a quick peck on the lips before you head out.");
 	//3 hours pass.
-	player.slimeFeed();
+	player.sexReward("cum")
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
 	player.orgasm();
 	dynStats("tou", .5, "lib", .5, "sen", -4);
@@ -1514,10 +1517,9 @@ private function getButtFuckedNonHoarseByLoppe():void {
 	outputText("\n\n<b>One bath later...</b>");
 
 	outputText("\n\nFeeling clean and refreshed, not to mention much lighter, you leave Loppe's bathroom with a thank-you.  The girl laughs nervously.  \"<i>Again, sorry about that, sugar.  Anyways, I'm in need of a bath of my own.</i>\"");
-	player.slimeFeed();
+	player.sexReward("cum")
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
 	//3 hours pass
-	player.orgasm();
 	dynStats("tou", .5, "lib", .5, "sen", -4);
 	doNext(camp.returnToCampUseFourHours);
 }
@@ -1661,11 +1663,9 @@ private function getAssFuckedByLoppeAsACentaur():void {
 	outputText("  Anyway, your clothes are back in my room; sorry to fuck and run, but I've got some errands to run before mom gets home - you'll have to see yourself out, okay?</i>\"");
 
 	outputText("\n\nYou nod and head to her room to fetch your [armor].");
-
-	player.orgasm();
+	player.sexReward("cum")
 	dynStats("tou", .5, "lib", .5, "sen", -4);
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
-	player.slimeFeed();
 	doNext(camp.returnToCampUseFourHours);
 }
 
@@ -1928,10 +1928,8 @@ private function boobjobLoppe():void {
 	outputText("\n\n\"<i>Anyway, I set your [armor] over there.</i>\"  She points to a chair nearby.   You thank her and pick yourself out of bed ");
 	if((player.str < 50 && !player.isTaur()) || (player.str < 30 && player.isTaur())) outputText("- while your stomach is still heavily swollen and gurgles in protest, it's not bad enough to impair you - ");
 	outputText("before going over and dressing yourself.  Loppe waves goodbye to you as you head out once again.");
-
+	player.sexReward("cum")
 	flags[kFLAGS.LOPPE_TIMES_SEXED]++;
-	player.slimeFeed();
-	player.orgasm();
 	dynStats("tou", .5, "lib", .5, "sen", -4);
 	doNext(camp.returnToCampUseFourHours);
 }

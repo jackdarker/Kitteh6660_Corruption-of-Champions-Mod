@@ -3,6 +3,7 @@
  */
 package classes.Scenes.Combat {
 import classes.BodyParts.Face;
+import classes.BodyParts.Tail;
 import classes.BodyParts.Wings;
 import classes.GlobalFlags.kFLAGS;
 import classes.PerkLib;
@@ -118,6 +119,7 @@ public class CombatUI extends BaseCombatContent {
 				break;
 			case "Pistol":
 			case "Rifle":
+			case "2H Firearm":
                 if (player.ammo <= 0)
                     btnRanged.show("Reload", combat.reloadWeapon1, "Your " + player.weaponRangeName + " is out of ammo.  You'll have to reload it before attack.");
                 else btnRanged.show("Shoot", combat.fireBow, "Fire a round at your opponent with your " + player.weaponRangeName + "!  Damage done is determined only by your weapon.");
@@ -128,7 +130,7 @@ public class CombatUI extends BaseCombatContent {
 		if (player.isFlying() && player.wings.type == Wings.BAT_ARM){btnRanged.disable("It would be rather difficult to aim while flapping your arms."); }
 		if (player.isInGoblinMech()) {
 			if (player.hasKeyItem("Repeater Gun") >= 0 || player.hasKeyItem("Machine Gun MK1") >= 0 || player.hasKeyItem("Machine Gun MK2") >= 0 || player.hasKeyItem("Machine Gun MK3") >= 0) {
-				if (player.weaponRangePerk == "Pistol" || player.weaponRangePerk == "Rifle" || player.weaponRangePerk == "2H Firearm") {
+				if (player.weaponRangePerk == "Pistol" || player.weaponRangePerk == "Rifle" || player.weaponRangePerk == "2H Firearm" || player.weaponRangePerk == "Dual Firearms") {
 					if (player.isUsingGoblinMechFriendlyFirearms()) btnRanged.show("Shoot", combat.fireBow, "Fire a round at your opponent with your " + player.weaponRangeName + "!  Damage done is determined only by your weapon.");
 					else btnRanged.disable("Your firearms is not compatibile to be used with current piloted mech.");
 				}
@@ -226,6 +228,7 @@ public class CombatUI extends BaseCombatContent {
 				}
 			}
 			addButton(4, "Maintain", combat.HypnosisMaintain);
+		//Naga grapple
 		} else if (monster.hasStatusEffect(StatusEffects.Constricted) && !monster.hasStatusEffect(StatusEffects.HypnosisNaga)) {
 			menu();
 			addButton(0, "Squeeze", SceneLib.desert.nagaScene.naggaSqueeze).hint("Squeeze some HP out of your opponent! \n\nFatigue Cost: " + physicalCost(20) + "");
@@ -237,6 +240,7 @@ public class CombatUI extends BaseCombatContent {
 				}
 			}
 			addButton(4, "Release", SceneLib.desert.nagaScene.nagaLeggoMyEggo);
+		//Grappling scylla
 		} else if (monster.hasStatusEffect(StatusEffects.ConstrictedScylla)) {
 			menu();
 			addButton(0, "Squeeze", combat.ScyllaSqueeze);
@@ -253,16 +257,17 @@ public class CombatUI extends BaseCombatContent {
 				}
 			}
 			addButton(4, "Release", combat.ScyllaLeggoMyEggo);
-		} else if (monster.hasStatusEffect(StatusEffects.GooEngulf)) {
+		//Orca be playing rought
+		} else if (monster.hasStatusEffect(StatusEffects.OrcaPlay)) {
 			menu();
-			addButton(0, "Tease", combat.GooTease).hint("Mold limb to caress and pleasure your grappled foe. \n\nFatigue Cost: " + physicalCost(20) + "");
-			if (player.hasPerk(PerkLib.HollowFangsEvolved)) {
-				addButton(3, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(3).disable("You are too tired to bite " + monster.a + " " + monster.short + ".");
-				}
+			addButton(0, "Juggle", combat.OrcaJuggle).hint("Deal bite damage and send your foe back in the air at the cost of a fairly decent amount of fatigue. Extend the duration of play by 2 rounds up to twice. \n\nFatigue Cost: " + physicalCost(50) + "");
+			addButton(1, "Tail wack", combat.OrcaWack).hint("Stun your opponent and smash it back into the air with your tail.\n\nFatigue Cost: " + physicalCost(20) + "");
+			addButton(2, "Smash", combat.OrcaSmash).hint("Wack your opponent with your weapon crushing its armor and increasing all further damage dealth by 50% for two rounds.\n\nFatigue Cost: " + physicalCost(20) + "");
+			if(player.tailType == !Tail.ORCA) {
+				button(0).disable("You need a orca tail to use this ability.");
 			}
-			addButton(4, "Release", combat.GooLeggoMyEggo);
+			addButton(3, "Impale", combat.OrcaImpale).hint("End the game by viciously impaling your falling foe on your weapon. \n\nFatigue Cost: " + physicalCost(20) + "");
+			addButton(4, "Release", combat.OrcaLeggoMyEggo).hint("Stop playing early and let your prey fall to the ground.");
 		} else if (monster.hasStatusEffect(StatusEffects.EmbraceVampire)) {
 			menu();
 			if (player.faceType == Face.VAMPIRE || player.hasPerk(PerkLib.HollowFangs)) {
@@ -310,6 +315,9 @@ public class CombatUI extends BaseCombatContent {
 			if (player.hasStatusEffect(StatusEffects.SummonedElementalsIce)) addButton(7, "Ice", combat.baseelementalattacks, Combat.ICE);
 			if (player.hasStatusEffect(StatusEffects.SummonedElementalsLightning)) addButton(8, "Lightning", combat.baseelementalattacks, Combat.LIGHTNING);
 			if (player.hasStatusEffect(StatusEffects.SummonedElementalsDarkness)) addButton(9, "Darkness", combat.baseelementalattacks, Combat.DARKNESS);
+			if (player.hasStatusEffect(StatusEffects.SummonedElementalsPoison)) addButton(10, "Poison", combat.baseelementalattacks, Combat.POISON);
+			if (player.hasStatusEffect(StatusEffects.SummonedElementalsPurity)) addButton(11, "Purity", combat.baseelementalattacks, Combat.PURITY);
+			if (player.hasStatusEffect(StatusEffects.SummonedElementalsCorruption)) addButton(12, "Corruption", combat.baseelementalattacks, Combat.CORRUPTION);
 		} else if (player.hasPerk(PerkLib.FirstAttackGolems) && flags[kFLAGS.GOLEMANCER_PERM_GOLEMS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_GOLEM_ATTACKED] != 1 && player.mana >= combat.pspecials.pernamentgolemsendcost()) {
 			menu();
 			addButton(0, "Send P.Gol/1", combat.pspecials.sendPernamentGolem1);
@@ -325,45 +333,63 @@ public class CombatUI extends BaseCombatContent {
 			}
 		} else if (flags[kFLAGS.PLAYER_COMPANION_1] != "" && flags[kFLAGS.IN_COMBAT_PLAYER_COMPANION_1_ACTION] != 1) {		//Todo
 			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Alvina") combat.comfoll.alvinaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Amily") combat.comfoll.amilyCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Aurora") combat.comfoll.auroraCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Etna") combat.comfoll.etnaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Excellia") combat.comfoll.excelliaCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Mitzi") combat.comfoll.mitziCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Neisa") combat.comfoll.neisaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Siegweird") combat.comfoll.siegweirdCombatActions();
 		} else if (flags[kFLAGS.PLAYER_COMPANION_2] != "" && flags[kFLAGS.IN_COMBAT_PLAYER_COMPANION_2_ACTION] != 1) {
 			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Alvina") combat.comfoll.alvinaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Amily") combat.comfoll.amilyCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Aurora") combat.comfoll.auroraCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Etna") combat.comfoll.etnaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Excellia") combat.comfoll.excelliaCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Mitzi") combat.comfoll.mitziCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Neisa") combat.comfoll.neisaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Siegweird") combat.comfoll.siegweirdCombatActions();
 		} else if (flags[kFLAGS.PLAYER_COMPANION_3] != "" && flags[kFLAGS.IN_COMBAT_PLAYER_COMPANION_3_ACTION] != 1) {
 			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Alvina") combat.comfoll.alvinaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Amily") combat.comfoll.amilyCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Aurora") combat.comfoll.auroraCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Etna") combat.comfoll.etnaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Excellia") combat.comfoll.excelliaCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Mitzi") combat.comfoll.mitziCombatActions();
 			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Neisa") combat.comfoll.neisaCombatActions();
+			if (flags[kFLAGS.PLAYER_COMPANION_3] == "Siegweird") combat.comfoll.siegweirdCombatActions();
 		}
 		
 		// Modifications - monster-special actions
-		if (monster is SandTrap) {
-			btnSpecial1.show("Climb", combat.wait2, "Climb the sand to move away from the sand trap.");
-		} else if (monster is Alraune) {
-			if (player.fatigueLeft() < 50) btnSpecial1.disable("You're too tired to struggle.");
-			else btnSpecial1.show("Struggle", combat.wait2, "Struggle to forcefully pull yourself a good distance away from plant woman.");
-		} else if (monster is DriderIncubus) {
-			var drider:DriderIncubus = monster as DriderIncubus;
-			if (!drider.goblinFree) btnSpecial1.show("Free Goblin", drider.freeGoblin);
-		} else if (monster is Lethice) {
-			var lethice:Lethice = monster as Lethice;
-			if (player.hasStatusEffect(StatusEffects.LethicesRapeTentacles)) {
-				if (player.lust < combat.magic.getWhiteMagicLustCap()
-					&& player.hasStatusEffect(StatusEffects.KnowsWhitefire)
-					&& !player.hasPerk(PerkLib.BloodMage)
-					&& player.mana >= 30) {
-					btnSpecial1.show("Dispell", lethice.dispellRapetacles);
+		if (!isPlayerPlayingWithElementalsOrGolems()) {
+			if (monster is SandTrap) {
+				btnSpecial1.show("Climb", combat.wait2, "Climb the sand to move away from the sand trap.");
+			} else if (monster is Alraune) {
+				if (player.fatigueLeft() < 50) btnSpecial1.disable("You're too tired to struggle.");
+				else btnSpecial1.show("Struggle", combat.wait2, "Struggle to forcefully pull yourself a good distance away from plant woman.");
+			} else if (monster is DriderIncubus) {
+				var drider:DriderIncubus = monster as DriderIncubus;
+				if (!drider.goblinFree) btnSpecial1.show("Free Goblin", drider.freeGoblin);
+			} else if (monster is Lethice) {
+				var lethice:Lethice = monster as Lethice;
+				if (player.hasStatusEffect(StatusEffects.LethicesRapeTentacles)) {
+					if (player.lust < combat.magic.getWhiteMagicLustCap()
+						&& player.hasStatusEffect(StatusEffects.KnowsWhitefire)
+						&& !player.hasPerk(PerkLib.BloodMage)
+						&& player.mana >= 30) {
+						btnSpecial1.show("Dispell", lethice.dispellRapetacles);
+					}
 				}
 			}
 		}
 	}
+	
+	private function isPlayerPlayingWithElementalsOrGolems():Boolean {
+	var dancingwithminions:Boolean = false;
+	if (player.hasPerk(PerkLib.FirstAttackElementals) && flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 3 && flags[kFLAGS.IN_COMBAT_PLAYER_ELEMENTAL_ATTACKED] != 1) dancingwithminions = true;
+	if (player.hasPerk(PerkLib.FirstAttackGolems) && flags[kFLAGS.GOLEMANCER_PERM_GOLEMS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_GOLEM_ATTACKED] != 1 && player.mana >= combat.pspecials.pernamentgolemsendcost()) dancingwithminions = true;
+	return dancingwithminions;
+}
 	
 	internal function mainMenuWhenBound():void {
 		menu();
