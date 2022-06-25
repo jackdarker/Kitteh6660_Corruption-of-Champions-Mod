@@ -1,0 +1,892 @@
+From 40ea75eee81a129066b036f87582632de0738342 Mon Sep 17 00:00:00 2001
+From: Jack Darker <JackDarker@freenet.de>
+Date: Sat, 24 Aug 2019 10:18:04 +0200
+Subject: [PATCH 5/6] added Fenris-NPC back in but still fixes to do added
+ Inventory-Full message added SlaveCollar
+
+---
+ classes/classes/EngineCore.as                 |   4 +-
+ classes/classes/GlobalFlags/kFLAGS.as         |   7 +-
+ classes/classes/Items/NecklaceLib.as          |   1 +
+ classes/classes/Monster.as                    |   8 +-
+ classes/classes/Player.as                     |   4 +-
+ classes/classes/Scenes/Areas/Forest.as        |   7 ++
+ .../Scenes/Areas/Lake/FenrisGooFight.as       |  26 ++---
+ .../Scenes/Areas/Lake/FetishCultist.as        |   3 +-
+ .../classes/Scenes/Areas/Lake/FetishZealot.as |   3 +-
+ classes/classes/Scenes/Combat/Combat.as       |   1 +
+ classes/classes/Scenes/Dungeons/DngMapper.as  |   5 +-
+ classes/classes/Scenes/Inventory.as           |  11 +-
+ classes/classes/Scenes/NPCs/Fenris.as         |  43 ++++----
+ classes/classes/Scenes/NPCs/FenrisMonster.as  | 104 ++++++++++--------
+ classes/classes/Scenes/NPCs/FenrisScene.as    |  76 ++++++-------
+ classes/classes/Scenes/SceneLib.as            |   2 +
+ 16 files changed, 171 insertions(+), 134 deletions(-)
+
+diff --git a/classes/classes/EngineCore.as b/classes/classes/EngineCore.as
+index e0ba3f95f..2f9593def 100644
+--- a/classes/classes/EngineCore.as
++++ b/classes/classes/EngineCore.as
+@@ -819,8 +819,8 @@ public class EngineCore {
+      */
+     public static function doYesNo(eventYes:Function, eventNo:Function):void {
+         menu();
+-        addButton(0, "Yes", eventYes);
+-        addButton(1, "No", eventNo);
++        addButton(6, "Yes", eventYes);	//jk: moved the buttons because I accidently pressing YES instead of NEXT all the time
++        addButton(7, "No", eventNo);	//f.e. when picking up items with full inventory
+     }
+ 
+     /**
+diff --git a/classes/classes/GlobalFlags/kFLAGS.as b/classes/classes/GlobalFlags/kFLAGS.as
+index 817dce500..d78b6e19d 100644
+--- a/classes/classes/GlobalFlags/kFLAGS.as
++++ b/classes/classes/GlobalFlags/kFLAGS.as
+@@ -1979,8 +1979,8 @@ public static const UNKNOWN_FLAG_NUMBER_01970:int
+ public static const UNKNOWN_FLAG_NUMBER_01971:int                                   = 1971;
+ public static const UNKNOWN_FLAG_NUMBER_01972:int                                   = 1972;
+ public static const UNKNOWN_FLAG_NUMBER_01973:int                                   = 1973;
+-public static const UNKNOWN_FLAG_NUMBER_01974:int                                   = 1974;
+-public static const UNKNOWN_FLAG_NUMBER_01975:int                                   = 1975;
++public static const FENRIS_FLAG:int                                   				= 1974;	//placeholderflag to store info of fenris
++public static const FENRIS_BREAST:int                                   			= 1975;	//placeholderflag for breaststore of fenris
+ public static const UNKNOWN_FLAG_NUMBER_01976:int                                   = 1976;
+ public static const UNKNOWN_FLAG_NUMBER_01977:int                                   = 1977;
+ public static const UNKNOWN_FLAG_NUMBER_01978:int                                   = 1978;
+@@ -3006,5 +3006,4 @@ public static const LOW_STANDARDS_FOR_ALL:int
+ public static const HYPER_HAPPY:int                                                 = 2998;
+ public static const UNKNOWN_FLAG_NUMBER_02999:int                                   = 2999; // ------------------------- Jojo Debug Flag?
+ 	}    
+-}
+-
+\ No newline at end of file
++}
+\ No newline at end of file
+diff --git a/classes/classes/Items/NecklaceLib.as b/classes/classes/Items/NecklaceLib.as
+index 4afd1743f..3207dd4bf 100644
+--- a/classes/classes/Items/NecklaceLib.as
++++ b/classes/classes/Items/NecklaceLib.as
+@@ -23,6 +23,7 @@ package classes.Items
+ 		public const SMNECK :Necklace = new Necklace("SMNeck", "SMNecklace", "soulmetal necklace", "a soulmetal necklace", 0, 100, 500, "This simple necklace is made from low quality soulmetal. Despite it seemly simplicity it allow for slight compresion of it weaver soulforce allowing storing a little bit more of it. \n\nType: Jewelry (Necklace) \nBase value: 500 \nSpecial: Increases maximum Soulforce by 100.","Necklace");
+ 		public const TSNECK :Necklace = new Necklace("TSNeck", "T.S.Necklace", "training soul necklace", "a training soul necklace", 0, 0, 300, "Necklace made from soulmetal to help train soulforce to the uttermost limit for novice soul cultivator. \n\nType: Jewelry (Necklace) \nBase value: 300","Necklace");
+ 		public const YWSCARF:Necklace = new Necklace("YWScarf", "Y. W. scarf", "Yellow Winter scarf", "a Yellow Winter scarf", 0, 0, 800, "This fancy winter scarf helps protect against cold temperatures and is magically enchanted to empower cold based abilities. \n\nType: Jewelry (Necklace) \nBase value: 800","Necklace");
++		public const SLVECLR:Necklace = new Necklace("SlveClr", "Slave-Collar", "Slave-Collar", "a Slave-Collar", 0, 0, 50, "A slave collar made from thick black leather and shiny steel. \n Odd: it somehow halfes the usual 8 hours penalty when losing a fight. \nType: Jewelry (Necklace) \nBase value: 50","Necklace");
+ 		
+ 		public function NecklaceLib() 
+ 		{
+diff --git a/classes/classes/Monster.as b/classes/classes/Monster.as
+index d0c978805..46c659e75 100644
+--- a/classes/classes/Monster.as
++++ b/classes/classes/Monster.as
+@@ -2286,7 +2286,13 @@ import flash.utils.getQualifiedClassName;
+ 			if(temp > player.gems) temp = player.gems;
+ 			outputText("\n\nYou'll probably wake up in eight hours or so, missing " + temp + " gems.");
+ 			player.gems -= temp;
+-			EngineCore.doNext(SceneLib.camp.returnToCampUseEightHours);
++			if (player.necklace.id == necklaces.SLVECLR.id) {
++				EngineCore.doNext(SceneLib.camp.returnToCampUseFourHours);
++			}else {
++				EngineCore.doNext(SceneLib.camp.returnToCampUseEightHours);
++			
++			}
++			
+ 		}
+ 
+ 		/**
+diff --git a/classes/classes/Player.as b/classes/classes/Player.as
+index 42cbfe0f0..e940b1f68 100644
+--- a/classes/classes/Player.as
++++ b/classes/classes/Player.as
+@@ -8574,7 +8574,9 @@ use namespace CoC;
+ 			return itemSlots[idx];
+ 		}
+ 
+-		// 0..5 or -1 if no
++		/**
++		 * 0.. or -1 if no
++		 */
+ 		public function emptySlot():Number {
+ 		    for (var i:int = 0; i<itemSlots.length;i++){
+ 				if (itemSlot(i).isEmpty() && itemSlot(i).unlocked) return i;
+diff --git a/classes/classes/Scenes/Areas/Forest.as b/classes/classes/Scenes/Areas/Forest.as
+index 151808ed5..20073da46 100644
+--- a/classes/classes/Scenes/Areas/Forest.as
++++ b/classes/classes/Scenes/Areas/Forest.as
+@@ -240,6 +240,13 @@ use namespace CoC;
+ 							return (flags[kFLAGS.KONSTANTIN_FOLLOWER] < 2);
+ 						},
+ 						chance: 0.8
++					}, {
++						name  : "fenris",
++						call  : SceneLib.fenrisScene,
++						when  : function():Boolean {
++							return (player.level>4);
++						},
++						chance: 0.8
+ 					});
+ 					/*
+ 					{
+diff --git a/classes/classes/Scenes/Areas/Lake/FenrisGooFight.as b/classes/classes/Scenes/Areas/Lake/FenrisGooFight.as
+index bbdc0bb58..839572769 100644
+--- a/classes/classes/Scenes/Areas/Lake/FenrisGooFight.as
++++ b/classes/classes/Scenes/Areas/Lake/FenrisGooFight.as
+@@ -7,7 +7,7 @@ package classes.Scenes.Areas.Lake
+ 	import classes.*;
+ 	import classes.Scenes.NPCs.Fenris;
+ 	import classes.GlobalFlags.kFLAGS;
+-	import classes.GlobalFlags.kGAMECLASS;
++	import classes.Scenes.SceneLib;
+ 	
+ 	public class FenrisGooFight extends GooGirl
+ 	{
+@@ -27,9 +27,8 @@ package classes.Scenes.Areas.Lake
+ 		{
+ 			outputText("The girl reaches into her torso, pulls a large clump of goo out, and chucks it at you like a child throwing mud. The slime splatters on your chest and creeps under your " + player.armorName + ", tickling your skin like fingers dancing across your body. ", false);
+ 			var damage:Number = 1;
+-			player.takeDamage(damage, true);
+-			game.dynStats("lus", 5 + rand(3) + player.sens / 10);
+-			combatRoundOver();
++			player.takePhysDamage(damage, true);
++			player.dynStats("lus", 5 + rand(3) + player.sens / 10);
+ 		}
+ 
+ 		override public function defeated(hpVictory:Boolean):void
+@@ -42,7 +41,7 @@ package classes.Scenes.Areas.Lake
+ 		{
+ 			if (pcCameWorms) {
+ 				outputText("\n\nThe goo-girl seems confused but doesn't mind.");
+-				doNext(game.combat.endLustLoss);
++				doNext(SceneLib.combat.endLustLoss);
+ 			} else {
+ 				looseToGoo(hpVictory);
+ 			}
+@@ -65,9 +64,9 @@ package classes.Scenes.Areas.Lake
+ 			outputText("Todo: get raped\n", false);
+ 			player.slimeFeed();
+ 			player.orgasm();
+-			game.dynStats("sen", 4);
++			player.dynStats("sen", 4);
+ 			player.slimeFeed();
+-			game.combat.cleanupAfterCombat();		
++			SceneLib.combat.cleanupAfterCombatImpl();		
+ 		}
+ 		private function defeatGoo(hpVictory:Boolean):void
+ 		{
+@@ -78,12 +77,11 @@ package classes.Scenes.Areas.Lake
+ 			Fenris.getInstance().addXP(10);
+ 			
+ 			outputText("\n\n<b>What do you do to her, and if anything, which of your body parts do you use?</b>", false);
+-			game.menu();
+-			game.addButton(1, "You Rape", _rapeFunc, null, null, null, "");
+-			game.addButton(2, "Fenris rape", _rapeFunc, null, null, null, "");
+-			game.addButton(3, "Threesome", _rapeFunc, null, null, null, "");
+-			game.addButton(14, "Leave", game.combat.cleanupAfterCombat, null, null, null, "");
+-
++			EngineCore.simpleChoices( "You Rape", _rapeFunc,
++			"Fenris rape", _rapeFunc,
++			"Threesome", _rapeFunc,
++			"",null,
++			"Leave", SceneLib.combat.cleanupAfterCombatImpl);
+ 		}
+ 		private function rapeFunc():void
+ 		{
+@@ -91,7 +89,7 @@ package classes.Scenes.Areas.Lake
+ 			outputText("Todo: Fenris and you have your way with her.", false);
+ 			player.orgasm();
+ 			player.slimeFeed();
+-			game.combat.cleanupAfterCombat();
++			doNext(SceneLib.combat.cleanupAfterCombatImpl);
+ 		}
+ 		public function FenrisGooFight() 
+ 		{
+diff --git a/classes/classes/Scenes/Areas/Lake/FetishCultist.as b/classes/classes/Scenes/Areas/Lake/FetishCultist.as
+index 5f7796cf8..c63001283 100644
+--- a/classes/classes/Scenes/Areas/Lake/FetishCultist.as
++++ b/classes/classes/Scenes/Areas/Lake/FetishCultist.as
+@@ -188,7 +188,8 @@ public class FetishCultist extends Monster
+ 			this.gems = 5+rand(10);
+ 			this.drop = new WeightedDrop().add(consumables.LABOVA_,1)
+ 					.add(weapons.RIDINGC,1)
+-					.add(consumables.OVIELIX,2)
++					.add(consumables.OVIELIX, 2)
++					.add(necklaces.SLVECLR,1)
+ 					.add(consumables.L_DRAFT,6);
+ 			this.special1 = cultistRaisePlayerLust;
+ 			this.special2 = cultistLustTransfer;
+diff --git a/classes/classes/Scenes/Areas/Lake/FetishZealot.as b/classes/classes/Scenes/Areas/Lake/FetishZealot.as
+index e1cb520d6..0712eb782 100644
+--- a/classes/classes/Scenes/Areas/Lake/FetishZealot.as
++++ b/classes/classes/Scenes/Areas/Lake/FetishZealot.as
+@@ -177,7 +177,8 @@ public class FetishZealot extends Monster
+ 			this.gems = 10+rand(15);
+ 			this.drop = new WeightedDrop().add(armors.C_CLOTH,1)
+ 					.add(consumables.L_DRAFT,4)
+-					.add(weapons.L_DAGGR,1)
++					.add(weapons.L_DAGGR, 1)
++					.add(necklaces.SLVECLR,1)
+ 					.add(null,4);
+ 			this.special1 = zealotSpecial1;
+ 			this.special2 = zealotSpecial2;
+diff --git a/classes/classes/Scenes/Combat/Combat.as b/classes/classes/Scenes/Combat/Combat.as
+index 49e69ba86..fb3a660d8 100644
+--- a/classes/classes/Scenes/Combat/Combat.as
++++ b/classes/classes/Scenes/Combat/Combat.as
+@@ -307,6 +307,7 @@ public function cleanupAfterCombatImpl(nextFunc:Function = null):void {
+ 			//Keep gems from going below zero.
+ 			if (gemsLost > player.gems) gemsLost = player.gems;
+ 			var timePasses:int = monster.handleCombatLossText(inDungeon || inRoomedDungeon, gemsLost); //Allows monsters to customize the loss text and the amount of time lost
++			if (timePasses == 8 && player.necklace.id == necklaces.SLVECLR.id) timePasses = 4;
+ 			if (player.hasStatusEffect(StatusEffects.SoulArena)) timePasses = 1;
+ 			player.gems -= gemsLost;
+ 			inCombat = false;
+diff --git a/classes/classes/Scenes/Dungeons/DngMapper.as b/classes/classes/Scenes/Dungeons/DngMapper.as
+index 94f2f06ed..733ff33f6 100644
+--- a/classes/classes/Scenes/Dungeons/DngMapper.as
++++ b/classes/classes/Scenes/Dungeons/DngMapper.as
+@@ -127,11 +127,12 @@ package classes.Scenes.Dungeons
+ 			var map:Array;
+ 			var roomInfo:DngMapperInfo;
+ 			var i:int;
++			var j:int ;
+ 			//create 2d-array to store textual representation of room and connection between them
+ 			map = new Array(2*(maxX - minX)+1); 
+ 			for (i = 0; i < map.length; i++) {  
+ 				var submap:Array = new Array(2*(maxY - minY)+1); 
+-				for (var j:int = 0; j < submap.length; j++) {   
++				for (j = 0; j < submap.length; j++) {   
+ 					submap[j] = "   ";   
+ 				}
+ 				map[i] = submap;
+@@ -173,7 +174,7 @@ package classes.Scenes.Dungeons
+ 			}
+ 			//print
+ 			_line = (/*Dungeon.name +*/ " " + floor.name +"\n");
+-			for (var j:int = 0; j < (2 * (maxY - minY) + 1); j++) {   
++			for (j= 0; j < (2 * (maxY - minY) + 1); j++) {   
+ 				for (i = 0; i < (2*(maxX - minX)+1); i++) { 
+ 					_line += map[i][j]+"\t";   //need to use tabs for proper formating
+ 				}
+diff --git a/classes/classes/Scenes/Inventory.as b/classes/classes/Scenes/Inventory.as
+index acec69ca2..50ddfedf7 100644
+--- a/classes/classes/Scenes/Inventory.as
++++ b/classes/classes/Scenes/Inventory.as
+@@ -4,6 +4,7 @@
+ package classes.Scenes
+ {
+ import classes.*;
++import classes.BodyParts.Face;
+ import classes.GlobalFlags.kFLAGS;
+ import classes.CoC;
+ import classes.Items.Armor;
+@@ -184,14 +185,17 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false &&
+ 					if (model.time.hours >= 6) addButton(5, "Garden", Gardening.manageuyourgarden).hint("Visit your plant offspring");
+ 				}
+ 				if (player.hasKeyItem("Gryphon Statuette") >= 0) {
+-					addButton(6, "Gryphon", CoC.instance.mutations.skybornSeed, 1);
++					addButton(6, "Gryphon", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 1, player),miscitemsMenu));
+ 				}
+ 				if (player.hasKeyItem("Peacock Statuette") >= 0) {
+-					addButton(6, "Peacock", CoC.instance.mutations.skybornSeed, 2);
++					addButton(6, "Peacock", curry(execAndDoNext,curry(CoC.instance.mutations.skybornSeed, 2, player),miscitemsMenu));
+ 				}
+ 				addButton(14, "Back", inventoryMenu);
+ 		}
+-		
++		private function execAndDoNext(A:Function, B:Function):void {
++			A();
++			doNext(B);
++		}
+ 		public function BagOfCosmosMenu():void {
+ 			hideMenus();
+ 			spriteSelect(-1);
+@@ -378,6 +382,7 @@ if (!CoC.instance.inCombat && inDungeon == false && inRoomedDungeon == false &&
+ 			if (temp >= 0) {
+ 				player.itemSlots[temp].setItemAndQty(itype, 1);
+ 				outputText("You place " + itype.longName + " in your " + inventorySlotName[temp] + " pouch.");
++				if (player.emptySlot() < 0) outputText("\n<b>Your Inventory is full !</b>");
+ 				itemGoNext();
+ 				return;
+ 			}
+diff --git a/classes/classes/Scenes/NPCs/Fenris.as b/classes/classes/Scenes/NPCs/Fenris.as
+index 8007db55e..d5d5495cb 100644
+--- a/classes/classes/Scenes/NPCs/Fenris.as
++++ b/classes/classes/Scenes/NPCs/Fenris.as
+@@ -5,13 +5,14 @@
+ 
+ package classes.Scenes.NPCs{
+ 
++	import classes.Bindings;
+ 	import classes.BreastRowClass;
+ 	import classes.BreastStore;
++	import classes.EventParser;
+ 	import classes.Items.Useable;
+ 	import classes.Items.Weapon;
+ 	import classes.Items.WeaponLib;
+ 	import classes.PregnancyStore;
+-	import classes.GlobalFlags.kGAMECLASS;
+ 	import classes.GlobalFlags.kFLAGS;
+ 	import classes.TimeAwareInterface;
+ 	import classes.Monster;
+@@ -28,7 +29,7 @@ package classes.Scenes.NPCs{
+ 	import classes.SaveAwareInterface;
+ 
+ 	//dont extends Monster because we need to change stats and features
+-	public class Fenris implements SaveAwareInterface, TimeAwareInterface 
++	public class Fenris extends NPCAwareContent implements SaveAwareInterface, TimeAwareInterface 
+ 	{
+ 		
+ 		//those are the main quest stages
+@@ -473,12 +474,12 @@ package classes.Scenes.NPCs{
+ 		}
+ 		//returns 0 if he eats it
+ 		public function eatThis(Food:SimpleConsumable, Result:ReturnResult):void {
+-			if (Food == kGAMECLASS.consumables.VITAL_T) {
++			if (Food == CoC.instance.consumables.VITAL_T) {
+ 				Result.Code = 0;
+ 				Result.Text = "[fenris Ey] uncorks the bottle and then gulps down its content without hesitation. The invigorating effect immediatly refreshs [fenris em]."
+ 				//Todo: refresh HP?
+ 				setPlayerRelation(getPlayerRelation() + 3);
+-			}else if (Food == kGAMECLASS.consumables.CANINEP) { 
++			}else if (Food == CoC.instance.consumables.CANINEP) { 
+ 				Result.Code = 0;
+ 				Result.Text = "[fenris Ey] takes some bites from the fruit ";
+ 				if (getBodyStrength() < 70) {
+@@ -493,7 +494,7 @@ package classes.Scenes.NPCs{
+ 				} else {
+ 				}
+ 				
+-			}else if (Food == kGAMECLASS.consumables.SDELITE) { 
++			}else if (Food == CoC.instance.consumables.SDELITE) { 
+ 				Result.Code = 0;
+ 				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips on it.";
+ 				if (getBodyStrength() < 70 && getCockSize()> 0) {
+@@ -507,7 +508,7 @@ package classes.Scenes.NPCs{
+ 					Result.Text += "You get the impression that an dangerous spark is glinting in [fenris eir] eyes, but a moment later it's gone.\n"
+ 				} else {
+ 				}
+-			}else if ( Food == kGAMECLASS.consumables.PPHILTR) { 	
++			}else if ( Food == CoC.instance.consumables.PPHILTR) { 	
+ 				Result.Code = 0;
+ 				Result.Text = "[fenris Ey] uncorks the bottle, sniffs at it and take some sips off it.\n";
+ 				if (getCorruption() > 8) {
+@@ -615,9 +616,9 @@ package classes.Scenes.NPCs{
+ 		/* translates between USEABLE and Fenris-Items
+ 		 * */
+ 		public function equipItemFromUseable(item:Useable , give:Boolean , Result:ReturnResult):void {
+-			if (item == kGAMECLASS.weapons.PIPE) {
++			if (item == CoC.instance.weapons.PIPE) {
+ 				equipItem(ITEMSLOT_WEAPON, WEAPON_PIPE, true, Result);
+-			} else if (item == kGAMECLASS.undergarments.FURLOIN) {
++			} else if (item == CoC.instance.undergarments.FURLOIN) {
+ 				equipItem(ITEMSLOT_UNDERWEAR, UNDERWEAR_LOINCLOTH, true, Result);
+ 			} else {
+ 				Result.Code = 1;
+@@ -714,7 +715,7 @@ package classes.Scenes.NPCs{
+ 				new Fenris();
+ 			} 
+ 			//workaround to initialise as soon as kGAMECLASS is valid
+-			if (kGAMECLASS != null && !_instance._initDone) {
++			if (CoC.instance!= null && !_instance._initDone) {
+ 				_instance.initFenris(false);
+ 			}
+ 			return _instance;
+@@ -724,10 +725,10 @@ package classes.Scenes.NPCs{
+ 				throw new Error("Singleton... use getInstance()");
+ 			} 
+ 			_instance = this;
+-			CoC.saveAwareClassAdd(this);
+-			CoC.timeAwareClassAdd(this);
++			classes.Saves.saveAwareClassAdd(this);
++			EventParser.timeAwareClassAdd(this);
+ 			_BreastStore = new BreastStore(kFLAGS.FENRIS_BREAST);
+-			CoC.saveAwareClassAdd(_BreastStore);
++			classes.Saves.saveAwareClassAdd(_BreastStore);
+ 		}
+ 		
+ 		/* for debug-Reset
+@@ -876,7 +877,7 @@ package classes.Scenes.NPCs{
+ 		public function timeChange():Boolean
+ 		{
+ 			//pregnancy.pregnancyAdvance();
+-			trace("\nFenris time change: Time is " + kGAMECLASS.model.time.hours , false);
++			trace("\nFenris time change: Time is " + CoC.instance.model.time.hours , false);
+ 			var _Return:Boolean = getMainQuestStage() >= MAINQUEST_Greetings;
+ 			if (_Return) {
+ 				_Return = false;
+@@ -887,9 +888,9 @@ package classes.Scenes.NPCs{
+ 				if (_lust > 90 ) _lust = 90;
+ 				setLust(_lust);
+ 				
+-				if (kGAMECLASS.model.time.hours >= 16 && kGAMECLASS.model.time.hours < 17) {
++				if (CoC.instance.model.time.hours >= 16 && CoC.instance.model.time.hours < 17) {
+ 					//Todo: depending on quest, availbale areas a.s.o calculate chance for fenris to win/loose afight
+-					if (getLevel()< (kGAMECLASS.player.level+3)) {
++					if (getLevel()< (CoC.instance.player.level+3)) {
+ 						_rand = Utils.rand(100);
+ 						_XPChance = _XPChance+40;
+ 						if (testMainQuestFlag(MAINFLAG_SEARCH_DEEPWOOD)) _XPChance = _XPChance+10;
+@@ -899,16 +900,16 @@ package classes.Scenes.NPCs{
+ 						if (_rand < _XPChance ) {
+ 							if (addXP(10*getLevel())) {
+ 								_Return = true;
+-								kGAMECLASS.outputText("You hear rumors that Fenris leveld up.\n");
++								outputText("You hear rumors that Fenris leveld up.\n");
+ 							}
+ 						}
+ 					}
+ 				}
+-				if (kGAMECLASS.player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) { //? should be moved to player?
+-					if (kGAMECLASS.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
+-						kGAMECLASS.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
+-					}
+-				}
++				//TODO if (CoC.instance.player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) { //? should be moved to player?
++					//if (CoC.instance.player.statusEffectv1(StatusEffects.FenrisCombatSupport) > 0) {
++						//CoC.instance.player.addStatusValue(StatusEffects.FenrisCombatSupport, 1, -1); //Decrement cooldown!
++					//}
++				//}
+ 				setTempFlag(TEMPFLAG_SEXED_COOLDOWN, false); //unlock SexEd-dialog once per day
+ 			}
+ 			return _Return;
+diff --git a/classes/classes/Scenes/NPCs/FenrisMonster.as b/classes/classes/Scenes/NPCs/FenrisMonster.as
+index 714e8be84..dcd4c61a7 100644
+--- a/classes/classes/Scenes/NPCs/FenrisMonster.as
++++ b/classes/classes/Scenes/NPCs/FenrisMonster.as
+@@ -6,6 +6,13 @@
+ package classes.Scenes.NPCs
+ {
+ 	import classes.*;
++	import classes.Scenes.SceneLib;
++	import classes.VaginaClass;
++	import classes.AssClass;
++	import classes.BodyParts.Butt;
++	import classes.BodyParts.Hips;
++	import classes.BodyParts.LowerBody;
++	import classes.BodyParts.Tail;
+ 	import classes.GlobalFlags.kFLAGS;
+ 	import classes.internals.*;
+ 
+@@ -21,7 +28,7 @@ package classes.Scenes.NPCs
+ 			//_monster.imageName = "hellhound"; //Todo: add image
+ 			_monster.long = _fenris.descrwithclothes; // "You are fighting an anthro-wolf";
+ 			if (_fenris.hasVagina()) {
+-					_monster.createVagina(_fenris.getVaginaVirgin(),VAGINA_WETNESS_NORMAL,_fenris.getVaginaSize());
++					_monster.createVagina(_fenris.getVaginaVirgin(),classes.VaginaClass.WETNESS_NORMAL,_fenris.getVaginaSize());
+ 					//createStatusEffect(StatusEffects.BonusVCapacity, 85, 0, 0, 0);
+ 				}
+ 			/*if (_fenris.getBreastSize() >= 1) {
+@@ -38,13 +45,16 @@ package classes.Scenes.NPCs
+ 				_monster.cumMultiplier = 1;
+ 		}
+ 			
+-		_monster.ass.analLooseness = ANAL_LOOSENESS_TIGHT;
+-		_monster.ass.analWetness = ANAL_WETNESS_DRY;
+-			//this.createStatusEffect(StatusEffects.BonusACapacity,85,0,0,0);
+-		_monster.tallness = 70;
+-		_monster.hipRating = HIP_RATING_SLENDER;
+-		_monster.buttRating = BUTT_RATING_TIGHT;
+-		_monster.skinTone = "stone gray";
++		this.createBreastRow();
++		this.createBreastRow();
++		this.createBreastRow();
++		this.ass.analLooseness = AssClass.LOOSENESS_NORMAL;
++		this.ass.analWetness = AssClass.WETNESS_NORMAL;
++		this.tallness = 70;
++		this.hips.type = Hips.RATING_AVERAGE;
++		this.butt.type = Butt.RATING_AVERAGE + 1;
++		this.lowerBody = LowerBody.DOG;
++		this.skin.growFur({color:"black"});
+ 		_monster.hairColor = "dark gray";
+ 		_monster.hairLength = 5;
+ 
+@@ -54,7 +64,7 @@ package classes.Scenes.NPCs
+ 		_monster.drop = new ChainedDrop().
+ 					add(undergarments.C_LOIN,0.05).
+ 					add(consumables.CANINEP,0.95);
+-		_monster.tailType = TAIL_TYPE_DOG;
++		this.tailType = Tail.DOG;
+ 		_monster.tailRecharge = 0;
+ 		_monster.checkMonster();		
+ 		
+@@ -64,7 +74,7 @@ package classes.Scenes.NPCs
+ 		var _fenris:Fenris = Fenris.getInstance();
+ 		level = Math.round( (player.level +  (_fenris.getLevel() -player.level)/4)* 10)/10; //autolevel??
+ 		initStrTouSpeInte(_fenris.getStrength(), _fenris.getThoughness(), _fenris.getSpeed(), _fenris.getIntelligence());
+-		initLibSensCor(_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
++		initWisLibSensCor(10/*TODO*/,_fenris.getLibido(), _fenris.getLibido(), _fenris.getCorruption());
+ 		bonusHP = level*10;
+ 		lust = Math.min(70,Fenris.getInstance().getLust());
+ 		lustVuln = 0.01*_fenris.getLibido();		
+@@ -110,7 +120,7 @@ package classes.Scenes.NPCs
+ 	{
+ 		HowlCooldown = 5;
+ 		outputText("Annoyed by your attempts to defeat him, he raises his wolfen head and calls a terrifiying howl.\n", false);
+-		addHP(eMaxHP()*0.33);
++		addHP(this.maxHP()*0.33);
+ 		fatigue += 10;
+ 	}
+ 	//
+@@ -141,11 +151,12 @@ package classes.Scenes.NPCs
+ 		
+ 		if (PentacleState >= 3 && PentacleState <=5 ) {
+ 			outputText("You are molested by the pentacles.\n", false);
+-			game.dynStats("lus", 5 + player.sens / 10); // Lust++
++			player.dynStats("lus", 5 + player.sens / 10); // Lust++
+ 		}
+ 		//just grabbed the player
+ 		if (PentacleState == 2) {
+-			if (player.hasStatusEffect(StatusEffects.bound)) {
++			if(false) {
++			//TODO if (player.hasStatusEffect(StatusEffects.bound)) {
+ 				outputText("The pentacles increase their effort to entwine you.\n", false);
+ 				if (_pentacles >= 6) {
+ 					outputText("Two of them slip around your waist and upper body while another set trys to constrict your arms.\n", false);
+@@ -157,7 +168,7 @@ package classes.Scenes.NPCs
+ 					outputText("Both of them slip around your waist and upper body.\n", false);
+ 					PentacleState = PentacleState+1;
+ 				}
+-				game.dynStats("lus", 5 + player.sens / 10);
++				player.dynStats("lus", 5 + player.sens / 10);
+ 			} else {
+ 				PentacleState = 1;
+ 			}
+@@ -165,7 +176,8 @@ package classes.Scenes.NPCs
+ 		}
+ 		//try to grab player
+ 		if (PentacleState == 1) {
+-			if (player.hasStatusEffect(StatusEffects.bound)) {
++			if(false) {
++			//TODO if (player.hasStatusEffect(StatusEffects.bound)) {
+ 				//Success Todo
+ 				if (false) {
+ 					outputText("In an impressive display of gymnastics, you dodge, duck, dip, dive, and roll away from the shower of grab-happy arms trying to hold you. Your instincts tell you that this was a GOOD thing.\n", false);
+@@ -173,7 +185,7 @@ package classes.Scenes.NPCs
+ 				//Fail
+ 				else {
+ 					outputText("While you attempt to avoid the onslaught of pseudopods, one catches you around your " + player.foot() + " and drags you to the ground. You attempt to reach for it to pull it off only to have all of the other tentacles grab you in various places and immobilize you in the air. You are trapped and helpless!!!\n\n", false);
+-					game.dynStats("lus", (8+player.sens/20));
++					player.dynStats("lus", (8+player.sens/20));
+ 					player.createStatusEffect(StatusEffects.bound, 0, 0, 0, 0);
+ 					PentacleState = 2;
+ 				}
+@@ -203,7 +215,7 @@ package classes.Scenes.NPCs
+ 			var _oldweaponVerb:String = this.weaponVerb;
+ 			var _oldweaponAttack:Number = this.weaponAttack;
+ 			//return to combat menu when finished
+-			doNext(game.playerMenu);
++			//TODO? doNext(game.playerMenu);
+ 			if (select == 0) {
+ 				this.weaponName = "claws";
+ 				this.weaponVerb = "claw";
+@@ -267,42 +279,42 @@ package classes.Scenes.NPCs
+ 			if (HowlCooldown > 0 ) HowlCooldown = HowlCooldown - 1;
+ 			statScreenRefresh();
+ 			outputText("\n", false);
+-			combatRoundOver();
++			//TODO ?combatRoundOver();
+ 	}
+-	override public function handleStruggling(Struggling:Boolean):Boolean
+-	{
+-		var _Result:Boolean  = Struggling;
+-		clearOutput();
++	//TODO override public function handleStruggling(Struggling:Boolean):Boolean
++	//{
++		//var _Result:Boolean  = Struggling;
++		//clearOutput();
+ 		//Todo better description
+ 		//Struggle:
+-		if (Struggling) {
+-			outputText("You struggle against thight bindings of the tentacles.");
++		//if (Struggling) {
++			//outputText("You struggle against thight bindings of the tentacles.");
+ 			//Success
+-			if (rand(20) + player.str / 20  >= 12) {
+-				outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
+-				player.removeStatusEffect(StatusEffects.bound);
+-				PentacleState = 100; //Start cooldown
+-				doAI();
+-			} else {//Failure  ++LUST
+-				outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
+-				game.dynStats("lus", 5 + player.sens / 10);
+-				combatRoundOver();
+-			}
+-		} else {
+-			clearOutput();
+-			outputText("You just wait to see where this leads too.");
+-			outputText("\n\nThe bindings intensifys.");		
+-			game.dynStats("lus", 5 + player.sens / 10);
+-			combatRoundOver();		
+-		}
+-
+-		return _Result;
+-	}
++			//if (rand(20) + player.str / 20  >= 12) {
++				//outputText("  Summoning up reserves of strength you didn't know you had, you wrench yourself free of the pentacles, pushing them away.\n\n");
++				//player.removeStatusEffect(StatusEffects.bound);
++				//PentacleState = 100; //Start cooldown
++				//doAI();
++			//} else {//Failure  ++LUST
++				//outputText("  Despite your valiant efforts, the pentacles didnt loose their grip on you.\n");
++				//game.dynStats("lus", 5 + player.sens / 10);
++				//combatRoundOver();
++			//}
++		//} else {
++			//clearOutput();
++			//outputText("You just wait to see where this leads too.");
++			//outputText("\n\nThe bindings intensifys.");		
++			//game.dynStats("lus", 5 + player.sens / 10);
++			//combatRoundOver();		
++		//}
++//
++		//return _Result;
++	//}
+ 	override public function defeated(hpVictory:Boolean):void
+ 	{
+ 		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
+ 		else {}
+-		game.fenrisScene.winAgainstFenris();
++		SceneLib.fenrisScene.winAgainstFenris();
+ 		
+ 	}
+ 
+@@ -310,6 +322,6 @@ package classes.Scenes.NPCs
+ 	{
+ 		if (hasStatusEffect(StatusEffects.Sparring)) { }  //Todo
+ 		else {}
+-		game.fenrisScene.loseToFenris();
++		SceneLib.fenrisScene.loseToFenris();
+ 	}
+ }}
+\ No newline at end of file
+diff --git a/classes/classes/Scenes/NPCs/FenrisScene.as b/classes/classes/Scenes/NPCs/FenrisScene.as
+index 35c824781..24176b125 100644
+--- a/classes/classes/Scenes/NPCs/FenrisScene.as
++++ b/classes/classes/Scenes/NPCs/FenrisScene.as
+@@ -5,12 +5,12 @@
+ package classes.Scenes.NPCs{
+ 
+ 	import classes.Items.Weapon;
++	import classes.Scenes.SceneLib;
+ 	import classes.Scenes.API.Encounter;
+ 	import classes.Scenes.NPCs.Fenris;
+ 	import classes.Scenes.NPCs.FenrisMonster;
+ 	import classes.Scenes.Areas.Lake.FenrisGooFight;
+ 	import classes.GlobalFlags.kFLAGS;
+-	import classes.GlobalFlags.kGAMECLASS;
+ 	import classes.internals.*;
+ 	import classes.StatusEffects;
+ 	import classes.Items.Consumables.SimpleConsumable;
+@@ -20,7 +20,7 @@ package classes.Scenes.NPCs{
+ 	public class FenrisScene extends NPCAwareContent implements Encounter {
+ 		//override the following encounter-functions when creating new encounters and call encounterTracking on execution	
+ 	public function encounterChance():Number {
+-		return 0;
++		return 1;
+ 	}
+ 	public function execEncounter():void {
+ 		encounterTracking("Lake");		
+@@ -321,37 +321,37 @@ private function greetingsFirstTime (dlgstage:int = -1):void {
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 100) { //	
+ 		clearOutput();
+-		outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n As the creature hears you, it swims quickly to the shore line , rushing out of the water and collecting some stuff from a flat rock.", false);	
+-		outputText("\n As you come closer, you notice that this one is a kind of wolf-man. He has the head of a wolf and also his digitgrade legs and feet loke more like that of a canine. His torso and arms look more human, except that there a claws sprouting out of his finger-tips.", false);	
+-		outputText("You asume that his gender is male because you notice a slight bulge,covered by the loincloth he is wearing and because his chest looks rather manly with small black nipples poking slightly through his dense fur.", false);
+-		outputText("His pelt is of grey color, darker on his back and lighter on his belly and tighs.", false);	
+-		outputText("\n Its hard to tell how old he is but actually he seems mor like a wolf-boy than a full grown adult.", false);	
++		outputText("'<i>Hi there , have some bathing fun?</i>' you call. \n As the creature hears you, it swims quickly to the shore line , rushing out of the water and collecting some stuff from a flat rock.");	
++		outputText("\n As you come closer, you notice that this one is a kind of wolf-man. He has the head of a wolf and also his digitgrade legs and feet loke more like that of a canine. His torso and arms look more human, except that there a claws sprouting out of his finger-tips.");	
++		outputText("You asume that his gender is male because you notice a slight bulge,covered by the loincloth he is wearing and because his chest looks rather manly with small black nipples poking slightly through his dense fur.");
++		outputText("His pelt is of grey color, darker on his back and lighter on his belly and tighs.");	
++		outputText("\n Its hard to tell how old he is but actually he seems mor like a wolf-boy than a full grown adult.");	
+ 		menu();
+ 		addButton(0, "Next", greetingsFirstTime, 110, null, null, "");	
+ 	} else if (dlgstage == 110) { //
+-		outputText("\n\n You try to start a conversation with him but he seems rather shy to answer your questions. Soon you decide to say good bye. Maybe he will loosen up a little bit over time." , false);
++		outputText("\n\n You try to start a conversation with him but he seems rather shy to answer your questions. Soon you decide to say good bye. Maybe he will loosen up a little bit over time." );
+ 		menu();
+ 		addButton(0, "Next", greetingsFirstTime, 120, null, null, "");	
+ 	} else if (dlgstage == 120) { //
+-		outputText("\n\n As you leave, an odd idea comes to your mind: Maybe you should have tried to steal his loin cloth while he was busy in the lake. That might have given you the opportunity to check the rest of his \"gear\"...", false);
++		outputText("\n\n As you leave, an odd idea comes to your mind: Maybe you should have tried to steal his loin cloth while he was busy in the lake. That might have given you the opportunity to check the rest of his \"gear\"...");
+ 		progressMainQuest(1);
+ 		menu();
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 200) { //
+-		outputText("\n\n Todo: speak about where he came from." , false);
++		outputText("\n\n Todo: speak about where he came from." );
+ 		progressMainQuest(1);
+ 		menu();
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 300) { //
+-		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n" , false);
+-		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n" , false);
++		outputText("\n\n '<i>Everything alright with you?<i>'\n 'Umm.. yes I think.</i>' he responds '<i> I'm just a little puzzled about...</i> \n" );
++		outputText("'<i>I just met some otter girl and I was just offering to help each other if need arises...'\n 'and she responded 'Oh yeah, right now you could take care of my need ' and some other stuff about 'scratching her itch' and I didnt understand what she meant.</i>' \n" );
+ 	
+ 		progressMainQuest(1);
+ 		menu();
+ 		addButton(0, "Next", greetingsFirstTime, 301, null, null, "");
+ 	} else if (dlgstage == 301) { //
+-		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? </i>'" , false); //Todo: explain him about the flowers and bees
+-		outputText("\n\n Well, maybe someone needs an introduction in this topic then...." , false); 
++		outputText("\n\n '<i>She just asked you to pleasure her and you dont know what to do? </i>'" ); //Todo: explain him about the flowers and bees
++		outputText("\n\n Well, maybe someone needs an introduction in this topic then...." ); 
+ 		Fenris.getInstance().upgradeSexEd(Fenris.SEXED_TOPIC_BASE); //unlocks Sex-Education Topics
+ 		menu();
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+@@ -511,14 +511,14 @@ private function buildTalkMenu(dlgstage:int = -1):void {
+ /*build list of places you know
+  */ 
+ private function buildLocationToGoMenu():void {
+-	if (flags[kFLAGS.TIMES_EXPLORED_FOREST]  > 0) {
++	if (1/*TODOflags[kFLAGS.TIMES_EXPLORED_FOREST] */ > 0) {
+ 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_FOREST)) {			
+ 			addButton(1, "avoid forest", dontGoThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
+ 		} else {
+ 			addButton(1, "search forest", goThere,Fenris.MAINFLAG_SEARCH_FOREST, 200, null, "");
+ 		}	
+ 	}
+-	if (flags[kFLAGS.TIMES_EXPLORED_MOUNTAIN]  > 0) {
++	if (flags[kFLAGS.DISCOVERED_HIGH_MOUNTAIN]  > 0) {
+ 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_MOUNTAIN)) {
+ 			addButton(5, "avoid mountain", dontGoThere,Fenris.MAINFLAG_SEARCH_MOUNTAIN, 200, null, "");
+ 		} else {
+@@ -532,7 +532,7 @@ private function buildLocationToGoMenu():void {
+ 			addButton(6, "search deepwood", goThere,Fenris.MAINFLAG_SEARCH_DEEPWOOD, 200, null, "");
+ 		}		
+ 	}
+-	if (flags[kFLAGS.TIMES_EXPLORED_DESERT] > 0) {
++	if (0/*TODOflags[kFLAGS.TIMES_EXPLORED_DESERT]*/ > 0) {
+ 		if (Fenris.getInstance().testMainQuestFlag(Fenris.MAINFLAG_SEARCH_DESERT)) {
+ 			addButton(7, "avoid desert", dontGoThere,Fenris.MAINFLAG_SEARCH_DESERT, 200, null, "");
+ 		} else {
+@@ -794,18 +794,18 @@ private function questCagedDlg (dlgstage:int = -1):void {
+ 		if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_FORGEKEY1) {
+ 			outputText("Fenris asks you urgently if you found someone that could take care of the chastity device.\n");
+ 			outputText("'<i>Yeah, I found a blacksmith that knows a lot about those things. Unfortunatly <i>'  you sigh '<i> she also said that it is nearly impossible to reforge the key for it.<i>'\n");
+-			outputText("\n He didnt seem to take that for a good message '<i>So that means I'm stuck with it?<i>'\n", false)
++			outputText("\n He didnt seem to take that for a good message '<i>So that means I'm stuck with it?<i>'\n")
+ 			menu();
+ 			addButton(0, "Next", questCagedDlg, 100, null, null, "");
+ 		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_SHRINKCOCK1) { //Todo: trigger only if PC unlocked fetish zealot
+-			outputText("As you patrol around the lake, you can see a group of people gathering at a makeshift shelter.\n", false)
+-			outputText("You decide to hide and spy on them before you take further steps.\n", false)
++			outputText("As you patrol around the lake, you can see a group of people gathering at a makeshift shelter.\n")
++			outputText("You decide to hide and spy on them before you take further steps.\n")
+ 			menu();
+ 			addButton(1, "Spy", questCagedDlg, 400, null, null, "");
+ 			addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 		} else if (_fenris.getMainQuestStage() == Fenris.MAINQUEST_HUNTKEY1_SUCCESS) {
+-			outputText("'<i>I have good news for you <i>' you boom proudly '<i> I got the key !<i>'\n", false);
+-			outputText("Happy as he is , Fenris barks aloud, wagging nervously with his tail. \n", false)
++			outputText("'<i>I have good news for you <i>' you boom proudly '<i> I got the key !<i>'\n");
++			outputText("Happy as he is , Fenris barks aloud, wagging nervously with his tail. \n")
+ 			menu();
+ 			//if (playercorruption>50) {
+ 			//outputText("\nBut not so fast. YOU have the key, and YOU will decide if he is ready to be released. ")
+@@ -895,9 +895,9 @@ private function questCagedDlg (dlgstage:int = -1):void {
+ 	} else if (dlgstage == 310) { //
+ 		outputText("\nTODO: You decide to unlock Fenris and he is happy about this.");
+ 		outputText("\n<B>You might now call Fenris for help in combat (added Physical Skill - Fenris Combat Support)</B>");
+-		if (player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) {
++		/*TODO if (player.hasStatusEffect(StatusEffects.FenrisCombatSupport)) {
+ 			player.createStatusEffect(StatusEffects.FenrisCombatSupport,0,0,0,0);
+-		}
++		} */
+ 		progressMainQuest(1);
+ 		menu();
+ 		addButton(14, "Back", metAgain, 0, null, null, "");			
+@@ -907,38 +907,38 @@ private function questCagedDlg (dlgstage:int = -1):void {
+ 		menu();
+ 		addButton(14, "Back", metAgain, 0, null, null, "");	
+ 	} else if (dlgstage == 400) { // confront Fetish zealot 
+-		outputText("\nYou can easily see that those people wear some strange cloths and gadgets.\n", false); //Todo: description leather-bondage and chastity stuff
++		outputText("\nYou can easily see that those people wear some strange cloths and gadgets.\n"); //Todo: description leather-bondage and chastity stuff
+ 		outputText("\nThere seems also a strained discussion going on. It's hard to hear some details but you catch something about 'wolf' and 'chastity'. One of them also grabs a shiny pendant dangling down at her neckchain and show it off to the other persons gathering around. ");
+ 		outputText("\nCould this be the key you are searching?");
+-		outputText("\nSo what now? Maybe you can talk with those guys if they are friendly enough. But if not you might get into trouble since there are at least 4 or 5 of them. Of course you could also try to sneak away silently and come back when you are. ready. \n", false); 
++		outputText("\nSo what now? Maybe you can talk with those guys if they are friendly enough. But if not you might get into trouble since there are at least 4 or 5 of them. Of course you could also try to sneak away silently and come back when you are. ready. \n"); 
+ 		menu();
+ 		addButton(1, "Talk", questCagedDlg, 410, null, null, "");
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 410) { // 
+-		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n", false);
+-		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n", false);
+-		outputText("\nTodo:BlaBla Gimme the key BlaBla Pay for it.\n", false); //Todo
++		outputText("\nTheir head turn one by one to you as you slowly make your way over to them.\n");
++		outputText("\n'<i>And who are you?</i>' the female with the pendant asks resentful.\n");
++		outputText("\nTodo:BlaBla Gimme the key BlaBla Pay for it.\n"); //Todo
+ 		menu();
+ 		addButton(1, "Pay", questCagedDlg, 420, null, null, ""); // Todo: check if PC has enough money
+ 		addButton(2, "Fight", questCagedDlg, 430, null, null, "");
+ 		addButton(14, "Run", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 420) { 
+ 		clearOutput();
+-		outputText("\nRumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n", false);
+-		outputText("\n'<i>Oh thats not just the expense for the key, </i>' she responds smiling dangerously '<i>its also the charge for walking out of here freely. </i>'\n", false);
++		outputText("\nRumbling about the prices, you count the requested amount of gems into heir hand and demand the key.\n");
++		outputText("\n'<i>Oh thats not just the expense for the key, </i>' she responds smiling dangerously '<i>its also the charge for walking out of here freely. </i>'\n");
+ 		menu();
+ 		addButton(0, "Next", questCagedDlg, 421, null, null, ""); 
+ 	} else if (dlgstage == 421) { 
+-		outputText("\nA little bit intimidated by this statement, you grab the key an walk away quickly.\n", false);
+-		outputText("\nAt least you have the key now.\n", false);
++		outputText("\nA little bit intimidated by this statement, you grab the key an walk away quickly.\n");
++		outputText("\nAt least you have the key now.\n");
+ 		progressMainQuest(1);
+ 		menu()
+ 		addButton(14, "Leave", camp.returnToCampUseOneHour, null, null, null, "Continue on");
+ 	} else if (dlgstage == 430) { 
+ 		clearOutput();
+-		outputText("\nYou ready yourself to fight those odd bunch of people and get that damned key.\n", false);
++		outputText("\nYou ready yourself to fight those odd bunch of people and get that damned key.\n");
+ 		//startCombat(new fetishZealotKeyFight());	Todo
+-		outputText("\nAfter the battle you search for the key. But its nowhere to be found, darn.\n", false);
++		outputText("\nAfter the battle you search for the key. But its nowhere to be found, darn.\n");
+ 		progressMainQuest(2);
+ 		camp.returnToCampUseOneHour()
+ 	}
+@@ -965,7 +965,7 @@ private function afterLoinClothStealDlg(dlgstage:int = -1):void {
+ 	_dlgStage = dlgstage;
+ 	if (dlgstage <= 0 ) {
+ 		clearOutput();
+-		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] says '<i> ...you didn't see a loin cloth lying around, no? </i>' \n", false);	
++		outputText("\nYou see a wolfman approach you. [fenris Ey] seems to be trying to shyly cover [fenris eir] crotch\n'<i>Hmm.., excuse me</i>' [fenris ey] says '<i> ...you didn't see a loin cloth lying around, no? </i>' \n");	
+ 		menu();
+ 		addButton(0, "Nope", afterLoinClothStealDlg, 100, null, null, "Just pretend you didnt steal it"); 
+ 		addButton(2, "Attack", afterLoinClothStealDlg, 200, null, null, "Ready for some beating?");
+@@ -1033,7 +1033,7 @@ public function loseToFenris():void {
+ 		loseToFenrisDescr(false);
+ 	}
+ 	
+-	combat.cleanupAfterCombat();
++	SceneLib.combat.cleanupAfterCombatImpl();
+  }
+  private function loseToFenrisDescr(Sparring:Boolean):void {
+ 	 outputText("Todo: Loose description, Pentaclerape maybe ");
+@@ -1052,6 +1052,6 @@ public function loseToFenris():void {
+ 			// cannot fuck vagina
+ 		}*/
+ 	//menu();
+-	combat.cleanupAfterCombat();
++	SceneLib.combat.cleanupAfterCombatImpl();
+  }
+ }}
+\ No newline at end of file
+diff --git a/classes/classes/Scenes/SceneLib.as b/classes/classes/Scenes/SceneLib.as
+index 4a45ecba1..a40b78a77 100644
+--- a/classes/classes/Scenes/SceneLib.as
++++ b/classes/classes/Scenes/SceneLib.as
+@@ -233,6 +233,8 @@ public class SceneLib {
+ 	
+ 	public static var feralDragonScene:FeralDragonScene = new FeralDragonScene();
+ 
++	public static var fenrisScene:FenrisScene= new FenrisScene();
++	
+     public function SceneLib() {
+     }
+ }
+-- 
+2.17.1.windows.2
+

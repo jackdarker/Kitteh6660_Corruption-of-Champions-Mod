@@ -1,0 +1,314 @@
+From 4ad3bfc32728cd11e489ed5e2bd405eaa9b4271f Mon Sep 17 00:00:00 2001
+From: Jack Darker <JackDarker@freenet.de>
+Date: Sun, 15 Sep 2019 01:33:32 +0200
+Subject: [PATCH 6/6] refactored tentaclebeast; fixed some wrong accessors in
+ satyr transformation
+
+---
+ .../Scenes/Areas/Forest/TentacleBeast.as      |   9 +-
+ .../Areas/Forest/TentacleBeastRaging.as       | 109 ++++--------------
+ .../Scenes/Areas/Mountain/MinotaurScene.as    |  21 +++-
+ classes/classes/Scenes/Dungeons/BeeHive.as    |  12 +-
+ .../classes/Scenes/Monsters/FeralDragon.as    |   2 +-
+ .../classes/Scenes/Places/Bazaar/BlackCock.as |   8 +-
+ 6 files changed, 60 insertions(+), 101 deletions(-)
+
+diff --git a/classes/classes/Scenes/Areas/Forest/TentacleBeast.as b/classes/classes/Scenes/Areas/Forest/TentacleBeast.as
+index 65baa7108..190b9fb8a 100644
+--- a/classes/classes/Scenes/Areas/Forest/TentacleBeast.as
++++ b/classes/classes/Scenes/Areas/Forest/TentacleBeast.as
+@@ -107,7 +107,12 @@ public class TentacleBeast extends Monster
+ 
+ 		public function TentacleBeast()
+ 		{
+-			trace("TentacleBeast Constructor!");
++			//trace("TentacleBeast Constructor!");
++			setupMonster();
++			checkMonster();
++		}
++
++		protected function setupMonster():void {
+ 			this.a = "the ";
+ 			this.short = "tentacle beast";
+ 			this.imageName = "tentaclebeast";
+@@ -154,9 +159,7 @@ public class TentacleBeast extends Monster
+ 			this.special2 = tentacleEntwine;
+ 			this.special3 = tentaclePhysicalAttack;
+ 			this.tailType = Tail.DEMONIC;
+-			checkMonster();
+ 		}
+-
+ 	}
+ 
+ }
+diff --git a/classes/classes/Scenes/Areas/Forest/TentacleBeastRaging.as b/classes/classes/Scenes/Areas/Forest/TentacleBeastRaging.as
+index 221135c24..27a4f99e0 100644
+--- a/classes/classes/Scenes/Areas/Forest/TentacleBeastRaging.as
++++ b/classes/classes/Scenes/Areas/Forest/TentacleBeastRaging.as
+@@ -10,119 +10,52 @@ import classes.Scenes.Places.HeXinDao;
+ import classes.Scenes.SceneLib;
+ import classes.internals.*;
+ 	
+-public class TentacleBeastRaging extends Monster
+-	{
+-		private function tentaclePhysicalAttack():void {
+-			outputText("The shambling horror throws its tentacles at you with a murderous force.\n");
+-			var temp:int = int((str + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
+-			if(temp < 0) temp = 0;
+-			//Miss
+-			if(temp == 0 || (player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80)) {
+-				outputText("However, you quickly evade the clumsy efforts of the abomination to strike you.");
+-			}
+-			//Hit
+-			else {
+-				outputText("The tentacles crash upon your body mercilessly. ");
+-				player.takePhysDamage(temp, true);
+-			}
++public class TentacleBeastRaging extends TentacleBeast
++{
++	private function tentaclePhysicalAttackWrath():void {
++		outputText("The shambling horror throws its tentacles at you with a crazy and uncontroled manner.\n");
++		var temp:int = int(((str + weaponAttack) * 2) - Math.random()*(player.tou) - player.armorDef);
++		if (temp < 0) temp = 0;
++		this.wrath -= 200;
++		//Miss
++		if(temp == 0 || (player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80)) {
++			outputText("However, you quickly evade the clumsy efforts of the abomination to strike you.");
+ 		}
+-		private function tentaclePhysicalAttackWrath():void {
+-			outputText("The shambling horror throws its tentacles at you with a crazy and uncontroled manner.\n");
+-			var temp:int = int(((str + weaponAttack) * 2) - Math.random()*(player.tou) - player.armorDef);
+-			if (temp < 0) temp = 0;
+-			this.wrath -= 200;
+-			//Miss
+-			if(temp == 0 || (player.spe - spe > 0 && int(Math.random()*(((player.spe-spe)/4)+80)) > 80)) {
+-				outputText("However, you quickly evade the clumsy efforts of the abomination to strike you.");
+-			}
+-			//Hit
+-			else {
+-				outputText("The tentacles crash upon your body mercilessly. ");
+-				player.takePhysDamage(temp, true);
+-			}
++		//Hit
++		else {
++			outputText("The tentacles crash upon your body mercilessly. ");
++			player.takePhysDamage(temp, true);
+ 		}
+-		
++	}
++	
+ 		override protected function performCombatAction():void
+ 		{
+ 			this.wrath += 100;
+ 			if (this.wrath >= 200) tentaclePhysicalAttackWrath();
+-			else  tentaclePhysicalAttack();
++			else  super.performCombatAction();
+ 		}
+ 		
+ 		override public function defeated(hpVictory:Boolean):void
+ 		{
+-			if (hpVictory) {
+-				outputText("The creature lets out an ear-piercing screech as it collapses upon itself. Its green coloring quickly fades to brown as the life drains from it, leaving you victorious.", true);
+-				EngineCore.awardAchievement("Tentacle Beast Slayer", kACHIEVEMENTS.GENERAL_TENTACLE_BEAST_SLAYER);
+-			}
+-			else {
+-				outputText("The tentacle beast's mass begins quivering and sighing, the tentacles wrapping around each other and feverishly caressing each other.  It seems the beast has given up on fighting.");
+-			}
+-			if(!hpVictory && player.gender > 0 && flags[kFLAGS.SFW_MODE] <= 0) {
+-				outputText("  Perhaps you could use it to sate yourself?", true);
+-				EngineCore.doYesNo(SceneLib.forest.tentacleBeastScene.tentacleVictoryRape,cleanupAfterCombat);
+-			}
+-			else if (this.HP <= 0) SceneLib.forest.tentacleBeastScene.choiceofaction();
++			super.defeated(hpVictory);  
++			//if there was no action taken by super, we will end up here
++			if (this.HP <= 0) SceneLib.forest.tentacleBeastScene.choiceofaction();
+ 			else cleanupAfterCombat();
+ 		}
+-
+-		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
+-		{
+-			if (hpVictory) {
+-				outputText("Overcome by your wounds, you turn to make a last desperate attempt to run...\n\n");
+-				SceneLib.forest.tentacleBeastScene.tentacleLossRape();
+-			} else {
+-				outputText("You give up on fighting, too aroused to resist any longer.  Shrugging, you walk into the writhing mass...\n\n");
+-				doNext(SceneLib.forest.tentacleBeastScene.tentacleLossRape);
+-			}
+-		}
+ 		
+ 		public function TentacleBeastRaging() 
+ 		{
+-			this.a = "the ";
++			super.setupMonster();
+ 			this.short = "raging tentacle beast";
+-			this.imageName = "tentaclebeast";
+ 			this.long = "You see the massive, shambling and growling angry form of the tentacle beast before you.  Appearing as a large shrub, it shifts its bulbous mass and reveals a collection of unnaturaly twisted thorny tendrils and deformed cephalopodic limbs.";
+-			// this.plural = false;
+-			this.createCock(40,1.5);
+-			this.createCock(60,1.5);
+-			this.createCock(50,1.5);
+-			this.createCock(20,1.5);
+-			this.balls = 0;
+-			this.ballSize = 0;
+-			this.cumMultiplier = 3;
+-			// this.hoursSinceCum = 0;
+-			this.pronoun1 = "it";
+-			this.pronoun2 = "it";
+-			this.pronoun3 = "its";
+-			this.createBreastRow(0,0);
+-			this.ass.analLooseness = AssClass.LOOSENESS_TIGHT;
+-			this.ass.analWetness = AssClass.WETNESS_SLIME_DROOLING;
+-			this.tallness = rand(9) + 70;
+-			this.hips.type = Hips.RATING_BOYISH;
+-			this.butt.type = Butt.RATING_BUTTLESS;
+-			this.skin.setBaseOnly({color:"green"});
+-			this.skinDesc = "bark";
+-			this.hairColor = "green";
+-			this.hairLength = 1;
+ 			initStrTouSpeInte(31, 25, 10, 20);
+ 			initWisLibSensCor(15, 90, 20, 100);
+-			this.weaponName = "whip-tendril";
+-			this.weaponVerb="thorny tendril";
+ 			this.weaponAttack = 3;
+-			this.armorName = "rubbery skin";
+ 			this.armorDef = 5;
+ 			this.armorMDef = 0;
+ 			this.bonusHP = 40;
+ 			this.bonusWrath = 100;
+-			this.bonusLust = 20;
+-			this.lust = 10;
+-			this.lustVuln = 0.8;
+-			this.temperment = TEMPERMENT_LOVE_GRAPPLES;
+-			this.level = 12;
+ 			this.gems = rand(7)+3;
+-			this.drop = new WeightedDrop(null, 1);
+-			this.tailType = Tail.DEMONIC;
+ 			this.createPerk(PerkLib.EnemyFeralType, 0, 0, 0, 0);
+ 			checkMonster();
+ 		}
+diff --git a/classes/classes/Scenes/Areas/Mountain/MinotaurScene.as b/classes/classes/Scenes/Areas/Mountain/MinotaurScene.as
+index 347476880..0abd6fe19 100644
+--- a/classes/classes/Scenes/Areas/Mountain/MinotaurScene.as
++++ b/classes/classes/Scenes/Areas/Mountain/MinotaurScene.as
+@@ -124,6 +124,9 @@ private function postfightoptions():void {
+ 			addButton(11, "Vine in Butt", alrauneVineInButtScene);
+ 			addButton(12, "Get Pollinated", uniquuuesexscene.alrauneGetPollinatedScene);
+ 		}
++		if (player.hasKeyItem("All-Natural Onahole")) {
++			addButton(13, "Use Onahole", onaholeMino);
++		}
+ 	}
+ 	addButton(13, "Other", otherpostfightoptions);
+ 	addButton(14, "Leave", cleanupAfterCombat);
+@@ -134,8 +137,25 @@ private function otherpostfightoptions():void {
+ 	menu();
+ 	addButton(0, "Kill", killMinotaur);
+ 	if (player.tailType == Tail.MANTICORE_PUSSYTAIL) addButton(13, "Tail Rape", uniquuuesexscene.manticoreTailRapeScene);
++	if (player.hasKeyItem("All-Natural Onahole")) {
++			addButton(4, "Use Onahole", onaholeMino);
++		}
+ 	addButton(14, "Back", postfightoptions);
+ }
++private function onaholeMino():void {
++	clearOutput();
++	//TODO better description
++	outputText("You straddle the hips of the big bully and slip the Onahole over his hardening beast-meat. The cupious amounts of pre he is spilling all around makes it easy to slip the stretchy toy down his length. A bunch of thorough strokes later he is at full-mast and you have diffiulties to keep in charge.\n");
++	if (rand(100) < 80) { //IDEA usage proficiency
++		outputText("Some more strokes later he bellows out loudly and the rubbery toy expands beeing filled with his bull-seed. You make haste to fill the sticky stuff into a bottle.\n")
++		inventory.takeItem(consumables.MINOCUM, cleanupAfterCombat);
++	} else {
++		outputText("Unfortunatly the sextoy proofs to weak for this size of endowment. It rips appart rendering it uselas. What a waste.\n")
++		player.removeKeyItem("All-Natural Onahole");
++		cleanupAfterCombat();
++	}
++	
++}
+ private function killMinotaur():void {
+ 	clearOutput();
+ 	flags[kFLAGS.MINOTAURS_KILLED]++;
+@@ -143,7 +163,6 @@ private function killMinotaur():void {
+ 	if (player.cor < 25) dynStats("cor", -0.5);
+ 	inventory.takeItem(useables.MINOHOR, cleanupAfterCombat);
+ }
+-
+ //Tentacle scenes require multi dicks at minimum
+ //(dicks > 1 && tentacledicks > 0)
+ private function rapeMinotaurTentacles():void {
+diff --git a/classes/classes/Scenes/Dungeons/BeeHive.as b/classes/classes/Scenes/Dungeons/BeeHive.as
+index cf3e4a2fd..155553317 100644
+--- a/classes/classes/Scenes/Dungeons/BeeHive.as
++++ b/classes/classes/Scenes/Dungeons/BeeHive.as
+@@ -8,6 +8,7 @@ package classes.Scenes.Dungeons
+ import classes.EventParser;
+ import classes.internals.LookupTable;
+ import classes.Scenes.Areas.Forest.BeeGirl;
++import classes.Scenes.Areas.Forest.TentacleBeast;
+ import classes.ItemType;
+ 
+ 	public class BeeHive extends DungeonAbstractContent
+@@ -59,9 +60,12 @@ import classes.ItemType;
+ 			DngDirection.createDirection(DngDirection.DirS, rooms.GetElement("B4" ), rooms.GetElement("Stairs"));
+ 			room = (rooms.GetElement("Entrance") as DngRoom);
+ 			room.isDungeonEntry = room.isDungeonExit = true;
++			room = (rooms.GetElement("B1") as DngRoom);
++			room.onEnterFct = encounterTentacle;
+ 			room = (rooms.GetElement("B2") as DngRoom);
+ 			room.onEnterFct = encounterBee2;
+-			room.getDirection(DngDirection.DirW).onEnterFct = encounterBee;
++			room.getDirection(DngDirection.DirW)
++			room.onEnterFct = encounterBee2;
+ 			room = (rooms.GetElement("A4") as DngRoom);
+ 			room.onEnterFct = encounterBee2;
+ 			room = (rooms.GetElement("A3") as DngRoom);
+@@ -114,9 +118,9 @@ import classes.ItemType;
+ 			setFloors(_floors);
+ 		}
+ 		
+-		private function encounterBee(Me:DngDirection):Boolean {
+-			outputText("\nThere is a beegirl.");
+-			startCombat(new BeeGirl());
++		private function encounterTentacle(Me:DngRoom):Boolean {
++			outputText("\nThere is a Tentaclebeast.");
++			startCombat(new TentacleBeast());
+ 			doNext(playerMenu);
+ 			return true;
+ 		}
+diff --git a/classes/classes/Scenes/Monsters/FeralDragon.as b/classes/classes/Scenes/Monsters/FeralDragon.as
+index 9914ebdc1..22fe6fb34 100644
+--- a/classes/classes/Scenes/Monsters/FeralDragon.as
++++ b/classes/classes/Scenes/Monsters/FeralDragon.as
+@@ -42,7 +42,7 @@ import classes.internals.*;
+ 			this.imageName = "feraldragon";	//Todo male-female-herm
+ 			this.long = "It's obvious that this beast is a 4-legged reptile with large leathery wings and a long pointed tail. There is a spark of intelligence in its glooming eyes but there are also sharp teeths and curved claws that mark this mystical beeing as predator.\n";
+ 			// this.plural = false;
+-			this.level = Math.max(20, 15 + rand(this.player.level / 2));	//scales with player
++			this.level = Math.max(20, this.player.level + this.player.level*(rand(100)-50)/200);	//scales with player +-25%
+ 
+ 			this.createCock(rand(2) + 11, rand(1)+2.5, CockTypesEnum.DRAGON);
+ 			this.balls = 0;	//internal
+diff --git a/classes/classes/Scenes/Places/Bazaar/BlackCock.as b/classes/classes/Scenes/Places/Bazaar/BlackCock.as
+index 94c61ffdf..256d5d614 100644
+--- a/classes/classes/Scenes/Places/Bazaar/BlackCock.as
++++ b/classes/classes/Scenes/Places/Bazaar/BlackCock.as
+@@ -1429,14 +1429,14 @@ import classes.lists.Gender;
+ 				}
+ 			}
+ 			if (player.hasPerk(PerkLib.TransformationImmunity)) changeLimit = 0;
+-			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].length < 12) {
++			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].cockLength < 12) { 
+ 				outputText("\n\nHeat funnels into your cock as the alcohol flushes through you. Reaching down to inspect it, you find it has grown longer.");
+-				player.cocks[player.smallestCockIndex()].length++;
++				player.cocks[player.smallestCockIndex()].cockLength+=1; //fixme
+ 				changes++;
+ 			}
+-			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].girth < 4) {
++			if (rand(3) == 0 && changes < changeLimit && player.cocks[player.smallestCockIndex()].cockThickness < 4) {  //fixme
+ 				outputText("\n\nYou cock feels warm. When you reach down to inspect it your suspicions are confirmed. it's gotten thicker.");
+-				player.cocks[player.smallestCockIndex()].girth += 0.5;
++				player.cocks[player.smallestCockIndex()].cockThickness+=0.5;
+ 				changes++;
+ 			}
+ 			if (rand(3) == 0 && changes < changeLimit && player.balls > 0) {
+-- 
+2.17.1.windows.2
+

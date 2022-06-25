@@ -1,0 +1,240 @@
+From afaa95650678f98220f09a4edf2766da4abc2571 Mon Sep 17 00:00:00 2001
+From: Jack Darker <JackDarker@freenet.de>
+Date: Sat, 15 Jun 2019 05:54:13 +0200
+Subject: [PATCH 1/6] added Dog genetic memory, arms still missing
+
+---
+ classes/classes/Items/MutationsHelper.as |  13 +++---
+ classes/classes/Scenes/Metamorph.as      |  57 ++++++++++++++++++++++-
+ classes/classes/StatusEffects.as         |   6 +++
+ hors1                                    | Bin 13453 -> 0 bytes
+ hors2                                    | Bin 13211 -> 0 bytes
+ nixi                                     | Bin 4988 -> 0 bytes
+ 6 files changed, 69 insertions(+), 7 deletions(-)
+ delete mode 100644 hors1
+ delete mode 100644 hors2
+ delete mode 100644 nixi
+
+diff --git a/classes/classes/Items/MutationsHelper.as b/classes/classes/Items/MutationsHelper.as
+index bf70b1366..f7c4cefdb 100644
+--- a/classes/classes/Items/MutationsHelper.as
++++ b/classes/classes/Items/MutationsHelper.as
+@@ -315,6 +315,7 @@ import classes.BodyParts.Wings;
+ 		[Arms.BOAR, StatusEffects.UnlockedBoarArms],
+ 		[Arms.CAT, StatusEffects.UnlockedCatArms],
+ 		[Arms.DISPLACER, StatusEffects.UnlockedDisplacerArms],
++		//[Arms.DOG, StatusEffects.UnlockedDogArms],    //TODO no .DOG?
+ 		[Arms.DRAGON, StatusEffects.UnlockedDraconicArms],
+ 		[Arms.DEVIL, StatusEffects.UnlockedDevilArms],
+ 		[Arms.ELF, StatusEffects.UnlockedElfArms],
+@@ -341,7 +342,7 @@ import classes.BodyParts.Wings;
+ 		[Arms.SHARK, StatusEffects.UnlockedSharkArms],
+ 		[Arms.SPHINX, StatusEffects.UnlockedSphinxArms],
+ 		[Arms.SPIDER, StatusEffects.UnlockedSpiderArms],
+-		[Arms.WOLF, null],
++		[Arms.WOLF, null],	
+ 		[Arms.YETI, null],
+ 	]);
+ 
+@@ -355,7 +356,7 @@ import classes.BodyParts.Wings;
+ 		[Ears.CAT, StatusEffects.UnlockedCatEars],
+ 		[Ears.COW, StatusEffects.UnlockedCowEars],
+ 		[Ears.DEER, null],
+-		[Ears.DOG, null],
++		[Ears.DOG, StatusEffects.UnlockedDogEars],
+ 		[Ears.DRAGON, StatusEffects.UnlockedDraconicEars],
+ 		[Ears.ECHIDNA, null],
+ 		[Ears.ELFIN, StatusEffects.UnlockedElfinEars],
+@@ -428,7 +429,7 @@ import classes.BodyParts.Wings;
+ 		[Face.CHESHIRE_SMILE,StatusEffects.UnlockedCheshireSmile],
+ 		[Face.COW_MINOTAUR, StatusEffects.UnlockedCowMinotaurFace],
+ 		[Face.DEER, null],
+-		[Face.DOG, null],
++		[Face.DOG, StatusEffects.UnlockedDogFace],
+ 		[Face.DRAGON, StatusEffects.UnlockedDraconicFace],
+ 		[Face.DRAGON_FANGS, StatusEffects.UnlockedDraconicFangs],
+ 		[Face.DEVIL_FANGS, StatusEffects.UnlockedDevilFangs],
+@@ -533,7 +534,7 @@ import classes.BodyParts.Wings;
+ 		[LowerBody.DEERTAUR, null],
+ 		[LowerBody.DEMONIC_CLAWS, StatusEffects.UnlockedDemonClawedLegs],
+ 		[LowerBody.DEMONIC_HIGH_HEELS, StatusEffects.UnlockedDemonHighHeels],
+-		[LowerBody.DOG, null],
++		[LowerBody.DOG, StatusEffects.UnlockedDogLegs],
+ 		[LowerBody.DRAGON, StatusEffects.UnlockedDraconicLegs],
+ 		[LowerBody.DRIDER, StatusEffects.UnlockedDriderLegs],
+ 		[LowerBody.ECHIDNA, null],
+@@ -596,12 +597,12 @@ import classes.BodyParts.Wings;
+ 	private const METAMORPH_TONGUES:Object = createMapFromPairs([
+ 		[Tongue.CAT, [StatusEffects.UnlockedCatTongue, "Cat Tongue"]],
+ 		[Tongue.DEMONIC, [StatusEffects.UnlockedDemonTonuge, "Demonic Tongue"]],
++		[Tongue.DOG, [StatusEffects.UnlockedDogTongue, "Dog Tongue"]],
+ 		[Tongue.DRACONIC, [StatusEffects.UnlockedDraconicTongue, "Draconic Tongue"]],
+ 		[Tongue.ECHIDNA, [null, "Echidna Tongue"]],
+ 		[Tongue.HUMAN, [StatusEffects.UnlockedHumanTongue, "Human Tongue"]],
+ 		[Tongue.ELF, [StatusEffects.UnlockedElfTongue, "Elf Tongue"]],
+ 		[Tongue.SNAKE, [StatusEffects.UnlockedSnakeTongue, "Snake Tongue"]],
+-		[Tongue.DOG, [null, "Dog Tongue"]],
+ 	]);
+ 
+ 	/**
+@@ -629,7 +630,7 @@ import classes.BodyParts.Wings;
+ 		[Tail.COW, StatusEffects.UnlockedCowTail],
+ 		[Tail.DEER, null],
+ 		[Tail.DEMONIC, StatusEffects.UnlockedDemonTail],
+-		[Tail.DOG, null],
++		[Tail.DOG, StatusEffects.UnlockedDogTail],
+ 		[Tail.DRACONIC, StatusEffects.UnlockedDraconicTail],
+ 		[Tail.ECHIDNA, null],
+ 		[Tail.FERRET, null],
+diff --git a/classes/classes/Scenes/Metamorph.as b/classes/classes/Scenes/Metamorph.as
+index c847a7e33..443118029 100644
+--- a/classes/classes/Scenes/Metamorph.as
++++ b/classes/classes/Scenes/Metamorph.as
+@@ -36,7 +36,7 @@ public function accessMetamorphMenu():void {
+ 	outputText("Using some of soulforce to re-gain any body parts that your body remembered in it genetic memory.\n");
+ 	outputText("<i>Bonus to max soulforce: " + 50 * (1 + player.perkv1(PerkLib.Metamorph)) + "</i>\n\n");
+ 	outputText("<b>Race added to Metamorph:\n");
+-	outputText("Alicorn, Bat, Bee, Bicorn, Boar, Cat, Cheshire Cat, Cow, Couatl, Demon, Devil, Displacer Beast, Dragon, Elf, Fox, Gorgon, Harpy, Hellcat, Horse, Human, Kitsune, Lizard, Manticore, Mantis, Minotaur, Naga, Nekomata, Nightmare, Oni, Orc, Orca, Phoenix, Pig, Raiju, Red Panda, Salamander, Shark, Sphinx, Spider (+Drider), Unicorn, Vampire</b>");
++	outputText("Alicorn, Bat, Bee, Bicorn, Boar, Cat, Cheshire Cat, Cow, Couatl, Demon, Devil, Displacer Beast, Dog, Dragon, Elf, Fox, Gorgon, Harpy, Hellcat, Horse, Human, Kitsune, Lizard, Manticore, Mantis, Minotaur, Naga, Nekomata, Nightmare, Oni, Orc, Orca, Phoenix, Pig, Raiju, Red Panda, Salamander, Shark, Sphinx, Spider (+Drider), Unicorn, Vampire</b>");
+ 	menu();
+ 	addButton(10, "Page 1", accessPage1MetamorphMenu).hint("Hair, Face, Tongue, Eyes, Ears, Horns");
+ 	addButton(11, "Page 2", accessPage2MetamorphMenu).hint("Arms, Wings, Legs");
+@@ -63,6 +63,21 @@ private function accessPage1MetamorphMenu():void {
+ 	addButton(12, "Horns(2)", accessPage2HornsMenu);
+ 	addButton(14, "Back", accessMetamorphMenu);
+ }
++//use this to bind the button to a metamorph; metamorpFunc has just to apply the transform to the player and print a text
++private function createButton(pageMenuFunc:Function, button:int, Unlock:StatusEffectType, alreadyMutated:Boolean, cost:int, label:String, metamorphFunc:Function)
++{
++	if (!player.hasStatusEffect(Unlock)) addButtonDisabled(button, "???", "You not yet unlocked this metamorphosis!");
++	else if (alreadyMutated) addButtonDisabled(button, label, "You already have this transformation.");
++	else if (player.soulforce < cost) addButtonDisabled(button, label, "You already have this transformation.");
++	else addButton(button, label, curry(doMethamorph, metamorphFunc, cost, pageMenuFunc));
++}
++private function doMethamorph(metamorphFunc:Function, cost:int ,pageMenuFunc:Function) {
++	clearOutput();
++	player.soulforce -= cost;
++	metamorphFunc();
++	doNext(pageMenuFunc);
++}
++
+ private function accessHairMenu():void {
+ 	menu();
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedHumanHair) && player.hairType != Hair.NORMAL && player.soulforce >= 500) addButton(0, "Human", metamorphHumanHair);
+@@ -121,6 +136,9 @@ private function accessPage1FaceMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardFace) && player.faceType == Face.LIZARD) addButtonDisabled(7, "Lizard", "You already have lizard face.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardFace) && player.faceType != Face.LIZARD && player.soulforce < 100) addButtonDisabled(7, "Lizard", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(7, "???", "You not yet unlocked this metamorphosis!");
++
++	createButton(accessPage1FaceMenu, 8, StatusEffects.UnlockedDogFace, (player.faceType == Face.DOG), 100, "Dog", metamorphDogArms);
++	
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType != Face.SPIDER_FANGS && player.soulforce >= 100) addButton(10, "Spider", metamorphSpiderFangs);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType == Face.SPIDER_FANGS) addButtonDisabled(10, "Spider", "You already have spider fangs.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedSpiderFangs) && player.faceType != Face.SPIDER_FANGS && player.soulforce < 100) addButtonDisabled(10, "Spider", "You not have enough Soulforce for this metamorphosis.");
+@@ -137,6 +155,10 @@ private function accessPage1FaceMenu():void {
+ }
+ private function accessPage2FaceMenu():void {
+ 	menu();
++	if (player.hasStatusEffect(StatusEffects.UnlockedDogFace) && player.faceType != Face.DOG && player.soulforce >= 100) addButton(5, "DOG", metamorphDogFace);
++	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType == Face.PIG) addButtonDisabled(5, "Pig", "You already have pig face.");
++	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce < 100) addButtonDisabled(5, "Pig", "You not have enough Soulforce for this metamorphosis.");
++	else addButtonDisabled(5, "???", "You not yet unlocked this metamorphosis!");
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce >= 100) addButton(5, "Pig", metamorphPigFace);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType == Face.PIG) addButtonDisabled(5, "Pig", "You already have pig face.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedPigFace) && player.faceType != Face.PIG && player.soulforce < 100) addButtonDisabled(5, "Pig", "You not have enough Soulforce for this metamorphosis.");
+@@ -225,6 +247,8 @@ private function accessTongueMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedDraconicTongue) && player.tongue.type == Tongue.DRACONIC) addButtonDisabled(3, "Dragon", "You already have dragon tongue.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedDraconicTongue) && player.tongue.type != Tongue.DRACONIC && player.soulforce < 100) addButtonDisabled(3, "Dragon", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(3, "???", "You not yet unlocked this metamorphosis!");
++	createButton(accessTongueMenu, 4, StatusEffects.UnlockedDogTongue, (player.tongue.type == Tongue.DOG), 100, "Dog", metamorphDogTongue);
++	
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type != Tongue.CAT && player.soulforce >= 100) addButton(5, "Cat", metamorphCatTongue);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type == Tongue.CAT) addButtonDisabled(5, "Cat", "You already have cat tongue.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatTongue) && player.tongue.type != Tongue.CAT && player.soulforce < 100) addButtonDisabled(5, "Cat", "You not have enough Soulforce for this metamorphosis.");
+@@ -333,6 +357,7 @@ private function accessPage1EarsMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardEars) && player.ears.type == Ears.LIZARD) addButtonDisabled(6, "Lizard", "You already have lizard ears.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardEars) && player.ears.type != Ears.LIZARD && player.soulforce < 100) addButtonDisabled(6, "Lizard", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
++	createButton(accessPage1EarsMenu, 7, StatusEffects.UnlockedDogEars, (player.ears.type == Ears.DOG), 100, "Dog", metamorphDogEars);
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type != Ears.FOX && player.soulforce >= 100) addButton(9, "Fox", metamorphEarsFox);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type == Ears.FOX) addButtonDisabled(9, "Fox", "You already have fox ears.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedFoxEars) && player.ears.type != Ears.FOX && player.soulforce < 100) addButtonDisabled(9, "Fox", "You not have enough Soulforce for this metamorphosis.");
+@@ -489,6 +514,7 @@ private function accessPage1ArmsMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedPhoenixArms) && player.arms.type == Arms.PHOENIX) addButtonDisabled(6, "Phoenix", "You already have phoenix arms.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedPhoenixArms) && player.arms.type != Arms.PHOENIX && player.soulforce < 100) addButtonDisabled(6, "Phoenix", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
++	//Todo Arms.Dog? createButton(accessPage1ArmsMenu, 7, StatusEffects.UnlockedDogArms, player.arms.type == Arms.DOG, 100, "Dog", metamorphDogArms);
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type != Arms.SHARK && player.soulforce >= 100) addButton(8, "Shark", metamorphSharkArms);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type == Arms.SHARK) addButtonDisabled(8, "Shark", "You already have shark arms.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedSharkArms) && player.arms.type != Arms.SHARK && player.soulforce < 100) addButtonDisabled(8, "Shark", "You not have enough Soulforce for this metamorphosis.");
+@@ -696,6 +722,7 @@ private function accessPage1LegsMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedBeeLegs) && player.lowerBody == LowerBody.BEE) addButtonDisabled(6, "Bee", "You already have bee lower body.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedBeeLegs) && player.lowerBody != LowerBody.BEE && player.soulforce < 100) addButtonDisabled(6, "Bee", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(6, "???", "You not yet unlocked this metamorphosis!");
++	createButton(accessPage1LegsMenu, 7, StatusEffects.UnlockedDogLegs, player.lowerBody == LowerBody.DOG, 100, "Dog", metamorphDogLegs);
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody != LowerBody.CAT && player.soulforce >= 100) addButton(8, "Cat", metamorphCatLegs);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody == LowerBody.CAT) addButtonDisabled(8, "Cat", "You already have cat lower body.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedCatLegs) && player.lowerBody != LowerBody.CAT && player.soulforce < 100) addButtonDisabled(8, "Cat", "You not have enough Soulforce for this metamorphosis.");
+@@ -962,6 +989,7 @@ private function accessPage1TailMenu():void {
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardTail) && player.tailType == Tail.LIZARD) addButtonDisabled(10, "Lizard", "You already have lizard tail.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedLizardTail) && player.tailType != Tail.LIZARD && player.soulforce < 100) addButtonDisabled(10, "Lizard", "You not have enough Soulforce for this metamorphosis.");
+ 	else addButtonDisabled(10, "???", "You not yet unlocked this metamorphosis!");
++	createButton(accessPage1TailMenu, 11, StatusEffects.UnlockedDogTail, player.tail.type == Tail.DOG, 100, "Dog", metamorphDogTail);
+ 	if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType != Tail.HARPY && player.soulforce >= 100) addButton(12, "Harpy", metamorphHarpyTail);
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType == Tail.HARPY) addButtonDisabled(12, "Harpy", "You already have harpy tail.");
+ 	else if (player.hasStatusEffect(StatusEffects.UnlockedHarpyTail) && player.tailType != Tail.HARPY && player.soulforce < 100) addButtonDisabled(12, "Harpy", "You not have enough Soulforce for this metamorphosis.");
+@@ -1800,6 +1828,33 @@ private function metamorphHumanLegs():void {
+ 	restoreHumanLegs();
+ 	doNext(accessPage1LegsMenu);
+ }
++private function metamorphDogLegs():void {
++	outputText("\n\n<b>You now have dog feet.</b>");
++	player.lowerBody = LowerBody.DOG;
++	//TODO force this? player.legCount = 2;
++}
++private function metamorphDogFace():void {
++	outputText("\n\nYou cry out in pain as the bones in your face begin to break and rearrange. You rub your face furiously in an attempt to ease the pain, but to no avail. As the sensations pass, you examine your face in a nearby puddle. <b>You nearly gasp in shock at the sight of your new dog face!</b>");
++	player.faceType = Face.DOG;
++}
++private function metamorphDogTongue():void {
++	outputText("\n\n<b>You now have dog tongue.</b>");
++	player.tongue.type = Tongue.DOG;
++}
++private function metamorphDogArms():void {
++	//outputText("\n\n<b>You now have dog arms.</b>");
++	//player.arms.type = Arms.DOG;  TODO
++}
++private function metamorphDogTail():void {
++	if (player.tailType == Tail.NONE) outputText("\n\nYou feel a tug at the base of your spine as it lengthens ever so slightly. Looking over your shoulder, <b>you find that you have sprouted a dog tail.</b>");
++	else outputText("\n\nYou feel a pinching sensation in your [tail] as it begins to warp in change. When the sensation dissipates, <b>you are left with a dog tail.</b>");
++	player.tail.type = Tail.DOG;
++}
++private function metamorphDogEars():void {
++	outputText("\n\nYou feel a pressure on your ears as they begin to reshape. Once the changes finish, you flick them about experimentally, <b>and you’re left with pointed, floppy dog ears.</b>");
++	player.ears.type = Ears.DOG;
++}
++
+ private function metamorphBoarArms():void {
+ 	clearOutput();
+ 	player.soulforce -= 100;
+diff --git a/classes/classes/StatusEffects.as b/classes/classes/StatusEffects.as
+index 87fe1d492..4c9983e89 100644
+--- a/classes/classes/StatusEffects.as
++++ b/classes/classes/StatusEffects.as
+@@ -583,6 +583,12 @@ import classes.StatusEffects.VampireThirstEffect;
+ 		public static const UnlockedManticoreEyes:StatusEffectType		 = mk("Unlocked Manticore Eyes");
+ 		public static const UnlockedSphinxWings:StatusEffectType		 = mk("Unlocked Sphinx Wings");
+ 		public static const UnlockedSphinxArms:StatusEffectType			 = mk("Unlocked Sphinx Arms");//206 (for line 585)
++		public static const UnlockedDogFace:StatusEffectType 			 = mk("Unlocked Dog Face");
++		public static const UnlockedDogArms:StatusEffectType 		     = mk("Unlocked Dog Arms");
++		public static const UnlockedDogTail:StatusEffectType             = mk("Unlocked Dog Tail");
++		public static const UnlockedDogLegs:StatusEffectType             = mk("Unlocked Dog Legs");
++		public static const UnlockedDogEars:StatusEffectType             = mk("Unlocked Dog Ears");
++		public static const UnlockedDogTongue:StatusEffectType           = mk("Unlocked Dog Tongue");
+ 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
+ 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo ");
+ 	//	public static const UnlockedGoo:StatusEffectType = mk("Unlocked Goo/Siren ");
+
+-- 
+2.17.1.windows.2
+

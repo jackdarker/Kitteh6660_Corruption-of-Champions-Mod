@@ -248,6 +248,7 @@ use namespace CoC;
 			}
 			if (player.findPerk(PerkLib.SoulSense) >= 0) addButton(7, "Soul Sense", SoulSense).hint("Use your soul sense to trigger specific encounter."); //używanie divine sense aby znaleść określone event encounters: Tamani (lvl 6+), Tamani daugthers (lvl 6+), Kitsune mansion (lvl 12+), Izumi (lvl 18/24+), itp.
 			//addButton(10, "Cheats", SoulforceCheats).hint("Well as title saying those are cheats ^^");//block this option at each public version
+			addButton(11, "FunFlags", funFlags)
 			addButton(14, "Back", playerMenu);
 		}//w lini 28 w oOnLoadVariables zmian wprowadzić i w lini conditionalConverters w folderze parser zmian dot. wraith wprowadzić, zablokować perki soul king to soul ancestor w momencie robienia release version
 		public function SoulforceCheats():void {
@@ -3021,6 +3022,21 @@ public function FightHellfireSnail():void {
 			if (player.findPerk(PerkLib.SoulAncestor) >= 0) costPercent += 250;
 			mod *= costPercent/100;
 			return mod;
+		}
+		public function funFlags():void {
+			clearOutput();
+			if (player.hasPerk(PerkLib.MinotaurCumResistance)){
+				outputText("You might get addicted to mino-cum again!");
+				player.removePerk(PerkLib.MinotaurCumResistance)
+				player.removePerk(PerkLib.MinotaurCumAddict)
+				flags[kFLAGS.MINOTAUR_CUM_RESISTANCE_TRACKER] = 0
+				flags[kFLAGS.MINOTAUR_CUM_ADDICTION_TRACKER] = 0;
+				flags[kFLAGS.MINOTAUR_CUM_ADDICTION_STATE] = 0;
+			} else {
+				outputText("Nothing?");
+			}
+			menu();
+			addButton(14, "Back", accessSoulforceMenu);
 		}
 		public function SelfSustain():void {
 			clearOutput();
